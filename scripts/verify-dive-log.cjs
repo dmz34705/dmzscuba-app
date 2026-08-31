@@ -315,13 +315,26 @@ function memoryStorage() {
 
   const plugin = read('plugins', 'withLibDiveComputer.js');
   assert.match(plugin, /stage-libdivecomputer/);
-  assert.match(plugin, /NSBluetoothAlwaysUsageDescription/);
 
   const appJson = JSON.parse(read('app.json'));
   assert.ok(appJson.expo.plugins.includes('./plugins/withLibDiveComputer'));
   assert.equal(appJson.expo.ios.bundleIdentifier, 'com.dmzscuba.app');
+  // BLE transport (Part B step 3)
+  const blePlugin = appJson.expo.plugins.find((p) => Array.isArray(p) && p[0] === 'react-native-ble-plx');
+  assert.ok(blePlugin, 'react-native-ble-plx config plugin must be registered');
+  assert.match(blePlugin[1].bluetoothAlwaysPermission, /dive computer/i);
+  assert.ok(JSON.parse(read('package.json')).dependencies['react-native-ble-plx']);
+
+  const ble = read('src', 'features', 'diveComputerDownload', 'diveComputerBle.js');
+  assert.match(ble, /react-native-ble-plx/);
+  assert.match(ble, /export function looksLikeDiveComputer/);
+  assert.match(ble, /BLUETOOTH_SCAN/);
+  const dlHook = read('src', 'features', 'diveComputerDownload', 'useDiveComputerDownload.js');
+  assert.match(dlHook, /startDeviceScan/);
+  assert.match(dlHook, /connectToDevice/);
 
   assert.match(screen, /getLibdivecomputerVersion/);
+  assert.match(screen, /DiveComputerDownloadPanel/);
 
   console.log('Dive logbook checks passed.');
 })().catch((error) => {

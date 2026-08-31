@@ -52,6 +52,7 @@ import {
 } from '../lib/diveLog/format';
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
+import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComputerDownloadPanel';
 import { colors, radii, shadow, spacing } from '../theme';
 
 const DIVE_MODE_LABELS = { oc: 'Open circuit', ccr: 'Closed circuit', scr: 'Semi-closed', gauge: 'Gauge', freedive: 'Freedive' };
@@ -652,7 +653,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       else openList();
       return;
     }
-    if (view === 'detail') { openList(); return; }
+    if (view === 'detail' || view === 'download') { openList(); return; }
     onBack?.();
   }, [onBack, openList, selectedId, view]);
 
@@ -694,7 +695,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
     ? (selectedId ? 'Edit dive' : 'Log a dive')
     : view === 'detail'
       ? 'Dive details'
-      : 'Dive Log';
+      : view === 'download'
+        ? 'Dive computer'
+        : 'Dive Log';
 
   const headerAction = view === 'list' && loaded && rows.length
     ? <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
@@ -712,7 +715,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
           <>
             <SectionLabel>DIVE HISTORY</SectionLabel>
             <Text style={styles.title}>Every dive, on this device.</Text>
-            <Text style={styles.subtitle}>Log dives by hand now. Direct dive-computer download is coming next.</Text>
+            <Text style={styles.subtitle}>
+              {libdcVersion
+                ? 'Log dives by hand, or download them from a Bluetooth dive computer.'
+                : 'Log dives by hand now. Direct dive-computer download is coming next.'}
+            </Text>
 
             {!loaded ? (
               <Text style={styles.muted}>Loading your logbook…</Text>
@@ -731,13 +738,22 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
                 )}
                 <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} />
                 {libdcVersion ? (
-                  <Text style={styles.engineNote}>
-                    Dive-computer download engine linked · libdivecomputer {libdcVersion}
-                  </Text>
+                  <>
+                    <SecondaryButton
+                      label="Download from dive computer"
+                      onPress={() => setView('download')}
+                      style={styles.downloadButton}
+                    />
+                    <Text style={styles.engineNote}>libdivecomputer {libdcVersion}</Text>
+                  </>
                 ) : null}
               </>
             )}
           </>
+        )}
+
+        {view === 'download' && (
+          <DiveComputerDownloadPanel onClose={() => setView('list')} />
         )}
 
         {view === 'detail' && (
@@ -790,6 +806,7 @@ const styles = StyleSheet.create({
   emptyBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6, textAlign: 'center' },
 
   primaryCta: { marginTop: 8 },
+  downloadButton: { marginTop: 10 },
   engineNote: { color: colors.faint, fontSize: 11, marginTop: 12, textAlign: 'center' },
   cancelButton: { marginTop: 10 },
 
