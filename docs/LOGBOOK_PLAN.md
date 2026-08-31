@@ -19,8 +19,20 @@ and this doc do). Read `docs/ARCHITECTURE.md` first.
   Metro. `app.json` now sets `ios.bundleIdentifier` / `android.package`
   (`com.dmzscuba.app`) and `expo-dev-client` is a dependency. `ios/` stays
   generated (gitignored).
-- Next: Part B step 2 (vendor libdivecomputer + config plugin + `getVersion()`
-  module).
+- **Part B step 2 done (iOS)** — libdivecomputer 0.9.0 vendored and linked.
+  `vendor/libdivecomputer` is a submodule pinned at the v0.9.0 tag. A local Expo
+  module, `modules/dive-computer-bridge/`, compiles all 114 POSIX C sources via
+  its podspec (with a hand-written `ios/generated/config.h` + `version.h`) and
+  exposes `getVersion()` (C `dc_version()` → ObjC shim → Swift → JS). The
+  `plugins/withLibDiveComputer.js` config plugin stages the C sources into the
+  module (CocoaPods only builds files inside the pod root) and adds the
+  Bluetooth Info.plist key. Verified in the Simulator: the Dive Log screen shows
+  "libdivecomputer 0.9.0" from the native call. `npx expo run:ios` →
+  BUILD SUCCEEDED, 0 errors.
+  - Deviation from the plan below: no `project.pbxproj` surgery — the module
+    podspec does the linking, which is simpler and survives `expo prebuild`.
+- Next: Part B step 3 (BLE scan + connect). **Needs a decision: `react-native-ble-plx`
+  vs. CoreBluetooth in the Swift module** (see Open decisions).
 
 **Decided:**
 - Feature lives under **Tools** as "Dive Log".
@@ -196,14 +208,25 @@ Staged so each step compiles/runs before the next:
    then `npx expo run:ios` → BUILD SUCCEEDED, dev client runs on the simulator.
    `ios/` stays generated (`.gitignore` already ignores `/ios` `/android`); the
    config plugin will reproduce it.
-2. **Vendor + link libdivecomputer.** `vendor/libdivecomputer/` (git submodule of
-   the upstream repo, or copied 0.9.0 source + `config.h`). An Expo **config
-   plugin** (`plugins/withLibDiveComputer.js`) that adds the C sources to the iOS
-   target (podspec or `project.pbxproj` mods) with the flags from
-   `tmp-libdc/Android.mk` / `contrib/android/Android.mk` for Android, and adds
-   `NSBluetoothAlwaysUsageDescription` to Info.plist. Plus a tiny **Expo module**
-   (Swift, `ExpoModulesCore`) exposing `getVersion()` → `dc_version()`. Goal:
-   the app launches and JS can read the libdivecomputer version string.
+2. **Vendor + link libdivecomputer.** ✅ **Done for iOS (2026-08-31).**
+   `vendor/libdivecomputer/` is a submodule pinned at v0.9.0. The native module
+   `modules/dive-computer-bridge/` (local Expo module, autolinked) owns
+   everything:
+   - `ios/DiveComputerBridge.podspec` compiles the 114 POSIX C sources
+     (`contrib/android/Android.mk` list minus `serial_win32.c`) with
+     `HAVE_CONFIG_H=1` + `GCC_WARN_INHIBIT_ALL_WARNINGS`.
+   - `ios/generated/config.h` (hand-written for Apple) and
+     `ios/generated/libdivecomputer/version.h` (substituted from `version.h.in`)
+     replace the autotools-generated headers.
+   - `ios/DCLibdivecomputer.{h,m}` is a one-method ObjC shim; the Swift `Module`
+     (`getVersion()`) calls it. JS: `getLibdivecomputerVersion()` from
+     `modules/dive-computer-bridge`.
+   - `plugins/withLibDiveComputer.js` (registered in `app.json`) stages the C
+     sources from the submodule into `modules/dive-computer-bridge/ios/libdivecomputer/`
+     (gitignored) via `scripts/stage-libdivecomputer.js`, and adds
+     `NSBluetoothAlwaysUsageDescription`. It runs during `expo prebuild`; run the
+     script by hand before a bare `pod install`.
+   Android NDK build (the `Android.mk` route) is still step 5.
 3. **BLE scan + connect.** Either `react-native-ble-plx` (JS) or CoreBluetooth in
    the Swift module. Expose `scan()` / `connect(deviceId)`.
 4. **Download.** Implement a `dc_custom_cbs_t` iostream (`tmp-libdc/custom.h`)
