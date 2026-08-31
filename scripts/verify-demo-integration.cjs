@@ -20,4 +20,3 @@ assert.match(BOYLES_INTEGRATION_SCRIPT, /Step 2 of 2: tap the glowing INFLATE bu
 assert.match(BOYLES_INTEGRATION_SCRIPT, /dmz-app-target-inflate/);
 
 console.log('Demo integration checks passed.');
-ok 
