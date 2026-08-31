@@ -25,14 +25,25 @@ and this doc do). Read `docs/ARCHITECTURE.md` first.
   its podspec (with a hand-written `ios/generated/config.h` + `version.h`) and
   exposes `getVersion()` (C `dc_version()` → ObjC shim → Swift → JS). The
   `plugins/withLibDiveComputer.js` config plugin stages the C sources into the
-  module (CocoaPods only builds files inside the pod root) and adds the
-  Bluetooth Info.plist key. Verified in the Simulator: the Dive Log screen shows
-  "libdivecomputer 0.9.0" from the native call. `npx expo run:ios` →
-  BUILD SUCCEEDED, 0 errors.
+  module (CocoaPods only builds files inside the pod root). Verified in the
+  Simulator: the Dive Log screen shows "libdivecomputer 0.9.0" from the native
+  call. `npx expo run:ios` → BUILD SUCCEEDED, 0 errors.
   - Deviation from the plan below: no `project.pbxproj` surgery — the module
     podspec does the linking, which is simpler and survives `expo prebuild`.
-- Next: Part B step 3 (BLE scan + connect). **Needs a decision: `react-native-ble-plx`
-  vs. CoreBluetooth in the Swift module** (see Open decisions).
+- **Part B step 3 done (iOS, as far as a simulator can verify)** — BLE via
+  **`react-native-ble-plx`** (decided: written once, the Android port becomes an
+  NDK build rather than a second BLE stack). `src/features/diveComputerDownload/`
+  has `diveComputerBle.js` (manager, Android runtime permissions, adapter-state
+  wait, dive-computer name hints), `useDiveComputerDownload.js` (scan / connect /
+  disconnect state machine), and `DiveComputerDownloadPanel.js`. The Dive Log
+  list gets a "Download from dive computer" button (shown only in a native
+  build). The ble-plx config plugin owns the Bluetooth Info.plist / manifest
+  permissions. `npx expo run:ios` → BUILD SUCCEEDED; the scan flow runs and
+  degrades cleanly ("Turn on Bluetooth…") in the Simulator, which has no BLE
+  radio. **Real scan/connect needs a physical iPhone + a dive computer** (and,
+  past 7 days on device, the paid Apple Developer account).
+- Next: Part B step 4 (download) — the `dc_custom_cbs_t` iostream backed by the
+  ble-plx read/write, `connectedDevice` is the handoff point.
 
 **Decided:**
 - Feature lives under **Tools** as "Dive Log".
@@ -227,8 +238,11 @@ Staged so each step compiles/runs before the next:
      `NSBluetoothAlwaysUsageDescription`. It runs during `expo prebuild`; run the
      script by hand before a bare `pod install`.
    Android NDK build (the `Android.mk` route) is still step 5.
-3. **BLE scan + connect.** Either `react-native-ble-plx` (JS) or CoreBluetooth in
-   the Swift module. Expose `scan()` / `connect(deviceId)`.
+3. **BLE scan + connect.** ✅ **Done for iOS (2026-08-31).** `react-native-ble-plx`
+   (chosen over native CoreBluetooth so the Android port is an NDK build, not a
+   second BLE implementation). See `src/features/diveComputerDownload/`. Scan /
+   connect / disconnect work; real hardware verification is pending a physical
+   device.
 4. **Download.** Implement a `dc_custom_cbs_t` iostream (`tmp-libdc/custom.h`)
    backed by the BLE read/write from step 3. Then in the native module:
    `dc_context_new` → pick `dc_descriptor_t` (from a user-selected vendor/product,
@@ -293,5 +307,6 @@ is a release checkbox, not a code task — flag it before submitting.
 - Sync: when to build the DMZ-account sync endpoint, and whether it is a new
   `dmzscuba.com` Worker route (like `/api/account/app-settings`) or a direct
   Supabase table with RLS.
-- BLE library: `react-native-ble-plx` vs. CoreBluetooth-in-the-Swift-module.
-- Apple Developer Program: buy when device Bluetooth testing starts.
+- ~~BLE library~~ — **decided: `react-native-ble-plx`** (2026-08-31).
+- Apple Developer Program: buy when device Bluetooth testing starts (needed now
+  to verify step 3 on real hardware and to build step 4).
