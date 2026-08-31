@@ -10,6 +10,7 @@
     "backgroundColor": "#050B14",
     "primaryColor": "#E21B23",
     "ios": {
+      "bundleIdentifier": "com.dmzscuba.app",
       "supportsTablet": true,
       "userInterfaceStyle": "dark",
       "infoPlist": {
@@ -18,6 +19,7 @@
       }
     },
     "android": {
+      "package": "com.dmzscuba.app",
       "userInterfaceStyle": "dark",
       "permissions": [
         "CAMERA"
