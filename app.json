@@ -55,7 +55,8 @@
           "photosPermission": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose.",
           "cameraPermission": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens."
         }
-      ]
+      ],
+      "./plugins/withLibDiveComputer"
     ]
   }
 }

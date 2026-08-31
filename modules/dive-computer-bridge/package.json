@@ -1,0 +1,7 @@
+{
+  "name": "dive-computer-bridge",
+  "version": "0.1.0",
+  "description": "Native libdivecomputer bridge for DMZ Scuba (dive-computer download)",
+  "main": "index.js",
+  "private": true
+}
