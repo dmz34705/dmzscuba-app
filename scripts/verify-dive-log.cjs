@@ -9,6 +9,10 @@ const srcRoot = path.join(projectRoot, 'src');
 const read = (...parts) => fs.readFileSync(path.join(projectRoot, ...parts), 'utf8');
 
 const diveLog = loadSourceModule(path.join(srcRoot, 'lib', 'diveLog', 'index.js'), srcRoot);
+const { diveRecordFromComputer, computerDiveKey } = loadSourceModule(
+  path.join(srcRoot, 'features', 'diveComputerDownload', 'diveRecordFromComputer.js'),
+  srcRoot,
+);
 const {
   SCHEMA_VERSION,
   DIVE_TYPES,
@@ -205,6 +209,77 @@ assert.ok(geom.timeTicks.length > 0 && geom.timeTicks.every((tick) => tick.x >= 
 assert.ok(geom.points.every((point) => point.x >= 0 && point.x <= 300 && point.y >= 0 && point.y <= 150));
 
 // ---------------------------------------------------------------------------
+// diveRecordFromComputer (libdivecomputer parsed dive -> schema partial)
+// ---------------------------------------------------------------------------
+
+const rawComputerDive = {
+  fingerprint: 'Zm9vYmFy',
+  vendor: 'Shearwater',
+  product: 'Perdix',
+  datetime: { year: 2026, month: 5, day: 1, hour: 9, minute: 30, second: 0, timezone: -7 * 3600 },
+  divetimeSeconds: 2760,
+  maxDepthMeters: 30.4,
+  avgDepthMeters: 17.2,
+  tempSurfaceC: 24,
+  tempMinC: 18,
+  tempMaxC: null,
+  salinity: 'salt',
+  atmosphericBar: 1.01,
+  gasmixes: [{ oxygen: 0.32, helium: 0 }, { oxygen: 0.5, helium: 0 }],
+  tanks: [{ gasmix: 0, volumeLiters: 11.1, workPressureBar: 232, beginPressureBar: 210, endPressureBar: 70 }],
+  diveMode: 'oc',
+  decoModel: { type: 'buhlmann', gfLow: 40, gfHigh: 85, conservatism: 0 },
+  location: { latitude: 32.1, longitude: -80.2, altitude: 0 },
+  samples: [
+    { t: 0, depth: 0 },
+    { t: 20, depth: 10, tempC: 22 },
+    { t: 40, depth: 30, pressureBar: 180, ndl: 900 },
+    { t: 60, depth: 5, deco: { type: 'safetystop', depth: 5, seconds: 180 } },
+  ],
+  events: [
+    { t: 40, type: 'gaschange', gasmix: 1 },
+    { t: 55, eventType: 10 }, // SAFETYSTOP
+    { t: 58, eventType: 2 }, // RBT -> not mapped
+  ],
+};
+
+const computerRecord = diveRecordFromComputer(rawComputerDive, { vendor: 'Shearwater', product: 'Perdix', serial: 'SN1' });
+assert.equal(computerRecord.source, 'computer');
+assert.equal(computerRecord.device.vendor, 'Shearwater');
+assert.equal(computerRecord.device.fingerprint, 'Zm9vYmFy');
+assert.equal(computerRecord.startTime, '2026-05-01T16:30:00.000Z'); // 09:30 at -07:00
+assert.equal(computerRecord.timezoneOffsetMinutes, -420);
+assert.equal(computerRecord.durationSeconds, 2760);
+assert.equal(computerRecord.water.type, 'salt');
+assert.equal(computerRecord.water.maxDepthMeters, 30.4);
+assert.equal(computerRecord.gas.mixes[0].label, 'EAN32');
+assert.equal(computerRecord.gas.tanks[0].startBar, 210);
+assert.equal(computerRecord.diveMode, 'oc');
+assert.deepEqual(computerRecord.decoModel, { type: 'buhlmann', gfLow: 40, gfHigh: 85 });
+assert.equal(computerRecord.site.latitude, 32.1);
+assert.equal(computerRecord.profile.samples.length, 4);
+assert.equal(computerRecord.profile.samples[2].ndl, 900);
+assert.equal(computerRecord.profile.sampleIntervalSeconds, 20);
+const evTypes = computerRecord.profile.events.map((e) => e.type);
+assert.deepEqual(evTypes, ['gaschange', 'safetystop']); // eventType 2 dropped
+assert.equal(computerRecord.profile.events[0].note, 'EAN50');
+
+// The whole thing must survive normalization + validation.
+const normComputer = normalizeDiveRecord(computerRecord);
+assert.equal(validateDiveRecord(normComputer), '');
+
+// no-timezone datetime -> naive local interpretation, no throw
+const noTz = diveRecordFromComputer({
+  datetime: { year: 2026, month: 1, day: 2, hour: 8, minute: 0, second: 0, timezone: null },
+  divetimeSeconds: 1200, maxDepthMeters: 12, gasmixes: [], samples: [],
+}, {});
+assert.ok(!Number.isNaN(Date.parse(noTz.startTime)));
+assert.deepEqual(noTz.gas.mixes, [{ o2: 0.21, he: 0, label: 'Air' }]);
+
+assert.equal(computerDiveKey('Shearwater', 'Perdix', 'abc'), 'Shearwater|Perdix|abc');
+assert.equal(computerDiveKey('Shearwater', 'Perdix', null), null);
+
+// ---------------------------------------------------------------------------
 // storage (in-memory backend)
 // ---------------------------------------------------------------------------
 
@@ -258,10 +333,24 @@ function memoryStorage() {
   assert.equal(afterDelete.find((row) => row.id === saved.id).deletedAt != null, true);
   assert.equal(computeDiveLogStats(afterDelete).totalDives, 1);
 
+  // computer dedupe key + fingerprint round-trip
+  const computerSaved = await saveEntry(diveLog.createDiveRecord({
+    startTime: '2026-06-01T09:00:00.000Z',
+    durationSeconds: 1800,
+    source: 'computer',
+    device: { vendor: 'Suunto', product: 'D5', fingerprint: 'YWJj' },
+  }), store);
+  const computerRow = (await loadIndex(store)).find((r) => r.id === computerSaved.id);
+  assert.equal(computerRow.computerKey, 'Suunto|D5|YWJj');
+  await diveLog.saveFingerprint('Suunto', 'D5', 'YWJj', store);
+  assert.equal(await diveLog.loadFingerprint('Suunto', 'D5', store), 'YWJj');
+  assert.equal(await diveLog.loadFingerprint('Suunto', 'Zoop', store), null);
+
   await clearAll(store);
   assert.deepEqual(await loadIndex(store), []);
   assert.equal(store._map.has(DIVE_LOG_INDEX_KEY), false);
   assert.equal(store._map.has(`${DIVE_LOG_ENTRY_PREFIX}${second.id}`), false);
+  assert.equal(await diveLog.loadFingerprint('Suunto', 'D5', store), null);
 
   // ---------------------------------------------------------------------------
   // wiring / source structure
@@ -335,6 +424,11 @@ function memoryStorage() {
 
   assert.match(screen, /getLibdivecomputerVersion/);
   assert.match(screen, /DiveComputerDownloadPanel/);
+
+  const runner = read('src', 'features', 'diveComputerDownload', 'downloadRunner.js');
+  assert.match(runner, /monitorCharacteristicForService/);
+  assert.match(runner, /onDownloadWrite/);
+  assert.match(read('src', 'features', 'diveLog', 'useDiveLog.js'), /knownComputerKeys/);
 
   console.log('Dive logbook checks passed.');
 })().catch((error) => {

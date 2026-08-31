@@ -42,8 +42,31 @@ and this doc do). Read `docs/ARCHITECTURE.md` first.
   degrades cleanly ("Turn on Bluetooth…") in the Simulator, which has no BLE
   radio. **Real scan/connect needs a physical iPhone + a dive computer** (and,
   past 7 days on device, the paid Apple Developer account).
-- Next: Part B step 4 (download) — the `dc_custom_cbs_t` iostream backed by the
-  ble-plx read/write, `connectedDevice` is the handoff point.
+- **Part B step 4 written (iOS) — compiles, not yet hardware-verified.** The full
+  download path:
+  - `modules/dive-computer-bridge/ios/DiveComputerDownloader.m` — a
+    `dc_custom_cbs_t` iostream whose `read`/`poll` block on an `NSCondition`
+    fed by JS (`provideBytes`) and whose `write` emits an `onDownloadWrite`
+    event and blocks until `provideWriteComplete`. Descriptor lookup by
+    vendor+product or `dc_descriptor_filter(DC_TRANSPORT_BLE, name)`, then
+    `dc_device_open` → `dc_device_set_fingerprint` (incremental) →
+    `dc_device_foreach`. Each dive is parsed (`dc_parser_new2` + every
+    `DC_FIELD_*` + `dc_parser_samples_foreach` accumulated into rows) into a
+    dictionary emitted as `onDownloadDive`.
+  - `src/features/diveComputerDownload/downloadRunner.js` — picks the BLE
+    write/notify characteristics, pumps notifications into `provideBytes`, and
+    services `onDownloadWrite`.
+  - `src/features/diveComputerDownload/diveRecordFromComputer.js` — **pure,
+    unit-tested** mapper from the raw dive dict to a schema partial (datetime +
+    timezone → ISO, gas labels, tanks, sample normalization, `SAMPLE_EVENT_*` →
+    our event types).
+  - Dedup: `indexRow.computerKey` = `vendor|product|fingerprint`;
+    `useDiveLog.knownComputerKeys` skips dives already imported. Newest
+    fingerprint is persisted per computer (`loadFingerprint`/`saveFingerprint`)
+    for incremental re-downloads.
+  `npx expo run:ios` → BUILD SUCCEEDED. **An end-to-end download needs a
+  physical iPhone + a real dive computer** — the iostream timing, the
+  characteristic-pick heuristic, and per-model parser output are all unverified.
 
 **Decided:**
 - Feature lives under **Tools** as "Dive Log".
@@ -243,7 +266,13 @@ Staged so each step compiles/runs before the next:
    second BLE implementation). See `src/features/diveComputerDownload/`. Scan /
    connect / disconnect work; real hardware verification is pending a physical
    device.
-4. **Download.** Implement a `dc_custom_cbs_t` iostream (`tmp-libdc/custom.h`)
+4. **Download.** ⚠️ **Written for iOS (2026-08-31) — compiles, not hardware-tested.**
+   `modules/dive-computer-bridge/ios/DiveComputerDownloader.m` +
+   `src/features/diveComputerDownload/{downloadRunner,diveRecordFromComputer}.js`.
+   The pure mapper is unit-tested; an end-to-end download needs a device. Original
+   plan follows:
+
+   Implement a `dc_custom_cbs_t` iostream (`tmp-libdc/custom.h`)
    backed by the BLE read/write from step 3. Then in the native module:
    `dc_context_new` → pick `dc_descriptor_t` (from a user-selected vendor/product,
    or `dc_descriptor_filter` on the advertised BLE name) → `dc_device_open` →
