@@ -51,6 +51,7 @@ import {
   weightToInput,
 } from '../lib/diveLog/format';
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
+import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import { colors, radii, shadow, spacing } from '../theme';
 
 const DIVE_MODE_LABELS = { oc: 'Open circuit', ccr: 'Closed circuit', scr: 'Semi-closed', gauge: 'Gauge', freedive: 'Freedive' };
@@ -600,6 +601,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
     gasVolumeUnit: appSettings.gasVolumeUnit === 'L' ? 'L' : 'ft³',
   }), [appSettings.depthUnit, appSettings.pressureUnit, appSettings.temperatureUnit, appSettings.gasVolumeUnit]);
 
+  const libdcVersion = useMemo(() => getLibdivecomputerVersion(), []);
+
   const [view, setView] = useState('list');
   const [selectedId, setSelectedId] = useState(null);
   const [record, setRecord] = useState(null);
@@ -727,6 +730,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
                   ))
                 )}
                 <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} />
+                {libdcVersion ? (
+                  <Text style={styles.engineNote}>
+                    Dive-computer download engine linked · libdivecomputer {libdcVersion}
+                  </Text>
+                ) : null}
               </>
             )}
           </>
@@ -782,6 +790,7 @@ const styles = StyleSheet.create({
   emptyBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6, textAlign: 'center' },
 
   primaryCta: { marginTop: 8 },
+  engineNote: { color: colors.faint, fontSize: 11, marginTop: 12, textAlign: 'center' },
   cancelButton: { marginTop: 10 },
 
   detailCard: {},

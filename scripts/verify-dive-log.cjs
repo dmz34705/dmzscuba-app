@@ -295,6 +295,34 @@ function memoryStorage() {
   const pkg = JSON.parse(read('package.json'));
   assert.equal(pkg.scripts['test:dive-log'], 'node scripts/verify-dive-log.cjs');
 
+  // --- Part B: native libdivecomputer bridge wiring ---
+  const gitmodules = read('.gitmodules');
+  assert.match(gitmodules, /path = vendor\/libdivecomputer/);
+
+  const moduleConfig = JSON.parse(read('modules', 'dive-computer-bridge', 'expo-module.config.json'));
+  assert.deepEqual(moduleConfig.apple.modules, ['DiveComputerBridgeModule']);
+
+  const podspec = read('modules', 'dive-computer-bridge', 'ios', 'DiveComputerBridge.podspec');
+  assert.match(podspec, /\/src\/\*\.\{c,h\}/);
+  assert.match(podspec, /HAVE_CONFIG_H=1/);
+
+  const swift = read('modules', 'dive-computer-bridge', 'ios', 'DiveComputerBridgeModule.swift');
+  assert.match(swift, /Name\("DiveComputerBridgeModule"\)/);
+  assert.match(swift, /Function\("getVersion"\)/);
+
+  const generatedVersion = read('modules', 'dive-computer-bridge', 'ios', 'generated', 'libdivecomputer', 'version.h');
+  assert.match(generatedVersion, /#define DC_VERSION "0\.9\.0"/);
+
+  const plugin = read('plugins', 'withLibDiveComputer.js');
+  assert.match(plugin, /stage-libdivecomputer/);
+  assert.match(plugin, /NSBluetoothAlwaysUsageDescription/);
+
+  const appJson = JSON.parse(read('app.json'));
+  assert.ok(appJson.expo.plugins.includes('./plugins/withLibDiveComputer'));
+  assert.equal(appJson.expo.ios.bundleIdentifier, 'com.dmzscuba.app');
+
+  assert.match(screen, /getLibdivecomputerVersion/);
+
   console.log('Dive logbook checks passed.');
 })().catch((error) => {
   console.error(error);
