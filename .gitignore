@@ -33,6 +33,10 @@ yarn-error.*
 # local env files
 .env*.local
 
+# scratch / vendored-library staging (not part of the app source)
+tmp-libdc/
+tmp-*/
+
 # typescript
 *.tsbuildinfo
 

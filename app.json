@@ -2,23 +2,58 @@
   "expo": {
     "name": "DMZ Scuba",
     "slug": "dmz-scuba-app",
+    "scheme": "dmzscuba",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#050B14",
+    "primaryColor": "#E21B23",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "userInterfaceStyle": "dark",
+      "infoPlist": {
+        "NSCameraUsageDescription": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens.",
+        "NSPhotoLibraryUsageDescription": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose."
+      }
     },
     "android": {
+      "userInterfaceStyle": "dark",
+      "permissions": [
+        "CAMERA"
+      ],
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "backgroundColor": "#071525",
+        "foregroundImage": "./assets/android-icon-foreground.png"
       }
     },
     "web": {
+      "backgroundColor": "#050B14",
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#050B14",
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "dark": {
+            "backgroundColor": "#050B14",
+            "image": "./assets/splash-icon.png"
+          }
+        }
+      ],
+      "expo-secure-store",
+      "expo-web-browser",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose.",
+          "cameraPermission": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens."
+        }
+      ]
+    ]
   }
 }

@@ -1,0 +1,12 @@
+# Normalize line endings: store LF in the repo, check out LF everywhere.
+# Keeps diffs clean across the Windows and macOS machines this project runs on.
+* text=auto eol=lf
+
+*.png binary
+*.webp binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.gif binary
+*.pdf binary
+*.tar.gz binary
