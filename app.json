@@ -56,7 +56,13 @@
           "cameraPermission": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens."
         }
       ],
-      "./plugins/withLibDiveComputer"
+      "./plugins/withLibDiveComputer",
+      [
+        "react-native-ble-plx",
+        {
+          "bluetoothAlwaysPermission": "DMZ Scuba connects to your dive computer over Bluetooth to download your dive log."
+        }
+      ]
     ]
   }
 }

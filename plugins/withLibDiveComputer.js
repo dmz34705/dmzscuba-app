@@ -1,20 +1,19 @@
-const { withDangerousMod, withInfoPlist } = require('expo/config-plugins');
+const { withDangerousMod } = require('expo/config-plugins');
 const { execFileSync } = require('child_process');
 const path = require('path');
-
-const BT_USAGE =
-  'DMZ Scuba connects to your dive computer over Bluetooth to download your dive log.';
 
 /**
  * Config plugin for the vendored libdivecomputer native module.
  *
- * - Stages the submodule's C sources into the module (CocoaPods only compiles
- *   source_files inside the pod root). Runs before `pod install` during prebuild.
- * - Ensures the Bluetooth usage string is present in Info.plist.
+ * Stages the submodule's C sources into modules/dive-computer-bridge/ios/
+ * before `pod install` runs during prebuild — CocoaPods only compiles
+ * source_files that live inside the pod root. The Swift/JS bridge itself
+ * autolinks from modules/dive-computer-bridge/.
  *
- * The Swift/JS bridge itself autolinks from modules/dive-computer-bridge/.
+ * The Bluetooth Info.plist / manifest permissions are handled by the
+ * react-native-ble-plx config plugin.
  */
-function withLibDiveComputerStaging(config) {
+module.exports = function withLibDiveComputer(config) {
   return withDangerousMod(config, [
     'ios',
     (config) => {
@@ -29,17 +28,4 @@ function withLibDiveComputerStaging(config) {
       return config;
     },
   ]);
-}
-
-function withBluetoothUsage(config) {
-  return withInfoPlist(config, (config) => {
-    if (!config.modResults.NSBluetoothAlwaysUsageDescription) {
-      config.modResults.NSBluetoothAlwaysUsageDescription = BT_USAGE;
-    }
-    return config;
-  });
-}
-
-module.exports = function withLibDiveComputer(config) {
-  return withBluetoothUsage(withLibDiveComputerStaging(config));
 };
