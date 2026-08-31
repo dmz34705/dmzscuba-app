@@ -36,7 +36,7 @@ assert.match(tankSettingsSource, /resolveTankProfile/);
 assert.doesNotMatch(calculatorScreenSource, /AsyncStorage|TANK_STORAGE_KEY|DEFAULT_TANK_SETTINGS/);
 
 const featureIds = [...catalogSource.matchAll(/\n\s+id: '([^']+)'/g)].map((match) => match[1]);
-for (const requiredFeature of ['color-loss', 'boyles-law', 'dive-computer-simulator', 'dive-calculator', 'dive-lens']) {
+for (const requiredFeature of ['color-loss', 'boyles-law', 'dive-computer-simulator', 'dive-calculator', 'dive-lens', 'dive-log']) {
   assert.ok(featureIds.includes(requiredFeature), `The existing ${requiredFeature} feature must remain registered.`);
 }
 assert.equal(new Set(featureIds).size, featureIds.length, 'Feature catalog IDs must be unique.');

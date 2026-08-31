@@ -38,7 +38,8 @@
     "test:virtual-dive-computer": "node scripts/verify-virtual-dive-computer.cjs",
     "test:dive-computer-ui": "node scripts/verify-dive-computer-ui.cjs",
     "test:dive-computer-workspace": "node scripts/verify-dive-computer-workspace.cjs",
-    "test:dive-computer": "node scripts/verify-dive-computer.cjs"
+    "test:dive-computer": "node scripts/verify-dive-computer.cjs",
+    "test:dive-log": "node scripts/verify-dive-log.cjs"
   },
   "private": true
 }
