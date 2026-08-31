@@ -1,8 +1,9 @@
 // JS surface for the native libdivecomputer bridge.
 //
-// Part B step 2 only exposes the library version, to prove the native pipeline
-// (vendored C -> ObjC shim -> Swift module -> JS). BLE scan/connect and dive
-// download land in later steps on top of this same module.
+// - getLibdivecomputerVersion(): proves the native path (vendored C -> Swift -> JS).
+// - startDownload()/provideBytes()/provideWriteComplete()/cancelDownload() + the
+//   onDownload* events: run a libdivecomputer download over a BLE transport that
+//   lives in JS (react-native-ble-plx). See src/features/diveComputerDownload/.
 
 import DiveComputerBridge from './src/DiveComputerBridgeModule';
 
@@ -20,6 +21,38 @@ export function getLibdivecomputerVersion() {
   } catch {
     return null;
   }
+}
+
+/**
+ * Runs a dive download.
+ * @param {{ name: string, vendor?: string, product?: string, fingerprintBase64?: string }} options
+ * @returns {Promise<{ fingerprint: string | null, count: number }>}
+ */
+export function startDownload(options) {
+  return DiveComputerBridge.startDownload(options);
+}
+
+/** Hands bytes from a BLE notification to the running download. */
+export function provideBytes(base64) {
+  DiveComputerBridge.provideBytes(base64);
+}
+
+/** Call after the JS layer has written the bytes from an `onDownloadWrite` event. */
+export function provideWriteComplete() {
+  DiveComputerBridge.provideWriteComplete();
+}
+
+/** Requests cancellation of the running download. */
+export function cancelDownload() {
+  DiveComputerBridge.cancelDownload();
+}
+
+/**
+ * Subscribe to a download event. Returns a subscription with `.remove()`.
+ * @param {'onDownloadWrite'|'onDownloadProgress'|'onDownloadDevinfo'|'onDownloadDive'|'onDownloadLog'} event
+ */
+export function addDownloadListener(event, handler) {
+  return DiveComputerBridge.addListener(event, handler);
 }
 
 export default DiveComputerBridge;

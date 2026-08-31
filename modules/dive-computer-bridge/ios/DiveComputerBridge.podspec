@@ -28,9 +28,9 @@ Pod::Spec.new do |s|
     "#{libdc}/include/libdivecomputer/*.h",
     "#{libdc}/src/*.{c,h}",
   ]
-  # Only our shim is public API; libdivecomputer's headers stay project-internal
-  # so they never land in the module umbrella.
-  s.public_header_files = 'DCLibdivecomputer.h'
+  # Our ObjC surface is public (visible to the Swift module); libdivecomputer's
+  # own headers stay project-internal so they never land in the module umbrella.
+  s.public_header_files = 'DCLibdivecomputer.h', 'DiveComputerDownloader.h'
 
   s.pod_target_xcconfig = {
     'DEFINES_MODULE' => 'YES',
