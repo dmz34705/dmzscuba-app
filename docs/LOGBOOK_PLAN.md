@@ -5,7 +5,22 @@ dive-computer download. It exists because the work spans two machines and two
 Claude Code sessions (sessions do not transfer between machines — only the repo
 and this doc do). Read `docs/ARCHITECTURE.md` first.
 
-## Status (2026-08-30)
+## Status (2026-08-31)
+
+**Progress:**
+- **Part A shipped** to `main` (commits `50c27c4`, `661e533`, `3e3b65d`): the
+  pure-JS logbook (`src/lib/diveLog/*`), `useDiveLog`, `DiveLogScreen`, catalog
+  entry + `LogbookIcon`, navigator route, and `npm run test:dive-log`. All
+  `npm run test:*` green, `expo-doctor` clean, verified rendering in the
+  Simulator.
+- **Part B step 1 done** (bare dev build). `npx expo prebuild --platform ios`
+  then `npx expo run:ios` → **BUILD SUCCEEDED**, `com.dmzscuba.app` installs and
+  the Expo dev client launches on the iPhone 17 Pro simulator and connects to
+  Metro. `app.json` now sets `ios.bundleIdentifier` / `android.package`
+  (`com.dmzscuba.app`) and `expo-dev-client` is a dependency. `ios/` stays
+  generated (gitignored).
+- Next: Part B step 2 (vendor libdivecomputer + config plugin + `getVersion()`
+  module).
 
 **Decided:**
 - Feature lives under **Tools** as "Dive Log".
@@ -23,10 +38,15 @@ and this doc do). Read `docs/ARCHITECTURE.md` first.
 - Repo: `github.com/dmz34705/dmzscuba-app`, branch `main`. Windows working copy
   at `C:\Users\Zachary\dmz-scuba-app`; macOS clone at `/Users/dmz/dmzscuba-app`.
 - Expo SDK `~57.0.18`, React Native `0.86.3`, React `19.2.3`.
-- macOS: Node 24 + npm 11 installed, `npx expo start` works, **iOS Simulator +
-  Expo Go works** (Simulator Expo Go is SDK-matched even though the App Store one
-  is not). **CocoaPods is NOT installed yet** — needed before `npx expo prebuild`
-  / `npx expo run:ios` (`sudo gem install cocoapods` or via Homebrew).
+- macOS: Node 24 + npm 11, Xcode 26.6, iPhone 17 Pro simulator (iOS 26.5).
+  **CocoaPods 1.17.0 is installed** but not the usual way: the machine only has
+  system Ruby 2.6 (too old) and no admin password was available in-session, so
+  Homebrew was cloned into `~/homebrew` (home-dir, no sudo) and CocoaPods was
+  `gem install`ed into `~/.local/share/cocoapods-gem` using Homebrew's bundled
+  Ruby 4.0. `~/.local/bin/pod` is a wrapper that sets `GEM_HOME` + puts that Ruby
+  on `PATH`. **Do not delete `~/homebrew`** — `pod` depends on the Ruby inside
+  it. A normal `brew install cocoapods` under `/opt/homebrew` (needs one sudo)
+  would be cleaner if you want to redo it.
 - No paid Apple Developer account yet. Not required for Simulator builds or for
   all of Part A / most of Part B. Required to run on a physical iPhone for more
   than 7 days, to test real Bluetooth, and to ship.
@@ -172,10 +192,10 @@ Keep the manual form pragmatic — it does not need every schema field (profile,
 
 Staged so each step compiles/runs before the next:
 
-1. **Bare dev build.** `npx expo prebuild --platform ios` then `npx expo run:ios`
-   (Simulator). Confirms the native pipeline. Commit `ios/`? No — keep it
-   generated (`.gitignore` already ignores `/ios` `/android`); the config plugin
-   reproduces it. Needs CocoaPods.
+1. **Bare dev build.** ✅ **Done (2026-08-31).** `npx expo prebuild --platform ios`
+   then `npx expo run:ios` → BUILD SUCCEEDED, dev client runs on the simulator.
+   `ios/` stays generated (`.gitignore` already ignores `/ios` `/android`); the
+   config plugin will reproduce it.
 2. **Vendor + link libdivecomputer.** `vendor/libdivecomputer/` (git submodule of
    the upstream repo, or copied 0.9.0 source + `config.h`). An Expo **config
    plugin** (`plugins/withLibDiveComputer.js`) that adds the C sources to the iOS
