@@ -593,7 +593,7 @@ function DiveEditForm({ form, units, onChange, error }) {
 
 export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
-  const { loaded, rows, stats, getEntry, addDive, updateDive, deleteDive } = useDiveLog();
+  const { loaded, rows, stats, knownComputerKeys, getEntry, addDive, updateDive, deleteDive } = useDiveLog();
 
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
@@ -753,7 +753,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
         )}
 
         {view === 'download' && (
-          <DiveComputerDownloadPanel onClose={() => setView('list')} />
+          <DiveComputerDownloadPanel
+            onClose={() => setView('list')}
+            knownComputerKeys={knownComputerKeys}
+            addDive={addDive}
+          />
         )}
 
         {view === 'detail' && (

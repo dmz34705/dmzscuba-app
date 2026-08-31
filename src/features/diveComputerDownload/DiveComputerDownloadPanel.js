@@ -1,7 +1,9 @@
+import { useCallback } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { Card, PrimaryButton, SecondaryButton } from '../../components/Ui';
+import { Card, PrimaryButton, ProgressBar, SecondaryButton } from '../../components/Ui';
 import { colors, radii, spacing } from '../../theme';
+import { computerDiveKey, diveRecordFromComputer } from './diveRecordFromComputer';
 import useDiveComputerDownload from './useDiveComputerDownload';
 
 function SignalDots({ rssi }) {
@@ -27,16 +29,32 @@ function DeviceRow({ device, onConnect, disabled }) {
     >
       <View style={styles.deviceInfo}>
         <Text style={styles.deviceName}>{device.name}</Text>
-        <Text style={styles.deviceId}>{device.isLikely ? 'Dive computer' : device.id.slice(0, 17)}</Text>
+        <Text style={styles.deviceId}>{device.isLikely ? 'Likely dive computer' : device.id.slice(0, 17)}</Text>
       </View>
       <SignalDots rssi={device.rssi} />
     </Pressable>
   );
 }
 
-export default function DiveComputerDownloadPanel({ onClose }) {
-  const { supported, status, devices, connectedDevice, error, scan, stopScan, connect, disconnect } =
-    useDiveComputerDownload();
+/**
+ * @param {object} props
+ * @param {() => void} props.onClose
+ * @param {Set<string>} props.knownComputerKeys
+ * @param {(partial: object) => Promise<any>} props.addDive
+ */
+export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, addDive }) {
+  const saveDive = useCallback(async (rawDive, { vendor, product }) => {
+    const key = computerDiveKey(vendor, product, rawDive?.fingerprint);
+    if (key && knownComputerKeys?.has(key)) return 'duplicate';
+    const partial = diveRecordFromComputer(rawDive, { vendor, product });
+    await addDive(partial);
+    return 'saved';
+  }, [addDive, knownComputerKeys]);
+
+  const {
+    supported, status, devices, connectedDevice, progress, summary, error,
+    scan, stopScan, connect, disconnect, download, cancel,
+  } = useDiveComputerDownload({ onDiveDownloaded: saveDive });
 
   if (!supported) {
     return (
@@ -52,7 +70,9 @@ export default function DiveComputerDownloadPanel({ onClose }) {
   }
 
   const scanning = status === 'scanning';
-  const busy = status === 'connecting';
+  const connecting = status === 'connecting';
+  const downloading = status === 'downloading';
+  const pct = progress && progress.maximum > 0 ? progress.current / progress.maximum : 0;
 
   return (
     <Card style={styles.card}>
@@ -61,19 +81,45 @@ export default function DiveComputerDownloadPanel({ onClose }) {
         Wake your dive computer and put it in Bluetooth / upload mode, then scan.
       </Text>
 
+      {status === 'error' && error ? <Text style={styles.error}>{error}</Text> : null}
+
       {connectedDevice ? (
         <View style={styles.connectedBox}>
-          <Text style={styles.connectedLabel}>CONNECTED</Text>
+          <Text style={styles.connectedLabel}>{downloading ? 'DOWNLOADING' : status === 'done' ? 'DONE' : 'CONNECTED'}</Text>
           <Text style={styles.connectedName}>{connectedDevice.name}</Text>
-          <Text style={styles.body}>
-            Reading dives from the computer arrives in the next update. The connection is ready.
-          </Text>
-          <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.backButton} />
+
+          {downloading ? (
+            <>
+              <ProgressBar value={pct} />
+              <Text style={styles.progressText}>
+                {summary ? `${summary.saved} new · ${summary.downloaded} read` : 'Reading dives…'}
+              </Text>
+              <SecondaryButton label="Stop" onPress={cancel} style={styles.backButton} />
+            </>
+          ) : status === 'done' ? (
+            <>
+              <Text style={styles.body}>
+                {summary
+                  ? `Added ${summary.saved} new ${summary.saved === 1 ? 'dive' : 'dives'} (${summary.downloaded} on the computer).`
+                  : 'No new dives to add.'}
+              </Text>
+              <View style={styles.doneActions}>
+                <PrimaryButton label="Download again" onPress={() => download({})} style={styles.flexButton} />
+                <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
+              </View>
+            </>
+          ) : (
+            <>
+              <Text style={styles.body}>Connection ready.</Text>
+              <View style={styles.doneActions}>
+                <PrimaryButton label="Download dives" onPress={() => download({})} style={styles.flexButton} />
+                <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
+              </View>
+            </>
+          )}
         </View>
       ) : (
         <>
-          {status === 'error' && error ? <Text style={styles.error}>{error}</Text> : null}
-
           {scanning ? (
             <View style={styles.scanningRow}>
               <ActivityIndicator color={colors.cyan} />
@@ -82,9 +128,9 @@ export default function DiveComputerDownloadPanel({ onClose }) {
             </View>
           ) : (
             <PrimaryButton
-              label={busy ? 'Connecting…' : 'Scan for dive computers'}
+              label={connecting ? 'Connecting…' : 'Scan for dive computers'}
               onPress={scan}
-              disabled={busy}
+              disabled={connecting}
               style={styles.scanButton}
             />
           )}
@@ -92,7 +138,7 @@ export default function DiveComputerDownloadPanel({ onClose }) {
           {devices.length > 0 ? (
             <View style={styles.deviceList}>
               {devices.map((device) => (
-                <DeviceRow key={device.id} device={device} onConnect={connect} disabled={busy} />
+                <DeviceRow key={device.id} device={device} onConnect={connect} disabled={connecting} />
               ))}
             </View>
           ) : scanning ? null : (
@@ -112,6 +158,8 @@ const styles = StyleSheet.create({
   body: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
   scanButton: { marginTop: 14 },
   backButton: { marginTop: 12 },
+  flexButton: { flex: 1 },
+  doneActions: { flexDirection: 'row', gap: 9, marginTop: 12 },
   error: {
     backgroundColor: 'rgba(255,127,127,0.1)',
     borderColor: 'rgba(255,127,127,0.35)',
@@ -127,6 +175,7 @@ const styles = StyleSheet.create({
   scanningText: { color: colors.text, flex: 1, fontSize: 13, fontWeight: '700' },
   stopText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
   hint: { color: colors.faint, fontSize: 11, marginTop: 12 },
+  progressText: { color: colors.muted, fontSize: 12, marginTop: 8 },
   deviceList: { gap: 8, marginTop: 14 },
   deviceRow: {
     alignItems: 'center',
@@ -157,5 +206,5 @@ const styles = StyleSheet.create({
     padding: 13,
   },
   connectedLabel: { color: colors.good, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
-  connectedName: { color: colors.text, fontSize: 16, fontWeight: '900', marginTop: 4 },
+  connectedName: { color: colors.text, fontSize: 16, fontWeight: '900', marginBottom: 8, marginTop: 4 },
 });

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import { loadFingerprint, saveFingerprint } from '../../lib/diveLog/storage';
 import {
   BLE_STATE,
   ensureBlePermissions,
@@ -8,23 +9,27 @@ import {
   looksLikeDiveComputer,
   waitForPoweredOn,
 } from './diveComputerBle';
+import { abortDownload, runDownload } from './downloadRunner';
 
-// Controller for the "download from dive computer" flow.
-//
-// Step 3 covers scan -> connect -> disconnect and surfaces connection state.
-// The actual dive transfer (libdivecomputer over a BLE-backed custom iostream)
-// is wired in the next step; `connectedDevice` is the handoff point.
+// Controller for the "download from dive computer" flow: scan -> connect ->
+// download. The dive transfer runs libdivecomputer natively over a BLE transport
+// serviced here; each parsed dive is handed back through `onDiveDownloaded`.
 
 const SCAN_DURATION_MS = 20000;
 
-export default function useDiveComputerDownload() {
+export default function useDiveComputerDownload({ onDiveDownloaded } = {}) {
   const managerRef = useRef(null);
   const scanTimerRef = useRef(null);
   const seenRef = useRef(new Map());
+  const deviceRef = useRef(null); // the connected react-native-ble-plx Device
+  const diveHandlerRef = useRef(onDiveDownloaded);
+  diveHandlerRef.current = onDiveDownloaded;
 
-  const [status, setStatus] = useState('idle'); // idle | scanning | connecting | connected | error
+  const [status, setStatus] = useState('idle'); // idle | scanning | connecting | connected | downloading | done | error
   const [devices, setDevices] = useState([]);
   const [connectedDevice, setConnectedDevice] = useState(null);
+  const [progress, setProgress] = useState(null); // { current, maximum }
+  const [summary, setSummary] = useState(null); // { downloaded, saved }
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -35,7 +40,7 @@ export default function useDiveComputerDownload() {
       try {
         managerRef.current?.stopDeviceScan();
       } catch {
-        // manager may already be torn down
+        // manager already torn down
       }
     };
   }, []);
@@ -53,6 +58,7 @@ export default function useDiveComputerDownload() {
   const scan = useCallback(async () => {
     const manager = managerRef.current;
     setError('');
+    setSummary(null);
     seenRef.current = new Map();
     setDevices([]);
 
@@ -61,16 +67,12 @@ export default function useDiveComputerDownload() {
       setStatus('error');
       return;
     }
-
-    const granted = await ensureBlePermissions();
-    if (!granted) {
+    if (!(await ensureBlePermissions())) {
       setError('Bluetooth permission is needed to find your dive computer.');
       setStatus('error');
       return;
     }
-
-    const poweredOn = await waitForPoweredOn(manager);
-    if (!poweredOn) {
+    if (!(await waitForPoweredOn(manager))) {
       const state = await manager.state().catch(() => BLE_STATE.Unknown);
       setError(
         state === BLE_STATE.Unauthorized
@@ -90,20 +92,19 @@ export default function useDiveComputerDownload() {
         return;
       }
       const name = device?.name || device?.localName;
-      if (!device || !name) return; // skip unnamed background noise
-
+      if (!device || !name) return;
       seenRef.current.set(device.id, {
         id: device.id,
         name,
         rssi: typeof device.rssi === 'number' ? device.rssi : null,
         isLikely: looksLikeDiveComputer(device),
       });
-      const sorted = [...seenRef.current.values()].sort(
-        (a, b) => Number(b.isLikely) - Number(a.isLikely) || (b.rssi ?? -999) - (a.rssi ?? -999),
+      setDevices(
+        [...seenRef.current.values()].sort(
+          (a, b) => Number(b.isLikely) - Number(a.isLikely) || (b.rssi ?? -999) - (a.rssi ?? -999),
+        ),
       );
-      setDevices(sorted);
     });
-
     scanTimerRef.current = setTimeout(stopScan, SCAN_DURATION_MS);
   }, [stopScan]);
 
@@ -116,6 +117,7 @@ export default function useDiveComputerDownload() {
     try {
       const connection = await manager.connectToDevice(deviceId, { timeout: 15000 });
       const ready = await connection.discoverAllServicesAndCharacteristics();
+      deviceRef.current = ready;
       setConnectedDevice({ id: ready.id, name: ready.name || ready.localName || 'Dive computer' });
       setStatus('connected');
     } catch (connectError) {
@@ -127,7 +129,9 @@ export default function useDiveComputerDownload() {
   const disconnect = useCallback(async () => {
     const manager = managerRef.current;
     const target = connectedDevice;
+    deviceRef.current = null;
     setConnectedDevice(null);
+    setProgress(null);
     setStatus('idle');
     if (manager && target) {
       try {
@@ -138,22 +142,72 @@ export default function useDiveComputerDownload() {
     }
   }, [connectedDevice]);
 
+  const download = useCallback(async ({ vendor, product } = {}) => {
+    const device = deviceRef.current;
+    if (!device || !connectedDevice) return;
+
+    setError('');
+    setProgress(null);
+    setSummary(null);
+    setStatus('downloading');
+
+    const name = connectedDevice.name;
+    const fingerprintBase64 = await loadFingerprint(vendor, product).catch(() => null);
+    let downloaded = 0;
+    let saved = 0;
+
+    try {
+      const result = await runDownload({
+        device,
+        name,
+        vendor,
+        product,
+        fingerprintBase64,
+        onProgress: setProgress,
+        onDive: async (rawDive) => {
+          downloaded += 1;
+          const outcome = await diveHandlerRef.current?.(rawDive, { vendor, product });
+          if (outcome === 'saved') saved += 1;
+          setSummary({ downloaded, saved });
+        },
+      });
+      if (result?.fingerprint) {
+        await saveFingerprint(vendor, product, result.fingerprint).catch(() => {});
+      }
+      setSummary({ downloaded, saved });
+      setStatus('done');
+    } catch (downloadError) {
+      setError(downloadError?.message || 'The download did not finish.');
+      setStatus('error');
+    }
+  }, [connectedDevice]);
+
+  const cancel = useCallback(() => {
+    abortDownload();
+  }, []);
+
   const reset = useCallback(() => {
     stopScan();
     setError('');
-    setStatus('idle');
-  }, [stopScan]);
+    setSummary(null);
+    setProgress(null);
+    setStatus(connectedDevice ? 'connected' : 'idle');
+  }, [connectedDevice, stopScan]);
 
   return {
     supported: isBleSupported,
     status,
     devices,
     connectedDevice,
+    progress,
+    summary,
     error,
     scan,
     stopScan,
     connect,
     disconnect,
+    download,
+    cancel,
     reset,
   };
 }
