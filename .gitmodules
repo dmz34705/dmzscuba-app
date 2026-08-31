@@ -1,0 +1,6 @@
+# Pinned to the v0.9.0 release tag (commit 25b8fed). Bump by checking out a new
+# tag inside the submodule, then update modules/dive-computer-bridge/ios/generated/
+# (config.h + version.h) and re-run `npx expo prebuild`.
+[submodule "vendor/libdivecomputer"]
+	path = vendor/libdivecomputer
+	url = https://github.com/libdivecomputer/libdivecomputer.git
