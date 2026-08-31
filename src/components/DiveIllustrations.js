@@ -64,6 +64,18 @@ export function DiveComputerIcon({ size = 44 }) {
   );
 }
 
+export function LogbookIcon({ size = 44 }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 48 48">
+      <Rect x="9" y="6" width="27" height="36" rx="4" fill="#123650" stroke="#70DDF6" strokeWidth="2" />
+      <Rect x="14" y="6" width="4" height="36" fill="#071525" opacity=".6" />
+      <Path d="M22 14h10M22 20h10M22 26h7" stroke="#BFE8FF" strokeWidth="2" strokeLinecap="round" />
+      <Path d="M20 33l3.4 3.4L31 29" stroke="#70E2A3" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <Circle cx="36" cy="12" r="3" fill="#E21B23" />
+    </Svg>
+  );
+}
+
 export function DiverGraphic({ colors: gear, flashlight = false, width = 180 }) {
   const height = width * 0.58;
   return (

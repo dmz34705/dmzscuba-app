@@ -11,6 +11,7 @@ import CreateAccountScreen from '../screens/CreateAccountScreen';
 import DiveCalculatorScreen from '../screens/DiveCalculatorScreen';
 import DiveComputerSimulatorScreen from '../screens/DiveComputerSimulatorScreen';
 import DiveLensScreen from '../screens/DiveLensScreen';
+import DiveLogScreen from '../screens/DiveLogScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LearnScreen from '../screens/LearnScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -70,6 +71,9 @@ export default function AppNavigator() {
   }
   if (feature?.routeType === 'lens') {
     return <DiveLensScreen onBack={closeDetail} />;
+  }
+  if (feature?.routeType === 'dive-log') {
+    return <DiveLogScreen appSettings={appSettings.settings} onBack={closeDetail} />;
   }
 
   if (detailRoute === ACCOUNT_ROUTES.login) {
