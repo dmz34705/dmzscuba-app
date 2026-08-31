@@ -39,6 +39,13 @@ export default function useDiveLog() {
 
   const stats = useMemo(() => computeDiveLogStats(indexRows), [indexRows]);
 
+  // De-dup keys for dives already downloaded from a computer (ignores soft-deleted
+  // rows, so a deleted download can be re-imported).
+  const knownComputerKeys = useMemo(
+    () => new Set(indexRows.filter((row) => !row.deletedAt && row.computerKey).map((row) => row.computerKey)),
+    [indexRows],
+  );
+
   const getEntry = useCallback(async (id) => {
     if (!id) return null;
     if (entryCache.current.has(id)) return entryCache.current.get(id);
@@ -75,5 +82,5 @@ export default function useDiveLog() {
     await refreshIndex();
   }, [refreshIndex]);
 
-  return { loaded, rows, stats, getEntry, addDive, updateDive, deleteDive };
+  return { loaded, rows, stats, knownComputerKeys, getEntry, addDive, updateDive, deleteDive };
 }

@@ -14,9 +14,17 @@ import { normalizeDiveRecord, touchRecord } from './schema';
 
 export const DIVE_LOG_INDEX_KEY = '@dmz-scuba/dive-log/index-v1';
 export const DIVE_LOG_ENTRY_PREFIX = '@dmz-scuba/dive-log/entry-v1/';
+export const DIVE_LOG_FINGERPRINT_PREFIX = '@dmz-scuba/dive-log/fingerprint-v1/';
 
 export function entryKey(id) {
   return `${DIVE_LOG_ENTRY_PREFIX}${id}`;
+}
+
+/** Stable de-dup key for a downloaded dive (source==='computer'). */
+export function computerKeyFromRecord(record) {
+  const fp = record.device?.fingerprint;
+  if (record.source !== 'computer' || !fp) return null;
+  return `${record.device.vendor || ''}|${record.device.product || ''}|${fp}`;
 }
 
 export function indexRowFromRecord(record) {
@@ -30,7 +38,22 @@ export function indexRowFromRecord(record) {
     durationSeconds: record.durationSeconds ?? 0,
     source: record.source || 'manual',
     rating: record.rating ?? null,
+    computerKey: computerKeyFromRecord(record),
   };
+}
+
+function fingerprintKey(vendor, product) {
+  return `${DIVE_LOG_FINGERPRINT_PREFIX}${vendor || ''}|${product || ''}`;
+}
+
+/** Last downloaded fingerprint (base64) for a given computer, for incremental sync. */
+export async function loadFingerprint(vendor, product, storage = AsyncStorage) {
+  return (await storage.getItem(fingerprintKey(vendor, product))) || null;
+}
+
+export async function saveFingerprint(vendor, product, fingerprintBase64, storage = AsyncStorage) {
+  if (!fingerprintBase64) return;
+  await storage.setItem(fingerprintKey(vendor, product), String(fingerprintBase64));
 }
 
 function parseJson(raw, fallback) {
@@ -87,7 +110,9 @@ export async function softDeleteEntry(id, storage = AsyncStorage) {
 export async function clearAll(storage = AsyncStorage) {
   const keys = await storage.getAllKeys();
   const mine = (keys || []).filter(
-    (key) => key === DIVE_LOG_INDEX_KEY || key.startsWith(DIVE_LOG_ENTRY_PREFIX),
+    (key) => key === DIVE_LOG_INDEX_KEY
+      || key.startsWith(DIVE_LOG_ENTRY_PREFIX)
+      || key.startsWith(DIVE_LOG_FINGERPRINT_PREFIX),
   );
   if (typeof storage.multiRemove === 'function') {
     await storage.multiRemove(mine);
