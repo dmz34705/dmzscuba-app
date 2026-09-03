@@ -26,6 +26,7 @@ import {
   surfaceLogOntoDive,
   touchRecord,
 } from './schema';
+import { fuseComputerLogs } from './fuseLogs';
 
 export const DIVE_LOG_INDEX_KEY = '@dmz-scuba/dive-log/index-v2';
 export const DIVE_LOG_DIVE_PREFIX = '@dmz-scuba/dive-log/dive-v2/';
@@ -77,8 +78,11 @@ export function indexRowFromDive(dive, logs = []) {
     number: dive.number ?? null,
     gasLabel: dive.gas?.mixes?.[0]?.label || '',
     logCount: attachedLogs.length,
-    deviceKeys: attachedLogs.map((l) => l.deviceKey).filter(Boolean),
-    computerKeys: attachedLogs.map((l) => computerDiveKeyOf(l.device, l.fingerprint)).filter(Boolean),
+    deviceKeys: [...new Set(attachedLogs.map((l) => l.deviceKey).filter(Boolean))],
+    computerKeys: attachedLogs.flatMap((l) => {
+      const fps = [l.fingerprint, ...(l.mergedFingerprints || [])].filter(Boolean);
+      return fps.map((fp) => computerDiveKeyOf(l.device, fp)).filter(Boolean);
+    }),
     primaryDevice: primary ? { ...primary.device } : null,
     // primary-log analytics summary for the trends view (avoids loading every log)
     safetyScore: a && a.safetyScore != null ? a.safetyScore : null,
@@ -238,6 +242,45 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
     || logs.slice().sort((a, b) => (b.durationSeconds || 0) - (a.durationSeconds || 0))[0]
     || null;
   if (primary) next = surfaceLogOntoDive({ ...next, primaryLogId: primary.id }, primary);
+  await saveDive(next, storage);
+  return consolidateSameDeviceLogs(keepDiveId, storage);
+}
+
+/**
+ * When one physical computer contributed several logs to a dive (it split the
+ * dive at the surface), fuse them into one continuous reconstructed log. Runs
+ * after every merge/attach. No-op when each device has at most one log.
+ */
+export async function consolidateSameDeviceLogs(diveId, storage = AsyncStorage) {
+  const dive = await loadDive(diveId, storage);
+  if (!dive) return null;
+  const logs = await loadLogsForDive(dive, storage);
+  const byDevice = new Map();
+  for (const l of logs) {
+    const k = l.deviceKey || l.id;
+    if (!byDevice.has(k)) byDevice.set(k, []);
+    byDevice.get(k).push(l);
+  }
+  let changed = false;
+  let keptIds = [...dive.logIds];
+  for (const group of byDevice.values()) {
+    if (group.length < 2) continue;
+    const fused = await saveLog({ ...fuseComputerLogs(group), diveId }, storage); // eslint-disable-line no-await-in-loop
+    const drop = new Set(group.map((l) => l.id).filter((id) => id !== fused.id));
+    for (const id of drop) {
+      // eslint-disable-next-line no-await-in-loop
+      await storage.removeItem(logKey(id));
+    }
+    keptIds = keptIds.filter((id) => !drop.has(id));
+    changed = true;
+  }
+  if (!changed) return dive;
+  let next = normalizeDive({ ...dive, logIds: keptIds });
+  const freshLogs = await loadLogsForDive(next, storage);
+  const primary = freshLogs.find((l) => l.id === next.primaryLogId)
+    || freshLogs.slice().sort((a, b) => (b.durationSeconds || 0) - (a.durationSeconds || 0))[0]
+    || null;
+  if (primary) next = surfaceLogOntoDive({ ...next, primaryLogId: primary.id }, primary);
   return saveDive(next, storage);
 }
 
@@ -250,8 +293,9 @@ export async function attachLogToDive(diveId, logPartial, { makePrimary = false 
   const primaryLogId = makePrimary || !dive.primaryLogId ? log.id : dive.primaryLogId;
   let next = normalizeDive({ ...dive, logIds, primaryLogId, source: dive.source === 'manual' ? 'mixed' : dive.source });
   if (primaryLogId === log.id) next = surfaceLogOntoDive(next, log);
-  const savedDive = await saveDive({ ...next, logIds, primaryLogId }, storage);
-  return { dive: savedDive, log };
+  await saveDive({ ...next, logIds, primaryLogId }, storage);
+  const consolidated = await consolidateSameDeviceLogs(diveId, storage);
+  return { dive: consolidated, log };
 }
 
 // ---------------------------------------------------------------------------

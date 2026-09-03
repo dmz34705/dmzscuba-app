@@ -418,6 +418,12 @@ export function normalizeComputerLog(raw) {
     device,
     deviceKey: deviceKeyOf(device),
     fingerprint: str(source.fingerprint, '').trim() || null,
+    // extra fingerprints when this log was fused from split fragments — so
+    // re-downloading any fragment is still recognised as already imported
+    mergedFingerprints: Array.isArray(source.mergedFingerprints)
+      ? [...new Set(source.mergedFingerprints.map((f) => str(f, '').trim()).filter(Boolean))]
+      : [],
+    fusedFrom: intOrNull(source.fusedFrom, 0, 50),
     downloadedAt: str(source.downloadedAt, '') || nowIso(),
 
     reportedStartTime,

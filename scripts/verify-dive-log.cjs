@@ -685,8 +685,19 @@ function memoryStorage(seed = {}) {
   }
   const finalRows = (await loadIndex(rstore)).filter((r) => !r.deletedAt);
   assert.equal(finalRows.length, 1, `expected 1 dive after recovery, got ${finalRows.length}`);
-  assert.equal(finalRows[0].logCount, 3);
   assert.equal(finalRows[0].id, shDive.dive.id); // the long Shearwater dive is canonical
+  // the two Suunto fragments are fused into ONE continuous log (not stacked)
+  assert.equal(finalRows[0].logCount, 2);
+  const finalDive = await loadDive(shDive.dive.id, rstore);
+  const finalLogs = await loadLogsForDive(finalDive, rstore);
+  const fusedSu = finalLogs.find((l) => l.device.vendor === 'Suunto');
+  assert.equal(fusedSu.fusedFrom, 2);
+  assert.deepEqual(fusedSu.mergedFingerprints.sort(), ['SU27a', 'SU27b']);
+  // fused Suunto profile spans the whole dive, not just one fragment
+  assert.ok(fusedSu.durationSeconds > 3000, `fused duration ${fusedSu.durationSeconds}`);
+  // re-downloading either fragment is now recognised as already imported
+  assert.equal(finalRows[0].computerKeys.includes('Suunto|EON Core|SU27a'), true);
+  assert.equal(finalRows[0].computerKeys.includes('Suunto|EON Core|SU27b'), true);
 
   // fingerprint round-trip (unchanged from v1)
   await diveLog.saveFingerprint('EON Core', 'FP-B', store);
