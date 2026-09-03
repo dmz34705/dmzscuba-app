@@ -5,9 +5,39 @@ dive-computer download. It exists because the work spans two machines and two
 Claude Code sessions (sessions do not transfer between machines — only the repo
 and this doc do). Read `docs/ARCHITECTURE.md` first.
 
-## Status (2026-08-31)
+## Status (2026-09-03)
 
-**Progress:**
+**Progress since 2026-08-31:**
+- **Real dive-computer download works on hardware.** Shearwater Peregrine TX
+  and Suunto EON Core both download over BLE on a physical iPhone. Native model
+  resolution (longest BLE-name-prefix descriptor + DEVINFO fallback), Suunto EON
+  pairing flow (prime the OS bond, retry, clear-pairing guidance), imperial
+  cylinder capacity ("AL80" not "0.4 ft³").
+- **B5 done (JS)** — `schemaVersion: 2`: a `Dive` is the canonical counted record;
+  each download is a `ComputerLog` attached to it. `migrateToV2` converts v1
+  records (keeps v1 keys as a backup). `logAnalytics` computes ascent-rate /
+  sawtooth / avg-depth / SAC-RMV / ceiling / safety-score at import.
+- **B6+B7 done (JS)** — `matchDives.js` cross-computer matcher (profile
+  cross-correlation, clock-offset detection gated on a 15-min-multiple "clean"
+  offset, split-dive detection). `useDiveLog.importComputerLog` runs it during
+  download; a post-download "Review matches" screen resolves conflicts and
+  corrects the wrong computer's clock (`timeCorrectionMinutes`, remembered per
+  device).
+- **B8 done (JS)** — safety score + `diveTrends` (SAC/safety/avg-depth trend,
+  gas-mix histogram) + a "Stats" view.
+- All 16 `npm run test:*` green.
+
+**Remaining:**
+- **Native rich capture** (needs `npx expo run:ios --device` rebuild): per-tank
+  pressure samples (not just tank 0), `DC_SAMPLE_DECO.tts`, setpoint/ppO2
+  sensors, battery + firmware into `deviceMeta`. JS already tolerates their
+  absence.
+- **Profile overlays**: pressure / temperature / ceiling / ascent-rate lines on
+  the detail chart (`profileChart.js` + `ProfileChart`).
+- **On-device test of the v2 migration** — first launch after the JS bundle
+  updates runs `migrateToV2`; verify existing downloaded dives survive.
+- CCR fields — deferred pending real CCR-diver input.
+
 - **Part A shipped** to `main` (commits `50c27c4`, `661e533`, `3e3b65d`): the
   pure-JS logbook (`src/lib/diveLog/*`), `useDiveLog`, `DiveLogScreen`, catalog
   entry + `LogbookIcon`, navigator route, and `npm run test:dive-log`. All
