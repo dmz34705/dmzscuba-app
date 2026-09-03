@@ -383,38 +383,50 @@ export function findMatch(newLog, candidates) {
     if (!m || m.verdict === 'none') return;
     if (!bestMatch || m.score > bestMatch.score) bestMatch = m;
   };
+  const absorb = []; // existing dives that are each a fragment of newLog
 
   for (const cand of candidates) {
     const dive = cand.dive;
     const logs = cand.logs || [];
     const ref = logs.find((l) => l.id === dive.primaryLogId) || logs[0] || dive;
     const sameDevice = logs.some((l) => l.deviceKey && l.deviceKey === newLog.deviceKey);
+    if (sameDevice) continue;
 
-    if (!sameDevice) {
-      const pair = classifyPair(newLog, ref);
-      consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
+    const pair = classifyPair(newLog, ref);
+    consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
 
-      // new log is a fragment of this (longer) existing dive
-      const frag = classifyFragment(newLog, ref);
-      consider(frag.verdict === 'none' ? null : { ...frag, diveId: dive.id });
+    // newLog is a fragment of this longer existing dive
+    const frag = classifyFragment(newLog, ref);
+    consider(frag.verdict === 'none' ? null : { ...frag, diveId: dive.id });
 
-      // an existing dive whose device split what the new computer saw as one
-      const existingFrag = classifyFragment(ref, newLog);
-      if (existingFrag.verdict !== 'none') {
-        consider({
-          ...existingFrag,
-          kind: 'absorb-existing',
-          diveId: dive.id,
-          // offset here corrects the EXISTING dive's log; flip for "add to new"
-          offsetMinutes: -existingFrag.offsetMinutes,
-        });
-      }
+    // this existing dive is a fragment of the (longer) newLog -> absorb it
+    const existingFrag = classifyFragment(ref, newLog);
+    if (existingFrag.verdict !== 'none') {
+      absorb.push({ diveId: dive.id, result: existingFrag, deviceKey: ref.deviceKey, start: dive.startTime });
     }
   }
 
-  // new long log spanning several separately-logged same-device dives
+  // Prefer the validated stitch when the new long log spans several
+  // separately-logged same-device dives; else fall back to absorbing the
+  // individual fragments we found.
   const spanning = findSpanningMerge(newLog, candidates);
-  if (spanning && (!bestMatch || spanning.score >= bestMatch.score)) bestMatch = spanning;
+  if (spanning) {
+    if (!bestMatch || spanning.score >= bestMatch.score) bestMatch = spanning;
+  } else if (absorb.length && (!bestMatch || bestMatch.kind !== 'pair')) {
+    const best = absorb.reduce((a, b) => (b.result.score > a.result.score ? b : a));
+    const worstVerdict = absorb.some((a) => a.result.verdict !== 'auto') ? 'confirm' : 'auto';
+    bestMatch = {
+      kind: 'spanning-merge',
+      verdict: worstVerdict,
+      score: best.result.score,
+      diveIds: absorb.map((a) => a.diveId),
+      // offset corrects the fragments' clock; classifyFragment(ref,newLog) gives
+      // "minutes to add to the fragment"
+      offsetMinutes: best.result.offsetMinutes,
+      cleanOffset: !!best.result.cleanOffset,
+      clockConflict: Math.abs(best.result.offsetMinutes) >= 1,
+    };
+  }
 
   return { bestMatch };
 }

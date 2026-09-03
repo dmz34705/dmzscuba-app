@@ -262,23 +262,25 @@ export default function useDiveLog() {
       bundles.push({ dive: d, logs: await loadLogsForDive(d) });
     }
     const proposals = [];
-    const consumed = new Set();
+    const proposedSources = new Set(); // dives already slated to be folded away
     for (const b of bundles) {
-      if (consumed.has(b.dive.id) || !b.logs.length) continue;
+      if (proposedSources.has(b.dive.id) || !b.logs.length) continue;
       const primary = b.logs.find((l) => l.id === b.dive.primaryLogId) || b.logs[0];
-      const others = bundles.filter((x) => x.dive.id !== b.dive.id && !consumed.has(x.dive.id) && !consumed.has(x.dive.id));
+      const others = bundles.filter((x) => x.dive.id !== b.dive.id && !proposedSources.has(x.dive.id));
       const { bestMatch: m } = findMatch(primary, others);
       if (!m || m.verdict === 'none') continue;
       const targetIds = m.diveIds || [m.diveId];
+      const isSpanning = m.kind === 'spanning-merge';
+      const keepId = isSpanning ? b.dive.id : targetIds[0];
+      const foldIds = isSpanning ? targetIds : [b.dive.id];
       const first = bundles.find((x) => x.dive.id === targetIds[0]);
       const fp = first?.logs.find((l) => l.id === first.dive.primaryLogId) || first?.logs[0] || null;
-      const isSpanning = m.kind === 'spanning-merge';
       proposals.push({
-        id: `recheck:${b.dive.id}:${targetIds.join('+')}`,
+        id: `recheck:${keepId}:${foldIds.join('+')}`,
         kind: m.kind,
         newDiveId: b.dive.id,
-        primaryDiveId: isSpanning ? b.dive.id : targetIds[0],
-        absorbDiveIds: isSpanning ? targetIds : [targetIds[0]],
+        primaryDiveId: keepId,
+        absorbDiveIds: foldIds,
         newDeviceName: `${primary.device.vendor} ${primary.device.product}`.trim() || 'Dive computer',
         newDeviceKey: primary.deviceKey,
         matchDeviceName: fp ? `${fp.device.vendor} ${fp.device.product}`.trim() : 'the other computer',
@@ -289,8 +291,7 @@ export default function useDiveLog() {
         newReportedStart: primary.reportedStartTime,
         matchStart: first?.dive.startTime || '',
       });
-      consumed.add(b.dive.id);
-      targetIds.forEach((id) => consumed.add(id));
+      foldIds.forEach((id) => proposedSources.add(id));
     }
     setPendingProposals(proposals);
     return proposals.length;
