@@ -248,7 +248,11 @@ export default function useDiveComputerDownload({ onDiveDownloaded } = {}) {
     }
   }, [connectedDevice]);
 
-  const download = useCallback(async ({ full = false } = {}) => {
+  // Default: read every dive on the computer and let the logbook's own de-dup
+  // (knownComputerKeys) decide what's new. `incremental` uses the stored
+  // last-sync fingerprint to skip older dives — faster, but it can't recover a
+  // dive that was deleted in the app.
+  const download = useCallback(async ({ incremental = false } = {}) => {
     const device = deviceRef.current;
     if (!device || !connectedDevice) return;
 
@@ -258,12 +262,11 @@ export default function useDiveComputerDownload({ onDiveDownloaded } = {}) {
     setStatus('downloading');
 
     const name = connectedDevice.name;
-    if (full) await clearFingerprint(name).catch(() => {});
-    const fingerprintBase64 = full ? null : await loadFingerprint(name).catch(() => null);
-    let downloaded = 0;
-    let saved = 0;
+    if (!incremental) await clearFingerprint(name).catch(() => {});
+    const fingerprintBase64 = incremental ? await loadFingerprint(name).catch(() => null) : null;
+    const tally = { downloaded: 0, saved: 0, merged: 0, duplicate: 0 };
 
-    console.log('[dc-download] start', { name, hasFingerprint: !!fingerprintBase64 });
+    console.log('[dc-download] start', { name, incremental, hasFingerprint: !!fingerprintBase64 });
 
     try {
       const result = await runDownload({
@@ -276,20 +279,27 @@ export default function useDiveComputerDownload({ onDiveDownloaded } = {}) {
         },
         onLog: (m) => console.log('[dc-download] log:', m),
         onDive: async (rawDive) => {
-          downloaded += 1;
-          console.log('[dc-download] dive', downloaded, JSON.stringify(rawDive).slice(0, 900));
-          console.log('[dc-download] dive', downloaded, 'tanks:', JSON.stringify(rawDive?.tanks), 'mixes:', JSON.stringify(rawDive?.gasmixes));
-          const outcome = await diveHandlerRef.current?.(rawDive);
-          console.log('[dc-download] dive', downloaded, 'outcome:', outcome);
-          if (outcome === 'saved') saved += 1;
-          setSummary({ downloaded, saved });
+          tally.downloaded += 1;
+          console.log('[dc-download] dive', tally.downloaded, 'tanks:', JSON.stringify(rawDive?.tanks), 'mixes:', JSON.stringify(rawDive?.gasmixes));
+          try {
+            const outcome = await diveHandlerRef.current?.(rawDive);
+            console.log('[dc-download] dive', tally.downloaded, 'outcome:', outcome);
+            if (outcome === 'saved') tally.saved += 1;
+            else if (outcome === 'attached') tally.merged += 1;
+            else if (outcome === 'duplicate') tally.duplicate += 1;
+            else tally.failed = (tally.failed || 0) + 1;
+          } catch (e) {
+            console.log('[dc-download] dive', tally.downloaded, 'save failed:', e?.message);
+            tally.failed = (tally.failed || 0) + 1;
+          }
+          setSummary({ ...tally });
         },
       });
       console.log('[dc-download] finished', result);
       if (result?.fingerprint) {
         await saveFingerprint(name, result.fingerprint).catch(() => {});
       }
-      setSummary({ downloaded, saved });
+      setSummary({ ...tally });
       setStatus('done');
     } catch (downloadError) {
       setError(downloadError?.message || 'The download did not finish.');

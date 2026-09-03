@@ -55,8 +55,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
     const log = computerLogFromDownload(rawDive);
     const key = computerDiveKey(log.device.vendor, log.device.product, log.fingerprint);
     if (key && knownComputerKeys?.has(key)) return 'duplicate';
-    await importComputerLog(log);
-    return 'saved';
+    // 'saved' = new dive; 'attached' = merged into a dive from another computer
+    return importComputerLog(log);
   }, [importComputerLog, knownComputerKeys]);
 
   const {
@@ -104,7 +104,7 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
             <>
               <ProgressBar value={pct} />
               <Text style={styles.progressText}>
-                {summary ? `${summary.saved} new · ${summary.downloaded} read` : 'Reading dives…'}
+                {summary ? `${summary.downloaded} read · ${summary.saved} new · ${summary.merged} merged` : 'Reading dives…'}
               </Text>
               <SecondaryButton label="Stop" onPress={cancel} style={styles.backButton} />
             </>
@@ -112,15 +112,19 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
             <>
               <Text style={styles.body}>
                 {summary
-                  ? `Added ${summary.saved} new ${summary.saved === 1 ? 'dive' : 'dives'} (${summary.downloaded} on the computer).`
-                  : 'No new dives to add.'}
+                  ? `Read ${summary.downloaded} ${summary.downloaded === 1 ? 'dive' : 'dives'} — `
+                    + `${summary.saved} new`
+                    + (summary.merged ? `, ${summary.merged} merged into an existing dive` : '')
+                    + (summary.duplicate ? `, ${summary.duplicate} already in your log` : '')
+                    + '.'
+                  : 'No dives read.'}
               </Text>
               <View style={styles.doneActions}>
                 <PrimaryButton label="Download again" onPress={() => download()} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Re-download every dive (ignore last sync)</Text>
+              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Only sync new dives (faster)</Text>
               </Pressable>
             </>
           ) : (
@@ -130,8 +134,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
                 <PrimaryButton label="Download dives" onPress={() => download()} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Re-download every dive (ignore last sync)</Text>
+              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Only sync new dives (faster)</Text>
               </Pressable>
             </>
           )}
