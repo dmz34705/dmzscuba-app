@@ -244,7 +244,8 @@ export default function useDiveLog() {
     }
 
     const proposals = [];
-    const claimed = new Set(); // dive ids already covered by a proposal
+    let autoMerged = 0;
+    const claimed = new Set(); // dive ids already covered by a proposal or an auto-merge
     const entryById = new Map();
     for (const c of clusters) for (const e of c.entries) entryById.set(e.diveId, e);
     const toReconcileEntry = (e) => ({
@@ -276,6 +277,20 @@ export default function useDiveLog() {
         const nameOf = (dev) => `${dev.vendor} ${dev.product}`.trim() || 'Dive computer';
         const dates = rec.groups.flatMap((g) => [...g.aIds, ...g.bIds])
           .map((id) => entryById.get(id)?.dive.startTime).filter(Boolean).sort();
+        const clocksAgree = Math.abs(rec.offsetMinutes) < 1;
+
+        // Confident + clocks agree -> just merge, no decision to make.
+        if (rec.confidence === 'high' && clocksAgree) {
+          for (const mg of merges) {
+            // eslint-disable-next-line no-await-in-loop
+            await mergeDives(mg.keepId, mg.absorbIds, {});
+            [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
+          }
+          autoMerged += merges.length;
+          continue;
+        }
+
+        // Clocks disagree, or low confidence -> ask.
         proposals.push({
           id: `reconcile:${deviceKeyOf(cA.device)}::${deviceKeyOf(cB.device)}`,
           kind: 'reconcile',
@@ -295,8 +310,8 @@ export default function useDiveLog() {
       }
     }
     setPendingProposals(proposals);
-    if (fused) await refreshIndex();
-    return { proposals: proposals.length, fused };
+    if (fused || autoMerged) await refreshIndex();
+    return { proposals: proposals.length, fused, autoMerged };
   }, [refreshIndex]);
 
   /** Dev: hard-delete soft-deleted dives + their logs + fingerprint markers. */

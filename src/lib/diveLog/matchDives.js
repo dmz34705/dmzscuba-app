@@ -596,19 +596,44 @@ export function reconcileComputers(a, b) {
   }
   if (!best) return null;
 
-  // 3. refine with one anchor's profile alignment when we can
+  // 3. verify + refine with the best anchor's depth-profile alignment
   let offsetMs = best.offsetMs;
-  const anchorWithProfile = best.chain.find((c) => c.kind === 'pair'
-    && (A[c.ai].samples || []).length && (B[c.bj].samples || []).length);
-  if (anchorWithProfile) {
-    const dA = A[anchorWithProfile.ai];
-    const dB = B[anchorWithProfile.bj];
-    const { offsetSec, score } = bestOffset(dA.samples, dB.samples, (dA.startMs - dB.startMs) / 1000);
-    if (score >= CONFIRM_SCORE) offsetMs = -offsetSec * 1000;
+  let profileScore = 0;
+  let bestKind = 'pair';
+  for (const c of best.chain) {
+    let sA;
+    let sB;
+    let deltaSec;
+    if (c.kind === 'pair') {
+      sA = A[c.ai].samples; sB = B[c.bj].samples;
+      deltaSec = (A[c.ai].startMs - B[c.bj].startMs) / 1000;
+    } else if (c.kind === 'a-split' && c.ai + 1 < A.length) {
+      sA = stitchProfiles([A[c.ai], A[c.ai + 1]].map((d) => ({ samples: d.samples, durationSeconds: d.durationSeconds, wallStart: d.startMs })));
+      sB = B[c.bj].samples;
+      deltaSec = (A[c.ai].startMs - B[c.bj].startMs) / 1000;
+    } else if (c.kind === 'b-split' && c.bj + 1 < B.length) {
+      sA = A[c.ai].samples;
+      sB = stitchProfiles([B[c.bj], B[c.bj + 1]].map((d) => ({ samples: d.samples, durationSeconds: d.durationSeconds, wallStart: d.startMs })));
+      deltaSec = (A[c.ai].startMs - B[c.bj].startMs) / 1000;
+    } else {
+      continue;
+    }
+    if (!(sA || []).length || !(sB || []).length) continue;
+    const { offsetSec, score } = bestOffset(sA, sB, deltaSec);
+    if (score > profileScore) {
+      profileScore = score;
+      bestKind = c.kind;
+      if (score >= CONFIRM_SCORE) offsetMs = -offsetSec * 1000;
+    }
   }
   const clean = cleanOffsetMinutes(-offsetMs / 1000);
   const offsetMinutes = clean != null ? clean : Math.round(-offsetMs / 60000);
-  const confidence = best.support >= 2 ? 'high' : 'low';
+  // High confidence: several ordered anchors, OR a single anchor whose profiles
+  // line up well. A split anchor scores lower (one side surfaced where the other
+  // didn't) but the tight duration + surface-gap + sequence-position match is
+  // itself strong evidence, so it gets a lower bar.
+  const scoreBar = bestKind === 'pair' ? 0.9 : 0.72;
+  const confidence = (best.support >= 2 || profileScore >= scoreBar) ? 'high' : 'low';
 
   // 4. walk both sequences on the shared clock and group them
   //    offsetMs = b.start - a.start; subtract it to bring B onto A's timeline
@@ -644,6 +669,7 @@ export function reconcileComputers(a, b) {
     cleanOffset: clean != null,
     confidence,
     anchors: best.support,
+    profileScore: Math.round(profileScore * 1000) / 1000,
     groups: groups.filter((g) => g.aIds.length + g.bIds.length >= 2),
   };
 }

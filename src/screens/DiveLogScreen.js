@@ -749,10 +749,12 @@ function DetailCard({ title, children }) {
 }
 
 function LogsCard({ logs, primaryLog, units }) {
-  if (logs.length < 2) return null; // a single-computer dive doesn't need this
+  if (!logs.length) return null;
   return (
     <Card style={styles.detailCard}>
-      <Text style={styles.detailCardTitle}>Recorded by {logs.length} computers</Text>
+      <Text style={styles.detailCardTitle}>
+        {logs.length > 1 ? `Recorded by ${logs.length} computers` : 'Recorded by'}
+      </Text>
       {logs.map((log) => {
         let name = `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer';
         if (log.fusedFrom > 1) name += ` (${log.fusedFrom} recordings joined)`;
@@ -1350,14 +1352,15 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
             onRecheck={async () => {
               setRechecking(true);
               try {
-                const { proposals, fused } = await recheckDuplicates();
+                const { proposals, fused, autoMerged } = await recheckDuplicates();
                 if (proposals > 0) {
                   setView('review');
                 } else {
+                  const did = (fused || 0) + (autoMerged || 0);
                   Alert.alert(
-                    fused ? 'Cleaned up' : 'No duplicates found',
-                    fused
-                      ? `Combined split logs on ${fused} ${fused === 1 ? 'dive' : 'dives'}. No further duplicates.`
+                    did ? 'Merged' : 'No duplicates found',
+                    did
+                      ? `Combined ${did} ${did === 1 ? 'dive' : 'dives'} recorded by more than one computer. Nothing left to review.`
                       : 'Every dive looks unique.',
                   );
                 }

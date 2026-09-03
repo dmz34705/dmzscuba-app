@@ -524,6 +524,33 @@ assert.ok(rec.groups.some((g) => g.aIds.includes('a3') && g.bIds.includes('b3'))
 // two computers that share nothing -> null
 assert.equal(reconcileComputers(A, [{ id: 'z', startMs: AT + 90 * 24 * H, durationSeconds: 1200, maxDepthMeters: 8, samples: prof(1200) }]), null);
 
+// ONE shared dive, clocks agree, Suunto split it in two (the diver briefly
+// surfaced, which the Shearwater also recorded). Single anchor but the profiles
+// line up -> high confidence, auto-mergeable.
+// The diver surfaced from ~1200s to ~1500s — that's why the Suunto ended the
+// dive there; the Shearwater kept one continuous log through it.
+const contProfile = [];
+for (let t = 0; t <= 3600; t += 20) {
+  let d;
+  if (t < 120) d = t / 4;
+  else if (t <= 1200) d = 30;
+  else if (t < 1500) d = 1;             // at the surface between fragments
+  else if (t < 1620) d = (t - 1500) / 4;
+  else if (t < 3480) d = 28;
+  else d = (3600 - t) / 4;
+  contProfile.push({ t, depth: d });
+}
+const oneA = [{ id: 'A1', startMs: AT, durationSeconds: 3600, maxDepthMeters: 30, samples: contProfile }];
+const oneB = [
+  { id: 'B1a', startMs: AT, durationSeconds: 1200, maxDepthMeters: 30, samples: prof(1200) },
+  { id: 'B1b', startMs: AT + 1500 * 1000, durationSeconds: 2100, maxDepthMeters: 28, samples: prof(2100) },
+];
+const recOne = reconcileComputers(oneA, oneB);
+assert.ok(recOne, 'one-shared-dive reconciliation');
+assert.equal(recOne.confidence, 'high', `confidence ${recOne.confidence} score ${recOne.profileScore}`);
+assert.equal(Math.abs(recOne.offsetMinutes) < 1, true);
+assert.deepEqual(recOne.groups[0].bIds.sort(), ['B1a', 'B1b']);
+
 // findMatch wires it together; ignores same-device candidates
 const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
 const fm = findMatch(fmNew, [
