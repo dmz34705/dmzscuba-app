@@ -6,6 +6,7 @@ import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
 import { findMatch } from '../../lib/diveLog/matchDives';
 import {
   attachLogToDive,
+  clearAll,
   consolidateSameDeviceLogs,
   createDiveFromLog,
   isMigratedToV2,
@@ -16,6 +17,7 @@ import {
   loadMatchCandidates,
   mergeDives,
   migrateToV2,
+  purgeDeleted,
   rebuildIndex,
   saveDeviceTimeCorrection,
   saveDive,
@@ -114,6 +116,7 @@ export default function useDiveLog() {
 
   const stats = useMemo(() => computeDiveLogStats(indexRows), [indexRows]);
   const trends = useMemo(() => computeDiveTrends(indexRows), [indexRows]);
+  const deletedCount = useMemo(() => indexRows.filter((r) => r.deletedAt).length, [indexRows]);
   const folders = useMemo(() => buildFolders(rows), [rows]);
 
   // Same-computer de-dup keys (vendor|product|fingerprint) for dives already
@@ -256,7 +259,7 @@ export default function useDiveLog() {
   /** Re-run the matcher across the whole book (recovers dives split before the
    *  matcher improved). Populates pendingProposals; nothing is written yet. */
   const recheckDuplicates = useCallback(async () => {
-    let dives = await loadAll();
+    let dives = (await loadAll()).filter((d) => !d.deletedAt);
     // First: fuse any dive that already has several logs from one computer
     // (e.g. a split dive merged before fragment-fusing existed).
     let fused = 0;
@@ -275,7 +278,7 @@ export default function useDiveLog() {
         fused += 1;
       }
     }
-    if (fused) dives = await loadAll();
+    if (fused) dives = (await loadAll()).filter((d) => !d.deletedAt);
 
     const bundles = [];
     for (const d of dives) {
@@ -318,6 +321,22 @@ export default function useDiveLog() {
     if (fused) await refreshIndex();
     return { proposals: proposals.length, fused };
   }, [refreshIndex]);
+
+  /** Dev: hard-delete soft-deleted dives + their logs + fingerprint markers. */
+  const purgeDeletedDownloads = useCallback(async () => {
+    const n = await purgeDeleted();
+    diveCache.current.clear();
+    await refreshIndex();
+    return n;
+  }, [refreshIndex]);
+
+  /** Dev: wipe the entire dive logbook (v1 backup included). */
+  const eraseAllDiveData = useCallback(async () => {
+    await clearAll();
+    diveCache.current.clear();
+    setPendingProposals([]);
+    setIndexRows([]);
+  }, []);
 
   /** Manual merge: user selected several dives that are really one. */
   const mergeDivesManual = useCallback(async (diveIds) => {
@@ -381,6 +400,7 @@ export default function useDiveLog() {
     rows,
     stats,
     trends,
+    deletedCount,
     folders,
     knownComputerKeys,
     pendingProposals,
@@ -394,5 +414,7 @@ export default function useDiveLog() {
     clearProposals,
     recheckDuplicates,
     mergeDivesManual,
+    purgeDeletedDownloads,
+    eraseAllDiveData,
   };
 }

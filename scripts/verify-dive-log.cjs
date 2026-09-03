@@ -703,8 +703,27 @@ function memoryStorage(seed = {}) {
   await diveLog.saveFingerprint('EON Core', 'FP-B', store);
   assert.equal(await diveLog.loadFingerprint('EON Core', store), 'FP-B');
 
+  // --- purgeDeleted: hard-remove soft-deleted dives + their logs + fp markers ---
+  const pstore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const keepDive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PK-1' }), pstore);
+  const dropDive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PK-2', vendor: 'Suunto', product: 'D5', serial: 'x' }), pstore);
+  await diveLog.saveFingerprint('D5', 'PK-2', pstore);
+  await softDeleteDive(dropDive.dive.id, pstore);
+  assert.equal((await loadIndex(pstore)).length, 2);
+  const purged = await diveLog.purgeDeleted(pstore);
+  assert.equal(purged, 1);
+  assert.equal((await loadIndex(pstore)).length, 1);
+  assert.equal((await loadIndex(pstore))[0].id, keepDive.dive.id);
+  assert.equal(pstore._map.has(`${DIVE_LOG_DIVE_PREFIX}${dropDive.dive.id}`), false);
+  assert.equal(pstore._map.has(`${DIVE_LOG_LOG_PREFIX}${dropDive.log.id}`), false);
+  assert.equal(await diveLog.loadFingerprint('D5', pstore), null); // markers cleared
+  assert.equal(await loadLog(keepDive.log.id, pstore) != null, true); // live data untouched
+
   await clearAll(store);
-  assert.equal(store._map.has(DIVE_LOG_INDEX_KEY), false);
+  // clearAll leaves an empty v2 index marker so migrateToV2 won't rebuild from v1
+  assert.deepEqual(await loadIndex(store), []);
+  assert.equal(await isMigratedToV2(store), true);
+  assert.equal(store._map.has('@dmz-scuba/dive-log/index-v1'), false);
 
   // ---- migration v1 -> v2 ----
   const v1Manual = { schemaVersion: 1, id: 'm1', createdAt: '2026-01-01T00:00:00Z', deletedAt: null, source: 'manual', startTime: '2026-01-01T10:00:00Z', durationSeconds: 1800, site: { name: 'Quarry' }, water: { maxDepthMeters: 12 }, gas: { mixes: [{ o2: 0.21, he: 0, label: 'Air' }], tanks: [] }, profile: { samples: [], events: [] } };
@@ -774,6 +793,8 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /resolveProposal/);
   assert.match(hook, /recheckDuplicates/);
   assert.match(hook, /mergeDives/);
+  assert.match(hook, /purgeDeleted/);
+  assert.match(hook, /eraseAllDiveData/);
   assert.match(hook, /const deleteDives = useCallback/);
   assert.doesNotMatch(hook, /AsyncStorage/);
 

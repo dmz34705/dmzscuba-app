@@ -423,8 +423,8 @@ function TrendArrow({ slope, goodDirection = 'down' }) {
   );
 }
 
-function StatsView({ trends, stats, units, onRecheck, rechecking }) {
-  if (!trends.diveCount) {
+function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll }) {
+  if (!trends.diveCount && !deletedCount) {
     return <Text style={styles.muted}>Log or download a few dives to see your trends.</Text>;
   }
   const sacUnit = units.pressureUnit;
@@ -487,6 +487,20 @@ function StatsView({ trends, stats, units, onRecheck, rechecking }) {
           disabled={rechecking}
           style={styles.primaryCta}
         />
+        <SecondaryButton
+          label={deletedCount ? `Purge ${deletedCount} deleted ${deletedCount === 1 ? 'dive' : 'dives'}` : 'Purge deleted dives'}
+          onPress={onPurge}
+          disabled={!deletedCount}
+          style={styles.primaryCta}
+        />
+        <Text style={styles.engineNote}>
+          Deleted dives stay hidden but on the device (so a delete is reversible and
+          the matcher can re-import them). Purge removes them for good and clears the
+          per-computer sync markers.
+        </Text>
+        <Pressable onPress={onEraseAll} hitSlop={8} style={styles.reviewSkip}>
+          <Text style={[styles.reviewSkipText, { color: colors.danger }]}>Erase the entire logbook (dev)</Text>
+        </Pressable>
       </Card>
     </>
   );
@@ -914,9 +928,9 @@ function DiveEditForm({ form, units, onChange, error }) {
 export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
   const {
-    loaded, rows, stats, trends, folders, knownComputerKeys, pendingProposals,
+    loaded, rows, stats, trends, deletedCount, folders, knownComputerKeys, pendingProposals,
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLog, resolveProposal, clearProposals,
-    recheckDuplicates, mergeDivesManual,
+    recheckDuplicates, mergeDivesManual, purgeDeletedDownloads, eraseAllDiveData,
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
 
@@ -1250,6 +1264,27 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
             stats={stats}
             units={units}
             rechecking={rechecking}
+            deletedCount={deletedCount}
+            onPurge={() => {
+              Alert.alert(
+                `Purge ${deletedCount} deleted ${deletedCount === 1 ? 'dive' : 'dives'}?`,
+                'Permanently removes soft-deleted dives and their computer logs, and clears the per-computer sync markers so they can be re-downloaded.',
+                [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Purge', style: 'destructive', onPress: async () => { const n = await purgeDeletedDownloads(); Alert.alert('Purged', `Removed ${n} ${n === 1 ? 'dive' : 'dives'}.`); } },
+                ],
+              );
+            }}
+            onEraseAll={() => {
+              Alert.alert(
+                'Erase the entire logbook?',
+                'Deletes every dive, computer log, and sync marker on this device — including the v1 backup. Cannot be undone.',
+                [
+                  { text: 'Cancel', style: 'cancel' },
+                  { text: 'Erase everything', style: 'destructive', onPress: async () => { await eraseAllDiveData(); setView('list'); } },
+                ],
+              );
+            }}
             onRecheck={async () => {
               setRechecking(true);
               try {

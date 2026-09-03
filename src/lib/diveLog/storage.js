@@ -350,20 +350,57 @@ export async function rebuildIndex(storage = AsyncStorage) {
   return rows;
 }
 
+async function removeKeys(keys, storage) {
+  if (!keys.length) return;
+  if (typeof storage.multiRemove === 'function') {
+    await storage.multiRemove(keys);
+    return;
+  }
+  await Promise.all(keys.map((key) => storage.removeItem(key)));
+}
+
+/** Wipe every dive-log key, v1 backup included. Dev reset — irreversible. */
 export async function clearAll(storage = AsyncStorage) {
   const keys = (await storage.getAllKeys()) || [];
   const mine = keys.filter(
     (key) => key === DIVE_LOG_INDEX_KEY
       || key === DIVE_LOG_CORRECTIONS_KEY
+      || key === V1_INDEX_KEY
       || key.startsWith(DIVE_LOG_DIVE_PREFIX)
       || key.startsWith(DIVE_LOG_LOG_PREFIX)
-      || key.startsWith(DIVE_LOG_FINGERPRINT_PREFIX),
+      || key.startsWith(DIVE_LOG_FINGERPRINT_PREFIX)
+      || key.startsWith(V1_ENTRY_PREFIX),
   );
-  if (typeof storage.multiRemove === 'function') {
-    await storage.multiRemove(mine);
-    return;
+  await removeKeys(mine, storage);
+  // Leave a v2 marker so migrateToV2 doesn't rebuild from a stale v1 backup.
+  await storage.setItem(DIVE_LOG_INDEX_KEY, '[]');
+}
+
+/**
+ * Hard-delete soft-deleted dives (and their logs, index rows) plus every
+ * per-computer fingerprint marker. Keeps live dives. Returns how many dives went.
+ */
+export async function purgeDeleted(storage = AsyncStorage) {
+  const index = await loadIndex(storage);
+  const dead = index.filter((row) => row.deletedAt);
+  const logKeysToDrop = [];
+  for (const row of dead) {
+    // eslint-disable-next-line no-await-in-loop
+    const dive = await loadDive(row.id, storage);
+    for (const lid of dive?.logIds || []) logKeysToDrop.push(logKey(lid));
   }
-  await Promise.all(mine.map((key) => storage.removeItem(key)));
+  await removeKeys([
+    ...dead.map((row) => diveKey(row.id)),
+    ...logKeysToDrop,
+  ], storage);
+  await writeIndex(index.filter((row) => !row.deletedAt), storage);
+
+  // fingerprint markers are keyed by BLE name, not dive — clear them all so a
+  // re-download of a purged dive isn't skipped.
+  const allKeys = (await storage.getAllKeys()) || [];
+  await removeKeys(allKeys.filter((k) => k.startsWith(DIVE_LOG_FINGERPRINT_PREFIX)), storage);
+
+  return dead.length;
 }
 
 // ---------------------------------------------------------------------------
