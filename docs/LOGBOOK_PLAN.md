@@ -45,6 +45,12 @@ and this doc do). Read `docs/ARCHITECTURE.md` first.
   folder grid; the detail view shows the top-ranked computer's data, tap a
   "Recorded by" row to switch; air pressure is attributed per computer (dual
   traces when both have a transmitter).
+- **Background download** — the transfer engine is now a module singleton
+  (`downloadService.js`), not a hook, so a download keeps running when the user
+  leaves the download screen. The engine writes dives to storage itself and
+  raises `downloadReviewFlag`; the logbook re-runs rebuild + reconcile when it
+  next renders. A "downloading in background" banner across logbook views taps
+  back in; a scrolling `DownloadConsole` shows the live transfer log.
 - Dev tools in Stats: purge deleted dives, erase logbook, re-check duplicates.
 - All 16 `npm run test:*` green.
 

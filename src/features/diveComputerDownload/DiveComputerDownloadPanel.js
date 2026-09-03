@@ -1,10 +1,9 @@
-import { useCallback, useEffect, useRef } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Card, PrimaryButton, ProgressBar, SecondaryButton } from '../../components/Ui';
-import { colors, radii, spacing } from '../../theme';
+import { colors, radii } from '../../theme';
 import { looksLikeSuunto } from './diveComputerBle';
-import { computerDiveKey, computerLogFromDownload } from './computerLogFromDownload';
+import DownloadConsole from './DownloadConsole';
 import useDiveComputerDownload from './useDiveComputerDownload';
 
 const SUUNTO_PAIRING_HINT =
@@ -44,54 +43,19 @@ function DeviceRow({ device, onConnect, disabled }) {
 }
 
 /**
+ * The download flow's UI. All transfer state lives in the module-level
+ * `downloadService` (via `useDiveComputerDownload`), so leaving this screen does
+ * NOT interrupt an in-progress download — the logbook screen picks the finished
+ * dives up when it next renders.
+ *
  * @param {object} props
  * @param {() => void} props.onClose
- * @param {Set<string>} props.knownComputerKeys
- * @param {(logPartial: object) => Promise<'saved'|'duplicate'>} props.importComputerLog
  */
-export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, importComputerLogs, onImportComplete }) {
-  const forceRef = useRef(false);       // "re-import everything" — skip the per-dive de-dup
-  const pendingLogsRef = useRef([]);    // collected during the transfer, written in one batch
-
-  const saveDive = useCallback((rawDive) => {
-    // vendor/product/serial come resolved from the native libdivecomputer descriptor.
-    const log = computerLogFromDownload(rawDive);
-    const key = computerDiveKey(log.device.vendor, log.device.product, log.fingerprint);
-    if (!forceRef.current && key && knownComputerKeys?.has(key)) return 'duplicate';
-    pendingLogsRef.current.push(log); // batched — see the status effect below
-    return 'saved';
-  }, [knownComputerKeys]);
-
-  const hasImportedFingerprint = useCallback(
-    (fp) => !!fp && [...(knownComputerKeys || [])].some((k) => k.endsWith(`|${fp}`)),
-    [knownComputerKeys],
-  );
-
+export default function DiveComputerDownloadPanel({ onClose }) {
   const {
-    supported, status, devices, connectedDevice, progress, summary, error,
-    scan, stopScan, connect, disconnect, download, cancel,
-  } = useDiveComputerDownload({ onDiveDownloaded: saveDive, hasImportedFingerprint });
-
-  // When the transfer settles, write the collected dives in one batch, then run
-  // the deferred reconciliation. Also flush on error so a partial download isn't
-  // lost.
-  const importRef = useRef(importComputerLogs);
-  importRef.current = importComputerLogs;
-  const completeRef = useRef(onImportComplete);
-  completeRef.current = onImportComplete;
-  const flushedRef = useRef(false);
-  useEffect(() => {
-    if (status === 'downloading') { flushedRef.current = false; return; }
-    if ((status === 'done' || status === 'error') && !flushedRef.current) {
-      flushedRef.current = true;
-      const logs = pendingLogsRef.current;
-      pendingLogsRef.current = [];
-      (async () => {
-        if (logs.length) await importRef.current?.(logs);
-        await completeRef.current?.();
-      })();
-    }
-  }, [status]);
+    supported, status, devices, connectedDevice, progress, summary, error, log,
+    scan, stopScan, connect, disconnect, download, cancel, clearLog,
+  } = useDiveComputerDownload();
 
   if (!supported) {
     return (
@@ -117,7 +81,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
     <Card style={styles.card}>
       <Text style={styles.title}>Download from dive computer</Text>
       <Text style={styles.body}>
-        Wake your dive computer and put it in Bluetooth / upload mode, then scan.
+        Wake your dive computer and put it in Bluetooth / upload mode, then scan. You can leave
+        this screen while it downloads — the transfer keeps running.
       </Text>
 
       {status === 'error' && error ? <Text style={styles.error}>{error}</Text> : null}
@@ -148,13 +113,13 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
                   : 'No dives read.'}
               </Text>
               <View style={styles.doneActions}>
-                <PrimaryButton label="Download again" onPress={() => { forceRef.current = false; download(); }} style={styles.flexButton} />
+                <PrimaryButton label="Download again" onPress={() => download()} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => { forceRef.current = false; download({ incremental: true }); }} hitSlop={8} style={styles.linkRow}>
+              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
                 <Text style={styles.linkText}>Sync new dives only (faster)</Text>
               </Pressable>
-              <Pressable onPress={() => { forceRef.current = true; download(); }} hitSlop={8} style={styles.linkRow}>
+              <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
                 <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
               </Pressable>
             </>
@@ -164,15 +129,15 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
               <View style={styles.doneActions}>
                 <PrimaryButton
                   label="Download dives"
-                  onPress={() => { forceRef.current = false; download(); }}
+                  onPress={() => download()}
                   style={styles.flexButton}
                 />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => { forceRef.current = false; download({ incremental: true }); }} hitSlop={8} style={styles.linkRow}>
+              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
                 <Text style={styles.linkText}>Sync new dives only (faster)</Text>
               </Pressable>
-              <Pressable onPress={() => { forceRef.current = true; download(); }} hitSlop={8} style={styles.linkRow}>
+              <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
                 <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
               </Pressable>
             </>
@@ -208,6 +173,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
           <SecondaryButton label="Back" onPress={onClose} style={styles.backButton} />
         </>
       )}
+
+      <DownloadConsole log={log} onClear={clearLog} />
     </Card>
   );
 }

@@ -54,6 +54,8 @@ import {
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComputerDownloadPanel';
+import useDiveComputerDownload from '../features/diveComputerDownload/useDiveComputerDownload';
+import { clearPendingReview, hasPendingReview } from '../features/diveComputerDownload/downloadReviewFlag';
 import { colors, radii, shadow, spacing } from '../theme';
 
 const DIVE_MODE_LABELS = { oc: 'Open circuit', ccr: 'Closed circuit', scr: 'Semi-closed', gauge: 'Gauge', freedive: 'Freedive' };
@@ -1068,6 +1070,26 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
 
+  // The dive-computer transfer runs in a module-level singleton, so it survives
+  // leaving this screen. Watch its status: when a background download settles,
+  // pull the new dives into the index and run cross-computer reconciliation.
+  const download = useDiveComputerDownload();
+  useEffect(() => {
+    if (!loaded) return undefined;
+    if (download.status === 'downloading' || download.status === 'connecting' || download.status === 'scanning') {
+      return undefined;
+    }
+    if (!hasPendingReview()) return undefined;
+    let active = true;
+    (async () => {
+      await finishImport();
+      if (!active) return;
+      await recheckDuplicates();
+      clearPendingReview();
+    })();
+    return () => { active = false; };
+  }, [loaded, download.status, finishImport, recheckDuplicates]);
+
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
     pressureUnit: appSettings.pressureUnit === 'bar' ? 'bar' : 'psi',
@@ -1308,6 +1330,19 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
         contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom, 16) + 32 }]}
         showsVerticalScrollIndicator={false}
       >
+        {view !== 'download' && (download.status === 'downloading' || download.status === 'connecting') ? (
+          <Pressable style={styles.dlBanner} onPress={() => setView('download')}>
+            <View style={styles.dlBannerDot} />
+            <Text style={styles.dlBannerText} numberOfLines={1}>
+              {download.status === 'connecting'
+                ? `Connecting to ${download.connectedDevice?.name || 'dive computer'}…`
+                : `Downloading${download.connectedDevice ? ` from ${download.connectedDevice.name}` : ''}`
+                  + (download.summary ? ` · ${download.summary.downloaded} read, ${download.summary.saved} new` : '…')}
+            </Text>
+            <Text style={styles.dlBannerCta}>View</Text>
+          </Pressable>
+        ) : null}
+
         {view === 'list' && (
           <>
             <SectionLabel>{activeFolder ? 'DIVES' : 'DIVE HISTORY'}</SectionLabel>
@@ -1397,15 +1432,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
         )}
 
         {view === 'download' && (
-          <DiveComputerDownloadPanel
-            onClose={() => setView('list')}
-            knownComputerKeys={knownComputerKeys}
-            importComputerLogs={importComputerLogs}
-            onImportComplete={async () => {
-              await finishImport();
-              await recheckDuplicates();
-            }}
-          />
+          <DiveComputerDownloadPanel onClose={() => setView('list')} />
         )}
 
         {view === 'review' && (
@@ -1552,6 +1579,21 @@ const styles = StyleSheet.create({
 
   primaryCta: { marginTop: 8 },
   downloadButton: { marginTop: 10 },
+  dlBanner: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(112,226,163,0.1)',
+    borderColor: 'rgba(112,226,163,0.35)',
+    borderRadius: radii.md,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 9,
+    marginBottom: 14,
+    paddingHorizontal: 13,
+    paddingVertical: 10,
+  },
+  dlBannerDot: { backgroundColor: colors.good, borderRadius: 4, height: 8, width: 8 },
+  dlBannerText: { color: colors.text, flex: 1, fontSize: 12, fontWeight: '700' },
+  dlBannerCta: { color: colors.good, fontSize: 12, fontWeight: '900' },
 
   reviewCard: { borderColor: 'rgba(112,221,246,.28)', gap: 4, marginTop: 12 },
   reviewTitle: { color: colors.text, fontSize: 15, fontWeight: '900' },

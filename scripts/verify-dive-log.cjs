@@ -992,9 +992,30 @@ function memoryStorage(seed = {}) {
   const ble = read('src', 'features', 'diveComputerDownload', 'diveComputerBle.js');
   assert.match(ble, /export function looksLikeDiveComputer/);
   assert.match(ble, /export function looksLikeSuunto/);
+  // The transfer engine is a module-level singleton so a download survives the
+  // download screen (or the whole logbook) unmounting.
+  const dlService = read('src', 'features', 'diveComputerDownload', 'downloadService.js');
+  assert.match(dlService, /connectToDevice/);
+  assert.match(dlService, /primePairing/);
+  assert.match(dlService, /export function subscribe/);
+  assert.match(dlService, /createDivesFromLogs/);       // engine writes dives itself
+  assert.match(dlService, /markPendingReview/);         // flags the logbook to reconcile
+  assert.match(dlService, /LOG_LIMIT/);                 // bounded console ring buffer
+  assert.match(dlService, /if \(downloadRunning\) return/); // no re-entrant download
+
   const dlHook = read('src', 'features', 'diveComputerDownload', 'useDiveComputerDownload.js');
-  assert.match(dlHook, /connectToDevice/);
-  assert.match(dlHook, /primePairing/);
+  assert.match(dlHook, /downloadService\.subscribe/);   // hook is a thin subscription now
+  assert.doesNotMatch(dlHook, /useRef\(new Map/);       // BLE state no longer lives in the hook
+
+  const dlFlag = read('src', 'features', 'diveComputerDownload', 'downloadReviewFlag.js');
+  assert.match(dlFlag, /export function hasPendingReview/);
+  assert.doesNotMatch(dlFlag, /^import /m);             // must stay dependency-free
+
+  const dlConsole = read('src', 'features', 'diveComputerDownload', 'DownloadConsole.js');
+  assert.match(dlConsole, /scrollToEnd/);               // console sticks to the latest line
+
+  assert.match(screen, /hasPendingReview/);             // logbook reconciles after a bg download
+  assert.match(screen, /dlBanner/);                     // "downloading in background" affordance
 
   const runner = read('src', 'features', 'diveComputerDownload', 'downloadRunner.js');
   assert.match(runner, /monitorCharacteristicForService/);
