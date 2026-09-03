@@ -1,12 +1,20 @@
-// Dive logbook data model (schemaVersion 1).
+// Dive logbook data model (schemaVersion 2).
 //
 // Framework-independent. Canonical storage units are SI: metres, seconds, °C,
 // bar, litres, kg. Every conversion happens at the presentation edge in
-// ./format.js. The record shape is designed so account sync can be layered on
-// later without a migration: stable id, created/updated timestamps, soft delete,
-// and a `sync` bookkeeping block.
+// ./format.js.
+//
+// v2 splits the old flat record into two types:
+//   Dive        - the canonical, user-facing, *counted* unit. One per real dive.
+//   ComputerLog - one download from one physical computer, attached to a Dive.
+// A Dive with several logs (e.g. two computers, or one computer that split a
+// dive another saw as one) is still a single dive. See docs/LOGBOOK_PLAN.md
+// "Part B continued".
+//
+// The v1 shape (`normalizeDiveRecord`) is retained for the one-time migration.
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
+export const LEGACY_SCHEMA_VERSION = 1;
 
 export const DIVE_TYPES = Object.freeze([
   'training', 'fun', 'night', 'wreck', 'drift', 'deep', 'deco', 'boat', 'shore', 'cave', 'ice', 'altitude', 'photo',
@@ -18,7 +26,7 @@ export const DIVE_MODES = Object.freeze(['oc', 'ccr', 'scr', 'gauge', 'freedive'
 
 export const DECO_MODEL_TYPES = Object.freeze(['buhlmann', 'vpm', 'rgbm', 'dciem']);
 
-export const DIVE_SOURCES = Object.freeze(['manual', 'import', 'computer']);
+export const DIVE_SOURCES = Object.freeze(['manual', 'import', 'computer', 'mixed']);
 
 export const SYNC_STATUSES = Object.freeze(['local', 'pending', 'synced', 'conflict']);
 
@@ -245,7 +253,7 @@ function normalizeGear(raw) {
 export function normalizeDiveRecord(raw) {
   const source = isObject(raw) ? raw : {};
   return {
-    schemaVersion: SCHEMA_VERSION,
+    schemaVersion: LEGACY_SCHEMA_VERSION,
     id: str(source.id, '').trim() || createId(),
     createdAt: str(source.createdAt, '') || nowIso(),
     updatedAt: str(source.updatedAt, '') || nowIso(),
@@ -303,4 +311,217 @@ export function createDiveRecord(partial = {}) {
 /** Returns a copy with `updatedAt` bumped to now. */
 export function touchRecord(record) {
   return { ...record, updatedAt: nowIso() };
+}
+
+// ---------------------------------------------------------------------------
+// v2: ComputerLog — one download from one physical computer
+// ---------------------------------------------------------------------------
+
+const MAX_CORRECTION_MINUTES = 72 * 60; // a computer's clock can be a few days out
+
+/** Shift an ISO timestamp by whole minutes; '' stays ''. */
+export function shiftIso(iso, minutes) {
+  const base = Date.parse(iso);
+  if (Number.isNaN(base) || !minutes) return iso || '';
+  return new Date(base + minutes * 60000).toISOString();
+}
+
+/** vendor|product|serial — identifies the physical unit (not the dive). */
+export function deviceKeyOf(device) {
+  const d = isObject(device) ? device : {};
+  const vendor = str(d.vendor, '').trim();
+  const product = str(d.product, '').trim();
+  const serial = str(d.serial, '').trim();
+  if (!vendor && !product) return null;
+  return `${vendor}|${product}|${serial}`;
+}
+
+/** vendor|product|fingerprint — identifies one dive on one model (same-device de-dup). */
+export function computerDiveKeyOf(device, fingerprint) {
+  const fp = str(fingerprint, '').trim();
+  if (!fp) return null;
+  const d = isObject(device) ? device : {};
+  return `${str(d.vendor, '').trim()}|${str(d.product, '').trim()}|${fp}`;
+}
+
+function normalizeLogDevice(raw) {
+  const source = isObject(raw) ? raw : {};
+  return {
+    vendor: str(source.vendor, '').trim(),
+    product: str(source.product, '').trim(),
+    serial: str(source.serial, '').trim(),
+  };
+}
+
+function normalizeAnalytics(raw) {
+  const s = isObject(raw) ? raw : {};
+  return {
+    gfLow: intOrNull(s.gfLow, 0, 200),
+    gfHigh: intOrNull(s.gfHigh, 0, 200),
+    decoModelType: DECO_MODEL_TYPES.includes(s.decoModelType) ? s.decoModelType : null,
+    conservatism: intOrNull(s.conservatism, -5, 5),
+    ceilingMaxMeters: clampNum(s.ceilingMaxMeters, 0, MAX_DEPTH_METERS, null),
+    firstStopMeters: clampNum(s.firstStopMeters, 0, MAX_DEPTH_METERS, null),
+    ndlMinAtStartSec: clampNum(s.ndlMinAtStartSec, 0, MAX_DURATION_SECONDS, null),
+    cnsStartPct: clampNum(s.cnsStartPct, 0, 1000, null),
+    cnsEndPct: clampNum(s.cnsEndPct, 0, 1000, null),
+    otu: clampNum(s.otu, 0, 100000, null),
+    ascentRateMaxMPerMin: clampNum(s.ascentRateMaxMPerMin, 0, 200, null),
+    sawtoothIndex: clampNum(s.sawtoothIndex, 0, 100000, null),
+    sacBarPerMin: clampNum(s.sacBarPerMin, 0, 200, null),
+    rmvLitersPerMin: clampNum(s.rmvLitersPerMin, 0, 200, null),
+  };
+}
+
+function normalizeDeviceMeta(raw) {
+  const s = isObject(raw) ? raw : {};
+  return {
+    firmware: str(s.firmware, '').trim(),
+    serialRaw: str(s.serialRaw, '').trim(),
+    hardwareModel: str(s.hardwareModel, '').trim(),
+    batteryPct: clampNum(s.batteryPct, 0, 100, null),
+  };
+}
+
+/**
+ * Normalizer for a ComputerLog. Every field clamped/defaulted; the record always
+ * matches the v2 shape. `startTime` is derived: reportedStartTime + correction.
+ */
+export function normalizeComputerLog(raw) {
+  const source = isObject(raw) ? raw : {};
+  const device = normalizeLogDevice(source.device);
+  const reportedStartTime = str(source.reportedStartTime, '') || str(source.startTime, '');
+  const timeCorrectionMinutes = intOrNull(source.timeCorrectionMinutes, -MAX_CORRECTION_MINUTES, MAX_CORRECTION_MINUTES) ?? 0;
+  const water = normalizeWater(source.water);
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    id: str(source.id, '').trim() || createId(),
+    diveId: str(source.diveId, '').trim() || null,
+    createdAt: str(source.createdAt, '') || nowIso(),
+    updatedAt: str(source.updatedAt, '') || nowIso(),
+
+    device,
+    deviceKey: deviceKeyOf(device),
+    fingerprint: str(source.fingerprint, '').trim() || null,
+    downloadedAt: str(source.downloadedAt, '') || nowIso(),
+
+    reportedStartTime,
+    timeCorrectionMinutes,
+    startTime: shiftIso(reportedStartTime, timeCorrectionMinutes),
+    timezoneOffsetMinutes: intOrNull(source.timezoneOffsetMinutes, -840, 840),
+
+    durationSeconds: clampNum(source.durationSeconds, 0, MAX_DURATION_SECONDS, 0) ?? 0,
+    surfaceIntervalSeconds: clampNum(source.surfaceIntervalSeconds, 0, 7 * 24 * 60 * 60, null),
+    water,
+    atmosphericBar: clampNum(source.atmosphericBar, 0, 2, null),
+    gas: normalizeGas(source.gas),
+    diveMode: DIVE_MODES.includes(source.diveMode) ? source.diveMode : null,
+    decoModel: normalizeDecoModel(source.decoModel),
+
+    profile: normalizeProfile(source.profile),
+    analytics: normalizeAnalytics(source.analytics),
+    deviceMeta: normalizeDeviceMeta(source.deviceMeta),
+
+    splitOf: str(source.splitOf, '').trim() || null,
+  };
+}
+
+export function createComputerLog(partial = {}) {
+  const timestamp = nowIso();
+  return normalizeComputerLog({
+    ...partial,
+    id: partial.id || createId(),
+    createdAt: partial.createdAt || timestamp,
+    updatedAt: timestamp,
+    downloadedAt: partial.downloadedAt || timestamp,
+  });
+}
+
+/** Re-derives `startTime` after a `timeCorrectionMinutes` change. */
+export function withTimeCorrection(log, minutes) {
+  const timeCorrectionMinutes = clampNum(minutes, -MAX_CORRECTION_MINUTES, MAX_CORRECTION_MINUTES, 0) ?? 0;
+  return normalizeComputerLog({ ...log, timeCorrectionMinutes, updatedAt: nowIso() });
+}
+
+// ---------------------------------------------------------------------------
+// v2: Dive — the canonical, counted record
+// ---------------------------------------------------------------------------
+
+/**
+ * Normalizer for a Dive. Shares the field normalizers with v1 (site/water/gas/
+ * gear/…) but drops `profile`/`device` (those live on the logs) and adds
+ * `primaryLogId` / `logIds`.
+ */
+export function normalizeDive(raw) {
+  const source = isObject(raw) ? raw : {};
+  const logIds = Array.isArray(source.logIds)
+    ? [...new Set(source.logIds.map((id) => str(id, '').trim()).filter(Boolean))]
+    : [];
+  const primaryLogId = str(source.primaryLogId, '').trim() || null;
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    id: str(source.id, '').trim() || createId(),
+    createdAt: str(source.createdAt, '') || nowIso(),
+    updatedAt: str(source.updatedAt, '') || nowIso(),
+    deletedAt: str(source.deletedAt, '') || null,
+
+    sync: normalizeSync(source.sync),
+
+    source: DIVE_SOURCES.includes(source.source) ? source.source : 'manual',
+    primaryLogId: logIds.includes(primaryLogId) ? primaryLogId : (logIds[0] || null),
+    logIds,
+
+    number: intOrNull(source.number, 0, 100000),
+    startTime: str(source.startTime, ''),
+    timezoneOffsetMinutes: intOrNull(source.timezoneOffsetMinutes, -840, 840),
+    durationSeconds: clampNum(source.durationSeconds, 0, MAX_DURATION_SECONDS, 0) ?? 0,
+    surfaceIntervalSeconds: clampNum(source.surfaceIntervalSeconds, 0, 7 * 24 * 60 * 60, null),
+
+    site: normalizeSite(source.site),
+    operator: str(source.operator, '').trim(),
+    buddies: stringList(source.buddies),
+
+    water: normalizeWater(source.water),
+    atmosphericBar: clampNum(source.atmosphericBar, 0, 2, null),
+    gas: normalizeGas(source.gas),
+
+    diveMode: DIVE_MODES.includes(source.diveMode) ? source.diveMode : null,
+    types: Array.isArray(source.types) ? DIVE_TYPES.filter((type) => source.types.includes(type)) : [],
+    decoModel: normalizeDecoModel(source.decoModel),
+
+    gear: normalizeGear(source.gear),
+
+    rating: intOrNull(source.rating, 1, 5),
+    notes: str(source.notes, '').trim(),
+    tags: stringList(source.tags),
+  };
+}
+
+export function createDive(partial = {}) {
+  const timestamp = nowIso();
+  return normalizeDive({
+    ...partial,
+    id: partial.id || createId(),
+    createdAt: partial.createdAt || timestamp,
+    updatedAt: timestamp,
+    deletedAt: partial.deletedAt || null,
+  });
+}
+
+const LOG_SUMMARY_FIELDS = ['durationSeconds', 'surfaceIntervalSeconds', 'atmosphericBar', 'diveMode', 'decoModel', 'timezoneOffsetMinutes'];
+
+/**
+ * Fold a ComputerLog's field values onto a Dive as the surfaced summary. User-
+ * owned fields (site, buddies, notes, rating, tags, types, gear) are never
+ * touched. Called when a log becomes the Dive's primary.
+ */
+export function surfaceLogOntoDive(dive, log) {
+  if (!log) return normalizeDive(dive);
+  const merged = { ...dive };
+  for (const key of LOG_SUMMARY_FIELDS) merged[key] = log[key];
+  merged.startTime = log.startTime;
+  merged.water = { ...dive.water, ...log.water };
+  merged.gas = log.gas && (log.gas.mixes?.length || log.gas.tanks?.length) ? log.gas : dive.gas;
+  merged.updatedAt = nowIso();
+  return normalizeDive(merged);
 }

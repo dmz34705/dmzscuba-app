@@ -1,14 +1,14 @@
-// Pure mapping from libdivecomputer's parsed dive (as delivered by the native
-// bridge's `onDownloadDive` event) to a dive-record partial for
-// `useDiveLog.addDive`. No React, no native — unit-tested in Node.
+// Pure mapping from libdivecomputer's parsed dive (the native bridge's
+// `onDownloadDive` event) to a ComputerLog partial for the logbook store.
+// No React, no native — unit-tested in Node.
 //
-// libdivecomputer field/sample reference: docs/LOGBOOK_PLAN.md "libdivecomputer
-// -> schema mapping".
+// A ComputerLog is one download from one physical computer; the logbook attaches
+// it to a Dive (creating one if the cross-computer matcher finds no match).
 
-import { defaultGasLabel } from '../../lib/diveLog/schema';
+import { computerDiveKeyOf, defaultGasLabel } from '../../lib/diveLog/schema';
+import { computeLogAnalytics } from '../../lib/diveLog/logAnalytics';
 
-// SAMPLE_EVENT_* (parser.h) -> our profile event types. Unlisted events (and
-// SAMPLE_EVENT_NONE / the deprecated gaschange entries) are dropped.
+// SAMPLE_EVENT_* (parser.h) -> our profile event types.
 const SAMPLE_EVENT_TYPES = {
   1: 'decostop',
   3: 'ascent',
@@ -33,11 +33,9 @@ function computerDatetimeToIso(datetime) {
   if (!year || !month || !day) return '';
   const tz = num(timezone);
   if (tz === null) {
-    // No timezone from the device: interpret the wall clock in the phone's zone.
     const local = new Date(year, month - 1, day, hour || 0, minute || 0, second || 0);
     return Number.isNaN(local.getTime()) ? '' : local.toISOString();
   }
-  // Wall clock is at offset `tz` seconds; convert to the real UTC instant.
   const utcMs = Date.UTC(year, month - 1, day, hour || 0, minute || 0, second || 0) - tz * 1000;
   const date = new Date(utcMs);
   return Number.isNaN(date.getTime()) ? '' : date.toISOString();
@@ -53,8 +51,7 @@ function medianSampleInterval(samples) {
   if (!deltas.length) return null;
   deltas.sort((a, b) => a - b);
   const mid = Math.floor(deltas.length / 2);
-  const median = deltas.length % 2 ? deltas[mid] : (deltas[mid - 1] + deltas[mid]) / 2;
-  return Math.round(median);
+  return Math.round(deltas.length % 2 ? deltas[mid] : (deltas[mid - 1] + deltas[mid]) / 2);
 }
 
 function mapMix(mix) {
@@ -96,84 +93,105 @@ function mapEvents(rawEvents, mixes) {
   return out;
 }
 
-export function diveRecordFromComputer(raw, device = {}) {
+// Only keep tank data that came from a real transmitter/POD: libdivecomputer
+// reports begin/end pressure of 0 when nothing was paired. Volume alone (from the
+// tank config on the computer) is kept so a user can confirm the size.
+function mapTanks(rawTanks) {
+  return (Array.isArray(rawTanks) ? rawTanks : [])
+    .map((tank) => ({
+      volumeLiters: num(tank?.volumeLiters) || null,
+      workPressureBar: num(tank?.workPressureBar) || null,
+      startBar: num(tank?.beginPressureBar) || null,
+      endBar: num(tank?.endPressureBar) || null,
+      mixIndex: num(tank?.gasmix) ?? 0,
+    }))
+    .filter((t) => t.startBar || t.endBar || t.volumeLiters || t.workPressureBar);
+}
+
+/**
+ * @param {object} raw   native onDownloadDive payload
+ * @returns {object}      ComputerLog partial for schema.createComputerLog
+ */
+export function computerLogFromDownload(raw) {
   const source = raw && typeof raw === 'object' ? raw : {};
-  // The native bridge resolves the real vendor/product from the libdivecomputer
-  // descriptor and attaches them to each dive; prefer those over the caller hint.
-  const vendor = source.vendor || device.vendor || '';
-  const product = source.product || device.product || '';
+  const vendor = source.vendor || '';
+  const product = source.product || '';
+
   const rawSamples = Array.isArray(source.samples) ? source.samples : [];
   const samples = rawSamples.map(mapSample).sort((a, b) => a.t - b.t);
   const mixesRaw = Array.isArray(source.gasmixes) && source.gasmixes.length
     ? source.gasmixes
     : [{ oxygen: 0.21, helium: 0 }];
   const mixes = mixesRaw.map(mapMix);
+  const events = mapEvents(source.events, mixes);
+  const tanks = mapTanks(source.tanks);
 
   const deepestSample = samples.reduce((max, s) => Math.max(max, num(s.depth) ?? 0), 0);
   const spanSeconds = samples.length >= 2 ? samples[samples.length - 1].t - samples[0].t : 0;
+  const durationSeconds = num(source.divetimeSeconds) || spanSeconds || 0;
+  const maxDepthMeters = num(source.maxDepthMeters) ?? deepestSample ?? 0;
+  const avgDepthMeters = num(source.avgDepthMeters);
 
-  const startTime = computerDatetimeToIso(source.datetime);
+  const reportedStartTime = computerDatetimeToIso(source.datetime);
   const tz = num(source.datetime?.timezone);
 
+  const decoModel = source.decoModel && typeof source.decoModel === 'object'
+    ? {
+      type: source.decoModel.type,
+      gfLow: num(source.decoModel.gfLow),
+      gfHigh: num(source.decoModel.gfHigh),
+      conservatism: num(source.decoModel.conservatism),
+    }
+    : null;
+
+  const analytics = computeLogAnalytics({
+    samples,
+    decoModel,
+    durationSeconds,
+    avgDepthMeters,
+    tank: tanks[0] || null,
+  });
+
   return {
-    source: 'computer',
     device: {
       vendor,
       product,
-      serial: source.serial || device.serial || null,
-      fingerprint: typeof source.fingerprint === 'string' ? source.fingerprint : null,
+      serial: source.serial ? String(source.serial) : '',
     },
-    startTime,
+    fingerprint: typeof source.fingerprint === 'string' ? source.fingerprint : null,
+    reportedStartTime,
     timezoneOffsetMinutes: tz === null ? null : Math.round(tz / 60),
-    durationSeconds: num(source.divetimeSeconds) || spanSeconds || 0,
+    durationSeconds,
     surfaceIntervalSeconds: null,
-    site: {
-      name: '',
-      location: '',
-      country: '',
-      latitude: num(source.location?.latitude),
-      longitude: num(source.location?.longitude),
-    },
     water: {
       type: source.salinity === 'salt' || source.salinity === 'fresh' ? source.salinity : null,
-      maxDepthMeters: num(source.maxDepthMeters) ?? deepestSample ?? 0,
-      avgDepthMeters: num(source.avgDepthMeters),
+      maxDepthMeters,
+      avgDepthMeters,
       tempSurfaceC: num(source.tempSurfaceC),
       tempMinC: num(source.tempMinC),
       tempMaxC: num(source.tempMaxC),
       visibilityMeters: null,
     },
     atmosphericBar: num(source.atmosphericBar),
-    gas: {
-      mixes,
-      tanks: (Array.isArray(source.tanks) ? source.tanks : [])
-        .map((tank) => ({
-          // libdivecomputer always reports volume as the tank's water capacity in
-          // litres; the display layer turns that into a cuft capacity using the
-          // working pressure. No transmitter/POD => begin/end pressure come back 0.
-          volumeLiters: num(tank?.volumeLiters) || null,
-          workPressureBar: num(tank?.workPressureBar) || null,
-          startBar: num(tank?.beginPressureBar) || null,
-          endBar: num(tank?.endPressureBar) || null,
-          mixIndex: num(tank?.gasmix) ?? 0,
-        }))
-        // Drop tanks the computer listed but has no actual data for.
-        .filter((t) => t.volumeLiters || t.workPressureBar || t.startBar || t.endBar),
-    },
+    gas: { mixes, tanks },
     diveMode: ['oc', 'ccr', 'scr', 'gauge', 'freedive'].includes(source.diveMode) ? source.diveMode : null,
-    decoModel: source.decoModel && typeof source.decoModel === 'object'
-      ? { type: source.decoModel.type, gfLow: num(source.decoModel.gfLow), gfHigh: num(source.decoModel.gfHigh) }
-      : null,
+    decoModel: decoModel && ['buhlmann', 'vpm', 'rgbm', 'dciem'].includes(decoModel.type) ? decoModel : null,
     profile: {
       sampleIntervalSeconds: medianSampleInterval(samples),
       samples,
-      events: mapEvents(source.events, mixes),
+      events,
+    },
+    analytics,
+    deviceMeta: {
+      firmware: source.firmware ? String(source.firmware) : '',
+      hardwareModel: source.hardwareModel ? String(source.hardwareModel) : '',
+      serialRaw: source.serial ? String(source.serial) : '',
+      batteryPct: num(source.batteryPct),
     },
   };
 }
 
-/** Stable key for de-duplicating downloaded dives across sessions. */
+/** Stable de-dup key for one downloaded dive on one model. */
 export function computerDiveKey(vendor, product, fingerprint) {
-  if (!fingerprint) return null;
-  return `${vendor || ''}|${product || ''}|${fingerprint}`;
+  return computerDiveKeyOf({ vendor, product }, fingerprint);
 }

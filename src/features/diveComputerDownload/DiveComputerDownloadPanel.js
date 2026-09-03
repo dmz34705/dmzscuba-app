@@ -4,7 +4,7 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-nati
 import { Card, PrimaryButton, ProgressBar, SecondaryButton } from '../../components/Ui';
 import { colors, radii, spacing } from '../../theme';
 import { looksLikeSuunto } from './diveComputerBle';
-import { computerDiveKey, diveRecordFromComputer } from './diveRecordFromComputer';
+import { computerDiveKey, computerLogFromDownload } from './computerLogFromDownload';
 import useDiveComputerDownload from './useDiveComputerDownload';
 
 const SUUNTO_PAIRING_HINT =
@@ -47,19 +47,17 @@ function DeviceRow({ device, onConnect, disabled }) {
  * @param {object} props
  * @param {() => void} props.onClose
  * @param {Set<string>} props.knownComputerKeys
- * @param {(partial: object) => Promise<any>} props.addDive
+ * @param {(logPartial: object) => Promise<'saved'|'duplicate'>} props.importComputerLog
  */
-export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, addDive }) {
+export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, importComputerLog }) {
   const saveDive = useCallback(async (rawDive) => {
-    // vendor/product come resolved from the native libdivecomputer descriptor.
-    const vendor = rawDive?.vendor || '';
-    const product = rawDive?.product || '';
-    const key = computerDiveKey(vendor, product, rawDive?.fingerprint);
+    // vendor/product/serial come resolved from the native libdivecomputer descriptor.
+    const log = computerLogFromDownload(rawDive);
+    const key = computerDiveKey(log.device.vendor, log.device.product, log.fingerprint);
     if (key && knownComputerKeys?.has(key)) return 'duplicate';
-    const partial = diveRecordFromComputer(rawDive, { vendor, product });
-    await addDive(partial);
+    await importComputerLog(log);
     return 'saved';
-  }, [addDive, knownComputerKeys]);
+  }, [importComputerLog, knownComputerKeys]);
 
   const {
     supported, status, devices, connectedDevice, progress, summary, error,

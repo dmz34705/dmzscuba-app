@@ -22,9 +22,9 @@ import {
   DIVE_MODES,
   DIVE_TYPES,
   WATER_TYPES,
-  createDiveRecord,
+  createDive,
   defaultGasLabel,
-  normalizeDiveRecord,
+  normalizeDive,
 } from '../lib/diveLog/schema';
 import { validateDiveRecord } from '../lib/diveLog/validation';
 import {
@@ -325,13 +325,13 @@ function FormSection({ title, children }) {
 // Profile chart (only present for imported / downloaded dives)
 // ---------------------------------------------------------------------------
 
-function ProfileChart({ record, depthUnit }) {
+function ProfileChart({ samples, maxDepthMeters, depthUnit }) {
   const { width } = useWindowDimensions();
   const chartWidth = Math.max(200, width - spacing.md * 2 - 30 - 30);
   const chartHeight = 150;
   const geometry = useMemo(
-    () => buildLogProfileGeometry(record.profile.samples, chartWidth, chartHeight, { maxDepthMeters: record.water.maxDepthMeters }),
-    [chartWidth, record.profile.samples, record.water.maxDepthMeters],
+    () => buildLogProfileGeometry(samples, chartWidth, chartHeight, { maxDepthMeters }),
+    [chartWidth, samples, maxDepthMeters],
   );
   if (!geometry.linePath) return null;
 
@@ -480,39 +480,70 @@ function DetailCard({ title, children }) {
   );
 }
 
-function DiveDetail({ record, units }) {
-  const mix = record.gas.mixes[0];
-  const tank = record.gas.tanks[0];
+function LogsCard({ logs, primaryLog, units }) {
+  if (!logs.length) return null;
+  return (
+    <Card style={styles.detailCard}>
+      <Text style={styles.detailCardTitle}>Recorded by</Text>
+      {logs.map((log) => {
+        const name = `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer';
+        const bits = [formatDepth(log.water.maxDepthMeters, units.depthUnit), formatDuration(log.durationSeconds)];
+        if (log.timeCorrectionMinutes) {
+          const sign = log.timeCorrectionMinutes > 0 ? '+' : '−';
+          const abs = Math.abs(log.timeCorrectionMinutes);
+          bits.push(`clock ${sign}${Math.floor(abs / 60)}:${String(abs % 60).padStart(2, '0')}`);
+        }
+        return (
+          <View key={log.id} style={styles.logRow}>
+            <View style={styles.logRowMain}>
+              <Text style={styles.logRowName}>
+                {name}{log.id === primaryLog?.id ? '  ·  primary' : ''}
+              </Text>
+              {log.device.serial ? <Text style={styles.logRowSerial}>SN {log.device.serial}</Text> : null}
+            </View>
+            <Text style={styles.logRowMeta}>{bits.join('  ·  ')}</Text>
+          </View>
+        );
+      })}
+    </Card>
+  );
+}
+
+function DiveDetail({ dive, logs = [], primaryLog, units }) {
+  const mix = dive.gas.mixes[0];
+  const tank = dive.gas.tanks[0];
+  const samples = primaryLog?.profile?.samples || [];
+  const analytics = primaryLog?.analytics;
   return (
     <>
       <DetailCard title="When & where">
-        <DetailRow label="Date" value={formatDate(record.startTime)} />
-        <DetailRow label="Time" value={formatTime(record.startTime)} />
-        <DetailRow label="Dive number" value={record.number != null ? String(record.number) : ''} />
-        <DetailRow label="Site" value={record.site.name} />
-        <DetailRow label="Location" value={[record.site.location, record.site.country].filter(Boolean).join(', ')} />
-        <DetailRow label="Coordinates" value={formatCoordinates(record.site.latitude, record.site.longitude)} />
-        <DetailRow label="Operator" value={record.operator} />
-        <DetailRow label="Buddies" value={record.buddies.join(', ')} />
+        <DetailRow label="Date" value={formatDate(dive.startTime)} />
+        <DetailRow label="Time" value={formatTime(dive.startTime)} />
+        <DetailRow label="Dive number" value={dive.number != null ? String(dive.number) : ''} />
+        <DetailRow label="Site" value={dive.site.name} />
+        <DetailRow label="Location" value={[dive.site.location, dive.site.country].filter(Boolean).join(', ')} />
+        <DetailRow label="Coordinates" value={formatCoordinates(dive.site.latitude, dive.site.longitude)} />
+        <DetailRow label="Operator" value={dive.operator} />
+        <DetailRow label="Buddies" value={dive.buddies.join(', ')} />
       </DetailCard>
 
       <DetailCard title="Depths & time">
-        <DetailRow label="Max depth" value={formatDepth(record.water.maxDepthMeters, units.depthUnit)} />
-        <DetailRow label="Avg depth" value={record.water.avgDepthMeters != null ? formatDepth(record.water.avgDepthMeters, units.depthUnit) : ''} />
-        <DetailRow label="Duration" value={formatDuration(record.durationSeconds)} />
-        <DetailRow label="Surface interval" value={record.surfaceIntervalSeconds != null ? formatDuration(record.surfaceIntervalSeconds) : ''} />
+        <DetailRow label="Max depth" value={formatDepth(dive.water.maxDepthMeters, units.depthUnit)} />
+        <DetailRow label="Avg depth" value={dive.water.avgDepthMeters != null ? formatDepth(dive.water.avgDepthMeters, units.depthUnit) : ''} />
+        <DetailRow label="Duration" value={formatDuration(dive.durationSeconds)} />
+        <DetailRow label="Surface interval" value={dive.surfaceIntervalSeconds != null ? formatDuration(dive.surfaceIntervalSeconds) : ''} />
       </DetailCard>
 
       <DetailCard title="Conditions">
-        <DetailRow label="Water" value={record.water.type ? WATER_TYPE_LABELS[record.water.type] : ''} />
-        <DetailRow label="Surface temp" value={record.water.tempSurfaceC != null ? formatTemperature(record.water.tempSurfaceC, units.temperatureUnit) : ''} />
-        <DetailRow label="Min temp" value={record.water.tempMinC != null ? formatTemperature(record.water.tempMinC, units.temperatureUnit) : ''} />
-        <DetailRow label="Visibility" value={record.water.visibilityMeters != null ? formatDepth(record.water.visibilityMeters, units.depthUnit) : ''} />
+        <DetailRow label="Water" value={dive.water.type ? WATER_TYPE_LABELS[dive.water.type] : ''} />
+        <DetailRow label="Surface temp" value={dive.water.tempSurfaceC != null ? formatTemperature(dive.water.tempSurfaceC, units.temperatureUnit) : ''} />
+        <DetailRow label="Min temp" value={dive.water.tempMinC != null ? formatTemperature(dive.water.tempMinC, units.temperatureUnit) : ''} />
+        <DetailRow label="Visibility" value={dive.water.visibilityMeters != null ? formatDepth(dive.water.visibilityMeters, units.depthUnit) : ''} />
       </DetailCard>
 
       <DetailCard title="Gas & equipment">
         <DetailRow label="Mix" value={mix ? formatGasLabel(mix) : ''} />
-        <DetailRow label="Dive mode" value={record.diveMode ? DIVE_MODE_LABELS[record.diveMode] : ''} />
+        <DetailRow label="Dive mode" value={dive.diveMode ? DIVE_MODE_LABELS[dive.diveMode] : ''} />
         <DetailRow label="Cylinder" value={tank?.volumeLiters != null ? formatVolume(tank.volumeLiters, units.gasVolumeUnit, tank.workPressureBar) : ''} />
         <DetailRow label="Working pressure" value={tank?.workPressureBar != null ? formatPressure(tank.workPressureBar, units.pressureUnit) : ''} />
         <DetailRow
@@ -521,25 +552,37 @@ function DiveDetail({ record, units }) {
             ? `${tank.startBar != null ? formatPressure(tank.startBar, units.pressureUnit) : '—'} → ${tank.endBar != null ? formatPressure(tank.endBar, units.pressureUnit) : '—'}`
             : ''}
         />
-        <DetailRow label="Weight" value={record.gear.weightKg != null ? formatWeight(record.gear.weightKg, 'kg') : ''} />
-        <DetailRow label="Exposure suit" value={record.gear.exposureSuit} />
+        <DetailRow label="Weight" value={dive.gear.weightKg != null ? formatWeight(dive.gear.weightKg, 'kg') : ''} />
+        <DetailRow label="Exposure suit" value={dive.gear.exposureSuit} />
       </DetailCard>
 
-      {record.profile.samples.length ? <ProfileChart record={record} depthUnit={units.depthUnit} /> : null}
+      {samples.length ? <ProfileChart samples={samples} maxDepthMeters={dive.water.maxDepthMeters} depthUnit={units.depthUnit} /> : null}
+
+      {analytics ? (
+        <DetailCard title="Computer values">
+          <DetailRow label="SAC" value={analytics.sacBarPerMin != null ? `${formatPressure(analytics.sacBarPerMin, units.pressureUnit)}/min` : ''} />
+          <DetailRow label="RMV" value={analytics.rmvLitersPerMin != null ? formatVolume(analytics.rmvLitersPerMin, units.gasVolumeUnit, tank?.workPressureBar) + '/min' : ''} />
+          <DetailRow label="Max ascent rate" value={analytics.ascentRateMaxMPerMin != null ? `${analytics.ascentRateMaxMPerMin} m/min` : ''} />
+          <DetailRow label="Sawtooth" value={analytics.sawtoothIndex ? `${analytics.sawtoothIndex} m extra descent` : ''} />
+          <DetailRow label="Deco model" value={analytics.decoModelType ? `${analytics.decoModelType.toUpperCase()}${analytics.gfLow != null ? ` ${analytics.gfLow}/${analytics.gfHigh}` : ''}` : ''} />
+          <DetailRow label="Max ceiling" value={analytics.ceilingMaxMeters != null ? formatDepth(analytics.ceilingMaxMeters, units.depthUnit) : ''} />
+          <DetailRow label="CNS" value={analytics.cnsEndPct != null ? `${Math.round(analytics.cnsEndPct)}%` : ''} />
+        </DetailCard>
+      ) : null}
+
+      <LogsCard logs={logs} primaryLog={primaryLog} units={units} />
 
       <DetailCard title="Notes & tags">
-        <DetailRow label="Rating" value={record.rating ? '★'.repeat(record.rating) : ''} />
-        <DetailRow label="Types" value={record.types.join(', ')} />
-        <DetailRow label="Tags" value={record.tags.join(', ')} />
-        {record.notes ? <Text style={styles.detailNotes}>{record.notes}</Text> : null}
+        <DetailRow label="Rating" value={dive.rating ? '★'.repeat(dive.rating) : ''} />
+        <DetailRow label="Types" value={dive.types.join(', ')} />
+        <DetailRow label="Tags" value={dive.tags.join(', ')} />
+        {dive.notes ? <Text style={styles.detailNotes}>{dive.notes}</Text> : null}
       </DetailCard>
 
       <Text style={styles.detailSource}>
-        {record.source === 'computer'
-          ? `Downloaded from ${record.device?.vendor || 'dive computer'} ${record.device?.product || ''}`.trim()
-          : record.source === 'import'
-            ? 'Imported from a file'
-            : 'Logged manually'}
+        {logs.length
+          ? `${logs.length} computer ${logs.length === 1 ? 'log' : 'logs'} attached`
+          : dive.source === 'import' ? 'Imported from a file' : 'Logged manually'}
       </Text>
     </>
   );
@@ -651,7 +694,7 @@ function DiveEditForm({ form, units, onChange, error }) {
 
 export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
-  const { loaded, rows, stats, folders, knownComputerKeys, getEntry, addDive, updateDive, deleteDive, deleteDives } = useDiveLog();
+  const { loaded, rows, stats, folders, knownComputerKeys, getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLog } = useDiveLog();
 
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
@@ -720,23 +763,35 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       ],
     );
   }, [deleteDives, exitSelect, selectedIds]);
-  const [record, setRecord] = useState(null);
+  const [record, setRecord] = useState(null);   // the Dive
+  const [logs, setLogs] = useState([]);          // its attached ComputerLogs
   const [form, setForm] = useState(null);
   const [formError, setFormError] = useState('');
   const [saving, setSaving] = useState(false);
+
+  const primaryLog = useMemo(
+    () => logs.find((l) => l.id === record?.primaryLogId) || logs[0] || null,
+    [logs, record],
+  );
 
   useEffect(() => {
     if (view !== 'detail' || !selectedId) return;
     let active = true;
     setRecord(null);
-    getEntry(selectedId).then((entry) => { if (active) setRecord(entry); });
+    setLogs([]);
+    getDive(selectedId).then((bundle) => {
+      if (!active) return;
+      setRecord(bundle?.dive || null);
+      setLogs(bundle?.logs || []);
+    });
     return () => { active = false; };
-  }, [getEntry, selectedId, view]);
+  }, [getDive, selectedId, view]);
 
   const openList = useCallback(() => {
     setView('list');
     setSelectedId(null);
     setRecord(null);
+    setLogs([]);
     setForm(null);
     setFormError('');
   }, []);
@@ -749,6 +804,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const openNew = useCallback(() => {
     setForm(blankForm());
     setRecord(null);
+    setLogs([]);
     setSelectedId(null);
     setFormError('');
     setView('edit');
@@ -777,15 +833,17 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
     if (!form) return;
     const partial = formToRecordPartial(form, units);
     const candidate = selectedId && record
-      ? normalizeDiveRecord({ ...record, ...partial, id: record.id, createdAt: record.createdAt })
-      : createDiveRecord(partial);
+      ? normalizeDive({ ...record, ...partial, id: record.id, createdAt: record.createdAt })
+      : createDive(partial);
     const error = validateDiveRecord(candidate);
     if (error) { setFormError(error); return; }
 
     setSaving(true);
     try {
       const saved = selectedId ? await updateDive(selectedId, partial) : await addDive(partial);
-      setRecord(saved);
+      const bundle = await getDive(saved.id);
+      setRecord(bundle?.dive || saved);
+      setLogs(bundle?.logs || []);
       setSelectedId(saved.id);
       setForm(null);
       setFormError('');
@@ -793,7 +851,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
     } finally {
       setSaving(false);
     }
-  }, [addDive, form, record, selectedId, units, updateDive]);
+  }, [addDive, form, getDive, record, selectedId, units, updateDive]);
 
   const handleDelete = useCallback(() => {
     if (!selectedId) return;
@@ -923,14 +981,14 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
           <DiveComputerDownloadPanel
             onClose={() => setView('list')}
             knownComputerKeys={knownComputerKeys}
-            addDive={addDive}
+            importComputerLog={importComputerLog}
           />
         )}
 
         {view === 'detail' && (
           record ? (
             <>
-              <DiveDetail record={record} units={units} />
+              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} />
               <View style={styles.detailActions}>
                 <SecondaryButton label="Edit" onPress={openEdit} style={styles.detailActionButton} />
                 <SecondaryButton label="Delete" onPress={handleDelete} style={styles.detailActionButton} />
@@ -1014,6 +1072,11 @@ const styles = StyleSheet.create({
   detailSource: { color: colors.faint, fontSize: 11, marginBottom: 8, marginTop: 4, textAlign: 'center' },
   detailActions: { flexDirection: 'row', gap: 10, marginTop: 6 },
   detailActionButton: { flex: 1 },
+  logRow: { borderTopColor: colors.line, borderTopWidth: 1, paddingVertical: 9 },
+  logRowMain: { alignItems: 'baseline', flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
+  logRowName: { color: colors.text, fontSize: 13, fontWeight: '800' },
+  logRowSerial: { color: colors.faint, fontSize: 10, fontWeight: '700' },
+  logRowMeta: { color: colors.muted, fontSize: 11, marginTop: 3 },
 
   chartRow: { flexDirection: 'row', marginTop: 6 },
   chartAxis: { width: 30 },
