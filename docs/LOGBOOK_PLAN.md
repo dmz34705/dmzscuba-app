@@ -19,10 +19,16 @@ and this doc do). Read `docs/ARCHITECTURE.md` first.
   sawtooth / avg-depth / SAC-RMV / ceiling / safety-score at import.
 - **B6+B7 done (JS)** — `matchDives.js` cross-computer matcher (profile
   cross-correlation, clock-offset detection gated on a 15-min-multiple "clean"
-  offset, split-dive detection). `useDiveLog.importComputerLog` runs it during
-  download; a post-download "Review matches" screen resolves conflicts and
-  corrects the wrong computer's clock (`timeCorrectionMinutes`, remembered per
-  device).
+  offset). `useDiveLog.importComputerLog` runs it during download; a
+  post-download "Review matches" screen resolves conflicts and corrects the
+  wrong computer's clock (`timeCorrectionMinutes`, remembered per device).
+  - **Split-dive detection** (both download orders): `classifyFragment` (a new
+    short log is part of an existing longer dive) + `findSpanningMerge` (a new
+    long log spans several separately-logged same-device dives). Handles the
+    Suunto-splits-what-Shearwater-sees-as-one case.
+  - **Recovery for already-inflated data**: Stats -> "Check for duplicate
+    dives" re-runs the matcher over the whole book; multi-select -> "Merge N"
+    for a manual fix. `storage.mergeDives` folds dives together.
 - **B8 done (JS)** — safety score + `diveTrends` (SAC/safety/avg-depth trend,
   gas-mix histogram) + a "Stats" view.
 - All 16 `npm run test:*` green.
