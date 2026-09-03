@@ -1,5 +1,7 @@
 #import "DiveComputerDownloader.h"
 
+#import <strings.h>  // strcasecmp
+
 #import <libdivecomputer/context.h>
 #import <libdivecomputer/descriptor.h>
 #import <libdivecomputer/iterator.h>
@@ -23,6 +25,15 @@
 }
 @property (atomic, assign, getter=isRunning) BOOL running;
 @property (nonatomic, copy, nullable) void (^onEvent)(NSString *, NSDictionary<NSString *, id> *);
+@property (nonatomic, copy, nullable) NSString *firstFingerprint; // newest dive's fingerprint, for incremental
+// Resolved from the DC_EVENT_DEVINFO model during download — libdivecomputer's
+// BLE-name filter only narrows to a family, so the descriptor we open with can be
+// the wrong model (e.g. "Petrel 2" for a Peregrine). DEVINFO gives the real one.
+@property (nonatomic, copy, nullable) NSString *resolvedVendor;
+@property (nonatomic, copy, nullable) NSString *resolvedProduct;
+@property (nonatomic, copy, nullable) NSString *deviceSerial;
+@property (nonatomic, assign) dc_context_t *dcContext;
+@property (nonatomic, assign) dc_family_t openFamily;
 @end
 
 @implementation DiveComputerDownloader
@@ -210,6 +221,44 @@ static int cancel_cb(void *ud) {
   return self->_cancelled ? 1 : 0;
 }
 
+// Find the descriptor in `family` whose model id matches `model`, and copy its
+// vendor/product onto the downloader. libdivecomputer auto-detects the model
+// during dc_device_open; this turns that number back into the right name.
+static void resolve_model(DiveComputerDownloader *self, unsigned int model) {
+  if (!self.dcContext) return;
+  dc_iterator_t *it = NULL;
+  if (dc_descriptor_iterator_new(&it, self.dcContext) != DC_STATUS_SUCCESS) return;
+  dc_descriptor_t *item = NULL;
+  NSMutableArray<NSString *> *matches = [NSMutableArray array];
+  NSString *foundVendor = nil, *foundProduct = nil;
+  while (dc_iterator_next(it, &item) == DC_STATUS_SUCCESS) {
+    if (dc_descriptor_get_type(item) == self.openFamily
+        && dc_descriptor_get_model(item) == model) {
+      const char *v = dc_descriptor_get_vendor(item);
+      const char *p = dc_descriptor_get_product(item);
+      // Prefer a descriptor that advertises BLE (the transport we're on) — for
+      // Shearwater, "Petrel" and "Petrel 2" share model id 3 but only the "2"
+      // speaks BLE, so an all-matches overwrite would otherwise land on "Petrel".
+      BOOL speaksBle = (dc_descriptor_get_transports(item) & DC_TRANSPORT_BLE) != 0;
+      if (v && p && (!foundProduct || speaksBle)) {
+        foundVendor = @(v);
+        foundProduct = @(p);
+      }
+      if (p) [matches addObject:@(p)];
+    }
+    dc_descriptor_free(item);
+  }
+  dc_iterator_free(it);
+
+  [self log:[NSString stringWithFormat:@"resolve_model: family=%d model=%u -> [%@]",
+             (int)self.openFamily, model, [matches componentsJoinedByString:@", "]]];
+
+  if (foundProduct) {
+    self.resolvedVendor = foundVendor;
+    self.resolvedProduct = foundProduct;
+  }
+}
+
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *ud) {
   DiveComputerDownloader *self = (__bridge DiveComputerDownloader *)ud;
   (void)device;
@@ -218,71 +267,78 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
     [self emit:@"progress" body:@{ @"current": @(p->current), @"maximum": @(p->maximum) }];
   } else if (event == DC_EVENT_DEVINFO) {
     const dc_event_devinfo_t *d = data;
+    [self log:[NSString stringWithFormat:@"devinfo: model=%u firmware=%u serial=%u",
+               d->model, d->firmware, d->serial]];
+    if (d->serial) self.deviceSerial = [@(d->serial) stringValue];
+    resolve_model(self, d->model);
     [self emit:@"devinfo" body:@{ @"model": @(d->model), @"firmware": @(d->firmware), @"serial": @(d->serial) }];
   }
 }
 
-typedef struct {
-  __unsafe_unretained DiveComputerDownloader *owner;
-  __unsafe_unretained NSMutableArray *rows;   // completed sample rows
-  __unsafe_unretained NSMutableDictionary *cur; // sample row being built
-  __unsafe_unretained NSMutableArray *events;
-  BOOL started;
-} sample_ctx_t;
-
-static void flush_sample(sample_ctx_t *ctx) {
-  if (ctx->cur) [ctx->rows addObject:[ctx->cur copy]];
-  ctx->cur = nil;
+// The sample callback's accumulator state lives in a strong NSMutableDictionary
+// "box" (keys: "rows", "events", "cur") passed as (__bridge void *). The box is a
+// strong local in parse_dive that outlives dc_parser_samples_foreach, so every
+// object it holds stays retained for the whole parse — unlike a C struct of
+// __unsafe_unretained pointers to autoreleased objects, which can dangle mid-loop
+// on a long dive and crash in objc_msgSend.
+static void flush_sample(NSMutableDictionary *box) {
+  NSMutableDictionary *cur = box[@"cur"];
+  if (cur) {
+    [(NSMutableArray *)box[@"rows"] addObject:[cur copy]];
+    [box removeObjectForKey:@"cur"];
+  }
 }
 
 static void sample_cb(dc_sample_type_t type, const dc_sample_value_t *value, void *ud) {
-  sample_ctx_t *ctx = (sample_ctx_t *)ud;
+  NSMutableDictionary *box = (__bridge NSMutableDictionary *)ud;
+  NSMutableDictionary *cur = box[@"cur"];
+  NSMutableArray *events = box[@"events"];
   switch (type) {
     case DC_SAMPLE_TIME: {
-      flush_sample(ctx);
-      ctx->cur = [NSMutableDictionary dictionary];
-      ctx->cur[@"t"] = @(value->time / 1000.0);
-      ctx->started = YES;
+      flush_sample(box);
+      cur = [NSMutableDictionary dictionary];
+      cur[@"t"] = @(value->time / 1000.0);
+      box[@"cur"] = cur;
       break;
     }
     case DC_SAMPLE_DEPTH:
-      if (ctx->cur) ctx->cur[@"depth"] = @(value->depth);
+      if (cur) cur[@"depth"] = @(value->depth);
       break;
     case DC_SAMPLE_TEMPERATURE:
-      if (ctx->cur) ctx->cur[@"tempC"] = @(value->temperature);
+      if (cur) cur[@"tempC"] = @(value->temperature);
       break;
     case DC_SAMPLE_PRESSURE:
-      if (ctx->cur && value->pressure.tank == 0) ctx->cur[@"pressureBar"] = @(value->pressure.value);
+      if (cur && value->pressure.tank == 0) cur[@"pressureBar"] = @(value->pressure.value);
       break;
     case DC_SAMPLE_PPO2:
-      if (ctx->cur) ctx->cur[@"ppo2"] = @(value->ppo2.value);
+      if (cur) cur[@"ppo2"] = @(value->ppo2.value);
       break;
     case DC_SAMPLE_CNS:
-      if (ctx->cur) ctx->cur[@"cns"] = @(value->cns * 100.0);
+      if (cur) cur[@"cns"] = @(value->cns * 100.0);
       break;
     case DC_SAMPLE_DECO: {
-      if (!ctx->cur) break;
+      if (!cur) break;
       static const char *kinds[] = { "ndl", "safetystop", "decostop", "deepstop" };
       unsigned int k = value->deco.type;
       NSString *kind = k < 4 ? @(kinds[k]) : @"ndl";
       if (value->deco.type == DC_DECO_NDL) {
-        ctx->cur[@"ndl"] = @(value->deco.time);
+        cur[@"ndl"] = @(value->deco.time);
       } else {
-        ctx->cur[@"deco"] = @{ @"type": kind,
-                               @"depth": @(value->deco.depth),
-                               @"seconds": @(value->deco.time) };
+        cur[@"deco"] = @{ @"type": kind,
+                          @"depth": @(value->deco.depth),
+                          @"seconds": @(value->deco.time) };
       }
       break;
     }
     case DC_SAMPLE_GASMIX: {
-      double t = ctx->cur ? [ctx->cur[@"t"] doubleValue] : 0;
-      [ctx->events addObject:@{ @"t": @(t), @"type": @"gaschange", @"gasmix": @(value->gasmix) }];
+      double t = cur ? [cur[@"t"] doubleValue] : 0;
+      [events addObject:@{ @"t": @(t), @"type": @"gaschange", @"gasmix": @(value->gasmix) }];
       break;
     }
     case DC_SAMPLE_EVENT: {
-      double t = ctx->cur ? [ctx->cur[@"t"] doubleValue] : 0;
-      [ctx->events addObject:@{ @"t": @(t), @"eventType": @(value->event.type),
-                                @"flags": @(value->event.flags), @"value": @(value->event.value) }];
+      double t = cur ? [cur[@"t"] doubleValue] : 0;
+      [events addObject:@{ @"t": @(t), @"eventType": @(value->event.type),
+                           @"flags": @(value->event.flags), @"value": @(value->event.value) }];
       break;
     }
     default:
@@ -304,7 +360,6 @@ typedef struct {
   dc_context_t *context;
   dc_descriptor_t *descriptor;
   unsigned int number;
-  __unsafe_unretained NSString *firstFingerprint;
   __unsafe_unretained NSString *vendor;
   __unsafe_unretained NSString *product;
 } dive_ctx_t;
@@ -362,7 +417,13 @@ static NSDictionary *parse_dive(dc_parser_t *parser) {
     for (unsigned int i = 0; i < ntank; i++) {
       dc_tank_t t = {0};
       if (dc_parser_get_field(parser, DC_FIELD_TANK, i, &t) == DC_STATUS_SUCCESS) {
+        // t.volume is always the tank's water capacity in litres; t.type says
+        // whether the diver specified it in imperial (cuft @ workpressure) or
+        // metric (litres) terms — the JS side needs this to display a scuba tank
+        // by the number the diver knows (an "AL80" is 80 cuft of gas, ~11.1 L of
+        // water). 0 = none/unknown, 1 = imperial, 2 = metric.
         [tanks addObject:@{ @"gasmix": t.gasmix == DC_GASMIX_UNKNOWN ? (id)[NSNull null] : @(t.gasmix),
+                            @"type": @(t.type),
                             @"volumeLiters": @(t.volume),
                             @"workPressureBar": @(t.workpressure),
                             @"beginPressureBar": @(t.beginpressure),
@@ -411,11 +472,11 @@ static NSDictionary *parse_dive(dc_parser_t *parser) {
 
   NSMutableArray *rows = [NSMutableArray array];
   NSMutableArray *events = [NSMutableArray array];
-  sample_ctx_t sctx = {0};
-  sctx.rows = rows;
-  sctx.events = events;
-  if (dc_parser_samples_foreach(parser, sample_cb, &sctx) == DC_STATUS_SUCCESS) {
-    flush_sample(&sctx);
+  NSMutableDictionary *box = [NSMutableDictionary dictionary];
+  box[@"rows"] = rows;
+  box[@"events"] = events;
+  if (dc_parser_samples_foreach(parser, sample_cb, (__bridge void *)box) == DC_STATUS_SUCCESS) {
+    flush_sample(box);
   }
   d[@"samples"] = rows;
   d[@"events"] = events;
@@ -430,7 +491,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
   ctx->number++;
 
   if (ctx->number == 1 && fingerprint && fsize > 0) {
-    ctx->firstFingerprint = fingerprintString(fingerprint, fsize);
+    self.firstFingerprint = fingerprintString(fingerprint, fsize);
   }
 
   dc_parser_t *parser = NULL;
@@ -440,13 +501,19 @@ static int dive_cb(const unsigned char *data, unsigned int size,
     return self->_cancelled ? 0 : 1;
   }
 
-  NSDictionary *raw = parse_dive(parser);
+  NSMutableDictionary *withFp = nil;
+  @autoreleasepool {
+    // Bound per-dive parsing garbage; a full Shearwater log parses thousands of
+    // samples per dive and this block runs on one long-lived dispatch queue task.
+    NSDictionary *raw = parse_dive(parser);
+    withFp = [raw mutableCopy];
+  }
   dc_parser_destroy(parser);
 
-  NSMutableDictionary *withFp = [raw mutableCopy];
   withFp[@"fingerprint"] = (fingerprint && fsize > 0) ? fingerprintString(fingerprint, fsize) : [NSNull null];
-  withFp[@"vendor"] = ctx->vendor ?: @"";
-  withFp[@"product"] = ctx->product ?: @"";
+  withFp[@"vendor"] = self.resolvedVendor ?: ctx->vendor ?: @"";
+  withFp[@"product"] = self.resolvedProduct ?: ctx->product ?: @"";
+  withFp[@"serial"] = self.deviceSerial ?: [NSNull null];
   [self emit:@"dive" body:@{ @"number": @(ctx->number), @"dive": withFp }];
 
   return self->_cancelled ? 0 : 1;
@@ -461,7 +528,9 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
   dc_iterator_t *iterator = NULL;
   if (dc_descriptor_iterator_new(&iterator, context) != DC_STATUS_SUCCESS) return NULL;
 
-  dc_descriptor_t *match = NULL;
+  dc_descriptor_t *match = NULL;   // first vendor/BLE-filter match (fallback)
+  dc_descriptor_t *best = NULL;    // most specific product-name match
+  size_t bestLen = 0;             // length of best's product name (longest wins)
   dc_descriptor_t *item = NULL;
   const char *wantVendor = vendor.length ? vendor.UTF8String : NULL;
   const char *wantProduct = product.length ? product.UTF8String : NULL;
@@ -469,20 +538,42 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
 
   while (dc_iterator_next(iterator, &item) == DC_STATUS_SUCCESS) {
     BOOL isMatch = NO;
+    BOOL isBest = NO;
     if (wantVendor && wantProduct) {
       const char *v = dc_descriptor_get_vendor(item);
       const char *p = dc_descriptor_get_product(item);
       isMatch = v && p && strcmp(v, wantVendor) == 0 && strcmp(p, wantProduct) == 0;
     } else if (bleName) {
+      // The per-vendor BLE filters (dc_filter_shearwater, dc_filter_suunto, …)
+      // match on vendor, not model: every Shearwater descriptor matches
+      // "Peregrine TX" and every EON descriptor matches "EON Core", so the first
+      // hit is the wrong model ("Petrel 2" / "EON Steel"). Both vendors advertise
+      // the model as the BLE-name prefix, so the descriptor whose product name is
+      // the longest prefix of the advertised name is the real one.
       isMatch = dc_descriptor_filter(item, DC_TRANSPORT_BLE, bleName) != 0;
+      const char *p = dc_descriptor_get_product(item);
+      if (isMatch && p) {
+        size_t plen = strlen(p);
+        if (plen > bestLen && strncasecmp(bleName, p, plen) == 0) {
+          isBest = YES;
+        }
+      }
     }
-    if (isMatch && !match) {
-      match = item; // keep, don't free
+    if (isBest) {
+      if (best) dc_descriptor_free(best);
+      best = item; // keep
+      bestLen = strlen(dc_descriptor_get_product(item));
+    } else if (isMatch && !match) {
+      match = item; // keep
     } else {
       dc_descriptor_free(item);
     }
   }
   dc_iterator_free(iterator);
+  if (best) {
+    if (match) dc_descriptor_free(match);
+    return best;
+  }
   return match;
 }
 
@@ -503,6 +594,11 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
 
   self.running = YES;
   self.onEvent = onEvent;
+  self.firstFingerprint = nil;
+  self.resolvedVendor = nil;
+  self.resolvedProduct = nil;
+  self.deviceSerial = nil;
+  self.dcContext = NULL;
   [_rxCond lock]; _rx.length = 0; _closed = NO; _cancelled = NO; [_rxCond unlock];
   [_txCond lock]; _txPending = NO; [_txCond unlock];
 
@@ -535,6 +631,12 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
       if (mv) matchedVendor = @(mv);
       if (mp) matchedProduct = @(mp);
     }
+    [self log:[NSString stringWithFormat:@"opening as %@ %@ (BLE name \"%@\")",
+               matchedVendor, matchedProduct, name ?: @""]];
+    // event_cb (DEVINFO) uses these to turn the auto-detected model id into the
+    // right vendor/product within the opened descriptor's family.
+    self.dcContext = context;
+    self.openFamily = dc_descriptor_get_type(descriptor);
 
     dc_custom_cbs_t cbs = {0};
     cbs.set_timeout = cb_set_timeout;
@@ -583,13 +685,15 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
     } else if (rc != DC_STATUS_SUCCESS) {
       error = [NSString stringWithFormat:@"Download failed (%d).", rc];
     } else {
-      result = @{ @"fingerprint": dctx.firstFingerprint ?: [NSNull null],
+      result = @{ @"fingerprint": self.firstFingerprint ?: [NSNull null],
                   @"count": @(dctx.number),
-                  @"vendor": matchedVendor,
-                  @"product": matchedProduct };
+                  @"vendor": self.resolvedVendor ?: matchedVendor,
+                  @"product": self.resolvedProduct ?: matchedProduct,
+                  @"serial": self.deviceSerial ?: [NSNull null] };
     }
 
   done:
+    self.dcContext = NULL;
     if (device) dc_device_close(device);
     if (iostream) dc_iostream_close(iostream);
     if (descriptor) dc_descriptor_free(descriptor);
