@@ -749,12 +749,13 @@ function DetailCard({ title, children }) {
 }
 
 function LogsCard({ logs, primaryLog, units }) {
-  if (!logs.length) return null;
+  if (logs.length < 2) return null; // a single-computer dive doesn't need this
   return (
     <Card style={styles.detailCard}>
-      <Text style={styles.detailCardTitle}>Recorded by</Text>
+      <Text style={styles.detailCardTitle}>Recorded by {logs.length} computers</Text>
       {logs.map((log) => {
-        const name = `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer';
+        let name = `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer';
+        if (log.fusedFrom > 1) name += ` (${log.fusedFrom} recordings joined)`;
         const bits = [formatDepth(log.water.maxDepthMeters, units.depthUnit), formatDuration(log.durationSeconds)];
         if (log.timeCorrectionMinutes) {
           const sign = log.timeCorrectionMinutes > 0 ? '+' : '−';
@@ -765,7 +766,7 @@ function LogsCard({ logs, primaryLog, units }) {
           <View key={log.id} style={styles.logRow}>
             <View style={styles.logRowMain}>
               <Text style={styles.logRowName}>
-                {name}{log.id === primaryLog?.id ? '  ·  primary' : ''}
+                {name}{log.id === primaryLog?.id ? '  ·  shown above' : ''}
               </Text>
               {log.device.serial ? <Text style={styles.logRowSerial}>SN {log.device.serial}</Text> : null}
             </View>

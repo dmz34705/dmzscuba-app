@@ -788,6 +788,28 @@ function memoryStorage(seed = {}) {
   assert.equal(finalRows[0].id, shDive.dive.id); // the long Shearwater dive is canonical
   // the two Suunto fragments are fused into ONE continuous log (not stacked)
   assert.equal(finalRows[0].logCount, 2);
+
+  // consolidateSameDeviceLogs fuses even when the fragments' serials disagree
+  const csStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const csDive = await createDiveFromLog({
+    device: { vendor: 'Shearwater', product: 'Perdix', serial: 'A' }, fingerprint: 'CS-sh',
+    reportedStartTime: '2026-09-01T13:00:00.000Z', durationSeconds: 3600,
+    water: { maxDepthMeters: 30 }, profile: { samples: longDiveProfile().map((x) => ({ ...x })) },
+  }, csStore);
+  const csF1 = await createDiveFromLog({
+    device: { vendor: 'Suunto', product: 'EON Core', serial: '778' }, fingerprint: 'CS-a',
+    reportedStartTime: '2026-09-01T13:00:00.000Z', durationSeconds: 1770,
+    water: { maxDepthMeters: 30 }, profile: { samples: suFrag1Samples.map((x) => ({ ...x })) },
+  }, csStore);
+  const csF2 = await createDiveFromLog({
+    device: { vendor: 'Suunto', product: 'EON Core', serial: '' }, fingerprint: 'CS-b', // serial dropped
+    reportedStartTime: '2026-09-01T13:30:30.000Z', durationSeconds: 1830,
+    water: { maxDepthMeters: 30 }, profile: { samples: suFrag2Samples.map((x) => ({ ...x })) },
+  }, csStore);
+  await diveLog.mergeDives(csDive.dive.id, [csF1.dive.id, csF2.dive.id], {}, csStore);
+  const csLogs = await loadLogsForDive(await loadDive(csDive.dive.id, csStore), csStore);
+  assert.equal(csLogs.length, 2, `expected shearwater + 1 fused suunto, got ${csLogs.length}`);
+  assert.equal(csLogs.find((l) => l.device.vendor === 'Suunto').fusedFrom, 2);
   const finalDive = await loadDive(shDive.dive.id, rstore);
   const finalLogs = await loadLogsForDive(finalDive, rstore);
   const fusedSu = finalLogs.find((l) => l.device.vendor === 'Suunto');

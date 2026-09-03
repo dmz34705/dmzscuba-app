@@ -293,15 +293,16 @@ export async function consolidateSameDeviceLogs(diveId, storage = AsyncStorage) 
   const dive = await loadDive(diveId, storage);
   if (!dive) return null;
   const logs = await loadLogsForDive(dive, storage);
-  const byDevice = new Map();
+  // Group by physical computer, serial-tolerant — a dropped serial must not stop
+  // two fragments from the same unit fusing.
+  const groups = [];
   for (const l of logs) {
-    const k = l.deviceKey || l.id;
-    if (!byDevice.has(k)) byDevice.set(k, []);
-    byDevice.get(k).push(l);
+    const g = groups.find((grp) => sameComputer(grp[0].device, l.device));
+    if (g) g.push(l); else groups.push([l]);
   }
   let changed = false;
   let keptIds = [...dive.logIds];
-  for (const group of byDevice.values()) {
+  for (const group of groups) {
     if (group.length < 2) continue;
     const fused = await saveLog({ ...fuseComputerLogs(group), diveId }, storage); // eslint-disable-line no-await-in-loop
     const drop = new Set(group.map((l) => l.id).filter((id) => id !== fused.id));
@@ -310,6 +311,7 @@ export async function consolidateSameDeviceLogs(diveId, storage = AsyncStorage) 
       await storage.removeItem(logKey(id));
     }
     keptIds = keptIds.filter((id) => !drop.has(id));
+    if (!keptIds.includes(fused.id)) keptIds.push(fused.id); // fuse may have minted a new id
     changed = true;
   }
   if (!changed) return dive;
