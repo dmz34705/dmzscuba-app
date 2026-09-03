@@ -193,19 +193,15 @@ export async function softDeleteDive(id, storage = AsyncStorage) {
  * Create a Dive from a ComputerLog (no match found). Persists the log, then a
  * Dive with the log's field values surfaced onto it.
  */
-export async function createDiveFromLog(logPartial, { indexed = true } = {}, storage = AsyncStorage) {
+export async function createDiveFromLog(logPartial, storage = AsyncStorage) {
   const log = createComputerLog(logPartial);
   const dive = surfaceLogOntoDive(
     createDive({ source: 'computer', logIds: [log.id], primaryLogId: log.id }),
     log,
   );
   const linkedLog = await saveLog({ ...log, diveId: dive.id }, storage);
-  const normalized = normalizeDive({ ...dive, logIds: [linkedLog.id], primaryLogId: linkedLog.id });
-  await storage.setItem(diveKey(normalized.id), JSON.stringify(normalized));
-  // `indexed: false` skips the read-modify-write of the whole index (O(n^2) over
-  // a bulk download); the caller rebuilds the index once at the end.
-  if (indexed) await upsertIndexRow(indexRowFromDive(normalized, [linkedLog]), storage);
-  return { dive: normalized, log: linkedLog };
+  const savedDive = await saveDive({ ...dive, logIds: [linkedLog.id], primaryLogId: linkedLog.id }, storage);
+  return { dive: savedDive, log: linkedLog };
 }
 
 /**
@@ -355,17 +351,33 @@ export async function clearFingerprint(deviceName, storage = AsyncStorage) {
 // maintenance
 // ---------------------------------------------------------------------------
 
-/** Recompute every index row from its Dive + logs. */
+/**
+ * Rebuild the index by scanning storage for every dive-v2 key — NOT from the
+ * current index — so it also recovers dives that were written without an index
+ * row. Used on mount when an orphan is detected and after a bulk import.
+ */
 export async function rebuildIndex(storage = AsyncStorage) {
-  const dives = await loadAll(storage);
+  const keys = (await storage.getAllKeys()) || [];
+  const ids = keys
+    .filter((k) => k.startsWith(DIVE_LOG_DIVE_PREFIX))
+    .map((k) => k.slice(DIVE_LOG_DIVE_PREFIX.length));
   const rows = [];
-  for (const dive of dives) {
+  for (const id of ids) {
+    // eslint-disable-next-line no-await-in-loop
+    const dive = await loadDive(id, storage);
+    if (!dive) continue;
     // eslint-disable-next-line no-await-in-loop
     const logs = await loadLogsForDive(dive, storage);
     rows.push(indexRowFromDive(dive, logs));
   }
   await writeIndex(rows, storage);
   return rows;
+}
+
+/** Count of dive-v2 records in storage (to detect index orphans). */
+export async function countStoredDives(storage = AsyncStorage) {
+  const keys = (await storage.getAllKeys()) || [];
+  return keys.filter((k) => k.startsWith(DIVE_LOG_DIVE_PREFIX)).length;
 }
 
 async function removeKeys(keys, storage) {

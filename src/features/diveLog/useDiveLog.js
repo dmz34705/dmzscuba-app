@@ -7,6 +7,7 @@ import { reconcileComputers, sameComputer } from '../../lib/diveLog/matchDives';
 import {
   clearAll,
   consolidateSameDeviceLogs,
+  countStoredDives,
   createDiveFromLog,
   isMigratedToV2,
   loadAll,
@@ -88,7 +89,10 @@ export default function useDiveLog() {
       try {
         if (!(await isMigratedToV2())) await migrateToV2();
         let rows = await loadIndex();
-        if (rows.some((r) => r.computerKeys === undefined)) {
+        // Rebuild if the index is stale-shaped or missing dives that exist in
+        // storage (e.g. left orphaned by an interrupted import).
+        if (rows.some((r) => r.computerKeys === undefined)
+            || (await countStoredDives()) > rows.length) {
           rows = await rebuildIndex().catch(() => rows);
         }
         if (active) setIndexRows(rows);
@@ -182,13 +186,15 @@ export default function useDiveLog() {
    * @returns 'saved'
    */
   const importComputerLog = useCallback(async (logPartial) => {
-    await createDiveFromLog(logPartial, { indexed: false });
+    await createDiveFromLog(logPartial);
     return 'saved';
   }, []);
 
-  /** After a download: rebuild the index once, then refresh. */
+  /** After a download: refresh the index into state (dives are written with
+   *  their index rows as they arrive; rebuild as a safety net). */
   const finishImport = useCallback(async () => {
-    await rebuildIndex().catch(() => {});
+    const rows = await loadIndex();
+    if (await countStoredDives() > rows.length) await rebuildIndex().catch(() => {});
     await refreshIndex();
   }, [refreshIndex]);
 
