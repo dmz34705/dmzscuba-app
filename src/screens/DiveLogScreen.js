@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Alert,
   Keyboard,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -116,6 +117,7 @@ function blankForm() {
     o2: '21',
     he: '0',
     tankVolume: '',
+    tankWorkPressure: '',
     tankStart: '',
     tankEnd: '',
     weight: '',
@@ -152,7 +154,8 @@ function recordToForm(record, units) {
     visibility: depthToInput(record.water.visibilityMeters, units.depthUnit),
     o2: String(Math.round(mix.o2 * 100)),
     he: String(Math.round(mix.he * 100)),
-    tankVolume: volumeToInput(tank.volumeLiters, units.gasVolumeUnit),
+    tankVolume: volumeToInput(tank.volumeLiters, units.gasVolumeUnit, tank.workPressureBar),
+    tankWorkPressure: pressureToInput(tank.workPressureBar, units.pressureUnit),
     tankStart: pressureToInput(tank.startBar, units.pressureUnit),
     tankEnd: pressureToInput(tank.endBar, units.pressureUnit),
     weight: weightToInput(record.gear.weightKg, 'kg'),
@@ -176,8 +179,11 @@ function formToRecordPartial(form, units) {
 
   const tankStart = parsePressureInput(form.tankStart, units.pressureUnit);
   const tankEnd = parsePressureInput(form.tankEnd, units.pressureUnit);
-  const tankVolume = parseVolumeInput(form.tankVolume, units.gasVolumeUnit);
-  const hasTank = tankStart != null || tankEnd != null || tankVolume != null;
+  const tankWorkPressure = parsePressureInput(form.tankWorkPressure, units.pressureUnit);
+  // In imperial units the cylinder "size" is a gas capacity that only converts to
+  // a water volume once we know the working pressure, so parse that first.
+  const tankVolume = parseVolumeInput(form.tankVolume, units.gasVolumeUnit, tankWorkPressure);
+  const hasTank = tankStart != null || tankEnd != null || tankVolume != null || tankWorkPressure != null;
 
   const startTime = combineDateTime(form.date, form.time);
   const parsedStart = Date.parse(startTime);
@@ -208,7 +214,7 @@ function formToRecordPartial(form, units) {
       tempMaxC: null,
       visibilityMeters: parseDepthInput(form.visibility, units.depthUnit),
     },
-    gas: { mixes: [mix], tanks: hasTank ? [{ volumeLiters: tankVolume, workPressureBar: null, startBar: tankStart, endBar: tankEnd, mixIndex: 0 }] : [] },
+    gas: { mixes: [mix], tanks: hasTank ? [{ volumeLiters: tankVolume, workPressureBar: tankWorkPressure, startBar: tankStart, endBar: tankEnd, mixIndex: 0 }] : [] },
     diveMode: form.diveMode || null,
     types: form.types,
     gear: { weightKg: parseWeightInput(form.weight, 'kg'), exposureSuit: form.suit.trim(), notes: '' },
@@ -384,19 +390,67 @@ function StatSummaryCard({ stats, units }) {
   );
 }
 
-function DiveListCard({ row, units, onPress }) {
+function DiveListCard({ row, units, onPress, onLongPress, selectable, selected }) {
   const parts = [formatDepth(row.maxDepthMeters, units.depthUnit), formatDuration(row.durationSeconds)];
+  const title = `${formatDate(row.startTime) || 'Undated dive'} · ${row.siteName || 'Unnamed site'}`;
   return (
-    <Card style={styles.diveCard}>
-      <SecondaryButton
-        label={`${formatDate(row.startTime) || 'Undated dive'} · ${row.siteName || 'Unnamed site'}`}
-        onPress={onPress}
-        style={styles.diveCardButton}
-      />
+    <Card style={[styles.diveCard, selected && styles.diveCardSelected]}>
+      {selectable ? (
+        <Pressable
+          accessibilityRole="checkbox"
+          accessibilityState={{ checked: selected }}
+          accessibilityLabel={title}
+          onPress={onPress}
+          onLongPress={onLongPress}
+          style={({ pressed }) => [styles.selectRow, pressed && styles.pressed]}
+        >
+          <View style={[styles.checkCircle, selected && styles.checkCircleOn]}>
+            {selected ? <Text style={styles.checkMark}>✓</Text> : null}
+          </View>
+          <Text style={styles.selectRowLabel} numberOfLines={1}>{title}</Text>
+        </Pressable>
+      ) : (
+        <SecondaryButton label={title} onPress={onPress} onLongPress={onLongPress} style={styles.diveCardButton} />
+      )}
       <View style={styles.diveCardMeta}>
         <Text style={styles.diveCardMetaText}>{parts.join('  ·  ')}</Text>
         {row.rating ? <Text style={styles.diveCardRating}>{'★'.repeat(row.rating)}</Text> : null}
       </View>
+    </Card>
+  );
+}
+
+function FolderCard({ folder, onPress }) {
+  const bits = [`${folder.count} ${folder.count === 1 ? 'dive' : 'dives'}`];
+  if (folder.lastDiveDate) bits.push(`last ${formatDate(folder.lastDiveDate)}`);
+  return (
+    <Card style={styles.diveCard}>
+      <SecondaryButton label={folder.label} onPress={onPress} style={styles.diveCardButton} />
+      {folder.sublabel ? <Text style={styles.folderSerial}>{folder.sublabel}</Text> : null}
+      <View style={styles.diveCardMeta}>
+        <Text style={styles.diveCardMetaText}>{bits.join('  ·  ')}</Text>
+      </View>
+    </Card>
+  );
+}
+
+function SelectionBar({ count, total, allSelected, onToggleAll, onDelete }) {
+  return (
+    <Card style={styles.selectionBar}>
+      <Pressable onPress={onToggleAll} hitSlop={8} style={({ pressed }) => [styles.selectionToggle, pressed && styles.pressed]}>
+        <Text style={styles.selectionToggleText}>{allSelected ? 'Deselect all' : `Select all (${total})`}</Text>
+      </Pressable>
+      <Pressable
+        accessibilityRole="button"
+        disabled={count === 0}
+        onPress={onDelete}
+        hitSlop={8}
+        style={({ pressed }) => [styles.selectionDelete, count === 0 && styles.selectionDeleteOff, pressed && styles.pressed]}
+      >
+        <Text style={[styles.selectionDeleteText, count === 0 && styles.selectionDeleteTextOff]}>
+          {count ? `Delete ${count}` : 'Delete'}
+        </Text>
+      </Pressable>
     </Card>
   );
 }
@@ -459,7 +513,8 @@ function DiveDetail({ record, units }) {
       <DetailCard title="Gas & equipment">
         <DetailRow label="Mix" value={mix ? formatGasLabel(mix) : ''} />
         <DetailRow label="Dive mode" value={record.diveMode ? DIVE_MODE_LABELS[record.diveMode] : ''} />
-        <DetailRow label="Cylinder" value={tank?.volumeLiters != null ? formatVolume(tank.volumeLiters, units.gasVolumeUnit) : ''} />
+        <DetailRow label="Cylinder" value={tank?.volumeLiters != null ? formatVolume(tank.volumeLiters, units.gasVolumeUnit, tank.workPressureBar) : ''} />
+        <DetailRow label="Working pressure" value={tank?.workPressureBar != null ? formatPressure(tank.workPressureBar, units.pressureUnit) : ''} />
         <DetailRow
           label="Pressure"
           value={tank && (tank.startBar != null || tank.endBar != null)
@@ -558,7 +613,10 @@ function DiveEditForm({ form, units, onChange, error }) {
           <Field label="Oxygen" value={form.o2} onChangeText={set('o2')} suffix="%" keyboardType="decimal-pad" />
           <Field label="Helium" value={form.he} onChangeText={set('he')} suffix="%" keyboardType="decimal-pad" />
         </View>
-        <Field label="Cylinder size" value={form.tankVolume} onChangeText={set('tankVolume')} suffix={gasVolumeUnit} keyboardType="decimal-pad" />
+        <View style={styles.twoColumn}>
+          <Field label="Cylinder size" value={form.tankVolume} onChangeText={set('tankVolume')} suffix={gasVolumeUnit} keyboardType="decimal-pad" helper={gasVolumeUnit === 'ft³' ? 'Capacity at working pressure' : undefined} />
+          <Field label="Working pressure" value={form.tankWorkPressure} onChangeText={set('tankWorkPressure')} suffix={pressureUnit} keyboardType="decimal-pad" />
+        </View>
         <View style={styles.twoColumn}>
           <Field label="Start pressure" value={form.tankStart} onChangeText={set('tankStart')} suffix={pressureUnit} keyboardType="decimal-pad" />
           <Field label="End pressure" value={form.tankEnd} onChangeText={set('tankEnd')} suffix={pressureUnit} keyboardType="decimal-pad" />
@@ -593,7 +651,7 @@ function DiveEditForm({ form, units, onChange, error }) {
 
 export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
-  const { loaded, rows, stats, knownComputerKeys, getEntry, addDive, updateDive, deleteDive } = useDiveLog();
+  const { loaded, rows, stats, folders, knownComputerKeys, getEntry, addDive, updateDive, deleteDive, deleteDives } = useDiveLog();
 
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
@@ -605,7 +663,63 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const libdcVersion = useMemo(() => getLibdivecomputerVersion(), []);
 
   const [view, setView] = useState('list');
+  const [folderKey, setFolderKey] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
+  const [selectMode, setSelectMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(() => new Set());
+
+  const foldersMode = useMemo(() => folders.some((f) => f.kind === 'computer'), [folders]);
+  const activeFolder = useMemo(
+    () => folders.find((f) => f.key === folderKey) || null,
+    [folders, folderKey],
+  );
+  const listRows = activeFolder ? activeFolder.rows : rows;
+  const showFolderGrid = foldersMode && !activeFolder;
+
+  const exitSelect = useCallback(() => {
+    setSelectMode(false);
+    setSelectedIds(new Set());
+  }, []);
+
+  // Leaving the list, or switching folders, drops any in-progress selection.
+  useEffect(() => { exitSelect(); }, [view, folderKey, exitSelect]);
+
+  const toggleSelected = useCallback((id) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const enterSelect = useCallback((id) => {
+    setSelectMode(true);
+    setSelectedIds(new Set(id ? [id] : []));
+  }, []);
+
+  const visibleIds = useMemo(() => listRows.map((r) => r.id), [listRows]);
+  const allSelected = visibleIds.length > 0 && visibleIds.every((id) => selectedIds.has(id));
+
+  const toggleSelectAll = useCallback(() => {
+    setSelectedIds(allSelected ? new Set() : new Set(visibleIds));
+  }, [allSelected, visibleIds]);
+
+  const handleDeleteSelected = useCallback(() => {
+    const ids = [...selectedIds];
+    if (!ids.length) return;
+    Alert.alert(
+      `Delete ${ids.length} ${ids.length === 1 ? 'dive' : 'dives'}?`,
+      'This removes them from your logbook on this device.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => { await deleteDives(ids); exitSelect(); },
+        },
+      ],
+    );
+  }, [deleteDives, exitSelect, selectedIds]);
   const [record, setRecord] = useState(null);
   const [form, setForm] = useState(null);
   const [formError, setFormError] = useState('');
@@ -648,14 +762,16 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   }, [record, units]);
 
   const handleBack = useCallback(() => {
+    if (view === 'list' && selectMode) { exitSelect(); return; }
     if (view === 'edit') {
       if (selectedId) { setView('detail'); setForm(null); setFormError(''); }
       else openList();
       return;
     }
     if (view === 'detail' || view === 'download') { openList(); return; }
+    if (view === 'list' && activeFolder) { setFolderKey(null); return; }
     onBack?.();
-  }, [onBack, openList, selectedId, view]);
+  }, [activeFolder, exitSelect, onBack, openList, selectMode, selectedId, view]);
 
   const handleSave = useCallback(async () => {
     if (!form) return;
@@ -697,11 +813,21 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       ? 'Dive details'
       : view === 'download'
         ? 'Dive computer'
-        : 'Dive Log';
+        : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
 
-  const headerAction = view === 'list' && loaded && rows.length
-    ? <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
-    : undefined;
+  const canSelect = view === 'list' && loaded && !showFolderGrid && listRows.length > 0;
+  const headerAction = selectMode
+    ? <SecondaryButton label="Done" onPress={exitSelect} style={styles.headerButton} />
+    : canSelect
+      ? (
+        <View style={styles.headerActions}>
+          <SecondaryButton label="Select" onPress={() => enterSelect(null)} style={styles.headerButton} />
+          <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
+        </View>
+      )
+      : view === 'list' && loaded && rows.length
+        ? <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
+        : undefined;
 
   return (
     <View style={styles.screen}>
@@ -713,31 +839,72 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       >
         {view === 'list' && (
           <>
-            <SectionLabel>DIVE HISTORY</SectionLabel>
-            <Text style={styles.title}>Every dive, on this device.</Text>
-            <Text style={styles.subtitle}>
-              {libdcVersion
-                ? 'Log dives by hand, or download them from a Bluetooth dive computer.'
-                : 'Log dives by hand now. Direct dive-computer download is coming next.'}
+            <SectionLabel>{activeFolder ? 'DIVES' : 'DIVE HISTORY'}</SectionLabel>
+            <Text style={styles.title}>
+              {activeFolder
+                ? (activeFolder.sublabel ? `${activeFolder.label} · ${activeFolder.sublabel}` : activeFolder.label)
+                : showFolderGrid ? 'Your dive computers.' : 'Every dive, on this device.'}
             </Text>
+            {!activeFolder ? (
+              <Text style={styles.subtitle}>
+                {libdcVersion
+                  ? 'Log dives by hand, or download them from a Bluetooth dive computer.'
+                  : 'Log dives by hand now. Direct dive-computer download is coming next.'}
+              </Text>
+            ) : null}
 
             {!loaded ? (
               <Text style={styles.muted}>Loading your logbook…</Text>
-            ) : (
+            ) : showFolderGrid ? (
               <>
                 <StatSummaryCard stats={stats} units={units} />
-                {rows.length === 0 ? (
+                {folders.map((folder) => (
+                  <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
+                ))}
+                <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} />
+                {libdcVersion ? (
+                  <>
+                    <SecondaryButton
+                      label="Download from dive computer"
+                      onPress={() => setView('download')}
+                      style={styles.downloadButton}
+                    />
+                    <Text style={styles.engineNote}>libdivecomputer {libdcVersion}</Text>
+                  </>
+                ) : null}
+              </>
+            ) : (
+              <>
+                {!activeFolder && !selectMode ? <StatSummaryCard stats={stats} units={units} /> : null}
+                {selectMode ? (
+                  <SelectionBar
+                    count={selectedIds.size}
+                    total={listRows.length}
+                    allSelected={allSelected}
+                    onToggleAll={toggleSelectAll}
+                    onDelete={handleDeleteSelected}
+                  />
+                ) : null}
+                {listRows.length === 0 ? (
                   <Card style={styles.emptyCard}>
                     <Text style={styles.emptyTitle}>No dives logged yet</Text>
                     <Text style={styles.emptyBody}>Add your first dive to start building your history and totals.</Text>
                   </Card>
                 ) : (
-                  rows.map((row) => (
-                    <DiveListCard key={row.id} row={row} units={units} onPress={() => openDetail(row.id)} />
+                  listRows.map((row) => (
+                    <DiveListCard
+                      key={row.id}
+                      row={row}
+                      units={units}
+                      selectable={selectMode}
+                      selected={selectedIds.has(row.id)}
+                      onPress={() => (selectMode ? toggleSelected(row.id) : openDetail(row.id))}
+                      onLongPress={() => (selectMode ? toggleSelected(row.id) : enterSelect(row.id))}
+                    />
                   ))
                 )}
-                <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} />
-                {libdcVersion ? (
+                {!selectMode ? <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} /> : null}
+                {!selectMode && !activeFolder && libdcVersion ? (
                   <>
                     <SecondaryButton
                       label="Download from dive computer"
@@ -800,10 +967,34 @@ const styles = StyleSheet.create({
   summaryFootnote: { color: colors.faint, fontSize: 11, marginTop: 12 },
 
   diveCard: { padding: 12 },
+  diveCardSelected: { borderColor: colors.cyan },
   diveCardButton: { alignItems: 'flex-start', minHeight: 40, paddingVertical: 9 },
   diveCardMeta: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
   diveCardMetaText: { color: colors.muted, fontSize: 12, fontWeight: '700' },
   diveCardRating: { color: colors.gold, fontSize: 12 },
+  folderSerial: { color: colors.faint, fontSize: 11, fontWeight: '700', marginLeft: 2, marginTop: 3 },
+  pressed: { opacity: 0.6 },
+
+  headerActions: { flexDirection: 'row', gap: 8 },
+  selectRow: { alignItems: 'center', flexDirection: 'row', gap: 10, minHeight: 40, paddingVertical: 9 },
+  selectRowLabel: { color: colors.text, flex: 1, fontSize: 13, fontWeight: '700' },
+  checkCircle: {
+    alignItems: 'center', borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 2,
+    height: 24, justifyContent: 'center', width: 24,
+  },
+  checkCircleOn: { backgroundColor: colors.cyan, borderColor: colors.cyan },
+  checkMark: { color: colors.black, fontSize: 14, fontWeight: '900' },
+
+  selectionBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', padding: 12 },
+  selectionToggle: { paddingVertical: 6 },
+  selectionToggleText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
+  selectionDelete: {
+    backgroundColor: 'rgba(255,127,127,0.12)', borderColor: 'rgba(255,127,127,0.4)', borderRadius: radii.sm,
+    borderWidth: 1, paddingHorizontal: 14, paddingVertical: 8,
+  },
+  selectionDeleteOff: { opacity: 0.4 },
+  selectionDeleteText: { color: colors.danger, fontSize: 13, fontWeight: '800' },
+  selectionDeleteTextOff: { color: colors.muted },
 
   emptyCard: { alignItems: 'center', paddingVertical: 26 },
   emptyTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },

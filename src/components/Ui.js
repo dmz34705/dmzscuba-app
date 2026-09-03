@@ -17,9 +17,9 @@ export function PrimaryButton({ label, onPress, accessibilityLabel, style, disab
   );
 }
 
-export function SecondaryButton({ label, onPress, selected = false, style }) {
+export function SecondaryButton({ label, onPress, onLongPress, selected = false, style }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityState={{ selected }} onPress={onPress} style={({ pressed }) => [styles.secondaryButton, selected && styles.secondarySelected, style, pressed && styles.pressed]}>
+    <Pressable accessibilityRole="button" accessibilityState={{ selected }} onPress={onPress} onLongPress={onLongPress} style={({ pressed }) => [styles.secondaryButton, selected && styles.secondarySelected, style, pressed && styles.pressed]}>
       <Text style={[styles.secondaryButtonText, selected && styles.secondarySelectedText]}>{label}</Text>
     </Pressable>
   );

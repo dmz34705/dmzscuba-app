@@ -9,6 +9,24 @@ import { defaultGasLabel } from './schema';
 export const BAR_TO_PSI = 14.5037738;
 export const CUBIC_FOOT_LITERS = 28.316846592;
 export const KG_TO_LB = 2.2046226218;
+const ATM_BAR = 1.01325;
+
+// Scuba tanks are named by the number the diver knows: metric by water volume
+// (an "11.1 L"), imperial by the free-gas capacity at working pressure (an
+// "AL80" = 80 cu ft ≈ 11.1 L of water at 207 bar). `volumeLiters` in a record is
+// always the water volume; convert to cu ft using the working pressure when we
+// have it, and fall back to the geometric volume when we don't.
+export function litersToCuft(liters, workPressureBar) {
+  const wp = finite(workPressureBar);
+  if (wp && wp > 0) return (liters * wp) / ATM_BAR / CUBIC_FOOT_LITERS;
+  return liters / CUBIC_FOOT_LITERS;
+}
+
+export function cuftToLiters(cuft, workPressureBar) {
+  const wp = finite(workPressureBar);
+  if (wp && wp > 0) return (cuft * CUBIC_FOOT_LITERS * ATM_BAR) / wp;
+  return cuft * CUBIC_FOOT_LITERS;
+}
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -64,10 +82,15 @@ export function formatPressure(bar, unit = 'bar') {
   return `${Math.round(value)} bar`;
 }
 
-export function formatVolume(liters, unit = 'L') {
+export function formatVolume(liters, unit = 'L', workPressureBar = null) {
   const value = finite(liters);
   if (value === null) return DASH;
-  if (unit === 'ft³') return `${(value / CUBIC_FOOT_LITERS).toFixed(1)} ft³`;
+  if (unit === 'ft³') {
+    const cuft = litersToCuft(value, workPressureBar);
+    // With a working pressure this is a real tank capacity ("80 ft³"); without
+    // one it is only the geometric volume, so keep a decimal to signal that.
+    return finite(workPressureBar) ? `${Math.round(cuft)} ft³` : `${cuft.toFixed(1)} ft³`;
+  }
   return `${value.toFixed(1)} L`;
 }
 
@@ -135,10 +158,10 @@ export function parsePressureInput(text, unit = 'bar') {
   return unit === 'psi' ? value / BAR_TO_PSI : value;
 }
 
-export function parseVolumeInput(text, unit = 'L') {
+export function parseVolumeInput(text, unit = 'L', workPressureBar = null) {
   const value = parseInput(text);
   if (value === null) return null;
-  return unit === 'ft³' ? value * CUBIC_FOOT_LITERS : value;
+  return unit === 'ft³' ? cuftToLiters(value, workPressureBar) : value;
 }
 
 export function parseWeightInput(text, unit = 'kg') {
@@ -182,10 +205,13 @@ export function pressureToInput(bar, unit = 'bar') {
   return inputString(unit === 'psi' ? value * BAR_TO_PSI : value, 0);
 }
 
-export function volumeToInput(liters, unit = 'L') {
+export function volumeToInput(liters, unit = 'L', workPressureBar = null) {
   const value = finite(liters);
   if (value === null) return '';
-  return inputString(unit === 'ft³' ? value / CUBIC_FOOT_LITERS : value, 1);
+  if (unit === 'ft³') {
+    return inputString(litersToCuft(value, workPressureBar), finite(workPressureBar) ? 0 : 1);
+  }
+  return inputString(value, 1);
 }
 
 export function weightToInput(kg, unit = 'kg') {

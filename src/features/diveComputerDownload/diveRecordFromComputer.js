@@ -98,6 +98,10 @@ function mapEvents(rawEvents, mixes) {
 
 export function diveRecordFromComputer(raw, device = {}) {
   const source = raw && typeof raw === 'object' ? raw : {};
+  // The native bridge resolves the real vendor/product from the libdivecomputer
+  // descriptor and attaches them to each dive; prefer those over the caller hint.
+  const vendor = source.vendor || device.vendor || '';
+  const product = source.product || device.product || '';
   const rawSamples = Array.isArray(source.samples) ? source.samples : [];
   const samples = rawSamples.map(mapSample).sort((a, b) => a.t - b.t);
   const mixesRaw = Array.isArray(source.gasmixes) && source.gasmixes.length
@@ -114,9 +118,9 @@ export function diveRecordFromComputer(raw, device = {}) {
   return {
     source: 'computer',
     device: {
-      vendor: device.vendor || '',
-      product: device.product || '',
-      serial: device.serial || null,
+      vendor,
+      product,
+      serial: source.serial || device.serial || null,
       fingerprint: typeof source.fingerprint === 'string' ? source.fingerprint : null,
     },
     startTime,
@@ -142,13 +146,19 @@ export function diveRecordFromComputer(raw, device = {}) {
     atmosphericBar: num(source.atmosphericBar),
     gas: {
       mixes,
-      tanks: (Array.isArray(source.tanks) ? source.tanks : []).map((tank) => ({
-        volumeLiters: num(tank?.volumeLiters) || null,
-        workPressureBar: num(tank?.workPressureBar) || null,
-        startBar: num(tank?.beginPressureBar) || null,
-        endBar: num(tank?.endPressureBar) || null,
-        mixIndex: num(tank?.gasmix) ?? 0,
-      })),
+      tanks: (Array.isArray(source.tanks) ? source.tanks : [])
+        .map((tank) => ({
+          // libdivecomputer always reports volume as the tank's water capacity in
+          // litres; the display layer turns that into a cuft capacity using the
+          // working pressure. No transmitter/POD => begin/end pressure come back 0.
+          volumeLiters: num(tank?.volumeLiters) || null,
+          workPressureBar: num(tank?.workPressureBar) || null,
+          startBar: num(tank?.beginPressureBar) || null,
+          endBar: num(tank?.endPressureBar) || null,
+          mixIndex: num(tank?.gasmix) ?? 0,
+        }))
+        // Drop tanks the computer listed but has no actual data for.
+        .filter((t) => t.volumeLiters || t.workPressureBar || t.startBar || t.endBar),
     },
     diveMode: ['oc', 'ccr', 'scr', 'gauge', 'freedive'].includes(source.diveMode) ? source.diveMode : null,
     decoModel: source.decoModel && typeof source.decoModel === 'object'

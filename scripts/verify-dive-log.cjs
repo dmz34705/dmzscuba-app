@@ -37,6 +37,7 @@ const {
   parseVolumeInput,
   parseNumberInput,
   depthToInput,
+  volumeToInput,
   buildLogProfileGeometry,
   loadIndex,
   loadEntry,
@@ -167,7 +168,13 @@ assert.equal(formatTemperature(0, 'F'), '32°F');
 assert.equal(formatPressure(200, 'bar'), '200 bar');
 assert.equal(formatPressure(200, 'psi'), '2901 psi');
 assert.equal(formatVolume(11.1, 'L'), '11.1 L');
-assert.equal(formatVolume(11.1, 'ft³'), '0.4 ft³');
+assert.equal(formatVolume(11.1, 'ft³'), '0.4 ft³'); // no working pressure -> geometric volume
+// With a working pressure, cuft is the free-gas capacity a diver knows (an "AL80").
+assert.equal(formatVolume(11.1, 'ft³', 207), '80 ft³');
+assert.equal(formatVolume(11.1, 'L', 207), '11.1 L');
+near(parseVolumeInput('80', 'ft³', 207), 11.1, 0.2);
+assert.equal(volumeToInput(11.1, 'ft³', 207), '80');
+assert.equal(volumeToInput(11.1, 'ft³'), '0.4');
 assert.equal(formatGasLabel({ o2: 0.32, he: 0 }), 'EAN32');
 assert.equal(formatGasLabel({ o2: 0.32, he: 0, label: 'Bottom mix' }), 'Bottom mix');
 assert.equal(formatDate('2026-05-01T09:00:00.000Z').includes('2026'), true);
@@ -279,6 +286,14 @@ assert.deepEqual(noTz.gas.mixes, [{ o2: 0.21, he: 0, label: 'Air' }]);
 assert.equal(computerDiveKey('Shearwater', 'Perdix', 'abc'), 'Shearwater|Perdix|abc');
 assert.equal(computerDiveKey('Shearwater', 'Perdix', null), null);
 
+// The native-resolved vendor/product on the raw dive win over the caller hint.
+const resolvedDevice = diveRecordFromComputer(
+  { ...rawComputerDive, vendor: 'Suunto', product: 'EON Core' },
+  { vendor: '', product: '' },
+);
+assert.equal(resolvedDevice.device.vendor, 'Suunto');
+assert.equal(resolvedDevice.device.product, 'EON Core');
+
 // ---------------------------------------------------------------------------
 // storage (in-memory backend)
 // ---------------------------------------------------------------------------
@@ -338,19 +353,28 @@ function memoryStorage() {
     startTime: '2026-06-01T09:00:00.000Z',
     durationSeconds: 1800,
     source: 'computer',
-    device: { vendor: 'Suunto', product: 'D5', fingerprint: 'YWJj' },
+    device: { vendor: 'Suunto', product: 'D5', serial: '99001', fingerprint: 'YWJj' },
   }), store);
   const computerRow = (await loadIndex(store)).find((r) => r.id === computerSaved.id);
   assert.equal(computerRow.computerKey, 'Suunto|D5|YWJj');
-  await diveLog.saveFingerprint('Suunto', 'D5', 'YWJj', store);
-  assert.equal(await diveLog.loadFingerprint('Suunto', 'D5', store), 'YWJj');
-  assert.equal(await diveLog.loadFingerprint('Suunto', 'Zoop', store), null);
+  assert.equal(computerRow.deviceKey, 'Suunto|D5|99001');
+  assert.equal(computerRow.deviceProduct, 'D5');
+  assert.equal(diveLog.deviceKeyFromRecord({ source: 'manual', device: null }), null);
+  assert.equal(
+    diveLog.deviceKeyFromRecord({ source: 'computer', device: { vendor: 'Shearwater', product: 'Peregrine TX', serial: '' } }),
+    'Shearwater|Peregrine TX|',
+  );
+  // rebuildIndex recomputes every row from its entry
+  assert.equal((await diveLog.rebuildIndex(store)).find((r) => r.id === computerSaved.id).deviceKey, 'Suunto|D5|99001');
+  await diveLog.saveFingerprint('Suunto D5', 'YWJj', store);
+  assert.equal(await diveLog.loadFingerprint('Suunto D5', store), 'YWJj');
+  assert.equal(await diveLog.loadFingerprint('EON Core', store), null);
 
   await clearAll(store);
   assert.deepEqual(await loadIndex(store), []);
   assert.equal(store._map.has(DIVE_LOG_INDEX_KEY), false);
   assert.equal(store._map.has(`${DIVE_LOG_ENTRY_PREFIX}${second.id}`), false);
-  assert.equal(await diveLog.loadFingerprint('Suunto', 'D5', store), null);
+  assert.equal(await diveLog.loadFingerprint('Suunto D5', store), null);
 
   // ---------------------------------------------------------------------------
   // wiring / source structure
@@ -374,11 +398,18 @@ function memoryStorage() {
   assert.match(screen, /useDiveLog/);
   assert.match(screen, /validateDiveRecord/);
   assert.match(screen, /buildLogProfileGeometry/);
+  // multi-select + bulk delete (dev workflow: download then clear for testing)
+  assert.match(screen, /\bPressable\b/, 'DiveListCard checkbox row needs Pressable imported');
+  assert.match(screen, /selectMode/);
+  assert.match(screen, /deleteDives/);
+  assert.match(screen, /SelectionBar/);
+  assert.match(screen, /enterSelect/);
 
   const hook = read('src', 'features', 'diveLog', 'useDiveLog.js');
   assert.match(hook, /loadIndex/);
   assert.match(hook, /saveEntry/);
   assert.match(hook, /softDeleteEntry/);
+  assert.match(hook, /const deleteDives = useCallback/);
   assert.doesNotMatch(hook, /AsyncStorage/);
 
   const pkg = JSON.parse(read('package.json'));
@@ -417,10 +448,14 @@ function memoryStorage() {
   const ble = read('src', 'features', 'diveComputerDownload', 'diveComputerBle.js');
   assert.match(ble, /react-native-ble-plx/);
   assert.match(ble, /export function looksLikeDiveComputer/);
+  assert.match(ble, /export function looksLikeSuunto/);
   assert.match(ble, /BLUETOOTH_SCAN/);
   const dlHook = read('src', 'features', 'diveComputerDownload', 'useDiveComputerDownload.js');
   assert.match(dlHook, /startDeviceScan/);
   assert.match(dlHook, /connectToDevice/);
+  // Suunto EON/D5 need a bonded link: prime the OS pairing handshake and retry.
+  assert.match(dlHook, /primePairing/);
+  assert.match(dlHook, /maxAttempts/);
 
   assert.match(screen, /getLibdivecomputerVersion/);
   assert.match(screen, /DiveComputerDownloadPanel/);
@@ -428,6 +463,8 @@ function memoryStorage() {
   const runner = read('src', 'features', 'diveComputerDownload', 'downloadRunner.js');
   assert.match(runner, /monitorCharacteristicForService/);
   assert.match(runner, /onDownloadWrite/);
+  assert.match(runner, /export async function primePairing/);
+  assert.match(runner, /export async function pickCharacteristics/);
   assert.match(read('src', 'features', 'diveLog', 'useDiveLog.js'), /knownComputerKeys/);
 
   console.log('Dive logbook checks passed.');

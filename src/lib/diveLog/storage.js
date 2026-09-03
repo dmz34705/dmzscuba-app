@@ -27,6 +27,14 @@ export function computerKeyFromRecord(record) {
   return `${record.device.vendor || ''}|${record.device.product || ''}|${fp}`;
 }
 
+/** Stable key for the physical computer a dive came from (model + serial). */
+export function deviceKeyFromRecord(record) {
+  if (record.source !== 'computer' || !record.device) return null;
+  const { vendor = '', product = '', serial = '' } = record.device;
+  if (!vendor && !product) return null;
+  return `${vendor}|${product}|${serial || ''}`;
+}
+
 export function indexRowFromRecord(record) {
   return {
     id: record.id,
@@ -39,21 +47,33 @@ export function indexRowFromRecord(record) {
     source: record.source || 'manual',
     rating: record.rating ?? null,
     computerKey: computerKeyFromRecord(record),
+    deviceKey: deviceKeyFromRecord(record),
+    deviceVendor: record.device?.vendor || '',
+    deviceProduct: record.device?.product || '',
+    deviceSerial: record.device?.serial || '',
   };
 }
 
-function fingerprintKey(vendor, product) {
-  return `${DIVE_LOG_FINGERPRINT_PREFIX}${vendor || ''}|${product || ''}`;
+function fingerprintKey(deviceName) {
+  return `${DIVE_LOG_FINGERPRINT_PREFIX}${deviceName || ''}`;
 }
 
+// Keyed by the dive computer's advertised Bluetooth name: at the point we need
+// the last fingerprint (before `dc_device_foreach`) the resolved vendor/product
+// aren't known yet, and the BLE name is what both JS and native already have.
 /** Last downloaded fingerprint (base64) for a given computer, for incremental sync. */
-export async function loadFingerprint(vendor, product, storage = AsyncStorage) {
-  return (await storage.getItem(fingerprintKey(vendor, product))) || null;
+export async function loadFingerprint(deviceName, storage = AsyncStorage) {
+  return (await storage.getItem(fingerprintKey(deviceName))) || null;
 }
 
-export async function saveFingerprint(vendor, product, fingerprintBase64, storage = AsyncStorage) {
-  if (!fingerprintBase64) return;
-  await storage.setItem(fingerprintKey(vendor, product), String(fingerprintBase64));
+export async function saveFingerprint(deviceName, fingerprintBase64, storage = AsyncStorage) {
+  if (!deviceName || !fingerprintBase64) return;
+  await storage.setItem(fingerprintKey(deviceName), String(fingerprintBase64));
+}
+
+/** Forget the last-sync marker so the next download re-fetches every dive. */
+export async function clearFingerprint(deviceName, storage = AsyncStorage) {
+  await storage.removeItem(fingerprintKey(deviceName));
 }
 
 function parseJson(raw, fallback) {
@@ -98,6 +118,17 @@ export async function saveEntry(record, storage = AsyncStorage) {
   next.push(row);
   await writeIndex(next, storage);
   return normalized;
+}
+
+/**
+ * Recompute every index row from its full entry. Cheap one-time repair when the
+ * index-row shape gains fields (e.g. device grouping) that older rows lack.
+ */
+export async function rebuildIndex(storage = AsyncStorage) {
+  const entries = await loadAll(storage);
+  const rows = entries.map(indexRowFromRecord);
+  await writeIndex(rows, storage);
+  return rows;
 }
 
 export async function softDeleteEntry(id, storage = AsyncStorage) {
