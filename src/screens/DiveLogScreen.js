@@ -986,7 +986,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, folders, knownComputerKeys, pendingProposals,
-    getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLog, finishImport, resolveProposal, clearProposals,
+    getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, purgeDeletedDownloads, eraseAllDiveData,
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
@@ -1303,7 +1303,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
           <DiveComputerDownloadPanel
             onClose={() => setView('list')}
             knownComputerKeys={knownComputerKeys}
-            importComputerLog={importComputerLog}
+            importComputerLogs={importComputerLogs}
             onImportComplete={async () => {
               await finishImport();
               await recheckDuplicates();

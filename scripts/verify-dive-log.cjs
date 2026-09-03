@@ -650,6 +650,20 @@ function memoryStorage(seed = {}) {
   assert.equal(index[0].logCount, 0);
   assert.deepEqual(index[0].deviceKeys, []);
 
+  // batch import: N dives written with ONE index write (no lost rows)
+  const batchStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const batch = await diveLog.createDivesFromLogs(
+    [1, 2, 3, 4, 5].map((n) => computerLogFromDownload({
+      ...rawComputerDive,
+      fingerprint: `B-${n}`,
+      datetime: { year: 2026, month: 6, day: n, hour: 9, minute: 0, second: 0, timezone: 0 },
+    })),
+    batchStore,
+  );
+  assert.equal(batch.length, 5);
+  assert.equal((await loadIndex(batchStore)).length, 5, 'all 5 batch dives must be indexed');
+  assert.equal(new Set((await loadIndex(batchStore)).map((r) => r.id)).size, 5);
+
   // download -> new Dive + attached ComputerLog
   const { dive: cDive, log: cLog } = await createDiveFromLog(computerLogFromDownload({
     ...rawComputerDive,
@@ -875,8 +889,9 @@ function memoryStorage(seed = {}) {
 
   const hook = read('src', 'features', 'diveLog', 'useDiveLog.js');
   assert.match(hook, /migrateToV2/);
-  assert.match(hook, /createDiveFromLog/);
-  // fast import path: no per-dive matching, deferred to finishImport
+  // batched, deferred import path (no per-dive matching or index race)
+  assert.match(hook, /createDivesFromLogs/);
+  assert.match(hook, /const importComputerLogs = useCallback/);
   assert.match(hook, /const finishImport = useCallback/);
   assert.match(hook, /countStoredDives/);
   assert.match(hook, /resolveProposal/);

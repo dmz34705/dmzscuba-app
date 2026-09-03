@@ -49,16 +49,18 @@ function DeviceRow({ device, onConnect, disabled }) {
  * @param {Set<string>} props.knownComputerKeys
  * @param {(logPartial: object) => Promise<'saved'|'duplicate'>} props.importComputerLog
  */
-export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, importComputerLog, onImportComplete }) {
-  const forceRef = useRef(false); // "re-import everything" — skip the per-dive de-dup
-  const saveDive = useCallback(async (rawDive) => {
+export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, importComputerLogs, onImportComplete }) {
+  const forceRef = useRef(false);       // "re-import everything" — skip the per-dive de-dup
+  const pendingLogsRef = useRef([]);    // collected during the transfer, written in one batch
+
+  const saveDive = useCallback((rawDive) => {
     // vendor/product/serial come resolved from the native libdivecomputer descriptor.
     const log = computerLogFromDownload(rawDive);
     const key = computerDiveKey(log.device.vendor, log.device.product, log.fingerprint);
     if (!forceRef.current && key && knownComputerKeys?.has(key)) return 'duplicate';
-    // 'saved' = new dive; 'attached' = merged into a dive from another computer
-    return importComputerLog(log);
-  }, [importComputerLog, knownComputerKeys]);
+    pendingLogsRef.current.push(log); // batched — see the status effect below
+    return 'saved';
+  }, [knownComputerKeys]);
 
   const hasImportedFingerprint = useCallback(
     (fp) => !!fp && [...(knownComputerKeys || [])].some((k) => k.endsWith(`|${fp}`)),
@@ -70,16 +72,25 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
     scan, stopScan, connect, disconnect, download, cancel,
   } = useDiveComputerDownload({ onDiveDownloaded: saveDive, hasImportedFingerprint });
 
-  // When the transfer finishes, run the (deferred) reconciliation once.
+  // When the transfer settles, write the collected dives in one batch, then run
+  // the deferred reconciliation. Also flush on error so a partial download isn't
+  // lost.
+  const importRef = useRef(importComputerLogs);
+  importRef.current = importComputerLogs;
   const completeRef = useRef(onImportComplete);
   completeRef.current = onImportComplete;
-  const doneOnce = useRef(false);
+  const flushedRef = useRef(false);
   useEffect(() => {
-    if (status === 'done' && !doneOnce.current) {
-      doneOnce.current = true;
-      completeRef.current?.();
+    if (status === 'downloading') { flushedRef.current = false; return; }
+    if ((status === 'done' || status === 'error') && !flushedRef.current) {
+      flushedRef.current = true;
+      const logs = pendingLogsRef.current;
+      pendingLogsRef.current = [];
+      (async () => {
+        if (logs.length) await importRef.current?.(logs);
+        await completeRef.current?.();
+      })();
     }
-    if (status === 'downloading') doneOnce.current = false;
   }, [status]);
 
   if (!supported) {
@@ -122,7 +133,7 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
             <>
               <ProgressBar value={pct} />
               <Text style={styles.progressText}>
-                {summary ? `${summary.downloaded} read · ${summary.saved} new · ${summary.merged} merged` : 'Reading dives…'}
+                {summary ? `${summary.downloaded} read · ${summary.saved} new` : 'Reading dives…'}
               </Text>
               <SecondaryButton label="Stop" onPress={cancel} style={styles.backButton} />
             </>
@@ -131,10 +142,9 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
               <Text style={styles.body}>
                 {summary
                   ? `Read ${summary.downloaded} ${summary.downloaded === 1 ? 'dive' : 'dives'} — `
-                    + `${summary.saved} new`
-                    + (summary.merged ? `, ${summary.merged} merged into an existing dive` : '')
+                    + `${summary.saved} added`
                     + (summary.duplicate ? `, ${summary.duplicate} already in your log` : '')
-                    + '.'
+                    + '. Any matches with another computer are on the next screen.'
                   : 'No dives read.'}
               </Text>
               <View style={styles.doneActions}>

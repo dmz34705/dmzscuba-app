@@ -194,14 +194,38 @@ export async function softDeleteDive(id, storage = AsyncStorage) {
  * Dive with the log's field values surfaced onto it.
  */
 export async function createDiveFromLog(logPartial, storage = AsyncStorage) {
-  const log = createComputerLog(logPartial);
-  const dive = surfaceLogOntoDive(
-    createDive({ source: 'computer', logIds: [log.id], primaryLogId: log.id }),
-    log,
-  );
-  const linkedLog = await saveLog({ ...log, diveId: dive.id }, storage);
-  const savedDive = await saveDive({ ...dive, logIds: [linkedLog.id], primaryLogId: linkedLog.id }, storage);
-  return { dive: savedDive, log: linkedLog };
+  const [created] = await createDivesFromLogs([logPartial], storage);
+  return created;
+}
+
+/**
+ * Create a Dive + ComputerLog for each partial and write the index ONCE at the
+ * end. A bulk download fires these back-to-back; per-call index read-modify-write
+ * races and loses rows, so callers must batch.
+ * @returns [{ dive, log }]
+ */
+export async function createDivesFromLogs(logPartials, storage = AsyncStorage) {
+  const list = Array.isArray(logPartials) ? logPartials : [];
+  if (!list.length) return [];
+  const index = await loadIndex(storage);
+  const created = [];
+  for (const partial of list) {
+    const log = createComputerLog(partial);
+    const dive = surfaceLogOntoDive(
+      createDive({ source: 'computer', logIds: [log.id], primaryLogId: log.id }),
+      log,
+    );
+    const linkedLog = normalizeComputerLog({ ...log, diveId: dive.id });
+    const normDive = normalizeDive({ ...dive, logIds: [linkedLog.id], primaryLogId: linkedLog.id });
+    // eslint-disable-next-line no-await-in-loop
+    await storage.setItem(logKey(linkedLog.id), JSON.stringify(linkedLog));
+    // eslint-disable-next-line no-await-in-loop
+    await storage.setItem(diveKey(normDive.id), JSON.stringify(normDive));
+    index.push(indexRowFromDive(normDive, [linkedLog]));
+    created.push({ dive: normDive, log: linkedLog });
+  }
+  await writeIndex(index, storage);
+  return created;
 }
 
 /**

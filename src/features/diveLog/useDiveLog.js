@@ -8,7 +8,7 @@ import {
   clearAll,
   consolidateSameDeviceLogs,
   countStoredDives,
-  createDiveFromLog,
+  createDivesFromLogs,
   isMigratedToV2,
   loadAll,
   loadDive,
@@ -178,20 +178,20 @@ export default function useDiveLog() {
   }, [refreshIndex]);
 
   /**
-   * Import one downloaded ComputerLog — FAST. Just writes the log + a new Dive;
-   * no cross-computer matching and no index refresh (both would stall the BLE
-   * transfer if run per dive). Call `finishImport()` once the download is done to
-   * refresh and run reconciliation.
-   * @param {object} logPartial  from computerLogFromDownload()
-   * @returns 'saved'
+   * Import a batch of downloaded ComputerLogs — one Dive each, ONE index write.
+   * No per-dive matching or state refresh (both would stall the BLE transfer and
+   * the index write races if done per dive). `finishImport()` + reconciliation
+   * run once the transfer is done.
+   * @param {object[]} logPartials  from computerLogFromDownload()
+   * @returns {number} how many were written
    */
-  const importComputerLog = useCallback(async (logPartial) => {
-    await createDiveFromLog(logPartial);
-    return 'saved';
+  const importComputerLogs = useCallback(async (logPartials) => {
+    const created = await createDivesFromLogs(logPartials);
+    for (const { dive } of created) diveCache.current.delete(dive.id);
+    return created.length;
   }, []);
 
-  /** After a download: refresh the index into state (dives are written with
-   *  their index rows as they arrive; rebuild as a safety net). */
+  /** After a download: reconcile the new dives, then refresh into state. */
   const finishImport = useCallback(async () => {
     const rows = await loadIndex();
     if (await countStoredDives() > rows.length) await rebuildIndex().catch(() => {});
@@ -373,7 +373,7 @@ export default function useDiveLog() {
     updateDive,
     deleteDive,
     deleteDives,
-    importComputerLog,
+    importComputerLogs,
     finishImport,
     resolveProposal,
     clearProposals,
