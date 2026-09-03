@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Card, PrimaryButton, ProgressBar, SecondaryButton } from '../../components/Ui';
@@ -49,7 +49,7 @@ function DeviceRow({ device, onConnect, disabled }) {
  * @param {Set<string>} props.knownComputerKeys
  * @param {(logPartial: object) => Promise<'saved'|'duplicate'>} props.importComputerLog
  */
-export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, importComputerLog }) {
+export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, importComputerLog, onImportComplete }) {
   const saveDive = useCallback(async (rawDive) => {
     // vendor/product/serial come resolved from the native libdivecomputer descriptor.
     const log = computerLogFromDownload(rawDive);
@@ -59,10 +59,27 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
     return importComputerLog(log);
   }, [importComputerLog, knownComputerKeys]);
 
+  const hasImportedFingerprint = useCallback(
+    (fp) => !!fp && [...(knownComputerKeys || [])].some((k) => k.endsWith(`|${fp}`)),
+    [knownComputerKeys],
+  );
+
   const {
     supported, status, devices, connectedDevice, progress, summary, error,
     scan, stopScan, connect, disconnect, download, cancel,
-  } = useDiveComputerDownload({ onDiveDownloaded: saveDive });
+  } = useDiveComputerDownload({ onDiveDownloaded: saveDive, hasImportedFingerprint });
+
+  // When the transfer finishes, run the (deferred) reconciliation once.
+  const completeRef = useRef(onImportComplete);
+  completeRef.current = onImportComplete;
+  const doneOnce = useRef(false);
+  useEffect(() => {
+    if (status === 'done' && !doneOnce.current) {
+      doneOnce.current = true;
+      completeRef.current?.();
+    }
+    if (status === 'downloading') doneOnce.current = false;
+  }, [status]);
 
   if (!supported) {
     return (
@@ -123,8 +140,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
                 <PrimaryButton label="Download again" onPress={() => download()} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Only sync new dives (faster)</Text>
+              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Download all dives from the computer</Text>
               </Pressable>
             </>
           ) : (
@@ -134,8 +151,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
                 <PrimaryButton label="Download dives" onPress={() => download()} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Only sync new dives (faster)</Text>
+              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Download all dives from the computer</Text>
               </Pressable>
             </>
           )}

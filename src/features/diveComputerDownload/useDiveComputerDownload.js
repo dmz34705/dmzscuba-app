@@ -47,13 +47,15 @@ function refreshDevice(manager, deviceId, timeoutMs = 4000) {
 
 const SCAN_DURATION_MS = 20000;
 
-export default function useDiveComputerDownload({ onDiveDownloaded } = {}) {
+export default function useDiveComputerDownload({ onDiveDownloaded, hasImportedFingerprint } = {}) {
   const managerRef = useRef(null);
   const scanTimerRef = useRef(null);
   const seenRef = useRef(new Map());
   const deviceRef = useRef(null); // the connected react-native-ble-plx Device
   const diveHandlerRef = useRef(onDiveDownloaded);
   diveHandlerRef.current = onDiveDownloaded;
+  const hasFingerprintRef = useRef(hasImportedFingerprint);
+  hasFingerprintRef.current = hasImportedFingerprint;
 
   const [status, setStatus] = useState('idle'); // idle | scanning | connecting | connected | downloading | done | error
   const [devices, setDevices] = useState([]);
@@ -248,11 +250,11 @@ export default function useDiveComputerDownload({ onDiveDownloaded } = {}) {
     }
   }, [connectedDevice]);
 
-  // Default: read every dive on the computer and let the logbook's own de-dup
-  // (knownComputerKeys) decide what's new. `incremental` uses the stored
-  // last-sync fingerprint to skip older dives — faster, but it can't recover a
-  // dive that was deleted in the app.
-  const download = useCallback(async ({ incremental = false } = {}) => {
+  // Smart incremental: use the stored last-sync fingerprint ONLY if the logbook
+  // still holds that dive (so the computer sends just the newer ones — fast). If
+  // the app no longer has it (dives were deleted / wiped), read everything so
+  // nothing is lost. `{ full: true }` forces a complete read.
+  const download = useCallback(async ({ full = false } = {}) => {
     const device = deviceRef.current;
     if (!device || !connectedDevice) return;
 
@@ -262,11 +264,13 @@ export default function useDiveComputerDownload({ onDiveDownloaded } = {}) {
     setStatus('downloading');
 
     const name = connectedDevice.name;
-    if (!incremental) await clearFingerprint(name).catch(() => {});
-    const fingerprintBase64 = incremental ? await loadFingerprint(name).catch(() => null) : null;
+    const marker = full ? null : await loadFingerprint(name).catch(() => null);
+    const markerValid = marker && hasFingerprintRef.current?.(marker);
+    const fingerprintBase64 = markerValid ? marker : null;
+    if (!fingerprintBase64) await clearFingerprint(name).catch(() => {});
     const tally = { downloaded: 0, saved: 0, merged: 0, duplicate: 0 };
 
-    console.log('[dc-download] start', { name, incremental, hasFingerprint: !!fingerprintBase64 });
+    console.log('[dc-download] start', { name, full, markerValid, hasFingerprint: !!fingerprintBase64 });
 
     try {
       const result = await runDownload({

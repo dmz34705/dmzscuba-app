@@ -654,7 +654,7 @@ function memoryStorage(seed = {}) {
   const { dive: cDive, log: cLog } = await createDiveFromLog(computerLogFromDownload({
     ...rawComputerDive,
     fingerprint: 'FP-A',
-  }), store);
+  }), {}, store);
   assert.equal(cDive.source, 'computer');
   assert.deepEqual(cDive.logIds, [cLog.id]);
   assert.equal(cDive.primaryLogId, cLog.id);
@@ -713,8 +713,8 @@ function memoryStorage(seed = {}) {
   assert.ok(corr[0].decidedAt);
 
   // mergeDives folds one dive's logs into another and soft-deletes the emptied one
-  const mA = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-A', vendor: 'Shearwater', product: 'Perdix', serial: '1' }), store);
-  const mB = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-B', vendor: 'Suunto', product: 'EON Core', serial: '2' }), store);
+  const mA = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-A', vendor: 'Shearwater', product: 'Perdix', serial: '1' }), {}, store);
+  const mB = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-B', vendor: 'Suunto', product: 'EON Core', serial: '2' }), {}, store);
   const kept = await diveLog.mergeDives(mA.dive.id, [mB.dive.id], {}, store);
   assert.equal(kept.logIds.length, 2);
   assert.equal((await loadDive(mB.dive.id, store)).deletedAt != null, true);
@@ -729,18 +729,18 @@ function memoryStorage(seed = {}) {
     device: { vendor: 'Shearwater', product: 'Perdix', serial: 'S1' }, fingerprint: 'SH27',
     reportedStartTime: '2026-08-27T13:00:00.000Z', durationSeconds: 3600,
     water: { maxDepthMeters: 30 }, profile: { samples: longDiveProfile().map((x) => ({ ...x })) },
-  }, rstore);
+  }, {}, rstore);
   // Suunto: same dive logged as two fragments
   await createDiveFromLog({
     device: { vendor: 'Suunto', product: 'EON Core', serial: 'S2' }, fingerprint: 'SU27a',
     reportedStartTime: '2026-08-27T13:00:00.000Z', durationSeconds: 1770,
     water: { maxDepthMeters: 30 }, profile: { samples: suFrag1Samples.map((x) => ({ ...x })) },
-  }, rstore);
+  }, {}, rstore);
   await createDiveFromLog({
     device: { vendor: 'Suunto', product: 'EON Core', serial: 'S2' }, fingerprint: 'SU27b',
     reportedStartTime: '2026-08-27T13:30:30.000Z', durationSeconds: 1830,
     water: { maxDepthMeters: 30 }, profile: { samples: suFrag2Samples.map((x) => ({ ...x })) },
-  }, rstore);
+  }, {}, rstore);
   assert.equal((await loadIndex(rstore)).filter((r) => !r.deletedAt).length, 3); // inflated
 
   // recheck logic (mirrors useDiveLog.recheckDuplicates)
@@ -783,8 +783,8 @@ function memoryStorage(seed = {}) {
 
   // --- purgeDeleted: hard-remove soft-deleted dives + their logs + fp markers ---
   const pstore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
-  const keepDive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PK-1' }), pstore);
-  const dropDive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PK-2', vendor: 'Suunto', product: 'D5', serial: 'x' }), pstore);
+  const keepDive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PK-1' }), {}, pstore);
+  const dropDive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PK-2', vendor: 'Suunto', product: 'D5', serial: 'x' }), {}, pstore);
   await diveLog.saveFingerprint('D5', 'PK-2', pstore);
   await softDeleteDive(dropDive.dive.id, pstore);
   assert.equal((await loadIndex(pstore)).length, 2);
@@ -868,8 +868,9 @@ function memoryStorage(seed = {}) {
   const hook = read('src', 'features', 'diveLog', 'useDiveLog.js');
   assert.match(hook, /migrateToV2/);
   assert.match(hook, /createDiveFromLog/);
-  assert.match(hook, /findMatch/);
-  assert.match(hook, /loadMatchCandidates/);
+  // fast import path: no per-dive matching, deferred to finishImport
+  assert.match(hook, /const finishImport = useCallback/);
+  assert.match(hook, /indexed: false/);
   assert.match(hook, /resolveProposal/);
   assert.match(hook, /recheckDuplicates/);
   assert.match(hook, /reconcileComputers/);

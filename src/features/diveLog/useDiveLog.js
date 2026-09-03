@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { createComputerLog, createDive, deviceKeyOf, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
+import { createDive, deviceKeyOf, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
 import { computeDiveLogStats } from '../../lib/diveLog/stats';
 import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
-import { findMatch, reconcileComputers, sameComputer } from '../../lib/diveLog/matchDives';
+import { reconcileComputers, sameComputer } from '../../lib/diveLog/matchDives';
 import {
-  attachLogToDive,
   clearAll,
   consolidateSameDeviceLogs,
   createDiveFromLog,
@@ -14,7 +13,6 @@ import {
   loadDive,
   loadIndex,
   loadLogsForDive,
-  loadMatchCandidates,
   mergeDives,
   migrateToV2,
   purgeDeleted,
@@ -176,83 +174,22 @@ export default function useDiveLog() {
   }, [refreshIndex]);
 
   /**
-   * Import one downloaded ComputerLog. Runs the cross-computer matcher against
-   * nearby dives:
-   *  - no match            -> new Dive
-   *  - confident, clocks agree -> attach to the matched Dive silently
-   *  - clock conflict / low confidence -> new Dive for now + a pending proposal
-   *    for the post-download review sheet (B7)
-   * Returns 'saved' | 'attached'.
+   * Import one downloaded ComputerLog — FAST. Just writes the log + a new Dive;
+   * no cross-computer matching and no index refresh (both would stall the BLE
+   * transfer if run per dive). Call `finishImport()` once the download is done to
+   * refresh and run reconciliation.
    * @param {object} logPartial  from computerLogFromDownload()
+   * @returns 'saved'
    */
   const importComputerLog = useCallback(async (logPartial) => {
-    const log = createComputerLog(logPartial);
-    const candidates = await loadMatchCandidates(log.reportedStartTime).catch(() => []);
-    const { bestMatch: m } = findMatch(log, candidates);
-
-    const describe = (diveId) => {
-      const c = candidates.find((x) => x.dive.id === diveId);
-      const p = c?.logs.find((l) => l.id === c.dive.primaryLogId) || c?.logs[0] || null;
-      return {
-        deviceName: p ? `${p.device.vendor} ${p.device.product}`.trim() : 'the other computer',
-        deviceKey: p?.deviceKey || null,
-        start: c?.dive.startTime || '',
-      };
-    };
-    const newDeviceName = `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer';
-
-    if (!m) {
-      await createDiveFromLog(log);
-      await refreshIndex();
-      return 'saved';
-    }
-
-    const pushProposal = ({ newDiveId, primaryDiveId, absorbDiveIds, other }) => {
-      setPendingProposals((prev) => [...prev, {
-        id: `${newDiveId}:${absorbDiveIds.join('+')}`,
-        kind: m.kind,
-        newDiveId,
-        primaryDiveId,
-        absorbDiveIds,
-        newDeviceName,
-        newDeviceKey: log.deviceKey,
-        matchDeviceName: other.deviceName,
-        matchDeviceKey: other.deviceKey,
-        offsetMinutes: m.offsetMinutes || 0,
-        cleanOffset: !!m.cleanOffset,
-        implausibleClock: !!m.implausibleClock,
-        score: m.score,
-        newReportedStart: log.reportedStartTime,
-        matchStart: other.start,
-      }]);
-    };
-
-    // The new log attaches to an existing dive (whole-dive or fragment match).
-    if (m.kind === 'pair' || m.kind === 'fragment') {
-      if (m.verdict === 'auto' && !m.clockConflict) {
-        await attachLogToDive(m.diveId, m.kind === 'fragment' ? { ...log, splitOf: m.diveId } : log);
-        diveCache.current.delete(m.diveId);
-        await refreshIndex();
-        return 'attached';
-      }
-      const { dive } = await createDiveFromLog(log);
-      pushProposal({ newDiveId: dive.id, primaryDiveId: m.diveId, absorbDiveIds: [m.diveId], other: describe(m.diveId) });
-      await refreshIndex();
-      return 'saved';
-    }
-
-    // The new (long) log spans one or more separately-logged same-device dives.
-    const targets = m.diveIds || [m.diveId];
-    const { dive } = await createDiveFromLog(log);
-    if (m.verdict === 'auto' && !m.clockConflict) {
-      await mergeDives(dive.id, targets);
-      [dive.id, ...targets].forEach((id) => diveCache.current.delete(id));
-      await refreshIndex();
-      return 'attached';
-    }
-    pushProposal({ newDiveId: dive.id, primaryDiveId: dive.id, absorbDiveIds: targets, other: describe(targets[0]) });
-    await refreshIndex();
+    await createDiveFromLog(logPartial, { indexed: false });
     return 'saved';
+  }, []);
+
+  /** After a download: rebuild the index once, then refresh. */
+  const finishImport = useCallback(async () => {
+    await rebuildIndex().catch(() => {});
+    await refreshIndex();
   }, [refreshIndex]);
 
   const clearProposals = useCallback(() => setPendingProposals([]), []);
@@ -388,67 +325,29 @@ export default function useDiveLog() {
   }, [getDive, refreshIndex]);
 
   /**
-   * Resolve one post-download / recheck match proposal.
-   * @param {object} proposal   { primaryDiveId, absorbDiveIds[], newDiveId, ... }
+   * Resolve one "Two computers, one trip" proposal.
+   * @param {object} proposal   from recheckDuplicates ({ kind:'reconcile', merges, ... })
    * @param {'merge'|'separate'} action
    * @param {{ correctDeviceKey?: string }} [choice]  which computer's clock is right
    */
   const resolveProposal = useCallback(async (proposal, action, choice = {}) => {
-    // Whole-computer reconciliation: one clock decision, then all its merges.
-    if (proposal.kind === 'reconcile') {
-      if (action === 'merge') {
-        let correction = null;
-        if (proposal.offsetMinutes && choice.correctDeviceKey) {
-          // offsetMinutes = minutes to add to B's clock to match A.
-          const bIsWrong = choice.correctDeviceKey === proposal.deviceKeyA;
-          correction = bIsWrong
-            ? { deviceKey: proposal.deviceKeyB, offsetMinutes: proposal.offsetMinutes }
-            : { deviceKey: proposal.deviceKeyA, offsetMinutes: -proposal.offsetMinutes };
-          await saveDeviceTimeCorrection({
-            ...correction, appliesFrom: proposal.firstDate, appliesTo: proposal.lastDate,
-          });
-        }
-        for (const mg of proposal.merges) {
-          // eslint-disable-next-line no-await-in-loop
-          await mergeDives(mg.keepId, mg.absorbIds, { correction });
-          [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
-        }
-      }
-      setPendingProposals((prev) => prev.filter((p) => p.id !== proposal.id));
-      await refreshIndex();
-      return;
-    }
-
     if (action === 'merge') {
-      const keepId = proposal.primaryDiveId;
-      const foldIds = [...new Set(
-        [...(proposal.absorbDiveIds || []), proposal.newDiveId].filter((id) => id && id !== keepId),
-      )];
-
-      // Which device (if any) needs its clock corrected?
       let correction = null;
       if (proposal.offsetMinutes && choice.correctDeviceKey) {
-        if (choice.correctDeviceKey === proposal.newDeviceKey && proposal.matchDeviceKey) {
-          correction = { deviceKey: proposal.matchDeviceKey, offsetMinutes: -proposal.offsetMinutes };
-          await saveDeviceTimeCorrection({
-            deviceKey: proposal.matchDeviceKey,
-            offsetMinutes: -proposal.offsetMinutes,
-            appliesFrom: proposal.matchStart,
-            appliesTo: proposal.matchStart,
-          });
-        } else if (choice.correctDeviceKey !== proposal.newDeviceKey) {
-          correction = { deviceKey: proposal.newDeviceKey, offsetMinutes: proposal.offsetMinutes };
-          await saveDeviceTimeCorrection({
-            deviceKey: proposal.newDeviceKey,
-            offsetMinutes: proposal.offsetMinutes,
-            appliesFrom: proposal.newReportedStart,
-            appliesTo: proposal.newReportedStart,
-          });
-        }
+        // offsetMinutes = minutes to add to B's clock to match A; correct the other one.
+        const bIsWrong = choice.correctDeviceKey === proposal.deviceKeyA;
+        correction = bIsWrong
+          ? { deviceKey: proposal.deviceKeyB, offsetMinutes: proposal.offsetMinutes }
+          : { deviceKey: proposal.deviceKeyA, offsetMinutes: -proposal.offsetMinutes };
+        await saveDeviceTimeCorrection({
+          ...correction, appliesFrom: proposal.firstDate, appliesTo: proposal.lastDate,
+        });
       }
-
-      await mergeDives(keepId, foldIds, { correction });
-      [keepId, ...foldIds].forEach((id) => diveCache.current.delete(id));
+      for (const mg of proposal.merges) {
+        // eslint-disable-next-line no-await-in-loop
+        await mergeDives(mg.keepId, mg.absorbIds, { correction });
+        [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
+      }
     }
     setPendingProposals((prev) => prev.filter((p) => p.id !== proposal.id));
     await refreshIndex();
@@ -469,6 +368,7 @@ export default function useDiveLog() {
     deleteDive,
     deleteDives,
     importComputerLog,
+    finishImport,
     resolveProposal,
     clearProposals,
     recheckDuplicates,

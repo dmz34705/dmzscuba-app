@@ -193,15 +193,19 @@ export async function softDeleteDive(id, storage = AsyncStorage) {
  * Create a Dive from a ComputerLog (no match found). Persists the log, then a
  * Dive with the log's field values surfaced onto it.
  */
-export async function createDiveFromLog(logPartial, storage = AsyncStorage) {
+export async function createDiveFromLog(logPartial, { indexed = true } = {}, storage = AsyncStorage) {
   const log = createComputerLog(logPartial);
   const dive = surfaceLogOntoDive(
     createDive({ source: 'computer', logIds: [log.id], primaryLogId: log.id }),
     log,
   );
   const linkedLog = await saveLog({ ...log, diveId: dive.id }, storage);
-  const savedDive = await saveDive({ ...dive, logIds: [linkedLog.id], primaryLogId: linkedLog.id }, storage);
-  return { dive: savedDive, log: linkedLog };
+  const normalized = normalizeDive({ ...dive, logIds: [linkedLog.id], primaryLogId: linkedLog.id });
+  await storage.setItem(diveKey(normalized.id), JSON.stringify(normalized));
+  // `indexed: false` skips the read-modify-write of the whole index (O(n^2) over
+  // a bulk download); the caller rebuilds the index once at the end.
+  if (indexed) await upsertIndexRow(indexRowFromDive(normalized, [linkedLog]), storage);
+  return { dive: normalized, log: linkedLog };
 }
 
 /**
