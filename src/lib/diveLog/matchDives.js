@@ -389,20 +389,31 @@ export function findMatch(newLog, candidates) {
     const dive = cand.dive;
     const logs = cand.logs || [];
     const ref = logs.find((l) => l.id === dive.primaryLogId) || logs[0] || dive;
-    const sameDevice = logs.some((l) => l.deviceKey && l.deviceKey === newLog.deviceKey);
-    if (sameDevice) continue;
+    // This exact download is already on this dive (fingerprint) — nothing to do.
+    if (newLog.fingerprint && logs.some((l) => l.fingerprint && l.fingerprint === newLog.fingerprint
+        && l.deviceKey === newLog.deviceKey)) {
+      continue;
+    }
+    // A different whole dive from the *same* computer isn't a cross-computer
+    // match — but a *fragment* from the same computer can still belong here
+    // (the computer split one dive into several).
+    const sameDeviceWholeDive = logs.some((l) => l.deviceKey && l.deviceKey === newLog.deviceKey);
 
-    const pair = classifyPair(newLog, ref);
-    consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
+    if (!sameDeviceWholeDive) {
+      const pair = classifyPair(newLog, ref);
+      consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
+    }
 
     // newLog is a fragment of this longer existing dive
     const frag = classifyFragment(newLog, ref);
     consider(frag.verdict === 'none' ? null : { ...frag, diveId: dive.id });
 
     // this existing dive is a fragment of the (longer) newLog -> absorb it
-    const existingFrag = classifyFragment(ref, newLog);
-    if (existingFrag.verdict !== 'none') {
-      absorb.push({ diveId: dive.id, result: existingFrag, deviceKey: ref.deviceKey, start: dive.startTime });
+    if (!sameDeviceWholeDive) {
+      const existingFrag = classifyFragment(ref, newLog);
+      if (existingFrag.verdict !== 'none') {
+        absorb.push({ diveId: dive.id, result: existingFrag, deviceKey: ref.deviceKey, start: dive.startTime });
+      }
     }
   }
 

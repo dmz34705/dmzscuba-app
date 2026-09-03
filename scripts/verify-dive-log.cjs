@@ -72,6 +72,7 @@ const {
   loadLog,
   loadLogsForDive,
   saveDive,
+  loadAll,
   createDiveFromLog,
   attachLogToDive,
   softDeleteDive,
@@ -642,6 +643,50 @@ function memoryStorage(seed = {}) {
   const keptRow = (await loadIndex(store)).find((r) => r.id === mA.dive.id);
   assert.equal(keptRow.logCount, 2);
   assert.equal(keptRow.deviceKeys.length, 2);
+
+  // --- end to end: Aug 27 split-dive recovery ---
+  const rstore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  // Shearwater: one 60-min dive
+  const shDive = await createDiveFromLog({
+    device: { vendor: 'Shearwater', product: 'Perdix', serial: 'S1' }, fingerprint: 'SH27',
+    reportedStartTime: '2026-08-27T13:00:00.000Z', durationSeconds: 3600,
+    water: { maxDepthMeters: 30 }, profile: { samples: longDiveProfile().map((x) => ({ ...x })) },
+  }, rstore);
+  // Suunto: same dive logged as two fragments
+  await createDiveFromLog({
+    device: { vendor: 'Suunto', product: 'EON Core', serial: 'S2' }, fingerprint: 'SU27a',
+    reportedStartTime: '2026-08-27T13:00:00.000Z', durationSeconds: 1770,
+    water: { maxDepthMeters: 30 }, profile: { samples: suFrag1Samples.map((x) => ({ ...x })) },
+  }, rstore);
+  await createDiveFromLog({
+    device: { vendor: 'Suunto', product: 'EON Core', serial: 'S2' }, fingerprint: 'SU27b',
+    reportedStartTime: '2026-08-27T13:30:30.000Z', durationSeconds: 1830,
+    water: { maxDepthMeters: 30 }, profile: { samples: suFrag2Samples.map((x) => ({ ...x })) },
+  }, rstore);
+  assert.equal((await loadIndex(rstore)).filter((r) => !r.deletedAt).length, 3); // inflated
+
+  // recheck logic (mirrors useDiveLog.recheckDuplicates)
+  const rdives = await loadAll(rstore);
+  const rbundles = [];
+  for (const d of rdives) rbundles.push({ dive: d, logs: await loadLogsForDive(d, rstore) });
+  const folded = new Set();
+  for (const b of rbundles) {
+    if (folded.has(b.dive.id)) continue;
+    const primary = b.logs[0];
+    const others = rbundles.filter((x) => x.dive.id !== b.dive.id && !folded.has(x.dive.id));
+    const { bestMatch: mm } = findMatch(primary, others);
+    if (!mm || mm.verdict === 'none') continue;
+    const isSpanning = mm.kind === 'spanning-merge';
+    const keepId = isSpanning ? b.dive.id : (mm.diveIds || [mm.diveId])[0];
+    const foldIds = isSpanning ? mm.diveIds : [b.dive.id];
+    // eslint-disable-next-line no-await-in-loop
+    await diveLog.mergeDives(keepId, foldIds, {}, rstore);
+    foldIds.forEach((id) => folded.add(id));
+  }
+  const finalRows = (await loadIndex(rstore)).filter((r) => !r.deletedAt);
+  assert.equal(finalRows.length, 1, `expected 1 dive after recovery, got ${finalRows.length}`);
+  assert.equal(finalRows[0].logCount, 3);
+  assert.equal(finalRows[0].id, shDive.dive.id); // the long Shearwater dive is canonical
 
   // fingerprint round-trip (unchanged from v1)
   await diveLog.saveFingerprint('EON Core', 'FP-B', store);
