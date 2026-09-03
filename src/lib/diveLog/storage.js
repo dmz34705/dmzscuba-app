@@ -156,7 +156,7 @@ export async function loadAll(storage = AsyncStorage) {
  * reported start is `reportedStartTime`: within ±`windowHours` and not deleted.
  * The matcher does the expensive profile comparison on this shortlist.
  */
-export async function loadMatchCandidates(reportedStartTime, { windowHours = 30 } = {}, storage = AsyncStorage) {
+export async function loadMatchCandidates(reportedStartTime, { windowHours = 72 } = {}, storage = AsyncStorage) {
   const t = Date.parse(reportedStartTime);
   if (Number.isNaN(t)) return [];
   const windowMs = windowHours * 3600 * 1000;
@@ -197,6 +197,48 @@ export async function createDiveFromLog(logPartial, storage = AsyncStorage) {
   const linkedLog = await saveLog({ ...log, diveId: dive.id }, storage);
   const savedDive = await saveDive({ ...dive, logIds: [linkedLog.id], primaryLogId: linkedLog.id }, storage);
   return { dive: savedDive, log: linkedLog };
+}
+
+/**
+ * Fold `fromDiveIds` into `keepDiveId`: move their logs across, re-surface the
+ * primary, soft-delete the emptied dives. Used by the matcher (spanning merge)
+ * and the manual "merge dives" action. Optionally shift a device's logs by
+ * `correction` = { deviceKey, offsetMinutes }.
+ */
+export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } = {}, storage = AsyncStorage) {
+  const keep = await loadDive(keepDiveId, storage);
+  if (!keep) return null;
+  const logIds = new Set(keep.logIds);
+  for (const fromId of fromDiveIds) {
+    if (fromId === keepDiveId) continue;
+    // eslint-disable-next-line no-await-in-loop
+    const from = await loadDive(fromId, storage);
+    if (!from) continue;
+    for (const lid of from.logIds) {
+      // eslint-disable-next-line no-await-in-loop
+      const log = await loadLog(lid, storage);
+      if (!log) continue;
+      const shifted = correction && log.deviceKey === correction.deviceKey
+        ? { ...log, timeCorrectionMinutes: (log.timeCorrectionMinutes || 0) + correction.offsetMinutes }
+        : log;
+      // eslint-disable-next-line no-await-in-loop
+      await saveLog({ ...shifted, diveId: keepDiveId }, storage);
+      logIds.add(lid);
+    }
+    // eslint-disable-next-line no-await-in-loop
+    await softDeleteDive(fromId, storage);
+  }
+  let next = normalizeDive({
+    ...keep,
+    logIds: [...logIds],
+    source: keep.source === 'manual' ? 'mixed' : keep.source,
+  });
+  const logs = await loadLogsForDive(next, storage);
+  const primary = logs.find((l) => l.id === next.primaryLogId)
+    || logs.slice().sort((a, b) => (b.durationSeconds || 0) - (a.durationSeconds || 0))[0]
+    || null;
+  if (primary) next = surfaceLogOntoDive({ ...next, primaryLogId: primary.id }, primary);
+  return saveDive(next, storage);
 }
 
 /** Attach an already-created ComputerLog to an existing Dive. */

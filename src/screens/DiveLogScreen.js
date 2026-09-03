@@ -423,7 +423,7 @@ function TrendArrow({ slope, goodDirection = 'down' }) {
   );
 }
 
-function StatsView({ trends, stats, units }) {
+function StatsView({ trends, stats, units, onRecheck, rechecking }) {
   if (!trends.diveCount) {
     return <Text style={styles.muted}>Log or download a few dives to see your trends.</Text>;
   }
@@ -474,6 +474,20 @@ function StatsView({ trends, stats, units }) {
           ))}
         </Card>
       ) : null}
+
+      <Card style={styles.detailCard}>
+        <Text style={styles.detailCardTitle}>Housekeeping</Text>
+        <Text style={styles.reviewBody}>
+          Re-check every dive for the same dive logged twice — e.g. one computer
+          split a dive another saw as one.
+        </Text>
+        <SecondaryButton
+          label={rechecking ? 'Checking…' : 'Check for duplicate dives'}
+          onPress={onRecheck}
+          disabled={rechecking}
+          style={styles.primaryCta}
+        />
+      </Card>
     </>
   );
 }
@@ -522,23 +536,30 @@ function FolderCard({ folder, onPress }) {
   );
 }
 
-function SelectionBar({ count, total, allSelected, onToggleAll, onDelete }) {
+function SelectionBar({ count, total, allSelected, onToggleAll, onDelete, onMerge }) {
   return (
     <Card style={styles.selectionBar}>
       <Pressable onPress={onToggleAll} hitSlop={8} style={({ pressed }) => [styles.selectionToggle, pressed && styles.pressed]}>
         <Text style={styles.selectionToggleText}>{allSelected ? 'Deselect all' : `Select all (${total})`}</Text>
       </Pressable>
-      <Pressable
-        accessibilityRole="button"
-        disabled={count === 0}
-        onPress={onDelete}
-        hitSlop={8}
-        style={({ pressed }) => [styles.selectionDelete, count === 0 && styles.selectionDeleteOff, pressed && styles.pressed]}
-      >
-        <Text style={[styles.selectionDeleteText, count === 0 && styles.selectionDeleteTextOff]}>
-          {count ? `Delete ${count}` : 'Delete'}
-        </Text>
-      </Pressable>
+      <View style={styles.selectionRight}>
+        {count >= 2 ? (
+          <Pressable accessibilityRole="button" onPress={onMerge} hitSlop={8} style={({ pressed }) => [styles.selectionMerge, pressed && styles.pressed]}>
+            <Text style={styles.selectionMergeText}>Merge {count}</Text>
+          </Pressable>
+        ) : null}
+        <Pressable
+          accessibilityRole="button"
+          disabled={count === 0}
+          onPress={onDelete}
+          hitSlop={8}
+          style={({ pressed }) => [styles.selectionDelete, count === 0 && styles.selectionDeleteOff, pressed && styles.pressed]}
+        >
+          <Text style={[styles.selectionDeleteText, count === 0 && styles.selectionDeleteTextOff]}>
+            {count ? `Delete ${count}` : 'Delete'}
+          </Text>
+        </Pressable>
+      </View>
     </Card>
   );
 }
@@ -555,18 +576,37 @@ function offsetLabel(minutes) {
 
 function MatchReviewCard({ proposal, onResolve }) {
   const conflict = Math.abs(proposal.offsetMinutes) >= 1;
+  const nAbsorb = (proposal.absorbDiveIds || []).length;
+  const body = proposal.kind === 'spanning-merge'
+    ? (
+      <>
+        <Text style={styles.reviewStrong}>{nAbsorb} dives</Text> from{' '}
+        <Text style={styles.reviewStrong}>{proposal.matchDeviceName}</Text> together match one continuous dive from{' '}
+        <Text style={styles.reviewStrong}>{proposal.newDeviceName}</Text>
+      </>
+    ) : proposal.kind === 'fragment'
+      ? (
+        <>
+          A shorter dive from <Text style={styles.reviewStrong}>{proposal.newDeviceName}</Text> is part of a longer dive from{' '}
+          <Text style={styles.reviewStrong}>{proposal.matchDeviceName}</Text>
+        </>
+      )
+      : (
+        <>
+          A dive from <Text style={styles.reviewStrong}>{proposal.newDeviceName}</Text> lines up with one from{' '}
+          <Text style={styles.reviewStrong}>{proposal.matchDeviceName}</Text>
+        </>
+      );
   return (
     <Card style={styles.reviewCard}>
-      <Text style={styles.reviewTitle}>Same dive, two computers?</Text>
+      <Text style={styles.reviewTitle}>
+        {proposal.kind === 'spanning-merge' || proposal.kind === 'fragment' ? 'One dive, split in two?' : 'Same dive, two computers?'}
+      </Text>
       <Text style={styles.reviewBody}>
-        A dive from <Text style={styles.reviewStrong}>{proposal.newDeviceName}</Text> lines up with one from{' '}
-        <Text style={styles.reviewStrong}>{proposal.matchDeviceName}</Text>
-        {conflict ? ` — but their clocks differ by ${offsetLabel(proposal.offsetMinutes)}.` : '.'}
+        {body}
+        {conflict ? <Text> — but their clocks differ by {offsetLabel(proposal.offsetMinutes)}.</Text> : <Text>.</Text>}
       </Text>
-      <Text style={styles.reviewMeta}>
-        {`match confidence ${Math.round(proposal.score * 100)}%`}
-        {proposal.kind === 'split' ? ' · one computer split the dive' : ''}
-      </Text>
+      <Text style={styles.reviewMeta}>{`match confidence ${Math.round(proposal.score * 100)}%`}</Text>
 
       {conflict ? (
         <>
@@ -876,7 +916,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const {
     loaded, rows, stats, trends, folders, knownComputerKeys, pendingProposals,
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLog, resolveProposal, clearProposals,
+    recheckDuplicates, mergeDivesManual,
   } = useDiveLog();
+  const [rechecking, setRechecking] = useState(false);
 
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
@@ -952,6 +994,20 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       ],
     );
   }, [deleteDives, exitSelect, selectedIds]);
+
+  const handleMergeSelected = useCallback(() => {
+    const ids = [...selectedIds];
+    if (ids.length < 2) return;
+    Alert.alert(
+      `Merge ${ids.length} dives into one?`,
+      'Use this when these are really one dive recorded more than once. The computer logs stay; the dive counts once.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Merge', onPress: async () => { await mergeDivesManual(ids); exitSelect(); } },
+      ],
+    );
+  }, [exitSelect, mergeDivesManual, selectedIds]);
+
   const [record, setRecord] = useState(null);   // the Dive
   const [logs, setLogs] = useState([]);          // its attached ComputerLogs
   const [form, setForm] = useState(null);
@@ -1135,6 +1191,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
                     allSelected={allSelected}
                     onToggleAll={toggleSelectAll}
                     onDelete={handleDeleteSelected}
+                    onMerge={handleMergeSelected}
                   />
                 ) : null}
                 {listRows.length === 0 ? (
@@ -1187,7 +1244,24 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
           />
         )}
 
-        {view === 'stats' && <StatsView trends={trends} stats={stats} units={units} />}
+        {view === 'stats' && (
+          <StatsView
+            trends={trends}
+            stats={stats}
+            units={units}
+            rechecking={rechecking}
+            onRecheck={async () => {
+              setRechecking(true);
+              try {
+                const n = await recheckDuplicates();
+                if (n > 0) setView('review');
+                else Alert.alert('No duplicates found', 'Every dive looks unique.');
+              } finally {
+                setRechecking(false);
+              }
+            }}
+          />
+        )}
 
         {view === 'detail' && (
           record ? (
@@ -1263,6 +1337,12 @@ const styles = StyleSheet.create({
   selectionDeleteOff: { opacity: 0.4 },
   selectionDeleteText: { color: colors.danger, fontSize: 13, fontWeight: '800' },
   selectionDeleteTextOff: { color: colors.muted },
+  selectionRight: { alignItems: 'center', flexDirection: 'row', gap: 8 },
+  selectionMerge: {
+    backgroundColor: 'rgba(112,221,246,0.12)', borderColor: 'rgba(112,221,246,0.4)', borderRadius: radii.sm,
+    borderWidth: 1, paddingHorizontal: 12, paddingVertical: 8,
+  },
+  selectionMergeText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
 
   emptyCard: { alignItems: 'center', paddingVertical: 26 },
   emptyTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },

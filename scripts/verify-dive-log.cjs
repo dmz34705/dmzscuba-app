@@ -47,6 +47,8 @@ const {
   cleanOffsetMinutes,
   classifyPair,
   classifySplit,
+  classifyFragment,
+  findSpanningMerge,
   findMatch,
   // format
   formatDepth,
@@ -384,6 +386,65 @@ const split = classifySplit(wide, fragA, fragB);
 assert.ok(split.verdict !== 'none', `split verdict ${split.verdict}`);
 assert.deepEqual(split.fragmentIds, ['fa', 'fb']);
 
+// --- split-dive: one long dive vs two fragments from another computer ---
+// A 60-min dive with a brief mid-dive ascent to ~3 m (which trips a Suunto into
+// ending one dive and starting another; a Shearwater logs it as continuous).
+function longDiveProfile() {
+  const s = [];
+  for (let t = 0; t <= 3600; t += 10) {
+    let depth;
+    if (t < 180) depth = (t / 180) * 30;
+    else if (t >= 1680 && t < 1860) {
+      const p = (t - 1680) / 180;
+      depth = p < 0.5 ? 30 - (p / 0.5) * 28 : 2 + ((p - 0.5) / 0.5) * 28;
+    } else if (t > 3420) depth = Math.max(0, 30 * (1 - (t - 3420) / 180));
+    else depth = 30;
+    s.push({ t, depth });
+  }
+  return s;
+}
+const longProfile = longDiveProfile();
+const shearLong = {
+  deviceKey: 'Shearwater|Perdix|1', reportedStartTime: '2026-08-27T13:00:00.000Z',
+  durationSeconds: 3600, water: { maxDepthMeters: 30 }, profile: { samples: longProfile.map((x) => ({ ...x })) },
+};
+// Suunto fragment 1: the dive up to the surface excursion
+const suFrag1Samples = longProfile.filter((x) => x.t <= 1770).map((x) => ({ ...x }));
+const suFrag1 = {
+  id: 'su1', deviceKey: 'Suunto|EON Core|9', startTime: '2026-08-27T13:00:00.000Z', reportedStartTime: '2026-08-27T13:00:00.000Z',
+  durationSeconds: 1770, water: { maxDepthMeters: 30 }, profile: { samples: suFrag1Samples },
+};
+// Suunto fragment 2: the redescent onward, re-based to t=0
+const suFrag2Samples = [{ t: 0, depth: 1 }];
+longProfile.filter((x) => x.t >= 1800).forEach((x) => suFrag2Samples.push({ t: x.t - 1800 + 30, depth: x.depth }));
+const suFrag2 = {
+  id: 'su2', deviceKey: 'Suunto|EON Core|9', startTime: '2026-08-27T13:30:30.000Z', reportedStartTime: '2026-08-27T13:30:30.000Z',
+  durationSeconds: 1830, water: { maxDepthMeters: 30 }, profile: { samples: suFrag2Samples },
+};
+
+// classifyFragment: each Suunto fragment is part of the longer Shearwater dive
+const frag2Match = classifyFragment(suFrag2, shearLong);
+assert.ok(frag2Match.verdict !== 'none', `frag2 verdict ${frag2Match.verdict} score ${frag2Match.score}`);
+assert.ok(frag2Match.windowStartSec > 1200, `frag2 window ${frag2Match.windowStartSec}`);
+// a whole separate dive is NOT a fragment
+assert.equal(classifyFragment(other, shearLong).verdict, 'none');
+
+// findSpanningMerge: the long Shearwater dive spans the two separate Suunto dives
+const spanning = findSpanningMerge(shearLong, [
+  { dive: { id: 'dvA', primaryLogId: 'su1' }, logs: [suFrag1] },
+  { dive: { id: 'dvB', primaryLogId: 'su2' }, logs: [suFrag2] },
+]);
+assert.ok(spanning, 'expected a spanning merge');
+assert.equal(spanning.kind, 'spanning-merge');
+assert.deepEqual(spanning.diveIds.sort(), ['dvA', 'dvB']);
+
+// findMatch: importing the Suunto fragment finds it belongs to the existing long dive
+const fmFrag = findMatch(suFrag2, [
+  { dive: { id: 'dvLong', primaryLogId: 'sl' }, logs: [{ ...shearLong, id: 'sl' }] },
+]);
+assert.ok(fmFrag.bestMatch && fmFrag.bestMatch.diveId === 'dvLong', 'fragment should match the long dive');
+assert.equal(fmFrag.bestMatch.kind, 'fragment');
+
 // findMatch wires it together; ignores same-device candidates
 const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
 const fm = findMatch(fmNew, [
@@ -572,6 +633,16 @@ function memoryStorage(seed = {}) {
   assert.equal(corr[0].offsetMinutes, -420);
   assert.ok(corr[0].decidedAt);
 
+  // mergeDives folds one dive's logs into another and soft-deletes the emptied one
+  const mA = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-A', vendor: 'Shearwater', product: 'Perdix', serial: '1' }), store);
+  const mB = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-B', vendor: 'Suunto', product: 'EON Core', serial: '2' }), store);
+  const kept = await diveLog.mergeDives(mA.dive.id, [mB.dive.id], {}, store);
+  assert.equal(kept.logIds.length, 2);
+  assert.equal((await loadDive(mB.dive.id, store)).deletedAt != null, true);
+  const keptRow = (await loadIndex(store)).find((r) => r.id === mA.dive.id);
+  assert.equal(keptRow.logCount, 2);
+  assert.equal(keptRow.deviceKeys.length, 2);
+
   // fingerprint round-trip (unchanged from v1)
   await diveLog.saveFingerprint('EON Core', 'FP-B', store);
   assert.equal(await diveLog.loadFingerprint('EON Core', store), 'FP-B');
@@ -645,6 +716,8 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /findMatch/);
   assert.match(hook, /loadMatchCandidates/);
   assert.match(hook, /resolveProposal/);
+  assert.match(hook, /recheckDuplicates/);
+  assert.match(hook, /mergeDives/);
   assert.match(hook, /const deleteDives = useCallback/);
   assert.doesNotMatch(hook, /AsyncStorage/);
 

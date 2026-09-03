@@ -25,6 +25,8 @@ const CONFIRM_SCORE = 0.80;
 const MIN_OVERLAP_FRAC = 0.6;
 
 const SPLIT_MAX_GAP_SEC = 12 * 60;     // a surface gap shorter than this can be one dive
+const FRAGMENT_MAX_FRAC = 0.9;         // a "fragment" is meaningfully shorter than the whole
+const FRAGMENT_MIN_SEC = 120;          // ignore trivially short blips
 
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
 
@@ -174,6 +176,76 @@ export function classifyPair(newLog, candidate) {
   };
 }
 
+function samplesOf(logOrDive) {
+  return logOrDive?.profile?.samples || logOrDive?.samples || [];
+}
+function wallStart(logOrDive) {
+  return Date.parse(logOrDive?.reportedStartTime || logOrDive?.startTime);
+}
+
+/** Best lag (in samples) at which `short` sits inside `long`, sliding over the whole span. */
+function subwindowBestLag(long, short) {
+  if (long.length < 3 || short.length < 3 || short.length >= long.length) return { lagSteps: 0, score: -1 };
+  const maxLag = long.length - Math.floor(short.length * MIN_OVERLAP_FRAC);
+  const scanAt = (center, step, span) => {
+    let best = { lagSteps: center, score: -1 };
+    for (let lag = Math.max(0, center - span); lag <= Math.min(maxLag, center + span); lag += step) {
+      const s = alignmentScore(long, short, lag);
+      if (s != null && s > best.score) best = { lagSteps: lag, score: s };
+    }
+    return best;
+  };
+  const coarse = scanAt(Math.floor(maxLag / 2), Math.max(1, Math.round(30 / RESAMPLE_SEC)), maxLag);
+  if (coarse.score < 0) return coarse;
+  return scanAt(coarse.lagSteps, 1, Math.round(60 / RESAMPLE_SEC));
+}
+
+/**
+ * Is `shortLog` a *fragment* of the longer `longRef` — i.e. one computer ended
+ * the dive early / started a new one (Suunto) where the other saw it as one
+ * continuous dive (Shearwater)? Aligns the short profile against a window of the
+ * long one.
+ * @returns { verdict, score, offsetMinutes, cleanOffset, windowStartSec }
+ */
+export function classifyFragment(shortLog, longRef) {
+  const shortDur = shortLog.durationSeconds || 0;
+  const longDur = longRef.durationSeconds || 0;
+  if (shortDur < FRAGMENT_MIN_SEC) return { verdict: 'none' };
+  if (shortDur >= longDur * FRAGMENT_MAX_FRAC) return { verdict: 'none' }; // not shorter -> use classifyPair
+  const shortDepth = shortLog.water?.maxDepthMeters || 0;
+  const longDepth = longRef.water?.maxDepthMeters || 0;
+  if (shortDepth > longDepth + Math.max(DEPTH_TOL_M, DEPTH_TOL_FRAC * longDepth)) return { verdict: 'none' };
+
+  const long = resampleDepth(samplesOf(longRef));
+  const short = resampleDepth(samplesOf(shortLog));
+  const { lagSteps, score } = subwindowBestLag(long, short);
+  if (score < CONFIRM_SCORE) return { verdict: 'none' };
+
+  const lagSec = lagSteps * RESAMPLE_SEC;
+  const sShort = wallStart(shortLog);
+  const sLong = wallStart(longRef);
+  // minutes to add to the fragment's reported start so it sits where it belongs
+  const offsetSec = Number.isFinite(sShort) && Number.isFinite(sLong) ? (sLong + lagSec) - sShort : 0;
+  const clean = cleanOffsetMinutes(offsetSec);
+  const offsetMinutes = clean != null ? clean : Math.round(offsetSec / 60);
+  const clockConflict = Math.abs(offsetMinutes) >= 1;
+
+  let verdict = 'confirm';
+  if (score >= AUTO_SCORE && (!clockConflict || clean != null)) verdict = 'auto';
+  if (verdict === 'auto' && clockConflict && clean == null) verdict = 'confirm';
+
+  return {
+    verdict,
+    score: Math.round(score * 1000) / 1000,
+    offsetSec: Math.round(offsetSec),
+    offsetMinutes,
+    cleanOffset: clean != null,
+    clockConflict,
+    windowStartSec: lagSec,
+    kind: 'fragment',
+  };
+}
+
 /**
  * Does the new (long) log correspond to two consecutive candidate fragments from
  * one device that were split at the surface? Returns a match when the fragments'
@@ -215,48 +287,136 @@ export function classifySplit(newLog, fragA, fragB) {
   };
 }
 
+function stitchProfiles(entries) {
+  // entries: [{ samples, durationSeconds, wallStart }] in start order
+  const out = [];
+  let cursor = 0;
+  let prevEnd = null;
+  for (const e of entries) {
+    let gap = 0;
+    if (prevEnd != null && Number.isFinite(e.wallStart)) {
+      gap = Math.max(0, (e.wallStart - prevEnd) / 1000);
+      out.push({ t: cursor + gap / 2, depth: 1 }); // surface point in the gap
+    }
+    cursor += gap;
+    for (const s of cleanTimeSamples(e.samples)) out.push({ t: cursor + s.t, depth: s.depth });
+    cursor += e.durationSeconds || 0;
+    prevEnd = Number.isFinite(e.wallStart) ? e.wallStart + (e.durationSeconds || 0) * 1000 : null;
+  }
+  return out;
+}
+
+/**
+ * Does the new (long) log span a run of 2–3 existing same-device dives that were
+ * each logged separately (the splitting computer downloaded first)? Returns a
+ * merge proposal covering those dives.
+ */
+export function findSpanningMerge(newLog, candidates) {
+  const longDur = newLog.durationSeconds || 0;
+  const newSamples = samplesOf(newLog);
+  if (longDur < FRAGMENT_MIN_SEC || resampleDepth(newSamples).length < 3) return null;
+
+  // same-device candidate dives, each much shorter than newLog, sorted by start
+  const byDevice = new Map();
+  for (const c of candidates) {
+    const logs = c.logs || [];
+    if (logs.some((l) => l.deviceKey === newLog.deviceKey)) continue; // different computer only
+    const ref = logs.find((l) => l.id === c.dive.primaryLogId) || logs[0];
+    if (!ref || !ref.deviceKey) continue;
+    if ((ref.durationSeconds || 0) >= longDur * FRAGMENT_MAX_FRAC) continue;
+    if (!byDevice.has(ref.deviceKey)) byDevice.set(ref.deviceKey, []);
+    byDevice.get(ref.deviceKey).push({ dive: c.dive, ref });
+  }
+
+  for (const runs of byDevice.values()) {
+    runs.sort((a, b) => wallStart(a.ref) - wallStart(b.ref));
+    for (let i = 0; i < runs.length - 1; i += 1) {
+      for (let n = 2; n <= 3 && i + n <= runs.length; n += 1) {
+        const group = runs.slice(i, i + n);
+        const entries = group.map((g) => ({
+          samples: samplesOf(g.ref),
+          durationSeconds: g.ref.durationSeconds || 0,
+          wallStart: wallStart(g.ref),
+        }));
+        // gap between any two fragments must look like a brief surface interval
+        let gapsOk = true;
+        for (let k = 1; k < entries.length; k += 1) {
+          const gap = (entries[k].wallStart - entries[k - 1].wallStart) / 1000 - entries[k - 1].durationSeconds;
+          if (!(gap >= 0 && gap <= SPLIT_MAX_GAP_SEC)) gapsOk = false;
+        }
+        if (!gapsOk) continue;
+
+        const stitched = stitchProfiles(entries);
+        const firstStart = entries[0].wallStart;
+        const sNew = wallStart(newLog);
+        const reportedDeltaSec = Number.isFinite(firstStart) && Number.isFinite(sNew) ? (firstStart - sNew) / 1000 : 0;
+        const { offsetSec: rawOffsetSec, score } = bestOffset(stitched, newSamples, reportedDeltaSec);
+        if (score < CONFIRM_SCORE) continue;
+        const offsetSec = -rawOffsetSec;
+        const clean = cleanOffsetMinutes(offsetSec);
+        return {
+          kind: 'spanning-merge',
+          verdict: score >= AUTO_SCORE && (clean != null || Math.abs(offsetSec) < 60) ? 'auto' : 'confirm',
+          score: Math.round(score * 1000) / 1000,
+          diveIds: group.map((g) => g.dive.id),
+          offsetSec: Math.round(offsetSec),
+          offsetMinutes: clean != null ? clean : Math.round(offsetSec / 60),
+          cleanOffset: clean != null,
+          clockConflict: Math.abs(Math.round(offsetSec / 60)) >= 1,
+        };
+      }
+    }
+  }
+  return null;
+}
+
 /**
  * Match a new log against the existing book.
  * @param {object} newLog                the freshly downloaded ComputerLog
  * @param {Array<{dive, logs}>} candidates  existing dives + their logs (caller pre-filters by ~time window)
- * @returns {{ bestMatch: object|null, splitMatch: object|null }}
+ * @returns {{ bestMatch: object|null }}
+ *   bestMatch.kind: 'pair' | 'fragment' | 'spanning-merge'
  */
 export function findMatch(newLog, candidates) {
   let bestMatch = null;
+  const consider = (m) => {
+    if (!m || m.verdict === 'none') return;
+    if (!bestMatch || m.score > bestMatch.score) bestMatch = m;
+  };
+
   for (const cand of candidates) {
     const dive = cand.dive;
     const logs = cand.logs || [];
-    // Don't match a computer against its own earlier log of the same dive —
-    // that's the fingerprint de-dup's job.
-    const sameDevice = logs.some((l) => l.deviceKey && l.deviceKey === newLog.deviceKey);
-    if (sameDevice) continue;
-
     const ref = logs.find((l) => l.id === dive.primaryLogId) || logs[0] || dive;
-    const result = classifyPair(newLog, ref);
-    if (result.verdict === 'none') continue;
-    if (!bestMatch || result.score > bestMatch.score) {
-      bestMatch = { ...result, diveId: dive.id };
-    }
+    const sameDevice = logs.some((l) => l.deviceKey && l.deviceKey === newLog.deviceKey);
 
-    // Split: this dive's device logged 2+ fragments the new computer saw as one.
-    const byDevice = new Map();
-    for (const l of logs) {
-      const k = l.deviceKey || 'x';
-      if (!byDevice.has(k)) byDevice.set(k, []);
-      byDevice.get(k).push(l);
-    }
-    for (const frags of byDevice.values()) {
-      if (frags.length < 2) continue;
-      frags.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
-      for (let i = 0; i < frags.length - 1; i += 1) {
-        const split = classifySplit(newLog, frags[i], frags[i + 1]);
-        if (split.verdict !== 'none') {
-          return { bestMatch: { ...split, diveId: dive.id, kind: 'split' }, splitMatch: split };
-        }
+    if (!sameDevice) {
+      const pair = classifyPair(newLog, ref);
+      consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
+
+      // new log is a fragment of this (longer) existing dive
+      const frag = classifyFragment(newLog, ref);
+      consider(frag.verdict === 'none' ? null : { ...frag, diveId: dive.id });
+
+      // an existing dive whose device split what the new computer saw as one
+      const existingFrag = classifyFragment(ref, newLog);
+      if (existingFrag.verdict !== 'none') {
+        consider({
+          ...existingFrag,
+          kind: 'absorb-existing',
+          diveId: dive.id,
+          // offset here corrects the EXISTING dive's log; flip for "add to new"
+          offsetMinutes: -existingFrag.offsetMinutes,
+        });
       }
     }
   }
-  return { bestMatch, splitMatch: null };
+
+  // new long log spanning several separately-logged same-device dives
+  const spanning = findSpanningMerge(newLog, candidates);
+  if (spanning && (!bestMatch || spanning.score >= bestMatch.score)) bestMatch = spanning;
+
+  return { bestMatch };
 }
 
 /**

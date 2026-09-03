@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { createComputerLog, createDive, normalizeDive, surfaceLogOntoDive, touchRecord, withTimeCorrection } from '../../lib/diveLog/schema';
+import { createComputerLog, createDive, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
 import { computeDiveLogStats } from '../../lib/diveLog/stats';
 import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
 import { findMatch } from '../../lib/diveLog/matchDives';
@@ -8,16 +8,16 @@ import {
   attachLogToDive,
   createDiveFromLog,
   isMigratedToV2,
+  loadAll,
   loadDive,
   loadIndex,
-  loadLog,
   loadLogsForDive,
   loadMatchCandidates,
+  mergeDives,
   migrateToV2,
   rebuildIndex,
   saveDeviceTimeCorrection,
   saveDive,
-  saveLog,
   softDeleteDive,
 } from '../../lib/diveLog/storage';
 
@@ -184,83 +184,159 @@ export default function useDiveLog() {
   const importComputerLog = useCallback(async (logPartial) => {
     const log = createComputerLog(logPartial);
     const candidates = await loadMatchCandidates(log.reportedStartTime).catch(() => []);
-    const { bestMatch } = findMatch(log, candidates);
+    const { bestMatch: m } = findMatch(log, candidates);
 
-    if (bestMatch && bestMatch.verdict === 'auto' && !bestMatch.clockConflict) {
-      await attachLogToDive(bestMatch.diveId, log);
-      diveCache.current.delete(bestMatch.diveId);
+    const describe = (diveId) => {
+      const c = candidates.find((x) => x.dive.id === diveId);
+      const p = c?.logs.find((l) => l.id === c.dive.primaryLogId) || c?.logs[0] || null;
+      return {
+        deviceName: p ? `${p.device.vendor} ${p.device.product}`.trim() : 'the other computer',
+        deviceKey: p?.deviceKey || null,
+        start: c?.dive.startTime || '',
+      };
+    };
+    const newDeviceName = `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer';
+
+    if (!m) {
+      await createDiveFromLog(log);
+      await refreshIndex();
+      return 'saved';
+    }
+
+    const pushProposal = ({ newDiveId, primaryDiveId, absorbDiveIds, other }) => {
+      setPendingProposals((prev) => [...prev, {
+        id: `${newDiveId}:${absorbDiveIds.join('+')}`,
+        kind: m.kind,
+        newDiveId,
+        primaryDiveId,
+        absorbDiveIds,
+        newDeviceName,
+        newDeviceKey: log.deviceKey,
+        matchDeviceName: other.deviceName,
+        matchDeviceKey: other.deviceKey,
+        offsetMinutes: m.offsetMinutes || 0,
+        cleanOffset: !!m.cleanOffset,
+        score: m.score,
+        newReportedStart: log.reportedStartTime,
+        matchStart: other.start,
+      }]);
+    };
+
+    // The new log attaches to an existing dive (whole-dive or fragment match).
+    if (m.kind === 'pair' || m.kind === 'fragment') {
+      if (m.verdict === 'auto' && !m.clockConflict) {
+        await attachLogToDive(m.diveId, m.kind === 'fragment' ? { ...log, splitOf: m.diveId } : log);
+        diveCache.current.delete(m.diveId);
+        await refreshIndex();
+        return 'attached';
+      }
+      const { dive } = await createDiveFromLog(log);
+      pushProposal({ newDiveId: dive.id, primaryDiveId: m.diveId, absorbDiveIds: [m.diveId], other: describe(m.diveId) });
+      await refreshIndex();
+      return 'saved';
+    }
+
+    // The new (long) log spans one or more separately-logged same-device dives.
+    const targets = m.diveIds || [m.diveId];
+    const { dive } = await createDiveFromLog(log);
+    if (m.verdict === 'auto' && !m.clockConflict) {
+      await mergeDives(dive.id, targets);
+      [dive.id, ...targets].forEach((id) => diveCache.current.delete(id));
       await refreshIndex();
       return 'attached';
     }
-
-    const { dive } = await createDiveFromLog(log);
-
-    if (bestMatch && (bestMatch.clockConflict || bestMatch.verdict === 'confirm')) {
-      const matched = candidates.find((c) => c.dive.id === bestMatch.diveId);
-      const matchedPrimary = matched?.logs.find((l) => l.id === matched.dive.primaryLogId) || matched?.logs[0] || null;
-      setPendingProposals((prev) => [...prev, {
-        id: `${dive.id}:${bestMatch.diveId}`,
-        newDiveId: dive.id,
-        matchDiveId: bestMatch.diveId,
-        newDeviceName: `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer',
-        newDeviceKey: log.deviceKey,
-        matchDeviceName: matchedPrimary ? `${matchedPrimary.device.vendor} ${matchedPrimary.device.product}`.trim() : 'the other computer',
-        matchDeviceKey: matchedPrimary?.deviceKey || null,
-        offsetMinutes: bestMatch.offsetMinutes,
-        cleanOffset: !!bestMatch.cleanOffset,
-        score: bestMatch.score,
-        newReportedStart: log.reportedStartTime,
-        matchStart: matched?.dive.startTime || '',
-        kind: bestMatch.kind || 'pair',
-      }]);
-    }
-
+    pushProposal({ newDiveId: dive.id, primaryDiveId: dive.id, absorbDiveIds: targets, other: describe(targets[0]) });
     await refreshIndex();
     return 'saved';
   }, [refreshIndex]);
 
   const clearProposals = useCallback(() => setPendingProposals([]), []);
 
+  /** Re-run the matcher across the whole book (recovers dives split before the
+   *  matcher improved). Populates pendingProposals; nothing is written yet. */
+  const recheckDuplicates = useCallback(async () => {
+    const dives = await loadAll();
+    const bundles = [];
+    for (const d of dives) {
+      // eslint-disable-next-line no-await-in-loop
+      bundles.push({ dive: d, logs: await loadLogsForDive(d) });
+    }
+    const proposals = [];
+    const consumed = new Set();
+    for (const b of bundles) {
+      if (consumed.has(b.dive.id) || !b.logs.length) continue;
+      const primary = b.logs.find((l) => l.id === b.dive.primaryLogId) || b.logs[0];
+      const others = bundles.filter((x) => x.dive.id !== b.dive.id && !consumed.has(x.dive.id) && !consumed.has(x.dive.id));
+      const { bestMatch: m } = findMatch(primary, others);
+      if (!m || m.verdict === 'none') continue;
+      const targetIds = m.diveIds || [m.diveId];
+      const first = bundles.find((x) => x.dive.id === targetIds[0]);
+      const fp = first?.logs.find((l) => l.id === first.dive.primaryLogId) || first?.logs[0] || null;
+      const isSpanning = m.kind === 'spanning-merge';
+      proposals.push({
+        id: `recheck:${b.dive.id}:${targetIds.join('+')}`,
+        kind: m.kind,
+        newDiveId: b.dive.id,
+        primaryDiveId: isSpanning ? b.dive.id : targetIds[0],
+        absorbDiveIds: isSpanning ? targetIds : [targetIds[0]],
+        newDeviceName: `${primary.device.vendor} ${primary.device.product}`.trim() || 'Dive computer',
+        newDeviceKey: primary.deviceKey,
+        matchDeviceName: fp ? `${fp.device.vendor} ${fp.device.product}`.trim() : 'the other computer',
+        matchDeviceKey: fp?.deviceKey || null,
+        offsetMinutes: m.offsetMinutes || 0,
+        cleanOffset: !!m.cleanOffset,
+        score: m.score,
+        newReportedStart: primary.reportedStartTime,
+        matchStart: first?.dive.startTime || '',
+      });
+      consumed.add(b.dive.id);
+      targetIds.forEach((id) => consumed.add(id));
+    }
+    setPendingProposals(proposals);
+    return proposals.length;
+  }, []);
+
+  /** Manual merge: user selected several dives that are really one. */
+  const mergeDivesManual = useCallback(async (diveIds) => {
+    if (!Array.isArray(diveIds) || diveIds.length < 2) return;
+    const loaded = await Promise.all(diveIds.map((id) => getDive(id)));
+    const withDur = loaded.filter(Boolean).map((b) => ({
+      id: b.dive.id,
+      dur: (b.logs.find((l) => l.id === b.dive.primaryLogId) || b.logs[0])?.durationSeconds || b.dive.durationSeconds || 0,
+    }));
+    withDur.sort((a, b) => b.dur - a.dur);
+    const keepId = withDur[0].id;
+    await mergeDives(keepId, diveIds.filter((id) => id !== keepId));
+    diveIds.forEach((id) => diveCache.current.delete(id));
+    await refreshIndex();
+  }, [getDive, refreshIndex]);
+
   /**
-   * Resolve one post-download match proposal.
-   * @param {object} proposal
+   * Resolve one post-download / recheck match proposal.
+   * @param {object} proposal   { primaryDiveId, absorbDiveIds[], newDiveId, ... }
    * @param {'merge'|'separate'} action
-   * @param {{ correctDeviceKey?: string, offsetMinutes?: number }} [choice]
-   *   For 'merge': which computer's clock is right (the OTHER one gets corrected).
+   * @param {{ correctDeviceKey?: string }} [choice]  which computer's clock is right
    */
   const resolveProposal = useCallback(async (proposal, action, choice = {}) => {
     if (action === 'merge') {
-      const newDive = await loadDive(proposal.newDiveId);
-      const newLog = newDive?.logIds?.[0] ? await loadLog(newDive.logIds[0]) : null;
-      if (newLog) {
-        // `correctDeviceKey` is the computer whose clock the user says is right;
-        // the other one gets shifted by the detected offset.
-        const newIsWrong = choice.correctDeviceKey && choice.correctDeviceKey !== proposal.newDeviceKey;
-        const existingIsWrong = choice.correctDeviceKey === proposal.newDeviceKey && proposal.matchDeviceKey;
+      const keepId = proposal.primaryDiveId;
+      const foldIds = [...new Set(
+        [...(proposal.absorbDiveIds || []), proposal.newDiveId].filter((id) => id && id !== keepId),
+      )];
 
-        const movedLog = newIsWrong ? withTimeCorrection(newLog, proposal.offsetMinutes) : newLog;
-        await attachLogToDive(proposal.matchDiveId, { ...movedLog, diveId: proposal.matchDiveId });
-
-        if (existingIsWrong) {
-          const matchDive = await loadDive(proposal.matchDiveId);
-          const matchLogs = await loadLogsForDive(matchDive);
-          for (const l of matchLogs) {
-            if (l.deviceKey !== proposal.matchDeviceKey) continue;
-            // eslint-disable-next-line no-await-in-loop
-            await saveLog(withTimeCorrection(l, -proposal.offsetMinutes));
-          }
+      // Which device (if any) needs its clock corrected?
+      let correction = null;
+      if (proposal.offsetMinutes && choice.correctDeviceKey) {
+        if (choice.correctDeviceKey === proposal.newDeviceKey && proposal.matchDeviceKey) {
+          correction = { deviceKey: proposal.matchDeviceKey, offsetMinutes: -proposal.offsetMinutes };
           await saveDeviceTimeCorrection({
             deviceKey: proposal.matchDeviceKey,
             offsetMinutes: -proposal.offsetMinutes,
             appliesFrom: proposal.matchStart,
             appliesTo: proposal.matchStart,
           });
-          // recompute the matched dive's summary from its (now corrected) primary log
-          const fresh = await loadDive(proposal.matchDiveId);
-          const freshLogs = await loadLogsForDive(fresh);
-          const primary = freshLogs.find((l) => l.id === fresh.primaryLogId) || freshLogs[0];
-          if (primary) await saveDive(surfaceLogOntoDive(fresh, primary));
-        } else if (newIsWrong) {
+        } else if (choice.correctDeviceKey !== proposal.newDeviceKey) {
+          correction = { deviceKey: proposal.newDeviceKey, offsetMinutes: proposal.offsetMinutes };
           await saveDeviceTimeCorrection({
             deviceKey: proposal.newDeviceKey,
             offsetMinutes: proposal.offsetMinutes,
@@ -269,9 +345,9 @@ export default function useDiveLog() {
           });
         }
       }
-      await softDeleteDive(proposal.newDiveId);
-      diveCache.current.delete(proposal.newDiveId);
-      diveCache.current.delete(proposal.matchDiveId);
+
+      await mergeDives(keepId, foldIds, { correction });
+      [keepId, ...foldIds].forEach((id) => diveCache.current.delete(id));
     }
     setPendingProposals((prev) => prev.filter((p) => p.id !== proposal.id));
     await refreshIndex();
@@ -293,5 +369,7 @@ export default function useDiveLog() {
     importComputerLog,
     resolveProposal,
     clearProposals,
+    recheckDuplicates,
+    mergeDivesManual,
   };
 }
