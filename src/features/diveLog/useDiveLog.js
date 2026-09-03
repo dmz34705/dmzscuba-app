@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { createComputerLog, createDive, normalizeDive, surfaceLogOntoDive, touchRecord, withTimeCorrection } from '../../lib/diveLog/schema';
 import { computeDiveLogStats } from '../../lib/diveLog/stats';
+import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
 import { findMatch } from '../../lib/diveLog/matchDives';
 import {
   attachLogToDive,
@@ -111,6 +112,7 @@ export default function useDiveLog() {
   );
 
   const stats = useMemo(() => computeDiveLogStats(indexRows), [indexRows]);
+  const trends = useMemo(() => computeDiveTrends(indexRows), [indexRows]);
   const folders = useMemo(() => buildFolders(rows), [rows]);
 
   // Same-computer de-dup keys (vendor|product|fingerprint) for dives already
@@ -279,6 +281,7 @@ export default function useDiveLog() {
     loaded,
     rows,
     stats,
+    trends,
     folders,
     knownComputerKeys,
     pendingProposals,

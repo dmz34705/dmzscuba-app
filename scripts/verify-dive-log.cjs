@@ -37,7 +37,9 @@ const {
   sawtoothIndex,
   averageDepth,
   surfaceConsumption,
+  safetyScore,
   computeLogAnalytics,
+  computeDiveTrends,
   // matcher
   resampleDepth,
   alignmentScore,
@@ -274,15 +276,46 @@ assert.deepEqual(
 
 const analytics = computeLogAnalytics({
   samples: clean,
+  events: [{ t: 1000, type: 'safetystop' }],
   decoModel: { type: 'buhlmann', gfLow: 40, gfHigh: 85 },
   durationSeconds: 1200,
   avgDepthMeters: 25,
+  maxDepthMeters: 30,
   tank: { startBar: 220, endBar: 100, volumeLiters: 12 },
 });
 assert.equal(analytics.gfLow, 40);
 assert.equal(analytics.sawtoothIndex, 0);
 assert.ok(analytics.sacBarPerMin > 0);
 assert.ok(analytics.ascentRateMaxMPerMin > 0);
+assert.ok(typeof analytics.safetyScore === 'number');
+
+// safety score: a clean dive with a stop scores high; a yo-yo with no stop drops
+const gentle = [];
+for (let t = 0; t <= 1800; t += 10) {
+  // descend 30 m in 3 min, bottom, ascend 30 m in 5 min (~6 m/min)
+  const depth = t < 180 ? (t / 180) * 30 : t > 1500 ? Math.max(0, 30 - ((t - 1500) / 300) * 30) : 30;
+  gentle.push({ t, depth });
+}
+const cleanScore = safetyScore({ samples: gentle, events: [{ t: 1600, type: 'safetystop' }], maxDepthMeters: 30, hadDeco: false });
+assert.ok(cleanScore.score >= 90, `clean ${cleanScore.score}`);
+const messyScore = safetyScore({ samples: yo, events: [], maxDepthMeters: 30, hadDeco: false });
+assert.ok(messyScore.score < cleanScore.score, `messy ${messyScore.score} < clean ${cleanScore.score}`);
+assert.ok(messyScore.flags.length > 0);
+
+// computeDiveTrends off index rows
+const trendRows = [
+  { id: 't1', startTime: '2025-01-01T10:00:00Z', durationSeconds: 2400, deletedAt: null, safetyScore: 70, sacBarPerMin: 1.6, avgDepthMeters: 18, gasLabel: 'Air', ascentRateMaxMPerMin: 12 },
+  { id: 't2', startTime: '2025-02-01T10:00:00Z', durationSeconds: 2400, deletedAt: null, safetyScore: 80, sacBarPerMin: 1.4, avgDepthMeters: 16, gasLabel: 'Air', ascentRateMaxMPerMin: 8 },
+  { id: 't3', startTime: '2025-03-01T10:00:00Z', durationSeconds: 2400, deletedAt: null, safetyScore: 92, sacBarPerMin: 1.1, avgDepthMeters: 15, gasLabel: 'EAN32', ascentRateMaxMPerMin: 7 },
+  { id: 't4', startTime: '2025-03-05T10:00:00Z', durationSeconds: 1000, deletedAt: '2025-03-06Z', safetyScore: 10 },
+];
+const trends = computeDiveTrends(trendRows);
+assert.equal(trends.diveCount, 3);
+assert.ok(trends.sac.mean > 1.2 && trends.sac.mean < 1.5);
+assert.ok(trends.sac.trendPerDive < 0);       // SAC dropping over time = improving
+assert.ok(trends.safety.trendPerDive > 0);    // safety rising = improving
+assert.equal(trends.fastAscentDives, 1);
+assert.deepEqual(trends.gasMix.map((g) => g.label).sort(), ['Air', 'EAN32']);
 
 // ---------------------------------------------------------------------------
 // matchDives (cross-computer same-dive detection)
@@ -593,6 +626,8 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /pendingProposals/);
   assert.match(screen, /resolveProposal/);
   assert.match(screen, /view === 'review'/);
+  assert.match(screen, /StatsView/);
+  assert.match(screen, /view === 'stats'/);
 
   const hook = read('src', 'features', 'diveLog', 'useDiveLog.js');
   assert.match(hook, /migrateToV2/);

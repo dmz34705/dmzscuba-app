@@ -367,9 +367,12 @@ function normalizeAnalytics(raw) {
     cnsEndPct: clampNum(s.cnsEndPct, 0, 1000, null),
     otu: clampNum(s.otu, 0, 100000, null),
     ascentRateMaxMPerMin: clampNum(s.ascentRateMaxMPerMin, 0, 200, null),
+    ascentRateViolations: intOrNull(s.ascentRateViolations, 0, 100000) ?? 0,
     sawtoothIndex: clampNum(s.sawtoothIndex, 0, 100000, null),
     sacBarPerMin: clampNum(s.sacBarPerMin, 0, 200, null),
     rmvLitersPerMin: clampNum(s.rmvLitersPerMin, 0, 200, null),
+    safetyScore: intOrNull(s.safetyScore, 0, 100),
+    safetyFlags: Array.isArray(s.safetyFlags) ? s.safetyFlags.filter((f) => typeof f === 'string').slice(0, 12) : [],
   };
 }
 

@@ -109,6 +109,45 @@ export function surfaceConsumption({ startBar, endBar, durationSeconds, avgDepth
   };
 }
 
+/**
+ * A 0–100 "how clean was this dive" score with the reasons. Starts at 100 and
+ * deducts for things a cautious instructor would flag. Deliberately simple and
+ * transparent — it is a coaching nudge, not a medical instrument.
+ */
+export function safetyScore({ samples, events, maxDepthMeters, hadDeco }) {
+  const rows = sortedSamples(samples);
+  const evs = Array.isArray(events) ? events : [];
+  const ascent = ascentRateStats(rows, 10);
+  const saw = sawtoothIndex(rows);
+  const maxDepth = finiteOr(maxDepthMeters) ?? maxOf(rows.map((s) => s.depth));
+  const flags = [];
+  let score = 100;
+
+  if (ascent.violations > 0) {
+    const hit = Math.min(30, 4 + ascent.violations * 3);
+    score -= hit;
+    flags.push(`${ascent.violations} fast-ascent segment${ascent.violations === 1 ? '' : 's'} (−${hit})`);
+  }
+  if (ascent.maxMPerMin > 18) {
+    score -= 10;
+    flags.push(`peak ascent ${ascent.maxMPerMin} m/min (−10)`);
+  }
+  if (saw > 15) {
+    const hit = Math.min(20, Math.round(saw / 4));
+    score -= hit;
+    flags.push(`sawtooth profile, ${saw} m extra descent (−${hit})`);
+  }
+  // Safety stop expected on any dive past ~10 m; deco dives must clear their stops.
+  const didStop = evs.some((e) => e.type === 'safetystop');
+  const nearSurfaceHold = rows.some((s) => s.depth >= 3 && s.depth <= 6 && s.t > (rows[rows.length - 1]?.t || 0) * 0.6);
+  if (maxDepth > 10 && !didStop && !nearSurfaceHold) {
+    score -= hadDeco ? 25 : 12;
+    flags.push(`no safety stop (−${hadDeco ? 25 : 12})`);
+  }
+
+  return { score: Math.max(0, Math.round(score)), flags };
+}
+
 /** Deepest ceiling (m) implied by the deco samples, or null if never in deco. */
 export function maxCeiling(samples) {
   const rows = sortedSamples(samples);
@@ -127,10 +166,12 @@ export function maxCeiling(samples) {
  * (native `onDownloadDive` shape) plus its normalized samples. Callers pass what
  * they have; missing inputs -> null fields.
  */
-export function computeLogAnalytics({ samples, decoModel, durationSeconds, avgDepthMeters, tank } = {}) {
+export function computeLogAnalytics({ samples, events, decoModel, durationSeconds, avgDepthMeters, maxDepthMeters, tank } = {}) {
   const ascent = ascentRateStats(samples);
   const avg = finiteOr(avgDepthMeters) ?? averageDepth(samples);
   const cnsValues = sortedSamples(samples).map((s) => s.cns).filter((v) => Number.isFinite(v));
+  const ceiling = maxCeiling(samples);
+  const safety = safetyScore({ samples, events, maxDepthMeters, hadDeco: ceiling != null });
   const sac = surfaceConsumption({
     startBar: tank?.startBar,
     endBar: tank?.endBar,
@@ -143,15 +184,18 @@ export function computeLogAnalytics({ samples, decoModel, durationSeconds, avgDe
     gfHigh: finiteOr(decoModel?.gfHigh),
     decoModelType: decoModel?.type || null,
     conservatism: finiteOr(decoModel?.conservatism),
-    ceilingMaxMeters: maxCeiling(samples),
+    ceilingMaxMeters: ceiling,
     firstStopMeters: null,
     ndlMinAtStartSec: null,
     cnsStartPct: cnsValues.length ? cnsValues[0] : null,
     cnsEndPct: cnsValues.length ? cnsValues[cnsValues.length - 1] : null,
     otu: null,
     ascentRateMaxMPerMin: ascent.maxMPerMin || null,
+    ascentRateViolations: ascent.violations,
     sawtoothIndex: sawtoothIndex(samples),
     sacBarPerMin: sac.sacBarPerMin,
     rmvLitersPerMin: sac.rmvLitersPerMin,
+    safetyScore: safety.score,
+    safetyFlags: safety.flags,
   };
 }

@@ -371,8 +371,8 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit }) {
 // List view
 // ---------------------------------------------------------------------------
 
-function StatSummaryCard({ stats, units }) {
-  return (
+function StatSummaryCard({ stats, units, onPress }) {
+  const body = (
     <Card style={styles.summaryCard}>
       <Text style={styles.detailCardTitle}>Your logbook</Text>
       <View style={styles.statGrid}>
@@ -386,7 +386,79 @@ function StatSummaryCard({ stats, units }) {
           {`${formatDate(stats.firstDiveDate)} – ${formatDate(stats.lastDiveDate)}`}
         </Text>
       ) : null}
+      {onPress ? <Text style={styles.summaryLink}>See all stats →</Text> : null}
     </Card>
+  );
+  if (!onPress) return body;
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel="See all stats" onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
+      {body}
+    </Pressable>
+  );
+}
+
+function TrendArrow({ slope, goodDirection = 'down' }) {
+  if (slope == null || Math.abs(slope) < 0.001) return <Text style={styles.trendFlat}>→ steady</Text>;
+  const improving = goodDirection === 'down' ? slope < 0 : slope > 0;
+  return (
+    <Text style={improving ? styles.trendGood : styles.trendBad}>
+      {slope < 0 ? '▼' : '▲'} {improving ? 'improving' : 'watch'}
+    </Text>
+  );
+}
+
+function StatsView({ trends, stats, units }) {
+  if (!trends.diveCount) {
+    return <Text style={styles.muted}>Log or download a few dives to see your trends.</Text>;
+  }
+  const sacUnit = units.pressureUnit;
+  return (
+    <>
+      <SectionLabel>NERD STATS</SectionLabel>
+      <Text style={styles.title}>Your diving, measured.</Text>
+
+      <Card style={styles.summaryCard}>
+        <Text style={styles.detailCardTitle}>Totals</Text>
+        <View style={styles.statGrid}>
+          <Stat label="Dives" value={String(trends.diveCount)} style={styles.statCell} />
+          <Stat label="Bottom time" value={formatDuration(trends.totalBottomTimeSeconds)} style={styles.statCell} />
+          <Stat label="Deepest" value={stats.deepestMeters ? formatDepth(stats.deepestMeters, units.depthUnit) : '—'} style={styles.statCell} />
+          <Stat label="Fast-ascent dives" value={String(trends.fastAscentDives)} style={styles.statCell} />
+        </View>
+      </Card>
+
+      <Card style={styles.detailCard}>
+        <Text style={styles.detailCardTitle}>Gas consumption</Text>
+        <DetailRow label="Average SAC" value={trends.sac.mean != null ? `${formatPressure(trends.sac.mean, sacUnit)}/min` : 'No transmitter data yet'} />
+        <DetailRow label="Average RMV" value={trends.rmv.mean != null ? `${trends.rmv.mean.toFixed(1)} L/min` : ''} />
+        {trends.sac.mean != null ? (
+          <View style={styles.trendRow}><Text style={styles.trendLabel}>Over time</Text><TrendArrow slope={trends.sac.trendPerDive} goodDirection="down" /></View>
+        ) : null}
+      </Card>
+
+      <Card style={styles.detailCard}>
+        <Text style={styles.detailCardTitle}>Safety score</Text>
+        <DetailRow label="All dives" value={trends.safety.mean != null ? `${Math.round(trends.safety.mean)} / 100` : 'No profile data yet'} />
+        <DetailRow label="Last 10" value={trends.safety.recentMean != null ? `${trends.safety.recentMean} / 100` : ''} />
+        {trends.safety.mean != null ? (
+          <View style={styles.trendRow}><Text style={styles.trendLabel}>Trend</Text><TrendArrow slope={trends.safety.trendPerDive} goodDirection="up" /></View>
+        ) : null}
+      </Card>
+
+      <Card style={styles.detailCard}>
+        <Text style={styles.detailCardTitle}>Average depth</Text>
+        <DetailRow label="Across all dives" value={trends.avgDepth.mean != null ? formatDepth(trends.avgDepth.mean, units.depthUnit) : ''} />
+      </Card>
+
+      {trends.gasMix.length ? (
+        <Card style={styles.detailCard}>
+          <Text style={styles.detailCardTitle}>Gas mixes</Text>
+          {trends.gasMix.map((g) => (
+            <DetailRow key={g.label} label={g.label} value={`${g.count} ${g.count === 1 ? 'dive' : 'dives'}`} />
+          ))}
+        </Card>
+      ) : null}
+    </>
   );
 }
 
@@ -764,7 +836,7 @@ function DiveEditForm({ form, units, onChange, error }) {
 export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
   const {
-    loaded, rows, stats, folders, knownComputerKeys, pendingProposals,
+    loaded, rows, stats, trends, folders, knownComputerKeys, pendingProposals,
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLog, resolveProposal, clearProposals,
   } = useDiveLog();
 
@@ -903,7 +975,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       else openList();
       return;
     }
-    if (view === 'detail' || view === 'download') { openList(); return; }
+    if (view === 'detail' || view === 'download' || view === 'stats') { openList(); return; }
     if (view === 'review') { clearProposals(); openList(); return; }
     if (view === 'list' && activeFolder) { setFolderKey(null); return; }
     onBack?.();
@@ -953,7 +1025,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
         ? 'Dive computer'
         : view === 'review'
           ? 'Review matches'
-          : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
+          : view === 'stats'
+            ? 'Stats'
+            : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
 
   const canSelect = view === 'list' && loaded && !showFolderGrid && listRows.length > 0;
   const headerAction = selectMode
@@ -997,7 +1071,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
               <Text style={styles.muted}>Loading your logbook…</Text>
             ) : showFolderGrid ? (
               <>
-                <StatSummaryCard stats={stats} units={units} />
+                <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} />
                 {folders.map((folder) => (
                   <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
                 ))}
@@ -1015,7 +1089,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
               </>
             ) : (
               <>
-                {!activeFolder && !selectMode ? <StatSummaryCard stats={stats} units={units} /> : null}
+                {!activeFolder && !selectMode ? <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} /> : null}
                 {selectMode ? (
                   <SelectionBar
                     count={selectedIds.size}
@@ -1075,6 +1149,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
           />
         )}
 
+        {view === 'stats' && <StatsView trends={trends} stats={stats} units={units} />}
+
         {view === 'detail' && (
           record ? (
             <>
@@ -1113,6 +1189,12 @@ const styles = StyleSheet.create({
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
   statCell: { flexBasis: '47%', flexGrow: 1 },
   summaryFootnote: { color: colors.faint, fontSize: 11, marginTop: 12 },
+  summaryLink: { color: colors.cyan, fontSize: 12, fontWeight: '800', marginTop: 10 },
+  trendRow: { alignItems: 'center', borderTopColor: colors.line, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 9 },
+  trendLabel: { color: colors.muted, fontSize: 12 },
+  trendGood: { color: colors.good, fontSize: 12, fontWeight: '800' },
+  trendBad: { color: colors.warning, fontSize: 12, fontWeight: '800' },
+  trendFlat: { color: colors.faint, fontSize: 12, fontWeight: '700' },
 
   diveCard: { padding: 12 },
   diveCardSelected: { borderColor: colors.cyan },

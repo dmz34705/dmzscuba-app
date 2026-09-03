@@ -62,6 +62,7 @@ function parseJson(raw, fallback) {
 export function indexRowFromDive(dive, logs = []) {
   const attachedLogs = Array.isArray(logs) ? logs.filter(Boolean) : [];
   const primary = attachedLogs.find((l) => l.id === dive.primaryLogId) || attachedLogs[0] || null;
+  const a = primary?.analytics || null;
   return {
     id: dive.id,
     startTime: dive.startTime,
@@ -74,10 +75,16 @@ export function indexRowFromDive(dive, logs = []) {
     source: dive.source || 'manual',
     rating: dive.rating ?? null,
     number: dive.number ?? null,
+    gasLabel: dive.gas?.mixes?.[0]?.label || '',
     logCount: attachedLogs.length,
     deviceKeys: attachedLogs.map((l) => l.deviceKey).filter(Boolean),
     computerKeys: attachedLogs.map((l) => computerDiveKeyOf(l.device, l.fingerprint)).filter(Boolean),
     primaryDevice: primary ? { ...primary.device } : null,
+    // primary-log analytics summary for the trends view (avoids loading every log)
+    safetyScore: a && a.safetyScore != null ? a.safetyScore : null,
+    sacBarPerMin: a ? a.sacBarPerMin : null,
+    rmvLitersPerMin: a ? a.rmvLitersPerMin : null,
+    ascentRateMaxMPerMin: a ? a.ascentRateMaxMPerMin : null,
   };
 }
 

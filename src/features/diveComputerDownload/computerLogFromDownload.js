@@ -146,9 +146,11 @@ export function computerLogFromDownload(raw) {
 
   const analytics = computeLogAnalytics({
     samples,
+    events,
     decoModel,
     durationSeconds,
     avgDepthMeters,
+    maxDepthMeters,
     tank: tanks[0] || null,
   });
 
