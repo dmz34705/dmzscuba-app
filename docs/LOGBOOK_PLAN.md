@@ -31,6 +31,21 @@ and this doc do). Read `docs/ARCHITECTURE.md` first.
     for a manual fix. `storage.mergeDives` folds dives together.
 - **B8 done (JS)** — safety score + `diveTrends` (SAC/safety/avg-depth trend,
   gas-mix histogram) + a "Stats" view.
+- **Download/import reworked (JS)** — full read by default (incremental sync
+  couldn't recover a deleted dive); dives collected and written in ONE batch
+  (`createDivesFromLogs`) — the per-dive index race was silently dropping
+  downloads; matching is deferred to a single `recheckDuplicates` pass after
+  the transfer, which auto-merges high-confidence + clocks-agree matches and
+  only prompts when a clock decision is needed.
+- **Whole-trip reconciliation** — `reconcileComputers` aligns two computers'
+  full dive sequences (offset voted across every compatible pairing, requiring
+  in-order support) instead of matching pairwise; handles split dives in both
+  download orders. `sameComputer()` is serial-tolerant everywhere.
+- **Computer priority** — rank computers Primary/Secondary/Tertiary on the
+  folder grid; the detail view shows the top-ranked computer's data, tap a
+  "Recorded by" row to switch; air pressure is attributed per computer (dual
+  traces when both have a transmitter).
+- Dev tools in Stats: purge deleted dives, erase logbook, re-check duplicates.
 - All 16 `npm run test:*` green.
 
 **Remaining:**
