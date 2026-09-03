@@ -50,6 +50,7 @@ const {
   classifyFragment,
   findSpanningMerge,
   findMatch,
+  sameComputer,
   // format
   formatDepth,
   formatDuration,
@@ -463,6 +464,17 @@ const fmSameSn = findMatch(
   [{ dive: { id: 'dvSu1', primaryLogId: 'g1' }, logs: [{ ...suFrag1, id: 'g1', fingerprint: 'x1' }] }],
 );
 assert.equal(fmSameSn.bestMatch, null, 'same-computer dives must never be cross-matched');
+
+// sameComputer is serial-tolerant: a missing serial on one side still = one unit
+assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core', serial: '123' }, { vendor: 'Suunto', product: 'EON Core', serial: '' }), true);
+assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core', serial: '123' }, { vendor: 'Suunto', product: 'EON Core', serial: '999' }), false);
+assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core' }, { vendor: 'Shearwater', product: 'Perdix' }), false);
+
+// A Suunto dive with a battery-pull clock (years off) must NOT match another
+// Suunto dive of the same model just because the profiles look alike.
+const su2024 = { deviceKey: 'Suunto|EON Core|', device: { vendor: 'Suunto', product: 'EON Core', serial: '' }, reportedStartTime: '2024-01-05T09:00:00.000Z', startTime: '2024-01-05T09:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
+const su2026 = { id: 'g', deviceKey: 'Suunto|EON Core|778', device: { vendor: 'Suunto', product: 'EON Core', serial: '778' }, primaryLogId: 'g', reportedStartTime: '2026-08-27T13:00:00.000Z', startTime: '2026-08-27T13:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
+assert.equal(findMatch(su2024, [{ dive: { id: 'dv2026', primaryLogId: 'g' }, logs: [su2026] }]).bestMatch, null);
 // but once a different computer's dive is present, the fragment attaches to IT
 const fmMixed = findMatch(
   { ...suFrag2, deviceKey: 'Suunto|EON Core|9', fingerprint: 'x2' },

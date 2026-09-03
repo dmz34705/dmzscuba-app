@@ -35,6 +35,29 @@ const FRAGMENT_MIN_SEC = 120;          // ignore trivially short blips
 
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
 
+const norm = (s) => String(s == null ? '' : s).trim().toLowerCase();
+
+/**
+ * Two logs are from the same physical computer when the model matches and either
+ * the serials match or one is missing. Tolerant on serial because a download can
+ * miss it (partial handshake) or an older import never captured it — and the
+ * matcher must NEVER cross-compare two logs from one unit.
+ */
+export function sameComputer(a, b) {
+  const da = a || {};
+  const db = b || {};
+  if (norm(da.vendor) !== norm(db.vendor) || norm(da.product) !== norm(db.product)) return false;
+  const sa = norm(da.serial);
+  const sb = norm(db.serial);
+  return !sa || !sb || sa === sb;
+}
+
+function deviceOf(logOrDive) {
+  if (logOrDive?.device) return logOrDive.device;
+  const parts = String(logOrDive?.deviceKey || '').split('|');
+  return { vendor: parts[0] || '', product: parts[1] || '', serial: parts[2] || '' };
+}
+
 function cleanTimeSamples(samples) {
   return (Array.isArray(samples) ? samples : [])
     .filter((s) => s && Number.isFinite(s.t) && Number.isFinite(s.depth) && s.depth >= 0)
@@ -336,10 +359,12 @@ export function findSpanningMerge(newLog, candidates) {
   if (longDur < FRAGMENT_MIN_SEC || resampleDepth(newSamples).length < 3) return null;
 
   // same-device candidate dives, each much shorter than newLog, sorted by start
+  const newDevice = deviceOf(newLog);
   const byDevice = new Map();
   for (const c of candidates) {
     const logs = c.logs || [];
-    if (logs.some((l) => l.deviceKey === newLog.deviceKey)) continue; // different computer only
+    // fragments belong to a DIFFERENT computer than the one we're spanning with
+    if (logs.some((l) => sameComputer(deviceOf(l), newDevice))) continue;
     const ref = logs.find((l) => l.id === c.dive.primaryLogId) || logs[0];
     if (!ref || !ref.deviceKey) continue;
     if ((ref.durationSeconds || 0) >= longDur * FRAGMENT_MAX_FRAC) continue;
@@ -419,20 +444,26 @@ export function findMatch(newLog, candidates) {
     // the same physical unit are never "the same dive with different clocks";
     // same-unit logs are only ever combined by the split-fragment fusion, which
     // needs a different computer's continuous log to anchor it (findSpanningMerge).
-    const crossLogs = logs.filter((l) => l.deviceKey && l.deviceKey !== newLog.deviceKey);
+    const newDevice = deviceOf(newLog);
+    const crossLogs = logs.filter((l) => !sameComputer(deviceOf(l), newDevice));
     if (!crossLogs.length) continue;
     const ref = crossLogs.reduce((a, b) => ((b.durationSeconds || 0) > (a.durationSeconds || 0) ? b : a));
+    const sameModel = norm(deviceOf(ref).vendor) === norm(newDevice.vendor)
+      && norm(deviceOf(ref).product) === norm(newDevice.product);
+    // A years-apart "match" between two units of the same model is almost always
+    // a shape-only false positive — a real cross-computer clock error is small.
+    const keep = (m) => (m && m.implausibleClock && sameModel ? null : m);
 
     const pair = classifyPair(newLog, ref);
-    consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
+    consider(keep(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' }));
 
     // newLog is a fragment of this longer existing dive
     const frag = classifyFragment(newLog, ref);
-    consider(frag.verdict === 'none' ? null : { ...frag, diveId: dive.id });
+    consider(keep(frag.verdict === 'none' ? null : { ...frag, diveId: dive.id }));
 
     // this existing dive is a fragment of the (longer) newLog -> absorb it
     const existingFrag = classifyFragment(ref, newLog);
-    if (existingFrag.verdict !== 'none') {
+    if (existingFrag.verdict !== 'none' && !(existingFrag.implausibleClock && sameModel)) {
       absorb.push({ diveId: dive.id, result: existingFrag, deviceKey: ref.deviceKey, start: dive.startTime });
     }
   }
