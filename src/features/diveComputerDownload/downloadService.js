@@ -302,16 +302,22 @@ export async function download({ incremental = false, force = false } = {}) {
   set({ error: '', progress: null, summary: null, status: 'downloading' });
 
   const name = state.connectedDevice.name;
-  const known = force ? new Set() : await loadKnownComputerKeys();
+  const allKnown = await loadKnownComputerKeys();
+  const known = force ? new Set() : allKnown;
   const pendingLogs = [];
   const tally = { downloaded: 0, saved: 0, merged: 0, duplicate: 0, failed: 0 };
 
-  const marker = incremental ? await loadFingerprint(name).catch(() => null) : null;
-  const markerValid = marker && [...known].some((k) => k.endsWith(`|${marker}`));
-  const fingerprintBase64 = markerValid ? marker : null;
-  if (!fingerprintBase64) await clearFingerprint(name).catch(() => {});
+  // Always evaluate the saved marker: use it only for an incremental sync, but
+  // drop it only when it's provably stale (its dive is no longer in the book).
+  // A deliberate full read must NOT wipe a still-valid marker.
+  const marker = await loadFingerprint(name).catch(() => null);
+  const markerValid = !!marker && [...allKnown].some((k) => k.endsWith(`|${marker}`));
+  const fingerprintBase64 = incremental && markerValid ? marker : null;
+  if (marker && !markerValid) await clearFingerprint(name).catch(() => {});
+  set({ baselineKnown: markerValid });
 
-  log(`download start · ${name}${incremental ? ' · incremental' : ' · full read'}`);
+  const mode = fingerprintBase64 ? 'incremental' : incremental ? 'incremental → full (no baseline yet)' : 'full read';
+  log(`download start · ${name} · ${mode}`);
 
   try {
     const result = await runDownload({

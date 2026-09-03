@@ -1006,8 +1006,9 @@ function memoryStorage(seed = {}) {
   assert.match(dlService, /function refreshBaseline/);
 
   const dlPanel = read('src', 'features', 'diveComputerDownload', 'DiveComputerDownloadPanel.js');
-  assert.match(dlPanel, /Sync new dives/);              // incremental is a first-class button now
-  assert.match(dlPanel, /incremental: baselineKnown/);  // …and the default once a baseline exists
+  assert.match(dlPanel, /Sync new dives/);              // incremental sync is always an offered button
+  assert.match(dlPanel, /Full re-download/);            // full read is always an offered button
+  assert.match(dlPanel, /incremental: true/);
 
   const dlHook = read('src', 'features', 'diveComputerDownload', 'useDiveComputerDownload.js');
   assert.match(dlHook, /downloadService\.subscribe/);   // hook is a thin subscription now

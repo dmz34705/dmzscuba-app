@@ -42,25 +42,26 @@ function DeviceRow({ device, onConnect, disabled }) {
   );
 }
 
-// The two download modes as first-class actions. "Sync new dives" is the
-// primary once a baseline exists (fast — only dives not already saved); a full
-// re-read and a force re-import sit below as escape hatches.
-function DownloadActions({ baselineKnown, onDisconnect, download }) {
+// Both download modes are always offered as buttons. "Sync new dives" only
+// pulls dives that aren't already saved (fast); "Full re-download" reads the
+// whole computer — needed the first time and to recover a dive deleted in the
+// app. A force re-import sits below as an escape hatch.
+function DownloadActions({ onDisconnect, download }) {
   return (
     <>
       <View style={styles.doneActions}>
         <PrimaryButton
-          label={baselineKnown ? 'Sync new dives' : 'Download all dives'}
-          onPress={() => download({ incremental: baselineKnown })}
+          label="Sync new dives"
+          onPress={() => download({ incremental: true })}
           style={styles.flexButton}
         />
-        <SecondaryButton label="Disconnect" onPress={onDisconnect} style={styles.flexButton} />
+        <SecondaryButton
+          label="Full re-download"
+          onPress={() => download()}
+          style={styles.flexButton}
+        />
       </View>
-      {baselineKnown ? (
-        <Pressable onPress={() => download()} hitSlop={8} style={styles.linkRow}>
-          <Text style={styles.linkText}>Re-read the whole computer</Text>
-        </Pressable>
-      ) : null}
+      <SecondaryButton label="Disconnect" onPress={onDisconnect} style={styles.backButton} />
       <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
         <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
       </Pressable>
@@ -138,17 +139,18 @@ export default function DiveComputerDownloadPanel({ onClose }) {
                     + '. Any matches with another computer are on the next screen.'
                   : 'No dives read.'}
               </Text>
-              <DownloadActions baselineKnown={baselineKnown} onDisconnect={disconnect} download={download} />
+              <DownloadActions onDisconnect={disconnect} download={download} />
             </>
           ) : (
             <>
               <Text style={styles.body}>
                 {baselineKnown
-                  ? '“Sync new dives” pulls only the dives that aren’t already in your logbook.'
-                  : 'The first download reads every dive on the computer — with a large log this can take '
-                    + 'a while. After that, syncing new dives is quick.'}
+                  ? '“Sync new dives” pulls only dives that aren’t already in your logbook. '
+                    + '“Full re-download” reads everything (use it to get back a dive you deleted here).'
+                  : 'First time: “Full re-download” reads every dive on the computer — with a large log '
+                    + 'this can take a while. After that, “Sync new dives” is quick.'}
               </Text>
-              <DownloadActions baselineKnown={baselineKnown} onDisconnect={disconnect} download={download} />
+              <DownloadActions onDisconnect={disconnect} download={download} />
             </>
           )}
         </View>
