@@ -138,6 +138,18 @@ function normalizeSample(raw) {
   if (tempC !== null) sample.tempC = tempC;
   const pressureBar = clampNum(source.pressureBar, 0, 500, null);
   if (pressureBar !== null) sample.pressureBar = pressureBar;
+  if (isObject(source.pressuresByTank)) {
+    const byTank = {};
+    for (const [k, v] of Object.entries(source.pressuresByTank)) {
+      const bar = clampNum(v, 0, 500, null);
+      if (bar !== null) byTank[k] = bar;
+    }
+    if (Object.keys(byTank).length) sample.pressuresByTank = byTank;
+  }
+  const setpoint = clampNum(source.setpoint, 0, 5, null);
+  if (setpoint !== null) sample.setpoint = setpoint;
+  const rbt = clampNum(source.rbt, 0, MAX_DURATION_SECONDS, null);
+  if (rbt !== null) sample.rbt = rbt;
   const ppo2 = clampNum(source.ppo2, 0, 5, null);
   if (ppo2 !== null) sample.ppo2 = ppo2;
   const cns = clampNum(source.cns, 0, 1000, null);

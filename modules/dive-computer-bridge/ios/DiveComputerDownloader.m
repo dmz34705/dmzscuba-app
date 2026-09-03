@@ -307,9 +307,22 @@ static void sample_cb(dc_sample_type_t type, const dc_sample_value_t *value, voi
     case DC_SAMPLE_TEMPERATURE:
       if (cur) cur[@"tempC"] = @(value->temperature);
       break;
-    case DC_SAMPLE_PRESSURE:
-      if (cur && value->pressure.tank == 0) cur[@"pressureBar"] = @(value->pressure.value);
+    case DC_SAMPLE_PRESSURE: {
+      // A transmitter can sit on any tank slot (not always 0), and a dive can
+      // carry several. Keep every tank's pressure keyed by index, and surface the
+      // lowest-index one as `pressureBar` for the single-tank common case.
+      if (!cur) break;
+      unsigned int tank = value->pressure.tank;
+      NSMutableDictionary *byTank = cur[@"pressuresByTank"];
+      if (!byTank) { byTank = [NSMutableDictionary dictionary]; cur[@"pressuresByTank"] = byTank; }
+      byTank[[@(tank) stringValue]] = @(value->pressure.value);
+      NSNumber *primaryTank = cur[@"pressureTank"];
+      if (!primaryTank || tank < primaryTank.unsignedIntValue) {
+        cur[@"pressureBar"] = @(value->pressure.value);
+        cur[@"pressureTank"] = @(tank);
+      }
       break;
+    }
     case DC_SAMPLE_PPO2:
       if (cur) cur[@"ppo2"] = @(value->ppo2.value);
       break;
@@ -330,6 +343,12 @@ static void sample_cb(dc_sample_type_t type, const dc_sample_value_t *value, voi
       }
       break;
     }
+    case DC_SAMPLE_SETPOINT:
+      if (cur) cur[@"setpoint"] = @(value->setpoint);
+      break;
+    case DC_SAMPLE_RBT:
+      if (cur) cur[@"rbt"] = @(value->rbt);
+      break;
     case DC_SAMPLE_GASMIX: {
       double t = cur ? [cur[@"t"] doubleValue] : 0;
       [events addObject:@{ @"t": @(t), @"type": @"gaschange", @"gasmix": @(value->gasmix) }];

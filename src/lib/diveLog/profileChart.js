@@ -23,13 +23,52 @@ const EMPTY = Object.freeze({
   durationSeconds: 0,
   maxDepthMeters: 0,
   points: [],
+  pressurePath: '',
+  pressureTicks: [],
+  pressureRange: null,
+  hasPressure: false,
+  tempPath: '',
+  tempRange: null,
+  hasTemp: false,
 });
+
+const PRESSURE_TICK_STEPS_BAR = [20, 50, 100, 150, 200];
+
+// A monotonic-ish series scaled onto its own right-hand axis. Used for tank
+// pressure and temperature overlays: same x (time) as the depth trace, but the
+// y range is the series' own [0 or min .. max], drawn top-down like depth.
+function overlaySeries(rows, accessor, xFn, safeHeight, { fromZero = false } = {}) {
+  const pts = rows
+    .map((r) => ({ t: r.t, v: accessor(r) }))
+    .filter((p) => Number.isFinite(p.v));
+  if (pts.length < 2) return { path: '', ticks: [], range: null, has: false, points: [] };
+  let min = Infinity;
+  let max = -Infinity;
+  for (const p of pts) { if (p.v < min) min = p.v; if (p.v > max) max = p.v; }
+  if (fromZero) min = 0;
+  const span = Math.max(1e-6, max - min);
+  // High value near the top of the chart (a full tank / warm water reads "up").
+  const y = (v) => safeHeight - ((v - min) / span) * safeHeight;
+  const points = pts.map((p) => ({ t: p.t, v: p.v, x: xFn(p.t), y: y(p.v) }));
+  const path = points
+    .map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`)
+    .join(' ');
+  const step = chooseStep(PRESSURE_TICK_STEPS_BAR, span / 3);
+  const ticks = [];
+  for (let v = Math.ceil(min / step) * step; v < max; v += step) ticks.push({ value: v, y: y(v) });
+  return { path, ticks, range: { min, max }, has: true, points };
+}
 
 export function buildLogProfileGeometry(samples, width, height, options = {}) {
   const safeWidth = Math.max(1, finiteNumber(width, 1));
   const safeHeight = Math.max(1, finiteNumber(height, 1));
   const clean = (Array.isArray(samples) ? samples : [])
-    .map((sample) => ({ t: finiteNumber(sample?.t), depth: Math.max(0, finiteNumber(sample?.depth)) }))
+    .map((sample) => ({
+      t: finiteNumber(sample?.t),
+      depth: Math.max(0, finiteNumber(sample?.depth)),
+      pressureBar: typeof sample?.pressureBar === 'number' && sample.pressureBar > 0 ? sample.pressureBar : null,
+      tempC: typeof sample?.tempC === 'number' ? sample.tempC : null,
+    }))
     .filter((sample) => Number.isFinite(sample.t))
     .sort((a, b) => a.t - b.t);
 
@@ -72,6 +111,9 @@ export function buildLogProfileGeometry(samples, width, height, options = {}) {
     timeTicks.push({ seconds, x: (seconds / durationSeconds) * safeWidth });
   }
 
+  const pressure = overlaySeries(clean, (r) => r.pressureBar, x, safeHeight, { fromZero: true });
+  const temp = overlaySeries(clean, (r) => r.tempC, x, safeHeight);
+
   return {
     linePath,
     areaPath,
@@ -80,5 +122,13 @@ export function buildLogProfileGeometry(samples, width, height, options = {}) {
     durationSeconds,
     maxDepthMeters: deepestSample,
     points,
+    pressurePath: pressure.path,
+    pressureTicks: pressure.ticks,
+    pressureRange: pressure.range,
+    pressurePoints: pressure.points,
+    hasPressure: pressure.has,
+    tempPath: temp.path,
+    tempRange: temp.range,
+    hasTemp: temp.has,
   };
 }

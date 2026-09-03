@@ -65,6 +65,9 @@ function mapSample(raw) {
   if (num(raw?.depth) !== null) sample.depth = raw.depth;
   if (num(raw?.tempC) !== null) sample.tempC = raw.tempC;
   if (num(raw?.pressureBar) !== null) sample.pressureBar = raw.pressureBar;
+  if (raw?.pressuresByTank && typeof raw.pressuresByTank === 'object') sample.pressuresByTank = raw.pressuresByTank;
+  if (num(raw?.setpoint) !== null) sample.setpoint = raw.setpoint;
+  if (num(raw?.rbt) !== null) sample.rbt = raw.rbt;
   if (num(raw?.ppo2) !== null) sample.ppo2 = raw.ppo2;
   if (num(raw?.cns) !== null) sample.cns = raw.cns;
   if (num(raw?.ndl) !== null) sample.ndl = raw.ndl;

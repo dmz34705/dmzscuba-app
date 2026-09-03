@@ -238,7 +238,17 @@ for (let t = 0; t <= 1800; t += 60) {
 const geom = buildLogProfileGeometry(chartSamples, 300, 150, { maxDepthMeters: 30 });
 assert.ok(geom.linePath.startsWith('M '));
 assert.equal(geom.durationSeconds, 1800);
+assert.equal(geom.hasPressure, false);
 assert.equal(buildLogProfileGeometry([{ t: 0, depth: 0 }], 300, 150, {}).linePath, '');
+
+// tank-pressure overlay: a declining pressure series produces its own path + axis
+const withPressure = chartSamples.map((s, i) => ({ ...s, pressureBar: 230 - i * 4, tempC: 20 - i * 0.2 }));
+const pg = buildLogProfileGeometry(withPressure, 300, 150, { maxDepthMeters: 30 });
+assert.equal(pg.hasPressure, true);
+assert.ok(pg.pressurePath.startsWith('M '));
+assert.ok(pg.pressureRange.max > pg.pressureRange.min);
+assert.equal(pg.pressureRange.min, 0); // pressure axis starts at empty
+assert.equal(pg.hasTemp, true);
 
 // ---------------------------------------------------------------------------
 // logAnalytics
@@ -670,6 +680,10 @@ function memoryStorage(seed = {}) {
   const native = read('modules', 'dive-computer-bridge', 'ios', 'DiveComputerDownloader.m');
   assert.match(native, /resolve_model/);
   assert.match(native, /@"type": @\(t\.type\)/);
+  assert.match(native, /pressuresByTank/); // capture every tank's pressure, not just tank 0
+
+  assert.match(screen, /hasPressure/);
+  assert.match(screen, /Tank pressure/);
 
   console.log('Dive logbook checks passed.');
 })().catch((error) => {

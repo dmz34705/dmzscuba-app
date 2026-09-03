@@ -325,7 +325,7 @@ function FormSection({ title, children }) {
 // Profile chart (only present for imported / downloaded dives)
 // ---------------------------------------------------------------------------
 
-function ProfileChart({ samples, maxDepthMeters, depthUnit }) {
+function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit }) {
   const { width } = useWindowDimensions();
   const chartWidth = Math.max(200, width - spacing.md * 2 - 30 - 30);
   const chartHeight = 150;
@@ -335,6 +335,7 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit }) {
   );
   if (!geometry.linePath) return null;
 
+  const pRange = geometry.pressureRange;
   return (
     <Card style={styles.detailCard}>
       <Text style={styles.detailCardTitle}>Profile</Text>
@@ -356,13 +357,28 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit }) {
           ))}
           <Path d={geometry.areaPath} fill="rgba(112,221,246,.12)" />
           <Path d={geometry.linePath} fill="none" stroke={colors.cyan} strokeWidth="2.5" strokeLinejoin="round" />
+          {geometry.hasPressure ? (
+            <Path d={geometry.pressurePath} fill="none" stroke={colors.gold} strokeWidth="2" strokeLinejoin="round" strokeDasharray="1 0" />
+          ) : null}
           {geometry.timeTicks.map((tick) => (
             <SvgText key={`tl-${tick.seconds}`} x={tick.x} y={chartHeight + 12} fill={colors.faint} fontSize="8" fontWeight="700" textAnchor="middle">
               {`${Math.round(tick.seconds / 60)}m`}
             </SvgText>
           ))}
         </Svg>
+        {geometry.hasPressure && pRange ? (
+          <View style={styles.chartPressureAxis}>
+            <Text style={[styles.chartPressureText, { top: -4 }]}>{formatPressure(pRange.max, pressureUnit)}</Text>
+            <Text style={[styles.chartPressureText, { top: chartHeight - 8 }]}>{formatPressure(pRange.min, pressureUnit)}</Text>
+          </View>
+        ) : null}
       </View>
+      {geometry.hasPressure ? (
+        <View style={styles.chartLegend}>
+          <View style={styles.legendItem}><View style={[styles.legendSwatch, { backgroundColor: colors.cyan }]} /><Text style={styles.legendText}>Depth</Text></View>
+          <View style={styles.legendItem}><View style={[styles.legendSwatch, { backgroundColor: colors.gold }]} /><Text style={styles.legendText}>Tank pressure</Text></View>
+        </View>
+      ) : null}
     </Card>
   );
 }
@@ -655,6 +671,9 @@ function DiveDetail({ dive, logs = [], primaryLog, units }) {
   const tank = dive.gas.tanks[0];
   const samples = primaryLog?.profile?.samples || [];
   const analytics = primaryLog?.analytics;
+  const gasUsedBar = tank && tank.startBar != null && tank.endBar != null ? tank.startBar - tank.endBar : null;
+  const gasUsedLiters = gasUsedBar != null && tank.volumeLiters ? gasUsedBar * tank.volumeLiters : null;
+  const hasAir = tank && (tank.startBar != null || tank.endBar != null);
   return (
     <>
       <DetailCard title="When & where">
@@ -697,14 +716,33 @@ function DiveDetail({ dive, logs = [], primaryLog, units }) {
         <DetailRow label="Exposure suit" value={dive.gear.exposureSuit} />
       </DetailCard>
 
-      {samples.length ? <ProfileChart samples={samples} maxDepthMeters={dive.water.maxDepthMeters} depthUnit={units.depthUnit} /> : null}
+      {samples.length ? (
+        <ProfileChart
+          samples={samples}
+          maxDepthMeters={dive.water.maxDepthMeters}
+          depthUnit={units.depthUnit}
+          pressureUnit={units.pressureUnit}
+        />
+      ) : null}
+
+      {hasAir ? (
+        <DetailCard title="Air & consumption">
+          <DetailRow
+            label="Pressure"
+            value={`${tank.startBar != null ? formatPressure(tank.startBar, units.pressureUnit) : '—'} → ${tank.endBar != null ? formatPressure(tank.endBar, units.pressureUnit) : '—'}`}
+          />
+          <DetailRow label="Gas used" value={gasUsedBar != null ? formatPressure(gasUsedBar, units.pressureUnit) : ''} />
+          <DetailRow label="Free gas used" value={gasUsedLiters != null ? formatVolume(gasUsedLiters, units.gasVolumeUnit) : ''} />
+          <DetailRow label="SAC" value={analytics?.sacBarPerMin != null ? `${formatPressure(analytics.sacBarPerMin, units.pressureUnit)}/min` : ''} />
+          <DetailRow label="RMV" value={analytics?.rmvLitersPerMin != null ? `${analytics.rmvLitersPerMin.toFixed(1)} L/min` : ''} />
+        </DetailCard>
+      ) : null}
 
       {analytics ? (
         <DetailCard title="Computer values">
-          <DetailRow label="SAC" value={analytics.sacBarPerMin != null ? `${formatPressure(analytics.sacBarPerMin, units.pressureUnit)}/min` : ''} />
-          <DetailRow label="RMV" value={analytics.rmvLitersPerMin != null ? formatVolume(analytics.rmvLitersPerMin, units.gasVolumeUnit, tank?.workPressureBar) + '/min' : ''} />
           <DetailRow label="Max ascent rate" value={analytics.ascentRateMaxMPerMin != null ? `${analytics.ascentRateMaxMPerMin} m/min` : ''} />
           <DetailRow label="Sawtooth" value={analytics.sawtoothIndex ? `${analytics.sawtoothIndex} m extra descent` : ''} />
+          <DetailRow label="Safety score" value={analytics.safetyScore != null ? `${analytics.safetyScore} / 100` : ''} />
           <DetailRow label="Deco model" value={analytics.decoModelType ? `${analytics.decoModelType.toUpperCase()}${analytics.gfLow != null ? ` ${analytics.gfLow}/${analytics.gfHigh}` : ''}` : ''} />
           <DetailRow label="Max ceiling" value={analytics.ceilingMaxMeters != null ? formatDepth(analytics.ceilingMaxMeters, units.depthUnit) : ''} />
           <DetailRow label="CNS" value={analytics.cnsEndPct != null ? `${Math.round(analytics.cnsEndPct)}%` : ''} />
@@ -1264,6 +1302,12 @@ const styles = StyleSheet.create({
   chartRow: { flexDirection: 'row', marginTop: 6 },
   chartAxis: { width: 30 },
   chartAxisText: { color: colors.faint, fontSize: 8, fontWeight: '800', position: 'absolute', right: 4 },
+  chartPressureAxis: { width: 30 },
+  chartPressureText: { color: colors.gold, fontSize: 8, fontWeight: '800', left: 4, position: 'absolute' },
+  chartLegend: { flexDirection: 'row', gap: 16, marginLeft: 30, marginTop: 8 },
+  legendItem: { alignItems: 'center', flexDirection: 'row', gap: 5 },
+  legendSwatch: { borderRadius: 2, height: 3, width: 14 },
+  legendText: { color: colors.muted, fontSize: 10, fontWeight: '700' },
 
   formCard: {},
   formCardTitle: { color: colors.cyan, fontSize: 11, fontWeight: '900', letterSpacing: 1.2, marginBottom: 12, textTransform: 'uppercase' },
