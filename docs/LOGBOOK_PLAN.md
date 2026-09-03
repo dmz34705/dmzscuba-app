@@ -330,6 +330,165 @@ own framework (not statically linked into the app binary), include its source +
 acknowledgements screen, and be able to provide object files for relinking. This
 is a release checkbox, not a code task — flag it before submitting.
 
+## Part B continued — multi-computer logbook (B5–B8)
+
+Decided with Zachary 2026-09-03. Goal: a **dive** is the canonical unit; the
+**computer logs** from each physical device attach underneath it. Downloading a
+second computer recognises "this log is the same dive as one I already have",
+attaches it, and (if the clocks disagree) asks which is right and corrects the
+wrong one. Dive count = number of dive records, so diving two computers no longer
+inflates the count.
+
+### Prior art being replaced
+
+`schemaVersion: 1` (one flat record per download) and the `buildFolders()`
+per-computer grouping in `useDiveLog` are superseded. The "folder" view becomes a
+filter over dives, not the storage structure. `computerKey` (vendor|product|
+fingerprint) same-device de-dup stays — it prevents re-importing the *same* log;
+the new matcher is *cross*-device and fuzzy.
+
+### B5 — data model + rich capture + migration (`schemaVersion: 2`)
+
+**Two record types.**
+
+`Dive` — canonical, user-facing, counted.
+```
+{
+  schemaVersion: 2,
+  id, createdAt, updatedAt, deletedAt, sync,          // as before
+  startTime, timezoneOffsetMinutes,                    // canonical (post-correction)
+  source: 'manual' | 'computer' | 'mixed',
+  primaryLogId: string | null,                         // which log drives the summary/profile; null = manual
+  logIds: string[],                                     // attached ComputerLog ids
+
+  // summary fields surfaced from the primary log (or hand-entered for manual):
+  number, durationSeconds, surfaceIntervalSeconds,
+  water { type, maxDepthMeters, avgDepthMeters, tempSurfaceC, tempMinC, tempMaxC, visibilityMeters },
+  atmosphericBar,
+  gas { mixes[], tanks[] },                             // tanks only when a transmitter was present
+  diveMode, decoModel,
+
+  // user-owned, never overwritten by a log:
+  site { name, location, country, latitude, longitude },
+  operator, buddies[], types[], gear { weightKg, exposureSuit, notes },
+  rating, notes, tags[],
+}
+```
+
+`ComputerLog` — one download from one device, stored separately (profiles are big).
+```
+{
+  id, diveId,
+  device { vendor, product, serial },
+  deviceKey: 'vendor|product|serial',
+  fingerprint,                                          // libdivecomputer per-dive hex
+  downloadedAt,
+  reportedStartTime,                                    // exactly what the computer said — never mutated
+  timeCorrectionMinutes: number,                        // applied offset (0 = clock trusted)
+  startTime,                                            // reportedStartTime + correction (convenience)
+  durationSeconds, maxDepthMeters, avgDepthMeters,
+  tempSurfaceC, tempMinC, tempMaxC, salinity, atmosphericBar,
+  gasMixes[], tanks[],                                  // tanks[] entries only kept when .beginPressureBar > 0 (transmitter)
+  diveMode, decoModel,
+  profile { sampleIntervalSeconds, samples[], events[] },
+  analytics {                                           // raw fields for the B8 metrics layer
+    gfLow, gfHigh, decoModelType, conservatism,
+    ceilingMaxMeters, firstStopMeters, ndlMinAtStartSec,
+    cnsStartPct, cnsEndPct, otu,
+    ascentRateMaxMPerMin, sawtoothIndex,                // computed at import from samples
+  },
+  device_meta { firmware, serialRaw, batteryPct, hardwareModel },  // "Device" section, de-emphasised
+  splitOf: string | null,                              // sibling ComputerLog id when this device split one dive
+}
+```
+
+Storage keys: `@dmz-scuba/dive-log/index-v2` (Dive summary rows for list+stats),
+`@dmz-scuba/dive-log/dive-v2/<id>`, `@dmz-scuba/dive-log/log-v2/<logId>`,
+`@dmz-scuba/dive-log/device-time-corrections-v1` (remembered clock decisions:
+`{ deviceKey, appliesFrom, appliesTo, offsetMinutes, decidedAt }[]`).
+
+**Migration v1→v2** (run once, in `storage.js`, keep a `…/backup-v1` copy):
+- every v1 record → a `Dive`; `source: 'computer'` records also spawn one
+  `ComputerLog` (profile + device moved onto it, `primaryLogId` set).
+- `source: 'manual' | 'import'` → `Dive` with `logIds: []`, `source` preserved
+  (import stays a distinct source? — treat as manual for now).
+
+**Rich native capture** (`DiveComputerDownloader.m` `parse_dive`):
+- pressure sample: keep every tank index, not just 0 (`samples[].pressures: {<tank>: bar}` or `pressureBar` for tank 0 + `pressureBarByTank`).
+- add `DC_FIELD_TANK.type`, already done; only surface tank pressure/volume to the
+  Dive when `beginpressure > 0` (real transmitter). No transmitter ⇒ omit; the
+  cylinder fields stay user-editable on the Dive.
+- capture: `DC_FIELD_DECOMODEL` conservatism, per-sample `DC_SAMPLE_DECO.tts`,
+  `DC_SAMPLE_SETPOINT`, `DC_SAMPLE_PPO2.sensor` (all sensors), `DC_SAMPLE_GASMIX`
+  already, `DC_SAMPLE_RBT`, `DC_SAMPLE_HEARTBEAT`, `DC_SAMPLE_BEARING`.
+- housekeeping via events / `DC_EVENT_DEVINFO` (firmware) + any battery field.
+- CCR fields (setpoint, diluent, sensor voltages) captured raw, **not surfaced**
+  until we review with real CCR divers.
+
+**Analytics computed at import** (pure, `lib/diveLog/logAnalytics.js`): ascent-rate
+series + max, sawtooth index, avg depth from samples, CNS/OTU if not given.
+
+### B6 — cross-computer matcher (`lib/diveLog/matchDives.js`, pure, unit-tested)
+
+Runs in the JS layer as each `onDownloadDive` arrives (background, off the UI
+thread via `InteractionManager` / batched), building a proposal set. Inputs: the
+new `ComputerLog` L, the existing `Dive`+`ComputerLog` store, and the other logs
+from the current download session.
+
+1. **Prefilter.** Candidate dives whose window overlaps L's reported start ±30 h
+   (covers any tz + date-line). Keep where `abs(durL - durC) ≤ max(120s, 8%)` and
+   `abs(maxDepthL - maxDepthC) ≤ max(1.5 m, 8%)`.
+   - Split case: also test L against **sums of consecutive candidates** from one
+     device separated by a surface gap < ~12 min (Suunto ends a dive sooner than
+     Shearwater, so Suunto logs 2 where Shearwater logs 1).
+2. **Profile alignment.** Resample both depth series to 10 s. Slide L over the
+   candidate across the window; coarse pass at 15-min steps, then refine ±5 min
+   at 10 s steps around the best. Score = normalised cross-correlation of the
+   depth series (and a shape term: 1 − RMS(normalised depths)).
+3. **Classify.**
+   - `score ≥ 0.95` **and** best offset within ±90 s of a multiple of 15 min →
+     **same dive, auto-attach**. If that clean offset ≠ 0 it is a *clock
+     discrepancy* of that size between the two `deviceKey`s.
+   - `0.80 ≤ score < 0.95` → **same dive, needs confirmation**.
+   - else → not a match.
+4. **Split.** If L matches `frag1 + gap + frag2`, attach all fragments to one
+   Dive; set `splitOf` on the fragments; primary = the non-split (spanning) log.
+5. **Aggregate conflicts.** Group discrepancies by `(deviceKeyA, deviceKeyB,
+   offsetMinutes, contiguous date range)` → one prompt each.
+
+Output: `{ attach: [...], confirm: [...], conflicts: [...] }`. Nothing is written
+until B7 resolves it.
+
+Known gap: a single computer that split a dive, with no second computer that day,
+can't be detected — leave a manual "merge these two logs" action, don't guess.
+
+### B7 — conflict resolution UI + apply
+
+After the download session ends (user stops or all dives read) and returns toward
+the log, show a review sheet, one card per conflict cluster (Explorer-copy
+style):
+
+> **Dec 1, 2024 · 3 dives** — Peregrine TX 14:30, EON Core 07:30 (−7:00).
+> Which clock is right? **[Peregrine TX] [EON Core] [Enter time…] [Not the same dive]**
+
+- Choosing a side sets `timeCorrectionMinutes` on the other device's logs in that
+  cluster, recomputes each `Dive.startTime` from its primary log, groups the logs.
+- Persist the decision in `device-time-corrections-v1` (deviceKey + date range +
+  offset) so a re-download of those dives doesn't re-ask.
+- Auto-applied (high-confidence, clean non-zero offset, and a prior matching
+  correction already on file) skip the prompt; first-time offsets always ask.
+- "Not the same dive" → keep separate, remember as a negative match
+  (`fingerprint` pair) so it isn't re-proposed.
+
+### B8 — analytics / "nerd out" layer
+
+`lib/diveLog/logAnalytics.js` (per-dive) + `lib/diveLog/diveTrends.js` (across
+dives). Metrics: SAC/RMV per dive and trend, avg-depth trend, cumulative bottom
+time, thermal exposure, gas-mix history, **safety score** (weighted: ascent-rate
+violations, sawtooth index, safety-stop compliance, NDL/deco margin, rapid-ascent
+count). Profile overlays on the detail chart: tank pressure, temperature,
+ceiling, ascent-rate shading. New "Stats" view off the logbook.
+
 ## Open decisions (need Zachary)
 
 - Which dive computers to support first (drives descriptor/test priorities).
