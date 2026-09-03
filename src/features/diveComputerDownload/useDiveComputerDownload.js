@@ -250,11 +250,15 @@ export default function useDiveComputerDownload({ onDiveDownloaded, hasImportedF
     }
   }, [connectedDevice]);
 
-  // Smart incremental: use the stored last-sync fingerprint ONLY if the logbook
-  // still holds that dive (so the computer sends just the newer ones — fast). If
-  // the app no longer has it (dives were deleted / wiped), read everything so
-  // nothing is lost. `{ full: true }` forces a complete read.
-  const download = useCallback(async ({ full = false } = {}) => {
+  // Default: read every dive on the computer, and let the logbook's own per-dive
+  // de-dup skip the ones we already have. This is the only option that reliably
+  // brings back a dive you deleted in the app (incremental sync stops at the
+  // last-synced dive and can't reach anything older than it).
+  //
+  // `{ incremental: true }` opts into the fast path: pass the stored last-sync
+  // fingerprint so the computer only sends newer dives. Only safe when the book
+  // is known-complete; falls back to a full read if the marker's dive is gone.
+  const download = useCallback(async ({ incremental = false } = {}) => {
     const device = deviceRef.current;
     if (!device || !connectedDevice) return;
 
@@ -264,13 +268,13 @@ export default function useDiveComputerDownload({ onDiveDownloaded, hasImportedF
     setStatus('downloading');
 
     const name = connectedDevice.name;
-    const marker = full ? null : await loadFingerprint(name).catch(() => null);
+    const marker = incremental ? await loadFingerprint(name).catch(() => null) : null;
     const markerValid = marker && hasFingerprintRef.current?.(marker);
     const fingerprintBase64 = markerValid ? marker : null;
     if (!fingerprintBase64) await clearFingerprint(name).catch(() => {});
     const tally = { downloaded: 0, saved: 0, merged: 0, duplicate: 0 };
 
-    console.log('[dc-download] start', { name, full, markerValid, hasFingerprint: !!fingerprintBase64 });
+    console.log('[dc-download] start', { name, incremental, markerValid, hasFingerprint: !!fingerprintBase64 });
 
     try {
       const result = await runDownload({

@@ -50,11 +50,12 @@ function DeviceRow({ device, onConnect, disabled }) {
  * @param {(logPartial: object) => Promise<'saved'|'duplicate'>} props.importComputerLog
  */
 export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, importComputerLog, onImportComplete }) {
+  const forceRef = useRef(false); // "re-import everything" — skip the per-dive de-dup
   const saveDive = useCallback(async (rawDive) => {
     // vendor/product/serial come resolved from the native libdivecomputer descriptor.
     const log = computerLogFromDownload(rawDive);
     const key = computerDiveKey(log.device.vendor, log.device.product, log.fingerprint);
-    if (key && knownComputerKeys?.has(key)) return 'duplicate';
+    if (!forceRef.current && key && knownComputerKeys?.has(key)) return 'duplicate';
     // 'saved' = new dive; 'attached' = merged into a dive from another computer
     return importComputerLog(log);
   }, [importComputerLog, knownComputerKeys]);
@@ -137,22 +138,32 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
                   : 'No dives read.'}
               </Text>
               <View style={styles.doneActions}>
-                <PrimaryButton label="Download again" onPress={() => download()} style={styles.flexButton} />
+                <PrimaryButton label="Download again" onPress={() => { forceRef.current = false; download(); }} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Download all dives from the computer</Text>
+              <Pressable onPress={() => { forceRef.current = false; download({ incremental: true }); }} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Sync new dives only (faster)</Text>
+              </Pressable>
+              <Pressable onPress={() => { forceRef.current = true; download(); }} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
               </Pressable>
             </>
           ) : (
             <>
               <Text style={styles.body}>Connection ready.</Text>
               <View style={styles.doneActions}>
-                <PrimaryButton label="Download dives" onPress={() => download()} style={styles.flexButton} />
+                <PrimaryButton
+                  label="Download dives"
+                  onPress={() => { forceRef.current = false; download(); }}
+                  style={styles.flexButton}
+                />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
-              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Download all dives from the computer</Text>
+              <Pressable onPress={() => { forceRef.current = false; download({ incremental: true }); }} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Sync new dives only (faster)</Text>
+              </Pressable>
+              <Pressable onPress={() => { forceRef.current = true; download(); }} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
               </Pressable>
             </>
           )}
