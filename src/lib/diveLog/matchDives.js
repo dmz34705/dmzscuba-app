@@ -410,32 +410,30 @@ export function findMatch(newLog, candidates) {
   for (const cand of candidates) {
     const dive = cand.dive;
     const logs = cand.logs || [];
-    const ref = logs.find((l) => l.id === dive.primaryLogId) || logs[0] || dive;
     // This exact download is already on this dive (fingerprint) — nothing to do.
-    if (newLog.fingerprint && logs.some((l) => l.fingerprint && l.fingerprint === newLog.fingerprint
+    if (newLog.fingerprint && logs.some((l) => l.fingerprint === newLog.fingerprint
         && l.deviceKey === newLog.deviceKey)) {
       continue;
     }
-    // A different whole dive from the *same* computer isn't a cross-computer
-    // match — but a *fragment* from the same computer can still belong here
-    // (the computer split one dive into several).
-    const sameDeviceWholeDive = logs.some((l) => l.deviceKey && l.deviceKey === newLog.deviceKey);
+    // Only ever compare against logs from a DIFFERENT computer. Two dives from
+    // the same physical unit are never "the same dive with different clocks";
+    // same-unit logs are only ever combined by the split-fragment fusion, which
+    // needs a different computer's continuous log to anchor it (findSpanningMerge).
+    const crossLogs = logs.filter((l) => l.deviceKey && l.deviceKey !== newLog.deviceKey);
+    if (!crossLogs.length) continue;
+    const ref = crossLogs.reduce((a, b) => ((b.durationSeconds || 0) > (a.durationSeconds || 0) ? b : a));
 
-    if (!sameDeviceWholeDive) {
-      const pair = classifyPair(newLog, ref);
-      consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
-    }
+    const pair = classifyPair(newLog, ref);
+    consider(pair.verdict === 'none' ? null : { ...pair, diveId: dive.id, kind: 'pair' });
 
     // newLog is a fragment of this longer existing dive
     const frag = classifyFragment(newLog, ref);
     consider(frag.verdict === 'none' ? null : { ...frag, diveId: dive.id });
 
     // this existing dive is a fragment of the (longer) newLog -> absorb it
-    if (!sameDeviceWholeDive) {
-      const existingFrag = classifyFragment(ref, newLog);
-      if (existingFrag.verdict !== 'none') {
-        absorb.push({ diveId: dive.id, result: existingFrag, deviceKey: ref.deviceKey, start: dive.startTime });
-      }
+    const existingFrag = classifyFragment(ref, newLog);
+    if (existingFrag.verdict !== 'none') {
+      absorb.push({ diveId: dive.id, result: existingFrag, deviceKey: ref.deviceKey, start: dive.startTime });
     }
   }
 

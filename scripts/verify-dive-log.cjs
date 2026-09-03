@@ -455,6 +455,21 @@ const fmFrag = findMatch(suFrag2, [
 assert.ok(fmFrag.bestMatch && fmFrag.bestMatch.diveId === 'dvLong', 'fragment should match the long dive');
 assert.equal(fmFrag.bestMatch.kind, 'fragment');
 
+// findMatch NEVER cross-matches two dives from the SAME computer (same deviceKey).
+// suFrag1 and suFrag2 are both Suunto|EON Core|9 — even though frag2's profile is
+// a sub-window of frag1's shape, they must not be proposed as a match.
+const fmSameSn = findMatch(
+  { ...suFrag2, deviceKey: 'Suunto|EON Core|9', fingerprint: 'x2' },
+  [{ dive: { id: 'dvSu1', primaryLogId: 'g1' }, logs: [{ ...suFrag1, id: 'g1', fingerprint: 'x1' }] }],
+);
+assert.equal(fmSameSn.bestMatch, null, 'same-computer dives must never be cross-matched');
+// but once a different computer's dive is present, the fragment attaches to IT
+const fmMixed = findMatch(
+  { ...suFrag2, deviceKey: 'Suunto|EON Core|9', fingerprint: 'x2' },
+  [{ dive: { id: 'dvMix', primaryLogId: 'sh' }, logs: [{ ...shearLong, id: 'sh' }, { ...suFrag1, id: 'g1', fingerprint: 'x1' }] }],
+);
+assert.ok(fmMixed.bestMatch && fmMixed.bestMatch.diveId === 'dvMix');
+
 // findMatch wires it together; ignores same-device candidates
 const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
 const fm = findMatch(fmNew, [
