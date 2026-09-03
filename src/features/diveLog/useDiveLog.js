@@ -6,6 +6,7 @@ import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
 import { findMatch } from '../../lib/diveLog/matchDives';
 import {
   attachLogToDive,
+  consolidateSameDeviceLogs,
   createDiveFromLog,
   isMigratedToV2,
   loadAll,
@@ -255,7 +256,27 @@ export default function useDiveLog() {
   /** Re-run the matcher across the whole book (recovers dives split before the
    *  matcher improved). Populates pendingProposals; nothing is written yet. */
   const recheckDuplicates = useCallback(async () => {
-    const dives = await loadAll();
+    let dives = await loadAll();
+    // First: fuse any dive that already has several logs from one computer
+    // (e.g. a split dive merged before fragment-fusing existed).
+    let fused = 0;
+    for (const d of dives) {
+      const keys = new Set();
+      let dup = false;
+      // eslint-disable-next-line no-await-in-loop
+      for (const l of await loadLogsForDive(d)) {
+        if (l.deviceKey && keys.has(l.deviceKey)) dup = true;
+        if (l.deviceKey) keys.add(l.deviceKey);
+      }
+      if (dup) {
+        // eslint-disable-next-line no-await-in-loop
+        await consolidateSameDeviceLogs(d.id);
+        diveCache.current.delete(d.id);
+        fused += 1;
+      }
+    }
+    if (fused) dives = await loadAll();
+
     const bundles = [];
     for (const d of dives) {
       // eslint-disable-next-line no-await-in-loop
@@ -294,8 +315,9 @@ export default function useDiveLog() {
       foldIds.forEach((id) => proposedSources.add(id));
     }
     setPendingProposals(proposals);
-    return proposals.length;
-  }, []);
+    if (fused) await refreshIndex();
+    return { proposals: proposals.length, fused };
+  }, [refreshIndex]);
 
   /** Manual merge: user selected several dives that are really one. */
   const mergeDivesManual = useCallback(async (diveIds) => {

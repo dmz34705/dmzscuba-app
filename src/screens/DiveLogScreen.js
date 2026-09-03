@@ -1253,9 +1253,17 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
             onRecheck={async () => {
               setRechecking(true);
               try {
-                const n = await recheckDuplicates();
-                if (n > 0) setView('review');
-                else Alert.alert('No duplicates found', 'Every dive looks unique.');
+                const { proposals, fused } = await recheckDuplicates();
+                if (proposals > 0) {
+                  setView('review');
+                } else {
+                  Alert.alert(
+                    fused ? 'Cleaned up' : 'No duplicates found',
+                    fused
+                      ? `Combined split logs on ${fused} ${fused === 1 ? 'dive' : 'dives'}. No further duplicates.`
+                      : 'Every dive looks unique.',
+                  );
+                }
               } finally {
                 setRechecking(false);
               }
