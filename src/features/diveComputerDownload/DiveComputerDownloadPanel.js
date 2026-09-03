@@ -42,6 +42,32 @@ function DeviceRow({ device, onConnect, disabled }) {
   );
 }
 
+// The two download modes as first-class actions. "Sync new dives" is the
+// primary once a baseline exists (fast — only dives not already saved); a full
+// re-read and a force re-import sit below as escape hatches.
+function DownloadActions({ baselineKnown, onDisconnect, download }) {
+  return (
+    <>
+      <View style={styles.doneActions}>
+        <PrimaryButton
+          label={baselineKnown ? 'Sync new dives' : 'Download all dives'}
+          onPress={() => download({ incremental: baselineKnown })}
+          style={styles.flexButton}
+        />
+        <SecondaryButton label="Disconnect" onPress={onDisconnect} style={styles.flexButton} />
+      </View>
+      {baselineKnown ? (
+        <Pressable onPress={() => download()} hitSlop={8} style={styles.linkRow}>
+          <Text style={styles.linkText}>Re-read the whole computer</Text>
+        </Pressable>
+      ) : null}
+      <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
+        <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
+      </Pressable>
+    </>
+  );
+}
+
 /**
  * The download flow's UI. All transfer state lives in the module-level
  * `downloadService` (via `useDiveComputerDownload`), so leaving this screen does
@@ -53,7 +79,7 @@ function DeviceRow({ device, onConnect, disabled }) {
  */
 export default function DiveComputerDownloadPanel({ onClose }) {
   const {
-    supported, status, devices, connectedDevice, progress, summary, error, log,
+    supported, status, devices, connectedDevice, progress, summary, error, log, baselineKnown,
     scan, stopScan, connect, disconnect, download, cancel, clearLog,
   } = useDiveComputerDownload();
 
@@ -112,34 +138,17 @@ export default function DiveComputerDownloadPanel({ onClose }) {
                     + '. Any matches with another computer are on the next screen.'
                   : 'No dives read.'}
               </Text>
-              <View style={styles.doneActions}>
-                <PrimaryButton label="Download again" onPress={() => download()} style={styles.flexButton} />
-                <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
-              </View>
-              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Sync new dives only (faster)</Text>
-              </Pressable>
-              <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
-              </Pressable>
+              <DownloadActions baselineKnown={baselineKnown} onDisconnect={disconnect} download={download} />
             </>
           ) : (
             <>
-              <Text style={styles.body}>Connection ready.</Text>
-              <View style={styles.doneActions}>
-                <PrimaryButton
-                  label="Download dives"
-                  onPress={() => download()}
-                  style={styles.flexButton}
-                />
-                <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
-              </View>
-              <Pressable onPress={() => download({ incremental: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Sync new dives only (faster)</Text>
-              </Pressable>
-              <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
-                <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
-              </Pressable>
+              <Text style={styles.body}>
+                {baselineKnown
+                  ? '“Sync new dives” pulls only the dives that aren’t already in your logbook.'
+                  : 'The first download reads every dive on the computer — with a large log this can take '
+                    + 'a while. After that, syncing new dives is quick.'}
+              </Text>
+              <DownloadActions baselineKnown={baselineKnown} onDisconnect={disconnect} download={download} />
             </>
           )}
         </View>

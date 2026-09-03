@@ -25,6 +25,7 @@ export default function useDiveComputerDownload() {
     summary: snapshot.summary,
     error: snapshot.error,
     log: snapshot.log,
+    baselineKnown: snapshot.baselineKnown,
     scan: downloadService.scan,
     stopScan: downloadService.stopScan,
     connect: downloadService.connect,

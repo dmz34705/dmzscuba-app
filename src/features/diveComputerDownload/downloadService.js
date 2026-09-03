@@ -52,6 +52,11 @@ let state = {
   summary: null, // { downloaded, saved, merged, duplicate, failed }
   error: '',
   log: [], // [{ id, t, level, text }]
+  // true once we have a valid last-sync fingerprint for the connected computer
+  // whose dive is still in the logbook — i.e. an incremental "sync new dives"
+  // is safe and will be fast. false on a first-ever download (or after the
+  // marker's dive was deleted), where only a full read makes sense.
+  baselineKnown: false,
 };
 
 function emit() {
@@ -135,7 +140,7 @@ export function stopScan() {
 
 export async function scan() {
   ensureManager();
-  set({ error: '', summary: null, devices: [] });
+  set({ error: '', summary: null, devices: [], baselineKnown: false });
   seen = new Map();
 
   if (!manager) {
@@ -211,11 +216,10 @@ export async function connect(deviceId, meta = {}) {
       if (!stillConnected) throw new Error('link dropped after pairing');
 
       device = ready;
-      set({
-        connectedDevice: { id: ready.id, name: ready.name || ready.localName || meta.name || 'Dive computer' },
-        status: 'connected',
-      });
+      const resolvedName = ready.name || ready.localName || meta.name || 'Dive computer';
+      set({ connectedDevice: { id: ready.id, name: resolvedName }, status: 'connected' });
       log('connected');
+      refreshBaseline(resolvedName);
       return;
     } catch (connectError) {
       lastError = connectError;
@@ -249,7 +253,7 @@ export async function connect(deviceId, meta = {}) {
 export async function disconnect() {
   const target = state.connectedDevice;
   device = null;
-  set({ connectedDevice: null, progress: null, status: 'idle' });
+  set({ connectedDevice: null, progress: null, status: 'idle', baselineKnown: false });
   if (manager && target) {
     try { await manager.cancelDeviceConnection(target.id); } catch { /* already gone */ }
   }
@@ -269,6 +273,20 @@ async function loadKnownComputerKeys() {
     }
   } catch { /* first download — nothing known yet */ }
   return set2;
+}
+
+// Decide whether an incremental "sync new dives" is available for `name`: there
+// must be a saved fingerprint AND its dive must still be in the logbook (a
+// deleted marker dive can't be reached incrementally, so we'd have to full-read).
+async function refreshBaseline(name) {
+  try {
+    const marker = await loadFingerprint(name).catch(() => null);
+    if (!marker) { set({ baselineKnown: false }); return; }
+    const known = await loadKnownComputerKeys();
+    set({ baselineKnown: [...known].some((k) => k.endsWith(`|${marker}`)) });
+  } catch {
+    set({ baselineKnown: false });
+  }
 }
 
 /**
@@ -337,7 +355,9 @@ export async function download({ incremental = false, force = false } = {}) {
       log(`saved ${created.length} new ${created.length === 1 ? 'dive' : 'dives'} to the logbook`);
     }
 
-    set({ summary: { ...tally }, status: 'done' });
+    // A clean finish means the newest dive's fingerprint is saved and its dive
+    // is in the book — future syncs can go incremental.
+    set({ summary: { ...tally }, status: 'done', baselineKnown: !!result?.fingerprint || state.baselineKnown });
     log('download complete');
   } catch (downloadError) {
     // Still persist whatever arrived before the failure.

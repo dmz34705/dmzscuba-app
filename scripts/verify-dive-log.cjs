@@ -1002,6 +1002,12 @@ function memoryStorage(seed = {}) {
   assert.match(dlService, /markPendingReview/);         // flags the logbook to reconcile
   assert.match(dlService, /LOG_LIMIT/);                 // bounded console ring buffer
   assert.match(dlService, /if \(downloadRunning\) return/); // no re-entrant download
+  assert.match(dlService, /baselineKnown/);             // incremental-safe only with a live marker
+  assert.match(dlService, /function refreshBaseline/);
+
+  const dlPanel = read('src', 'features', 'diveComputerDownload', 'DiveComputerDownloadPanel.js');
+  assert.match(dlPanel, /Sync new dives/);              // incremental is a first-class button now
+  assert.match(dlPanel, /incremental: baselineKnown/);  // …and the default once a baseline exists
 
   const dlHook = read('src', 'features', 'diveComputerDownload', 'useDiveComputerDownload.js');
   assert.match(dlHook, /downloadService\.subscribe/);   // hook is a thin subscription now
