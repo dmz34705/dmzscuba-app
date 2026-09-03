@@ -264,10 +264,13 @@ export function classifyFragment(shortLog, longRef) {
   if (score < CONFIRM_SCORE) return { verdict: 'none' };
 
   const lagSec = lagSteps * RESAMPLE_SEC;
-  const sShort = wallStart(shortLog);
-  const sLong = wallStart(longRef);
-  // minutes to add to the fragment's reported start so it sits where it belongs
-  const offsetSec = Number.isFinite(sShort) && Number.isFinite(sLong) ? (sLong + lagSec) - sShort : 0;
+  const sShort = wallStart(shortLog); // ms
+  const sLong = wallStart(longRef);   // ms
+  // minutes to add to the fragment's reported start so it sits where it belongs.
+  // wallStart is in ms; convert the wall-clock gap to seconds before adding lagSec.
+  const offsetSec = Number.isFinite(sShort) && Number.isFinite(sLong)
+    ? (sLong - sShort) / 1000 + lagSec
+    : 0;
   const clean = cleanOffsetMinutes(offsetSec);
   const offsetMinutes = clean != null ? clean : Math.round(offsetSec / 60);
   const clockConflict = Math.abs(offsetMinutes) >= 1;

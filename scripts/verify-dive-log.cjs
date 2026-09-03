@@ -437,6 +437,13 @@ const suFrag2 = {
 const frag2Match = classifyFragment(suFrag2, shearLong);
 assert.ok(frag2Match.verdict !== 'none', `frag2 verdict ${frag2Match.verdict} score ${frag2Match.score}`);
 assert.ok(frag2Match.windowStartSec > 1200, `frag2 window ${frag2Match.windowStartSec}`);
+// frag2 genuinely starts ~30 min into the dive and the clocks agree -> ~0 offset
+// (regression: wallStart is ms; the offset must not be 1000x too big)
+assert.ok(Math.abs(frag2Match.offsetMinutes) <= 2, `frag2 offset ${frag2Match.offsetMinutes} min`);
+// same fragment, but its clock is a real +3 h out
+const frag2Shifted = { ...suFrag2, reportedStartTime: '2026-08-27T10:30:30.000Z', startTime: '2026-08-27T10:30:30.000Z' };
+const shiftedMatch = classifyFragment(frag2Shifted, shearLong);
+assert.equal(shiftedMatch.offsetMinutes, 180, `expected +180, got ${shiftedMatch.offsetMinutes}`);
 // a whole separate dive is NOT a fragment
 assert.equal(classifyFragment(other, shearLong).verdict, 'none');
 
