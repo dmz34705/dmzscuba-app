@@ -34,6 +34,7 @@ export const DIVE_LOG_DIVE_PREFIX = '@dmz-scuba/dive-log/dive-v2/';
 export const DIVE_LOG_LOG_PREFIX = '@dmz-scuba/dive-log/log-v2/';
 export const DIVE_LOG_CORRECTIONS_KEY = '@dmz-scuba/dive-log/corrections-v1';
 export const DIVE_LOG_FINGERPRINT_PREFIX = '@dmz-scuba/dive-log/fingerprint-v1/';
+export const DIVE_LOG_PRIORITY_KEY = '@dmz-scuba/dive-log/computer-priority-v1';
 
 // v1 (pre-migration) keys — read-only after migrateToV2.
 const V1_INDEX_KEY = '@dmz-scuba/dive-log/index-v1';
@@ -336,6 +337,58 @@ export async function attachLogToDive(diveId, logPartial, { makePrimary = false 
   await saveDive({ ...next, logIds, primaryLogId }, storage);
   const consolidated = await consolidateSameDeviceLogs(diveId, storage);
   return { dive: consolidated, log };
+}
+
+// ---------------------------------------------------------------------------
+// computer priority (primary / secondary / tertiary) — an ordered deviceKey list
+// ---------------------------------------------------------------------------
+
+export async function loadComputerPriority(storage = AsyncStorage) {
+  const raw = parseJson(await storage.getItem(DIVE_LOG_PRIORITY_KEY), []);
+  return Array.isArray(raw) ? raw.filter((k) => typeof k === 'string' && k) : [];
+}
+
+export async function saveComputerPriority(order, storage = AsyncStorage) {
+  const clean = [...new Set((Array.isArray(order) ? order : []).filter(Boolean))];
+  await storage.setItem(DIVE_LOG_PRIORITY_KEY, JSON.stringify(clean));
+  return clean;
+}
+
+/** 0-based rank of a deviceKey; unranked computers sort after ranked ones. */
+export function priorityIndex(order, deviceKey) {
+  const i = (order || []).indexOf(deviceKey);
+  return i === -1 ? 999 : i;
+}
+
+/** Pick the log to show for a dive: best-ranked computer, then longest. */
+export function pickPrimaryLog(logs, order) {
+  const live = (Array.isArray(logs) ? logs : []).filter(Boolean);
+  if (!live.length) return null;
+  return live.slice().sort((a, b) => (
+    priorityIndex(order, a.deviceKey) - priorityIndex(order, b.deviceKey)
+    || (b.durationSeconds || 0) - (a.durationSeconds || 0)
+  ))[0];
+}
+
+/**
+ * Recompute primaryLogId + re-surface the summary for every multi-log dive from
+ * the current priority order. Called after the order changes.
+ */
+export async function resurfaceForPriority(storage = AsyncStorage) {
+  const order = await loadComputerPriority(storage);
+  const index = await loadIndex(storage);
+  for (const row of index) {
+    if (!(row.logCount > 1)) continue;
+    // eslint-disable-next-line no-await-in-loop
+    const dive = await loadDive(row.id, storage);
+    if (!dive) continue;
+    // eslint-disable-next-line no-await-in-loop
+    const logs = await loadLogsForDive(dive, storage);
+    const primary = pickPrimaryLog(logs, order);
+    if (!primary || primary.id === dive.primaryLogId) continue;
+    // eslint-disable-next-line no-await-in-loop
+    await saveDive(surfaceLogOntoDive({ ...dive, primaryLogId: primary.id }, primary), storage);
+  }
 }
 
 // ---------------------------------------------------------------------------

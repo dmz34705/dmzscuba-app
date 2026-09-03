@@ -325,7 +325,7 @@ function FormSection({ title, children }) {
 // Profile chart (only present for imported / downloaded dives)
 // ---------------------------------------------------------------------------
 
-function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit }) {
+function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, pressureSeries = [] }) {
   const { width } = useWindowDimensions();
   const chartWidth = Math.max(200, width - spacing.md * 2 - 30 - 30);
   const chartHeight = 150;
@@ -335,7 +335,11 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit }) {
   );
   if (!geometry.linePath) return null;
 
-  const pRange = geometry.pressureRange;
+  // Tank-pressure traces — one per computer that recorded air — on a shared 0..max scale.
+  const withAir = pressureSeries.filter((s) => (s.samples || []).some((x) => x?.pressureBar > 0));
+  const maxBar = Math.max(0, ...withAir.flatMap((s) => (s.samples || []).map((x) => x?.pressureBar || 0)));
+  const airPaths = withAir.map((s) => ({ ...s, path: geometry.pressureOverlay(s.samples, maxBar) })).filter((s) => s.path);
+
   return (
     <Card style={styles.detailCard}>
       <Text style={styles.detailCardTitle}>Profile</Text>
@@ -357,26 +361,31 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit }) {
           ))}
           <Path d={geometry.areaPath} fill="rgba(112,221,246,.12)" />
           <Path d={geometry.linePath} fill="none" stroke={colors.cyan} strokeWidth="2.5" strokeLinejoin="round" />
-          {geometry.hasPressure ? (
-            <Path d={geometry.pressurePath} fill="none" stroke={colors.gold} strokeWidth="2" strokeLinejoin="round" strokeDasharray="1 0" />
-          ) : null}
+          {airPaths.map((s) => (
+            <Path key={s.label} d={s.path} fill="none" stroke={s.color} strokeWidth="2" strokeLinejoin="round" />
+          ))}
           {geometry.timeTicks.map((tick) => (
             <SvgText key={`tl-${tick.seconds}`} x={tick.x} y={chartHeight + 12} fill={colors.faint} fontSize="8" fontWeight="700" textAnchor="middle">
               {`${Math.round(tick.seconds / 60)}m`}
             </SvgText>
           ))}
         </Svg>
-        {geometry.hasPressure && pRange ? (
+        {airPaths.length ? (
           <View style={styles.chartPressureAxis}>
-            <Text style={[styles.chartPressureText, { top: -4 }]}>{formatPressure(pRange.max, pressureUnit)}</Text>
-            <Text style={[styles.chartPressureText, { top: chartHeight - 8 }]}>{formatPressure(pRange.min, pressureUnit)}</Text>
+            <Text style={[styles.chartPressureText, { top: -4 }]}>{formatPressure(maxBar, pressureUnit)}</Text>
+            <Text style={[styles.chartPressureText, { top: chartHeight - 8 }]}>0</Text>
           </View>
         ) : null}
       </View>
-      {geometry.hasPressure ? (
+      {airPaths.length ? (
         <View style={styles.chartLegend}>
           <View style={styles.legendItem}><View style={[styles.legendSwatch, { backgroundColor: colors.cyan }]} /><Text style={styles.legendText}>Depth</Text></View>
-          <View style={styles.legendItem}><View style={[styles.legendSwatch, { backgroundColor: colors.gold }]} /><Text style={styles.legendText}>Tank pressure</Text></View>
+          {airPaths.map((s) => (
+            <View key={s.label} style={styles.legendItem}>
+              <View style={[styles.legendSwatch, { backgroundColor: s.color }]} />
+              <Text style={styles.legendText}>{airPaths.length > 1 ? `${s.label} air` : 'Tank pressure'}</Text>
+            </View>
+          ))}
         </View>
       ) : null}
     </Card>
@@ -536,12 +545,33 @@ function DiveListCard({ row, units, onPress, onLongPress, selectable, selected }
   );
 }
 
-function FolderCard({ folder, onPress }) {
+const RANK_LABELS = { 1: 'Primary', 2: 'Secondary', 3: 'Tertiary' };
+
+function FolderCard({ folder, onPress, onSetRank }) {
   const bits = [`${folder.count} ${folder.count === 1 ? 'dive' : 'dives'}`];
   if (folder.lastDiveDate) bits.push(`last ${formatDate(folder.lastDiveDate)}`);
+  const showRank = folder.kind === 'computer' && onSetRank;
+  const pickRank = () => {
+    Alert.alert(folder.label, 'Priority for the data shown on dives recorded by more than one computer.', [
+      { text: 'Primary', onPress: () => onSetRank(folder.key, 1) },
+      { text: 'Secondary', onPress: () => onSetRank(folder.key, 2) },
+      { text: 'Tertiary', onPress: () => onSetRank(folder.key, 3) },
+      { text: 'Not ranked', onPress: () => onSetRank(folder.key, null) },
+      { text: 'Cancel', style: 'cancel' },
+    ]);
+  };
   return (
     <Card style={styles.diveCard}>
-      <SecondaryButton label={folder.label} onPress={onPress} style={styles.diveCardButton} />
+      <View style={styles.folderTopRow}>
+        <SecondaryButton label={folder.label} onPress={onPress} style={[styles.diveCardButton, styles.folderNameButton]} />
+        {showRank ? (
+          <Pressable onPress={pickRank} hitSlop={8} style={({ pressed }) => [styles.rankChip, folder.rank && styles.rankChipOn, pressed && styles.pressed]}>
+            <Text style={[styles.rankChipText, folder.rank && styles.rankChipTextOn]}>
+              {folder.rank ? RANK_LABELS[folder.rank] : 'Set rank'}
+            </Text>
+          </Pressable>
+        ) : null}
+      </View>
       {folder.sublabel ? <Text style={styles.folderSerial}>{folder.sublabel}</Text> : null}
       <View style={styles.diveCardMeta}>
         <Text style={styles.diveCardMetaText}>{bits.join('  ·  ')}</Text>
@@ -748,48 +778,88 @@ function DetailCard({ title, children }) {
   );
 }
 
-function LogsCard({ logs, primaryLog, units }) {
+function LogsCard({ logs, primaryLog, units, onShowLog }) {
   if (!logs.length) return null;
+  const multi = logs.length > 1;
   return (
     <Card style={styles.detailCard}>
       <Text style={styles.detailCardTitle}>
-        {logs.length > 1 ? `Recorded by ${logs.length} computers` : 'Recorded by'}
+        {multi ? `Recorded by ${logs.length} computers` : 'Recorded by'}
       </Text>
       {logs.map((log) => {
         let name = `${log.device.vendor} ${log.device.product}`.trim() || 'Dive computer';
         if (log.fusedFrom > 1) name += ` (${log.fusedFrom} recordings joined)`;
         const bits = [formatDepth(log.water.maxDepthMeters, units.depthUnit), formatDuration(log.durationSeconds)];
+        if (logHasAir(log)) bits.push('air');
         if (log.timeCorrectionMinutes) {
           const sign = log.timeCorrectionMinutes > 0 ? '+' : '−';
           const abs = Math.abs(log.timeCorrectionMinutes);
           bits.push(`clock ${sign}${Math.floor(abs / 60)}:${String(abs % 60).padStart(2, '0')}`);
         }
+        const shown = log.id === primaryLog?.id;
+        const tappable = multi && !!onShowLog;
         return (
-          <View key={log.id} style={styles.logRow}>
+          <Pressable
+            key={log.id}
+            disabled={!tappable}
+            onPress={tappable ? () => onShowLog(log.id) : undefined}
+            style={({ pressed }) => [styles.logRow, shown && styles.logRowShown, pressed && styles.pressed]}
+          >
             <View style={styles.logRowMain}>
-              <Text style={styles.logRowName}>
-                {name}{log.id === primaryLog?.id ? '  ·  shown above' : ''}
+              <Text style={[styles.logRowName, shown && styles.logRowNameShown]}>
+                {name}{shown ? '  ·  showing' : ''}
               </Text>
               {log.device.serial ? <Text style={styles.logRowSerial}>SN {log.device.serial}</Text> : null}
             </View>
             <Text style={styles.logRowMeta}>{bits.join('  ·  ')}</Text>
-          </View>
+          </Pressable>
         );
       })}
     </Card>
   );
 }
 
-function DiveDetail({ dive, logs = [], primaryLog, units }) {
-  const mix = dive.gas.mixes[0];
-  const tank = dive.gas.tanks[0];
+const PRESSURE_COLORS = ['#F0C84B', '#70E2A3', '#FF9F7F']; // per air-bearing computer
+
+function logHasAir(log) {
+  return (log?.gas?.tanks || []).some((t) => t?.startBar != null || t?.endBar != null)
+    || (log?.profile?.samples || []).some((s) => s?.pressureBar != null);
+}
+function computerName(log) {
+  return `${log?.device?.vendor || ''} ${log?.device?.product || ''}`.trim() || 'Dive computer';
+}
+
+function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog }) {
+  // Physical data comes from the shown computer's log; user's own fields from the Dive.
+  const phys = primaryLog || dive;
+  const water = phys.water || dive.water;
+  const gas = phys.gas || dive.gas;
+  const mix = gas.mixes?.[0];
+  const tank = gas.tanks?.[0];
   const samples = primaryLog?.profile?.samples || [];
   const analytics = primaryLog?.analytics;
-  const gasUsedBar = tank && tank.startBar != null && tank.endBar != null ? tank.startBar - tank.endBar : null;
-  const gasUsedLiters = gasUsedBar != null && tank.volumeLiters ? gasUsedBar * tank.volumeLiters : null;
-  const hasAir = tank && (tank.startBar != null || tank.endBar != null);
+  const shownName = primaryLog ? computerName(primaryLog) : null;
+
+  // Air pressure: which computer(s) recorded it.
+  const airLogs = logs.filter(logHasAir);
+  const airSeries = airLogs.map((log, i) => ({
+    label: computerName(log),
+    color: PRESSURE_COLORS[i % PRESSURE_COLORS.length],
+    samples: log.profile?.samples || [],
+    tank: log.gas?.tanks?.[0] || null,
+    analytics: log.analytics,
+  }));
+  const tankForNumbers = airSeries[0]?.tank || tank;
+  const gasUsedBar = tankForNumbers && tankForNumbers.startBar != null && tankForNumbers.endBar != null
+    ? tankForNumbers.startBar - tankForNumbers.endBar : null;
+  const gasUsedLiters = gasUsedBar != null && tankForNumbers.volumeLiters ? gasUsedBar * tankForNumbers.volumeLiters : null;
+
   return (
     <>
+      {logs.length > 1 && shownName ? (
+        <Text style={styles.detailShownFrom}>Showing {shownName}&apos;s data — tap a computer below to switch</Text>
+      ) : null}
+
       <DetailCard title="When & where">
         <DetailRow label="Date" value={formatDate(dive.startTime)} />
         <DetailRow label="Time" value={formatTime(dive.startTime)} />
@@ -802,30 +872,24 @@ function DiveDetail({ dive, logs = [], primaryLog, units }) {
       </DetailCard>
 
       <DetailCard title="Depths & time">
-        <DetailRow label="Max depth" value={formatDepth(dive.water.maxDepthMeters, units.depthUnit)} />
-        <DetailRow label="Avg depth" value={dive.water.avgDepthMeters != null ? formatDepth(dive.water.avgDepthMeters, units.depthUnit) : ''} />
-        <DetailRow label="Duration" value={formatDuration(dive.durationSeconds)} />
+        <DetailRow label="Max depth" value={formatDepth(water.maxDepthMeters, units.depthUnit)} />
+        <DetailRow label="Avg depth" value={water.avgDepthMeters != null ? formatDepth(water.avgDepthMeters, units.depthUnit) : ''} />
+        <DetailRow label="Duration" value={formatDuration(phys.durationSeconds)} />
         <DetailRow label="Surface interval" value={dive.surfaceIntervalSeconds != null ? formatDuration(dive.surfaceIntervalSeconds) : ''} />
       </DetailCard>
 
       <DetailCard title="Conditions">
-        <DetailRow label="Water" value={dive.water.type ? WATER_TYPE_LABELS[dive.water.type] : ''} />
-        <DetailRow label="Surface temp" value={dive.water.tempSurfaceC != null ? formatTemperature(dive.water.tempSurfaceC, units.temperatureUnit) : ''} />
-        <DetailRow label="Min temp" value={dive.water.tempMinC != null ? formatTemperature(dive.water.tempMinC, units.temperatureUnit) : ''} />
-        <DetailRow label="Visibility" value={dive.water.visibilityMeters != null ? formatDepth(dive.water.visibilityMeters, units.depthUnit) : ''} />
+        <DetailRow label="Water" value={water.type ? WATER_TYPE_LABELS[water.type] : ''} />
+        <DetailRow label="Surface temp" value={water.tempSurfaceC != null ? formatTemperature(water.tempSurfaceC, units.temperatureUnit) : ''} />
+        <DetailRow label="Min temp" value={water.tempMinC != null ? formatTemperature(water.tempMinC, units.temperatureUnit) : ''} />
+        <DetailRow label="Visibility" value={water.visibilityMeters != null ? formatDepth(water.visibilityMeters, units.depthUnit) : ''} />
       </DetailCard>
 
       <DetailCard title="Gas & equipment">
         <DetailRow label="Mix" value={mix ? formatGasLabel(mix) : ''} />
-        <DetailRow label="Dive mode" value={dive.diveMode ? DIVE_MODE_LABELS[dive.diveMode] : ''} />
+        <DetailRow label="Dive mode" value={phys.diveMode ? DIVE_MODE_LABELS[phys.diveMode] : ''} />
         <DetailRow label="Cylinder" value={tank?.volumeLiters != null ? formatVolume(tank.volumeLiters, units.gasVolumeUnit, tank.workPressureBar) : ''} />
         <DetailRow label="Working pressure" value={tank?.workPressureBar != null ? formatPressure(tank.workPressureBar, units.pressureUnit) : ''} />
-        <DetailRow
-          label="Pressure"
-          value={tank && (tank.startBar != null || tank.endBar != null)
-            ? `${tank.startBar != null ? formatPressure(tank.startBar, units.pressureUnit) : '—'} → ${tank.endBar != null ? formatPressure(tank.endBar, units.pressureUnit) : '—'}`
-            : ''}
-        />
         <DetailRow label="Weight" value={dive.gear.weightKg != null ? formatWeight(dive.gear.weightKg, 'kg') : ''} />
         <DetailRow label="Exposure suit" value={dive.gear.exposureSuit} />
       </DetailCard>
@@ -833,22 +897,32 @@ function DiveDetail({ dive, logs = [], primaryLog, units }) {
       {samples.length ? (
         <ProfileChart
           samples={samples}
-          maxDepthMeters={dive.water.maxDepthMeters}
+          maxDepthMeters={water.maxDepthMeters}
           depthUnit={units.depthUnit}
           pressureUnit={units.pressureUnit}
+          pressureSeries={airSeries}
         />
       ) : null}
 
-      {hasAir ? (
+      {airSeries.length ? (
         <DetailCard title="Air & consumption">
-          <DetailRow
-            label="Pressure"
-            value={`${tank.startBar != null ? formatPressure(tank.startBar, units.pressureUnit) : '—'} → ${tank.endBar != null ? formatPressure(tank.endBar, units.pressureUnit) : '—'}`}
-          />
+          {airSeries.map((s) => (
+            <View key={s.label}>
+              <Text style={[styles.airFrom, { color: s.color }]}>
+                {airSeries.length > 1 ? `● ${s.label}` : `From ${s.label}`}
+              </Text>
+              <DetailRow
+                label="Pressure"
+                value={s.tank && (s.tank.startBar != null || s.tank.endBar != null)
+                  ? `${s.tank.startBar != null ? formatPressure(s.tank.startBar, units.pressureUnit) : '—'} → ${s.tank.endBar != null ? formatPressure(s.tank.endBar, units.pressureUnit) : '—'}`
+                  : ''}
+              />
+              <DetailRow label="SAC" value={s.analytics?.sacBarPerMin != null ? `${formatPressure(s.analytics.sacBarPerMin, units.pressureUnit)}/min` : ''} />
+              <DetailRow label="RMV" value={s.analytics?.rmvLitersPerMin != null ? `${s.analytics.rmvLitersPerMin.toFixed(1)} L/min` : ''} />
+            </View>
+          ))}
           <DetailRow label="Gas used" value={gasUsedBar != null ? formatPressure(gasUsedBar, units.pressureUnit) : ''} />
           <DetailRow label="Free gas used" value={gasUsedLiters != null ? formatVolume(gasUsedLiters, units.gasVolumeUnit) : ''} />
-          <DetailRow label="SAC" value={analytics?.sacBarPerMin != null ? `${formatPressure(analytics.sacBarPerMin, units.pressureUnit)}/min` : ''} />
-          <DetailRow label="RMV" value={analytics?.rmvLitersPerMin != null ? `${analytics.rmvLitersPerMin.toFixed(1)} L/min` : ''} />
         </DetailCard>
       ) : null}
 
@@ -863,7 +937,7 @@ function DiveDetail({ dive, logs = [], primaryLog, units }) {
         </DetailCard>
       ) : null}
 
-      <LogsCard logs={logs} primaryLog={primaryLog} units={units} />
+      <LogsCard logs={logs} primaryLog={primaryLog} units={units} onShowLog={onShowLog} />
 
       <DetailCard title="Notes & tags">
         <DetailRow label="Rating" value={dive.rating ? '★'.repeat(dive.rating) : ''} />
@@ -988,7 +1062,7 @@ function DiveEditForm({ form, units, onChange, error }) {
 export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
   const {
-    loaded, rows, stats, trends, deletedCount, folders, knownComputerKeys, pendingProposals,
+    loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, purgeDeletedDownloads, eraseAllDiveData,
   } = useDiveLog();
@@ -1084,20 +1158,35 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
 
   const [record, setRecord] = useState(null);   // the Dive
   const [logs, setLogs] = useState([]);          // its attached ComputerLogs
+  const [shownLogId, setShownLogId] = useState(null); // user tapped a computer in "Recorded by"
   const [form, setForm] = useState(null);
   const [formError, setFormError] = useState('');
   const [saving, setSaving] = useState(false);
 
-  const primaryLog = useMemo(
-    () => logs.find((l) => l.id === record?.primaryLogId) || logs[0] || null,
-    [logs, record],
-  );
+  // The log whose data the detail view shows: the user's pick, else the
+  // highest-ranked computer, else the record's stored primary / longest.
+  const primaryLog = useMemo(() => {
+    if (shownLogId) {
+      const picked = logs.find((l) => l.id === shownLogId);
+      if (picked) return picked;
+    }
+    const rank = (dk) => {
+      const i = computerPriority.indexOf(dk);
+      return i === -1 ? 999 : i;
+    };
+    return [...logs].sort((a, b) => (
+      rank(a.deviceKey) - rank(b.deviceKey) || (b.durationSeconds || 0) - (a.durationSeconds || 0)
+    ))[0]
+      || logs.find((l) => l.id === record?.primaryLogId)
+      || null;
+  }, [logs, record, shownLogId, computerPriority]);
 
   useEffect(() => {
     if (view !== 'detail' || !selectedId) return;
     let active = true;
     setRecord(null);
     setLogs([]);
+    setShownLogId(null);
     getDive(selectedId).then((bundle) => {
       if (!active) return;
       setRecord(bundle?.dive || null);
@@ -1241,7 +1330,12 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
               <>
                 <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} />
                 {folders.map((folder) => (
-                  <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
+                  <FolderCard
+                    key={folder.key}
+                    folder={folder}
+                    onPress={() => setFolderKey(folder.key)}
+                    onSetRank={setComputerRank}
+                  />
                 ))}
                 <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} />
                 {libdcVersion ? (
@@ -1374,7 +1468,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
         {view === 'detail' && (
           record ? (
             <>
-              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} />
+              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} />
               <View style={styles.detailActions}>
                 <SecondaryButton label="Edit" onPress={openEdit} style={styles.detailActionButton} />
                 <SecondaryButton label="Delete" onPress={handleDelete} style={styles.detailActionButton} />
@@ -1482,11 +1576,22 @@ const styles = StyleSheet.create({
   detailSource: { color: colors.faint, fontSize: 11, marginBottom: 8, marginTop: 4, textAlign: 'center' },
   detailActions: { flexDirection: 'row', gap: 10, marginTop: 6 },
   detailActionButton: { flex: 1 },
-  logRow: { borderTopColor: colors.line, borderTopWidth: 1, paddingVertical: 9 },
+  detailShownFrom: { color: colors.cyan, fontSize: 11, fontWeight: '700', marginBottom: 8 },
+  airFrom: { fontSize: 11, fontWeight: '800', marginTop: 8 },
+  logRow: { borderTopColor: colors.line, borderRadius: 8, borderTopWidth: 1, paddingHorizontal: 6, paddingVertical: 9 },
+  logRowShown: { backgroundColor: 'rgba(112,221,246,0.07)' },
   logRowMain: { alignItems: 'baseline', flexDirection: 'row', gap: 8, justifyContent: 'space-between' },
   logRowName: { color: colors.text, fontSize: 13, fontWeight: '800' },
+  logRowNameShown: { color: colors.cyan },
   logRowSerial: { color: colors.faint, fontSize: 10, fontWeight: '700' },
   logRowMeta: { color: colors.muted, fontSize: 11, marginTop: 3 },
+
+  folderTopRow: { alignItems: 'center', flexDirection: 'row', gap: 8 },
+  folderNameButton: { flex: 1 },
+  rankChip: { borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 6 },
+  rankChipOn: { backgroundColor: 'rgba(112,221,246,0.12)', borderColor: colors.cyan },
+  rankChipText: { color: colors.faint, fontSize: 11, fontWeight: '800' },
+  rankChipTextOn: { color: colors.cyan },
 
   chartRow: { flexDirection: 'row', marginTop: 6 },
   chartAxis: { width: 30 },

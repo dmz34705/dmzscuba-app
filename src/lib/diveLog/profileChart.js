@@ -114,6 +114,20 @@ export function buildLogProfileGeometry(samples, width, height, options = {}) {
   const pressure = overlaySeries(clean, (r) => r.pressureBar, x, safeHeight, { fromZero: true });
   const temp = overlaySeries(clean, (r) => r.tempC, x, safeHeight);
 
+  // Independent pressure traces (one per computer) sharing a 0..max scale.
+  const buildPressureOverlay = (otherSamples, maxBar) => {
+    const rows = (Array.isArray(otherSamples) ? otherSamples : [])
+      .map((s) => ({ t: finiteNumber(s?.t), v: typeof s?.pressureBar === 'number' && s.pressureBar > 0 ? s.pressureBar : null }))
+      .filter((r) => Number.isFinite(r.t) && r.v != null)
+      .sort((a, b) => a.t - b.t);
+    if (rows.length < 2) return '';
+    const top = Math.max(1, finiteNumber(maxBar, 0) || rows.reduce((m, r) => Math.max(m, r.v), 0));
+    const py = (v) => safeHeight - (Math.min(1, v / top)) * safeHeight;
+    return rows
+      .map((r, i) => `${i === 0 ? 'M' : 'L'} ${x(r.t).toFixed(2)} ${py(r.v).toFixed(2)}`)
+      .join(' ');
+  };
+
   return {
     linePath,
     areaPath,
@@ -130,5 +144,7 @@ export function buildLogProfileGeometry(samples, width, height, options = {}) {
     tempPath: temp.path,
     tempRange: temp.range,
     hasTemp: temp.has,
+    // caller builds per-computer pressure traces on a shared scale
+    pressureOverlay: buildPressureOverlay,
   };
 }

@@ -11,6 +11,7 @@ import {
   createDivesFromLogs,
   isMigratedToV2,
   loadAll,
+  loadComputerPriority,
   loadDive,
   loadIndex,
   loadLogsForDive,
@@ -18,6 +19,8 @@ import {
   migrateToV2,
   purgeDeleted,
   rebuildIndex,
+  resurfaceForPriority,
+  saveComputerPriority,
   saveDeviceTimeCorrection,
   saveDive,
   softDeleteDive,
@@ -29,7 +32,7 @@ export const MANUAL_FOLDER_KEY = '__manual__';
 // plus one folder for hand-entered dives. A dive with logs from two computers
 // shows in both computers' folders. Computer folders sort newest-first; Manual
 // always sorts last.
-function buildFolders(rows) {
+function buildFolders(rows, priority = []) {
   const groups = new Map();
   const ensure = (key, seed) => {
     if (!groups.has(key)) groups.set(key, { key, rows: [], ...seed });
@@ -51,6 +54,7 @@ function buildFolders(rows) {
   const folders = [...groups.values()].map((g) => {
     const dates = g.rows.map((r) => r.startTime).filter(Boolean).sort();
     const modelName = `${g.vendor} ${g.product}`.trim() || 'Dive computer';
+    const rankIdx = g.kind === 'computer' ? priority.indexOf(g.key) : -1;
     return {
       ...g,
       label: g.kind === 'manual' ? 'Manual entries' : modelName,
@@ -58,11 +62,16 @@ function buildFolders(rows) {
       count: g.rows.length,
       lastDiveDate: dates[dates.length - 1] || '',
       deepestMeters: g.rows.reduce((max, r) => Math.max(max, r.maxDepthMeters || 0), 0),
+      rank: rankIdx === -1 ? null : rankIdx + 1, // 1 = primary
     };
   });
 
   folders.sort((a, b) => {
     if (a.kind !== b.kind) return a.kind === 'manual' ? 1 : -1;
+    // ranked computers first, in rank order; then by most recent dive
+    const ra = a.rank ?? 99;
+    const rb = b.rank ?? 99;
+    if (ra !== rb) return ra - rb;
     return String(b.lastDiveDate).localeCompare(String(a.lastDiveDate));
   });
   return folders;
@@ -81,6 +90,7 @@ export default function useDiveLog() {
   const [loaded, setLoaded] = useState(false);
   const [indexRows, setIndexRows] = useState([]);
   const [pendingProposals, setPendingProposals] = useState([]); // cross-computer matches to review
+  const [computerPriority, setComputerPriority] = useState([]); // ordered deviceKeys, [0] = primary
   const diveCache = useRef(new Map()); // id -> { dive, logs }
 
   useEffect(() => {
@@ -96,6 +106,8 @@ export default function useDiveLog() {
           rows = await rebuildIndex().catch(() => rows);
         }
         if (active) setIndexRows(rows);
+        const priority = await loadComputerPriority();
+        if (active) setComputerPriority(priority);
       } catch {
         // leave the logbook empty rather than crash the screen
       } finally {
@@ -119,7 +131,7 @@ export default function useDiveLog() {
   const stats = useMemo(() => computeDiveLogStats(indexRows), [indexRows]);
   const trends = useMemo(() => computeDiveTrends(indexRows), [indexRows]);
   const deletedCount = useMemo(() => indexRows.filter((r) => r.deletedAt).length, [indexRows]);
-  const folders = useMemo(() => buildFolders(rows), [rows]);
+  const folders = useMemo(() => buildFolders(rows, computerPriority), [rows, computerPriority]);
 
   // Same-computer de-dup keys (vendor|product|fingerprint) for dives already
   // imported. Ignores soft-deleted rows so a deleted download can be re-imported.
@@ -330,6 +342,24 @@ export default function useDiveLog() {
     setIndexRows([]);
   }, []);
 
+  /**
+   * Set a computer's priority rank. `rank` is 1-based (1 = primary); null unranks
+   * it. Re-picks the displayed log for every multi-computer dive.
+   */
+  const setComputerRank = useCallback(async (deviceKey, rank) => {
+    if (!deviceKey) return;
+    const current = (await loadComputerPriority()).filter((k) => k !== deviceKey);
+    if (rank != null) {
+      const at = Math.max(0, Math.min(current.length, rank - 1));
+      current.splice(at, 0, deviceKey);
+    }
+    const saved = await saveComputerPriority(current);
+    await resurfaceForPriority();
+    diveCache.current.clear();
+    setComputerPriority(saved);
+    await refreshIndex();
+  }, [refreshIndex]);
+
   /** Manual merge: user selected several dives that are really one. */
   const mergeDivesManual = useCallback(async (diveIds) => {
     if (!Array.isArray(diveIds) || diveIds.length < 2) return;
@@ -380,6 +410,8 @@ export default function useDiveLog() {
     stats,
     trends,
     deletedCount,
+    computerPriority,
+    setComputerRank,
     folders,
     knownComputerKeys,
     pendingProposals,

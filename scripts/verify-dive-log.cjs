@@ -816,6 +816,23 @@ function memoryStorage(seed = {}) {
   // the two Suunto fragments are fused into ONE continuous log (not stacked)
   assert.equal(finalRows[0].logCount, 2);
 
+  // computer priority: ranked list + pickPrimaryLog + resurface
+  const prStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const prShear = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PR-sh', vendor: 'Shearwater', product: 'Perdix', serial: 'X', divetimeSeconds: 3600 }), prStore);
+  await diveLog.attachLogToDive(prShear.dive.id, computerLogFromDownload({ ...rawComputerDive, fingerprint: 'PR-su', vendor: 'Suunto', product: 'EON Core', serial: 'Y', divetimeSeconds: 3300 }), {}, prStore);
+  let prDive = await loadDive(prShear.dive.id, prStore);
+  let prLogs = await loadLogsForDive(prDive, prStore);
+  // no priority yet -> longest wins
+  assert.equal(diveLog.pickPrimaryLog(prLogs, []).device.vendor, 'Shearwater');
+  // rank Suunto primary -> it wins even though it's shorter
+  await diveLog.saveComputerPriority(['Suunto|EON Core|Y', 'Shearwater|Perdix|X'], prStore);
+  assert.equal(diveLog.pickPrimaryLog(prLogs, await diveLog.loadComputerPriority(prStore)).device.vendor, 'Suunto');
+  await diveLog.resurfaceForPriority(prStore);
+  prDive = await loadDive(prShear.dive.id, prStore);
+  assert.equal((await loadLog(prDive.primaryLogId, prStore)).device.vendor, 'Suunto');
+  assert.equal(diveLog.priorityIndex(['a', 'b'], 'b'), 1);
+  assert.equal(diveLog.priorityIndex(['a'], 'z'), 999);
+
   // consolidateSameDeviceLogs fuses even when the fragments' serials disagree
   const csStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
   const csDive = await createDiveFromLog({
@@ -988,8 +1005,13 @@ function memoryStorage(seed = {}) {
   assert.match(native, /@"type": @\(t\.type\)/);
   assert.match(native, /pressuresByTank/); // capture every tank's pressure, not just tank 0
 
-  assert.match(screen, /hasPressure/);
+  assert.match(screen, /pressureSeries/);           // per-computer air traces
   assert.match(screen, /Tank pressure/);
+  assert.match(screen, /RANK_LABELS/);              // computer priority chip
+  assert.match(screen, /onSetRank/);
+  assert.match(screen, /onShowLog/);                // tap a computer to switch the shown data
+  assert.match(hook, /setComputerRank/);
+  assert.match(hook, /loadComputerPriority/);
 
   console.log('Dive logbook checks passed.');
 })().catch((error) => {
