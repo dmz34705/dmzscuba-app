@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { createComputerLog, createDive, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
+import { createComputerLog, createDive, deviceKeyOf, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
 import { computeDiveLogStats } from '../../lib/diveLog/stats';
 import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
-import { findMatch } from '../../lib/diveLog/matchDives';
+import { findMatch, reconcileComputers, sameComputer } from '../../lib/diveLog/matchDives';
 import {
   attachLogToDive,
   clearAll,
@@ -286,44 +286,70 @@ export default function useDiveLog() {
       // eslint-disable-next-line no-await-in-loop
       bundles.push({ dive: d, logs: await loadLogsForDive(d) });
     }
-    const proposals = [];
-    const proposedSources = new Set(); // dives already slated to be folded away
-    const WINDOW_MS = 3 * 24 * 3600 * 1000; // two dives more than ~3 days apart aren't "the same dive"
+
+    // Only dives that still carry logs from exactly one computer can be
+    // reconciled — already-merged dives are done.
+    const clusters = []; // { device, entries: [{ diveId, dive, log }] }
     for (const b of bundles) {
-      if (proposedSources.has(b.dive.id) || !b.logs.length) continue;
-      const primary = b.logs.find((l) => l.id === b.dive.primaryLogId) || b.logs[0];
-      const bT = Date.parse(b.dive.startTime);
-      const others = bundles.filter((x) => {
-        if (x.dive.id === b.dive.id || proposedSources.has(x.dive.id)) return false;
-        const xt = Date.parse(x.dive.startTime);
-        return Number.isNaN(bT) || Number.isNaN(xt) || Math.abs(xt - bT) <= WINDOW_MS;
-      });
-      const { bestMatch: m } = findMatch(primary, others);
-      if (!m || m.verdict === 'none') continue;
-      const targetIds = m.diveIds || [m.diveId];
-      const isSpanning = m.kind === 'spanning-merge';
-      const keepId = isSpanning ? b.dive.id : targetIds[0];
-      const foldIds = isSpanning ? targetIds : [b.dive.id];
-      const first = bundles.find((x) => x.dive.id === targetIds[0]);
-      const fp = first?.logs.find((l) => l.id === first.dive.primaryLogId) || first?.logs[0] || null;
-      proposals.push({
-        id: `recheck:${keepId}:${foldIds.join('+')}`,
-        kind: m.kind,
-        newDiveId: b.dive.id,
-        primaryDiveId: keepId,
-        absorbDiveIds: foldIds,
-        newDeviceName: `${primary.device.vendor} ${primary.device.product}`.trim() || 'Dive computer',
-        newDeviceKey: primary.deviceKey,
-        matchDeviceName: fp ? `${fp.device.vendor} ${fp.device.product}`.trim() : 'the other computer',
-        matchDeviceKey: fp?.deviceKey || null,
-        offsetMinutes: m.offsetMinutes || 0,
-        cleanOffset: !!m.cleanOffset,
-        implausibleClock: !!m.implausibleClock,
-        score: m.score,
-        newReportedStart: primary.reportedStartTime,
-        matchStart: first?.dive.startTime || '',
-      });
-      foldIds.forEach((id) => proposedSources.add(id));
+      if (!b.logs.length) continue;
+      const keys = new Set(b.logs.map((l) => l.deviceKey).filter(Boolean));
+      if (keys.size !== 1) continue;
+      const log = b.logs.find((l) => l.id === b.dive.primaryLogId) || b.logs[0];
+      let cluster = clusters.find((c) => sameComputer(c.device, log.device));
+      if (!cluster) { cluster = { device: log.device, entries: [] }; clusters.push(cluster); }
+      cluster.entries.push({ diveId: b.dive.id, dive: b.dive, log });
+    }
+
+    const proposals = [];
+    const claimed = new Set(); // dive ids already covered by a proposal
+    const entryById = new Map();
+    for (const c of clusters) for (const e of c.entries) entryById.set(e.diveId, e);
+    const toReconcileEntry = (e) => ({
+      id: e.diveId,
+      startMs: Date.parse(e.log.reportedStartTime || e.log.startTime),
+      durationSeconds: e.log.durationSeconds,
+      maxDepthMeters: e.log.water?.maxDepthMeters || 0,
+      samples: e.log.profile?.samples || [],
+    });
+
+    for (let x = 0; x < clusters.length; x += 1) {
+      for (let y = x + 1; y < clusters.length; y += 1) {
+        const cA = clusters[x];
+        const cB = clusters[y];
+        const rec = reconcileComputers(cA.entries.map(toReconcileEntry), cB.entries.map(toReconcileEntry));
+        if (!rec || !rec.groups.length) continue;
+
+        const merges = [];
+        for (const g of rec.groups) {
+          const ids = [...g.aIds, ...g.bIds].filter((id) => !claimed.has(id) && entryById.has(id));
+          if (ids.length < 2) continue;
+          const members = ids.map((id) => entryById.get(id))
+            .sort((p, q) => (q.log.durationSeconds || 0) - (p.log.durationSeconds || 0));
+          merges.push({ keepId: members[0].diveId, absorbIds: members.slice(1).map((m) => m.diveId) });
+          ids.forEach((id) => claimed.add(id));
+        }
+        if (!merges.length) continue;
+
+        const nameOf = (dev) => `${dev.vendor} ${dev.product}`.trim() || 'Dive computer';
+        const dates = rec.groups.flatMap((g) => [...g.aIds, ...g.bIds])
+          .map((id) => entryById.get(id)?.dive.startTime).filter(Boolean).sort();
+        proposals.push({
+          id: `reconcile:${deviceKeyOf(cA.device)}::${deviceKeyOf(cB.device)}`,
+          kind: 'reconcile',
+          deviceNameA: nameOf(cA.device),
+          deviceKeyA: deviceKeyOf(cA.device),
+          deviceNameB: nameOf(cB.device),
+          deviceKeyB: deviceKeyOf(cB.device),
+          offsetMinutes: rec.offsetMinutes, // add to B's clock to match A
+          cleanOffset: rec.cleanOffset,
+          confidence: rec.confidence,
+          anchors: rec.anchors,
+          sharedDiveCount: merges.length,
+          firstDate: dates[0] || '',
+          lastDate: dates[dates.length - 1] || '',
+          merges,
+        });
+      }
     }
     setPendingProposals(proposals);
     if (fused) await refreshIndex();
@@ -368,6 +394,31 @@ export default function useDiveLog() {
    * @param {{ correctDeviceKey?: string }} [choice]  which computer's clock is right
    */
   const resolveProposal = useCallback(async (proposal, action, choice = {}) => {
+    // Whole-computer reconciliation: one clock decision, then all its merges.
+    if (proposal.kind === 'reconcile') {
+      if (action === 'merge') {
+        let correction = null;
+        if (proposal.offsetMinutes && choice.correctDeviceKey) {
+          // offsetMinutes = minutes to add to B's clock to match A.
+          const bIsWrong = choice.correctDeviceKey === proposal.deviceKeyA;
+          correction = bIsWrong
+            ? { deviceKey: proposal.deviceKeyB, offsetMinutes: proposal.offsetMinutes }
+            : { deviceKey: proposal.deviceKeyA, offsetMinutes: -proposal.offsetMinutes };
+          await saveDeviceTimeCorrection({
+            ...correction, appliesFrom: proposal.firstDate, appliesTo: proposal.lastDate,
+          });
+        }
+        for (const mg of proposal.merges) {
+          // eslint-disable-next-line no-await-in-loop
+          await mergeDives(mg.keepId, mg.absorbIds, { correction });
+          [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
+        }
+      }
+      setPendingProposals((prev) => prev.filter((p) => p.id !== proposal.id));
+      await refreshIndex();
+      return;
+    }
+
     if (action === 'merge') {
       const keepId = proposal.primaryDiveId;
       const foldIds = [...new Set(

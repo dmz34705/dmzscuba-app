@@ -51,6 +51,7 @@ const {
   findSpanningMerge,
   findMatch,
   sameComputer,
+  reconcileComputers,
   // format
   formatDepth,
   formatDuration,
@@ -489,6 +490,40 @@ const fmMixed = findMatch(
 );
 assert.ok(fmMixed.bestMatch && fmMixed.bestMatch.diveId === 'dvMix');
 
+// --- reconcileComputers: whole-trip alignment across 3 dives, one split ---
+const H = 3600 * 1000;
+const MIN = 60 * 1000;
+const prof = (n) => { const s = []; for (let t = 0; t <= n; t += 20) s.push({ t, depth: t < 120 ? t / 4 : t > n - 120 ? (n - t) / 4 : 30 }); return s; };
+// Computer A (Shearwater) — clock correct
+const AT = Date.parse('2026-08-27T13:00:00.000Z');
+const A = [
+  { id: 'a1', startMs: AT, durationSeconds: 3600, maxDepthMeters: 30, samples: prof(3600) },
+  { id: 'a2', startMs: AT + 3 * H, durationSeconds: 2700, maxDepthMeters: 28, samples: prof(2700) },
+  { id: 'a3', startMs: AT + 6 * H, durationSeconds: 1800, maxDepthMeters: 20, samples: prof(1800) },
+];
+// Computer B (Suunto) — clock 3 h BEHIND, and it split dive 2 into two
+const BT = AT - 3 * H;
+const B = [
+  { id: 'b1', startMs: BT, durationSeconds: 3600, maxDepthMeters: 30, samples: prof(3600) },
+  { id: 'b2a', startMs: BT + 3 * H, durationSeconds: 1200, maxDepthMeters: 28, samples: prof(1200) },
+  { id: 'b2b', startMs: BT + 3 * H + 25 * MIN, durationSeconds: 1200, maxDepthMeters: 24, samples: prof(1200) },
+  { id: 'b3', startMs: BT + 6 * H, durationSeconds: 1800, maxDepthMeters: 20, samples: prof(1800) },
+];
+const rec = reconcileComputers(A, B);
+assert.ok(rec, 'expected a reconciliation');
+assert.equal(rec.offsetMinutes, 180, `offset ${rec.offsetMinutes} (add 3 h to B)`);
+assert.equal(rec.confidence, 'high');
+// the split dive: A's a2 == B's b2a + b2b
+const splitGroup = rec.groups.find((g) => g.aIds.includes('a2'));
+assert.ok(splitGroup, 'a2 should be grouped');
+assert.deepEqual(splitGroup.bIds.sort(), ['b2a', 'b2b']);
+// the clean 1:1 dives are grouped too
+assert.ok(rec.groups.some((g) => g.aIds.includes('a1') && g.bIds.includes('b1')));
+assert.ok(rec.groups.some((g) => g.aIds.includes('a3') && g.bIds.includes('b3')));
+
+// two computers that share nothing -> null
+assert.equal(reconcileComputers(A, [{ id: 'z', startMs: AT + 90 * 24 * H, durationSeconds: 1200, maxDepthMeters: 8, samples: prof(1200) }]), null);
+
 // findMatch wires it together; ignores same-device candidates
 const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
 const fm = findMatch(fmNew, [
@@ -837,9 +872,12 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /loadMatchCandidates/);
   assert.match(hook, /resolveProposal/);
   assert.match(hook, /recheckDuplicates/);
+  assert.match(hook, /reconcileComputers/);
   assert.match(hook, /mergeDives/);
   assert.match(hook, /purgeDeleted/);
   assert.match(hook, /eraseAllDiveData/);
+  assert.match(screen, /ReconcileCard/);
+  assert.match(screen, /kind === 'reconcile'/);
   assert.match(hook, /const deleteDives = useCallback/);
   assert.doesNotMatch(hook, /AsyncStorage/);
 

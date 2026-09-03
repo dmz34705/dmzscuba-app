@@ -27,6 +27,7 @@ import {
   touchRecord,
 } from './schema';
 import { fuseComputerLogs } from './fuseLogs';
+import { sameComputer } from './matchDives';
 
 export const DIVE_LOG_INDEX_KEY = '@dmz-scuba/dive-log/index-v2';
 export const DIVE_LOG_DIVE_PREFIX = '@dmz-scuba/dive-log/dive-v2/';
@@ -222,16 +223,29 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
       // eslint-disable-next-line no-await-in-loop
       const log = await loadLog(lid, storage);
       if (!log) continue;
-      const shifted = correction && log.deviceKey === correction.deviceKey
-        ? { ...log, timeCorrectionMinutes: (log.timeCorrectionMinutes || 0) + correction.offsetMinutes }
-        : log;
       // eslint-disable-next-line no-await-in-loop
-      await saveLog({ ...shifted, diveId: keepDiveId }, storage);
+      await saveLog({ ...log, diveId: keepDiveId }, storage);
       logIds.add(lid);
     }
     // eslint-disable-next-line no-await-in-loop
     await softDeleteDive(fromId, storage);
   }
+
+  // Apply the clock correction to every log on the merged dive from the wrong
+  // computer (serial-tolerant), keep's own logs included.
+  if (correction && correction.offsetMinutes) {
+    const wrongDevice = { vendor: '', product: '', serial: '', ...(correction.device || {}) };
+    const parts = String(correction.deviceKey || '').split('|');
+    if (!correction.device) { wrongDevice.vendor = parts[0] || ''; wrongDevice.product = parts[1] || ''; wrongDevice.serial = parts[2] || ''; }
+    for (const lid of logIds) {
+      // eslint-disable-next-line no-await-in-loop
+      const log = await loadLog(lid, storage);
+      if (!log || !sameComputer(log.device, wrongDevice)) continue;
+      // eslint-disable-next-line no-await-in-loop
+      await saveLog({ ...log, timeCorrectionMinutes: (log.timeCorrectionMinutes || 0) + correction.offsetMinutes }, storage);
+    }
+  }
+
   let next = normalizeDive({
     ...keep,
     logIds: [...logIds],

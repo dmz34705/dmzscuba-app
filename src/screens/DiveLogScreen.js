@@ -593,7 +593,49 @@ function offsetLabel(minutes) {
   return `${sign}${Math.floor(abs / 60)}:${String(abs % 60).padStart(2, '0')}`;
 }
 
+function ReconcileCard({ proposal, onResolve }) {
+  const conflict = Math.abs(proposal.offsetMinutes) >= 1;
+  const range = proposal.firstDate === proposal.lastDate
+    ? formatDate(proposal.firstDate)
+    : `${formatDate(proposal.firstDate)} – ${formatDate(proposal.lastDate)}`;
+  return (
+    <Card style={styles.reviewCard}>
+      <Text style={styles.reviewTitle}>Two computers, one trip</Text>
+      <Text style={styles.reviewBody}>
+        <Text style={styles.reviewStrong}>{proposal.sharedDiveCount}</Text>
+        {proposal.sharedDiveCount === 1 ? ' dive was ' : ' dives were '}
+        recorded by both <Text style={styles.reviewStrong}>{proposal.deviceNameA}</Text> and{' '}
+        <Text style={styles.reviewStrong}>{proposal.deviceNameB}</Text>
+        {conflict
+          ? <Text>, with clocks about {offsetLabel(proposal.offsetMinutes).replace(/^[+−]/, '')} apart.</Text>
+          : <Text>. Their clocks agree.</Text>}
+      </Text>
+      <Text style={styles.reviewMeta}>
+        {range || '—'}   ·   {proposal.confidence === 'high' ? `${proposal.anchors} matched dives` : 'low confidence — check carefully'}
+      </Text>
+
+      {conflict ? (
+        <>
+          <Text style={styles.reviewQuestion}>Which computer&apos;s clock is correct?</Text>
+          <View style={styles.reviewActions}>
+            <SecondaryButton label={proposal.deviceNameA} onPress={() => onResolve(proposal, 'merge', { correctDeviceKey: proposal.deviceKeyA })} style={styles.reviewButton} />
+            <SecondaryButton label={proposal.deviceNameB} onPress={() => onResolve(proposal, 'merge', { correctDeviceKey: proposal.deviceKeyB })} style={styles.reviewButton} />
+          </View>
+        </>
+      ) : (
+        <View style={styles.reviewActions}>
+          <PrimaryButton label={`Merge ${proposal.sharedDiveCount} ${proposal.sharedDiveCount === 1 ? 'dive' : 'dives'}`} onPress={() => onResolve(proposal, 'merge', {})} style={styles.reviewButton} />
+        </View>
+      )}
+      <Pressable onPress={() => onResolve(proposal, 'separate')} hitSlop={8} style={styles.reviewSkip}>
+        <Text style={styles.reviewSkipText}>These are different dives — leave them</Text>
+      </Pressable>
+    </Card>
+  );
+}
+
 function MatchReviewCard({ proposal, onResolve }) {
+  if (proposal.kind === 'reconcile') return <ReconcileCard proposal={proposal} onResolve={onResolve} />;
   const conflict = Math.abs(proposal.offsetMinutes) >= 1;
   const nAbsorb = (proposal.absorbDiveIds || []).length;
   const body = proposal.kind === 'spanning-merge'

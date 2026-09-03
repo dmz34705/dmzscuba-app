@@ -497,6 +497,157 @@ export function findMatch(newLog, candidates) {
   return { bestMatch };
 }
 
+// ---------------------------------------------------------------------------
+// Whole-sequence reconciliation
+// ---------------------------------------------------------------------------
+
+const RECONCILE_BUCKET_MS = 5 * 60 * 1000;   // group candidate offsets this coarsely
+const OVERLAP_SLACK_MS = 90 * 1000;          // recording-start jitter between computers
+
+/** [start, end] in ms for a dive entry ({ startMs, durationSeconds }). */
+function interval(d) {
+  return [d.startMs, d.startMs + (d.durationSeconds || 0) * 1000];
+}
+function intervalsOverlap(a, b, slack = OVERLAP_SLACK_MS) {
+  return a[0] - slack <= b[1] && b[0] - slack <= a[1];
+}
+
+/** Sum of durations + surface gaps for a consecutive run of entries (ms). */
+function runSpanMs(entries) {
+  if (!entries.length) return 0;
+  const first = entries[0];
+  const last = entries[entries.length - 1];
+  return (last.startMs - first.startMs) + (last.durationSeconds || 0) * 1000;
+}
+
+/**
+ * Reconcile two computers' whole dive sequences. Both recorded the same trip, so
+ * there is ONE clock offset between them — found from every dive at once, which
+ * is far more robust than a single pairwise profile match. Then the dives are
+ * grouped into real dives (1:1, or one side split into fragments).
+ *
+ * @param {Array} a  computer A's dives: { id, startMs, durationSeconds, maxDepthMeters, samples }
+ * @param {Array} b  computer B's dives (same shape)
+ * @returns null, or {
+ *   offsetMinutes,     // minutes to ADD to B's clock so it matches A
+ *   cleanOffset,       // the offset snaps to a timezone-shaped value
+ *   confidence,        // 'high' (>=2 mutually-consistent anchors) | 'low'
+ *   anchors,
+ *   groups: [{ aIds, bIds, kind: 'pair'|'a-split'|'b-split' }]  // only multi-member groups
+ * }
+ */
+export function reconcileComputers(a, b) {
+  const A = (Array.isArray(a) ? a : []).filter((d) => d && Number.isFinite(d.startMs)).slice().sort((x, y) => x.startMs - y.startMs);
+  const B = (Array.isArray(b) ? b : []).filter((d) => d && Number.isFinite(d.startMs)).slice().sort((x, y) => x.startMs - y.startMs);
+  if (!A.length || !B.length) return null;
+
+  // 1. candidate clock offsets from every roughly-compatible dive pairing
+  const candidates = [];
+  const pushCand = (ai, bj, offsetMs, kind) => candidates.push({ ai, bj, offsetMs, kind });
+  for (let i = 0; i < A.length; i += 1) {
+    for (let j = 0; j < B.length; j += 1) {
+      const dA = A[i];
+      const dB = B[j];
+      if (durationClose(dA.durationSeconds || 0, dB.durationSeconds || 0)
+          && depthClose(dA.maxDepthMeters || 0, dB.maxDepthMeters || 0)) {
+        pushCand(i, j, dB.startMs - dA.startMs, 'pair');
+      }
+      // B[j] is A[i] + A[i+1] split at the surface
+      if (i + 1 < A.length) {
+        const run = [A[i], A[i + 1]];
+        const gapSec = (A[i + 1].startMs - A[i].startMs) / 1000 - (A[i].durationSeconds || 0);
+        if (gapSec >= 0 && gapSec <= SPLIT_MAX_GAP_SEC
+            && durationClose(runSpanMs(run) / 1000, dB.durationSeconds || 0)) {
+          pushCand(i, j, dB.startMs - dA.startMs, 'a-split');
+        }
+      }
+      // A[i] is B[j] + B[j+1] split
+      if (j + 1 < B.length) {
+        const run = [B[j], B[j + 1]];
+        const gapSec = (B[j + 1].startMs - B[j].startMs) / 1000 - (B[j].durationSeconds || 0);
+        if (gapSec >= 0 && gapSec <= SPLIT_MAX_GAP_SEC
+            && durationClose(dA.durationSeconds || 0, runSpanMs(run) / 1000)) {
+          pushCand(i, j, dB.startMs - dA.startMs, 'b-split');
+        }
+      }
+    }
+  }
+  if (!candidates.length) return null;
+
+  // 2. vote: the offset bucket with the most candidates whose (ai, bj) indices
+  //    increase together (a genuine sequence alignment, not coincidence)
+  const buckets = new Map();
+  for (const c of candidates) {
+    const key = Math.round(c.offsetMs / RECONCILE_BUCKET_MS);
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(c);
+  }
+  let best = null;
+  for (const list of buckets.values()) {
+    const ordered = list.slice().sort((x, y) => x.ai - y.ai || x.bj - y.bj);
+    let monotonic = [ordered[0]];
+    for (const c of ordered.slice(1)) {
+      const prev = monotonic[monotonic.length - 1];
+      if (c.ai >= prev.ai && c.bj >= prev.bj && (c.ai > prev.ai || c.bj > prev.bj)) monotonic.push(c);
+    }
+    const medianOffset = list.slice().sort((x, y) => x.offsetMs - y.offsetMs)[Math.floor(list.length / 2)].offsetMs;
+    const cand = { support: monotonic.length, all: list, chain: monotonic, offsetMs: medianOffset };
+    if (!best || cand.support > best.support) best = cand;
+  }
+  if (!best) return null;
+
+  // 3. refine with one anchor's profile alignment when we can
+  let offsetMs = best.offsetMs;
+  const anchorWithProfile = best.chain.find((c) => c.kind === 'pair'
+    && (A[c.ai].samples || []).length && (B[c.bj].samples || []).length);
+  if (anchorWithProfile) {
+    const dA = A[anchorWithProfile.ai];
+    const dB = B[anchorWithProfile.bj];
+    const { offsetSec, score } = bestOffset(dA.samples, dB.samples, (dA.startMs - dB.startMs) / 1000);
+    if (score >= CONFIRM_SCORE) offsetMs = -offsetSec * 1000;
+  }
+  const clean = cleanOffsetMinutes(-offsetMs / 1000);
+  const offsetMinutes = clean != null ? clean : Math.round(-offsetMs / 60000);
+  const confidence = best.support >= 2 ? 'high' : 'low';
+
+  // 4. walk both sequences on the shared clock and group them
+  //    offsetMs = b.start - a.start; subtract it to bring B onto A's timeline
+  const bShift = B.map((d) => ({ ...d, startMs: d.startMs - offsetMs }));
+  const groups = [];
+  let i = 0;
+  let j = 0;
+  while (i < A.length && j < bShift.length) {
+    const ia = interval(A[i]);
+    const ib = interval(bShift[j]);
+    if (!intervalsOverlap(ia, ib)) {
+      if (ia[1] < ib[0]) i += 1; else j += 1;
+      continue;
+    }
+    // b-split: A[i] covers bShift[j] + bShift[j+1]
+    if (j + 1 < bShift.length && intervalsOverlap(ia, interval(bShift[j + 1]))
+        && durationClose((A[i].durationSeconds || 0), runSpanMs([bShift[j], bShift[j + 1]]) / 1000)) {
+      groups.push({ aIds: [A[i].id], bIds: [bShift[j].id, bShift[j + 1].id], kind: 'b-split' });
+      i += 1; j += 2; continue;
+    }
+    // a-split: bShift[j] covers A[i] + A[i+1]
+    if (i + 1 < A.length && intervalsOverlap(interval(A[i + 1]), ib)
+        && durationClose((bShift[j].durationSeconds || 0), runSpanMs([A[i], A[i + 1]]) / 1000)) {
+      groups.push({ aIds: [A[i].id, A[i + 1].id], bIds: [bShift[j].id], kind: 'a-split' });
+      i += 2; j += 1; continue;
+    }
+    groups.push({ aIds: [A[i].id], bIds: [bShift[j].id], kind: 'pair' });
+    i += 1; j += 1;
+  }
+
+  return {
+    offsetMinutes,
+    cleanOffset: clean != null,
+    confidence,
+    anchors: best.support,
+    groups: groups.filter((g) => g.aIds.length + g.bIds.length >= 2),
+  };
+}
+
 /**
  * Roll a set of per-log match results up into conflict clusters for the B7 UI:
  * one entry per (deviceA, deviceB, offsetMinutes) with the affected dives and
