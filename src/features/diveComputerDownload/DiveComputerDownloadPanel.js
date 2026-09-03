@@ -3,8 +3,15 @@ import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-nati
 
 import { Card, PrimaryButton, ProgressBar, SecondaryButton } from '../../components/Ui';
 import { colors, radii, spacing } from '../../theme';
+import { looksLikeSuunto } from './diveComputerBle';
 import { computerDiveKey, diveRecordFromComputer } from './diveRecordFromComputer';
 import useDiveComputerDownload from './useDiveComputerDownload';
+
+const SUUNTO_PAIRING_HINT =
+  'Suunto EON / D5 bonds with one device at a time. Keep this screen open and put the '
+  + 'computer in its pairing screen. iOS asks to pair — enter the code shown on the computer; '
+  + 'the first attempt often drops, then reconnects. If it says "connection refused", first '
+  + 'remove the existing pairing on the computer and in iPhone Settings → Bluetooth.';
 
 function SignalDots({ rssi }) {
   if (rssi == null) return null;
@@ -24,7 +31,7 @@ function DeviceRow({ device, onConnect, disabled }) {
       accessibilityRole="button"
       accessibilityLabel={`Connect to ${device.name}`}
       disabled={disabled}
-      onPress={() => onConnect(device.id)}
+      onPress={() => onConnect(device.id, { name: device.name })}
       style={({ pressed }) => [styles.deviceRow, pressed && styles.pressed, disabled && styles.rowDisabled]}
     >
       <View style={styles.deviceInfo}>
@@ -43,7 +50,10 @@ function DeviceRow({ device, onConnect, disabled }) {
  * @param {(partial: object) => Promise<any>} props.addDive
  */
 export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, addDive }) {
-  const saveDive = useCallback(async (rawDive, { vendor, product }) => {
+  const saveDive = useCallback(async (rawDive) => {
+    // vendor/product come resolved from the native libdivecomputer descriptor.
+    const vendor = rawDive?.vendor || '';
+    const product = rawDive?.product || '';
     const key = computerDiveKey(vendor, product, rawDive?.fingerprint);
     if (key && knownComputerKeys?.has(key)) return 'duplicate';
     const partial = diveRecordFromComputer(rawDive, { vendor, product });
@@ -73,6 +83,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
   const connecting = status === 'connecting';
   const downloading = status === 'downloading';
   const pct = progress && progress.maximum > 0 ? progress.current / progress.maximum : 0;
+  const showSuuntoHint = !downloading && status !== 'done'
+    && (devices.some((d) => looksLikeSuunto(d.name)) || looksLikeSuunto(connectedDevice?.name));
 
   return (
     <Card style={styles.card}>
@@ -82,6 +94,8 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
       </Text>
 
       {status === 'error' && error ? <Text style={styles.error}>{error}</Text> : null}
+
+      {showSuuntoHint ? <Text style={styles.suuntoHint}>{SUUNTO_PAIRING_HINT}</Text> : null}
 
       {connectedDevice ? (
         <View style={styles.connectedBox}>
@@ -104,17 +118,23 @@ export default function DiveComputerDownloadPanel({ onClose, knownComputerKeys, 
                   : 'No new dives to add.'}
               </Text>
               <View style={styles.doneActions}>
-                <PrimaryButton label="Download again" onPress={() => download({})} style={styles.flexButton} />
+                <PrimaryButton label="Download again" onPress={() => download()} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
+              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Re-download every dive (ignore last sync)</Text>
+              </Pressable>
             </>
           ) : (
             <>
               <Text style={styles.body}>Connection ready.</Text>
               <View style={styles.doneActions}>
-                <PrimaryButton label="Download dives" onPress={() => download({})} style={styles.flexButton} />
+                <PrimaryButton label="Download dives" onPress={() => download()} style={styles.flexButton} />
                 <SecondaryButton label="Disconnect" onPress={disconnect} style={styles.flexButton} />
               </View>
+              <Pressable onPress={() => download({ full: true })} hitSlop={8} style={styles.linkRow}>
+                <Text style={styles.linkText}>Re-download every dive (ignore last sync)</Text>
+              </Pressable>
             </>
           )}
         </View>
@@ -160,6 +180,8 @@ const styles = StyleSheet.create({
   backButton: { marginTop: 12 },
   flexButton: { flex: 1 },
   doneActions: { flexDirection: 'row', gap: 9, marginTop: 12 },
+  linkRow: { marginTop: 10, alignItems: 'center' },
+  linkText: { color: colors.cyan, fontSize: 12, fontWeight: '700' },
   error: {
     backgroundColor: 'rgba(255,127,127,0.1)',
     borderColor: 'rgba(255,127,127,0.35)',
@@ -175,6 +197,17 @@ const styles = StyleSheet.create({
   scanningText: { color: colors.text, flex: 1, fontSize: 13, fontWeight: '700' },
   stopText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
   hint: { color: colors.faint, fontSize: 11, marginTop: 12 },
+  suuntoHint: {
+    backgroundColor: 'rgba(112,221,246,0.08)',
+    borderColor: 'rgba(112,221,246,0.3)',
+    borderRadius: radii.sm,
+    borderWidth: 1,
+    color: colors.muted,
+    fontSize: 12,
+    lineHeight: 17,
+    marginTop: 12,
+    padding: 10,
+  },
   progressText: { color: colors.muted, fontSize: 12, marginTop: 8 },
   deviceList: { gap: 8, marginTop: 14 },
   deviceRow: {

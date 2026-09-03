@@ -71,6 +71,21 @@ export function looksLikeDiveComputer(nameOrDevice) {
   return DIVE_COMPUTER_NAME_HINTS.some((hint) => name.includes(hint));
 }
 
+// Suunto EON Steel / Core / D5 (the suunto_eonsteel BLE backend) require a bonded
+// (encrypted) BLE link — iOS shows a pairing-code prompt on first connect and the
+// device often drops the link once bonding completes. Callers use this to warn
+// the user and to retry the connect after the pairing hiccup.
+const SUUNTO_NAME_HINTS = ['suunto', 'eon steel', 'eon core', 'eon ', 'd5'];
+
+export function looksLikeSuunto(nameOrDevice) {
+  const raw = typeof nameOrDevice === 'string'
+    ? nameOrDevice
+    : (nameOrDevice?.name || nameOrDevice?.localName || '');
+  const name = raw.toLowerCase().trim();
+  if (!name) return false;
+  return SUUNTO_NAME_HINTS.some((hint) => name.includes(hint));
+}
+
 export async function ensureBlePermissions() {
   if (Platform.OS !== 'android') return true;
   const api = typeof Platform.Version === 'number' ? Platform.Version : parseInt(Platform.Version, 10);

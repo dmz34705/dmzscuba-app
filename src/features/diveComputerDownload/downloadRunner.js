@@ -41,7 +41,7 @@ function classifyCharacteristics(characteristics) {
   return { writeChar, notifyChar };
 }
 
-async function pickCharacteristics(device) {
+export async function pickCharacteristics(device) {
   const services = await device.services();
   const byUuid = new Map(services.map((s) => [norm(s.uuid), s]));
 
@@ -60,6 +60,47 @@ async function pickCharacteristics(device) {
   }
 
   throw new Error('This device does not expose a usable Bluetooth serial service.');
+}
+
+/**
+ * Force the OS BLE pairing / bonding handshake before the native download runs.
+ * Suunto EON Steel / Core / D5 require an encrypted (bonded) link: iOS only
+ * starts pairing when something touches an encrypted characteristic, so we
+ * briefly subscribe to the notify characteristic here. The peripheral commonly
+ * drops the link right after bonding — the caller retries the connect.
+ *
+ * Best-effort: silently returns if no usable service is exposed yet. Throws only
+ * when the subscription itself fails (encryption error → caller should retry).
+ *
+ * @param {import('react-native-ble-plx').Device} device  connected + discovered
+ * @param {(m: string) => void} [onLog]
+ */
+export async function primePairing(device, onLog) {
+  let picked = null;
+  try {
+    picked = await pickCharacteristics(device);
+  } catch {
+    onLog?.('pairing prime: no serial service yet, skipping');
+    return;
+  }
+  let sub = null;
+  try {
+    await new Promise((resolve, reject) => {
+      const timer = setTimeout(resolve, 1200);
+      sub = device.monitorCharacteristicForService(
+        picked.notifyChar.serviceUUID,
+        picked.notifyChar.uuid,
+        (error) => {
+          if (!error) return; // ignore any data that arrives during priming
+          clearTimeout(timer);
+          reject(error);
+        },
+      );
+    });
+    onLog?.('pairing prime ok');
+  } finally {
+    sub?.remove();
+  }
 }
 
 /**
