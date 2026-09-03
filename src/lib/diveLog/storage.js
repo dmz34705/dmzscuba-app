@@ -144,6 +144,33 @@ export async function loadAll(storage = AsyncStorage) {
   return dives.filter(Boolean);
 }
 
+/**
+ * Existing dives (+ their logs) that could be the same real dive as a log whose
+ * reported start is `reportedStartTime`: within ±`windowHours` and not deleted.
+ * The matcher does the expensive profile comparison on this shortlist.
+ */
+export async function loadMatchCandidates(reportedStartTime, { windowHours = 30 } = {}, storage = AsyncStorage) {
+  const t = Date.parse(reportedStartTime);
+  if (Number.isNaN(t)) return [];
+  const windowMs = windowHours * 3600 * 1000;
+  const index = await loadIndex(storage);
+  const near = index.filter((row) => {
+    if (row.deletedAt) return false;
+    const rt = Date.parse(row.startTime);
+    return !Number.isNaN(rt) && Math.abs(rt - t) <= windowMs;
+  });
+  const bundles = [];
+  for (const row of near) {
+    // eslint-disable-next-line no-await-in-loop
+    const dive = await loadDive(row.id, storage);
+    if (!dive) continue;
+    // eslint-disable-next-line no-await-in-loop
+    const logs = await loadLogsForDive(dive, storage);
+    bundles.push({ dive, logs });
+  }
+  return bundles;
+}
+
 export async function softDeleteDive(id, storage = AsyncStorage) {
   const current = await loadDive(id, storage);
   if (!current) return null;

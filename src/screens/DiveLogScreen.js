@@ -456,6 +456,75 @@ function SelectionBar({ count, total, allSelected, onToggleAll, onDelete }) {
 }
 
 // ---------------------------------------------------------------------------
+// Cross-computer match review (post-download)
+// ---------------------------------------------------------------------------
+
+function offsetLabel(minutes) {
+  const sign = minutes > 0 ? '+' : '−';
+  const abs = Math.abs(minutes);
+  return `${sign}${Math.floor(abs / 60)}:${String(abs % 60).padStart(2, '0')}`;
+}
+
+function MatchReviewCard({ proposal, onResolve }) {
+  const conflict = Math.abs(proposal.offsetMinutes) >= 1;
+  return (
+    <Card style={styles.reviewCard}>
+      <Text style={styles.reviewTitle}>Same dive, two computers?</Text>
+      <Text style={styles.reviewBody}>
+        A dive from <Text style={styles.reviewStrong}>{proposal.newDeviceName}</Text> lines up with one from{' '}
+        <Text style={styles.reviewStrong}>{proposal.matchDeviceName}</Text>
+        {conflict ? ` — but their clocks differ by ${offsetLabel(proposal.offsetMinutes)}.` : '.'}
+      </Text>
+      <Text style={styles.reviewMeta}>
+        {`match confidence ${Math.round(proposal.score * 100)}%`}
+        {proposal.kind === 'split' ? ' · one computer split the dive' : ''}
+      </Text>
+
+      {conflict ? (
+        <>
+          <Text style={styles.reviewQuestion}>Which clock is correct?</Text>
+          <View style={styles.reviewActions}>
+            <SecondaryButton
+              label={proposal.matchDeviceName}
+              onPress={() => onResolve(proposal, 'merge', { correctDeviceKey: proposal.matchDeviceKey })}
+              style={styles.reviewButton}
+            />
+            <SecondaryButton
+              label={proposal.newDeviceName}
+              onPress={() => onResolve(proposal, 'merge', { correctDeviceKey: proposal.newDeviceKey })}
+              style={styles.reviewButton}
+            />
+          </View>
+        </>
+      ) : (
+        <View style={styles.reviewActions}>
+          <PrimaryButton label="Merge — same dive" onPress={() => onResolve(proposal, 'merge', {})} style={styles.reviewButton} />
+        </View>
+      )}
+      <Pressable onPress={() => onResolve(proposal, 'separate')} hitSlop={8} style={styles.reviewSkip}>
+        <Text style={styles.reviewSkipText}>Not the same dive — keep separate</Text>
+      </Pressable>
+    </Card>
+  );
+}
+
+function MatchReview({ proposals, onResolve, onDone }) {
+  return (
+    <>
+      <SectionLabel>REVIEW</SectionLabel>
+      <Text style={styles.title}>Matching dives across computers</Text>
+      <Text style={styles.subtitle}>
+        {proposals.length} {proposals.length === 1 ? 'pair' : 'pairs'} to check. Merged dives count once.
+      </Text>
+      {proposals.map((p) => (
+        <MatchReviewCard key={p.id} proposal={p} onResolve={onResolve} />
+      ))}
+      <SecondaryButton label="Done" onPress={onDone} style={styles.cancelButton} />
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Detail view
 // ---------------------------------------------------------------------------
 
@@ -694,7 +763,10 @@ function DiveEditForm({ form, units, onChange, error }) {
 
 export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const insets = useSafeAreaInsets();
-  const { loaded, rows, stats, folders, knownComputerKeys, getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLog } = useDiveLog();
+  const {
+    loaded, rows, stats, folders, knownComputerKeys, pendingProposals,
+    getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLog, resolveProposal, clearProposals,
+  } = useDiveLog();
 
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
@@ -726,6 +798,13 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
 
   // Leaving the list, or switching folders, drops any in-progress selection.
   useEffect(() => { exitSelect(); }, [view, folderKey, exitSelect]);
+
+  // Surface the post-download match review once the panel closes; leave it when
+  // every proposal has been resolved.
+  useEffect(() => {
+    if (view === 'list' && pendingProposals.length) setView('review');
+    else if (view === 'review' && !pendingProposals.length) setView('list');
+  }, [view, pendingProposals.length]);
 
   const toggleSelected = useCallback((id) => {
     setSelectedIds((prev) => {
@@ -825,9 +904,10 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       return;
     }
     if (view === 'detail' || view === 'download') { openList(); return; }
+    if (view === 'review') { clearProposals(); openList(); return; }
     if (view === 'list' && activeFolder) { setFolderKey(null); return; }
     onBack?.();
-  }, [activeFolder, exitSelect, onBack, openList, selectMode, selectedId, view]);
+  }, [activeFolder, clearProposals, exitSelect, onBack, openList, selectMode, selectedId, view]);
 
   const handleSave = useCallback(async () => {
     if (!form) return;
@@ -871,7 +951,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       ? 'Dive details'
       : view === 'download'
         ? 'Dive computer'
-        : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
+        : view === 'review'
+          ? 'Review matches'
+          : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
 
   const canSelect = view === 'list' && loaded && !showFolderGrid && listRows.length > 0;
   const headerAction = selectMode
@@ -985,6 +1067,14 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
           />
         )}
 
+        {view === 'review' && (
+          <MatchReview
+            proposals={pendingProposals}
+            onResolve={resolveProposal}
+            onDone={() => { clearProposals(); setView('list'); }}
+          />
+        )}
+
         {view === 'detail' && (
           record ? (
             <>
@@ -1060,6 +1150,17 @@ const styles = StyleSheet.create({
 
   primaryCta: { marginTop: 8 },
   downloadButton: { marginTop: 10 },
+
+  reviewCard: { borderColor: 'rgba(112,221,246,.28)', gap: 4, marginTop: 12 },
+  reviewTitle: { color: colors.text, fontSize: 15, fontWeight: '900' },
+  reviewBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 4 },
+  reviewStrong: { color: colors.text, fontWeight: '800' },
+  reviewMeta: { color: colors.faint, fontSize: 11, marginTop: 4 },
+  reviewQuestion: { color: colors.text, fontSize: 12, fontWeight: '800', marginTop: 10 },
+  reviewActions: { flexDirection: 'row', gap: 9, marginTop: 8 },
+  reviewButton: { flex: 1 },
+  reviewSkip: { alignItems: 'center', marginTop: 10 },
+  reviewSkipText: { color: colors.cyan, fontSize: 12, fontWeight: '700' },
   engineNote: { color: colors.faint, fontSize: 11, marginTop: 12, textAlign: 'center' },
   cancelButton: { marginTop: 10 },
 

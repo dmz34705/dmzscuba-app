@@ -2,6 +2,7 @@
 
 export * from './schema';
 export * from './logAnalytics';
+export * from './matchDives';
 export * from './validation';
 export * from './storage';
 export * from './stats';

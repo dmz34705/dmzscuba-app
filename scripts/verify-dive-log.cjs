@@ -38,6 +38,14 @@ const {
   averageDepth,
   surfaceConsumption,
   computeLogAnalytics,
+  // matcher
+  resampleDepth,
+  alignmentScore,
+  bestOffset,
+  cleanOffsetMinutes,
+  classifyPair,
+  classifySplit,
+  findMatch,
   // format
   formatDepth,
   formatDuration,
@@ -277,6 +285,76 @@ assert.ok(analytics.sacBarPerMin > 0);
 assert.ok(analytics.ascentRateMaxMPerMin > 0);
 
 // ---------------------------------------------------------------------------
+// matchDives (cross-computer same-dive detection)
+// ---------------------------------------------------------------------------
+
+// A trapezoid profile: 3 min descent, ~34 min bottom at 30 m, 3 min ascent.
+function trapezoid(bottomDepth = 30, bottomSec = 2040) {
+  const s = [];
+  for (let t = 0; t <= 180; t += 10) s.push({ t, depth: (t / 180) * bottomDepth });
+  for (let t = 190; t <= 180 + bottomSec; t += 10) s.push({ t, depth: bottomDepth });
+  const base = 180 + bottomSec;
+  for (let t = base + 10; t <= base + 180; t += 10) s.push({ t, depth: bottomDepth * (1 - (t - base) / 180) });
+  return s;
+}
+
+assert.equal(resampleDepth([{ t: 0, depth: 0 }, { t: 20, depth: 10 }], 10).length, 3);
+assert.equal(resampleDepth([{ t: 0, depth: 0 }], 10).length, 0);
+assert.equal(cleanOffsetMinutes(-7 * 3600 + 30), -420); // snaps to a whole hour
+assert.equal(cleanOffsetMinutes(1234), null);          // not clock-shaped
+
+const baseProfile = trapezoid();
+const clone = () => baseProfile.map((x) => ({ ...x }));
+
+// identical profiles, clocks agree
+const a1 = { reportedStartTime: '2025-03-10T14:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
+const b1 = { startTime: '2025-03-10T14:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
+const agree = classifyPair(a1, b1);
+assert.equal(agree.verdict, 'auto');
+assert.equal(agree.clockConflict, false);
+
+// same dive, second computer's clock 7 h ahead
+const b2 = { startTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
+const conflict = classifyPair(a1, b2);
+assert.ok(conflict.verdict === 'auto' || conflict.verdict === 'confirm');
+assert.equal(conflict.clockConflict, true);
+assert.equal(conflict.offsetMinutes, 420); // add +7 h to a1's clock to meet b2 (21:00)
+assert.equal(conflict.cleanOffset, true);
+
+// a genuinely different dive (shallower, shorter) -> no match
+const other = { startTime: '2025-03-10T14:00:00.000Z', durationSeconds: 1200, water: { maxDepthMeters: 12 }, profile: { samples: trapezoid(12, 900) } };
+assert.equal(classifyPair(a1, other).verdict, 'none');
+
+// split: b saw one dive; a's device logged it as two fragments over a 5-min surface.
+// wide's profile is exactly the two fragments stitched over a 300 s gap.
+const fragASamples = trapezoid(30, 840);   // 1200 s
+const fragBSamples = trapezoid(28, 540);   // 900 s
+const fragA = { id: 'fa', deviceKey: 'Suunto|EON Core|1', startTime: '2025-03-10T14:00:00.000Z', durationSeconds: 1200, water: { maxDepthMeters: 30 }, profile: { samples: fragASamples } };
+const fragB = { id: 'fb', deviceKey: 'Suunto|EON Core|1', startTime: '2025-03-10T14:25:00.000Z', durationSeconds: 900, water: { maxDepthMeters: 28 }, profile: { samples: fragBSamples } };
+const stitchedSamples = [
+  ...fragASamples.map((s) => ({ ...s })),
+  { t: 1350, depth: 1 },
+  ...fragBSamples.map((s) => ({ t: 1500 + s.t, depth: s.depth })),
+];
+const wide = { reportedStartTime: '2025-03-10T14:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: stitchedSamples } };
+const split = classifySplit(wide, fragA, fragB);
+assert.ok(split.verdict !== 'none', `split verdict ${split.verdict}`);
+assert.deepEqual(split.fragmentIds, ['fa', 'fb']);
+
+// findMatch wires it together; ignores same-device candidates
+const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
+const fm = findMatch(fmNew, [
+  { dive: { id: 'dv1', primaryLogId: 'lg1' }, logs: [{ id: 'lg1', deviceKey: 'Suunto|EON Core|1', startTime: '2025-03-10T14:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } }] },
+]);
+assert.ok(fm.bestMatch && fm.bestMatch.diveId === 'dv1');
+assert.equal(fm.bestMatch.offsetMinutes, -420);
+// same-device candidate is skipped
+assert.equal(
+  findMatch(fmNew, [{ dive: { id: 'dvx', primaryLogId: 'l' }, logs: [{ id: 'l', deviceKey: 'Shearwater|Perdix|9', startTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } }] }]).bestMatch,
+  null,
+);
+
+// ---------------------------------------------------------------------------
 // computerLogFromDownload (libdivecomputer parsed dive -> ComputerLog partial)
 // ---------------------------------------------------------------------------
 
@@ -438,6 +516,19 @@ function memoryStorage(seed = {}) {
   const rebuilt = await rebuildIndex(store);
   assert.equal(rebuilt.find((r) => r.id === cDive.id).logCount, 2);
 
+  // loadMatchCandidates: only non-deleted dives within the time window
+  const cands = await diveLog.loadMatchCandidates('2026-05-01T16:40:00.000Z', {}, store);
+  assert.equal(cands.some((c) => c.dive.id === cDive.id), true);
+  assert.equal(cands.some((c) => c.dive.id === d1.id), false); // soft-deleted earlier
+  const farCands = await diveLog.loadMatchCandidates('2020-01-01T00:00:00.000Z', {}, store);
+  assert.equal(farCands.length, 0);
+
+  // device time corrections store
+  await diveLog.saveDeviceTimeCorrection({ deviceKey: 'Suunto|EON Core|777', offsetMinutes: -420, appliesFrom: '2026-05-01', appliesTo: '2026-05-01' }, store);
+  const corr = await diveLog.loadDeviceTimeCorrections(store);
+  assert.equal(corr[0].offsetMinutes, -420);
+  assert.ok(corr[0].decidedAt);
+
   // fingerprint round-trip (unchanged from v1)
   await diveLog.saveFingerprint('EON Core', 'FP-B', store);
   assert.equal(await diveLog.loadFingerprint('EON Core', store), 'FP-B');
@@ -497,10 +588,18 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /deleteDives/);
   assert.match(screen, /importComputerLog/);
   assert.match(screen, /primaryLog/);
+  // post-download cross-computer match review
+  assert.match(screen, /MatchReview/);
+  assert.match(screen, /pendingProposals/);
+  assert.match(screen, /resolveProposal/);
+  assert.match(screen, /view === 'review'/);
 
   const hook = read('src', 'features', 'diveLog', 'useDiveLog.js');
   assert.match(hook, /migrateToV2/);
   assert.match(hook, /createDiveFromLog/);
+  assert.match(hook, /findMatch/);
+  assert.match(hook, /loadMatchCandidates/);
+  assert.match(hook, /resolveProposal/);
   assert.match(hook, /const deleteDives = useCallback/);
   assert.doesNotMatch(hook, /AsyncStorage/);
 

@@ -1,0 +1,295 @@
+// Cross-computer dive matcher (B6). Pure, framework-independent, unit-tested.
+//
+// Given a freshly downloaded ComputerLog and the logs already in the book, decide
+// which (if any) existing Dive is the *same real dive* recorded by a different
+// computer — even when the two computers' clocks disagree (timezone changes, DST,
+// a clock never set) — and by how much they disagree.
+//
+// Nothing here writes: it returns proposals for the B7 conflict UI to apply.
+
+const RESAMPLE_SEC = 10;
+const SEARCH_WINDOW_SEC = 30 * 3600;   // ± this around the reported-start difference
+const COARSE_STEP_SEC = 15 * 60;       // clock errors are ~timezone-shaped
+const FINE_STEP_SEC = RESAMPLE_SEC;
+const FINE_SPAN_SEC = 8 * 60;          // refine ± this around the coarse best
+const CLEAN_OFFSET_UNIT_MIN = 15;      // a real clock error rounds to a multiple of this
+const CLEAN_OFFSET_TOL_SEC = 150;
+
+const DURATION_TOL_SEC = 120;
+const DURATION_TOL_FRAC = 0.08;
+const DEPTH_TOL_M = 1.5;
+const DEPTH_TOL_FRAC = 0.08;
+
+const AUTO_SCORE = 0.95;
+const CONFIRM_SCORE = 0.80;
+const MIN_OVERLAP_FRAC = 0.6;
+
+const SPLIT_MAX_GAP_SEC = 12 * 60;     // a surface gap shorter than this can be one dive
+
+const clamp01 = (v) => Math.max(0, Math.min(1, v));
+
+function cleanTimeSamples(samples) {
+  return (Array.isArray(samples) ? samples : [])
+    .filter((s) => s && Number.isFinite(s.t) && Number.isFinite(s.depth) && s.depth >= 0)
+    .slice()
+    .sort((a, b) => a.t - b.t);
+}
+
+/** Depths at 0, interval, 2·interval… seconds (linear interpolation between samples). */
+export function resampleDepth(samples, interval = RESAMPLE_SEC) {
+  const rows = cleanTimeSamples(samples);
+  if (rows.length < 2) return [];
+  const end = rows[rows.length - 1].t;
+  const out = [];
+  let j = 0;
+  for (let t = 0; t <= end; t += interval) {
+    while (j < rows.length - 1 && rows[j + 1].t < t) j += 1;
+    const a = rows[j];
+    const b = rows[Math.min(j + 1, rows.length - 1)];
+    if (b.t === a.t) { out.push(a.depth); continue; }
+    const frac = clamp01((t - a.t) / (b.t - a.t));
+    out.push(a.depth + (b.depth - a.depth) * frac);
+  }
+  return out;
+}
+
+function maxOf(arr) {
+  let m = 0;
+  for (const v of arr) if (v > m) m = v;
+  return m;
+}
+
+/**
+ * Similarity of two resampled depth series where series B is shifted `lagSteps`
+ * samples later than A. 1 = identical over the overlap, 0 = nothing alike.
+ * Returns null when the overlap is too small to judge.
+ */
+export function alignmentScore(a, b, lagSteps) {
+  const startA = Math.max(0, lagSteps);
+  const startB = Math.max(0, -lagSteps);
+  const overlap = Math.min(a.length - startA, b.length - startB);
+  if (overlap <= 0) return null;
+  const shorter = Math.min(a.length, b.length);
+  if (overlap < shorter * MIN_OVERLAP_FRAC) return null;
+
+  const ref = Math.max(maxOf(a), maxOf(b), 5);
+  let sq = 0;
+  for (let i = 0; i < overlap; i += 1) {
+    const diff = a[startA + i] - b[startB + i];
+    sq += diff * diff;
+  }
+  const rmse = Math.sqrt(sq / overlap);
+  return clamp01(1 - rmse / ref);
+}
+
+/**
+ * Best time offset (seconds to ADD to logB's clock so it lines up with logA) and
+ * its alignment score. `reportedDeltaSec` = startA - startB in wall-clock terms.
+ */
+export function bestOffset(samplesA, samplesB, reportedDeltaSec = 0) {
+  const a = resampleDepth(samplesA);
+  const b = resampleDepth(samplesB);
+  if (a.length < 3 || b.length < 3) return { offsetSec: 0, score: 0 };
+
+  const scan = (centerSec, stepSec, spanSec) => {
+    let best = { offsetSec: centerSec, score: -1 };
+    for (let o = centerSec - spanSec; o <= centerSec + spanSec; o += stepSec) {
+      const lagSteps = Math.round((o - reportedDeltaSec) / RESAMPLE_SEC);
+      const score = alignmentScore(a, b, lagSteps);
+      if (score != null && score > best.score) best = { offsetSec: o, score };
+    }
+    return best;
+  };
+
+  const coarse = scan(0, COARSE_STEP_SEC, SEARCH_WINDOW_SEC);
+  if (coarse.score < 0) return { offsetSec: 0, score: 0 };
+  const fine = scan(coarse.offsetSec, FINE_STEP_SEC, FINE_SPAN_SEC);
+  return fine.score >= coarse.score ? fine : coarse;
+}
+
+/** Round a raw offset to the nearest "clock-shaped" value, or null if it isn't one. */
+export function cleanOffsetMinutes(offsetSec) {
+  const unit = CLEAN_OFFSET_UNIT_MIN * 60;
+  const snapped = Math.round(offsetSec / unit) * unit;
+  return Math.abs(offsetSec - snapped) <= CLEAN_OFFSET_TOL_SEC ? Math.round(snapped / 60) : null;
+}
+
+function durationClose(a, b) {
+  return Math.abs(a - b) <= Math.max(DURATION_TOL_SEC, DURATION_TOL_FRAC * Math.max(a, b));
+}
+function depthClose(a, b) {
+  return Math.abs(a - b) <= Math.max(DEPTH_TOL_M, DEPTH_TOL_FRAC * Math.max(a, b));
+}
+
+function iso(ms) {
+  return Number.isFinite(ms) ? new Date(ms).toISOString() : '';
+}
+
+/**
+ * Compare one candidate log/dive against the new log. Returns a classification:
+ *   verdict: 'auto' | 'confirm' | 'none'
+ *   score, offsetSec, offsetMinutes (clean, or raw rounded), clockConflict
+ */
+export function classifyPair(newLog, candidate) {
+  const nDur = newLog.durationSeconds || 0;
+  const cDur = candidate.durationSeconds || 0;
+  const nDepth = newLog.water?.maxDepthMeters || 0;
+  const cDepth = candidate.water?.maxDepthMeters || 0;
+  if (!durationClose(nDur, cDur) || !depthClose(nDepth, cDepth)) {
+    return { verdict: 'none', score: 0 };
+  }
+
+  const startNew = Date.parse(newLog.reportedStartTime || newLog.startTime);
+  const startCand = Date.parse(candidate.startTime || candidate.reportedStartTime);
+  const reportedDeltaSec = Number.isFinite(startNew) && Number.isFinite(startCand)
+    ? (startNew - startCand) / 1000
+    : 0;
+
+  const { offsetSec: rawOffsetSec, score } = bestOffset(
+    candidate.profile?.samples || candidate.samples,
+    newLog.profile?.samples || newLog.samples,
+    reportedDeltaSec,
+  );
+  // Convention: `offsetMinutes` = minutes to ADD to the NEW log's reported start
+  // so it lines up with the matched dive. bestOffset returns startNew - startCand;
+  // negate it.
+  const offsetSec = -rawOffsetSec;
+  const clean = cleanOffsetMinutes(offsetSec);
+  const offsetMinutes = clean != null ? clean : Math.round(offsetSec / 60);
+  const clockConflict = Math.abs(offsetMinutes) >= 1;
+
+  let verdict = 'none';
+  if (score >= AUTO_SCORE && (!clockConflict || clean != null)) verdict = 'auto';
+  else if (score >= CONFIRM_SCORE) verdict = 'confirm';
+  // A clock conflict we can't cleanly explain always needs a human.
+  if (verdict === 'auto' && clockConflict && clean == null) verdict = 'confirm';
+
+  return {
+    verdict,
+    score: Math.round(score * 1000) / 1000,
+    offsetSec: Math.round(offsetSec),
+    offsetMinutes,
+    cleanOffset: clean != null,
+    clockConflict,
+  };
+}
+
+/**
+ * Does the new (long) log correspond to two consecutive candidate fragments from
+ * one device that were split at the surface? Returns a match when the fragments'
+ * combined span and the surface gap fit, and the profile aligns.
+ */
+export function classifySplit(newLog, fragA, fragB) {
+  const aStart = Date.parse(fragA.startTime || fragA.reportedStartTime);
+  const bStart = Date.parse(fragB.startTime || fragB.reportedStartTime);
+  if (!Number.isFinite(aStart) || !Number.isFinite(bStart) || bStart < aStart) return { verdict: 'none' };
+  const gapSec = (bStart - aStart) / 1000 - (fragA.durationSeconds || 0);
+  if (gapSec < 0 || gapSec > SPLIT_MAX_GAP_SEC) return { verdict: 'none' };
+
+  const combinedDur = (fragA.durationSeconds || 0) + gapSec + (fragB.durationSeconds || 0);
+  if (!durationClose(newLog.durationSeconds || 0, combinedDur)) return { verdict: 'none' };
+
+  // Stitch the two fragment profiles onto one time axis (gap held at ~3 m).
+  const stitched = [];
+  for (const s of cleanTimeSamples(fragA.profile?.samples || fragA.samples)) stitched.push({ t: s.t, depth: s.depth });
+  const gapStart = (fragA.durationSeconds || 0);
+  stitched.push({ t: gapStart + gapSec / 2, depth: 1 });
+  for (const s of cleanTimeSamples(fragB.profile?.samples || fragB.samples)) {
+    stitched.push({ t: gapStart + gapSec + s.t, depth: s.depth });
+  }
+
+  const startNew = Date.parse(newLog.reportedStartTime || newLog.startTime);
+  const reportedDeltaSec = Number.isFinite(startNew) && Number.isFinite(aStart)
+    ? (aStart - startNew) / 1000
+    : 0;
+  const { offsetSec: rawOffsetSec, score } = bestOffset(stitched, newLog.profile?.samples || newLog.samples, reportedDeltaSec);
+  if (score < CONFIRM_SCORE) return { verdict: 'none' };
+  const offsetSec = -rawOffsetSec; // minutes to add to the NEW log to meet the fragments
+  const clean = cleanOffsetMinutes(offsetSec);
+  return {
+    verdict: score >= AUTO_SCORE && clean != null ? 'auto' : 'confirm',
+    score: Math.round(score * 1000) / 1000,
+    offsetMinutes: clean != null ? clean : Math.round(offsetSec / 60),
+    cleanOffset: clean != null,
+    fragmentIds: [fragA.id, fragB.id],
+  };
+}
+
+/**
+ * Match a new log against the existing book.
+ * @param {object} newLog                the freshly downloaded ComputerLog
+ * @param {Array<{dive, logs}>} candidates  existing dives + their logs (caller pre-filters by ~time window)
+ * @returns {{ bestMatch: object|null, splitMatch: object|null }}
+ */
+export function findMatch(newLog, candidates) {
+  let bestMatch = null;
+  for (const cand of candidates) {
+    const dive = cand.dive;
+    const logs = cand.logs || [];
+    // Don't match a computer against its own earlier log of the same dive —
+    // that's the fingerprint de-dup's job.
+    const sameDevice = logs.some((l) => l.deviceKey && l.deviceKey === newLog.deviceKey);
+    if (sameDevice) continue;
+
+    const ref = logs.find((l) => l.id === dive.primaryLogId) || logs[0] || dive;
+    const result = classifyPair(newLog, ref);
+    if (result.verdict === 'none') continue;
+    if (!bestMatch || result.score > bestMatch.score) {
+      bestMatch = { ...result, diveId: dive.id };
+    }
+
+    // Split: this dive's device logged 2+ fragments the new computer saw as one.
+    const byDevice = new Map();
+    for (const l of logs) {
+      const k = l.deviceKey || 'x';
+      if (!byDevice.has(k)) byDevice.set(k, []);
+      byDevice.get(k).push(l);
+    }
+    for (const frags of byDevice.values()) {
+      if (frags.length < 2) continue;
+      frags.sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
+      for (let i = 0; i < frags.length - 1; i += 1) {
+        const split = classifySplit(newLog, frags[i], frags[i + 1]);
+        if (split.verdict !== 'none') {
+          return { bestMatch: { ...split, diveId: dive.id, kind: 'split' }, splitMatch: split };
+        }
+      }
+    }
+  }
+  return { bestMatch, splitMatch: null };
+}
+
+/**
+ * Roll a set of per-log match results up into conflict clusters for the B7 UI:
+ * one entry per (deviceA, deviceB, offsetMinutes) with the affected dives and
+ * the contiguous date range.
+ */
+export function clusterConflicts(matches) {
+  const clusters = new Map();
+  for (const m of matches) {
+    if (!m || !m.clockConflict || !m.offsetMinutes) continue;
+    const key = `${m.deviceKeyNew}|${m.deviceKeyExisting}|${m.offsetMinutes}`;
+    if (!clusters.has(key)) {
+      clusters.set(key, {
+        deviceKeyNew: m.deviceKeyNew,
+        deviceKeyExisting: m.deviceKeyExisting,
+        offsetMinutes: m.offsetMinutes,
+        cleanOffset: m.cleanOffset,
+        diveIds: [],
+        dates: [],
+      });
+    }
+    const c = clusters.get(key);
+    c.diveIds.push(m.diveId);
+    if (m.date) c.dates.push(m.date);
+  }
+  return [...clusters.values()].map((c) => ({
+    ...c,
+    dates: undefined,
+    firstDate: c.dates.length ? c.dates.slice().sort()[0] : '',
+    lastDate: c.dates.length ? c.dates.slice().sort()[c.dates.length - 1] : '',
+    diveCount: c.diveIds.length,
+  }));
+}
+
+export const _internals = { RESAMPLE_SEC, AUTO_SCORE, CONFIRM_SCORE, iso };
