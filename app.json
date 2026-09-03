@@ -57,6 +57,7 @@
         }
       ],
       "./plugins/withLibDiveComputer",
+      "./plugins/withDevelopmentTeam",
       [
         "react-native-ble-plx",
         {
