@@ -14,6 +14,11 @@ const FINE_STEP_SEC = RESAMPLE_SEC;
 const FINE_SPAN_SEC = 8 * 60;          // refine ± this around the coarse best
 const CLEAN_OFFSET_UNIT_MIN = 15;      // a real clock error rounds to a multiple of this
 const CLEAN_OFFSET_TOL_SEC = 150;
+// A clock set to the wrong timezone is off by <= ~15 h; DST/quarter-hours don't
+// change that. Anything past ~26 h means a battery-pull / never-set clock — the
+// profile match is the only evidence, so those always need a human.
+const TIMEZONE_OFFSET_MAX_MIN = 15 * 60;
+const PLAUSIBLE_OFFSET_MAX_MIN = 26 * 60;
 
 const DURATION_TOL_SEC = 120;
 const DURATION_TOL_FRAC = 0.08;
@@ -109,11 +114,22 @@ export function bestOffset(samplesA, samplesB, reportedDeltaSec = 0) {
   return fine.score >= coarse.score ? fine : coarse;
 }
 
-/** Round a raw offset to the nearest "clock-shaped" value, or null if it isn't one. */
+/**
+ * Round a raw offset to the nearest "clock-shaped" value (a 15-min multiple
+ * within a plausible clock-error range), or null if it isn't one. Snapping alone
+ * isn't enough — for a large offset the nearest 15-min grid point is always
+ * close, so we also bound the magnitude.
+ */
 export function cleanOffsetMinutes(offsetSec) {
+  if (Math.abs(offsetSec) > PLAUSIBLE_OFFSET_MAX_MIN * 60) return null;
   const unit = CLEAN_OFFSET_UNIT_MIN * 60;
   const snapped = Math.round(offsetSec / unit) * unit;
   return Math.abs(offsetSec - snapped) <= CLEAN_OFFSET_TOL_SEC ? Math.round(snapped / 60) : null;
+}
+
+/** A clean offset small enough to be an ordinary timezone error (auto-mergeable). */
+function isTimezoneOffset(offsetMinutes) {
+  return offsetMinutes != null && Math.abs(offsetMinutes) <= TIMEZONE_OFFSET_MAX_MIN;
 }
 
 function durationClose(a, b) {
@@ -161,16 +177,19 @@ export function classifyPair(newLog, candidate) {
   const clockConflict = Math.abs(offsetMinutes) >= 1;
 
   let verdict = 'none';
-  if (score >= AUTO_SCORE && (!clockConflict || clean != null)) verdict = 'auto';
+  if (score >= AUTO_SCORE) verdict = 'auto';
   else if (score >= CONFIRM_SCORE) verdict = 'confirm';
-  // A clock conflict we can't cleanly explain always needs a human.
-  if (verdict === 'auto' && clockConflict && clean == null) verdict = 'confirm';
+  // Auto-merge only when clocks agree, or disagree by an ordinary timezone-shaped
+  // amount. A big offset (battery-pull / never-set clock) is only backed by the
+  // profile shape — always confirm.
+  if (verdict === 'auto' && clockConflict && !isTimezoneOffset(clean)) verdict = 'confirm';
 
   return {
     verdict,
     score: Math.round(score * 1000) / 1000,
     offsetSec: Math.round(offsetSec),
     offsetMinutes,
+    implausibleClock: clean == null && clockConflict,
     cleanOffset: clean != null,
     clockConflict,
   };
@@ -231,8 +250,7 @@ export function classifyFragment(shortLog, longRef) {
   const clockConflict = Math.abs(offsetMinutes) >= 1;
 
   let verdict = 'confirm';
-  if (score >= AUTO_SCORE && (!clockConflict || clean != null)) verdict = 'auto';
-  if (verdict === 'auto' && clockConflict && clean == null) verdict = 'confirm';
+  if (score >= AUTO_SCORE && (!clockConflict || isTimezoneOffset(clean))) verdict = 'auto';
 
   return {
     verdict,
@@ -241,6 +259,7 @@ export function classifyFragment(shortLog, longRef) {
     offsetMinutes,
     cleanOffset: clean != null,
     clockConflict,
+    implausibleClock: clean == null && clockConflict,
     windowStartSec: lagSec,
     kind: 'fragment',
   };
@@ -354,15 +373,18 @@ export function findSpanningMerge(newLog, candidates) {
         if (score < CONFIRM_SCORE) continue;
         const offsetSec = -rawOffsetSec;
         const clean = cleanOffsetMinutes(offsetSec);
+        const offsetMinutes = clean != null ? clean : Math.round(offsetSec / 60);
+        const clockConflict = Math.abs(offsetMinutes) >= 1;
         return {
           kind: 'spanning-merge',
-          verdict: score >= AUTO_SCORE && (clean != null || Math.abs(offsetSec) < 60) ? 'auto' : 'confirm',
+          verdict: score >= AUTO_SCORE && (!clockConflict || isTimezoneOffset(clean)) ? 'auto' : 'confirm',
           score: Math.round(score * 1000) / 1000,
           diveIds: group.map((g) => g.dive.id),
           offsetSec: Math.round(offsetSec),
-          offsetMinutes: clean != null ? clean : Math.round(offsetSec / 60),
+          offsetMinutes,
           cleanOffset: clean != null,
-          clockConflict: Math.abs(Math.round(offsetSec / 60)) >= 1,
+          clockConflict,
+          implausibleClock: clean == null && clockConflict,
         };
       }
     }
@@ -436,6 +458,7 @@ export function findMatch(newLog, candidates) {
       offsetMinutes: best.result.offsetMinutes,
       cleanOffset: !!best.result.cleanOffset,
       clockConflict: Math.abs(best.result.offsetMinutes) >= 1,
+      implausibleClock: !!best.result.implausibleClock,
     };
   }
 

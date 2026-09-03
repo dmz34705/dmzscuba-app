@@ -220,6 +220,7 @@ export default function useDiveLog() {
         matchDeviceKey: other.deviceKey,
         offsetMinutes: m.offsetMinutes || 0,
         cleanOffset: !!m.cleanOffset,
+        implausibleClock: !!m.implausibleClock,
         score: m.score,
         newReportedStart: log.reportedStartTime,
         matchStart: other.start,
@@ -287,10 +288,16 @@ export default function useDiveLog() {
     }
     const proposals = [];
     const proposedSources = new Set(); // dives already slated to be folded away
+    const WINDOW_MS = 3 * 24 * 3600 * 1000; // two dives more than ~3 days apart aren't "the same dive"
     for (const b of bundles) {
       if (proposedSources.has(b.dive.id) || !b.logs.length) continue;
       const primary = b.logs.find((l) => l.id === b.dive.primaryLogId) || b.logs[0];
-      const others = bundles.filter((x) => x.dive.id !== b.dive.id && !proposedSources.has(x.dive.id));
+      const bT = Date.parse(b.dive.startTime);
+      const others = bundles.filter((x) => {
+        if (x.dive.id === b.dive.id || proposedSources.has(x.dive.id)) return false;
+        const xt = Date.parse(x.dive.startTime);
+        return Number.isNaN(bT) || Number.isNaN(xt) || Math.abs(xt - bT) <= WINDOW_MS;
+      });
       const { bestMatch: m } = findMatch(primary, others);
       if (!m || m.verdict === 'none') continue;
       const targetIds = m.diveIds || [m.diveId];
@@ -311,6 +318,7 @@ export default function useDiveLog() {
         matchDeviceKey: fp?.deviceKey || null,
         offsetMinutes: m.offsetMinutes || 0,
         cleanOffset: !!m.cleanOffset,
+        implausibleClock: !!m.implausibleClock,
         score: m.score,
         newReportedStart: primary.reportedStartTime,
         matchStart: first?.dive.startTime || '',

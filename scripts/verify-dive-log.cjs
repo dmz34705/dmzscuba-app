@@ -348,6 +348,8 @@ assert.equal(resampleDepth([{ t: 0, depth: 0 }, { t: 20, depth: 10 }], 10).lengt
 assert.equal(resampleDepth([{ t: 0, depth: 0 }], 10).length, 0);
 assert.equal(cleanOffsetMinutes(-7 * 3600 + 30), -420); // snaps to a whole hour
 assert.equal(cleanOffsetMinutes(1234), null);          // not clock-shaped
+assert.equal(cleanOffsetMinutes(40 * 3600), null);     // 40 h is not a plausible clock error
+assert.equal(cleanOffsetMinutes(3 * 3600), 180);       // 3 h is fine
 
 const baseProfile = trapezoid();
 const clone = () => baseProfile.map((x) => ({ ...x }));
@@ -370,6 +372,13 @@ assert.equal(conflict.cleanOffset, true);
 // a genuinely different dive (shallower, shorter) -> no match
 const other = { startTime: '2025-03-10T14:00:00.000Z', durationSeconds: 1200, water: { maxDepthMeters: 12 }, profile: { samples: trapezoid(12, 900) } };
 assert.equal(classifyPair(a1, other).verdict, 'none');
+
+// same profile but the other clock is 30 h off -> matched, but NOT auto, and flagged
+const bWayOff = { startTime: '2025-03-11T20:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
+const wild = classifyPair(a1, bWayOff);
+assert.ok(wild.verdict === 'confirm', `verdict ${wild.verdict}`);
+assert.equal(wild.implausibleClock, true);
+assert.equal(wild.cleanOffset, false);
 
 // split: b saw one dive; a's device logged it as two fragments over a 5-min surface.
 // wide's profile is exactly the two fragments stitched over a 300 s gap.
@@ -782,6 +791,8 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /pendingProposals/);
   assert.match(screen, /resolveProposal/);
   assert.match(screen, /view === 'review'/);
+  assert.match(screen, /implausibleClock/); // large clock-offset warning
+  assert.match(screen, /newReportedStart/);  // review card shows the dates
   assert.match(screen, /StatsView/);
   assert.match(screen, /view === 'stats'/);
 

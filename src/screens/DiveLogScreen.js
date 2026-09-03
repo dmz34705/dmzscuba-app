@@ -585,6 +585,11 @@ function SelectionBar({ count, total, allSelected, onToggleAll, onDelete, onMerg
 function offsetLabel(minutes) {
   const sign = minutes > 0 ? '+' : '−';
   const abs = Math.abs(minutes);
+  if (abs >= 1440) {
+    const d = Math.floor(abs / 1440);
+    const h = Math.round((abs % 1440) / 60);
+    return `${sign}${d}d ${h}h`;
+  }
   return `${sign}${Math.floor(abs / 60)}:${String(abs % 60).padStart(2, '0')}`;
 }
 
@@ -611,6 +616,8 @@ function MatchReviewCard({ proposal, onResolve }) {
           <Text style={styles.reviewStrong}>{proposal.matchDeviceName}</Text>
         </>
       );
+  const newDate = formatDate(proposal.newReportedStart);
+  const matchDate = formatDate(proposal.matchStart);
   return (
     <Card style={styles.reviewCard}>
       <Text style={styles.reviewTitle}>
@@ -620,7 +627,15 @@ function MatchReviewCard({ proposal, onResolve }) {
         {body}
         {conflict ? <Text> — but their clocks differ by {offsetLabel(proposal.offsetMinutes)}.</Text> : <Text>.</Text>}
       </Text>
+      <Text style={styles.reviewMeta}>
+        {proposal.newDeviceName}: {newDate || '—'}   ·   {proposal.matchDeviceName}: {matchDate || '—'}
+      </Text>
       <Text style={styles.reviewMeta}>{`match confidence ${Math.round(proposal.score * 100)}%`}</Text>
+      {proposal.implausibleClock ? (
+        <Text style={styles.reviewWarn}>
+          ⚠ That is a very large clock difference. Check the dates and profiles really are the same dive before merging.
+        </Text>
+      ) : null}
 
       {conflict ? (
         <>
@@ -1399,6 +1414,7 @@ const styles = StyleSheet.create({
   reviewBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 4 },
   reviewStrong: { color: colors.text, fontWeight: '800' },
   reviewMeta: { color: colors.faint, fontSize: 11, marginTop: 4 },
+  reviewWarn: { color: colors.warning, fontSize: 12, fontWeight: '700', lineHeight: 17, marginTop: 8 },
   reviewQuestion: { color: colors.text, fontSize: 12, fontWeight: '800', marginTop: 10 },
   reviewActions: { flexDirection: 'row', gap: 9, marginTop: 8 },
   reviewButton: { flex: 1 },
