@@ -82,6 +82,8 @@ const {
   isMigratedToV2,
   rebuildIndex,
   clearAll,
+  checkLogbookIntegrity,
+  repairLogbook,
   DIVE_LOG_INDEX_KEY,
   DIVE_LOG_DIVE_PREFIX,
   DIVE_LOG_LOG_PREFIX,
@@ -659,6 +661,10 @@ function memoryStorage(seed = {}) {
 }
 
 (async () => {
+  const assertIntegrity = async (target, label) => {
+    const result = await checkLogbookIntegrity(target);
+    assert.equal(result.ok, true, `${label}: ${JSON.stringify(result.problems)}`);
+  };
   const store = memoryStorage();
   await store.setItem(DIVE_LOG_INDEX_KEY, '[]'); // mark migrated (fresh install)
 
@@ -676,6 +682,7 @@ function memoryStorage(seed = {}) {
   assert.equal(index[0].siteName, 'Blue Hole');
   assert.equal(index[0].logCount, 0);
   assert.deepEqual(index[0].deviceKeys, []);
+  await assertIntegrity(store, 'manual save');
 
   // batch import: N dives written with ONE index write (no lost rows)
   const batchStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
@@ -690,6 +697,7 @@ function memoryStorage(seed = {}) {
   assert.equal(batch.length, 5);
   assert.equal((await loadIndex(batchStore)).length, 5, 'all 5 batch dives must be indexed');
   assert.equal(new Set((await loadIndex(batchStore)).map((r) => r.id)).size, 5);
+  await assertIntegrity(batchStore, 'batch import');
 
   // download -> new Dive + attached ComputerLog
   const { dive: cDive, log: cLog } = await createDiveFromLog(computerLogFromDownload({
@@ -709,6 +717,7 @@ function memoryStorage(seed = {}) {
   assert.equal(cRow.logCount, 1);
   assert.deepEqual(cRow.deviceKeys, ['Shearwater|Peregrine TX|12345']);
   assert.deepEqual(cRow.computerKeys, ['Shearwater|Peregrine TX|FP-A']);
+  await assertIntegrity(store, 'computer import');
 
   // attach a SECOND computer's log to the same dive (what B6/B7 will do)
   const { dive: dive2, log: log2 } = await attachLogToDive(cDive.id, computerLogFromDownload({
@@ -727,6 +736,7 @@ function memoryStorage(seed = {}) {
   assert.equal(row2.deviceKeys.length, 2);
   assert.equal(row2.computerKeys.includes('Suunto|EON Core|FP-B'), true);
   assert.equal(log2.id !== cLog.id, true);
+  await assertIntegrity(store, 'attach second computer');
 
   // still 2 dives total (manual + the one computer dive with two logs)
   assert.equal((await loadIndex(store)).filter((r) => !r.deletedAt).length, 2);
@@ -735,6 +745,7 @@ function memoryStorage(seed = {}) {
   const del = await softDeleteDive(d1.id, store);
   assert.ok(del.deletedAt);
   assert.equal(computeDiveLogStats(await loadIndex(store)).totalDives, 1);
+  await assertIntegrity(store, 'soft delete');
 
   // rebuildIndex recomputes rows from Dives + logs
   const rebuilt = await rebuildIndex(store);
@@ -747,6 +758,7 @@ function memoryStorage(seed = {}) {
   assert.equal(await diveLog.countStoredDives(store) > (await loadIndex(store)).length, true);
   const recovered = await rebuildIndex(store);
   assert.equal(recovered.some((r) => r.id === 'orphan-1'), true);
+  await assertIntegrity(store, 'index rebuild');
 
   // loadMatchCandidates: only non-deleted dives within the time window
   const cands = await diveLog.loadMatchCandidates('2026-05-01T16:40:00.000Z', {}, store);
@@ -770,6 +782,7 @@ function memoryStorage(seed = {}) {
   const keptRow = (await loadIndex(store)).find((r) => r.id === mA.dive.id);
   assert.equal(keptRow.logCount, 2);
   assert.equal(keptRow.deviceKeys.length, 2);
+  await assertIntegrity(store, 'merge dives');
 
   // --- end to end: Aug 27 split-dive recovery ---
   const rstore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
@@ -800,6 +813,7 @@ function memoryStorage(seed = {}) {
   assert.equal(finalRows[0].id, shDive.dive.id); // the long Shearwater dive is canonical
   // the two Suunto fragments are fused into ONE continuous log (not stacked)
   assert.equal(finalRows[0].logCount, 2);
+  await assertIntegrity(rstore, 'reconcile split dive');
 
   // computer priority: ranked list + pickPrimaryLog + resurface
   const prStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
@@ -817,6 +831,7 @@ function memoryStorage(seed = {}) {
   assert.equal((await loadLog(prDive.primaryLogId, prStore)).device.vendor, 'Suunto');
   assert.equal(diveLog.priorityIndex(['a', 'b'], 'b'), 1);
   assert.equal(diveLog.priorityIndex(['a'], 'z'), 999);
+  await assertIntegrity(prStore, 'priority resurface');
 
   // consolidateSameDeviceLogs fuses even when the fragments' serials disagree
   const csStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
@@ -839,6 +854,7 @@ function memoryStorage(seed = {}) {
   const csLogs = await loadLogsForDive(await loadDive(csDive.dive.id, csStore), csStore);
   assert.equal(csLogs.length, 2, `expected shearwater + 1 fused suunto, got ${csLogs.length}`);
   assert.equal(csLogs.find((l) => l.device.vendor === 'Suunto').fusedFrom, 2);
+  await assertIntegrity(csStore, 'same-device consolidation');
   const finalDive = await loadDive(shDive.dive.id, rstore);
   const finalLogs = await loadLogsForDive(finalDive, rstore);
   const fusedSu = finalLogs.find((l) => l.device.vendor === 'Suunto');
@@ -869,6 +885,7 @@ function memoryStorage(seed = {}) {
   assert.equal(pstore._map.has(`${DIVE_LOG_LOG_PREFIX}${dropDive.log.id}`), false);
   assert.equal(await diveLog.loadFingerprint('D5', pstore), null); // markers cleared
   assert.equal(await loadLog(keepDive.log.id, pstore) != null, true); // live data untouched
+  await assertIntegrity(pstore, 'purge deleted');
 
   // REGRESSION: purgeDeleted must NOT hard-remove a log that a merge moved onto a
   // live dive. (Symptom: a "Recorded by 2 computers" dive lost one computer's
@@ -882,12 +899,39 @@ function memoryStorage(seed = {}) {
   assert.equal(mpLogs.length, 2, `merged dive should keep both logs after purge, got ${mpLogs.length}`);
   assert.deepEqual(mpLogs.map((l) => l.device.vendor).sort(), ['Shearwater', 'Suunto']);
   assert.equal((await loadIndex(mpStore)).filter((r) => !r.deletedAt).length, 1);
+  await assertIntegrity(mpStore, 'merge then purge');
+
+  // Integrity checker reports drift; repair fixes mechanical relationship and
+  // projection problems without touching healthy live logs.
+  const badStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const badLive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'BAD-live' }), badStore);
+  const badDead = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'BAD-dead', vendor: 'Suunto', product: 'D5', serial: 'dead' }), badStore);
+  const badLiveRaw = JSON.parse(await badStore.getItem(`${DIVE_LOG_DIVE_PREFIX}${badLive.dive.id}`));
+  badLiveRaw.logIds.push('missing-log');
+  await badStore.setItem(`${DIVE_LOG_DIVE_PREFIX}${badLive.dive.id}`, JSON.stringify(badLiveRaw));
+  const badDeadRaw = JSON.parse(await badStore.getItem(`${DIVE_LOG_DIVE_PREFIX}${badDead.dive.id}`));
+  badDeadRaw.deletedAt = '2026-09-03T00:00:00.000Z';
+  await badStore.setItem(`${DIVE_LOG_DIVE_PREFIX}${badDead.dive.id}`, JSON.stringify(badDeadRaw));
+  const badIndex = await loadIndex(badStore);
+  badIndex[0] = { ...badIndex[0], logCount: 99, deviceKeys: ['ghost'], computerKeys: ['ghost'] };
+  badIndex.push({ id: 'missing-dive', logCount: 0, deviceKeys: [], computerKeys: [] });
+  await badStore.setItem(DIVE_LOG_INDEX_KEY, JSON.stringify(badIndex));
+  const unhealthy = await checkLogbookIntegrity(badStore);
+  assert.equal(unhealthy.ok, false);
+  assert.ok(unhealthy.problems.some((p) => p.code === 'DANGLING_DIVE_LOG'));
+  assert.ok(unhealthy.problems.some((p) => p.code === 'DELETED_DIVE_HAS_LOGS'));
+  assert.ok(unhealthy.problems.some((p) => p.code === 'INDEX_WITHOUT_DIVE'));
+  const repaired = await repairLogbook(badStore);
+  assert.equal(repaired.ok, true, JSON.stringify(repaired.problems));
+  assert.ok(repaired.actions.some((a) => a.code === 'REBUILT_INDEX'));
+  await assertIntegrity(badStore, 'integrity repair');
 
   await clearAll(store);
   // clearAll leaves an empty v2 index marker so migrateToV2 won't rebuild from v1
   assert.deepEqual(await loadIndex(store), []);
   assert.equal(await isMigratedToV2(store), true);
   assert.equal(store._map.has('@dmz-scuba/dive-log/index-v1'), false);
+  await assertIntegrity(store, 'clear all');
 
   // ---- migration v1 -> v2 ----
   const v1Manual = { schemaVersion: 1, id: 'm1', createdAt: '2026-01-01T00:00:00Z', deletedAt: null, source: 'manual', startTime: '2026-01-01T10:00:00Z', durationSeconds: 1800, site: { name: 'Quarry' }, water: { maxDepthMeters: 12 }, gas: { mixes: [{ o2: 0.21, he: 0, label: 'Air' }], tanks: [] }, profile: { samples: [], events: [] } };
@@ -919,6 +963,7 @@ function memoryStorage(seed = {}) {
   assert.equal(migLog.profile.samples.length, 2);
   // v1 keys left in place as a backup
   assert.equal(mstore._map.has('@dmz-scuba/dive-log/entry-v1/c1'), true);
+  await assertIntegrity(mstore, 'v1 migration');
 
   // ---------------------------------------------------------------------------
   // wiring / source structure
@@ -965,7 +1010,10 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /purgeDeleted/);
   assert.match(hook, /eraseAllDiveData/);
   assert.match(hook, /const dumpDiagnostic = useCallback/);
+  assert.match(hook, /checkLogbookIntegrity/);
+  assert.match(hook, /repairLogbook/);
   assert.match(screen, /Share\.share/);
+  assert.match(screen, /Run health check/);
 
   // "All dives" — a unified list of the reconciled dives, alongside the
   // per-computer folders.

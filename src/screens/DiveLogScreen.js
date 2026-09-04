@@ -435,7 +435,7 @@ function TrendArrow({ slope, goodDirection = 'down' }) {
   );
 }
 
-function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic }) {
+function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic, onHealthCheck }) {
   if (!trends.diveCount && !deletedCount) {
     return <Text style={styles.muted}>Log or download a few dives to see your trends.</Text>;
   }
@@ -512,6 +512,9 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
         </Text>
         <Pressable onPress={onDiagnostic} hitSlop={8} style={styles.reviewSkip}>
           <Text style={styles.reviewSkipText}>Share logbook diagnostic (dev)</Text>
+        </Pressable>
+        <Pressable onPress={onHealthCheck} hitSlop={8} style={styles.reviewSkip}>
+          <Text style={styles.reviewSkipText}>Run health check</Text>
         </Pressable>
         <Pressable onPress={onEraseAll} hitSlop={8} style={styles.reviewSkip}>
           <Text style={[styles.reviewSkipText, { color: colors.danger }]}>Erase the entire logbook (dev)</Text>
@@ -1071,6 +1074,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
+    runHealthCheck, repairHealthProblems,
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
 
@@ -1485,6 +1489,28 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
                 await Share.share({ message: text });
               } catch (e) {
                 Alert.alert('Diagnostic failed', e?.message || 'Could not build the report.');
+              }
+            }}
+            onHealthCheck={async () => {
+              try {
+                const result = await runHealthCheck();
+                const report = result.ok
+                  ? 'Dive logbook health check: OK\nNo relationship or index problems found.'
+                  : `Dive logbook health check: ${result.problems.length} problem(s)\n\n${result.problems.map((p) => `${p.code}${p.diveId ? ` dive=${p.diveId}` : ''}${p.logId ? ` log=${p.logId}` : ''}: ${p.detail}`).join('\n')}`;
+                await Share.share({ message: report });
+                if (!result.ok) {
+                  Alert.alert('Logbook problems found', `${result.problems.length} problem(s) found. Repair the mechanically-fixable issues now?`, [
+                    { text: 'Not now', style: 'cancel' },
+                    { text: 'Repair', onPress: async () => {
+                      const repaired = await repairHealthProblems();
+                      Alert.alert(repaired.ok ? 'Repair complete' : 'Repair incomplete', repaired.ok
+                        ? `Applied ${repaired.repaired} repair action(s).`
+                        : `${repaired.problems.length} problem(s) still need attention.`);
+                    } },
+                  ]);
+                }
+              } catch (e) {
+                Alert.alert('Health check failed', e?.message || 'Could not inspect the logbook.');
               }
             }}
             onEraseAll={() => {

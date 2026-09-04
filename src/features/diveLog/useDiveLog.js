@@ -4,6 +4,7 @@ import { createDive, normalizeDive, touchRecord } from '../../lib/diveLog/schema
 import { computeDiveLogStats } from '../../lib/diveLog/stats';
 import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
 import { reconcileLogbook } from '../../lib/diveLog/reconcileLogbook';
+import { checkLogbookIntegrity, repairLogbook } from '../../lib/diveLog/integrity';
 import {
   clearAll,
   countStoredDives,
@@ -285,6 +286,15 @@ export default function useDiveLog() {
     return rows.join('\n');
   }, [deletedCount, computerPriority]);
 
+  const runHealthCheck = useCallback(() => checkLogbookIntegrity(), []);
+
+  const repairHealthProblems = useCallback(async () => {
+    const result = await repairLogbook();
+    diveCache.current.clear();
+    await refreshIndex();
+    return result;
+  }, [refreshIndex]);
+
   /** Dev: wipe the entire dive logbook (v1 backup included). */
   const eraseAllDiveData = useCallback(async () => {
     await clearAll();
@@ -380,5 +390,7 @@ export default function useDiveLog() {
     purgeDeletedDownloads,
     eraseAllDiveData,
     dumpDiagnostic,
+    runHealthCheck,
+    repairHealthProblems,
   };
 }

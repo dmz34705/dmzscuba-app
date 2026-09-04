@@ -187,7 +187,18 @@ export async function loadMatchCandidates(reportedStartTime, { windowHours = 72 
 export async function softDeleteDive(id, storage = AsyncStorage) {
   const current = await loadDive(id, storage);
   if (!current) return null;
-  return saveDive(touchRecord({ ...current, deletedAt: new Date().toISOString() }), storage);
+  const logs = await loadLogsForDive(current, storage);
+  for (const log of logs) {
+    if (log.diveId !== id) continue;
+    // eslint-disable-next-line no-await-in-loop
+    await storage.removeItem(logKey(log.id));
+  }
+  return saveDive(touchRecord({
+    ...current,
+    logIds: [],
+    primaryLogId: null,
+    deletedAt: new Date().toISOString(),
+  }), storage);
 }
 
 /**
