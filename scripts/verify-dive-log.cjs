@@ -885,6 +885,19 @@ function memoryStorage(seed = {}) {
   assert.equal(await diveLog.loadFingerprint('D5', pstore), null); // markers cleared
   assert.equal(await loadLog(keepDive.log.id, pstore) != null, true); // live data untouched
 
+  // REGRESSION: purgeDeleted must NOT hard-remove a log that a merge moved onto a
+  // live dive. (Symptom: a "Recorded by 2 computers" dive lost one computer's
+  // log after the user purged deleted dives.)
+  const mpStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const mpShear = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MP-sh', vendor: 'Shearwater', product: 'Peregrine', serial: 'A', divetimeSeconds: 3600 }), mpStore);
+  const mpSuunto = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MP-su', vendor: 'Suunto', product: 'EON Core', serial: 'B', divetimeSeconds: 3300 }), mpStore);
+  await diveLog.mergeDives(mpShear.dive.id, [mpSuunto.dive.id], {}, mpStore);
+  await diveLog.purgeDeleted(mpStore);
+  const mpLogs = await loadLogsForDive(await loadDive(mpShear.dive.id, mpStore), mpStore);
+  assert.equal(mpLogs.length, 2, `merged dive should keep both logs after purge, got ${mpLogs.length}`);
+  assert.deepEqual(mpLogs.map((l) => l.device.vendor).sort(), ['Shearwater', 'Suunto']);
+  assert.equal((await loadIndex(mpStore)).filter((r) => !r.deletedAt).length, 1);
+
   await clearAll(store);
   // clearAll leaves an empty v2 index marker so migrateToV2 won't rebuild from v1
   assert.deepEqual(await loadIndex(store), []);

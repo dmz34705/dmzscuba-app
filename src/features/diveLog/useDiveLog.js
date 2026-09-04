@@ -260,9 +260,13 @@ export default function useDiveLog() {
     const claimed = new Set(); // dive ids already covered by a proposal or an auto-merge
     const entryById = new Map();
     for (const c of clusters) for (const e of c.entries) entryById.set(e.diveId, e);
+    // Use the EFFECTIVE start (reported clock + any correction already applied),
+    // so re-running the matcher over dives that were merged and corrected once
+    // sees them aligned (~0 offset -> auto-merge, no second correction) instead
+    // of re-detecting the original clock error and stacking another shift.
     const toReconcileEntry = (e) => ({
       id: e.diveId,
-      startMs: Date.parse(e.log.reportedStartTime || e.log.startTime),
+      startMs: Date.parse(e.log.startTime || e.log.reportedStartTime),
       durationSeconds: e.log.durationSeconds,
       maxDepthMeters: e.log.water?.maxDepthMeters || 0,
       samples: e.log.profile?.samples || [],

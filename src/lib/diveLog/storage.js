@@ -252,8 +252,12 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
       await saveLog({ ...log, diveId: keepDiveId }, storage);
       logIds.add(lid);
     }
+    // Drop the moved logs from the absorbed dive BEFORE soft-deleting it, so a
+    // later purgeDeleted doesn't hard-remove logs that now live on `keep`.
     // eslint-disable-next-line no-await-in-loop
-    await softDeleteDive(fromId, storage);
+    await saveDive(touchRecord({
+      ...from, logIds: [], primaryLogId: null, deletedAt: new Date().toISOString(),
+    }), storage);
   }
 
   // Apply the clock correction to every log on the merged dive from the wrong
@@ -492,11 +496,18 @@ export async function clearAll(storage = AsyncStorage) {
 export async function purgeDeleted(storage = AsyncStorage) {
   const index = await loadIndex(storage);
   const dead = index.filter((row) => row.deletedAt);
+  const deadIds = new Set(dead.map((row) => row.id));
   const logKeysToDrop = [];
   for (const row of dead) {
     // eslint-disable-next-line no-await-in-loop
     const dive = await loadDive(row.id, storage);
-    for (const lid of dive?.logIds || []) logKeysToDrop.push(logKey(lid));
+    for (const lid of dive?.logIds || []) {
+      // eslint-disable-next-line no-await-in-loop
+      const log = await loadLog(lid, storage);
+      // Only drop a log if it still belongs to a dead dive — a merge may have
+      // reassigned it to a live dive without clearing this stale logIds entry.
+      if (!log || deadIds.has(log.diveId) || !log.diveId) logKeysToDrop.push(logKey(lid));
+    }
   }
   await removeKeys([
     ...dead.map((row) => diveKey(row.id)),
