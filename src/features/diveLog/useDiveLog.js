@@ -1,12 +1,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { createDive, deviceKeyOf, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
+import { createDive, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
 import { computeDiveLogStats } from '../../lib/diveLog/stats';
 import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
-import { reconcileComputers, sameComputer } from '../../lib/diveLog/matchDives';
+import { reconcileLogbook } from '../../lib/diveLog/reconcileLogbook';
 import {
   clearAll,
-  consolidateSameDeviceLogs,
   countStoredDives,
   createDivesFromLogs,
   isMigratedToV2,
@@ -233,123 +232,13 @@ export default function useDiveLog() {
   /** Re-run the matcher across the whole book (recovers dives split before the
    *  matcher improved). Populates pendingProposals; nothing is written yet. */
   const recheckDuplicates = useCallback(async () => {
-    // Refresh the index from the actual dive/log records first: a stale row
-    // (e.g. computerKeys naming a log that no longer exists) would otherwise
-    // mislead both this pass and the download de-dup.
-    await rebuildIndex().catch(() => {});
-    let dives = (await loadAll()).filter((d) => !d.deletedAt);
-    // First: fuse any dive that already has several logs from one computer
-    // (e.g. a split dive merged before fragment-fusing existed).
-    let fused = 0;
-    for (const d of dives) {
-      const keys = new Set();
-      let dup = false;
-      // eslint-disable-next-line no-await-in-loop
-      for (const l of await loadLogsForDive(d)) {
-        if (l.deviceKey && keys.has(l.deviceKey)) dup = true;
-        if (l.deviceKey) keys.add(l.deviceKey);
-      }
-      if (dup) {
-        // eslint-disable-next-line no-await-in-loop
-        await consolidateSameDeviceLogs(d.id);
-        diveCache.current.delete(d.id);
-        fused += 1;
-      }
+    const result = await reconcileLogbook();
+    setPendingProposals(result.proposals);
+    if (result.fused || result.autoMerged) {
+      diveCache.current.clear();
+      await refreshIndex();
     }
-    if (fused) dives = (await loadAll()).filter((d) => !d.deletedAt);
-
-    const bundles = [];
-    for (const d of dives) {
-      // eslint-disable-next-line no-await-in-loop
-      bundles.push({ dive: d, logs: await loadLogsForDive(d) });
-    }
-
-    // Only dives that still carry logs from exactly one computer can be
-    // reconciled — already-merged dives are done.
-    const clusters = []; // { device, entries: [{ diveId, dive, log }] }
-    for (const b of bundles) {
-      if (!b.logs.length) continue;
-      const keys = new Set(b.logs.map((l) => l.deviceKey).filter(Boolean));
-      if (keys.size !== 1) continue;
-      const log = b.logs.find((l) => l.id === b.dive.primaryLogId) || b.logs[0];
-      let cluster = clusters.find((c) => sameComputer(c.device, log.device));
-      if (!cluster) { cluster = { device: log.device, entries: [] }; clusters.push(cluster); }
-      cluster.entries.push({ diveId: b.dive.id, dive: b.dive, log });
-    }
-
-    const proposals = [];
-    let autoMerged = 0;
-    const claimed = new Set(); // dive ids already covered by a proposal or an auto-merge
-    const entryById = new Map();
-    for (const c of clusters) for (const e of c.entries) entryById.set(e.diveId, e);
-    // Use the EFFECTIVE start (reported clock + any correction already applied),
-    // so re-running the matcher over dives that were merged and corrected once
-    // sees them aligned (~0 offset -> auto-merge, no second correction) instead
-    // of re-detecting the original clock error and stacking another shift.
-    const toReconcileEntry = (e) => ({
-      id: e.diveId,
-      startMs: Date.parse(e.log.startTime || e.log.reportedStartTime),
-      durationSeconds: e.log.durationSeconds,
-      maxDepthMeters: e.log.water?.maxDepthMeters || 0,
-      samples: e.log.profile?.samples || [],
-    });
-
-    for (let x = 0; x < clusters.length; x += 1) {
-      for (let y = x + 1; y < clusters.length; y += 1) {
-        const cA = clusters[x];
-        const cB = clusters[y];
-        const rec = reconcileComputers(cA.entries.map(toReconcileEntry), cB.entries.map(toReconcileEntry));
-        if (!rec || !rec.groups.length) continue;
-
-        const merges = [];
-        for (const g of rec.groups) {
-          const ids = [...g.aIds, ...g.bIds].filter((id) => !claimed.has(id) && entryById.has(id));
-          if (ids.length < 2) continue;
-          const members = ids.map((id) => entryById.get(id))
-            .sort((p, q) => (q.log.durationSeconds || 0) - (p.log.durationSeconds || 0));
-          merges.push({ keepId: members[0].diveId, absorbIds: members.slice(1).map((m) => m.diveId) });
-          ids.forEach((id) => claimed.add(id));
-        }
-        if (!merges.length) continue;
-
-        const nameOf = (dev) => `${dev.vendor} ${dev.product}`.trim() || 'Dive computer';
-        const dates = rec.groups.flatMap((g) => [...g.aIds, ...g.bIds])
-          .map((id) => entryById.get(id)?.dive.startTime).filter(Boolean).sort();
-        const clocksAgree = Math.abs(rec.offsetMinutes) < 1;
-
-        // Confident + clocks agree -> just merge, no decision to make.
-        if (rec.confidence === 'high' && clocksAgree) {
-          for (const mg of merges) {
-            // eslint-disable-next-line no-await-in-loop
-            await mergeDives(mg.keepId, mg.absorbIds, {});
-            [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
-          }
-          autoMerged += merges.length;
-          continue;
-        }
-
-        // Clocks disagree, or low confidence -> ask.
-        proposals.push({
-          id: `reconcile:${deviceKeyOf(cA.device)}::${deviceKeyOf(cB.device)}`,
-          kind: 'reconcile',
-          deviceNameA: nameOf(cA.device),
-          deviceKeyA: deviceKeyOf(cA.device),
-          deviceNameB: nameOf(cB.device),
-          deviceKeyB: deviceKeyOf(cB.device),
-          offsetMinutes: rec.offsetMinutes, // add to B's clock to match A
-          cleanOffset: rec.cleanOffset,
-          confidence: rec.confidence,
-          anchors: rec.anchors,
-          sharedDiveCount: merges.length,
-          firstDate: dates[0] || '',
-          lastDate: dates[dates.length - 1] || '',
-          merges,
-        });
-      }
-    }
-    setPendingProposals(proposals);
-    if (fused || autoMerged) await refreshIndex();
-    return { proposals: proposals.length, fused, autoMerged };
+    return { ...result, proposals: result.proposals.length };
   }, [refreshIndex]);
 
   /** Dev: hard-delete soft-deleted dives + their logs + fingerprint markers. */

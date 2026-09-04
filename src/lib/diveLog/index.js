@@ -4,6 +4,7 @@ export * from './schema';
 export * from './logAnalytics';
 export * from './diveTrends';
 export * from './matchDives';
+export * from './reconcileLogbook';
 export * from './validation';
 export * from './storage';
 export * from './stats';

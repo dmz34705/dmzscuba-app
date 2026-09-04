@@ -792,24 +792,9 @@ function memoryStorage(seed = {}) {
   }, rstore);
   assert.equal((await loadIndex(rstore)).filter((r) => !r.deletedAt).length, 3); // inflated
 
-  // recheck logic (mirrors useDiveLog.recheckDuplicates)
-  const rdives = await loadAll(rstore);
-  const rbundles = [];
-  for (const d of rdives) rbundles.push({ dive: d, logs: await loadLogsForDive(d, rstore) });
-  const folded = new Set();
-  for (const b of rbundles) {
-    if (folded.has(b.dive.id)) continue;
-    const primary = b.logs[0];
-    const others = rbundles.filter((x) => x.dive.id !== b.dive.id && !folded.has(x.dive.id));
-    const { bestMatch: mm } = findMatch(primary, others);
-    if (!mm || mm.verdict === 'none') continue;
-    const isSpanning = mm.kind === 'spanning-merge';
-    const keepId = isSpanning ? b.dive.id : (mm.diveIds || [mm.diveId])[0];
-    const foldIds = isSpanning ? mm.diveIds : [b.dive.id];
-    // eslint-disable-next-line no-await-in-loop
-    await diveLog.mergeDives(keepId, foldIds, {}, rstore);
-    foldIds.forEach((id) => folded.add(id));
-  }
+  // Run the same pure reconciliation pass used by the React hook.
+  const reconcileResult = await diveLog.reconcileLogbook(rstore);
+  assert.equal(reconcileResult.autoMerged, 1);
   const finalRows = (await loadIndex(rstore)).filter((r) => !r.deletedAt);
   assert.equal(finalRows.length, 1, `expected 1 dive after recovery, got ${finalRows.length}`);
   assert.equal(finalRows[0].id, shDive.dive.id); // the long Shearwater dive is canonical
@@ -975,7 +960,7 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /countStoredDives/);
   assert.match(hook, /resolveProposal/);
   assert.match(hook, /recheckDuplicates/);
-  assert.match(hook, /reconcileComputers/);
+  assert.match(hook, /reconcileLogbook/);
   assert.match(hook, /mergeDives/);
   assert.match(hook, /purgeDeleted/);
   assert.match(hook, /eraseAllDiveData/);
