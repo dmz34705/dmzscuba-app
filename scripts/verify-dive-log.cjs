@@ -966,6 +966,8 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /mergeDives/);
   assert.match(hook, /purgeDeleted/);
   assert.match(hook, /eraseAllDiveData/);
+  assert.match(hook, /const dumpDiagnostic = useCallback/);
+  assert.match(screen, /Share\.share/);
   assert.match(screen, /ReconcileCard/);
   assert.match(screen, /kind === 'reconcile'/);
   assert.match(hook, /const deleteDives = useCallback/);

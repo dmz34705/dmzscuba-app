@@ -4,6 +4,7 @@ import {
   Keyboard,
   Pressable,
   ScrollView,
+  Share,
   StyleSheet,
   Text,
   TextInput,
@@ -434,7 +435,7 @@ function TrendArrow({ slope, goodDirection = 'down' }) {
   );
 }
 
-function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll }) {
+function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic }) {
   if (!trends.diveCount && !deletedCount) {
     return <Text style={styles.muted}>Log or download a few dives to see your trends.</Text>;
   }
@@ -509,6 +510,9 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
           the matcher can re-import them). Purge removes them for good and clears the
           per-computer sync markers.
         </Text>
+        <Pressable onPress={onDiagnostic} hitSlop={8} style={styles.reviewSkip}>
+          <Text style={styles.reviewSkipText}>Share logbook diagnostic (dev)</Text>
+        </Pressable>
         <Pressable onPress={onEraseAll} hitSlop={8} style={styles.reviewSkip}>
           <Text style={[styles.reviewSkipText, { color: colors.danger }]}>Erase the entire logbook (dev)</Text>
         </Pressable>
@@ -1066,7 +1070,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
-    recheckDuplicates, mergeDivesManual, purgeDeletedDownloads, eraseAllDiveData,
+    recheckDuplicates, mergeDivesManual, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
 
@@ -1465,6 +1469,14 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
                   { text: 'Purge', style: 'destructive', onPress: async () => { const n = await purgeDeletedDownloads(); Alert.alert('Purged', `Removed ${n} ${n === 1 ? 'dive' : 'dives'}.`); } },
                 ],
               );
+            }}
+            onDiagnostic={async () => {
+              try {
+                const text = await dumpDiagnostic();
+                await Share.share({ message: text });
+              } catch (e) {
+                Alert.alert('Diagnostic failed', e?.message || 'Could not build the report.');
+              }
             }}
             onEraseAll={() => {
               Alert.alert(

@@ -334,6 +334,42 @@ export default function useDiveLog() {
     return n;
   }, [refreshIndex]);
 
+  /**
+   * Dev: a plain-text dump of every dive + its attached logs, so a broken
+   * "Recorded by" / split-merge state can be inspected off-device. Recent and
+   * multi-log and deleted dives only — keeps it short for a big logbook.
+   */
+  const dumpDiagnostic = useCallback(async () => {
+    const all = await loadAll();
+    const cutoff = Date.now() - 28 * 24 * 3600 * 1000;
+    const recent = (iso) => { const t = Date.parse(iso || ''); return Number.isFinite(t) && t >= cutoff; };
+    const rows = [];
+    const sorted = [...all].sort((a, b) => String(a.startTime || a.createdAt).localeCompare(String(b.startTime || b.createdAt)));
+    for (const d of sorted) {
+      const logs = await loadLogsForDive(d); // eslint-disable-line no-await-in-loop
+      const keep = d.deletedAt || logs.length > 1 || recent(d.startTime)
+        || logs.some((l) => recent(l.reportedStartTime));
+      if (!keep) continue;
+      rows.push(
+        `DIVE ${(d.startTime || '?').slice(0, 16)}  src=${d.source}`
+        + `${d.deletedAt ? '  [DELETED]' : ''}  logs=${d.logIds.length}`,
+      );
+      for (const l of logs) {
+        const dev = `${l.device?.vendor || '∅'}/${l.device?.product || '∅'}/${l.device?.serial || '–'}`;
+        rows.push(
+          `   · ${dev}  dur=${Math.round((l.durationSeconds || 0) / 60)}m`
+          + `  samp=${l.profile?.samples?.length || 0}  fused=${l.fusedFrom || 1}`
+          + `  corr=${l.timeCorrectionMinutes || 0}m`
+          + `  reported=${(l.reportedStartTime || '?').slice(0, 16)}`
+          + `  fp=${String(l.fingerprint || '').slice(0, 6)}`
+          + `${l.id === d.primaryLogId ? '  ←primary' : ''}`,
+        );
+      }
+    }
+    rows.push(`— ${sorted.length} dives total, ${deletedCount} deleted, priority=[${computerPriority.join(', ') || 'none'}]`);
+    return rows.join('\n');
+  }, [deletedCount, computerPriority]);
+
   /** Dev: wipe the entire dive logbook (v1 backup included). */
   const eraseAllDiveData = useCallback(async () => {
     await clearAll();
@@ -428,5 +464,6 @@ export default function useDiveLog() {
     mergeDivesManual,
     purgeDeletedDownloads,
     eraseAllDiveData,
+    dumpDiagnostic,
   };
 }
