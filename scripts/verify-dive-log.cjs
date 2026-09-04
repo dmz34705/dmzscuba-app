@@ -84,6 +84,7 @@ const {
   clearAll,
   checkLogbookIntegrity,
   repairLogbook,
+  refreshIndexRows,
   DIVE_LOG_INDEX_KEY,
   DIVE_LOG_DIVE_PREFIX,
   DIVE_LOG_LOG_PREFIX,
@@ -717,6 +718,15 @@ function memoryStorage(seed = {}) {
   assert.equal(cRow.logCount, 1);
   assert.deepEqual(cRow.deviceKeys, ['Shearwater|Peregrine TX|12345']);
   assert.deepEqual(cRow.computerKeys, ['Shearwater|Peregrine TX|FP-A']);
+  const staleRows = await loadIndex(store);
+  const staleAt = staleRows.findIndex((row) => row.id === cDive.id);
+  staleRows[staleAt] = { ...staleRows[staleAt], logCount: 88, deviceKeys: ['stale'], computerKeys: ['stale'] };
+  await store.setItem(DIVE_LOG_INDEX_KEY, JSON.stringify(staleRows));
+  await refreshIndexRows([cDive.id], store);
+  const refreshedRow = (await loadIndex(store)).find((row) => row.id === cDive.id);
+  assert.equal(refreshedRow.logCount, 1);
+  assert.deepEqual(refreshedRow.deviceKeys, ['Shearwater|Peregrine TX|12345']);
+  assert.deepEqual(refreshedRow.computerKeys, ['Shearwater|Peregrine TX|FP-A']);
   await assertIntegrity(store, 'computer import');
 
   // attach a SECOND computer's log to the same dive (what B6/B7 will do)

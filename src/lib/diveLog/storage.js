@@ -81,10 +81,10 @@ export function indexRowFromDive(dive, logs = []) {
     gasLabel: dive.gas?.mixes?.[0]?.label || '',
     logCount: attachedLogs.length,
     deviceKeys: [...new Set(attachedLogs.map((l) => l.deviceKey).filter(Boolean))],
-    computerKeys: attachedLogs.flatMap((l) => {
+    computerKeys: [...new Set(attachedLogs.flatMap((l) => {
       const fps = [l.fingerprint, ...(l.mergedFingerprints || [])].filter(Boolean);
       return fps.map((fp) => computerDiveKeyOf(l.device, fp)).filter(Boolean);
-    }),
+    }))],
     primaryDevice: primary ? { ...primary.device } : null,
     // primary-log analytics summary for the trends view (avoids loading every log)
     safetyScore: a && a.safetyScore != null ? a.safetyScore : null,
@@ -103,11 +103,23 @@ async function writeIndex(rows, storage) {
   await storage.setItem(DIVE_LOG_INDEX_KEY, JSON.stringify(rows));
 }
 
-async function upsertIndexRow(row, storage) {
+/** Recompute selected index rows exclusively from their Dive + attached logs. */
+export async function refreshIndexRows(diveIds, storage = AsyncStorage) {
+  const ids = [...new Set((Array.isArray(diveIds) ? diveIds : [diveIds]).filter(Boolean))];
+  if (!ids.length) return loadIndex(storage);
   const index = await loadIndex(storage);
-  const next = index.filter((existing) => existing.id !== row.id);
-  next.push(row);
+  const touched = new Set(ids);
+  const next = index.filter((existing) => !touched.has(existing.id));
+  for (const id of ids) {
+    // eslint-disable-next-line no-await-in-loop
+    const dive = await loadDive(id, storage);
+    if (!dive) continue;
+    // eslint-disable-next-line no-await-in-loop
+    const logs = await loadLogsForDive(dive, storage);
+    next.push(indexRowFromDive(dive, logs));
+  }
   await writeIndex(next, storage);
+  return next;
 }
 
 // ---------------------------------------------------------------------------
@@ -146,8 +158,7 @@ export async function loadDive(id, storage = AsyncStorage) {
 export async function saveDive(dive, storage = AsyncStorage) {
   const normalized = normalizeDive(dive);
   await storage.setItem(diveKey(normalized.id), JSON.stringify(normalized));
-  const logs = await loadLogsForDive(normalized, storage);
-  await upsertIndexRow(indexRowFromDive(normalized, logs), storage);
+  await refreshIndexRows([normalized.id], storage);
   return normalized;
 }
 
@@ -219,7 +230,6 @@ export async function createDiveFromLog(logPartial, storage = AsyncStorage) {
 export async function createDivesFromLogs(logPartials, storage = AsyncStorage) {
   const list = Array.isArray(logPartials) ? logPartials : [];
   if (!list.length) return [];
-  const index = await loadIndex(storage);
   const created = [];
   for (const partial of list) {
     const log = createComputerLog(partial);
@@ -233,10 +243,9 @@ export async function createDivesFromLogs(logPartials, storage = AsyncStorage) {
     await storage.setItem(logKey(linkedLog.id), JSON.stringify(linkedLog));
     // eslint-disable-next-line no-await-in-loop
     await storage.setItem(diveKey(normDive.id), JSON.stringify(normDive));
-    index.push(indexRowFromDive(normDive, [linkedLog]));
     created.push({ dive: normDive, log: linkedLog });
   }
-  await writeIndex(index, storage);
+  await refreshIndexRows(created.map(({ dive }) => dive.id), storage);
   return created;
 }
 
@@ -297,7 +306,9 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
     || null;
   if (primary) next = surfaceLogOntoDive({ ...next, primaryLogId: primary.id }, primary);
   await saveDive(next, storage);
-  return consolidateSameDeviceLogs(keepDiveId, storage);
+  const consolidated = await consolidateSameDeviceLogs(keepDiveId, storage);
+  await refreshIndexRows([keepDiveId, ...fromDiveIds], storage);
+  return consolidated;
 }
 
 /**
@@ -330,14 +341,19 @@ export async function consolidateSameDeviceLogs(diveId, storage = AsyncStorage) 
     if (!keptIds.includes(fused.id)) keptIds.push(fused.id); // fuse may have minted a new id
     changed = true;
   }
-  if (!changed) return dive;
+  if (!changed) {
+    await refreshIndexRows([diveId], storage);
+    return dive;
+  }
   let next = normalizeDive({ ...dive, logIds: keptIds });
   const freshLogs = await loadLogsForDive(next, storage);
   const primary = freshLogs.find((l) => l.id === next.primaryLogId)
     || freshLogs.slice().sort((a, b) => (b.durationSeconds || 0) - (a.durationSeconds || 0))[0]
     || null;
   if (primary) next = surfaceLogOntoDive({ ...next, primaryLogId: primary.id }, primary);
-  return saveDive(next, storage);
+  const saved = await saveDive(next, storage);
+  await refreshIndexRows([diveId], storage);
+  return saved;
 }
 
 /** Attach an already-created ComputerLog to an existing Dive. */
@@ -351,6 +367,7 @@ export async function attachLogToDive(diveId, logPartial, { makePrimary = false 
   if (primaryLogId === log.id) next = surfaceLogOntoDive(next, log);
   await saveDive({ ...next, logIds, primaryLogId }, storage);
   const consolidated = await consolidateSameDeviceLogs(diveId, storage);
+  await refreshIndexRows([diveId], storage);
   return { dive: consolidated, log };
 }
 
@@ -524,12 +541,12 @@ export async function purgeDeleted(storage = AsyncStorage) {
     ...dead.map((row) => diveKey(row.id)),
     ...logKeysToDrop,
   ], storage);
-  await writeIndex(index.filter((row) => !row.deletedAt), storage);
-
   // fingerprint markers are keyed by BLE name, not dive — clear them all so a
   // re-download of a purged dive isn't skipped.
   const allKeys = (await storage.getAllKeys()) || [];
   await removeKeys(allKeys.filter((k) => k.startsWith(DIVE_LOG_FINGERPRINT_PREFIX)), storage);
+
+  await rebuildIndex(storage);
 
   return dead.length;
 }
@@ -559,8 +576,6 @@ export async function migrateToV2(storage = AsyncStorage) {
   if (await isMigratedToV2(storage)) return { migrated: 0, alreadyDone: true };
 
   const entries = await loadV1Entries(storage);
-  const indexRows = [];
-
   for (const entry of entries) {
     const isComputer = entry.source === 'computer' && entry.device;
     const diveBase = createDive({
@@ -588,7 +603,6 @@ export async function migrateToV2(storage = AsyncStorage) {
       tags: entry.tags,
     });
 
-    let logs = [];
     if (isComputer) {
       const log = await saveLog(createComputerLog({
         diveId: entry.id,
@@ -610,16 +624,14 @@ export async function migrateToV2(storage = AsyncStorage) {
         decoModel: entry.decoModel,
         profile: entry.profile,
       }), storage); // eslint-disable-line no-await-in-loop
-      logs = [log];
       diveBase.logIds = [log.id];
       diveBase.primaryLogId = log.id;
     }
 
     const dive = normalizeDive(diveBase);
     await storage.setItem(diveKey(dive.id), JSON.stringify(dive)); // eslint-disable-line no-await-in-loop
-    indexRows.push(indexRowFromDive(dive, logs));
   }
 
-  await writeIndex(indexRows, storage);
+  await rebuildIndex(storage);
   return { migrated: entries.length, alreadyDone: false };
 }
