@@ -981,6 +981,15 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /eraseAllDiveData/);
   assert.match(hook, /const dumpDiagnostic = useCallback/);
   assert.match(screen, /Share\.share/);
+
+  // "All dives" — a unified list of the reconciled dives, alongside the
+  // per-computer folders.
+  assert.match(hook, /export const ALL_DIVES_KEY/);
+  assert.match(hook, /kind: 'all'/);
+  assert.match(screen, /ALL_DIVES_KEY/);
+  assert.match(screen, /YOUR DIVES/);
+  assert.match(screen, /BY COMPUTER/);
+  assert.match(screen, /f\.kind === 'all'/);
   assert.match(screen, /ReconcileCard/);
   assert.match(screen, /kind === 'reconcile'/);
   assert.match(hook, /const deleteDives = useCallback/);

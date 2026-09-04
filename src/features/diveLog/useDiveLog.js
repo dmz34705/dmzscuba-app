@@ -27,6 +27,7 @@ import {
 } from '../../lib/diveLog/storage';
 
 export const MANUAL_FOLDER_KEY = '__manual__';
+export const ALL_DIVES_KEY = '__all__';
 
 // Groups index rows into one folder per physical dive computer (model + serial),
 // plus one folder for hand-entered dives. A dive with logs from two computers
@@ -74,7 +75,24 @@ function buildFolders(rows, priority = []) {
     if (ra !== rb) return ra - rb;
     return String(b.lastDiveDate).localeCompare(String(a.lastDiveDate));
   });
-  return folders;
+
+  // Virtual "All dives" folder: every reconciled dive, counted once, whatever
+  // recorded it. This is the actual logbook; the per-computer folders are a
+  // by-device breakdown of the same dives.
+  const allDates = rows.map((r) => r.startTime).filter(Boolean).sort();
+  const allFolder = {
+    key: ALL_DIVES_KEY,
+    kind: 'all',
+    vendor: '', product: '', serial: '',
+    rows: [...rows],
+    label: 'All dives',
+    sublabel: '',
+    count: rows.length,
+    lastDiveDate: allDates[allDates.length - 1] || '',
+    deepestMeters: rows.reduce((max, r) => Math.max(max, r.maxDepthMeters || 0), 0),
+    rank: null,
+  };
+  return [allFolder, ...folders];
 }
 
 function sortRows(rows) {

@@ -17,7 +17,7 @@ import Svg, { Line, Path, Text as SvgText } from 'react-native-svg';
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { FormError } from '../components/AccountForm';
 import { Card, PrimaryButton, SecondaryButton, Stat } from '../components/Ui';
-import useDiveLog from '../features/diveLog/useDiveLog';
+import useDiveLog, { ALL_DIVES_KEY } from '../features/diveLog/useDiveLog';
 import { NUMBER_KEYBOARD_ACCESSORY_ID, usesNumberKeyboard } from '../lib/numberKeyboard';
 import {
   DIVE_MODES,
@@ -567,7 +567,7 @@ function FolderCard({ folder, onPress, onSetRank }) {
     ]);
   };
   return (
-    <Card style={styles.diveCard}>
+    <Card style={[styles.diveCard, folder.kind === 'all' && styles.diveCardAll]}>
       <View style={styles.folderTopRow}>
         <SecondaryButton label={folder.label} onPress={onPress} style={[styles.diveCardButton, styles.folderNameButton]} />
         {showRank ? (
@@ -1355,11 +1355,13 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
 
         {view === 'list' && (
           <>
-            <SectionLabel>{activeFolder ? 'DIVES' : 'DIVE HISTORY'}</SectionLabel>
+            {!showFolderGrid ? (
+              <SectionLabel>{activeFolder ? 'DIVES' : 'DIVE HISTORY'}</SectionLabel>
+            ) : null}
             <Text style={styles.title}>
               {activeFolder
                 ? (activeFolder.sublabel ? `${activeFolder.label} · ${activeFolder.sublabel}` : activeFolder.label)
-                : showFolderGrid ? 'Your dive computers.' : 'Every dive, on this device.'}
+                : showFolderGrid ? 'Your logbook.' : 'Every dive, on this device.'}
             </Text>
             {!activeFolder ? (
               <Text style={styles.subtitle}>
@@ -1374,7 +1376,14 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
             ) : showFolderGrid ? (
               <>
                 <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} />
-                {folders.map((folder) => (
+
+                <View style={styles.gridSection}><SectionLabel>YOUR DIVES</SectionLabel></View>
+                {folders.filter((f) => f.kind === 'all').map((folder) => (
+                  <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
+                ))}
+
+                <View style={styles.gridSection}><SectionLabel>BY COMPUTER</SectionLabel></View>
+                {folders.filter((f) => f.kind !== 'all').map((folder) => (
                   <FolderCard
                     key={folder.key}
                     folder={folder}
@@ -1556,7 +1565,9 @@ const styles = StyleSheet.create({
   trendFlat: { color: colors.faint, fontSize: 12, fontWeight: '700' },
 
   diveCard: { padding: 12 },
+  diveCardAll: { borderColor: colors.cyan, borderWidth: 1 },
   diveCardSelected: { borderColor: colors.cyan },
+  gridSection: { marginTop: 6 },
   diveCardButton: { alignItems: 'flex-start', minHeight: 40, paddingVertical: 9 },
   diveCardMeta: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
   diveCardMetaText: { color: colors.muted, fontSize: 12, fontWeight: '700' },
