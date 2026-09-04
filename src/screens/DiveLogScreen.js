@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
   Keyboard,
@@ -55,7 +55,7 @@ import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComputerDownloadPanel';
 import useDiveComputerDownload from '../features/diveComputerDownload/useDiveComputerDownload';
-import { clearPendingReview, hasPendingReview } from '../features/diveComputerDownload/downloadReviewFlag';
+import { clearPendingReview } from '../features/diveComputerDownload/downloadReviewFlag';
 import { colors, radii, shadow, spacing } from '../theme';
 
 const DIVE_MODE_LABELS = { oc: 'Open circuit', ccr: 'Closed circuit', scr: 'Semi-closed', gauge: 'Gauge', freedive: 'Freedive' };
@@ -1071,23 +1071,29 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const [rechecking, setRechecking] = useState(false);
 
   // The dive-computer transfer runs in a module-level singleton, so it survives
-  // leaving this screen. Watch its status: when a background download settles,
-  // pull the new dives into the index and run cross-computer reconciliation.
+  // leaving this screen. Each time a download settles (here, or in the
+  // background) pull the new dives into the index and re-run cross-computer
+  // reconciliation — split-dive detection, clock-offset merges, "Recorded by".
+  // Edge-triggered: one run per settle, and again on remount if a background
+  // download finished while this screen was gone.
   const download = useDiveComputerDownload();
+  const handledDownloadRef = useRef(null);
   useEffect(() => {
-    if (!loaded) return undefined;
-    if (download.status === 'downloading' || download.status === 'connecting' || download.status === 'scanning') {
-      return undefined;
-    }
-    if (!hasPendingReview()) return undefined;
-    let active = true;
+    if (!loaded) return;
+    const s = download.status;
+    if (s !== 'done' && s !== 'error') { handledDownloadRef.current = null; return; }
+    if (handledDownloadRef.current === s) return;
+    handledDownloadRef.current = s;
     (async () => {
-      await finishImport();
-      if (!active) return;
-      await recheckDuplicates();
-      clearPendingReview();
+      try {
+        await finishImport();
+        await recheckDuplicates();
+      } catch (e) {
+        console.log('[dive-log] post-download reconcile failed:', e?.message);
+      } finally {
+        clearPendingReview();
+      }
     })();
-    return () => { active = false; };
   }, [loaded, download.status, finishImport, recheckDuplicates]);
 
   const units = useMemo(() => ({

@@ -1021,7 +1021,9 @@ function memoryStorage(seed = {}) {
   const dlConsole = read('src', 'features', 'diveComputerDownload', 'DownloadConsole.js');
   assert.match(dlConsole, /scrollToEnd/);               // console sticks to the latest line
 
-  assert.match(screen, /hasPendingReview/);             // logbook reconciles after a bg download
+  // Every download settle (live or background) re-runs reconciliation, edge-triggered.
+  assert.match(screen, /handledDownloadRef/);
+  assert.match(screen, /await recheckDuplicates\(\)/);
   assert.match(screen, /dlBanner/);                     // "downloading in background" affordance
 
   const runner = read('src', 'features', 'diveComputerDownload', 'downloadRunner.js');
