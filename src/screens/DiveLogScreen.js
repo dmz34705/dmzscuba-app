@@ -435,7 +435,7 @@ function TrendArrow({ slope, goodDirection = 'down' }) {
   );
 }
 
-function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic, onHealthCheck }) {
+function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic, onHealthCheck, onRestoreBackup }) {
   const sacUnit = units.pressureUnit;
   return (
     <>
@@ -503,15 +503,18 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
           style={styles.primaryCta}
         />
         <Text style={styles.engineNote}>
-          Deleted dives stay hidden but on the device (so a delete is reversible and
-          the matcher can re-import them). Purge removes them for good and clears the
-          per-computer sync markers.
+          Deleted dive records stay hidden until purge. Their exclusively owned
+          computer logs are removed so a fresh download can import them again. Purge
+          removes the remaining records and clears per-computer sync markers.
         </Text>
         <Pressable onPress={onDiagnostic} hitSlop={8} style={styles.reviewSkip}>
           <Text style={styles.reviewSkipText}>Share logbook diagnostic (dev)</Text>
         </Pressable>
         <Pressable onPress={onHealthCheck} hitSlop={8} style={styles.reviewSkip}>
           <Text style={styles.reviewSkipText}>Run health check</Text>
+        </Pressable>
+        <Pressable onPress={onRestoreBackup} hitSlop={8} style={styles.reviewSkip}>
+          <Text style={styles.reviewSkipText}>Restore a backup</Text>
         </Pressable>
         <Pressable onPress={onEraseAll} hitSlop={8} style={styles.reviewSkip}>
           <Text style={[styles.reviewSkipText, { color: colors.danger }]}>Erase the entire logbook (dev)</Text>
@@ -1072,6 +1075,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
+    getSnapshots, restoreBackup,
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
 
@@ -1485,7 +1489,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
             onPurge={() => {
               Alert.alert(
                 `Purge ${deletedCount} deleted ${deletedCount === 1 ? 'dive' : 'dives'}?`,
-                'Permanently removes soft-deleted dives and their computer logs, and clears the per-computer sync markers so they can be re-downloaded.',
+                'Permanently removes soft-deleted dive records and clears the per-computer sync markers so they can be re-downloaded.',
                 [
                   { text: 'Cancel', style: 'cancel' },
                   { text: 'Purge', style: 'destructive', onPress: async () => { const n = await purgeDeletedDownloads(); Alert.alert('Purged', `Removed ${n} ${n === 1 ? 'dive' : 'dives'}.`); } },
@@ -1520,6 +1524,30 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
                 }
               } catch (e) {
                 Alert.alert('Health check failed', e?.message || 'Could not inspect the logbook.');
+              }
+            }}
+            onRestoreBackup={async () => {
+              try {
+                const snapshots = await getSnapshots();
+                if (!snapshots.length) {
+                  Alert.alert('No backups yet', 'Backups are created automatically before purging or combining more than two dives.');
+                  return;
+                }
+                Alert.alert('Restore a logbook backup', 'Choose a backup. Your current logbook records will be replaced.', [
+                  ...snapshots.map((snapshot) => ({
+                    text: `${new Date(snapshot.createdAt).toLocaleString()} · ${snapshot.keyCount} keys`,
+                    onPress: () => Alert.alert('Restore this backup?', 'This replaces the current dives, logs, index, and sync metadata.', [
+                      { text: 'Cancel', style: 'cancel' },
+                      { text: 'Restore', style: 'destructive', onPress: async () => {
+                        await restoreBackup(snapshot.id);
+                        Alert.alert('Backup restored', 'The logbook was restored successfully.');
+                      } },
+                    ]),
+                  })),
+                  { text: 'Cancel', style: 'cancel' },
+                ]);
+              } catch (e) {
+                Alert.alert('Restore failed', e?.message || 'Could not restore the backup.');
               }
             }}
             onEraseAll={() => {

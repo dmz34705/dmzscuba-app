@@ -15,12 +15,14 @@ import {
   loadDive,
   loadIndex,
   loadLogsForDive,
+  listSnapshots,
   mergeDives,
   migrateToV2,
   purgeDeleted,
   recordNegativeMatchesForDives,
   rebuildIndex,
   resurfaceForPriority,
+  restoreSnapshot,
   saveComputerPriority,
   saveDeviceTimeCorrection,
   saveDive,
@@ -297,6 +299,16 @@ export default function useDiveLog() {
     return result;
   }, [refreshIndex]);
 
+  const getSnapshots = useCallback(() => listSnapshots(), []);
+
+  const restoreBackup = useCallback(async (id) => {
+    const result = await restoreSnapshot(id);
+    diveCache.current.clear();
+    setPendingProposals([]);
+    await refreshIndex();
+    return result;
+  }, [refreshIndex]);
+
   /** Dev: wipe the entire dive logbook (v1 backup included). */
   const eraseAllDiveData = useCallback(async () => {
     await clearAll();
@@ -407,5 +419,7 @@ export default function useDiveLog() {
     dumpDiagnostic,
     runHealthCheck,
     repairHealthProblems,
+    getSnapshots,
+    restoreBackup,
   };
 }

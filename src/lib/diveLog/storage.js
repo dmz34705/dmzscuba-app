@@ -36,10 +36,12 @@ export const DIVE_LOG_CORRECTIONS_KEY = '@dmz-scuba/dive-log/corrections-v1';
 export const DIVE_LOG_FINGERPRINT_PREFIX = '@dmz-scuba/dive-log/fingerprint-v1/';
 export const DIVE_LOG_PRIORITY_KEY = '@dmz-scuba/dive-log/computer-priority-v1';
 export const DIVE_LOG_NEGATIVE_MATCH_KEY = '@dmz-scuba/dive-log/negative-v1';
+export const DIVE_LOG_SNAPSHOT_PREFIX = '@dmz-scuba/dive-log/snapshot-v1/';
 
 // v1 (pre-migration) keys — read-only after migrateToV2.
 const V1_INDEX_KEY = '@dmz-scuba/dive-log/index-v1';
 const V1_ENTRY_PREFIX = '@dmz-scuba/dive-log/entry-v1/';
+let lastSnapshotMs = 0;
 
 export function diveKey(id) {
   return `${DIVE_LOG_DIVE_PREFIX}${id}`;
@@ -257,6 +259,8 @@ export async function createDivesFromLogs(logPartials, storage = AsyncStorage) {
  * `correction` = { deviceKey, offsetMinutes }.
  */
 export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } = {}, storage = AsyncStorage) {
+  const mergeIds = [...new Set([keepDiveId, ...(fromDiveIds || [])].filter(Boolean))];
+  if (mergeIds.length > 2) await snapshotLogbook(storage);
   const keep = await loadDive(keepDiveId, storage);
   if (!keep) return null;
   const logIds = new Set(keep.logIds);
@@ -566,6 +570,63 @@ export async function splitDive(diveId, { by = 'computer' } = {}, storage = Asyn
 // maintenance
 // ---------------------------------------------------------------------------
 
+function isSnapshotKey(key) {
+  return key.startsWith(DIVE_LOG_SNAPSHOT_PREFIX);
+}
+
+function isLogbookDataKey(key) {
+  return key.startsWith('@dmz-scuba/dive-log/') && !isSnapshotKey(key);
+}
+
+/** Store a raw, restorable logbook backup and retain only the newest three. */
+export async function snapshotLogbook(storage = AsyncStorage) {
+  const keys = ((await storage.getAllKeys()) || []).filter(isLogbookDataKey).sort();
+  const entries = {};
+  for (const key of keys) {
+    // eslint-disable-next-line no-await-in-loop
+    const value = await storage.getItem(key);
+    if (value != null) entries[key] = value;
+  }
+  const snapshotMs = Math.max(Date.now(), lastSnapshotMs + 1);
+  lastSnapshotMs = snapshotMs;
+  const createdAt = new Date(snapshotMs).toISOString();
+  const id = `${snapshotMs}-${Math.random().toString(36).slice(2, 10)}`;
+  const snapshot = { id, createdAt, entries };
+  await storage.setItem(`${DIVE_LOG_SNAPSHOT_PREFIX}${id}`, JSON.stringify(snapshot));
+
+  const snapshots = await listSnapshots(storage);
+  const expired = snapshots.slice(3).map((item) => `${DIVE_LOG_SNAPSHOT_PREFIX}${item.id}`);
+  await removeKeys(expired, storage);
+  return { id, createdAt, keyCount: keys.length };
+}
+
+export async function listSnapshots(storage = AsyncStorage) {
+  const keys = ((await storage.getAllKeys()) || []).filter(isSnapshotKey);
+  const snapshots = [];
+  for (const key of keys) {
+    // eslint-disable-next-line no-await-in-loop
+    const parsed = parseJson(await storage.getItem(key), null);
+    if (!parsed || typeof parsed.id !== 'string' || !parsed.entries || typeof parsed.entries !== 'object') continue;
+    snapshots.push({ id: parsed.id, createdAt: parsed.createdAt || '', keyCount: Object.keys(parsed.entries).length });
+  }
+  return snapshots.sort((a, b) => String(b.id).localeCompare(String(a.id)));
+}
+
+export async function restoreSnapshot(id, storage = AsyncStorage) {
+  const parsed = parseJson(await storage.getItem(`${DIVE_LOG_SNAPSHOT_PREFIX}${id}`), null);
+  if (!parsed || parsed.id !== id || !parsed.entries || typeof parsed.entries !== 'object') {
+    throw new Error('Logbook backup not found or invalid.');
+  }
+  const currentKeys = ((await storage.getAllKeys()) || []).filter(isLogbookDataKey);
+  await removeKeys(currentKeys, storage);
+  for (const [key, value] of Object.entries(parsed.entries)) {
+    if (!isLogbookDataKey(key) || typeof value !== 'string') continue;
+    // eslint-disable-next-line no-await-in-loop
+    await storage.setItem(key, value);
+  }
+  return { id, restored: Object.keys(parsed.entries).length };
+}
+
 /**
  * Rebuild the index by scanning storage for every dive-v2 key — NOT from the
  * current index — so it also recovers dives that were written without an index
@@ -627,6 +688,7 @@ export async function clearAll(storage = AsyncStorage) {
  * per-computer fingerprint marker. Keeps live dives. Returns how many dives went.
  */
 export async function purgeDeleted(storage = AsyncStorage) {
+  await snapshotLogbook(storage);
   const index = await loadIndex(storage);
   const dead = index.filter((row) => row.deletedAt);
   const deadIds = new Set(dead.map((row) => row.id));

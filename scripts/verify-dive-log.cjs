@@ -1020,7 +1020,35 @@ function memoryStorage(seed = {}) {
   assert.equal(pstore._map.has(`${DIVE_LOG_LOG_PREFIX}${dropDive.log.id}`), false);
   assert.equal(await diveLog.loadFingerprint('D5', pstore), null); // markers cleared
   assert.equal(await loadLog(keepDive.log.id, pstore) != null, true); // live data untouched
+  const purgeSnapshots = await diveLog.listSnapshots(pstore);
+  assert.equal(purgeSnapshots.length, 1, 'purge creates a backup first');
   await assertIntegrity(pstore, 'purge deleted');
+
+  // Restore the pre-purge raw records, then verify rolling retention keeps the
+  // newest three snapshots only.
+  await diveLog.restoreSnapshot(purgeSnapshots[0].id, pstore);
+  assert.equal((await loadIndex(pstore)).length, 2);
+  await assertIntegrity(pstore, 'snapshot restore');
+  await diveLog.snapshotLogbook(pstore);
+  await diveLog.snapshotLogbook(pstore);
+  await diveLog.snapshotLogbook(pstore);
+  assert.equal((await diveLog.listSnapshots(pstore)).length, 3);
+
+  // A merge involving more than two Dives also snapshots before changing data.
+  const snapMergeStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const snapMergeDives = [];
+  for (const [i, vendor] of ['Shearwater', 'Suunto', 'Garmin'].entries()) {
+    // eslint-disable-next-line no-await-in-loop
+    snapMergeDives.push(await createDiveFromLog({
+      device: { vendor, product: `Model ${i}`, serial: String(i) }, fingerprint: `SNAP-${i}`,
+      reportedStartTime: '2026-08-01T12:00:00.000Z', durationSeconds: 2400,
+      water: { maxDepthMeters: 25 }, profile: { samples: trapezoid(25, 2040) },
+    }, snapMergeStore));
+  }
+  await diveLog.mergeDives(snapMergeDives[0].dive.id, snapMergeDives.slice(1).map((item) => item.dive.id), {}, snapMergeStore);
+  assert.equal((await diveLog.listSnapshots(snapMergeStore)).length, 1);
+  assert.equal((await loadIndex(snapMergeStore)).filter((row) => !row.deletedAt).length, 1);
+  await assertIntegrity(snapMergeStore, 'three-dive merge snapshot');
 
   // REGRESSION: purgeDeleted must NOT hard-remove a log that a merge moved onto a
   // live dive. (Symptom: a "Recorded by 2 computers" dive lost one computer's
@@ -1149,9 +1177,12 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /repairLogbook/);
   assert.match(hook, /splitDiveRecord/);
   assert.match(hook, /recordNegativeMatchesForDives/);
+  assert.match(hook, /listSnapshots/);
+  assert.match(hook, /restoreSnapshot/);
   assert.match(screen, /Share\.share/);
   assert.match(screen, /Run health check/);
   assert.match(screen, /Split — not the same dive/);
+  assert.match(screen, /Restore a backup/);
 
   // "All dives" — a unified list of the reconciled dives, alongside the
   // per-computer folders.
