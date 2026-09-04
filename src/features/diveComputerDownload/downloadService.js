@@ -15,6 +15,7 @@ import {
   createDivesFromLogs,
   loadFingerprint,
   loadIndex,
+  rebuildIndex,
   saveFingerprint,
 } from '../../lib/diveLog/storage';
 import { computerDiveKey, computerLogFromDownload } from './computerLogFromDownload';
@@ -266,7 +267,10 @@ export async function disconnect() {
 async function loadKnownComputerKeys() {
   const set2 = new Set();
   try {
-    const rows = await loadIndex();
+    // rebuild (not just read) so `computerKeys` reflects logs that ACTUALLY
+    // exist — a dive whose log was lost must not be treated as already-synced,
+    // or its dives can never be re-downloaded.
+    const rows = await rebuildIndex();
     for (const row of rows) {
       if (row.deletedAt) continue;
       for (const key of row.computerKeys || []) set2.add(key);
@@ -282,8 +286,9 @@ async function refreshBaseline(name) {
   try {
     const marker = await loadFingerprint(name).catch(() => null);
     if (!marker) { set({ baselineKnown: false }); return; }
-    const known = await loadKnownComputerKeys();
-    set({ baselineKnown: [...known].some((k) => k.endsWith(`|${marker}`)) });
+    const rows = await loadIndex();
+    const known = rows.filter((r) => !r.deletedAt).flatMap((r) => r.computerKeys || []);
+    set({ baselineKnown: known.some((k) => k.endsWith(`|${marker}`)) });
   } catch {
     set({ baselineKnown: false });
   }

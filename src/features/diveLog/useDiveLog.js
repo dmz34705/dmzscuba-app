@@ -215,6 +215,10 @@ export default function useDiveLog() {
   /** Re-run the matcher across the whole book (recovers dives split before the
    *  matcher improved). Populates pendingProposals; nothing is written yet. */
   const recheckDuplicates = useCallback(async () => {
+    // Refresh the index from the actual dive/log records first: a stale row
+    // (e.g. computerKeys naming a log that no longer exists) would otherwise
+    // mislead both this pass and the download de-dup.
+    await rebuildIndex().catch(() => {});
     let dives = (await loadAll()).filter((d) => !d.deletedAt);
     // First: fuse any dive that already has several logs from one computer
     // (e.g. a split dive merged before fragment-fusing existed).
