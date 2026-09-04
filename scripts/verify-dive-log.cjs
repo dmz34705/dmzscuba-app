@@ -876,6 +876,102 @@ function memoryStorage(seed = {}) {
   assert.equal(finalRows[0].computerKeys.includes('Suunto|EON Core|SU27a'), true);
   assert.equal(finalRows[0].computerKeys.includes('Suunto|EON Core|SU27b'), true);
 
+  // End-to-end two-computer trip: six real dives over three days, computer B
+  // one hour fast, with one B dive split into two surface-separated fragments.
+  const runTripReconcile = async (importBFirst) => {
+    const tripStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+    const deviceA = { vendor: 'Shearwater', product: 'Perdix 2', serial: 101 };
+    const deviceB = { vendor: 'Suunto', product: 'EON Core', serial: 202 };
+    const deviceAKey = 'Shearwater|Perdix 2|101';
+    const deviceBKey = 'Suunto|EON Core|202';
+    const starts = [
+      '2026-07-10T10:00:00.000Z', '2026-07-10T14:00:00.000Z',
+      '2026-07-11T10:00:00.000Z', '2026-07-11T14:00:00.000Z',
+      '2026-07-12T10:00:00.000Z', '2026-07-12T14:00:00.000Z',
+    ];
+    const durations = [2400, 3000, 3600, 2700, 2100, 3300];
+    const depths = [18, 24, 30, 22, 16, 28];
+    const raw = (device, iso, duration, depth, fingerprint, samples = prof(duration)) => {
+      const date = new Date(iso);
+      return computerLogFromDownload({
+        ...device,
+        fingerprint,
+        datetime: {
+          year: date.getUTCFullYear(), month: date.getUTCMonth() + 1, day: date.getUTCDate(),
+          hour: date.getUTCHours(), minute: date.getUTCMinutes(), second: date.getUTCSeconds(), timezone: 0,
+        },
+        divetimeSeconds: duration,
+        maxDepthMeters: depth,
+        gasmixes: [{ oxygen: 0.21, helium: 0 }],
+        samples,
+      });
+    };
+    const logsA = starts.map((start, i) => raw(deviceA, start, durations[i], depths[i], `E2E-A-${i}`));
+    const logsB = [];
+    starts.forEach((start, i) => {
+      const fastStart = new Date(Date.parse(start) + H).toISOString();
+      if (i === 2) {
+        logsB.push(raw(deviceB, fastStart, 1500, depths[i], 'E2E-B-2a', prof(1500)));
+        logsB.push(raw(deviceB, new Date(Date.parse(fastStart) + 1800 * 1000).toISOString(), 1800, depths[i] - 1, 'E2E-B-2b', prof(1800)));
+      } else {
+        logsB.push(raw(deviceB, fastStart, durations[i], depths[i], `E2E-B-${i}`));
+      }
+    });
+
+    const batches = importBFirst ? [logsB, logsA] : [logsA, logsB];
+    await diveLog.createDivesFromLogs(batches[0], tripStore);
+    await diveLog.createDivesFromLogs(batches[1], tripStore);
+    assert.equal((await loadIndex(tripStore)).filter((row) => !row.deletedAt).length, 13);
+
+    const pass = await diveLog.reconcileLogbook(tripStore);
+    assert.equal(pass.proposals.length, 1, `expected one clock proposal, got ${pass.proposals.length}`);
+    const proposal = pass.proposals[0];
+    assert.equal(proposal.sharedDiveCount, 6);
+    assert.equal(Math.abs(proposal.offsetMinutes), 60);
+    const aIsProposalA = proposal.deviceKeyA === deviceAKey;
+    const correction = aIsProposalA
+      ? { deviceKey: deviceBKey, offsetMinutes: proposal.offsetMinutes }
+      : { deviceKey: deviceBKey, offsetMinutes: -proposal.offsetMinutes };
+    assert.equal(correction.offsetMinutes, -60);
+    await diveLog.saveDeviceTimeCorrection({
+      ...correction, appliesFrom: proposal.firstDate, appliesTo: proposal.lastDate,
+    }, tripStore);
+    for (const merge of proposal.merges) {
+      // eslint-disable-next-line no-await-in-loop
+      await diveLog.mergeDives(merge.keepId, merge.absorbIds, { correction }, tripStore);
+    }
+
+    const liveRows = (await loadIndex(tripStore)).filter((row) => !row.deletedAt);
+    assert.equal(liveRows.length, 6);
+    assert.ok(liveRows.every((row) => row.deviceKeys.length === 2));
+    const liveDives = (await loadAll(tripStore)).filter((dive) => !dive.deletedAt);
+    const allLogs = [];
+    for (const dive of liveDives) {
+      // eslint-disable-next-line no-await-in-loop
+      allLogs.push(...await loadLogsForDive(dive, tripStore));
+    }
+    const bLogs = allLogs.filter((item) => item.deviceKey === deviceBKey);
+    assert.equal(bLogs.length, 6);
+    assert.ok(bLogs.every((item) => item.timeCorrectionMinutes === -60));
+    assert.equal(bLogs.filter((item) => item.fusedFrom === 2).length, 1);
+    assert.equal(new Set(allLogs.map((item) => item.id)).size, allLogs.length);
+    await assertIntegrity(tripStore, `e2e trip (${importBFirst ? 'B first' : 'A first'})`);
+
+    const secondPass = await diveLog.reconcileLogbook(tripStore);
+    assert.equal(secondPass.autoMerged, 0);
+    assert.equal(secondPass.proposals.length, 0);
+    const afterRerun = [];
+    for (const dive of (await loadAll(tripStore)).filter((item) => !item.deletedAt)) {
+      // eslint-disable-next-line no-await-in-loop
+      afterRerun.push(...await loadLogsForDive(dive, tripStore));
+    }
+    assert.ok(afterRerun.filter((item) => item.deviceKey === deviceBKey)
+      .every((item) => item.timeCorrectionMinutes === -60));
+    await assertIntegrity(tripStore, `e2e trip rerun (${importBFirst ? 'B first' : 'A first'})`);
+  };
+  await runTripReconcile(false);
+  await runTripReconcile(true);
+
   // fingerprint round-trip (unchanged from v1)
   await diveLog.saveFingerprint('EON Core', 'FP-B', store);
   assert.equal(await diveLog.loadFingerprint('EON Core', store), 'FP-B');
