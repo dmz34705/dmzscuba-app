@@ -86,7 +86,12 @@ export const SURFACE_SEQUENCE = Object.freeze([
   { id: DEVICE_SCREENS.SURFACE_HOME },
   { id: DEVICE_SCREENS.ALT_1 },
   { id: DEVICE_SCREENS.ALT_2 },
-  { id: DEVICE_SCREENS.ALT_3, skip: (device) => !device.logbook.entries.some((entry) => entry.fo2 > 0.21) },
+  {
+    id: DEVICE_SCREENS.ALT_3,
+    // The oxygen-status screen appears once oxygen is relevant: a nitrox dive
+    // has been logged, or a nitrox gas is currently programmed.
+    skip: (device) => !device.logbook.entries.some((entry) => entry.fo2 > 0.21) && device.configuredGas.fo2 <= 0.21,
+  },
   { id: DEVICE_SCREENS.FLY_SAT },
   { id: DEVICE_SCREENS.PLAN_LEAD_IN },
   { id: DEVICE_SCREENS.LOG_LEAD_IN },

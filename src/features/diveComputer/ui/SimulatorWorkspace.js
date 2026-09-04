@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import ButtonLegend from './ButtonLegend';
 import VirtualDiveComputer from './VirtualDiveComputer';
 import WaterColumnViewport from './WaterColumnViewport';
 import { resolveSimulatorWorkspaceLayout } from './workspaceLayout';
@@ -19,6 +20,7 @@ export default function SimulatorWorkspace({ depthUnit, deviceDisplay, focusArea
         contentContainerStyle={[styles.row, { gap: layout.gap, minWidth: Math.max(availableWidth, layout.contentWidth) }]}
         horizontal
         nestedScrollEnabled
+        scrollEnabled={layout.requiresHorizontalScroll}
         showsHorizontalScrollIndicator={layout.requiresHorizontalScroll}
       >
         <WaterColumnViewport
@@ -37,6 +39,7 @@ export default function SimulatorWorkspace({ depthUnit, deviceDisplay, focusArea
           onDeviceEvent={onDeviceEvent}
         />
       </ScrollView>
+      <ButtonLegend display={deviceDisplay} />
     </View>
   );
 }

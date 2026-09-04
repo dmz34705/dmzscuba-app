@@ -22,6 +22,7 @@ export default function VirtualDiveComputer({ display, embedded = false, focusAr
         contentContainerStyle={[styles.scrollContent, embedded && styles.embeddedContent, { minWidth: contentWidth }]}
         horizontal
         nestedScrollEnabled
+        scrollEnabled={instrumentWidth == null}
         showsHorizontalScrollIndicator={false}
       >
         <ComputerHousing display={display} focusAreas={focusAreas} focusLevel={focusLevel} geometry={geometry} onDeviceEvent={onDeviceEvent} />

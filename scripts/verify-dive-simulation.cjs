@@ -13,6 +13,7 @@ const {
   SIMULATION_SPEEDS,
   advanceSimulation,
   calculateNdlMinutes,
+  celsiusToFahrenheit,
   createSimulation,
   pauseSimulation,
   resumeSimulation,
@@ -31,6 +32,7 @@ const {
   setWaterType,
   stepSimulation,
   surfaceSimulation,
+  waterTemperatureCelsius,
 } = simulation;
 
 function almostEqual(actual, expected, tolerance = 1e-8, message = '') {
@@ -450,6 +452,20 @@ assert.equal(disableState.deepStop.status, 'disabled', 'Deep stop never resumes 
 let depthDisableState = setDeepStopEnabled(createSimulation(), true);
 depthDisableState = advanceSimulation(depthDisableState, { depthMeters: 60, elapsedSimulationSeconds: 5 });
 assert.equal(depthDisableState.deepStop.status, 'disabled', 'Exceeding 57m disables deep stop even before it would otherwise activate.');
+
+// 17d. Water temperature is a deterministic, monotonic-with-depth function
+// used for the surface and dive-mode temperature fields.
+assert.equal(waterTemperatureCelsius(0), 27);
+assert.equal(waterTemperatureCelsius(3), 27, 'The surface mixed layer holds a constant temperature.');
+assert.equal(waterTemperatureCelsius(40), 15, 'Deep water settles to a constant temperature.');
+assert.ok(waterTemperatureCelsius(9) > waterTemperatureCelsius(15));
+assert.ok(waterTemperatureCelsius(15) > waterTemperatureCelsius(20));
+for (let depth = 0; depth < 40; depth += 1) {
+  assert.ok(waterTemperatureCelsius(depth) >= waterTemperatureCelsius(depth + 1) - 1e-9, 'Temperature never rises with depth.');
+  assert.equal(waterTemperatureCelsius(depth), waterTemperatureCelsius(depth), 'Temperature is a pure function of depth.');
+}
+assert.equal(celsiusToFahrenheit(0), 32);
+assert.equal(celsiusToFahrenheit(100), 212);
 
 // 18/19. The engine executes in Node and has no UI, React, lesson, or future-device imports.
 const forbiddenPatterns = [

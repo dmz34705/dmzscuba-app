@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text, View } from 'react-native';
 
@@ -10,14 +10,21 @@ function Screw({ scale, style }) {
   return <View style={[styles.screw, { borderRadius: 4 * scale, height: 7 * scale, width: 7 * scale }, style]} />;
 }
 
-const BOTH_BUTTON_HOLD_MS = 3000;
+// A ~2 second combined hold returns to the home screen from any menu. Kept
+// short enough to feel responsive and paired with an on-screen progress cue,
+// because a silent multi-second hold is easy to abandon early.
+const BOTH_BUTTON_HOLD_MS = 1800;
+const BOTH_HOLD_PROGRESS_INTERVAL_MS = 60;
 
 export default function ComputerHousing({ display, focusAreas = [], focusLevel = 'quiet', geometry, onDeviceEvent }) {
-  const buttonState = useRef({ leftPressed: false, rightPressed: false, leftLong: false, rightLong: false, bothSent: false, bothCandidate: false, bothCancelled: false, bothPressedAt: null, bothTimer: null, pendingLongEvents: {} });
+  const buttonState = useRef({ leftPressed: false, rightPressed: false, leftLong: false, rightLong: false, bothSent: false, bothCandidate: false, bothCancelled: false, bothPressedAt: null, bothTimer: null, bothProgressTimer: null, pendingLongEvents: {} });
+  const [holdProgress, setHoldProgress] = useState(0);
   useEffect(() => () => {
     const state = buttonState.current;
     if (state.bothTimer) clearTimeout(state.bothTimer);
+    if (state.bothProgressTimer) clearInterval(state.bothProgressTimer);
     state.bothTimer = null;
+    state.bothProgressTimer = null;
     state.pendingLongEvents = {};
     state.leftPressed = false;
     state.rightPressed = false;
@@ -26,6 +33,13 @@ export default function ComputerHousing({ display, focusAreas = [], focusLevel =
   const focusHousing = focusAreas.includes('housing');
   const focusDisplay = focusAreas.includes('display');
   const focusButtons = focusAreas.includes('buttons');
+  const stopHoldProgress = () => {
+    if (buttonState.current.bothProgressTimer) {
+      clearInterval(buttonState.current.bothProgressTimer);
+      buttonState.current.bothProgressTimer = null;
+    }
+    setHoldProgress(0);
+  };
   const handlePressState = (button, pressed) => {
     buttonState.current.pendingLongEvents = buttonState.current.pendingLongEvents || {};
     buttonState.current[`${button}Pressed`] = pressed;
@@ -33,6 +47,13 @@ export default function ComputerHousing({ display, focusAreas = [], focusLevel =
       buttonState.current.bothCandidate = true;
       buttonState.current.bothCancelled = false;
       buttonState.current.bothPressedAt = Date.now();
+      setHoldProgress(0.001);
+      // Drive the on-screen progress cue while both buttons are held.
+      buttonState.current.bothProgressTimer = setInterval(() => {
+        const state = buttonState.current;
+        if (state.bothPressedAt == null || state.bothSent) return;
+        setHoldProgress(Math.min(1, (Date.now() - state.bothPressedAt) / BOTH_BUTTON_HOLD_MS));
+      }, BOTH_HOLD_PROGRESS_INTERVAL_MS);
       // Start the combined-hold threshold from the moment the second button
       // goes down. This does not depend on either Pressable's onLongPress
       // callback winning the race against the other one.
@@ -43,6 +64,7 @@ export default function ComputerHousing({ display, focusAreas = [], focusLevel =
           state.bothSent = true;
           delete state.pendingLongEvents.left;
           delete state.pendingLongEvents.right;
+          stopHoldProgress();
           onDeviceEvent(DEVICE_EVENTS.BOTH_LONG);
         }
       }, BOTH_BUTTON_HOLD_MS);
@@ -62,18 +84,21 @@ export default function ComputerHousing({ display, focusAreas = [], focusLevel =
         buttonState.current.bothCandidate = true;
         buttonState.current.bothCancelled = true;
       }
-      const pendingEvent = buttonState.current.pendingLongEvents[button];
-      delete buttonState.current.pendingLongEvents[button];
-      if (wasLong && pendingEvent && !buttonState.current.bothSent && !buttonState.current.bothCandidate) onDeviceEvent(pendingEvent);
+      // Either button lifting ends the combined-hold window - a lingering
+      // second button must not later complete the gesture on its own.
+      buttonState.current.bothPressedAt = null;
       if (buttonState.current.bothTimer) {
         clearTimeout(buttonState.current.bothTimer);
         buttonState.current.bothTimer = null;
       }
+      stopHoldProgress();
+      const pendingEvent = buttonState.current.pendingLongEvents[button];
+      delete buttonState.current.pendingLongEvents[button];
+      if (wasLong && pendingEvent && !buttonState.current.bothSent && !buttonState.current.bothCandidate) onDeviceEvent(pendingEvent);
       if (!buttonState.current.leftPressed && !buttonState.current.rightPressed) {
         buttonState.current.bothSent = false;
         buttonState.current.bothCandidate = false;
         buttonState.current.bothCancelled = false;
-        buttonState.current.bothPressedAt = null;
       }
     }
   };
@@ -121,7 +146,7 @@ export default function ComputerHousing({ display, focusAreas = [], focusLevel =
         <Text allowFontScaling={false} style={[styles.model, { fontSize: 5.5 * scale, left: 0, right: 0, top: 25 * scale }]}>DMZ DIVE INSTRUMENTS</Text>
 
         <View style={[styles.bezel, focusDisplay && styles.focusedBezel, { borderRadius: 10 * scale, borderWidth: 8 * scale, height: 216 * scale, left: 19 * scale, top: 36 * scale, width: 306 * scale }]}>
-          <InstrumentDisplay display={display} focusAreas={focusAreas} height={screen.height} scale={scale} width={screen.width} />
+          <InstrumentDisplay display={display} focusAreas={focusAreas} height={screen.height} holdProgress={holdProgress} scale={scale} width={screen.width} />
         </View>
 
         <Screw scale={scale} style={{ left: 20 * scale, top: 27 * scale }} />

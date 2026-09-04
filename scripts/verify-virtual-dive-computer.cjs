@@ -25,6 +25,7 @@ const {
   FIELD_STEPPERS,
   buildVirtualDiveComputerDisplay,
   createVirtualDiveComputer,
+  describeButtons,
   diveSequenceIds,
   interpretButtonPress,
   surfaceSequenceIds,
@@ -118,6 +119,14 @@ assert.equal(computer.editing.draftValue, 31, 'Long-press decrements a range fie
 computer = press(computer, DEVICE_EVENTS.RIGHT_LONG);
 assert.equal(computer.currentScreen, DEVICE_SCREENS.SET_GAS_LEAD_IN);
 assert.equal(computer.configuredGas.fo2, 0.32, 'Right-long should cancel a gas edit.');
+
+// 7b. Programming a nitrox gas unlocks the surface oxygen-status screen (ALT 3)
+// and its planner MOD, even before any nitrox dive has been logged.
+assert.ok(surfaceSequenceIds(computer).includes(DEVICE_SCREENS.ALT_3), 'ALT 3 appears when a nitrox gas is configured.');
+assert.ok(!surfaceSequenceIds(createVirtualDiveComputer()).includes(DEVICE_SCREENS.ALT_3), 'ALT 3 stays hidden on air with no dives.');
+const nitroxAlt3 = buildVirtualDiveComputerDisplay({ ...computer, currentScreen: DEVICE_SCREENS.ALT_3 }, createSimulation());
+assert.equal(nitroxAlt3.alt3.fo2Label, 'EAN32');
+assert.ok(nitroxAlt3.alt3.mod && nitroxAlt3.alt3.mod.value > 0, 'ALT 3 shows the MOD for the configured nitrox gas.');
 
 // 8. Automatic dive entry uses the public simulation lifecycle.
 actualDive = setDepth(actualDive, 20);
@@ -322,6 +331,56 @@ sessionComputer = sync(sessionComputer, sessionDive);
 assert.equal(sessionComputer.logbook.entries.length, 2, 'A 10-minute interval must create a separate logbook dive.');
 assert.equal(sessionComputer.history.totalDives, 2);
 
+// 14c. After a dive the surface menu labels must stay screen-specific - an
+// earlier bug stamped every post-dive surface screen "DIVE COMPLETE".
+let postDiveComputer = createVirtualDiveComputer();
+let postDiveSim = advanceSimulation(setDepth(createSimulation(), 3), { depthMeters: 3, elapsedSimulationSeconds: 5 });
+postDiveComputer = sync(postDiveComputer, postDiveSim);
+postDiveSim = advanceSimulation(postDiveSim, { depthMeters: 14, elapsedSimulationSeconds: 6 * 60 });
+postDiveComputer = sync(postDiveComputer, postDiveSim);
+assert.equal(postDiveComputer.lifecycle, 'dive');
+postDiveSim = advanceSimulation(postDiveSim, { depthMeters: 0, elapsedSimulationSeconds: 200 });
+postDiveComputer = sync(postDiveComputer, postDiveSim);
+assert.equal(postDiveComputer.lifecycle, 'postDive');
+for (const [screenId, expectedLabel] of [
+  [DEVICE_SCREENS.SET_TIME_LEAD_IN, 'SET TIME'],
+  [DEVICE_SCREENS.PLAN_LEAD_IN, 'PLAN'],
+  [DEVICE_SCREENS.DEEP_STOP, 'DEEP STOP'],
+]) {
+  const labelled = buildVirtualDiveComputerDisplay({ ...postDiveComputer, currentScreen: screenId }, postDiveSim);
+  assert.equal(labelled.labels.status.toUpperCase(), expectedLabel, `Post-dive ${screenId} must keep its own header.`);
+}
+
+// 14d. A paused post-dive simulation must not strand the device in POST_DIVE.
+const pausedPostDive = { ...postDiveSim, clock: { ...postDiveSim.clock, status: 'paused' } };
+const settledComputer = sync(sync(createVirtualDiveComputer(), postDiveSim), pausedPostDive);
+assert.equal(settledComputer.lifecycle, 'surface', 'A paused post-dive sim must settle the device back to the surface lifecycle.');
+
+// 14e. The two-button home shortcut normalizes the lifecycle and is a
+// deliberate no-op underwater.
+let midDiveComputer = sync(createVirtualDiveComputer(), advanceSimulation(setDepth(createSimulation(), 18), { depthMeters: 18, elapsedSimulationSeconds: 30 }));
+assert.equal(midDiveComputer.lifecycle, 'dive');
+const midDiveScreen = midDiveComputer.currentScreen;
+midDiveComputer = press(midDiveComputer, DEVICE_EVENTS.BOTH_LONG);
+assert.equal(midDiveComputer.currentScreen, midDiveScreen, 'BOTH_LONG must not leave the dive screen underwater.');
+const homedFromPostDive = press(postDiveComputer, DEVICE_EVENTS.BOTH_LONG);
+assert.equal(homedFromPostDive.currentScreen, DEVICE_SCREENS.SURFACE_HOME);
+assert.equal(homedFromPostDive.lifecycle, 'surface', 'BOTH_LONG on the surface must normalize the lifecycle.');
+
+// 14f. The home screen is one stable "ready to dive" layout, pre- and
+// post-dive, and it carries water temperature and configured gas.
+const freshHome = buildVirtualDiveComputerDisplay(createVirtualDiveComputer(), createSimulation());
+assert.equal(freshHome.home.hasEverDived, false);
+assert.equal(freshHome.home.temperature.unit, 'F');
+assert.ok(freshHome.home.temperature.value > 60 && freshHome.home.temperature.value < 100);
+assert.equal(freshHome.home.fo2Label, 'Air');
+const divedHome = buildVirtualDiveComputerDisplay(postDiveComputer, postDiveSim);
+assert.equal(divedHome.home.hasEverDived, true);
+assert.ok(typeof divedHome.home.surfaceInterval === 'string' && divedHome.home.timeToFly);
+
+// 14g. Lowest water temperature is tracked into history across a dive.
+assert.ok(postDiveComputer.history.lowestTemperature != null && postDiveComputer.history.lowestTemperature < 27);
+
 // 15. LOG: preview cycles recorded dives; ADV always backs out of a data
 // page to preview and SEL goes deeper - the one screen in this spec where
 // ADV means "back," per the manual's own button diagram.
@@ -472,6 +531,42 @@ for (const [screenId, stepper] of Object.entries(FIELD_STEPPERS)) {
   assert.ok(stepper.parent, `${screenId} field stepper is missing a parent to cancel back to.`);
   assert.equal(typeof stepper.next, 'function', `${screenId} field stepper is missing next().`);
 }
+
+// 17b. describeButtons mirrors the state machine for the on-screen button
+// legend: one screen from every family, plus the logbook ADV="back" reversal.
+const legendFor = (device, simulation = createSimulation()) => describeButtons(buildVirtualDiveComputerDisplay(device, simulation));
+
+const homeLegend = legendFor(createVirtualDiveComputer());
+assert.equal(homeLegend.adv.tap, 'Next screen');
+assert.equal(homeLegend.adv.hold, 'Home screen');
+assert.equal(homeLegend.sel.tap, null, 'SEL does nothing on the home screen.');
+assert.ok(homeLegend.both, 'The surface legend advertises the two-button home hold.');
+
+const leadInLegend = legendFor({ ...createVirtualDiveComputer(), currentScreen: DEVICE_SCREENS.SET_UTIL_LEAD_IN });
+assert.equal(leadInLegend.sel.tap, 'Open menu');
+
+let stepperDevice = { ...createVirtualDiveComputer(), currentScreen: DEVICE_SCREENS.SET_TIME_LEAD_IN };
+stepperDevice = press(stepperDevice, DEVICE_EVENTS.RIGHT_SHORT); // -> DATE_FORMAT (toggle)
+const toggleLegend = legendFor(stepperDevice);
+assert.equal(toggleLegend.adv.tap, 'Switch value');
+assert.equal(toggleLegend.sel.tap, 'Save and continue');
+assert.equal(toggleLegend.sel.hold, 'Cancel, no change');
+stepperDevice = press(press(stepperDevice, DEVICE_EVENTS.RIGHT_SHORT), DEVICE_EVENTS.RIGHT_SHORT); // DATE_FORMAT -> HOUR_FORMAT -> SET_HOUR (range)
+assert.equal(stepperDevice.currentScreen, DEVICE_SCREENS.SET_HOUR);
+const rangeLegend = legendFor(stepperDevice);
+assert.equal(rangeLegend.adv.hold, 'Change value down', 'A range field advertises the reverse-step hold.');
+
+let logDevice = { ...createVirtualDiveComputer(), currentScreen: DEVICE_SCREENS.LOG_PREVIEW, logbook: { entries: [{ diveNumber: 1, fo2: 0.21, runtimeSeconds: 600, maximumDepthMeters: 12, averageDepthMeters: 8, configuredFo2: 0.21, deepStopTriggered: false, endOfDiveCnsPercent: 1, highestPpO2: 0.6, maxAscentRateMpm: 3, maxTissueLoadingPercent: 20, preDiveSurfaceIntervalSeconds: 0, profileSampleCount: 1, runtimeSeconds: 600, surfacedAtSimulationSeconds: 700 }], lastRecordedDiveCount: 1, selectedIndex: 0 } };
+assert.equal(legendFor(logDevice).sel.tap, 'Open this dive');
+logDevice = press(logDevice, DEVICE_EVENTS.RIGHT_SHORT);
+assert.equal(logDevice.currentScreen, DEVICE_SCREENS.LOG_DATA_1);
+assert.equal(legendFor(logDevice).adv.tap, 'Back to dive list', 'In the logbook data pages, ADV means back.');
+assert.equal(legendFor(logDevice).sel.tap, 'Next data page');
+
+let diveLegendDevice = sync(createVirtualDiveComputer(), advanceSimulation(setDepth(createSimulation(), 18), { depthMeters: 18, elapsedSimulationSeconds: 20 }));
+const diveLegend = describeButtons(buildVirtualDiveComputerDisplay(diveLegendDevice, advanceSimulation(setDepth(createSimulation(), 18), { depthMeters: 18, elapsedSimulationSeconds: 20 })));
+assert.equal(diveLegend.adv.tap, 'Next data page');
+assert.equal(diveLegend.both, null, 'The two-button hold is not offered underwater.');
 
 // 18. Replayable deterministic button and simulation event sequences.
 const sequence = [

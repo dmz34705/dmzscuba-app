@@ -1,9 +1,11 @@
 import {
   calculateNdlMinutes,
   calculateOxygenMinutesRemaining,
+  celsiusToFahrenheit,
   maximumOperatingDepthMeters,
   selectAscentRateMpm,
   selectDiveTimeRemainingMinutes,
+  waterTemperatureCelsius,
 } from '../diveSimulation';
 import { DEVICE_SCREENS, FIELD_STEPPERS } from './screenGraph';
 
@@ -37,6 +39,11 @@ function formatClockTime(hour24, minute, hourFormat) {
 
 function depthValue(depthMeters, unit) {
   return unit === 'm' ? depthMeters : depthMeters * 3.28084;
+}
+
+function temperatureField(id, celsius, unit) {
+  if (celsius == null) return { id, unit, value: null };
+  return { id, unit, value: unit === 'C' ? celsius : celsiusToFahrenheit(celsius) };
 }
 
 function depthField(id, depthMeters, unit, precision = unit === 'm' ? 1 : 0) {
@@ -117,6 +124,7 @@ function fieldStepperDisplay(device, screenId, depthUnit) {
   return {
     id: 'display.fieldStepper',
     isEditing,
+    kind: stepper.kind,
     label: FIELD_LABELS[screenId] || screenId,
     value: formatFieldValue(screenId, value, depthUnit, device.settings.hourFormat),
   };
@@ -126,12 +134,12 @@ function gasFieldDisplay(device, screenId) {
   const isEditing = Boolean(device.editing && device.editing.fieldId === screenId);
   const draft = isEditing ? device.editing.draftValue : null;
   if (screenId === DEVICE_SCREENS.SET_AIR_EAN) {
-    return { id: 'display.fieldStepper', isEditing, label: 'AIR OR EAN', value: String(draft).toUpperCase() };
+    return { id: 'display.fieldStepper', isEditing, kind: 'toggle', label: 'AIR OR EAN', value: String(draft).toUpperCase() };
   }
   if (screenId === DEVICE_SCREENS.GAS_FO2) {
-    return { id: 'display.fieldStepper', isEditing, label: 'GAS FO2', value: `${draft}% O2` };
+    return { id: 'display.fieldStepper', isEditing, kind: 'range', label: 'GAS FO2', value: `${draft}% O2` };
   }
-  return { id: 'display.fieldStepper', isEditing, label: 'GAS PO2 ALARM', value: draft == null ? '--' : draft.toFixed(1) };
+  return { id: 'display.fieldStepper', isEditing, kind: 'range', label: 'GAS PO2 ALARM', value: draft == null ? '--' : draft.toFixed(1) };
 }
 
 function planDisplay(device, simulation, depthUnit) {
@@ -189,17 +197,22 @@ function logbookEntryDisplay(entry, depthUnit) {
   };
 }
 
+// The header label is resolved from the *screen*, not the lifecycle. An earlier
+// version short-circuited on `lifecycle === 'postDive'` and stamped every
+// surface menu "DIVE COMPLETE" for the whole post-dive window; the lifecycle is
+// now only a last-resort fallback for the bare home screen.
 function statusLabel(device) {
   const screenId = device.currentScreen;
+  // Underwater / dive-mode screens.
   if (screenId === DEVICE_SCREENS.DIVE_WARNING) return 'Warning';
   if (screenId === DEVICE_SCREENS.DIVE_DECOMPRESSION) return 'Decompression';
   if (screenId === DEVICE_SCREENS.DIVE_DEEP_STOP_MAIN) return 'Deep stop';
   if (screenId === DEVICE_SCREENS.DIVE_SAFETY_STOP) return 'Safety stop';
-  if (screenId === DEVICE_SCREENS.DIVE_ALT_2) return 'Time / temperature';
   if (screenId === DEVICE_SCREENS.DIVE_DEEP_STOP_PREVIEW) return 'Deep stop pending';
+  if (screenId === DEVICE_SCREENS.DIVE_ALT_2) return 'Time / temperature';
   if (screenId === DEVICE_SCREENS.DIVE_ALT_3) return 'Oxygen status';
-  if (device.lifecycle === 'dive') return 'No decompression';
-  if (device.lifecycle === 'postDive') return 'Dive complete';
+  if (screenId === DEVICE_SCREENS.DIVE_PRIMARY) return 'No decompression';
+  // Surface screens.
   if (screenId === DEVICE_SCREENS.ALT_1) return 'Last dive';
   if (screenId === DEVICE_SCREENS.ALT_2) return 'Elevation / time / temp';
   if (screenId === DEVICE_SCREENS.ALT_3) return 'Oxygen status';
@@ -211,6 +224,9 @@ function statusLabel(device) {
   if (screenId.startsWith('log.')) return 'Log';
   if (screenId === DEVICE_SCREENS.TOTAL_HOURS || screenId === DEVICE_SCREENS.EXTREMES) return 'History';
   if (screenId.startsWith('setGas.')) return 'Gas settings';
+  // Home screen only.
+  if (device.lifecycle === 'dive') return 'No decompression';
+  if (device.lifecycle === 'postDive') return 'Surface';
   return 'Surface ready';
 }
 
@@ -270,13 +286,18 @@ export function buildVirtualDiveComputerDisplay(device, simulation) {
     alt2: {
       elevationMeters: device.history.highestElevationMeters,
       id: 'display.alt2',
-      temperature: { id: 'display.alt2.temp', unit: device.settings.units.temperature, value: null },
+      temperature: temperatureField('display.alt2.temp', waterTemperatureCelsius(0), device.settings.units.temperature),
       time: formatClockTime(device.dateTime.hour, device.dateTime.minute, device.settings.hourFormat),
     },
-    alt3: hasPreviousDive ? {
-      cnsPercent: device.logbook.entries[0].endOfDiveCnsPercent,
-      fo2Label: device.logbook.entries[0].fo2 === 0.21 ? 'Air' : `EAN${Math.round(device.logbook.entries[0].fo2 * 100)}`,
+    alt3: (device.configuredGas.fo2 > 0.21 || hasPreviousDive) ? {
+      cnsPercent: hasPreviousDive
+        ? device.logbook.entries[0].endOfDiveCnsPercent
+        : simulation.physiology.oxygen.cnsPercent,
+      fo2Label: device.configuredGas.fo2 === 0.21 ? 'Air' : `EAN${Math.round(device.configuredGas.fo2 * 100)}`,
       id: 'display.alt3',
+      mod: device.configuredGas.fo2 > 0.21
+        ? depthField('display.alt3.mod', maximumOperatingDepthMeters(device.configuredGas.fo2, device.configuredGas.po2Alarm, simulation.waterType), depthUnit)
+        : null,
       po2Alarm: device.configuredGas.po2Alarm,
     } : null,
     ascentRate: {
@@ -303,28 +324,26 @@ export function buildVirtualDiveComputerDisplay(device, simulation) {
         deepestDive: depthField('display.history.deepest', device.history.deepestDiveMeters, depthUnit),
         highestElevation: { id: 'display.history.elevation', unit: depthUnit, value: depthValue(device.history.highestElevationMeters, depthUnit) },
         longestDive: formatTime(device.history.longestDiveSeconds),
-        lowestTemperature: device.history.lowestTemperature,
+        lowestTemperature: temperatureField('display.history.temp', device.history.lowestTemperature, device.settings.units.temperature),
       },
       id: 'display.history',
       totalDives: device.history.totalDives,
       totalHours: formatHours(device.history.totalMinutes * 60),
     },
-    home: hasEverDived && simulation.dive.surfaceIntervalSeconds < 600 ? {
-      fo2Label: device.configuredGas.fo2 === 0.21 ? 'Air' : `EAN${Math.round(device.configuredGas.fo2 * 100)}`,
+    // One stable "ready to dive" surface screen. It always shows time, water
+    // temperature and the configured gas; once a dive has been logged it adds
+    // the surface interval, residual nitrogen and time-to-fly. The post-dive
+    // summary is not duplicated here - it lives on ALT 1 ("LAST DIVE").
+    home: {
       id: 'display.home',
-      recentDive: {
-        diveTime: formatTime(simulation.dive.runtimeSeconds),
-        maximumDepth: depthField('display.home.maxDepth', simulation.dive.maximumDepthMeters, depthUnit),
-      },
-      surf: null,
-    } : {
       fo2Label: device.configuredGas.fo2 === 0.21 ? 'Air' : `EAN${Math.round(device.configuredGas.fo2 * 100)}`,
-      id: 'display.home',
-      recentDive: null,
-      surf: {
-        formatted: hasEverDived ? formatTime(simulation.dive.surfaceIntervalSeconds) : formatTime(device.clock.elapsedSeconds),
-        sourceLabel: hasEverDived ? 'SURFACE INTERVAL' : 'SINCE ACTIVATION',
-      },
+      time: formatClockTime(device.dateTime.hour, device.dateTime.minute, device.settings.hourFormat),
+      temperature: temperatureField('display.home.temp', waterTemperatureCelsius(0), device.settings.units.temperature),
+      hasEverDived,
+      tissueLoadingPercent: simulation.physiology.tissueLoadingPercent,
+      surfaceInterval: hasEverDived ? formatTime(simulation.dive.surfaceIntervalSeconds) : null,
+      timeToFly: hasEverDived ? formatHours(Math.max(0, 85800 - simulation.dive.surfaceIntervalSeconds)) : null,
+      desaturated: !hasEverDived || simulation.dive.surfaceIntervalSeconds >= 82800,
     },
     labels: { status: statusLabel(device), title: screenId },
     leadIn: LEAD_IN_LABELS[screenId] ? { id: 'display.leadIn', title: LEAD_IN_LABELS[screenId], totalDives: screenId === DEVICE_SCREENS.HISTORY_LEAD_IN ? device.history.totalDives : null } : null,
@@ -337,7 +356,7 @@ export function buildVirtualDiveComputerDisplay(device, simulation) {
     deepStopPreview,
     diveAlt2: {
       id: 'display.diveAlt2',
-      temperature: { id: 'display.diveAlt2.temp', unit: device.settings.units.temperature, value: null },
+      temperature: temperatureField('display.diveAlt2.temp', waterTemperatureCelsius(simulation.environment.depthMeters), device.settings.units.temperature),
       time: formatClockTime(device.dateTime.hour, device.dateTime.minute, device.settings.hourFormat),
     },
     diveAlt3: {

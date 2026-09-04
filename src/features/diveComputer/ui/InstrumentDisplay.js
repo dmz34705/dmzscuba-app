@@ -16,6 +16,11 @@ function formatDepth(field) {
   return `${field.value.toFixed(field.precision)} ${field.unit}`;
 }
 
+function formatTemperature(field) {
+  if (!field || field.value == null) return '--';
+  return `${Math.round(field.value)}°${field.unit}`;
+}
+
 function Label({ children, scale, style }) {
   return <Text allowFontScaling={false} style={[styles.label, { fontSize: 7.5 * scale, lineHeight: 9 * scale }, style]}>{children}</Text>;
 }
@@ -75,26 +80,32 @@ function AscentRate({ ascentRate, focused = false, scale }) {
 // ---- Surface-mode screens (real i300C surface OS, manual pages 16-30). ----
 
 function HomeScreen({ display, scale }) {
-  if (display.home.recentDive) {
-    return (
-      <View style={[styles.surfaceScreen, { padding: 8 * scale }]}>
-        <Label scale={scale}>DIVE COMPLETE</Label>
-        <View style={styles.metricRow}>
-          <Metric label="MAX DEPTH" scale={scale} value={formatDepth(display.home.recentDive.maximumDepth)} />
-          <Metric label="DIVE TIME" scale={scale} value={display.home.recentDive.diveTime} />
-        </View>
-        <View style={[styles.metricRow, { marginTop: 10 * scale }]}>
-          <Metric label="FO2" scale={scale} value={display.home.fo2Label} />
-        </View>
-      </View>
-    );
-  }
+  const home = display.home;
   return (
-    <View style={[styles.centerScreen, { padding: 8 * scale }]}>
-      <Label scale={scale}>{display.home.surf.sourceLabel}</Label>
-      <Numeric scale={scale} size={40}>{display.home.surf.formatted}</Numeric>
+    <View style={[styles.surfaceScreen, { padding: 8 * scale }]}>
+      <View style={styles.metricRow}>
+        <Metric label="TIME" scale={scale} value={home.time.formatted} />
+        <Metric label="WATER" scale={scale} value={formatTemperature(home.temperature)} />
+        <Metric label="GAS" scale={scale} value={home.fo2Label} />
+      </View>
       <View style={[styles.rule, { marginVertical: 7 * scale }]} />
-      <Metric label="FO2" scale={scale} value={display.home.fo2Label} />
+      {home.hasEverDived ? (
+        <>
+          <View style={styles.metricRow}>
+            <Metric label="SURF INTERVAL" scale={scale} value={home.surfaceInterval} />
+            <Metric label="N2 LOAD" scale={scale} value={`${Math.round(home.tissueLoadingPercent)}%`} />
+          </View>
+          <View style={[styles.metricRow, { marginTop: 10 * scale }]}>
+            <Metric label="TIME TO FLY" scale={scale} value={home.desaturated ? '0:00' : home.timeToFly} />
+            <Metric label="STATUS" scale={scale} value={home.desaturated ? 'DESAT' : 'NO FLY'} />
+          </View>
+        </>
+      ) : (
+        <View style={[styles.centerScreen, { paddingVertical: 6 * scale }]}>
+          <Text allowFontScaling={false} style={[styles.leadInTitle, { fontSize: 17 * scale }]}>READY TO DIVE</Text>
+          <Label scale={scale}>SURFACE</Label>
+        </View>
+      )}
     </View>
   );
 }
@@ -130,7 +141,7 @@ function AltScreen({ display, scale, screenId }) {
           <Metric label="TIME" scale={scale} value={display.alt2.time.formatted} />
         </View>
         <View style={[styles.metricRow, { marginTop: 10 * scale }]}>
-          <Metric label="TEMP" scale={scale} value={`-- ${display.alt2.temperature.unit}`} />
+          <Metric label="TEMP" scale={scale} value={formatTemperature(display.alt2.temperature)} />
         </View>
       </View>
     );
@@ -152,7 +163,8 @@ function AltScreen({ display, scale, screenId }) {
         <Metric label="O2 SATURATION" scale={scale} value={`${alt3.cnsPercent.toFixed(0)}%`} />
       </View>
       <View style={[styles.metricRow, { marginTop: 10 * scale }]}>
-        <Metric label="PO2 ALARM SETPOINT" scale={scale} value={alt3.po2Alarm.toFixed(1)} />
+        <Metric label="PO2 ALARM" scale={scale} value={alt3.po2Alarm.toFixed(1)} />
+        <Metric label="MOD" scale={scale} value={alt3.mod ? formatDepth(alt3.mod) : '--'} />
       </View>
     </View>
   );
@@ -296,7 +308,7 @@ function ExtremesScreen({ display, scale }) {
       </View>
       <View style={[styles.metricRow, { marginTop: 10 * scale }]}>
         <Metric label="HIGHEST ELEVATION" scale={scale} value={`${extremes.highestElevation.value.toFixed(0)} ${extremes.highestElevation.unit}`} />
-        <Metric label="LOWEST TEMP" scale={scale} value={extremes.lowestTemperature == null ? '--' : `${extremes.lowestTemperature}`} />
+        <Metric label="LOWEST TEMP" scale={scale} value={formatTemperature(extremes.lowestTemperature)} />
       </View>
     </View>
   );
@@ -363,7 +375,7 @@ function DiveAltScreen({ display, focused = false, scale, screenId }) {
         <Label scale={scale}>ALT 2</Label>
         <View style={styles.metricRow}>
           <Metric label="TIME" scale={scale} value={display.diveAlt2.time.formatted} />
-          <Metric label="TEMP" scale={scale} value={`-- ${display.diveAlt2.temperature.unit}`} />
+          <Metric label="TEMP" scale={scale} value={formatTemperature(display.diveAlt2.temperature)} />
         </View>
       </View>
     );
@@ -441,7 +453,7 @@ function DisplayContent({ display, focusAreas, scale }) {
   return <HomeScreen display={display} scale={scale} />;
 }
 
-export default function InstrumentDisplay({ display, focusAreas = [], height, scale, width }) {
+export default function InstrumentDisplay({ display, focusAreas = [], height, holdProgress = 0, scale, width }) {
   const warningBorder = display.warningIndicator.active
     ? display.warning?.severity === 'danger' ? LCD.danger : LCD.warning
     : '#263E3A';
@@ -454,6 +466,15 @@ export default function InstrumentDisplay({ display, focusAreas = [], height, sc
         <DisplayHeader display={display} focused={focusAreas.includes('status')} scale={scale} />
         <View style={styles.content}><DisplayContent display={display} focusAreas={focusAreas} scale={scale} /></View>
       </View>
+      {holdProgress > 0 ? (
+        <View accessible accessibilityLabel="Hold both buttons to return to the home screen" pointerEvents="none" style={styles.holdOverlay}>
+          <Text allowFontScaling={false} style={[styles.holdTitle, { fontSize: 11 * scale }]}>RETURN HOME</Text>
+          <View style={[styles.holdTrack, { height: 6 * scale, width: width * 0.62 }]}>
+            <View style={[styles.holdFill, { width: `${Math.min(100, Math.round(holdProgress * 100))}%` }]} />
+          </View>
+          <Text allowFontScaling={false} style={[styles.holdHint, { fontSize: 7.5 * scale }]}>KEEP HOLDING · RELEASE TO CANCEL</Text>
+        </View>
+      ) : null}
       <View pointerEvents="none" style={[styles.glassHighlight, { borderRadius: 2 * scale }]} />
     </View>
   );
@@ -475,6 +496,11 @@ const styles = StyleSheet.create({
   glass: { backgroundColor: '#020807', borderColor: '#0B1012', overflow: 'hidden' },
   glassHighlight: { borderColor: 'rgba(255,255,255,.06)', borderLeftWidth: 1, borderTopWidth: 1, bottom: 4, left: 4, position: 'absolute', right: 4, top: 4 },
   header: { alignItems: 'center', borderBottomColor: LCD.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', justifyContent: 'space-between' },
+  holdOverlay: { alignItems: 'center', backgroundColor: 'rgba(3,8,7,0.92)', bottom: 0, gap: 8, justifyContent: 'center', left: 0, position: 'absolute', right: 0, top: 0 },
+  holdTitle: { color: LCD.text, fontWeight: '900', letterSpacing: 1.5 },
+  holdTrack: { backgroundColor: 'rgba(174,235,218,0.16)', borderRadius: 3, overflow: 'hidden' },
+  holdFill: { backgroundColor: LCD.text, borderRadius: 3, height: '100%' },
+  holdHint: { color: LCD.dim, fontWeight: '800', letterSpacing: 0.6 },
   headerRight: { alignItems: 'center', flexDirection: 'row', gap: 6 },
   headerText: { color: LCD.dim, fontWeight: '900', letterSpacing: 0.8 },
   label: { color: LCD.dim, fontWeight: '900', letterSpacing: 0.7 },

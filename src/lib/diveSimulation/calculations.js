@@ -112,6 +112,30 @@ export function calculateOxygenMinutesRemaining(cnsPercent, depthMeters, fo2, wa
   return oxygenMinutesRemaining(cnsPercent, ppO2);
 }
 
+// A plain training thermocline: a warm mixed layer near the surface, a linear
+// drop through the thermocline, then a near-constant deep temperature. It is a
+// pure function of the current depth (no path/history dependence) so it stays
+// deterministic and replay-safe and never needs to live in simulation state.
+export const WATER_TEMPERATURE_PROFILE = Object.freeze({
+  surfaceCelsius: 27,
+  deepCelsius: 15,
+  thermoclineTopMeters: 9,
+  thermoclineBottomMeters: 20,
+});
+
+export function waterTemperatureCelsius(depthMeters, profile = WATER_TEMPERATURE_PROFILE) {
+  const { surfaceCelsius, deepCelsius, thermoclineTopMeters, thermoclineBottomMeters } = profile;
+  const depth = Math.max(0, Number.isFinite(Number(depthMeters)) ? Number(depthMeters) : 0);
+  if (depth <= thermoclineTopMeters) return surfaceCelsius;
+  if (depth >= thermoclineBottomMeters) return deepCelsius;
+  const ratio = (depth - thermoclineTopMeters) / (thermoclineBottomMeters - thermoclineTopMeters);
+  return surfaceCelsius + ratio * (deepCelsius - surfaceCelsius);
+}
+
+export function celsiusToFahrenheit(celsius) {
+  return celsius * 9 / 5 + 32;
+}
+
 export function maximumOperatingDepthMeters(fo2, po2Limit, waterType = 'salt') {
   const metersPerAtmosphere = METERS_PER_ATMOSPHERE[waterType] ?? METERS_PER_ATMOSPHERE.salt;
   const oxygenFraction = normalizeFo2(fo2);

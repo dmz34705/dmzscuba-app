@@ -21,3 +21,4 @@ export {
   transitionVirtualDiveComputer,
 } from './stateMachine';
 export { buildVirtualDiveComputerDisplay } from './displayModel';
+export { describeButtons } from './buttonModel';

@@ -133,6 +133,26 @@ function diveTwo(pair, phase) {
   return { device: s.device, simulation: pauseSimulation(s.simulation) };
 }
 
+function diveWarning(pair, phase) {
+  // A short dive whose only purpose is a rapid-ascent (SLOW ASCENT) alarm:
+  // descend to 18 m, ascend fast into the warning band, acknowledge, correct,
+  // and surface.
+  let s = { device: pair.device, simulation: resumeSimulation(pair.simulation) };
+  s = stepBoth(s, 6, 20);
+  s = stepBoth(s, 18, 130);
+  s = stepBoth(s, 18, 60);
+  if (phase === 'descended') return s;
+  s = stepBoth(s, 4.6, 45); // ~18 m/min ascent - well over the 9 m/min limit
+  if (phase === 'warned') return s;
+  s = { device: transitionVirtualDiveComputer(s.device, { type: DEVICE_EVENTS.RIGHT_SHORT }), simulation: s.simulation };
+  if (phase === 'acknowledged') return s;
+  s = stepBoth(s, 4.6, 40); // hold - the rate falls back under the limit
+  s = stepBoth(s, 0, 60);
+  s = stepBoth(s, 0, 2);
+  s = stepBoth(s, 0, SURFACE_INTERVAL_SECONDS);
+  return { device: s.device, simulation: pauseSimulation(s.simulation) };
+}
+
 function diveThree(pair) {
   // A clean qualifying knowledge-check dive: over ten minutes, shallow enough
   // (< deepStopTriggerDepthMeters) that only a safety stop activates.
@@ -158,7 +178,9 @@ function memoized(key, build) {
 
 const afterDiveOne = (depthUnit) => memoized(`dive1:${depthUnit}`, () => diveOne(freshPair(depthUnit), 'surface'));
 const afterDiveTwo = (depthUnit) => memoized(`dive2:${depthUnit}`, () => diveTwo(afterDiveOne(depthUnit), 'surface'));
-const afterQuizDive = (depthUnit) => memoized(`dive3:${depthUnit}`, () => diveThree(afterDiveTwo(depthUnit)));
+const afterWarningDive = (depthUnit) => memoized(`warningDive:${depthUnit}`, () => diveWarning(afterDiveTwo(depthUnit), 'surface'));
+const afterNitrox = (depthUnit) => memoized(`nitrox:${depthUnit}`, () => withEan32(afterWarningDive(depthUnit)));
+const afterQuizDive = (depthUnit) => memoized(`quizDive:${depthUnit}`, () => diveThree(afterNitrox(depthUnit)));
 
 // ---- Post-dive menu navigation. ----
 
@@ -173,6 +195,11 @@ function toHome(device) {
 function toPlannerActive(device) {
   const leadIn = pressUntil(device, DEVICE_EVENTS.LEFT_SHORT, (d) => d.currentScreen === DEVICE_SCREENS.PLAN_LEAD_IN);
   return transitionVirtualDiveComputer(leadIn, { type: DEVICE_EVENTS.RIGHT_SHORT });
+}
+
+function toPlannerModDepth(device) {
+  const active = toPlannerActive(device);
+  return pressUntil(active, DEVICE_EVENTS.LEFT_SHORT, (d) => d.planner.depthMeters >= 36, 20);
 }
 
 function toDeepStopSetting(device) {
@@ -209,6 +236,13 @@ function withBluetoothOn(pair) {
   };
 }
 
+function withEan32(pair) {
+  return {
+    device: { ...pair.device, configuredGas: { ...pair.device.configuredGas, fo2: 0.32, po2Alarm: 1.4 } },
+    simulation: pair.simulation,
+  };
+}
+
 function navigated(pair, navigate) {
   return snapshot(navigate(pair.device), pair.simulation);
 }
@@ -225,7 +259,8 @@ const diveTwoAt = (depthUnit, phase) => fromPair(diveTwo(afterDiveOne(depthUnit)
  */
 export function buildGuidedStepCompletionSnapshot(stepId, { depthUnit = 'ft', actualTime = new Date() } = {}) {
   switch (stepId) {
-    case 'introduction': {
+    case 'introduction':
+    case 'button-basics': {
       const p = freshPair(depthUnit);
       return snapshot(p.device, p.simulation);
     }
@@ -273,9 +308,18 @@ export function buildGuidedStepCompletionSnapshot(stepId, { depthUnit = 'ft', ac
     case 'log-earlier-page-3': return navigated(afterDiveTwo(depthUnit), toLogEntry(1, DEVICE_SCREENS.LOG_DATA_3));
     case 'log-exit': return navigated(afterDiveTwo(depthUnit), toLeadIn(DEVICE_SCREENS.LOG_LEAD_IN));
 
-    case 'quiz-intro': return navigated(afterDiveTwo(depthUnit), toHome);
-    case 'quiz-bluetooth': return navigated(withBluetoothOn(afterDiveTwo(depthUnit)), toHome);
-    case 'quiz-log-po2': return navigated(withBluetoothOn(afterDiveTwo(depthUnit)), toLogEntry(0, DEVICE_SCREENS.LOG_DATA_3));
+    case 'warning-dive': return fromPair(diveWarning(afterDiveTwo(depthUnit), 'descended'));
+    case 'warning-slow-ascent': return fromPair(diveWarning(afterDiveTwo(depthUnit), 'warned'));
+    case 'warning-correct': return fromPair(afterWarningDive(depthUnit));
+
+    case 'nitrox-setgas-nav': return navigated(afterWarningDive(depthUnit), toLeadIn(DEVICE_SCREENS.SET_GAS_LEAD_IN));
+    case 'nitrox-set-ean32': return navigated(afterNitrox(depthUnit), toLeadIn(DEVICE_SCREENS.SET_GAS_LEAD_IN));
+    case 'nitrox-mod': return navigated(afterNitrox(depthUnit), toPlannerModDepth);
+    case 'nitrox-o2-screen': return navigated(afterNitrox(depthUnit), toLeadIn(DEVICE_SCREENS.ALT_3));
+
+    case 'quiz-intro': return navigated(afterNitrox(depthUnit), toHome);
+    case 'quiz-bluetooth': return navigated(withBluetoothOn(afterNitrox(depthUnit)), toHome);
+    case 'quiz-log-po2': return navigated(withBluetoothOn(afterNitrox(depthUnit)), toLogEntry(1, DEVICE_SCREENS.LOG_DATA_3));
     case 'quiz-dive': return fromPair(withBluetoothOn(afterQuizDive(depthUnit)));
 
     case 'complete':

@@ -8,12 +8,18 @@ export const GUIDED_DIVE_ACTIONS = Object.freeze({
 // Only pause the student for a takeaway when the step teaches a meaningful
 // concept. Navigation-only steps should flow directly into the next task.
 export const GUIDED_REVIEW_STEPS = new Set([
+  'button-basics',
   'surface-ready',
   'set-day',
   'activate-dive',
   'accumulate-time',
   'explain-safety-stop',
   'surface',
+  'warning-slow-ascent',
+  'warning-correct',
+  'nitrox-set-ean32',
+  'nitrox-mod',
+  'nitrox-o2-screen',
   'planner-read',
   'deep-stop-enable',
   'deep-stop-descent',
@@ -92,6 +98,17 @@ export const GUIDED_DIVE_STEPS = Object.freeze([
     id: 'introduction',
     instruction: 'We will identify the LCD, protective bezel, and the ADV and SEL buttons together. When you are ready, press START THE GUIDED TOUR.',
     title: 'Meet your dive computer.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Practice the two presses',
+    body: 'This computer has only two buttons, and each one does two things depending on how long you press it. A quick tap is one command; pressing and holding for about a second is a different command. Almost every convoluted-seeming dive computer works this way — learn the tap-versus-hold habit here and the rest of the menus make sense.',
+    completionBody: 'A quick tap and a hold are two separate commands on both buttons. As a rule: a tap moves you forward — next screen, next field, save — and a hold takes you back or out — back to the home screen, cancel an edit. The legend under the computer always shows what each press does on the current screen.',
+    eyebrow: 'HOW THE BUTTONS WORK',
+    focus: ['display', 'leftButton', 'rightButton'],
+    id: 'button-basics',
+    instruction: 'Tap ADV once and watch the screen advance. Then press and hold ADV for about a second — it jumps straight back to the home screen.',
+    title: 'A tap and a hold are different.',
   },
   {
     action: GUIDED_DIVE_ACTIONS.CONTINUE,
@@ -200,7 +217,7 @@ export const GUIDED_DIVE_STEPS = Object.freeze([
     action: GUIDED_DIVE_ACTIONS.CONTINUE,
     actionLabel: 'Observe the descent',
     body: 'Watch the diver descend and observe the computer turn on at approximately 4–5 ft. As depth increases, notice the NDL decrease and the elapsed dive time advance.',
-    completionBody: 'We observed the computer activate at approximately 4–5 ft. As the diver descended, the depth increased, the NDL decreased, and the elapsed dive time advanced.',
+    completionBody: 'We observed the computer activate at approximately 4–5 ft. NDL is your no-decompression limit: the number of minutes you could stay at the current depth and still ascend straight to the surface without a required decompression stop. It counts down as you absorb nitrogen, and it falls faster the deeper you go. If it ever reaches zero the computer switches into decompression mode. Time at the surface between dives lets nitrogen leave your body, which raises the NDL back up.',
     eyebrow: 'AUTOMATIC DIVE MODE',
     focus: ['water', 'display', 'depth', 'ndl', 'time'],
     id: 'activate-dive',
@@ -285,7 +302,7 @@ export const GUIDED_DIVE_STEPS = Object.freeze([
     action: GUIDED_DIVE_ACTIONS.CONTINUE,
     actionLabel: 'Continue to deep-stop setup',
     body: 'Press ADV inside PLAN to cycle through the available depths. Compare the NDL at each depth, then continue until the starting depth appears again so you can see how the limit changes across the planner range.',
-    completionBody: 'We cycled through the planner’s depth options and compared the NDL at each one. This demonstrated how the available limit changes with depth and how the planner uses residual nitrogen from the previous dive.',
+    completionBody: 'We cycled through the planner’s depth options and compared the NDL at each one. The planner starts from the nitrogen still left in your body from the last dive — your residual nitrogen — so right after a dive its limits are shorter than the computer’s fresh limits. As your surface interval grows, that residual nitrogen falls and the planner’s NDLs climb back toward normal. That is why a longer surface interval buys you more bottom time on the next dive.',
     eyebrow: 'PLANNER READING',
     focus: ['display', 'leftButton'],
     id: 'planner-read',
@@ -440,7 +457,7 @@ export const GUIDED_DIVE_STEPS = Object.freeze([
   {
     action: GUIDED_DIVE_ACTIONS.CONTINUE,
     actionLabel: 'Open the earlier dive',
-    body: 'The log preview can cycle through recorded dives. Advance changes the selected entry; Select opens the entry currently shown.',
+    body: 'Note the one exception to the tap-forward rule: inside a dive’s log data pages, ADV goes back to the preview instead of forward — SEL is what moves you deeper through the pages here. It is the only screen on the computer where the buttons swap roles, and the legend under the computer shows it. Now: Advance changes the selected entry; Select opens the entry currently shown.',
     eyebrow: 'DIVE LOGBOOK · EARLIER DIVE',
     focus: ['display', 'leftButton', 'rightButton'],
     id: 'log-select-earlier',
@@ -490,6 +507,81 @@ export const GUIDED_DIVE_STEPS = Object.freeze([
   },
   {
     action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Start the ascent-rate dive',
+    body: 'Every dive computer watches how fast you ascend. Rise faster than its limit — roughly nine metres, or thirty feet, a minute — and it raises an alarm, because a fast ascent does not give dissolved nitrogen time to leave your blood safely. We will trigger that alarm on purpose so you know what it looks like.',
+    eyebrow: 'ASCENT-RATE ALARM',
+    focus: ['water', 'display', 'depth-18', 'simulation-toggle'],
+    id: 'warning-dive',
+    instruction: 'Scroll down, choose the highlighted 59 ft / 18 m target, then press START SIMULATION.',
+    title: 'Set up a dive to test your ascent rate.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Trigger the ascent alarm',
+    body: 'The ascent-rate indicator on the display fills as you rise. When it reaches the top the computer flashes SLOW ASCENT and sounds its alarm. Select the FAST ascent rate and a shallow target so the indicator climbs into its warning band.',
+    completionBody: 'The ascent-rate indicator filled into its warning band and the computer raised SLOW ASCENT. An alarm reflects a live condition — the computer is telling you to slow down right now, before you keep rising.',
+    eyebrow: 'ASCENT-RATE ALARM',
+    focus: ['water', 'display', 'ascent', 'rate-12', 'depth-stop'],
+    id: 'warning-slow-ascent',
+    instruction: 'Select the FAST ascent rate and the 15 ft / 4.6 m target, then watch the ascent-rate bar and the SLOW ASCENT warning.',
+    title: 'Trigger the SLOW ASCENT alarm.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Bring the ascent under control',
+    body: 'Press SEL to acknowledge the alarm — the flashing stops, but a small ! stays in the corner and is written into this dive’s log entry. Then select the CONTROLLED ascent rate and surface. The alarm condition clears as soon as your rate drops back under the limit.',
+    completionBody: 'Acknowledging silences an alarm; it does not undo it. The ! indicator and the fast ascent rate are recorded in the logbook for this dive. Warnings track a live condition and clear when you fix it — but a more serious one behaves differently: if your no-decompression limit reaches zero, the computer switches into decompression mode and shows a mandatory ceiling you must not ascend past. You can practise that in Free Practice with the Deco response scenario.',
+    eyebrow: 'ASCENT-RATE ALARM',
+    focus: ['display', 'rightButton', 'rate-6', 'depth-0', 'water'],
+    id: 'warning-correct',
+    instruction: 'While SLOW ASCENT is flashing, press SEL to acknowledge it. Then select CONTROLLED and 0 ft and surface under control.',
+    title: 'Acknowledge, then correct the ascent.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Find SET GAS',
+    body: 'Enriched air — nitrox — has more oxygen and less nitrogen than air. Less nitrogen extends your no-decompression limit, but the extra oxygen becomes toxic below a depth called the MOD, the maximum operating depth. You program the computer with the gas in your cylinder so it can track both. Start in the SET GAS menu.',
+    eyebrow: 'ENRICHED AIR (NITROX)',
+    focus: ['display', 'leftButton'],
+    id: 'nitrox-setgas-nav',
+    instruction: 'Use ADV from the surface screen until the LCD shows SET GAS.',
+    title: 'Open the gas menu.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Program EAN32',
+    body: 'SEL opens the gas editor. First choose AIR or EAN — select EAN. Then set the oxygen percentage to 32 with ADV, and accept the PO2 alarm setpoint to save.',
+    completionBody: 'The computer is now programmed for EAN32. Its planner and its oxygen tracking will use 32% oxygen instead of 21% until you change it back.',
+    eyebrow: 'ENRICHED AIR (NITROX)',
+    focus: ['display', 'leftButton', 'rightButton'],
+    id: 'nitrox-set-ean32',
+    instruction: 'Press SEL to open the editor, select EAN, set the oxygen to 32%, then accept the PO2 alarm to return to SET GAS.',
+    title: 'Program EAN32.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Compare limits in the planner',
+    body: 'Open the planner and step the depth deeper with ADV. In the shallows the no-decompression limit on EAN32 is longer than it was on air. But once you pass the MOD the planner shows ABOVE MOD and refuses to give a time — that depth is off-limits on this gas.',
+    completionBody: 'On EAN32 you gain bottom time in the shallows and lose access to deeper water. That trade-off is the point of choosing a gas: match it to the dive you are planning.',
+    eyebrow: 'ENRICHED AIR (NITROX)',
+    focus: ['display', 'leftButton', 'rightButton'],
+    id: 'nitrox-mod',
+    instruction: 'Open PLAN and press ADV to step the depth down past the MOD, until the planner shows ABOVE MOD.',
+    title: 'See the MOD in the planner.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
+    actionLabel: 'Read the oxygen screen',
+    body: 'Because a nitrox gas is now programmed, the surface menu has an extra screen — ALT 3, the oxygen status page. It shows your programmed gas, its PO2 alarm setpoint, the MOD, and your accumulated oxygen exposure (O2 SATURATION).',
+    completionBody: 'ALT 3 is where the computer summarises everything oxygen-related between dives. On air this screen is hidden; on nitrox it is part of your pre-dive check.',
+    eyebrow: 'ENRICHED AIR (NITROX)',
+    focus: ['display', 'leftButton', 'rightButton'],
+    id: 'nitrox-o2-screen',
+    instruction: 'Exit the planner with SEL, then use ADV until the LCD shows ALT 3, the oxygen status screen.',
+    title: 'Find the oxygen status screen.',
+  },
+  {
+    action: GUIDED_DIVE_ACTIONS.CONTINUE,
     actionLabel: 'Begin the knowledge check',
     body: 'The next three scenarios test how confidently you can apply what you learned without highlighted controls. Nothing on the computer will be highlighted for you. The trainer verifies each scenario against the computer’s real settings, logbook, and live dive data.',
     completionBody: 'Scenario 1: under SET UTIL, turn BLUETOOTH on. Scenario 2: read an exact value from Dive 2 in the logbook and enter it. Scenario 3: run a simulated dive of at least 10 minutes and complete every stop the computer activates. Work at your own pace — you can still step back if you need to.',
@@ -520,7 +612,7 @@ export const GUIDED_DIVE_STEPS = Object.freeze([
     action: GUIDED_DIVE_ACTIONS.CONTINUE,
     actionLabel: 'Complete scenario 2',
     answerPrompt: 'On the deeper logged dive (LOG DATA 1 shows DEEP STOP: YES), what was its HIGHEST PO2?',
-    body: 'Go back to the logbook and find the dive that shows DEEP STOP: YES on LOG DATA 1 — the deeper dive with two stops, which is the most recent entry. Read its LOG DATA 3 page and type the HIGHEST PO2 value exactly as the screen shows it. Your entry is checked against the real saved dive, so it has to match the reading.',
+    body: 'Go back to the logbook and find the dive that shows DEEP STOP: YES on LOG DATA 1 — the deeper dive with two stops, which is Dive 2 in the log. Read its LOG DATA 3 page and type the HIGHEST PO2 value exactly as the screen shows it. Your entry is checked against the real saved dive, so it has to match the reading.',
     completionBody: 'Correct. You found the right dive in the log (the one with a deep stop), read the correct data page, and reported HIGHEST PO2 exactly as the computer recorded it. Reading the log accurately is how you review a dive after you surface.',
     eyebrow: 'KNOWLEDGE CHECK · 2 OF 3',
     focus: [],
@@ -548,11 +640,11 @@ export const GUIDED_DIVE_STEPS = Object.freeze([
   {
     action: GUIDED_DIVE_ACTIONS.OPEN_PRACTICE,
     actionLabel: 'Open Free Practice',
-    body: 'You have now operated the computer through real surface menus, date/time settings, dives, stops, the planner, the logbook, utility settings, the two-button home shortcut, and an independent knowledge check.',
+    body: 'You have now operated the computer through the tap-versus-hold button model, real surface menus, date and time, dives, the safety stop and the deep stop, a rapid-ascent alarm, the planner and residual nitrogen, nitrox setup and the MOD, the logbook, utility settings, the two-button home shortcut, and an independent knowledge check.',
     eyebrow: 'GUIDED TOUR COMPLETE',
     focus: ['housing', 'profile'],
     id: 'complete',
-    instruction: 'Free Practice is your unguided playground for exploring the same instrument.',
+    instruction: 'Free Practice is your unguided playground for the same instrument — it also has Ascent-control and Deco-response scenarios with live coaching.',
     title: 'You are ready to explore independently.',
   },
 ]);
@@ -561,6 +653,7 @@ export function evaluateGuidedDiveObjective(stepId, {
   device,
   simulation,
   actualTime = new Date(),
+  buttonGesturesComplete = false,
   plannerCycleComplete = false,
   quizAnswer = null,
   quizDiveObservation = null,
@@ -571,6 +664,8 @@ export function evaluateGuidedDiveObjective(stepId, {
       return true;
     case 'quiz-intro':
       return true;
+    case 'button-basics':
+      return Boolean(buttonGesturesComplete);
     case 'quiz-bluetooth':
       return device.settings.bluetooth === true;
     case 'quiz-log-po2':
@@ -664,6 +759,23 @@ export function evaluateGuidedDiveObjective(stepId, {
       return device.currentScreen === DEVICE_SCREENS.LOG_DATA_3 && device.logbook.selectedIndex === 1;
     case 'log-exit':
       return device.currentScreen === DEVICE_SCREENS.LOG_LEAD_IN;
+    case 'warning-dive':
+      return simulation.dive.lifecycle === 'diving'
+        && simulation.environment.depthMeters >= 17.5;
+    case 'warning-slow-ascent':
+      return device.warning.latchedCodes.includes('rapid-ascent');
+    case 'warning-correct':
+      return simulation.dive.lifecycle === 'postDive';
+    case 'nitrox-setgas-nav':
+      return device.currentScreen === DEVICE_SCREENS.SET_GAS_LEAD_IN;
+    case 'nitrox-set-ean32':
+      return device.configuredGas.fo2 === 0.32
+        && device.currentScreen === DEVICE_SCREENS.SET_GAS_LEAD_IN;
+    case 'nitrox-mod':
+      return device.currentScreen === DEVICE_SCREENS.PLAN_ACTIVE
+        && device.planner.depthMeters >= 36;
+    case 'nitrox-o2-screen':
+      return device.currentScreen === DEVICE_SCREENS.ALT_3;
     case 'complete':
       return true;
     default:

@@ -1,4 +1,4 @@
-import { SIMULATION_LIMITS, selectAscentRateMpm } from '../diveSimulation';
+import { SIMULATION_LIMITS, selectAscentRateMpm, waterTemperatureCelsius } from '../diveSimulation';
 import {
   DEVICE_SCREENS,
   DISPLAY_ONLY_SCREENS,
@@ -26,6 +26,11 @@ function clamp(value, minimum, maximum) {
 
 function unique(values) {
   return [...new Set(values)];
+}
+
+function minTemperature(current, candidate) {
+  if (!Number.isFinite(candidate)) return current;
+  return current == null ? candidate : Math.min(current, candidate);
 }
 
 function cycleScreen(currentScreen, screens) {
@@ -401,6 +406,13 @@ function synchronizeWithSimulation(state, simulation) {
           depthSum: state.diveStats.depthSum + simulation.environment.depthMeters,
           ppO2Max: Math.max(state.diveStats.ppO2Max, simulation.physiology.oxygen.ppO2),
         },
+      history: {
+        ...next.history,
+        lowestTemperature: minTemperature(
+          next.history.lowestTemperature,
+          waterTemperatureCelsius(simulation.environment.depthMeters),
+        ),
+      },
       lifecycle: DEVICE_LIFECYCLES.DIVE,
       observedDeepStopStatus: simulation.deepStop.status,
       observedDiveCondition: diveCondition,
@@ -434,7 +446,19 @@ function synchronizeWithSimulation(state, simulation) {
 
   if (simulationLifecycle === 'postDive') {
     next = addLogbookEntry(next, simulation);
-    if (state.observedSimulationLifecycle === 'postDive') return next;
+    if (state.observedSimulationLifecycle === 'postDive') {
+      // The engine only leaves 'postDive' once the surface interval clock runs
+      // out the post-dive window. A paused simulation never gets there, so the
+      // device would otherwise sit in POST_DIVE forever. Once the window has
+      // elapsed - or the simulation is paused and can no longer advance it -
+      // settle back to the ordinary surface lifecycle.
+      const windowElapsed = simulation.dive.surfaceIntervalSeconds >= SIMULATION_LIMITS.surfaceModeDelaySeconds;
+      const stalledPaused = simulation.clock.status !== 'running';
+      if ((windowElapsed || stalledPaused) && next.lifecycle === DEVICE_LIFECYCLES.POST_DIVE) {
+        return { ...next, lifecycle: DEVICE_LIFECYCLES.SURFACE };
+      }
+      return next;
+    }
     return {
       ...next,
       currentScreen: DEVICE_SCREENS.SURFACE_HOME,
@@ -520,7 +544,13 @@ export function transitionVirtualDiveComputer(state, event) {
   }
   if (event.type === DEVICE_EVENTS.SIMULATION_UPDATED) return synchronizeWithSimulation(state, event.simulation);
   if (event.type === DEVICE_EVENTS.BOTH_LONG) {
-    return enterScreen({ ...state, editing: null }, DEVICE_SCREENS.SURFACE_HOME);
+    // Underwater the two-button hold has nothing to return to - the dive
+    // screens are driven by the simulation - so it is a deliberate no-op.
+    if (state.lifecycle === DEVICE_LIFECYCLES.DIVE) return state;
+    return enterScreen(
+      { ...state, editing: null, lifecycle: DEVICE_LIFECYCLES.SURFACE },
+      DEVICE_SCREENS.SURFACE_HOME,
+    );
   }
   if (event.type === DEVICE_EVENTS.TICK) {
     const elapsedSeconds = Math.max(0, Number(event.elapsedSeconds) || 0);

@@ -300,4 +300,99 @@ assert.ok(
   'The fabricated logbook must accept the displayed HIGHEST PO2 as the scenario-2 answer.',
 );
 
+// ---- Warnings chapter: recognize -> acknowledge -> correct a rapid-ascent
+// alarm, added between the logbook lesson and the knowledge check. ----
+assert.match(guidedLessonSource, /id: 'warning-dive'/);
+assert.match(guidedLessonSource, /id: 'warning-slow-ascent'/);
+assert.match(guidedLessonSource, /id: 'warning-correct'/);
+assert.ok(
+  guidedLessonSource.indexOf("id: 'log-exit'") < guidedLessonSource.indexOf("id: 'warning-dive'")
+  && guidedLessonSource.indexOf("id: 'warning-correct'") < guidedLessonSource.indexOf("id: 'quiz-intro'"),
+  'The warnings chapter sits between the logbook lesson and the knowledge check.',
+);
+assert.match(guidedLessonSource, /case 'warning-slow-ascent':\s*\n\s*return device\.warning\.latchedCodes\.includes\('rapid-ascent'\);/, 'The alarm step completes when the rapid-ascent warning is raised.');
+assert.match(guidedLessonSource, /case 'warning-correct':\s*\n\s*return simulation\.dive\.lifecycle === 'postDive';/);
+for (const reviewStep of ["'warning-slow-ascent'", "'warning-correct'"]) {
+  assert.ok(guidedReviewBlock.includes(reviewStep), `${reviewStep} must pause for a takeaway.`);
+}
+
+const warnedSkip = build('warning-slow-ascent');
+assert.equal(warnedSkip.simulation.dive.lifecycle, 'diving');
+assert.ok(warnedSkip.device.warning.latchedCodes.includes('rapid-ascent'), 'Skipping the alarm step must leave the rapid-ascent warning raised.');
+assert.ok(
+  guidedLesson.evaluateGuidedDiveObjective('warning-slow-ascent', { device: warnedSkip.device, simulation: warnedSkip.simulation }),
+  'The fabricated alarm state must satisfy the warning objective.',
+);
+const afterWarning = build('warning-correct');
+assert.equal(afterWarning.device.logbook.entries.length, 3, 'The warnings chapter adds a third logged dive.');
+
+// ---- Nitrox chapter: program EAN32, read its MOD in the planner, and the
+// oxygen-status screen (ALT 3) that a nitrox gas unlocks. ----
+assert.match(guidedLessonSource, /id: 'nitrox-setgas-nav'/);
+assert.match(guidedLessonSource, /id: 'nitrox-set-ean32'/);
+assert.match(guidedLessonSource, /id: 'nitrox-mod'/);
+assert.match(guidedLessonSource, /id: 'nitrox-o2-screen'/);
+assert.ok(
+  guidedLessonSource.indexOf("id: 'warning-correct'") < guidedLessonSource.indexOf("id: 'nitrox-setgas-nav'")
+  && guidedLessonSource.indexOf("id: 'nitrox-o2-screen'") < guidedLessonSource.indexOf("id: 'quiz-intro'"),
+  'The nitrox chapter sits between the warnings chapter and the knowledge check.',
+);
+assert.match(guidedLessonSource, /case 'nitrox-set-ean32':[\s\S]*device\.configuredGas\.fo2 === 0\.32/);
+assert.match(guidedLessonSource, /case 'nitrox-mod':[\s\S]*device\.currentScreen === DEVICE_SCREENS\.PLAN_ACTIVE/);
+assert.match(guidedLessonSource, /case 'nitrox-o2-screen':\s*\n\s*return device\.currentScreen === DEVICE_SCREENS\.ALT_3;/);
+
+const ean32Skip = build('nitrox-set-ean32');
+assert.equal(ean32Skip.device.configuredGas.fo2, 0.32, 'Skipping the EAN32 step must leave the computer programmed for nitrox.');
+assert.equal(ean32Skip.device.currentScreen, 'setGas.leadIn');
+const modSkip = build('nitrox-mod');
+assert.equal(modSkip.device.currentScreen, 'plan.active');
+assert.ok(modSkip.device.planner.depthMeters >= 36, 'The MOD step lands past the EAN32 MOD.');
+const o2Skip = build('nitrox-o2-screen');
+assert.equal(o2Skip.device.currentScreen, 'surface.alt3');
+assert.equal(build('quiz-intro').device.configuredGas.fo2, 0.32, 'The nitrox setting carries into the knowledge check.');
+
+// ---- Free Practice scenario picker: the ascent-control and deco scenarios
+// are reachable, with live coaching text. ----
+assert.match(screenSource, /function ScenarioSelector/);
+assert.match(screenSource, /DIVE_COMPUTER_SCENARIOS/);
+assert.match(screenSource, /simulator\.setScenarioId/);
+assert.match(screenSource, /simulator\.guidance\.title/);
+assert.doesNotMatch(screenSource, /accessibilityRole="tablist"/);
+const scenarios = srcModule('features/diveComputer/scenarios.js');
+assert.deepEqual(scenarios.DIVE_COMPUTER_SCENARIOS.map((s) => s.id), ['guided-dive', 'ascent-control', 'decompression-response']);
+for (const scenarioId of ['ascent-control', 'decompression-response']) {
+  const seeded = engine.seedDiveComputerState({ depthMeters: 20, minutesAtDepth: 10 });
+  const guidance = scenarios.scenarioGuidance({ computer: seeded, scenarioId, stage: 0, travelRateMpm: 6 });
+  assert.ok(guidance && guidance.title && guidance.action && guidance.body, `${scenarioId} must return coaching copy.`);
+}
+
+// ---- Press-vs-hold drill + concept copy. ----
+assert.match(guidedLessonSource, /id: 'button-basics'/);
+assert.ok(
+  guidedLessonSource.indexOf("id: 'introduction'") < guidedLessonSource.indexOf("id: 'button-basics'")
+  && guidedLessonSource.indexOf("id: 'button-basics'") < guidedLessonSource.indexOf("id: 'surface-ready'"),
+  'The tap-versus-hold drill comes right after the introduction.',
+);
+assert.match(guidedLessonSource, /case 'button-basics':\s*\n\s*return Boolean\(buttonGesturesComplete\);/);
+assert.ok(guidedReviewBlock.includes("'button-basics'"), 'The button drill pauses for a takeaway.');
+assert.match(lessonHookSource, /buttonGesturesComplete/, 'The lesson hook tracks the tap and hold gestures for the drill.');
+assert.match(lessonHookSource, /LEFT_SHORT' \|\| event === 'RIGHT_SHORT'/, 'The drill counts a quick tap on either button.');
+assert.match(lessonHookSource, /LEFT_LONG' \|\| event === 'RIGHT_LONG'/, 'The drill counts a press-and-hold on either button.');
+assert.match(guidedLessonSource, /NDL is your no-decompression limit/, 'The descent step explains what NDL is and what zero means.');
+assert.match(guidedLessonSource, /residual nitrogen[\s\S]*longer surface interval buys you more bottom time/, 'The planner review explains residual nitrogen and surface intervals.');
+assert.match(guidedLessonSource, /the one screen on the computer where the buttons swap roles|the only screen on the computer where the buttons swap roles/, 'The logbook lesson calls out the ADV-means-back reversal.');
+
+const drillSkip = build('button-basics');
+assert.equal(drillSkip.device.currentScreen, 'surface.home');
+assert.equal(drillSkip.scenarioId, 'guided-dive');
+assert.equal(
+  guidedLesson.evaluateGuidedDiveObjective('button-basics', { device: drillSkip.device, simulation: drillSkip.simulation }),
+  false,
+  'The drill is not complete until both gestures are performed.',
+);
+assert.ok(
+  guidedLesson.evaluateGuidedDiveObjective('button-basics', { device: drillSkip.device, simulation: drillSkip.simulation, buttonGesturesComplete: true }),
+  'The drill completes once the hook reports both gestures.',
+);
+
 console.log('Dive computer simulator checks passed.');

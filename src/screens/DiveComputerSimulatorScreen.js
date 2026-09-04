@@ -8,6 +8,7 @@ import { PrimaryButton, ProgressBar, SecondaryButton } from '../components/Ui';
 import { NUMBER_KEYBOARD_ACCESSORY_ID, usesNumberKeyboard } from '../lib/numberKeyboard';
 import useGuidedDiveLesson from '../features/diveComputer/training/useGuidedDiveLesson';
 import useDiveComputerSimulator from '../features/diveComputer/useDiveComputerSimulator';
+import { DIVE_COMPUTER_SCENARIOS } from '../features/diveComputer/scenarios';
 import DiveProfileViewport from '../features/diveComputer/ui/DiveProfileViewport';
 import SimulatorWorkspace from '../features/diveComputer/ui/SimulatorWorkspace';
 import { displayDepthToMeters, formatComputerDepth, formatSimulationTime, metersToDisplayDepth } from '../lib/diveComputer';
@@ -73,7 +74,7 @@ function GuidedLesson({ depthUnit, onOpenPractice, visible = true }) {
   const isLessonStart = stepIndex === 0;
   const objectiveFinished = objectiveComplete && !isLessonStart;
   const waitingForDevice = !objectiveComplete && !needsSimulationAction;
-  const showSimulationControls = stepIndex >= 4;
+  const showSimulationControls = stepIndex >= 5;
   const highlightedControls = useMemo(() => {
     if (objectiveComplete) return [];
     const targetIs18m = Math.abs(simulator.targetDepthMeters - 18) < 0.2;
@@ -115,6 +116,17 @@ function GuidedLesson({ depthUnit, onOpenPractice, visible = true }) {
     if (step.id === 'surface') {
       if (!targetIsSurface) return ['depth-0'];
       if (!controlledRateAcknowledged) return ['rate-6'];
+      return [];
+    }
+    if (step.id === 'warning-dive') return [targetIs18m ? 'simulation-toggle' : 'depth-18'];
+    if (step.id === 'warning-slow-ascent') {
+      if (simulator.travelRateMpm !== 12) return ['rate-12'];
+      if (!targetIsStopDepth) return ['depth-stop'];
+      return [];
+    }
+    if (step.id === 'warning-correct') {
+      if (simulator.travelRateMpm !== 6) return ['rate-6'];
+      if (!targetIsSurface) return ['depth-0'];
       return [];
     }
     return [];
@@ -473,9 +485,32 @@ function PracticeLogPanel({ computer, depthUnit }) {
   );
 }
 
+function ScenarioSelector({ activeId, disabled, onSelect }) {
+  return (
+    <View style={styles.scenarioRow}>
+      {DIVE_COMPUTER_SCENARIOS.map((scenario) => {
+        const selected = scenario.id === activeId;
+        return (
+          <Pressable
+            key={scenario.id}
+            accessibilityRole="button"
+            accessibilityState={{ disabled, selected }}
+            disabled={disabled}
+            onPress={() => onSelect(scenario.id)}
+            style={({ pressed }) => [styles.scenarioPill, selected && styles.scenarioPillActive, disabled && styles.scenarioPillDisabled, pressed && styles.pressed]}
+          >
+            <Text style={[styles.scenarioPillText, selected && styles.scenarioPillTextActive]}>{scenario.shortLabel}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
 function PracticeMode({ depthUnit, onReturnToLesson, visible = true }) {
   const insets = useSafeAreaInsets();
   const simulator = useDiveComputerSimulator({ initialDepthUnit: depthUnit });
+  const scenarioActive = simulator.scenarioId !== 'guided-dive';
 
   return (
     <ScrollView accessibilityElementsHidden={!visible} contentContainerStyle={[styles.practiceContent, { paddingBottom: insets.bottom + 32 }]} importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'} showsVerticalScrollIndicator={false} style={[styles.experience, !visible && styles.hiddenExperience]}>
@@ -487,6 +522,22 @@ function PracticeMode({ depthUnit, onReturnToLesson, visible = true }) {
         </View>
         <Pressable accessibilityRole="button" onPress={onReturnToLesson} style={styles.tourButton}><Text style={styles.tourButtonText}>GUIDED TOUR</Text></Pressable>
       </View>
+
+      <View style={styles.scenarioSection}>
+        <SectionLabel>TRAINING SCENARIO</SectionLabel>
+        <Text style={styles.helper}>{simulator.scenario.summary}</Text>
+        <ScenarioSelector activeId={simulator.scenarioId} disabled={simulator.isRunning} onSelect={simulator.setScenarioId} />
+        {simulator.isRunning ? <Text style={styles.scenarioLockNote}>Stop the simulation to switch scenarios.</Text> : null}
+      </View>
+
+      {scenarioActive ? (
+        <View style={styles.coachPanel}>
+          <Text style={styles.coachLabel}>COACH</Text>
+          <Text style={styles.coachTitle}>{simulator.guidance.title}</Text>
+          <Text style={styles.coachBody}>{simulator.guidance.body}</Text>
+          <Text style={styles.coachAction}>{simulator.guidance.action}</Text>
+        </View>
+      ) : null}
 
       <SimulatorWorkspace depthUnit={depthUnit} deviceDisplay={simulator.deviceDisplay} onDeviceEvent={simulator.dispatchDeviceEvent} simulation={simulator.simulation} />
       <PracticeDivePanel depthUnit={depthUnit} simulator={simulator} />
@@ -579,6 +630,20 @@ const styles = StyleSheet.create({
   practiceIntro: { alignItems: 'flex-start', flexDirection: 'row', marginBottom: spacing.lg },
   tourButton: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: 5, borderWidth: 1, justifyContent: 'center', marginLeft: 8, marginTop: 2, minHeight: 38, paddingHorizontal: 9 },
   tourButtonText: { color: colors.cyan, fontSize: 8, fontWeight: '900', letterSpacing: 0.8 },
+
+  scenarioSection: { marginBottom: spacing.md },
+  scenarioRow: { flexDirection: 'row', gap: 6, marginTop: 10 },
+  scenarioPill: { alignItems: 'center', backgroundColor: '#07111D', borderColor: colors.lineStrong, borderRadius: 5, borderWidth: 1, flex: 1, justifyContent: 'center', minHeight: 40, paddingHorizontal: 8 },
+  scenarioPillActive: { backgroundColor: 'rgba(112,221,246,.12)', borderColor: colors.cyan },
+  scenarioPillDisabled: { opacity: 0.4 },
+  scenarioPillText: { color: colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: 0.7 },
+  scenarioPillTextActive: { color: colors.cyan },
+  scenarioLockNote: { color: colors.faint, fontSize: 10, fontStyle: 'italic', marginTop: 6 },
+  coachPanel: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)', borderRadius: radii.md, borderWidth: 1, marginBottom: spacing.md, padding: spacing.md },
+  coachLabel: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.3 },
+  coachTitle: { color: colors.text, fontSize: 15, fontWeight: '900', marginTop: 5 },
+  coachBody: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 5 },
+  coachAction: { color: colors.text, fontSize: 12, fontWeight: '800', lineHeight: 17, marginTop: 8 },
 
   practiceSection: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, marginTop: 20, paddingTop: 14 },
   sectionEyebrow: { color: colors.text, fontSize: 11, fontWeight: '900', letterSpacing: 1.1 },

@@ -95,6 +95,9 @@ assert.match(screenSource, /<SimulatorWorkspace/);
 assert.match(workspaceSource, /<VirtualDiveComputer/);
 assert.match(workspaceSource, /display=\{deviceDisplay\}/);
 assert.match(workspaceSource, /onDeviceEvent=\{onDeviceEvent\}/);
+assert.match(workspaceSource, /<ButtonLegend display=\{deviceDisplay\}/, 'The workspace shows a per-screen button legend in both modes.');
+const legendSource = source('ButtonLegend.js');
+assert.match(legendSource, /describeButtons/, 'The button legend is driven by the shared describeButtons helper, not its own copy of the rules.');
 
 // Physical input mapping supports short and long presses without screen callbacks.
 assert.match(buttonSource, /DEVICE_EVENTS\.LEFT_SHORT/);
@@ -107,11 +110,16 @@ assert.match(buttonSource, /onDeviceEvent\(events\.short\)/);
 assert.match(buttonSource, /onDeviceEvent\(events\.long\)/);
 assert.match(buttonSource, /onPressStateChange/);
 assert.match(housingSource, /DEVICE_EVENTS\.BOTH_LONG/);
-assert.match(housingSource, /BOTH_BUTTON_HOLD_MS = 3000/, 'The dual-button home shortcut should require an approximately three-second hold.');
+assert.match(housingSource, /BOTH_BUTTON_HOLD_MS = 1800/, 'The dual-button home shortcut should require an approximately two-second hold.');
+assert.match(housingSource, /setHoldProgress/, 'The combined hold must drive an on-screen progress cue.');
+assert.match(housingSource, /holdProgress=\{holdProgress\}/, 'The hold progress must be passed to the instrument display for the on-LCD cue.');
 assert.match(housingSource, /bothCancelled/, 'Releasing either button early must cancel the combined hold.');
 assert.match(housingSource, /clearTimeout\(state\.bothTimer\)/, 'The combined hold timer must be cleaned up on unmount.');
+assert.match(housingSource, /clearInterval\(state\.bothProgressTimer\)/, 'The hold progress interval must be cleaned up on unmount.');
 assert.match(housingSource, /if \(bothHeldLongEnough && !buttonState\.current\.bothSent && !buttonState\.current\.bothCancelled\)/, 'An early release must not later trigger the home shortcut.');
+assert.match(housingSource, /buttonState\.current\.bothPressedAt = null;/, 'Either button lifting must end the combined-hold window immediately.');
 assert.doesNotMatch(housingSource, /const bothLong = buttonState\.current\.leftLong && buttonState\.current\.rightLong/, 'Individual long-press callbacks must not trigger the dual-button shortcut early.');
+assert.match(displaySource, /holdProgress > 0/, 'The instrument must render the return-home hold cue on the LCD.');
 assert.match(screenSource, /highlightedControls/);
 assert.match(screenSource, /speed-\$\{speed\}/);
 

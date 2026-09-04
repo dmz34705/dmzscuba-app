@@ -43,6 +43,8 @@ export default function useGuidedDiveLesson({ depthUnit = 'ft', currentTime = ne
   const [quizAnswerSubmitted, setQuizAnswerSubmitted] = useState(null);
   const quizDiveObservationRef = useRef(EMPTY_QUIZ_DIVE_OBSERVATION);
   const [quizDiveObservation, setQuizDiveObservation] = useState(EMPTY_QUIZ_DIVE_OBSERVATION);
+  const buttonGesturesRef = useRef({ short: false, long: false });
+  const [buttonGesturesComplete, setButtonGesturesComplete] = useState(false);
   const step = guidedDiveStepAt(stepIndex, depthUnit);
   if (!stepSnapshots.current[stepIndex]) stepSnapshots.current[stepIndex] = simulator.getSnapshot();
   const objectiveComplete = useMemo(
@@ -50,12 +52,29 @@ export default function useGuidedDiveLesson({ depthUnit = 'ft', currentTime = ne
       device: simulator.device,
       simulation: simulator.simulation,
       actualTime: currentTime,
+      buttonGesturesComplete,
       plannerCycleComplete,
       quizAnswer: quizAnswerSubmitted,
       quizDiveObservation,
     }),
-    [currentTime, plannerCycleComplete, quizAnswerSubmitted, quizDiveObservation, simulator.device, simulator.simulation, step.id],
+    [buttonGesturesComplete, currentTime, plannerCycleComplete, quizAnswerSubmitted, quizDiveObservation, simulator.device, simulator.simulation, step.id],
   );
+
+  // The button-basics drill completes once the student has done both a quick
+  // tap and a press-and-hold, on either button.
+  useEffect(() => {
+    if (step.id !== 'button-basics') {
+      buttonGesturesRef.current = { short: false, long: false };
+      if (buttonGesturesComplete) setButtonGesturesComplete(false);
+      return;
+    }
+    const event = simulator.device.input.lastEvent;
+    if (event === 'LEFT_SHORT' || event === 'RIGHT_SHORT') buttonGesturesRef.current.short = true;
+    if (event === 'LEFT_LONG' || event === 'RIGHT_LONG') buttonGesturesRef.current.long = true;
+    if (buttonGesturesRef.current.short && buttonGesturesRef.current.long && !buttonGesturesComplete) {
+      setButtonGesturesComplete(true);
+    }
+  }, [buttonGesturesComplete, simulator.device.input.lastEvent, step.id]);
   const quizAnswerIncorrect = step.id === 'quiz-log-po2' && quizAnswerSubmitted != null && !objectiveComplete;
 
   useEffect(() => {

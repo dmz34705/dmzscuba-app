@@ -1,5 +1,11 @@
 export { SIMULATION_LIMITS, SIMULATION_SPEEDS } from './constants';
-export { calculateNdlMinutes, calculateOxygenMinutesRemaining, maximumOperatingDepthMeters } from './calculations';
+export {
+  calculateNdlMinutes,
+  calculateOxygenMinutesRemaining,
+  celsiusToFahrenheit,
+  maximumOperatingDepthMeters,
+  waterTemperatureCelsius,
+} from './calculations';
 export {
   DEEP_STOP_STATUS,
   DIVE_LIFECYCLES,
