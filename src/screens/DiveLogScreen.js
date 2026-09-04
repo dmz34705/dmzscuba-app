@@ -436,9 +436,6 @@ function TrendArrow({ slope, goodDirection = 'down' }) {
 }
 
 function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic, onHealthCheck }) {
-  if (!trends.diveCount && !deletedCount) {
-    return <Text style={styles.muted}>Log or download a few dives to see your trends.</Text>;
-  }
   const sacUnit = units.pressureUnit;
   return (
     <>
@@ -1073,7 +1070,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
     getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
-    recheckDuplicates, mergeDivesManual, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
+    recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
@@ -1309,6 +1306,18 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
       },
     ]);
   }, [deleteDive, openList, selectedId]);
+
+  const handleSplit = useCallback(() => {
+    if (!selectedId || logs.length < 2) return;
+    Alert.alert(
+      'Split this dive by computer?',
+      'Use this when the attached computer logs are not the same physical dive. They will stay separate during future duplicate checks.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Split — not the same dive', onPress: async () => { await splitDiveRecord(selectedId); openList(); } },
+      ],
+    );
+  }, [logs.length, openList, selectedId, splitDiveRecord]);
 
   const headerTitle = view === 'edit'
     ? (selectedId ? 'Edit dive' : 'Log a dive')
@@ -1551,6 +1560,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack }) {
               <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} />
               <View style={styles.detailActions}>
                 <SecondaryButton label="Edit" onPress={openEdit} style={styles.detailActionButton} />
+                {logs.length > 1 ? <SecondaryButton label="Split — not the same dive" onPress={handleSplit} style={styles.detailActionButton} /> : null}
                 <SecondaryButton label="Delete" onPress={handleDelete} style={styles.detailActionButton} />
               </View>
             </>

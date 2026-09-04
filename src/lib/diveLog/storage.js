@@ -35,6 +35,7 @@ export const DIVE_LOG_LOG_PREFIX = '@dmz-scuba/dive-log/log-v2/';
 export const DIVE_LOG_CORRECTIONS_KEY = '@dmz-scuba/dive-log/corrections-v1';
 export const DIVE_LOG_FINGERPRINT_PREFIX = '@dmz-scuba/dive-log/fingerprint-v1/';
 export const DIVE_LOG_PRIORITY_KEY = '@dmz-scuba/dive-log/computer-priority-v1';
+export const DIVE_LOG_NEGATIVE_MATCH_KEY = '@dmz-scuba/dive-log/negative-v1';
 
 // v1 (pre-migration) keys — read-only after migrateToV2.
 const V1_INDEX_KEY = '@dmz-scuba/dive-log/index-v1';
@@ -458,6 +459,109 @@ export async function clearFingerprint(deviceName, storage = AsyncStorage) {
   await storage.removeItem(fingerprintKey(deviceName));
 }
 
+function fingerprintTokens(log) {
+  return [...new Set([log?.fingerprint, ...(log?.mergedFingerprints || [])]
+    .filter(Boolean)
+    .map((fingerprint) => `${log.deviceKey || deviceKeyOf(log.device) || ''}|${fingerprint}`))];
+}
+
+export function negativeMatchPair(a, b) {
+  if (!a || !b || a === b) return null;
+  return JSON.stringify([String(a), String(b)].sort());
+}
+
+export async function loadNegativeMatches(storage = AsyncStorage) {
+  const rows = parseJson(await storage.getItem(DIVE_LOG_NEGATIVE_MATCH_KEY), []);
+  return new Set(Array.isArray(rows) ? rows.filter((value) => typeof value === 'string') : []);
+}
+
+async function saveNegativeMatches(matches, storage) {
+  const values = [...matches].sort();
+  await storage.setItem(DIVE_LOG_NEGATIVE_MATCH_KEY, JSON.stringify(values));
+  return values;
+}
+
+export function logsHaveNegativeMatch(logsA, logsB, matches) {
+  const known = matches instanceof Set ? matches : new Set(matches || []);
+  for (const a of (logsA || []).flatMap(fingerprintTokens)) {
+    for (const b of (logsB || []).flatMap(fingerprintTokens)) {
+      const pair = negativeMatchPair(a, b);
+      if (pair && known.has(pair)) return true;
+    }
+  }
+  return false;
+}
+
+export async function recordNegativeMatch(logsA, logsB, storage = AsyncStorage) {
+  const matches = await loadNegativeMatches(storage);
+  for (const a of (logsA || []).flatMap(fingerprintTokens)) {
+    for (const b of (logsB || []).flatMap(fingerprintTokens)) {
+      const pair = negativeMatchPair(a, b);
+      if (pair) matches.add(pair);
+    }
+  }
+  return saveNegativeMatches(matches, storage);
+}
+
+export async function recordNegativeMatchesForDives(diveIds, storage = AsyncStorage) {
+  const bundles = [];
+  for (const id of [...new Set(diveIds || [])]) {
+    // eslint-disable-next-line no-await-in-loop
+    const dive = await loadDive(id, storage);
+    if (!dive) continue;
+    // eslint-disable-next-line no-await-in-loop
+    bundles.push(await loadLogsForDive(dive, storage));
+  }
+  for (let i = 0; i < bundles.length; i += 1) {
+    for (let j = i + 1; j < bundles.length; j += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await recordNegativeMatch(bundles[i], bundles[j], storage);
+    }
+  }
+  return loadNegativeMatches(storage);
+}
+
+/** Split a merged Dive into one canonical Dive per physical computer. */
+export async function splitDive(diveId, { by = 'computer' } = {}, storage = AsyncStorage) {
+  const dive = await loadDive(diveId, storage);
+  if (!dive || dive.deletedAt) return [];
+  const logs = await loadLogsForDive(dive, storage);
+  if (logs.length < 2) return [dive];
+
+  const groups = [];
+  for (const log of logs) {
+    const group = by === 'log' ? null : groups.find((items) => sameComputer(items[0].device, log.device));
+    if (group) group.push(log); else groups.push([log]);
+  }
+  if (groups.length < 2) return [dive];
+
+  for (let i = 0; i < groups.length; i += 1) {
+    for (let j = i + 1; j < groups.length; j += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await recordNegativeMatch(groups[i], groups[j], storage);
+    }
+  }
+
+  const split = [];
+  for (let i = 0; i < groups.length; i += 1) {
+    const group = groups[i];
+    const primary = group.find((log) => log.id === dive.primaryLogId)
+      || group.slice().sort((a, b) => (b.durationSeconds || 0) - (a.durationSeconds || 0))[0];
+    const base = i === 0
+      ? normalizeDive({ ...dive, logIds: group.map((log) => log.id), primaryLogId: primary.id })
+      : createDive({ ...dive, id: undefined, deletedAt: null, logIds: group.map((log) => log.id), primaryLogId: primary.id });
+    const next = surfaceLogOntoDive(base, primary);
+    for (const log of group) {
+      // eslint-disable-next-line no-await-in-loop
+      await saveLog({ ...log, diveId: next.id }, storage);
+    }
+    // eslint-disable-next-line no-await-in-loop
+    split.push(await saveDive(next, storage));
+  }
+  await refreshIndexRows(split.map((item) => item.id), storage);
+  return split;
+}
+
 // ---------------------------------------------------------------------------
 // maintenance
 // ---------------------------------------------------------------------------
@@ -506,6 +610,7 @@ export async function clearAll(storage = AsyncStorage) {
   const mine = keys.filter(
     (key) => key === DIVE_LOG_INDEX_KEY
       || key === DIVE_LOG_CORRECTIONS_KEY
+      || key === DIVE_LOG_NEGATIVE_MATCH_KEY
       || key === V1_INDEX_KEY
       || key.startsWith(DIVE_LOG_DIVE_PREFIX)
       || key.startsWith(DIVE_LOG_LOG_PREFIX)

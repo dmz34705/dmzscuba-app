@@ -7,6 +7,8 @@ import {
   consolidateSameDeviceLogs,
   loadAll,
   loadLogsForDive,
+  loadNegativeMatches,
+  logsHaveNegativeMatch,
   mergeDives,
   rebuildIndex,
 } from './storage';
@@ -20,6 +22,7 @@ import {
 export async function reconcileLogbook(storage) {
   await rebuildIndex(storage).catch(() => {});
   let dives = (await loadAll(storage)).filter((dive) => !dive.deletedAt);
+  const negativeMatches = await loadNegativeMatches(storage);
 
   let fused = 0;
   for (const dive of dives) {
@@ -90,6 +93,9 @@ export async function reconcileLogbook(storage) {
         if (ids.length < 2) continue;
         const members = ids.map((id) => entryById.get(id))
           .sort((a, b) => (b.log.durationSeconds || 0) - (a.log.durationSeconds || 0));
+        const forbidden = members.some((member, i) => members.slice(i + 1)
+          .some((other) => logsHaveNegativeMatch([member.log], [other.log], negativeMatches)));
+        if (forbidden) continue;
         merges.push({ keepId: members[0].diveId, absorbIds: members.slice(1).map((member) => member.diveId) });
         ids.forEach((id) => claimed.add(id));
       }

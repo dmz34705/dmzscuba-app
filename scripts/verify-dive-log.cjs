@@ -794,6 +794,35 @@ function memoryStorage(seed = {}) {
   assert.equal(keptRow.deviceKeys.length, 2);
   await assertIntegrity(store, 'merge dives');
 
+  // Split a multi-computer dive back into one Dive per computer and remember
+  // the negative match so the reconciler does not immediately join it again.
+  const splitStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const splitA = await createDiveFromLog({
+    device: { vendor: 'Shearwater', product: 'Perdix', serial: 'split-a' }, fingerprint: 'SPLIT-A',
+    reportedStartTime: '2026-06-15T12:00:00.000Z', durationSeconds: 2400,
+    water: { maxDepthMeters: 31 }, profile: { samples: trapezoid(31, 2040) },
+  }, splitStore);
+  const splitB = await createDiveFromLog({
+    device: { vendor: 'Suunto', product: 'EON Core', serial: 'split-b' }, fingerprint: 'SPLIT-B',
+    reportedStartTime: '2026-06-15T12:00:00.000Z', durationSeconds: 2400,
+    water: { maxDepthMeters: 30 }, profile: { samples: trapezoid(30, 2040) },
+  }, splitStore);
+  await diveLog.mergeDives(splitA.dive.id, [splitB.dive.id], {}, splitStore);
+  assert.equal((await loadIndex(splitStore)).filter((row) => !row.deletedAt).length, 1);
+  const splitResult = await diveLog.splitDive(splitA.dive.id, {}, splitStore);
+  assert.equal(splitResult.length, 2);
+  const splitRows = (await loadIndex(splitStore)).filter((row) => !row.deletedAt);
+  assert.equal(splitRows.length, 2);
+  assert.ok(splitRows.every((row) => row.logCount === 1 && row.deviceKeys.length === 1));
+  const splitDepths = splitResult.map((item) => item.water.maxDepthMeters).sort((a, b) => a - b);
+  assert.deepEqual(splitDepths, [30, 31]);
+  assert.ok((await diveLog.loadNegativeMatches(splitStore)).size > 0);
+  const splitRecheck = await diveLog.reconcileLogbook(splitStore);
+  assert.equal(splitRecheck.autoMerged, 0);
+  assert.equal(splitRecheck.proposals.length, 0);
+  assert.equal((await loadIndex(splitStore)).filter((row) => !row.deletedAt).length, 2);
+  await assertIntegrity(splitStore, 'split with negative match');
+
   // --- end to end: Aug 27 split-dive recovery ---
   const rstore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
   // Shearwater: one 60-min dive
@@ -1118,8 +1147,11 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /const dumpDiagnostic = useCallback/);
   assert.match(hook, /checkLogbookIntegrity/);
   assert.match(hook, /repairLogbook/);
+  assert.match(hook, /splitDiveRecord/);
+  assert.match(hook, /recordNegativeMatchesForDives/);
   assert.match(screen, /Share\.share/);
   assert.match(screen, /Run health check/);
+  assert.match(screen, /Split — not the same dive/);
 
   // "All dives" — a unified list of the reconciled dives, alongside the
   // per-computer folders.

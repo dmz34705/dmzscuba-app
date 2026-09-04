@@ -18,12 +18,14 @@ import {
   mergeDives,
   migrateToV2,
   purgeDeleted,
+  recordNegativeMatchesForDives,
   rebuildIndex,
   resurfaceForPriority,
   saveComputerPriority,
   saveDeviceTimeCorrection,
   saveDive,
   softDeleteDive,
+  splitDive,
 } from '../../lib/diveLog/storage';
 
 export const MANUAL_FOLDER_KEY = '__manual__';
@@ -336,6 +338,13 @@ export default function useDiveLog() {
     await refreshIndex();
   }, [getDive, refreshIndex]);
 
+  const splitDiveRecord = useCallback(async (diveId) => {
+    const split = await splitDive(diveId);
+    diveCache.current.clear();
+    await refreshIndex();
+    return split;
+  }, [refreshIndex]);
+
   /**
    * Resolve one "Two computers, one trip" proposal.
    * @param {object} proposal   from recheckDuplicates ({ kind:'reconcile', merges, ... })
@@ -359,6 +368,11 @@ export default function useDiveLog() {
         // eslint-disable-next-line no-await-in-loop
         await mergeDives(mg.keepId, mg.absorbIds, { correction });
         [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
+      }
+    } else if (action === 'separate') {
+      for (const merge of proposal.merges || []) {
+        // eslint-disable-next-line no-await-in-loop
+        await recordNegativeMatchesForDives([merge.keepId, ...merge.absorbIds]);
       }
     }
     setPendingProposals((prev) => prev.filter((p) => p.id !== proposal.id));
@@ -387,6 +401,7 @@ export default function useDiveLog() {
     clearProposals,
     recheckDuplicates,
     mergeDivesManual,
+    splitDiveRecord,
     purgeDeletedDownloads,
     eraseAllDiveData,
     dumpDiagnostic,
