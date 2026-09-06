@@ -1,7 +1,9 @@
-import { ACCOUNT_API_BASE_URL } from './accountApi';
 import { normalizeLensResult } from './lensResult';
 
 const REQUEST_TIMEOUT_MS = 30000;
+// Native iOS networking can fail before HTTP when reaching the public site hostname.
+// Keep account traffic on the site, but use the Worker directly for the image request.
+const VISION_API_BASE_URL = 'https://dmz-media-api.zacharylisowski55.workers.dev';
 
 export class LensApiError extends Error {
   constructor(message, code = 'LENS_REQUEST_FAILED') {
@@ -24,7 +26,7 @@ export async function identifyPhoto({ base64, mimeType = 'image/jpeg' }) {
   let response;
   let data;
   try {
-    response = await fetch(`${ACCOUNT_API_BASE_URL}/api/vision/identify`, {
+    response = await fetch(`${VISION_API_BASE_URL}/api/vision/identify`, {
       method: 'POST',
       headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify({ imageBase64: base64, mimeType }),
