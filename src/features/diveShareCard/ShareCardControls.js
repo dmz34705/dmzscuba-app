@@ -7,7 +7,7 @@
 // sharing (DiveShareCardScreen owns all of that).
 
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { colors, radii, spacing } from '../../theme';
@@ -109,6 +109,8 @@ function ThemeSwatch({ theme, selected, onPress }) {
  * @param {string} [props.photoUri]
  * @param {() => void} props.onPickPhoto
  * @param {() => void} props.onClearPhoto
+ * @param {Array<{ id: string, uri: string }>} [props.linkedPhotos]  photos already linked to this dive
+ * @param {(uri: string) => void} [props.onPickLinkedPhoto]
  * @param {Record<string, string|null>} props.statValues  which stats this dive actually has
  */
 export default function ShareCardControls({
@@ -119,6 +121,8 @@ export default function ShareCardControls({
   photoUri,
   onPickPhoto,
   onClearPhoto,
+  linkedPhotos = [],
+  onPickLinkedPhoto,
   statValues,
 }) {
   const [tab, setTab] = useState('photo');
@@ -200,6 +204,32 @@ export default function ShareCardControls({
                 selected={!photoUri}
               />
             </View>
+            {linkedPhotos.length && onPickLinkedPhoto ? (
+              <View>
+                <Text style={styles.linkedLabel}>FROM THIS DIVE’S LOG</Text>
+                <ScrollView
+                  contentContainerStyle={styles.linkedRow}
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.linkedScroll}
+                >
+                  {linkedPhotos.map((photo) => {
+                    const selected = photo.uri === photoUri;
+                    return (
+                      <Pressable
+                        accessibilityLabel={selected ? 'Selected log photo' : 'Use this log photo'}
+                        accessibilityRole="button"
+                        key={photo.id}
+                        onPress={() => onPickLinkedPhoto(photo.uri)}
+                        style={[styles.linkedThumbWrap, selected && styles.linkedThumbWrapSelected]}
+                      >
+                        <Image source={{ uri: photo.uri }} style={styles.linkedThumb} />
+                      </Pressable>
+                    );
+                  })}
+                </ScrollView>
+              </View>
+            ) : null}
             <Text style={styles.hint}>
               {photoUri
                 ? 'The card frames the whole photo — no cropping needed.'
@@ -315,6 +345,12 @@ const styles = StyleSheet.create({
   // statsWrap).
   swatchScroll: { flexGrow: 0 },
   swatchRow: { flexDirection: 'row', gap: spacing.md, paddingHorizontal: 2 },
+  linkedLabel: { color: colors.faint, fontSize: 10, fontWeight: '800', letterSpacing: 1, marginBottom: 6 },
+  linkedScroll: { flexGrow: 0 },
+  linkedRow: { flexDirection: 'row', gap: 8, paddingHorizontal: 2 },
+  linkedThumbWrap: { borderColor: 'transparent', borderRadius: radii.sm, borderWidth: 2, overflow: 'hidden' },
+  linkedThumbWrapSelected: { borderColor: colors.cyan },
+  linkedThumb: { backgroundColor: colors.surface, borderRadius: radii.sm - 2, height: 44, width: 44 },
   swatchWrap: { alignItems: 'center', width: 58 },
   swatch: { borderColor: 'transparent', borderRadius: radii.md, borderWidth: 2, height: 34, width: 34 },
   swatchSelected: { borderColor: colors.cyan },

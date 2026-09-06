@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  ActivityIndicator,
   Alert,
   Image,
   Keyboard,
@@ -1292,7 +1293,7 @@ function KeyStats({ water, phys, temperatures, mix, pressure, sac, units }) {
 
 function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePhoto, chartColors, lineWidth }) {
   const [profileFullscreen, setProfileFullscreen] = useState(false);
-  const [viewerPhoto, setViewerPhoto] = useState(null);
+  const [viewerIndex, setViewerIndex] = useState(null);
   // Physical data comes from the shown computer's log; user's own fields from the Dive.
   const phys = primaryLog || dive;
   // A computer log may legitimately omit individual condition fields. Keep the
@@ -1384,6 +1385,7 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
   const shareCardData = {
     samples,
     maxDepthMeters: water.maxDepthMeters,
+    photos: Array.isArray(dive.photos) ? dive.photos : [],
     title: dive.site.name || 'Scuba dive',
     subtitle: [formatDate(dive.startTime), formatTimeOfDay(dive.startTime)].filter(Boolean).join(' · '),
     depthTop: formatDepth(0, units.depthUnit),
@@ -1467,32 +1469,41 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
       {dive.photos?.length ? (
         <DetailCard title={'Dive photos (' + dive.photos.length + ')'} defaultExpanded>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.photoStrip}>
-            {dive.photos.map((photo) => (
+            {dive.photos.map((photo, i) => (
               <Pressable
                 key={photo.id}
-                onPress={() => setViewerPhoto(photo)}
+                onPress={() => setViewerIndex(i)}
                 accessibilityRole="button"
                 accessibilityLabel="View linked dive photo"
+                style={styles.divePhotoWrap}
               >
                 <Image source={{ uri: photo.uri }} style={styles.divePhoto} />
+                <View style={styles.divePhotoExpand}><Text style={styles.divePhotoExpandIcon}>⤢</Text></View>
               </Pressable>
             ))}
           </ScrollView>
+          <Text style={styles.divePhotoHint}>Tap a photo to view it full screen.</Text>
         </DetailCard>
       ) : null}
 
-      {viewerPhoto ? (
+      {viewerIndex != null && dive.photos?.length ? (
         <PhotoViewerModal
-          photo={viewerPhoto}
-          onClose={() => setViewerPhoto(null)}
-          onRemove={() => {
-            const target = viewerPhoto;
+          photos={dive.photos}
+          index={Math.min(viewerIndex, dive.photos.length - 1)}
+          onIndex={setViewerIndex}
+          onClose={() => setViewerIndex(null)}
+          onRemove={(target) => {
             Alert.alert('Remove this photo?', 'It stays in your camera roll — only the link to this dive is removed.', [
               { text: 'Cancel', style: 'cancel' },
               {
                 text: 'Remove',
                 style: 'destructive',
-                onPress: () => { setViewerPhoto(null); onRemovePhoto?.(target); },
+                onPress: () => {
+                  const remaining = dive.photos.length - 1;
+                  if (remaining <= 0) setViewerIndex(null);
+                  else setViewerIndex((idx) => Math.min(idx, remaining - 1));
+                  onRemovePhoto?.(target);
+                },
               },
             ]);
           }}
@@ -1815,7 +1826,7 @@ function matchStatusLabel(match) {
   return match.confidence === 'high' ? 'During this dive' : 'Near this dive';
 }
 
-function BatchPhotoReviewModal({ review, dives, units, saving, onCancel, onConfirm, onReassign }) {
+function BatchPhotoReviewModal({ review, dives, units, saving, progress, onCancel, onConfirm, onReassign }) {
   // When set, the sheet shows the dive picker for this item instead of the list.
   const [assignFor, setAssignFor] = useState(null);
   const matched = review.items.filter((item) => item.match);
@@ -1828,10 +1839,22 @@ function BatchPhotoReviewModal({ review, dives, units, saving, onCancel, onConfi
   };
 
   return (
-    <Modal animationType="slide" transparent visible onRequestClose={assignFor ? () => setAssignFor(null) : onCancel}>
+    <Modal
+      animationType="slide"
+      transparent
+      visible
+      onRequestClose={progress ? () => {} : assignFor ? () => setAssignFor(null) : onCancel}
+    >
       <View style={styles.photoReviewBackdrop}>
         <View style={styles.photoReviewSheet}>
-          {assigningItem ? (
+          {progress ? (
+            <View style={styles.photoProgress}>
+              <ActivityIndicator size="large" color={colors.cyan} />
+              <Text style={styles.photoProgressTitle}>Linking photos…</Text>
+              <Text style={styles.photoProgressMeta}>{progress.done} of {progress.total}</Text>
+              <Text style={styles.photoProgressHint}>Keep DMZ Scuba open until this finishes.</Text>
+            </View>
+          ) : assigningItem ? (
             <>
               <Text accessibilityRole="header" style={styles.photoReviewTitle}>Choose a dive</Text>
               <Text style={styles.photoReviewSummary}>
@@ -1911,16 +1934,47 @@ function BatchPhotoReviewModal({ review, dives, units, saving, onCancel, onConfi
   );
 }
 
-function PhotoViewerModal({ photo, onClose, onRemove }) {
+function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove }) {
+  const { width } = useWindowDimensions();
+  const scrollRef = useRef(null);
+  const current = photos[index] || null;
+
+  // Keep the pager on the active photo when the index changes from outside
+  // (e.g. a photo was removed and the list shifted).
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ x: index * width, animated: false });
+  }, [index, width]);
+
+  if (!current) return null;
   return (
     <Modal animationType="fade" transparent visible onRequestClose={onClose}>
       <View style={styles.photoViewerBackdrop}>
-        <Pressable style={styles.photoViewerImageWrap} onPress={onClose} accessibilityLabel="Close photo">
-          <Image source={{ uri: photo.uri }} style={styles.photoViewerImage} resizeMode="contain" />
-        </Pressable>
+        <View style={styles.photoViewerBar}>
+          <Text style={styles.photoViewerCount}>{index + 1} / {photos.length}</Text>
+          <Pressable onPress={onClose} hitSlop={10} accessibilityRole="button" accessibilityLabel="Close photo">
+            <Text style={styles.photoViewerClose}>Done</Text>
+          </Pressable>
+        </View>
+        <ScrollView
+          ref={scrollRef}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          contentOffset={{ x: index * width, y: 0 }}
+          onMomentumScrollEnd={(e) => {
+            const next = Math.round(e.nativeEvent.contentOffset.x / width);
+            if (next !== index) onIndex(next);
+          }}
+          style={styles.photoViewerPager}
+        >
+          {photos.map((photo) => (
+            <View key={photo.id} style={[styles.photoViewerPage, { width }]}>
+              <Image source={{ uri: photo.uri }} style={styles.photoViewerImage} resizeMode="contain" />
+            </View>
+          ))}
+        </ScrollView>
         <View style={styles.photoViewerActions}>
-          <SecondaryButton label="Remove from this dive" onPress={onRemove} style={styles.photoViewerButton} />
-          <SecondaryButton label="Close" onPress={onClose} style={styles.photoViewerButton} />
+          <SecondaryButton label="Remove from this dive" onPress={() => onRemove(current)} style={styles.photoViewerButton} />
         </View>
       </View>
     </Modal>
@@ -1982,6 +2036,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [photoImportReview, setPhotoImportReview] = useState(null);
   const [photoImportSaving, setPhotoImportSaving] = useState(false);
+  const [photoLinkProgress, setPhotoLinkProgress] = useState(null);
 
   const foldersMode = useMemo(() => folders.some((f) => f.kind === 'computer'), [folders]);
   const activeFolder = useMemo(
@@ -2108,20 +2163,24 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 
   const confirmPhotoImport = useCallback(async () => {
     if (!photoImportReview || photoImportSaving) return;
+    const plan = buildPhotoImportPlan(photoImportReview.items);
+    const total = plan.reduce((sum, group) => sum + group.photos.length, 0);
     setPhotoImportSaving(true);
+    setPhotoLinkProgress({ total, done: 0 });
     try {
-      const plan = buildPhotoImportPlan(photoImportReview.items);
-      let linkedCount = 0;
+      let done = 0;
       for (const { diveId, photos } of plan) {
         await attachPhotosToDive(diveId, photos);
-        linkedCount += photos.length;
+        done += photos.length;
+        setPhotoLinkProgress({ total, done });
       }
       setPhotoImportReview(null);
-      Alert.alert('Photos linked', linkedCount + (linkedCount === 1 ? ' photo was added to its dive.' : ' photos were added to their dives.'));
+      Alert.alert('Photos linked', total + (total === 1 ? ' photo was added to its dive.' : ' photos were added to their dives.'));
     } catch (error) {
       Alert.alert('Could not link photos', error?.message || 'The selected photos could not be added to the logbook.');
     } finally {
       setPhotoImportSaving(false);
+      setPhotoLinkProgress(null);
     }
   }, [attachPhotosToDive, photoImportReview, photoImportSaving]);
 
@@ -2518,6 +2577,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             dives={rows}
             units={units}
             saving={photoImportSaving}
+            progress={photoLinkProgress}
             onCancel={() => setPhotoImportReview(null)}
             onConfirm={confirmPhotoImport}
             onReassign={reassignPhotoMatch}
@@ -2707,13 +2767,25 @@ const styles = StyleSheet.create({
   photoAssignActive: { backgroundColor: colors.surface, borderRadius: 10 },
   photoAssignCheck: { color: colors.cyan, fontSize: 16, fontWeight: '900' },
   photoAssignClear: { color: colors.faint, fontSize: 14, fontWeight: '700' },
-  photoViewerBackdrop: { backgroundColor: 'rgba(0,0,0,0.94)', flex: 1, justifyContent: 'center' },
-  photoViewerImageWrap: { flex: 1 },
-  photoViewerImage: { flex: 1, width: '100%' },
+  photoProgress: { alignItems: 'center', gap: 8, paddingHorizontal: spacing.lg, paddingVertical: 40 },
+  photoProgressTitle: { color: colors.text, fontSize: 17, fontWeight: '800', marginTop: 6 },
+  photoProgressMeta: { color: colors.cyan, fontSize: 14, fontWeight: '800' },
+  photoProgressHint: { color: colors.muted, fontSize: 12, textAlign: 'center' },
+  photoViewerBackdrop: { backgroundColor: 'rgba(0,0,0,0.94)', flex: 1 },
+  photoViewerBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: spacing.lg, paddingTop: spacing.lg },
+  photoViewerCount: { color: 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: '700' },
+  photoViewerClose: { color: colors.cyan, fontSize: 15, fontWeight: '800' },
+  photoViewerPager: { flex: 1 },
+  photoViewerPage: { alignItems: 'center', height: '100%', justifyContent: 'center' },
+  photoViewerImage: { height: '100%', width: '100%' },
   photoViewerActions: { flexDirection: 'row', gap: 12, padding: spacing.lg },
   photoViewerButton: { flex: 1 },
   photoStrip: { gap: 10, paddingVertical: 4 },
+  divePhotoWrap: { borderRadius: 12, overflow: 'hidden' },
   divePhoto: { borderRadius: 12, height: 140, width: 140 },
+  divePhotoExpand: { backgroundColor: 'rgba(0,0,0,0.45)', borderRadius: 10, bottom: 6, paddingHorizontal: 5, paddingVertical: 1, position: 'absolute', right: 6 },
+  divePhotoExpandIcon: { color: '#fff', fontSize: 13, fontWeight: '900' },
+  divePhotoHint: { color: colors.faint, fontSize: 11, marginTop: 8 },
   screen: { backgroundColor: colors.background, flex: 1 },
   content: { paddingHorizontal: spacing.md, paddingTop: spacing.lg },
   title: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 33 },

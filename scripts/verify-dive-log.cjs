@@ -1332,6 +1332,24 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /const attachPhotosToDive = useCallback/);
   assert.match(hook, /const removePhotoFromDive = useCallback/);
 
+  // Linking shows a blocking progress state (not a silent pause then a dialog).
+  assert.match(screen, /photoLinkProgress/);
+  assert.match(screen, /setPhotoLinkProgress\(\{ total, done \}\)/);
+  assert.match(screen, /ActivityIndicator/);
+  assert.match(screen, /Keep DMZ Scuba open until this finishes/);
+  // Full-screen viewer is a swipeable pager over all the dive's photos.
+  assert.match(screen, /pagingEnabled/);
+  assert.match(screen, /<PhotoViewerModal\s+photos=\{dive\.photos\}/);
+
+  // Share card can use a photo already linked to the dive as its background.
+  const shareScreenSrc = read('src', 'features', 'diveShareCard', 'DiveShareCardScreen.js');
+  const shareControlsSrc = read('src', 'features', 'diveShareCard', 'ShareCardControls.js');
+  assert.match(shareScreenSrc, /linkedPhotos/);
+  assert.match(shareScreenSrc, /const pickLinkedPhoto/);
+  assert.match(shareControlsSrc, /onPickLinkedPhoto/);
+  assert.match(shareControlsSrc, /FROM THIS DIVE/);
+  assert.match(screen, /photos: Array\.isArray\(dive\.photos\)/);
+
   const pkg = JSON.parse(read('package.json'));
   assert.equal(pkg.scripts['test:dive-log'], 'node scripts/verify-dive-log.cjs');
 

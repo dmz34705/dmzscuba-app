@@ -570,13 +570,21 @@ photo, and only for identification.
   id/assetId/uri) and `removePhotoFromDive(id, photoId)`.
 - `DiveLogScreen`:
   - **Dive Lens screen** → "Link to this dive" (single photo, best time match).
-  - **Dive Log list** → "Match camera roll photos": multi-select picker
-    (`allowsMultipleSelection`, `exif: true`) → `BatchPhotoReviewModal`. Each row
-    is tappable to open an in-sheet dive picker (manual assign, or "Don't link").
-    Confirm runs `buildPhotoImportPlan` → `attachPhotosToDive` per dive.
+  - **Dive Log list** → "Auto-sort dive photos" card / header "Photos" shortcut:
+    multi-select picker (`allowsMultipleSelection`, `exif: true`) →
+    `BatchPhotoReviewModal`. Each row is tappable to open an in-sheet dive picker
+    (manual assign, or "Don't link"). Confirm runs `buildPhotoImportPlan` →
+    `attachPhotosToDive` per dive, behind a blocking progress state
+    (`photoLinkProgress` = `{ total, done }`, updated per dive) so the diver
+    can't walk away mid-link.
   - **Dive detail** → "Dive photos" card; tap a thumbnail for `PhotoViewerModal`
-    (full-screen) with "Remove from this dive" (unlink only — the photo stays in
-    the camera roll).
+    — a full-screen swipeable pager over all the dive's photos, with a counter
+    and "Remove from this dive" (unlink only — the photo stays in the camera
+    roll).
+  - **Share card** (`DiveShareCardScreen` / `ShareCardControls`): the Photo tab
+    shows a "FROM THIS DIVE'S LOG" thumbnail strip alongside "Choose a photo" /
+    "Plain background" — tap one to use a linked photo as the card background
+    (`shareCardData.photos` carries `dive.photos` through).
 - Permissions: `NSPhotoLibraryUsageDescription` + the `expo-image-picker` /
   `expo-media-library` `photosPermission` strings in `app.json` already cover it.
 

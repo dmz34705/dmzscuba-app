@@ -40,7 +40,7 @@ try {
 
 /**
  * @param {object} props
- * @param {object} props.dive  { samples, maxDepthMeters, title, subtitle, depthTop, depthBottom, values }
+ * @param {object} props.dive  { samples, maxDepthMeters, title, subtitle, depthTop, depthBottom, values, photos }
  * @param {() => void} props.onClose
  */
 export default function DiveShareCardScreen({ dive, onClose }) {
@@ -126,6 +126,12 @@ export default function DiveShareCardScreen({ dive, onClose }) {
     setPhotoUri(picked.assets[0].uri);
   };
 
+  const linkedPhotos = Array.isArray(dive.photos) ? dive.photos : [];
+  const pickLinkedPhoto = (uri) => {
+    setError('');
+    setPhotoUri(uri);
+  };
+
   const saveAndShare = async () => {
     if (!exportRef.current || busy) return;
     setBusy(true);
@@ -196,8 +202,10 @@ export default function DiveShareCardScreen({ dive, onClose }) {
             ) : null}
 
             <ShareCardControls
+              linkedPhotos={linkedPhotos}
               onClearPhoto={() => setPhotoUri(null)}
               onOptionsChange={applyOptions}
+              onPickLinkedPhoto={pickLinkedPhoto}
               onPickPhoto={pickPhoto}
               onThemeChange={setThemeKey}
               options={options}
