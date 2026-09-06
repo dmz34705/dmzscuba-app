@@ -909,10 +909,11 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
 function DiveListCard({ row, units, onPress, onLongPress, selectable, selected }) {
   const parts = [formatDepth(row.maxDepthMeters, units.depthUnit), formatDuration(row.durationSeconds)];
   const dateLabel = formatDate(row.startTime) || 'Undated dive';
-  // Without a site name, pair the date with the start time instead of a
-  // placeholder — a screen full of "Unnamed site" reads as one long
-  // duplicate; the time still tells dives on the same day apart.
-  const title = row.siteName ? `${dateLabel} · ${row.siteName}` : `${dateLabel} · ${formatTimeOfDay(row.startTime) || 'Unnamed dive'}`;
+  const timeLabel = formatTimeOfDay(row.startTime) || 'Unnamed dive';
+  // Date and start time always lead the card so dives on the same day (a
+  // repetitive-site training day especially) stay distinguishable; the site
+  // name, when set, follows.
+  const title = row.siteName ? `${dateLabel} · ${timeLabel} · ${row.siteName}` : `${dateLabel} · ${timeLabel}`;
   return (
     <Card style={[styles.diveCard, selected && styles.diveCardSelected]}>
       {selectable ? (
