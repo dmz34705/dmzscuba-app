@@ -226,6 +226,26 @@ export default function useDiveLog() {
     return saved;
   }, [refreshIndex]);
 
+  const removePhotoFromDive = useCallback(async (id, photoId) => {
+    const current = await loadDive(id);
+    if (!current || !photoId) return current;
+    const existing = Array.isArray(current.photos) ? current.photos : [];
+    const next = existing.filter((photo) => (
+      photo.id !== photoId && photo.assetId !== photoId && photo.uri !== photoId
+    ));
+    if (next.length === existing.length) return current;
+    const saved = await saveDive(touchRecord(normalizeDive({
+      ...current,
+      photos: next,
+      id,
+      createdAt: current.createdAt,
+    })));
+    const logs = await loadLogsForDive(saved);
+    diveCache.current.set(saved.id, { dive: saved, logs });
+    await refreshIndex();
+    return saved;
+  }, [refreshIndex]);
+
   const deleteDive = useCallback(async (id) => {
     await softDeleteDive(id);
     diveCache.current.delete(id);
@@ -436,6 +456,7 @@ export default function useDiveLog() {
     addDive,
     updateDive,
     attachPhotosToDive,
+    removePhotoFromDive,
     deleteDive,
     deleteDives,
     importComputerLogs,

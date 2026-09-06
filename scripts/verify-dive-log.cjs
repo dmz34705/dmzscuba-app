@@ -1290,6 +1290,48 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /const deleteDives = useCallback/);
   assert.doesNotMatch(hook, /AsyncStorage/);
 
+  // --- camera-roll photo import: batch match, manual assign, unlink ---
+  const photoMatching = loadSourceModule(
+    path.join(srcRoot, 'lib', 'diveLog', 'photoMatching.js'), srcRoot,
+  );
+
+  // buildPhotoImportPlan groups reviewed picker items into per-dive batches and
+  // drops anything without a match.
+  const planItems = [
+    { asset: { uri: 'ph://a', assetId: 'a' }, capturedAt: '2026-09-05T15:20:00.000Z', match: { dive: { id: 'dive-1' }, confidence: 'high' } },
+    { asset: { uri: 'ph://b', assetId: 'b' }, capturedAt: '2026-09-05T15:40:00.000Z', match: { dive: { id: 'dive-1' }, confidence: 'medium' } },
+    { asset: { uri: 'ph://c', assetId: 'c' }, capturedAt: null, match: { dive: { id: 'dive-2' }, confidence: 'manual' } },
+    { asset: { uri: 'ph://d', assetId: 'd' }, capturedAt: null, match: null },
+  ];
+  const plan = photoMatching.buildPhotoImportPlan(planItems, '2026-09-06T00:00:00.000Z');
+  assert.deepEqual(plan.map((g) => g.diveId), ['dive-1', 'dive-2']);
+  assert.equal(plan[0].photos.length, 2);
+  assert.equal(plan[0].photos[0].id, 'a');
+  assert.equal(plan[0].photos[0].linkedAt, '2026-09-06T00:00:00.000Z');
+  assert.equal(plan[0].photos[0].source, 'logbook-photo-import');
+  assert.equal(plan[1].photos[0].source, 'logbook-photo-import-manual');
+  assert.deepEqual(photoMatching.buildPhotoImportPlan(null), []);
+  assert.deepEqual(photoMatching.buildPhotoImportPlan([{ asset: null, match: { dive: { id: 'x' } } }]), []);
+
+  // manualDivePhotoMatch wraps a hand-picked dive as a match the plan accepts.
+  const manual = photoMatching.manualDivePhotoMatch({ id: 'dive-9', siteName: 'Blue Hole' }, '2026-09-05T15:00:00.000Z');
+  assert.equal(manual.confidence, 'manual');
+  assert.equal(manual.dive.id, 'dive-9');
+  assert.equal(photoMatching.manualDivePhotoMatch(null), null);
+
+  assert.match(screen, /Auto-sort dive photos/);
+  assert.match(screen, /Choose and match photos/);
+  assert.match(screen, /BatchPhotoReviewModal/);
+  assert.match(screen, /PhotoViewerModal/);
+  assert.match(screen, /allowsMultipleSelection: true/);
+  assert.match(screen, /exif: true/);
+  assert.match(screen, /buildPhotoImportPlan/);
+  assert.match(screen, /reassignPhotoMatch/);
+  assert.match(screen, /handleRemovePhoto/);
+  assert.match(screen, /No photos were uploaded/);
+  assert.match(hook, /const attachPhotosToDive = useCallback/);
+  assert.match(hook, /const removePhotoFromDive = useCallback/);
+
   const pkg = JSON.parse(read('package.json'));
   assert.equal(pkg.scripts['test:dive-log'], 'node scripts/verify-dive-log.cjs');
 

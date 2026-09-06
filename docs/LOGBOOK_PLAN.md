@@ -546,6 +546,44 @@ violations, sawtooth index, safety-stop compliance, NDL/deco margin, rapid-ascen
 count). Profile overlays on the detail chart: tank pressure, temperature,
 ceiling, ascent-rate shading. New "Stats" view off the logbook.
 
+## Part C — camera-roll photos on dives
+
+Link photos from the device's photo library to logged dives. **Fully on-device**:
+matching uses each photo's own timestamp (EXIF `DateTimeOriginal`, else the asset
+`creationTime`/`modificationTime`); nothing is uploaded. Only Dive Lens uploads a
+photo, and only for identification.
+
+- `lib/diveLog/photoMatching.js` (pure, unit-tested in `verify-dive-lens.cjs` +
+  `verify-dive-log.cjs`):
+  - `photoCapturedAt(asset)` → ISO capture time or `null`.
+  - `findDivePhotoMatches(asset, dives, capturedAt)` → candidate dives within
+    ±90 min of the dive window, sorted by closeness, `confidence` `'high'`
+    (during the dive) / `'medium'` (in the buffer).
+  - `manualDivePhotoMatch(dive, capturedAt)` → a `confidence: 'manual'` match for
+    a dive the diver picks by hand.
+  - `buildPhotoImportPlan(items)` → groups reviewed items into the per-dive
+    `[{ diveId, photos }]` batches `attachPhotosToDive` takes; drops unmatched.
+- Dive record: `photos: [{ id, uri, assetId, capturedAt, linkedAt, source }]`
+  (`schema.js` `normalizeDivePhotos`, max 200, de-duped by id). `source` is
+  `dive-lens`, `logbook-photo-import`, or `logbook-photo-import-manual`.
+- `useDiveLog`: `attachPhotosToDive(id, photos)` (de-dupes against existing by
+  id/assetId/uri) and `removePhotoFromDive(id, photoId)`.
+- `DiveLogScreen`:
+  - **Dive Lens screen** → "Link to this dive" (single photo, best time match).
+  - **Dive Log list** → "Match camera roll photos": multi-select picker
+    (`allowsMultipleSelection`, `exif: true`) → `BatchPhotoReviewModal`. Each row
+    is tappable to open an in-sheet dive picker (manual assign, or "Don't link").
+    Confirm runs `buildPhotoImportPlan` → `attachPhotosToDive` per dive.
+  - **Dive detail** → "Dive photos" card; tap a thumbnail for `PhotoViewerModal`
+    (full-screen) with "Remove from this dive" (unlink only — the photo stays in
+    the camera roll).
+- Permissions: `NSPhotoLibraryUsageDescription` + the `expo-image-picker` /
+  `expo-media-library` `photosPermission` strings in `app.json` already cover it.
+
+Not done: photo captions/reordering, a shared cloud copy (waits on the account
+sync decision below — linked photos are local URIs, so they do not survive a
+reinstall or move between devices yet).
+
 ## Open decisions (need Zachary)
 
 - Which dive computers to support first (drives descriptor/test priorities).

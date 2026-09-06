@@ -45,3 +45,33 @@ export function findDivePhotoMatches(asset, dives, capturedAtOverride = null) {
     };
   }).filter(Boolean).sort((a, b) => a.distanceMs - b.distanceMs || String(b.dive.startTime).localeCompare(String(a.dive.startTime)));
 }
+
+// A match the diver picked by hand in the review sheet, for a photo the
+// timestamp window could not place (no EXIF, or shot well outside the dive).
+export function manualDivePhotoMatch(dive, capturedAt = null) {
+  if (!dive || !dive.id) return null;
+  return { dive, capturedAt: capturedAt || null, distanceMs: 0, confidence: 'manual' };
+}
+
+// Turn reviewed picker items ({ asset, capturedAt, match }) into the per-dive
+// photo batches `attachPhotosToDive` expects. Items with no match are dropped.
+export function buildPhotoImportPlan(items, linkedAtIso = null) {
+  if (!Array.isArray(items)) return [];
+  const linkedAt = linkedAtIso || new Date().toISOString();
+  const groups = new Map();
+  for (const item of items) {
+    const dive = item && item.match ? item.match.dive : null;
+    const asset = item ? item.asset : null;
+    if (!dive || !dive.id || !asset || !asset.uri) continue;
+    if (!groups.has(dive.id)) groups.set(dive.id, []);
+    groups.get(dive.id).push({
+      id: asset.assetId || asset.uri,
+      uri: asset.uri,
+      assetId: asset.assetId || null,
+      capturedAt: item.capturedAt || null,
+      linkedAt,
+      source: item.match.confidence === 'manual' ? 'logbook-photo-import-manual' : 'logbook-photo-import',
+    });
+  }
+  return [...groups.entries()].map(([diveId, photos]) => ({ diveId, photos }));
+}

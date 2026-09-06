@@ -73,7 +73,12 @@ import {
   weightToInput,
 } from '../lib/diveLog/format';
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
-import { findDivePhotoMatches, photoCapturedAt } from '../lib/diveLog/photoMatching';
+import {
+  buildPhotoImportPlan,
+  findDivePhotoMatches,
+  manualDivePhotoMatch,
+  photoCapturedAt,
+} from '../lib/diveLog/photoMatching';
 import { hiddenDataSections, sectionIsVisible } from '../lib/diveLog/diveModeFields';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
@@ -1285,8 +1290,9 @@ function KeyStats({ water, phys, temperatures, mix, pressure, sac, units }) {
   );
 }
 
-function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, chartColors, lineWidth }) {
+function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePhoto, chartColors, lineWidth }) {
   const [profileFullscreen, setProfileFullscreen] = useState(false);
+  const [viewerPhoto, setViewerPhoto] = useState(null);
   // Physical data comes from the shown computer's log; user's own fields from the Dive.
   const phys = primaryLog || dive;
   // A computer log may legitimately omit individual condition fields. Keep the
@@ -1462,10 +1468,35 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, chartColors
         <DetailCard title={'Dive photos (' + dive.photos.length + ')'} defaultExpanded>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.photoStrip}>
             {dive.photos.map((photo) => (
-              <Image key={photo.id} source={{ uri: photo.uri }} style={styles.divePhoto} accessibilityLabel="Linked dive photo" />
+              <Pressable
+                key={photo.id}
+                onPress={() => setViewerPhoto(photo)}
+                accessibilityRole="button"
+                accessibilityLabel="View linked dive photo"
+              >
+                <Image source={{ uri: photo.uri }} style={styles.divePhoto} />
+              </Pressable>
             ))}
           </ScrollView>
         </DetailCard>
+      ) : null}
+
+      {viewerPhoto ? (
+        <PhotoViewerModal
+          photo={viewerPhoto}
+          onClose={() => setViewerPhoto(null)}
+          onRemove={() => {
+            const target = viewerPhoto;
+            Alert.alert('Remove this photo?', 'It stays in your camera roll — only the link to this dive is removed.', [
+              { text: 'Cancel', style: 'cancel' },
+              {
+                text: 'Remove',
+                style: 'destructive',
+                onPress: () => { setViewerPhoto(null); onRemovePhoto?.(target); },
+              },
+            ]);
+          }}
+        />
       ) : null}
 
       {/* Always open. Gating this on "has gas data" was worse than useless:
@@ -1778,45 +1809,118 @@ function DiveEditForm({ form, units, onChange, error }) {
 // Screen
 // ---------------------------------------------------------------------------
 
-function BatchPhotoReviewModal({ review, saving, onCancel, onConfirm }) {
+function matchStatusLabel(match) {
+  if (!match) return 'This photo will not be linked';
+  if (match.confidence === 'manual') return 'Assigned by you';
+  return match.confidence === 'high' ? 'During this dive' : 'Near this dive';
+}
+
+function BatchPhotoReviewModal({ review, dives, units, saving, onCancel, onConfirm, onReassign }) {
+  // When set, the sheet shows the dive picker for this item instead of the list.
+  const [assignFor, setAssignFor] = useState(null);
   const matched = review.items.filter((item) => item.match);
   const unmatched = review.items.length - matched.length;
+  const assigningItem = assignFor ? review.items.find((item) => item.id === assignFor) : null;
+
+  const pick = (dive) => {
+    onReassign(assignFor, dive ? manualDivePhotoMatch(dive, assigningItem?.capturedAt) : null);
+    setAssignFor(null);
+  };
+
   return (
-    <Modal animationType="slide" transparent visible onRequestClose={onCancel}>
+    <Modal animationType="slide" transparent visible onRequestClose={assignFor ? () => setAssignFor(null) : onCancel}>
       <View style={styles.photoReviewBackdrop}>
         <View style={styles.photoReviewSheet}>
-          <Text accessibilityRole="header" style={styles.photoReviewTitle}>Review photo matches</Text>
-          <Text style={styles.photoReviewSummary}>{matched.length} matched · {unmatched} need review</Text>
-          <Text style={styles.photoReviewPrivacy}>Matching used photo timestamps on this device. No photos were uploaded.</Text>
-          <ScrollView style={styles.photoReviewList} contentContainerStyle={styles.photoReviewListContent}>
-            {review.items.map((item, index) => (
-              <View key={item.id} style={[styles.photoReviewRow, index > 0 && styles.photoReviewDivider]}>
-                <Image source={{ uri: item.asset.uri }} style={styles.photoReviewThumb} />
-                <View style={styles.photoReviewCopy}>
-                  <Text numberOfLines={1} style={styles.photoReviewName}>
-                    {item.match ? (item.match.dive.siteName || 'Logged dive') : 'No dive match'}
-                  </Text>
-                  <Text style={styles.photoReviewMeta}>
-                    {item.capturedAt ? new Date(item.capturedAt).toLocaleString() : 'No capture timestamp'}
-                  </Text>
-                  <Text style={item.match ? styles.photoReviewMatched : styles.photoReviewUnmatched}>
-                    {item.match
-                      ? (item.match.confidence === 'high' ? 'During this dive' : 'Near this dive')
-                      : 'This photo will not be linked'}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
-          {matched.length ? (
-            <PrimaryButton
-              label={saving ? 'Linking photos…' : 'Link ' + matched.length + (matched.length === 1 ? ' photo' : ' photos')}
-              onPress={onConfirm}
-              disabled={saving}
-              style={styles.photoReviewAction}
-            />
-          ) : null}
-          <SecondaryButton label={matched.length ? 'Cancel' : 'Done'} onPress={onCancel} disabled={saving} style={styles.photoReviewAction} />
+          {assigningItem ? (
+            <>
+              <Text accessibilityRole="header" style={styles.photoReviewTitle}>Choose a dive</Text>
+              <Text style={styles.photoReviewSummary}>
+                {assigningItem.capturedAt ? new Date(assigningItem.capturedAt).toLocaleString() : 'No capture timestamp'}
+              </Text>
+              <ScrollView style={styles.photoReviewList} contentContainerStyle={styles.photoReviewListContent}>
+                {assigningItem.match ? (
+                  <Pressable onPress={() => pick(null)} style={[styles.photoReviewRow, styles.photoAssignRow]}>
+                    <Text style={styles.photoAssignClear}>Don&apos;t link this photo</Text>
+                  </Pressable>
+                ) : null}
+                {dives.map((dive, index) => {
+                  const active = assigningItem.match?.dive?.id === dive.id;
+                  return (
+                    <Pressable
+                      key={dive.id}
+                      onPress={() => pick(dive)}
+                      style={[styles.photoReviewRow, styles.photoAssignRow, index > 0 && styles.photoReviewDivider, active && styles.photoAssignActive]}
+                    >
+                      <View style={styles.photoReviewCopy}>
+                        <Text numberOfLines={1} style={styles.photoReviewName}>{dive.siteName || 'Unnamed site'}</Text>
+                        <Text style={styles.photoReviewMeta}>
+                          {formatDate(dive.startTime)}
+                          {dive.maxDepthMeters != null ? ' · ' + formatDepth(dive.maxDepthMeters, units.depthUnit) : ''}
+                        </Text>
+                      </View>
+                      {active ? <Text style={styles.photoAssignCheck}>✓</Text> : null}
+                    </Pressable>
+                  );
+                })}
+              </ScrollView>
+              <SecondaryButton label="Back" onPress={() => setAssignFor(null)} style={styles.photoReviewAction} />
+            </>
+          ) : (
+            <>
+              <Text accessibilityRole="header" style={styles.photoReviewTitle}>Review photo matches</Text>
+              <Text style={styles.photoReviewSummary}>{matched.length} to link · {unmatched} not linked</Text>
+              <Text style={styles.photoReviewPrivacy}>Matching used photo timestamps on this device. No photos were uploaded. Tap a photo to change its dive.</Text>
+              <ScrollView style={styles.photoReviewList} contentContainerStyle={styles.photoReviewListContent}>
+                {review.items.map((item, index) => (
+                  <Pressable
+                    key={item.id}
+                    onPress={() => setAssignFor(item.id)}
+                    disabled={saving}
+                    style={[styles.photoReviewRow, index > 0 && styles.photoReviewDivider]}
+                  >
+                    <Image source={{ uri: item.asset.uri }} style={styles.photoReviewThumb} />
+                    <View style={styles.photoReviewCopy}>
+                      <Text numberOfLines={1} style={styles.photoReviewName}>
+                        {item.match ? (item.match.dive.siteName || 'Logged dive') : 'No dive match'}
+                      </Text>
+                      <Text style={styles.photoReviewMeta}>
+                        {item.capturedAt ? new Date(item.capturedAt).toLocaleString() : 'No capture timestamp'}
+                      </Text>
+                      <Text style={item.match ? styles.photoReviewMatched : styles.photoReviewUnmatched}>
+                        {matchStatusLabel(item.match)}
+                      </Text>
+                    </View>
+                    <Text style={styles.photoReviewChange}>{item.match ? 'Change' : 'Choose'}</Text>
+                  </Pressable>
+                ))}
+              </ScrollView>
+              {matched.length ? (
+                <PrimaryButton
+                  label={saving ? 'Linking photos…' : 'Link ' + matched.length + (matched.length === 1 ? ' photo' : ' photos')}
+                  onPress={onConfirm}
+                  disabled={saving}
+                  style={styles.photoReviewAction}
+                />
+              ) : null}
+              <SecondaryButton label={matched.length ? 'Cancel' : 'Done'} onPress={onCancel} disabled={saving} style={styles.photoReviewAction} />
+            </>
+          )}
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function PhotoViewerModal({ photo, onClose, onRemove }) {
+  return (
+    <Modal animationType="fade" transparent visible onRequestClose={onClose}>
+      <View style={styles.photoViewerBackdrop}>
+        <Pressable style={styles.photoViewerImageWrap} onPress={onClose} accessibilityLabel="Close photo">
+          <Image source={{ uri: photo.uri }} style={styles.photoViewerImage} resizeMode="contain" />
+        </Pressable>
+        <View style={styles.photoViewerActions}>
+          <SecondaryButton label="Remove from this dive" onPress={onRemove} style={styles.photoViewerButton} />
+          <SecondaryButton label="Close" onPress={onClose} style={styles.photoViewerButton} />
         </View>
       </View>
     </Modal>
@@ -1827,7 +1931,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
-    getDive, addDive, updateDive, attachPhotosToDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
+    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
     getSnapshots, restoreBackup,
@@ -1996,28 +2100,22 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     setPhotoImportReview({ items });
   }, [rows]);
 
+  const reassignPhotoMatch = useCallback((itemId, match) => {
+    setPhotoImportReview((prev) => (prev ? {
+      items: prev.items.map((item) => (item.id === itemId ? { ...item, match } : item)),
+    } : prev));
+  }, []);
+
   const confirmPhotoImport = useCallback(async () => {
     if (!photoImportReview || photoImportSaving) return;
     setPhotoImportSaving(true);
     try {
-      const grouped = new Map();
-      for (const item of photoImportReview.items) {
-        if (!item.match) continue;
-        const diveId = item.match.dive.id;
-        if (!grouped.has(diveId)) grouped.set(diveId, []);
-        grouped.get(diveId).push({
-          id: item.asset.assetId || item.asset.uri,
-          uri: item.asset.uri,
-          assetId: item.asset.assetId || null,
-          capturedAt: item.capturedAt,
-          linkedAt: new Date().toISOString(),
-          source: 'logbook-photo-import',
-        });
-      }
-      for (const [diveId, photos] of grouped) {
+      const plan = buildPhotoImportPlan(photoImportReview.items);
+      let linkedCount = 0;
+      for (const { diveId, photos } of plan) {
         await attachPhotosToDive(diveId, photos);
+        linkedCount += photos.length;
       }
-      const linkedCount = [...grouped.values()].reduce((sum, photos) => sum + photos.length, 0);
       setPhotoImportReview(null);
       Alert.alert('Photos linked', linkedCount + (linkedCount === 1 ? ' photo was added to its dive.' : ' photos were added to their dives.'));
     } catch (error) {
@@ -2167,6 +2265,16 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     ]);
   }, [deleteDive, openList, selectedId]);
 
+  const handleRemovePhoto = useCallback(async (photo) => {
+    if (!record || !photo) return;
+    try {
+      const saved = await removePhotoFromDive(record.id, photo.id);
+      if (saved) setRecord(saved);
+    } catch (error) {
+      Alert.alert('Could not remove photo', error?.message || 'The photo link could not be removed.');
+    }
+  }, [record, removePhotoFromDive]);
+
   const handleSplit = useCallback(() => {
     if (!selectedId || logs.length < 2) return;
     Alert.alert(
@@ -2197,12 +2305,18 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     : canSelect
       ? (
         <View style={styles.headerActions}>
+          <SecondaryButton label="Photos" onPress={beginPhotoImport} style={styles.headerButton} />
           <SecondaryButton label="Select" onPress={() => enterSelect(null)} style={styles.headerButton} />
           <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
         </View>
       )
       : view === 'list' && loaded && rows.length
-        ? <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
+        ? (
+          <View style={styles.headerActions}>
+            <SecondaryButton label="Photos" onPress={beginPhotoImport} style={styles.headerButton} />
+            <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
+          </View>
+        )
         : undefined;
 
   return (
@@ -2255,11 +2369,18 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             ) : null}
 
             {loaded && rows.length && !selectMode ? (
-              <SecondaryButton
-                label="Match camera roll photos"
-                onPress={beginPhotoImport}
-                style={styles.photoImportButton}
-              />
+              <Card style={styles.photoImportCard}>
+                <Text style={styles.photoImportEyebrow}>PHOTO ORGANIZER</Text>
+                <Text style={styles.photoImportTitle}>Auto-sort dive photos</Text>
+                <Text style={styles.photoImportBody}>
+                  Choose multiple camera-roll photos. DMZ Scuba will compare their capture times with your logged dives, show every suggested match, and let you confirm before anything is linked.
+                </Text>
+                <PrimaryButton
+                  label="Choose and match photos"
+                  onPress={beginPhotoImport}
+                  style={styles.photoImportButton}
+                />
+              </Card>
             ) : null}
 
             {!loaded ? (
@@ -2394,9 +2515,12 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         {photoImportReview ? (
           <BatchPhotoReviewModal
             review={photoImportReview}
+            dives={rows}
+            units={units}
             saving={photoImportSaving}
             onCancel={() => setPhotoImportReview(null)}
             onConfirm={confirmPhotoImport}
+            onReassign={reassignPhotoMatch}
           />
         ) : null}
 
@@ -2531,7 +2655,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         {view === 'detail' && (
           record ? (
             <>
-              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} chartColors={chartColors} lineWidth={lineWidth} />
+              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} onRemovePhoto={handleRemovePhoto} chartColors={chartColors} lineWidth={lineWidth} />
               <View style={styles.detailActions}>
                 <SecondaryButton label="Edit" onPress={openEdit} style={styles.detailActionButton} />
                 <SecondaryButton label="Export" onPress={() => chooseExportFormat([record.id])} style={styles.detailActionButton} />
@@ -2557,7 +2681,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 }
 
 const styles = StyleSheet.create({
-  photoImportButton: { marginBottom: 14 },
+  photoImportCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)', marginBottom: 16 },
+  photoImportEyebrow: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
+  photoImportTitle: { color: colors.text, fontSize: 18, fontWeight: '900', marginTop: 7 },
+  photoImportBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
+  photoImportButton: { marginTop: 12 },
   photoReviewBackdrop: { backgroundColor: 'rgba(0,0,0,0.7)', flex: 1, justifyContent: 'flex-end' },
   photoReviewSheet: { backgroundColor: colors.background, borderColor: colors.lineStrong, borderTopLeftRadius: 22, borderTopRightRadius: 22, borderWidth: 1, maxHeight: '85%', padding: spacing.lg },
   photoReviewTitle: { color: colors.text, fontSize: 22, fontWeight: '900' },
@@ -2573,7 +2701,17 @@ const styles = StyleSheet.create({
   photoReviewMeta: { color: colors.muted, fontSize: 11, marginTop: 3 },
   photoReviewMatched: { color: colors.cyan, fontSize: 11, fontWeight: '700', marginTop: 4 },
   photoReviewUnmatched: { color: colors.faint, fontSize: 11, marginTop: 4 },
+  photoReviewChange: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
   photoReviewAction: { marginTop: 8 },
+  photoAssignRow: { minHeight: 52 },
+  photoAssignActive: { backgroundColor: colors.surface, borderRadius: 10 },
+  photoAssignCheck: { color: colors.cyan, fontSize: 16, fontWeight: '900' },
+  photoAssignClear: { color: colors.faint, fontSize: 14, fontWeight: '700' },
+  photoViewerBackdrop: { backgroundColor: 'rgba(0,0,0,0.94)', flex: 1, justifyContent: 'center' },
+  photoViewerImageWrap: { flex: 1 },
+  photoViewerImage: { flex: 1, width: '100%' },
+  photoViewerActions: { flexDirection: 'row', gap: 12, padding: spacing.lg },
+  photoViewerButton: { flex: 1 },
   photoStrip: { gap: 10, paddingVertical: 4 },
   divePhoto: { borderRadius: 12, height: 140, width: 140 },
   screen: { backgroundColor: colors.background, flex: 1 },
