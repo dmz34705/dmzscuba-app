@@ -202,6 +202,30 @@ export default function useDiveLog() {
     return saved;
   }, [refreshIndex]);
 
+  const attachPhotosToDive = useCallback(async (id, photos) => {
+    const current = await loadDive(id);
+    if (!current || !Array.isArray(photos) || !photos.length) return current;
+    const existing = Array.isArray(current.photos) ? current.photos : [];
+    const seen = new Set(existing.flatMap((photo) => [photo.id, photo.assetId, photo.uri]).filter(Boolean));
+    const additions = photos.filter((photo) => {
+      const keys = [photo?.id, photo?.assetId, photo?.uri].filter(Boolean);
+      if (!keys.length || keys.some((key) => seen.has(key))) return false;
+      keys.forEach((key) => seen.add(key));
+      return true;
+    });
+    if (!additions.length) return current;
+    const saved = await saveDive(touchRecord(normalizeDive({
+      ...current,
+      photos: [...existing, ...additions],
+      id,
+      createdAt: current.createdAt,
+    })));
+    const logs = await loadLogsForDive(saved);
+    diveCache.current.set(saved.id, { dive: saved, logs });
+    await refreshIndex();
+    return saved;
+  }, [refreshIndex]);
+
   const deleteDive = useCallback(async (id) => {
     await softDeleteDive(id);
     diveCache.current.delete(id);
@@ -411,6 +435,7 @@ export default function useDiveLog() {
     getDive,
     addDive,
     updateDive,
+    attachPhotosToDive,
     deleteDive,
     deleteDives,
     importComputerLogs,

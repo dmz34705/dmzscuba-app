@@ -14,6 +14,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as ImagePicker from 'expo-image-picker';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
@@ -72,6 +73,7 @@ import {
   weightToInput,
 } from '../lib/diveLog/format';
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
+import { findDivePhotoMatches, photoCapturedAt } from '../lib/diveLog/photoMatching';
 import { hiddenDataSections, sectionIsVisible } from '../lib/diveLog/diveModeFields';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
@@ -1776,11 +1778,56 @@ function DiveEditForm({ form, units, onChange, error }) {
 // Screen
 // ---------------------------------------------------------------------------
 
+function BatchPhotoReviewModal({ review, saving, onCancel, onConfirm }) {
+  const matched = review.items.filter((item) => item.match);
+  const unmatched = review.items.length - matched.length;
+  return (
+    <Modal animationType="slide" transparent visible onRequestClose={onCancel}>
+      <View style={styles.photoReviewBackdrop}>
+        <View style={styles.photoReviewSheet}>
+          <Text accessibilityRole="header" style={styles.photoReviewTitle}>Review photo matches</Text>
+          <Text style={styles.photoReviewSummary}>{matched.length} matched · {unmatched} need review</Text>
+          <Text style={styles.photoReviewPrivacy}>Matching used photo timestamps on this device. No photos were uploaded.</Text>
+          <ScrollView style={styles.photoReviewList} contentContainerStyle={styles.photoReviewListContent}>
+            {review.items.map((item, index) => (
+              <View key={item.id} style={[styles.photoReviewRow, index > 0 && styles.photoReviewDivider]}>
+                <Image source={{ uri: item.asset.uri }} style={styles.photoReviewThumb} />
+                <View style={styles.photoReviewCopy}>
+                  <Text numberOfLines={1} style={styles.photoReviewName}>
+                    {item.match ? (item.match.dive.siteName || 'Logged dive') : 'No dive match'}
+                  </Text>
+                  <Text style={styles.photoReviewMeta}>
+                    {item.capturedAt ? new Date(item.capturedAt).toLocaleString() : 'No capture timestamp'}
+                  </Text>
+                  <Text style={item.match ? styles.photoReviewMatched : styles.photoReviewUnmatched}>
+                    {item.match
+                      ? (item.match.confidence === 'high' ? 'During this dive' : 'Near this dive')
+                      : 'This photo will not be linked'}
+                  </Text>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+          {matched.length ? (
+            <PrimaryButton
+              label={saving ? 'Linking photos…' : 'Link ' + matched.length + (matched.length === 1 ? ' photo' : ' photos')}
+              onPress={onConfirm}
+              disabled={saving}
+              style={styles.photoReviewAction}
+            />
+          ) : null}
+          <SecondaryButton label={matched.length ? 'Cancel' : 'Done'} onPress={onCancel} disabled={saving} style={styles.photoReviewAction} />
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings = () => {} }) {
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
-    getDive, addDive, updateDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
+    getDive, addDive, updateDive, attachPhotosToDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
     getSnapshots, restoreBackup,
@@ -1829,6 +1876,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [selectedId, setSelectedId] = useState(null);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
+  const [photoImportReview, setPhotoImportReview] = useState(null);
+  const [photoImportSaving, setPhotoImportSaving] = useState(false);
 
   const foldersMode = useMemo(() => folders.some((f) => f.kind === 'computer'), [folders]);
   const activeFolder = useMemo(
@@ -1918,6 +1967,65 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       ],
     );
   }, [exitSelect, mergeDivesManual, selectedIds]);
+
+  const beginPhotoImport = useCallback(async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert('Photo access needed', 'Enable photo library access for DMZ Scuba in device settings to match photos with dives.');
+      return;
+    }
+    const picked = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsMultipleSelection: true,
+      orderedSelection: true,
+      selectionLimit: 0,
+      exif: true,
+      quality: 1,
+    });
+    if (picked.canceled || !picked.assets?.length) return;
+    const items = picked.assets.map((asset, index) => {
+      const capturedAt = photoCapturedAt(asset);
+      const match = capturedAt ? findDivePhotoMatches(asset, rows, capturedAt)[0] || null : null;
+      return {
+        id: asset.assetId || asset.uri || 'selected-photo-' + index,
+        asset,
+        capturedAt,
+        match,
+      };
+    });
+    setPhotoImportReview({ items });
+  }, [rows]);
+
+  const confirmPhotoImport = useCallback(async () => {
+    if (!photoImportReview || photoImportSaving) return;
+    setPhotoImportSaving(true);
+    try {
+      const grouped = new Map();
+      for (const item of photoImportReview.items) {
+        if (!item.match) continue;
+        const diveId = item.match.dive.id;
+        if (!grouped.has(diveId)) grouped.set(diveId, []);
+        grouped.get(diveId).push({
+          id: item.asset.assetId || item.asset.uri,
+          uri: item.asset.uri,
+          assetId: item.asset.assetId || null,
+          capturedAt: item.capturedAt,
+          linkedAt: new Date().toISOString(),
+          source: 'logbook-photo-import',
+        });
+      }
+      for (const [diveId, photos] of grouped) {
+        await attachPhotosToDive(diveId, photos);
+      }
+      const linkedCount = [...grouped.values()].reduce((sum, photos) => sum + photos.length, 0);
+      setPhotoImportReview(null);
+      Alert.alert('Photos linked', linkedCount + (linkedCount === 1 ? ' photo was added to its dive.' : ' photos were added to their dives.'));
+    } catch (error) {
+      Alert.alert('Could not link photos', error?.message || 'The selected photos could not be added to the logbook.');
+    } finally {
+      setPhotoImportSaving(false);
+    }
+  }, [attachPhotosToDive, photoImportReview, photoImportSaving]);
 
   const chooseExportFormat = useCallback((ids = null) => {
     const count = ids?.length || rows.length;
@@ -2146,6 +2254,14 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
               </Text>
             ) : null}
 
+            {loaded && rows.length && !selectMode ? (
+              <SecondaryButton
+                label="Match camera roll photos"
+                onPress={beginPhotoImport}
+                style={styles.photoImportButton}
+              />
+            ) : null}
+
             {!loaded ? (
               <Text style={styles.muted}>Loading your logbook…</Text>
             ) : showFolderGrid ? (
@@ -2274,6 +2390,15 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             )}
           </>
         )}
+
+        {photoImportReview ? (
+          <BatchPhotoReviewModal
+            review={photoImportReview}
+            saving={photoImportSaving}
+            onCancel={() => setPhotoImportReview(null)}
+            onConfirm={confirmPhotoImport}
+          />
+        ) : null}
 
         {filterOpen ? (
           <DiveFilterSheet
@@ -2432,6 +2557,23 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 }
 
 const styles = StyleSheet.create({
+  photoImportButton: { marginBottom: 14 },
+  photoReviewBackdrop: { backgroundColor: 'rgba(0,0,0,0.7)', flex: 1, justifyContent: 'flex-end' },
+  photoReviewSheet: { backgroundColor: colors.background, borderColor: colors.lineStrong, borderTopLeftRadius: 22, borderTopRightRadius: 22, borderWidth: 1, maxHeight: '85%', padding: spacing.lg },
+  photoReviewTitle: { color: colors.text, fontSize: 22, fontWeight: '900' },
+  photoReviewSummary: { color: colors.cyan, fontSize: 14, fontWeight: '800', marginTop: 6 },
+  photoReviewPrivacy: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 8 },
+  photoReviewList: { marginVertical: 14 },
+  photoReviewListContent: { paddingBottom: 4 },
+  photoReviewRow: { alignItems: 'center', flexDirection: 'row', gap: 12, paddingVertical: 10 },
+  photoReviewDivider: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth },
+  photoReviewThumb: { backgroundColor: colors.surface, borderRadius: 10, height: 62, width: 62 },
+  photoReviewCopy: { flex: 1 },
+  photoReviewName: { color: colors.text, fontSize: 14, fontWeight: '800' },
+  photoReviewMeta: { color: colors.muted, fontSize: 11, marginTop: 3 },
+  photoReviewMatched: { color: colors.cyan, fontSize: 11, fontWeight: '700', marginTop: 4 },
+  photoReviewUnmatched: { color: colors.faint, fontSize: 11, marginTop: 4 },
+  photoReviewAction: { marginTop: 8 },
   photoStrip: { gap: 10, paddingVertical: 4 },
   divePhoto: { borderRadius: 12, height: 140, width: 140 },
   screen: { backgroundColor: colors.background, flex: 1 },
