@@ -33,6 +33,7 @@ import {
   defaultGasLabel,
   mergeGas,
   normalizeDive,
+  shiftIso,
 } from '../lib/diveLog/schema';
 import {
   DEFAULT_DIVE_FILTER,
@@ -973,21 +974,28 @@ function FolderCard({ folder, onPress, onSetRank }) {
   );
 }
 
-function SelectionBar({ count, total, allSelected, onToggleAll, onDelete, onMerge, onExport }) {
+function SelectionBar({ count, total, allSelected, onToggleAll, onDelete, onMerge, onExport, onEdit }) {
   return (
     <Card style={styles.selectionBar}>
       <Pressable onPress={onToggleAll} hitSlop={8} style={({ pressed }) => [styles.selectionToggle, pressed && styles.pressed]}>
-        <Text style={styles.selectionToggleText}>{allSelected ? 'Deselect all' : `Select all (${total})`}</Text>
+        <Text style={styles.selectionToggleText}>
+          {allSelected ? 'Deselect all' : count ? `${count} selected · all (${total})` : `Select all (${total})`}
+        </Text>
       </Pressable>
       <View style={styles.selectionRight}>
         {count ? (
+          <Pressable accessibilityRole="button" onPress={onEdit} hitSlop={8} style={({ pressed }) => [styles.selectionExport, pressed && styles.pressed]}>
+            <Text style={styles.selectionExportText}>Edit</Text>
+          </Pressable>
+        ) : null}
+        {count ? (
           <Pressable accessibilityRole="button" onPress={onExport} hitSlop={8} style={({ pressed }) => [styles.selectionExport, pressed && styles.pressed]}>
-            <Text style={styles.selectionExportText}>Export {count}</Text>
+            <Text style={styles.selectionExportText}>Export</Text>
           </Pressable>
         ) : null}
         {count >= 2 ? (
           <Pressable accessibilityRole="button" onPress={onMerge} hitSlop={8} style={({ pressed }) => [styles.selectionMerge, pressed && styles.pressed]}>
-            <Text style={styles.selectionMergeText}>Merge {count}</Text>
+            <Text style={styles.selectionMergeText}>Merge</Text>
           </Pressable>
         ) : null}
         <Pressable
@@ -997,9 +1005,7 @@ function SelectionBar({ count, total, allSelected, onToggleAll, onDelete, onMerg
           hitSlop={8}
           style={({ pressed }) => [styles.selectionDelete, count === 0 && styles.selectionDeleteOff, pressed && styles.pressed]}
         >
-          <Text style={[styles.selectionDeleteText, count === 0 && styles.selectionDeleteTextOff]}>
-            {count ? `Delete ${count}` : 'Delete'}
-          </Text>
+          <Text style={[styles.selectionDeleteText, count === 0 && styles.selectionDeleteTextOff]}>Delete</Text>
         </Pressable>
       </View>
     </Card>
@@ -1835,6 +1841,118 @@ function DiveEditForm({ form, units, onChange, error }) {
 // Screen
 // ---------------------------------------------------------------------------
 
+// One editable field in the bulk-edit sheet: a checkbox that reveals its input
+// only when switched on, so an untouched row can't silently overwrite anything.
+function BulkEditRow({ label, on, onToggle, children }) {
+  return (
+    <View style={styles.bulkRow}>
+      <Pressable
+        onPress={onToggle}
+        hitSlop={6}
+        accessibilityRole="checkbox"
+        accessibilityState={{ checked: on }}
+        style={styles.bulkToggle}
+      >
+        <View style={[styles.bulkCheck, on && styles.bulkCheckOn]}>
+          {on ? <Text style={styles.bulkCheckMark}>✓</Text> : null}
+        </View>
+        <Text style={styles.bulkRowLabel}>{label}</Text>
+      </Pressable>
+      {on ? <View style={styles.bulkRowBody}>{children}</View> : null}
+    </View>
+  );
+}
+
+// Batch-edit the trip-level fields of several selected dives at once. Never
+// exposes per-dive numbers (depth, duration, temps, gas) — those can't be
+// shared across a selection.
+function BulkEditSheet({ count, saving, onCancel, onApply }) {
+  const [on, setOn] = useState(() => new Set());
+  const [v, setV] = useState({
+    siteName: '', location: '', country: '', operator: '',
+    suit: '', buddies: '', tag: '', waterType: 'salt', shift: '',
+  });
+  const toggle = (key) => setOn((prev) => {
+    const next = new Set(prev);
+    if (next.has(key)) next.delete(key); else next.add(key);
+    return next;
+  });
+  const set = (key) => (text) => setV((prev) => ({ ...prev, [key]: text }));
+  const label = `${count} ${count === 1 ? 'dive' : 'dives'}`;
+
+  return (
+    <Modal animationType="slide" transparent visible onRequestClose={onCancel}>
+      <View style={styles.photoReviewBackdrop}>
+        <View style={styles.photoReviewSheet}>
+          <Text accessibilityRole="header" style={styles.photoReviewTitle}>Edit {label}</Text>
+          <Text style={styles.photoReviewPrivacy}>
+            Only the rows you switch on change. Depth, duration, temperature and gas are per-dive and never touched.
+          </Text>
+          <ScrollView
+            style={styles.photoReviewList}
+            contentContainerStyle={styles.photoReviewListContent}
+            keyboardShouldPersistTaps="handled"
+          >
+            <BulkEditRow label="Site name" on={on.has('siteName')} onToggle={() => toggle('siteName')}>
+              <Field label="Site name" value={v.siteName} onChangeText={set('siteName')} placeholder="e.g. Palancar Gardens" />
+            </BulkEditRow>
+            <BulkEditRow label="Location / region" on={on.has('location')} onToggle={() => toggle('location')}>
+              <Field label="Location" value={v.location} onChangeText={set('location')} placeholder="e.g. Cozumel" />
+            </BulkEditRow>
+            <BulkEditRow label="Country" on={on.has('country')} onToggle={() => toggle('country')}>
+              <Field label="Country" value={v.country} onChangeText={set('country')} placeholder="e.g. Mexico" />
+            </BulkEditRow>
+            <BulkEditRow label="Operator / boat" on={on.has('operator')} onToggle={() => toggle('operator')}>
+              <Field label="Operator" value={v.operator} onChangeText={set('operator')} placeholder="e.g. Aldora Divers" />
+            </BulkEditRow>
+            <BulkEditRow label="Water type" on={on.has('waterType')} onToggle={() => toggle('waterType')}>
+              <View style={styles.bulkChips}>
+                {WATER_TYPES.map((wt) => (
+                  <Pressable
+                    key={wt}
+                    onPress={() => set('waterType')(wt)}
+                    style={[styles.bulkChip, v.waterType === wt && styles.bulkChipOn]}
+                  >
+                    <Text style={[styles.bulkChipText, v.waterType === wt && styles.bulkChipTextOn]}>
+                      {WATER_TYPE_LABELS[wt] || wt}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
+            </BulkEditRow>
+            <BulkEditRow label="Buddies (replaces the list)" on={on.has('buddies')} onToggle={() => toggle('buddies')}>
+              <Field label="Buddies" value={v.buddies} onChangeText={set('buddies')} placeholder="comma separated" />
+            </BulkEditRow>
+            <BulkEditRow label="Exposure suit" on={on.has('suit')} onToggle={() => toggle('suit')}>
+              <Field label="Suit" value={v.suit} onChangeText={set('suit')} placeholder="e.g. 5 mm full" />
+            </BulkEditRow>
+            <BulkEditRow label="Add a tag" on={on.has('tag')} onToggle={() => toggle('tag')}>
+              <Field label="Tag" value={v.tag} onChangeText={set('tag')} placeholder="e.g. cozumel-2025" autoCapitalize="none" />
+            </BulkEditRow>
+            <BulkEditRow label="Shift the time" on={on.has('shift')} onToggle={() => toggle('shift')}>
+              <Field
+                label="Minutes (− earlier, + later)"
+                value={v.shift}
+                onChangeText={set('shift')}
+                placeholder="e.g. -90"
+                keyboardType="numbers-and-punctuation"
+                suffix="min"
+              />
+            </BulkEditRow>
+          </ScrollView>
+          <PrimaryButton
+            label={saving ? 'Applying…' : on.size ? `Apply to ${label}` : 'Switch on what to change'}
+            onPress={() => onApply({ fields: [...on], values: v })}
+            disabled={saving || on.size === 0}
+            style={styles.photoReviewAction}
+          />
+          <SecondaryButton label="Cancel" onPress={onCancel} disabled={saving} style={styles.photoReviewAction} />
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 function matchStatusLabel(match) {
   if (!match) return 'This photo will not be linked';
   if (match.confidence === 'manual') return 'Assigned by you';
@@ -2227,6 +2345,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [photoLinkProgress, setPhotoLinkProgress] = useState(null);
   const [photoScanning, setPhotoScanning] = useState(null);
   const [galleryReloadKey, setGalleryReloadKey] = useState(0);
+  const [bulkEditOpen, setBulkEditOpen] = useState(false);
+  const [bulkSaving, setBulkSaving] = useState(false);
 
   const foldersMode = useMemo(() => folders.some((f) => f.kind === 'computer'), [folders]);
   const activeFolder = useMemo(
@@ -2316,6 +2436,47 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       ],
     );
   }, [exitSelect, mergeDivesManual, selectedIds]);
+
+  const handleBulkEdit = useCallback(async ({ fields, values }) => {
+    const ids = [...selectedIds];
+    const set = new Set(fields);
+    const buildPatch = (dive) => {
+      const patch = {};
+      if (set.has('siteName') || set.has('location') || set.has('country')) {
+        patch.site = { ...dive.site };
+        if (set.has('siteName')) patch.site.name = values.siteName.trim();
+        if (set.has('location')) patch.site.location = values.location.trim();
+        if (set.has('country')) patch.site.country = values.country.trim();
+      }
+      if (set.has('operator')) patch.operator = values.operator.trim();
+      if (set.has('waterType')) patch.water = { ...dive.water, type: values.waterType };
+      if (set.has('suit')) patch.gear = { ...dive.gear, exposureSuit: values.suit.trim() };
+      if (set.has('buddies')) {
+        patch.buddies = values.buddies.split(',').map((s) => s.trim()).filter(Boolean);
+      }
+      if (set.has('tag')) {
+        const tag = values.tag.trim();
+        if (tag) patch.tags = Array.from(new Set([...(dive.tags || []), tag]));
+      }
+      if (set.has('shift')) {
+        const minutes = parseInt(values.shift, 10);
+        if (Number.isFinite(minutes) && minutes !== 0) patch.startTime = shiftIso(dive.startTime, minutes);
+      }
+      return patch;
+    };
+    setBulkSaving(true);
+    try {
+      const n = await bulkEditDives(ids, buildPatch);
+      setBulkEditOpen(false);
+      exitSelect();
+      setGalleryReloadKey((k) => k + 1);
+      Alert.alert('Dives updated', `${n} ${n === 1 ? 'dive was' : 'dives were'} updated.`);
+    } catch (error) {
+      Alert.alert('Could not update dives', error?.message || 'The batch edit failed.');
+    } finally {
+      setBulkSaving(false);
+    }
+  }, [bulkEditDives, exitSelect, selectedIds]);
 
   const beginPhotoImport = useCallback(async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -2731,6 +2892,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                     onToggleAll={toggleSelectAll}
                     onDelete={handleDeleteSelected}
                     onMerge={handleMergeSelected}
+                    onEdit={() => setBulkEditOpen(true)}
                     onExport={() => chooseExportFormat([...selectedIds])}
                   />
                 ) : null}
@@ -2790,6 +2952,15 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             onCancel={() => setPhotoImportReview(null)}
             onConfirm={confirmPhotoImport}
             onReassign={reassignPhotoMatch}
+          />
+        ) : null}
+
+        {bulkEditOpen ? (
+          <BulkEditSheet
+            count={selectedIds.size}
+            saving={bulkSaving}
+            onCancel={() => setBulkEditOpen(false)}
+            onApply={handleBulkEdit}
           />
         ) : null}
 
@@ -3003,6 +3174,18 @@ const styles = StyleSheet.create({
   photoReviewMatched: { color: colors.cyan, fontSize: 11, fontWeight: '700', marginTop: 4 },
   photoReviewUnmatched: { color: colors.faint, fontSize: 11, marginTop: 4 },
   photoReviewChange: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
+  bulkRow: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 10 },
+  bulkToggle: { alignItems: 'center', flexDirection: 'row', gap: 10 },
+  bulkCheck: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: 6, borderWidth: 1.5, height: 22, justifyContent: 'center', width: 22 },
+  bulkCheckOn: { backgroundColor: colors.cyan, borderColor: colors.cyan },
+  bulkCheckMark: { color: colors.background, fontSize: 13, fontWeight: '900' },
+  bulkRowLabel: { color: colors.text, fontSize: 14, fontWeight: '700' },
+  bulkRowBody: { marginTop: 8, paddingLeft: 32 },
+  bulkChips: { flexDirection: 'row', gap: 8 },
+  bulkChip: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.sm, borderWidth: 1, paddingHorizontal: 16, paddingVertical: 8 },
+  bulkChipOn: { backgroundColor: 'rgba(112,221,246,0.16)', borderColor: colors.cyan },
+  bulkChipText: { color: colors.muted, fontSize: 13, fontWeight: '700' },
+  bulkChipTextOn: { color: colors.cyan },
   photoReviewAction: { marginTop: 8 },
   photoAssignRow: { minHeight: 52 },
   photoAssignActive: { backgroundColor: colors.surface, borderRadius: 10 },

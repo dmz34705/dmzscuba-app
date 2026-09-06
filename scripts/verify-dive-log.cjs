@@ -1358,6 +1358,14 @@ function memoryStorage(seed = {}) {
 
   // All-photos gallery: a grid of every linked photo, filtered by the same dive
   // filter, with depth-at-photo-time in the viewer.
+  // Batch edit: trip-level fields only, applied to the current selection.
+  assert.match(screen, /function BulkEditSheet/);
+  assert.match(screen, /const handleBulkEdit = useCallback/);
+  assert.match(screen, /patch\.startTime = shiftIso\(dive\.startTime, minutes\)/);
+  assert.match(screen, /onEdit=\{\(\) => setBulkEditOpen\(true\)\}/);
+  assert.doesNotMatch(screen, /BulkEditRow label="Max depth"/);
+  assert.match(hook, /const bulkEditDives = useCallback/);
+
   assert.match(screen, /view === 'gallery'/);
   assert.match(screen, /function PhotoGalleryView/);
   assert.match(screen, /filterDiveRows\(rows, filter\)/);

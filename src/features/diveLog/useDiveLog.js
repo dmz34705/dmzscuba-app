@@ -278,6 +278,32 @@ export default function useDiveLog() {
     await refreshIndex();
   }, [refreshIndex]);
 
+  // Apply the same trip-level change to several dives at once. `buildPatch(dive)`
+  // returns a shallow patch merged onto that dive (so callers can fold new
+  // values into sub-objects like `site`), or a falsy value to skip it. Only
+  // user-owned fields should be touched — depth/duration/temps/gas are
+  // per-dive. Returns the number of dives actually changed.
+  const bulkEditDives = useCallback(async (ids, buildPatch) => {
+    let changed = 0;
+    for (const id of ids) {
+      const current = await loadDive(id); // eslint-disable-line no-await-in-loop
+      if (!current) continue;
+      const patch = buildPatch(current);
+      if (!patch || !Object.keys(patch).length) continue;
+      const saved = await saveDive(touchRecord(normalizeDive({ // eslint-disable-line no-await-in-loop
+        ...current,
+        ...patch,
+        id,
+        createdAt: current.createdAt,
+      })));
+      const logs = await loadLogsForDive(saved); // eslint-disable-line no-await-in-loop
+      diveCache.current.set(saved.id, { dive: saved, logs });
+      changed += 1;
+    }
+    await refreshIndex();
+    return changed;
+  }, [refreshIndex]);
+
   /**
    * Import a batch of downloaded ComputerLogs — one Dive each, ONE index write.
    * No per-dive matching or state refresh (both would stall the BLE transfer and
@@ -477,6 +503,7 @@ export default function useDiveLog() {
     loadGalleryPhotos,
     deleteDive,
     deleteDives,
+    bulkEditDives,
     importComputerLogs,
     finishImport,
     resolveProposal,

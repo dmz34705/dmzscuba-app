@@ -602,6 +602,23 @@ Not done: photo captions/reordering, a shared cloud copy (waits on the account
 sync decision below — linked photos are local URIs, so they do not survive a
 reinstall or move between devices yet).
 
+## Batch edit (selection mode)
+
+Long-press a dive → select several → **Edit** in the selection bar opens
+`BulkEditSheet`. Each row is a checkbox that reveals its input only when on, so
+an untouched row can't overwrite anything. Trip-level fields only — site name /
+location / country, operator, water type ("salinity"), buddies (replaces),
+exposure suit, add-a-tag, and **shift the time** (± minutes, via
+`shiftIso(dive.startTime, m)`). Per-dive numbers (depth, duration, temps, gas)
+are deliberately absent. `useDiveLog.bulkEditDives(ids, buildPatch)` loads each
+dive, merges `buildPatch(dive)` (shallow, so callers fold values into `site` /
+`water` / `gear` sub-objects), re-normalizes, saves, then one `refreshIndex()`.
+
+Time correction, recap: per-**computer** clock drift is fixed in "Review
+matches" (`timeCorrectionMinutes`, profile-aligned, remembered per device); the
+batch time-shift above is the manual trip-level fix. Dive `number` is just a
+display field — not used for time correction.
+
 ## Open decisions (need Zachary)
 
 - Which dive computers to support first (drives descriptor/test priorities).
