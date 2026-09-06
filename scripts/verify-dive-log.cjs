@@ -13,6 +13,10 @@ const { computerLogFromDownload, computerDiveKey } = loadSourceModule(
   path.join(srcRoot, 'features', 'diveComputerDownload', 'computerLogFromDownload.js'),
   srcRoot,
 );
+const shareCardOptions = loadSourceModule(
+  path.join(srcRoot, 'features', 'diveShareCard', 'shareCardOptions.js'),
+  srcRoot,
+);
 const {
   SCHEMA_VERSION,
   LEGACY_SCHEMA_VERSION,
@@ -85,9 +89,23 @@ const {
   checkLogbookIntegrity,
   repairLogbook,
   refreshIndexRows,
+  restoreJsonBackup,
+  loadLogbookBundleForIds,
+  exportLogbookJson,
+  exportLogbookCsv,
+  exportLogbookUddf,
   DIVE_LOG_INDEX_KEY,
   DIVE_LOG_DIVE_PREFIX,
   DIVE_LOG_LOG_PREFIX,
+  sectionsForMode,
+  sectionIsVisible,
+  hiddenDataSections,
+  createJsonBackup,
+  createJsonExport,
+  stringifyJsonBackup,
+  parseJsonBackup,
+  exportDivesToCsv,
+  exportDivesToUddf,
 } = diveLog;
 
 const near = (actual, expected, tolerance = 0.01) =>
@@ -177,6 +195,33 @@ assert.equal(merged.water.maxDepthMeters, 32);
 assert.equal(defaultGasLabel(0.21, 0), 'Air');
 assert.equal(defaultGasLabel(0.18, 0.45), 'TX 18/45');
 assert.ok(DIVE_TYPES.includes('wreck') && DIVE_MODES.includes('ccr') && WATER_TYPES.includes('salt'));
+
+// Mode policy is pure data: CCR exposes its future technical sections, while
+// freedive does not expose cylinder/gear controls. Existing data is surfaced
+// in an explicit recovery section rather than disappearing after a mode edit.
+assert.ok(sectionIsVisible('ccr', 'gasEquipment'));
+assert.ok(!sectionIsVisible('freedive', 'gasEquipment'));
+assert.ok(sectionsForMode('oc').includes('computerAnalytics'));
+assert.deepEqual(hiddenDataSections('freedive', { gas: { tanks: [{ startBar: 200 }] } }), ['gasEquipment']);
+assert.deepEqual(hiddenDataSections('freedive', { gas: { mixes: [{ o2: 0.32, label: 'EAN32' }] } }), ['gasEquipment']);
+
+const exportDive = createDive({ id: 'export-dive', startTime: '2026-05-01T09:00:00.000Z', durationSeconds: 1200, site: { name: 'Blue, Hole' }, notes: 'great\ndive', gas: { mixes: [{ o2: 0.32, he: 0, label: 'EAN32' }], tanks: [{ volumeLiters: 11.1, startBar: 200, endBar: 60, mixIndex: 0 }] } });
+const exportLog = createComputerLog({ id: 'export-log', diveId: 'export-dive', profile: { samples: [{ t: 0, depth: 0, tempC: 20 }, { t: 600, depth: 30, ppo2: 1.28 }] } });
+const backupText = stringifyJsonBackup({ dives: [exportDive], logs: [exportLog] });
+const backup = parseJsonBackup(backupText);
+assert.equal(backup.dives[0].id, 'export-dive');
+assert.equal(backup.computerLogs[0].profile.samples[1].ppo2, 1.28);
+const csv = exportDivesToCsv([{ dive: exportDive, logs: [exportLog] }]);
+assert.match(csv, /Blue, Hole/);
+assert.match(csv, /"great\ndive"/);
+const uddf = exportDivesToUddf([{ dive: exportDive, logs: [exportLog] }]);
+assert.match(uddf, /<uddf version="3\.2\.3">/);
+assert.match(uddf, /<samples>/);
+assert.match(uddf, /<ppo2>1\.28<\/ppo2>/);
+const summaryExport = createJsonExport({ dives: [exportDive], logs: [exportLog], detail: 'summary' });
+assert.deepEqual(summaryExport.computerLogs[0].profile.samples, []);
+assert.match(exportDivesToCsv([{ dive: exportDive, logs: [exportLog] }], { detail: 'full' }), /sample_t_seconds/);
+assert.match(exportDivesToCsv([{ dive: exportDive, logs: [exportLog] }], { detail: 'full' }), /600,30/);
 
 // ---------------------------------------------------------------------------
 // validation (runs against a normalized Dive)
@@ -611,6 +656,8 @@ assert.equal(cl.reportedStartTime, '2026-05-01T16:30:00.000Z'); // 09:30 at -07:
 assert.equal(cl.timezoneOffsetMinutes, -420);
 assert.equal(cl.durationSeconds, 2760);
 assert.equal(cl.water.type, 'salt');
+assert.equal(cl.water.tempSurfaceC, 24);
+assert.equal(cl.water.tempMinC, 18);
 assert.equal(cl.gas.mixes[0].label, 'EAN32');
 assert.equal(cl.gas.tanks.length, 1);
 assert.equal(cl.gas.tanks[0].startBar, 210);
@@ -620,6 +667,23 @@ assert.equal(cl.profile.sampleIntervalSeconds, 20);
 assert.deepEqual(cl.profile.events.map((e) => e.type), ['gaschange', 'safetystop']);
 assert.equal(cl.profile.events[0].note, 'EAN50');
 assert.ok(cl.analytics && typeof cl.analytics.sawtoothIndex === 'number');
+
+// Summary temperatures are derived from the sampled profile when a computer
+// supplies sample temperatures but no DC_FIELD_TEMPERATURE_* summary fields.
+const derivedTemperature = computerLogFromDownload({
+  ...rawComputerDive,
+  tempSurfaceC: null,
+  tempMinC: null,
+  tempMaxC: null,
+  samples: [
+    { t: 0, depth: 0.5, tempC: 25 },
+    { t: 20, depth: 12, tempC: 21 },
+    { t: 40, depth: 20, tempC: 19 },
+  ],
+});
+assert.equal(derivedTemperature.water.tempSurfaceC, 25);
+assert.equal(derivedTemperature.water.tempMinC, 19);
+assert.equal(derivedTemperature.water.tempMaxC, 25);
 
 // survives normalization + a Dive built from it validates
 const clNorm = normalizeComputerLog(cl);
@@ -684,6 +748,27 @@ function memoryStorage(seed = {}) {
   assert.equal(index[0].logCount, 0);
   assert.deepEqual(index[0].deviceKeys, []);
   await assertIntegrity(store, 'manual save');
+  assert.equal((await loadLogbookBundleForIds([d1.id], store)).length, 1);
+  assert.equal((await exportLogbookJson(store, [d1.id])).dives.length, 1);
+  assert.match(await exportLogbookCsv(store, [d1.id]), /Blue Hole/);
+  assert.match(await exportLogbookUddf(store, [d1.id]), /export-dive|Blue Hole|<uddf/);
+
+  // JSON restore is normalized, additive, and collision-safe. The existing
+  // dive stays untouched while its imported copy and log receive new ids.
+  const restoreStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  await saveDive(d1, restoreStore);
+  const restoreLog = createComputerLog({ id: 'restore-log', diveId: d1.id, durationSeconds: 900 });
+  const restoreResult = await restoreJsonBackup(stringifyJsonBackup({ dives: [{ ...d1, logIds: [restoreLog.id], primaryLogId: restoreLog.id }], logs: [restoreLog] }), restoreStore);
+  assert.equal(restoreResult.importedDives.length, 1);
+  assert.equal(restoreResult.remappedDives, 1);
+  assert.equal(restoreResult.remappedLogs, 0);
+  assert.equal((await loadIndex(restoreStore)).length, 2);
+  const importedCopy = (await loadIndex(restoreStore)).find((row) => row.id !== d1.id);
+  assert.ok(importedCopy);
+  const restoredBundle = await loadDive(importedCopy.id, restoreStore);
+  assert.equal(restoredBundle.logIds.length, 1);
+  assert.equal(restoredBundle.logIds[0], restoreLog.id);
+  await assertIntegrity(restoreStore, 'additive JSON restore');
 
   // batch import: N dives written with ONE index write (no lost rows)
   const batchStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
@@ -1144,6 +1229,14 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /useDiveLog/);
   assert.match(screen, /validateDiveRecord/);
   assert.match(screen, /buildLogProfileGeometry/);
+  assert.match(screen, /Maximum temperature/);
+  assert.match(screen, /Touch and drag across the chart/);
+  assert.match(screen, /onResponderMove=\{handleScrub\}/);
+  assert.match(screen, /strokeDasharray="4 3"/);
+  assert.match(screen, /FullscreenProfile/);
+  assert.match(screen, /OrientationLock\.LANDSCAPE/);
+  assert.match(screen, /Expand dive profile/);
+  assert.match(screen, /temperatureUnit=\{units\.temperatureUnit\}/);
   assert.match(screen, /\bPressable\b/);
   assert.match(screen, /selectMode/);
   assert.match(screen, /deleteDives/);
@@ -1268,6 +1361,724 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /onShowLog/);                // tap a computer to switch the shown data
   assert.match(hook, /setComputerRank/);
   assert.match(hook, /loadComputerPriority/);
+
+  // ---------------------------------------------------------------------------
+  // Share card: option model
+  // ---------------------------------------------------------------------------
+  {
+    const {
+      ASPECT_PRESETS,
+      DEFAULT_STAT_KEYS,
+      MAX_CARD_STATS,
+      MIN_CARD_STATS,
+      STAT_FIELDS,
+      DEFAULT_WATERMARK,
+      MAX_WATERMARK_LENGTH,
+      PROFILE_STYLES,
+      exportPixelSize,
+      getAspectPreset,
+      hasStatValue,
+      resolveProfileVariant,
+      resolveStats,
+      sanitizeShareCardOptions,
+      toggleStat,
+    } = shareCardOptions;
+
+    const aspectKeys = ASPECT_PRESETS.map((preset) => preset.key);
+    assert.equal(new Set(aspectKeys).size, aspectKeys.length, 'Aspect preset keys must be unique.');
+    for (const preset of ASPECT_PRESETS) {
+      assert.ok(preset.ratio > 0, `${preset.key} needs a positive height/width ratio.`);
+    }
+    assert.equal(getAspectPreset('nope').key, ASPECT_PRESETS[0].key, 'Unknown aspect falls back to the first.');
+    assert.deepEqual(exportPixelSize('square'), { width: 1080, height: 1080 });
+    assert.equal(exportPixelSize('story').height, 1920, 'A 9:16 story card exports 1080x1920.');
+
+    // Stats render in STAT_FIELDS order, not the order they were selected in,
+    // and a stat this dive has no value for is dropped rather than blanked.
+    const values = { time: '1h 00m', depth: '36.9 ft', temp: '70°F', gas: null };
+    const rows = resolveStats(values, ['temp', 'time', 'gas']);
+    assert.deepEqual(rows.map((row) => row.key), ['time', 'temp'], 'Stats keep canonical order and drop empties.');
+    assert.equal(rows[0].label, 'Dive time');
+    assert.equal(resolveStats(values, ['time', '  ']).length, 1);
+    assert.equal(resolveStats({ time: '   ' }, ['time']).length, 0, 'Whitespace is not a value.');
+
+    // format.js hands back an em dash, not null, for a value it doesn't have —
+    // that must not reach the card as a stat reading "—".
+    assert.equal(resolveStats({ temp: '\u2014' }, ['temp']).length, 0, 'The placeholder dash is not a value.');
+    assert.equal(hasStatValue({ temp: '\u2014' }, 'temp'), false);
+    assert.equal(hasStatValue({ temp: '70°F' }, 'temp'), true);
+    assert.equal(hasStatValue({}, 'temp'), false);
+    assert.equal(hasStatValue(null, 'temp'), false, 'A dive with no values at all is handled.');
+
+    // The row has hard limits in both directions, and a rejected toggle must
+    // be a no-op the caller can detect by reference.
+    const atMax = STAT_FIELDS.slice(0, MAX_CARD_STATS).map((field) => field.key);
+    const extra = STAT_FIELDS[MAX_CARD_STATS].key;
+    assert.equal(toggleStat(atMax, extra), atMax, 'Adding past the cap returns the same array.');
+    const one = [STAT_FIELDS[0].key];
+    assert.equal(toggleStat(one, STAT_FIELDS[0].key), one, 'Removing the last stat returns the same array.');
+    assert.ok(toggleStat(one, extra).length === MIN_CARD_STATS + 1);
+    assert.deepEqual(toggleStat(['temp'], 'time'), ['time', 'temp'], 'Toggling on restores canonical order.');
+    assert.deepEqual(toggleStat(['time'], 'not-a-stat'), ['time'], 'An unknown stat key changes nothing.');
+
+    // Anything restored or hand-edited has to come back renderable.
+    const clean = sanitizeShareCardOptions({ aspectKey: 'bogus', detailKey: 7, textKey: null, statKeys: [] });
+    assert.equal(clean.aspectKey, 'post');
+    assert.equal(clean.detailKey, 'summary');
+    assert.equal(clean.textKey, 'md');
+    assert.deepEqual(clean.statKeys, [...DEFAULT_STAT_KEYS], 'An empty selection falls back to the defaults.');
+    assert.equal(clean.showDepthAxis, true, 'The depth axis is on unless explicitly turned off.');
+    assert.equal(sanitizeShareCardOptions({ showDepthAxis: false }).showDepthAxis, false);
+    assert.equal(sanitizeShareCardOptions().aspectKey, 'post', 'No input at all still sanitizes.');
+
+    // Chart styles: "auto" defers to whatever the theme draws, so switching
+    // theme still changes the card's character until the user overrides it.
+    const profileKeys = PROFILE_STYLES.map((style) => style.key);
+    assert.equal(new Set(profileKeys).size, profileKeys.length, 'Profile style keys must be unique.');
+    assert.ok(profileKeys.includes('auto'), 'There must be an auto option.');
+    assert.equal(resolveProfileVariant('auto', 'glow'), 'glow', 'Auto uses the theme signature.');
+    assert.equal(resolveProfileVariant('bars', 'glow'), 'bars', 'An explicit pick overrides the theme.');
+    assert.equal(resolveProfileVariant('nonsense', 'wave'), 'wave', 'An unknown style falls back to auto.');
+    assert.equal(sanitizeShareCardOptions({ profileKey: 'steps' }).profileKey, 'steps');
+    assert.equal(sanitizeShareCardOptions({ profileKey: 'nope' }).profileKey, 'auto');
+
+    // The signature line is editable, and blank is a deliberate choice that has
+    // to survive sanitising rather than snapping back to the default.
+    assert.equal(sanitizeShareCardOptions({}).watermark, DEFAULT_WATERMARK);
+    assert.equal(sanitizeShareCardOptions({ watermark: '' }).watermark, '', 'Blank means no watermark.');
+    assert.equal(sanitizeShareCardOptions({ watermark: 'Reef Rats' }).watermark, 'Reef Rats');
+    assert.equal(sanitizeShareCardOptions({ watermark: 42 }).watermark, DEFAULT_WATERMARK, 'A non-string falls back.');
+    assert.equal(
+      sanitizeShareCardOptions({ watermark: 'x'.repeat(MAX_WATERMARK_LENGTH + 20) }).watermark.length,
+      MAX_WATERMARK_LENGTH,
+      'An over-long signature is truncated, not rejected.',
+    );
+    assert.ok(
+      sanitizeShareCardOptions({ statKeys: STAT_FIELDS.map((f) => f.key) }).statKeys.length <= MAX_CARD_STATS,
+      'Sanitizing clamps an over-full selection.',
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Share card: preview layout regressions
+  // ---------------------------------------------------------------------------
+  {
+    const controls = read('src', 'features', 'diveShareCard', 'ShareCardControls.js');
+    const shareScreen = read('src', 'features', 'diveShareCard', 'DiveShareCardScreen.js');
+    const profileKeys = shareCardOptions.PROFILE_STYLES.map((style) => style.key);
+    const curveSource = read('src', 'features', 'diveShareCard', 'layouts', 'ProfileCurve.js');
+
+    // RN bakes flexGrow: 1 into every ScrollView, so a scroll row sitting above
+    // the preview silently eats the card's height. That shipped twice; the
+    // stats list is the only ScrollView left on this screen and it must stay
+    // pinned. See ShareCardControls styles.statsWrap.
+    assert.match(controls, /statsWrap: \{ flexGrow: 0 \}/, 'The stats ScrollView must not grow into the preview.');
+    assert.doesNotMatch(shareScreen, /<ScrollView/, 'The share screen itself must not reintroduce a scrolling preview.');
+
+    // The preview card is fitted to the measured box on BOTH axes — width
+    // alone let it overflow behind the action bar.
+    assert.match(shareScreen, /previewBox\.width, previewBox\.height \/ aspect\.ratio/);
+    assert.match(shareScreen, /onLayout=\{onPreviewLayout\}/);
+    // onLayout reports the border box, so the preview box uses margin, not
+    // padding — padding would be counted as space the card could fill.
+    assert.match(shareScreen, /previewWrap: \{[^}]*marginVertical/);
+    assert.doesNotMatch(shareScreen, /previewWrap: \{[^}]*padding/);
+
+    // Card preferences survive between dives; the photo deliberately does not.
+    const prefsHook = read('src', 'features', 'diveShareCard', 'useShareCardOptions.js');
+    assert.match(shareCardOptions.SHARE_CARD_STORAGE_KEY, /^@dmz-scuba\/share-card-v\d+$/, 'The storage key is versioned.');
+    assert.match(prefsHook, /SHARE_CARD_STORAGE_KEY/);
+    assert.match(prefsHook, /sanitizeShareCardOptions\(parsed\?\.options\)/, 'Restored options are sanitized.');
+    assert.doesNotMatch(prefsHook, /photoUri/, 'A picked photo must not be persisted across launches.');
+    // Writing before the read completes would overwrite saved settings with
+    // the defaults on every launch.
+    assert.match(prefsHook, /if \(!loaded\) return;/);
+    assert.match(shareScreen, /useShareCardOptions/);
+    assert.match(shareScreen, /previewBox && loaded/, 'The card waits for saved settings before first paint.');
+
+    // The signature field sits at the bottom of the sheet, so the keyboard
+    // would cover the very text you're typing. The sheet lifts by the overlap
+    // instead, and the preview (which fits itself to its box) shrinks to suit.
+    const keyboardHook = read('src', 'components', 'useKeyboardOverlap.js');
+    assert.match(keyboardHook, /keyboardWillChangeFrame/, 'The sheet tracks the keyboard as it animates.');
+    assert.match(keyboardHook, /keyboardWillHide/);
+    assert.match(keyboardHook, /windowHeight - endY/, 'Overlap is measured against the window, not the keyboard height.');
+    assert.match(keyboardHook, /shown\.remove\(\)/, 'Keyboard listeners are removed on unmount.');
+    assert.match(shareScreen, /paddingBottom: keyboardOverlap/);
+    // Adding the home-indicator inset on top of the keyboard would leave a gap.
+    assert.match(shareScreen, /keyboardOverlap > 0 \? 0 : insets\.bottom/);
+    // Without this the first tap on a chip is swallowed dismissing the keyboard.
+    assert.equal(
+      (controls.match(/keyboardShouldPersistTaps="handled"/g) || []).length,
+      2,
+      'Both option scroll views keep taps working while the keyboard is up.',
+    );
+
+    // Geometry is the expensive part of a render and depends only on the dive
+    // and the chart size — it must not be rebuilt on every keystroke.
+    assert.match(curveSource, /useMemo\(\s*\(\) => buildLogProfileGeometry/, 'ProfileCurve memoizes its geometry.');
+    assert.match(curveSource, /\[samples, width, height, maxDepthMeters\]/);
+
+    // The export is captured from its own fixed-size copy, so the saved file's
+    // resolution never depends on what the preview fits on screen.
+    assert.match(shareScreen, /exportPixelSize/);
+    assert.match(shareScreen, /offscreenExport/);
+    assert.match(shareScreen, /ref=\{exportRef\}/);
+
+    // Derived from themes.js, not a hardcoded list, so a theme added later is
+    // held to the same contract instead of quietly skipping these checks.
+    const themeFile = read('src', 'features', 'diveShareCard', 'themes.js');
+    const layoutNames = [...themeFile.matchAll(/Layout: (\w+),/g)].map((match) => match[1]);
+    const themeKeys = [...themeFile.matchAll(/\n    key: '([^']+)'/g)].map((match) => match[1]);
+    assert.equal(new Set(themeKeys).size, themeKeys.length, 'Theme keys must be unique.');
+    assert.equal(layoutNames.length, themeKeys.length, 'Every theme needs its own layout.');
+    assert.ok(themeKeys.length >= 8, 'The style picker should offer at least eight looks.');
+
+    for (const layout of layoutNames) {
+      const source = read('src', 'features', 'diveShareCard', 'layouts', `${layout}.js`);
+      assert.match(source, /stats\.map/, `${layout} renders the configurable stat row.`);
+      assert.match(source, /CardBackground/, `${layout} uses the shared photo/gradient background.`);
+      assert.match(source, /detail === 'brief'/, `${layout} honours the Summary/Brief setting.`);
+      assert.match(source, /DepthAxis/, `${layout} can draw the depth axis.`);
+      // No layout may pin its own curve or signature text any more — both are
+      // user-settable and arrive as props.
+      assert.match(source, /variant=\{profileVariant\}/, `${layout} draws the selected chart style.`);
+      assert.doesNotMatch(source, /variant="/, `${layout} must not hardcode a curve variant.`);
+      assert.match(source, /\{mark \?/, `${layout} hides the signature when it's blank.`);
+      assert.doesNotMatch(source, />DMZ|>dmz|D M Z/, `${layout} must not hardcode the signature text.`);
+    }
+
+    // Every theme's signature curve has to be a real variant, and never "auto"
+    // (which would resolve to itself forever).
+    const variants = [...themeFile.matchAll(/profileVariant: '([^']+)'/g)].map((match) => match[1]);
+    assert.equal(variants.length, themeKeys.length, 'Every theme declares a signature curve.');
+    for (const variant of variants) {
+      assert.ok(profileKeys.includes(variant), `${variant} is a real profile style.`);
+      assert.notEqual(variant, 'auto', 'A theme signature cannot itself be "auto".');
+    }
+
+    for (const variant of profileKeys.filter((key) => key !== 'auto')) {
+      assert.ok(curveSource.includes(`'${variant}'`), `ProfileCurve draws the ${variant} style.`);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logbook filtering
+  // ---------------------------------------------------------------------------
+  {
+    const {
+      DEFAULT_DIVE_FILTER,
+      countActiveFilters,
+      filterDiveRows,
+      gasKindOf,
+      isDiveFilterActive,
+      matchesDiveFilter,
+      sanitizeDiveFilter,
+    } = diveLog;
+
+    const row = (over = {}) => ({
+      id: 'd1',
+      startTime: '2026-08-27T11:22:00.000Z',
+      maxDepthMeters: 30,
+      durationSeconds: 3300,
+      tempMinC: 21,
+      sacBarPerMin: 12,
+      rating: 4,
+      gasMaxO2: 0.32,
+      gasMaxHe: 0,
+      types: ['fun', 'wreck'],
+      waterType: 'salt',
+      diveMode: 'oc',
+      source: 'computer',
+      logCount: 1,
+      search: 'blue corner palau jane wreck turtles',
+      ...over,
+    });
+    const base = sanitizeDiveFilter(DEFAULT_DIVE_FILTER);
+    const withFilter = (patch) => sanitizeDiveFilter({ ...base, ...patch });
+
+    assert.equal(isDiveFilterActive(base), false, 'The default filter is inactive.');
+    assert.equal(matchesDiveFilter(row(), base), true, 'An inactive filter matches everything.');
+    assert.equal(filterDiveRows([row(), row({ id: 'd2' })], base).length, 2);
+
+    // Text: every term must hit, so typing more words narrows.
+    assert.equal(matchesDiveFilter(row(), withFilter({ text: 'palau' })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ text: 'PALAU TURTLES' })), true, 'Search is case-insensitive.');
+    assert.equal(matchesDiveFilter(row(), withFilter({ text: 'palau shark' })), false, 'All terms must match.');
+    assert.equal(matchesDiveFilter(row({ search: '' }), withFilter({ text: 'palau' })), false);
+
+    // Ranges are inclusive at both ends.
+    assert.equal(matchesDiveFilter(row(), withFilter({ depthMeters: { min: 30, max: 30 } })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ depthMeters: { min: 31, max: null } })), false);
+    assert.equal(matchesDiveFilter(row(), withFilter({ depthMeters: { min: null, max: 29 } })), false);
+    assert.equal(matchesDiveFilter(row(), withFilter({ tempC: { min: 20, max: 22 } })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ sacBarPerMin: { min: null, max: 15 } })), true);
+
+    // A dive that never recorded the number can't satisfy a bound on it —
+    // "SAC under 15" must not answer with dives whose SAC is unknown.
+    assert.equal(matchesDiveFilter(row({ sacBarPerMin: null }), withFilter({ sacBarPerMin: { min: null, max: 15 } })), false);
+    assert.equal(matchesDiveFilter(row({ tempMinC: null }), withFilter({ tempC: { min: 0, max: 40 } })), false);
+    // ...but it still shows up when that criterion isn't set.
+    assert.equal(matchesDiveFilter(row({ sacBarPerMin: null }), base), true);
+
+    // A backwards range is a typo, not a request to match nothing.
+    assert.deepEqual(sanitizeDiveFilter({ depthMeters: { min: 40, max: 10 } }).depthMeters, { min: 10, max: 40 });
+    assert.deepEqual(
+      [sanitizeDiveFilter({ dateFrom: '2026-09-01', dateTo: '2026-01-01' }).dateFrom,
+        sanitizeDiveFilter({ dateFrom: '2026-09-01', dateTo: '2026-01-01' }).dateTo],
+      ['2026-01-01', '2026-09-01'],
+    );
+
+    // Dates are inclusive of the whole end day, not midnight at the start.
+    assert.equal(matchesDiveFilter(row(), withFilter({ dateTo: '2026-08-27' })), true, 'The end day is included.');
+    assert.equal(matchesDiveFilter(row(), withFilter({ dateFrom: '2026-08-27' })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ dateFrom: '2026-08-28' })), false);
+    assert.equal(matchesDiveFilter(row({ startTime: 'not-a-date' }), withFilter({ dateFrom: '2020-01-01' })), false);
+
+    // Oxygen is stored as a percentage but the row carries a fraction.
+    assert.equal(matchesDiveFilter(row(), withFilter({ o2Percent: { min: 30, max: 36 } })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ o2Percent: { min: 36, max: null } })), false);
+    assert.equal(matchesDiveFilter(row({ gasMaxO2: null }), withFilter({ o2Percent: { min: 21, max: 100 } })), false);
+
+    // Gas classification, including the air/nitrox boundary.
+    assert.equal(gasKindOf({ gasMaxO2: 0.21, gasMaxHe: 0 }), 'air');
+    assert.equal(gasKindOf({ gasMaxO2: 0.209, gasMaxHe: 0 }), 'air', 'Nominal air is not nitrox.');
+    assert.equal(gasKindOf({ gasMaxO2: 0.32, gasMaxHe: 0 }), 'nitrox');
+    assert.equal(gasKindOf({ gasMaxO2: 0.18, gasMaxHe: 0.45 }), 'trimix', 'Helium wins over a low O2 fraction.');
+    assert.equal(gasKindOf({}), null, 'A row with no gas fields is unclassified.');
+    assert.equal(matchesDiveFilter(row(), withFilter({ gasKinds: ['nitrox'] })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ gasKinds: ['air', 'trimix'] })), false);
+    assert.equal(matchesDiveFilter(row({ gasMaxO2: null, gasMaxHe: null }), withFilter({ gasKinds: ['air'] })), false);
+
+    // Multi-select lists are OR within a category, AND across categories.
+    assert.equal(matchesDiveFilter(row(), withFilter({ types: ['wreck'] })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ types: ['cave'] })), false);
+    assert.equal(matchesDiveFilter(row(), withFilter({ types: ['cave', 'fun'] })), true, 'Any selected type matches.');
+    assert.equal(matchesDiveFilter(row(), withFilter({ types: ['wreck'], waterTypes: ['fresh'] })), false);
+    assert.equal(matchesDiveFilter(row(), withFilter({ modes: ['oc'] })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ sources: ['manual'] })), false);
+    assert.equal(matchesDiveFilter(row({ types: [] }), withFilter({ types: ['fun'] })), false);
+
+    assert.equal(matchesDiveFilter(row(), withFilter({ hasComputer: true })), true);
+    assert.equal(matchesDiveFilter(row(), withFilter({ hasComputer: false })), false);
+    assert.equal(matchesDiveFilter(row({ logCount: 0 }), withFilter({ hasComputer: false })), true);
+
+    // Garbage in still yields something every consumer can apply.
+    const dirty = sanitizeDiveFilter({ text: 7, types: ['fun', 'not-a-type'], modes: 'oc', hasComputer: 'yes' });
+    assert.equal(dirty.text, '');
+    assert.deepEqual(dirty.types, ['fun'], 'Unknown enum values are dropped.');
+    assert.deepEqual(dirty.modes, []);
+    assert.equal(dirty.hasComputer, null, 'Only a real boolean counts.');
+    assert.equal(sanitizeDiveFilter().text, '', 'No input at all still sanitizes.');
+    assert.equal(sanitizeDiveFilter({ dateFrom: '27/08/2026' }).dateFrom, null, 'A non-ISO date is rejected.');
+
+    // The badge counts criteria, not values.
+    assert.equal(countActiveFilters(base), 0);
+    assert.equal(countActiveFilters(withFilter({ text: 'palau' })), 1);
+    assert.equal(countActiveFilters(withFilter({ depthMeters: { min: 10, max: 40 } })), 1, 'A range is one criterion.');
+    assert.equal(countActiveFilters(withFilter({ dateFrom: '2026-01-01', dateTo: '2026-02-01' })), 1);
+    assert.equal(countActiveFilters(withFilter({ types: ['fun', 'wreck'] })), 1, 'A multi-select is one criterion.');
+    assert.equal(countActiveFilters(withFilter({ text: 'x', modes: ['oc'], hasComputer: true })), 3);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logbook filtering: the index has to carry what the filters read
+  // ---------------------------------------------------------------------------
+  {
+    const dive = createDive({
+      startTime: '2026-08-27T11:22:00.000Z',
+      site: { name: 'Blue Corner', location: 'Palau' },
+      buddies: ['Jane'],
+      tags: ['turtles'],
+      notes: 'Strong current on the wall.',
+      water: { maxDepthMeters: 30, tempMinC: 21, type: 'salt' },
+      gas: { mixes: [{ o2: 0.21, he: 0 }, { o2: 0.36, he: 0 }] },
+      diveMode: 'oc',
+      types: ['fun', 'wreck'],
+    });
+    const indexed = diveLog.indexRowFromDive(dive, []);
+    for (const field of ['tempMinC', 'waterType', 'diveMode', 'types', 'gasMaxO2', 'gasMaxHe', 'search']) {
+      assert.ok(field in indexed, `The index row must carry ${field} for filtering.`);
+    }
+    assert.equal(indexed.tempMinC, 21);
+    assert.equal(indexed.waterType, 'salt');
+    assert.equal(indexed.gasMaxO2, 0.36, 'The richest mix classifies the dive, not the first.');
+    assert.deepEqual(indexed.types, ['fun', 'wreck']);
+    // The haystack is lowercased once at write time so matching stays cheap.
+    assert.equal(indexed.search, indexed.search.toLowerCase());
+    for (const term of ['blue corner', 'palau', 'jane', 'turtles', 'current']) {
+      assert.ok(indexed.search.includes(term), `Search text should cover "${term}".`);
+    }
+    assert.ok(indexed.search.length <= 400, 'Search text is capped so the index stays small.');
+    assert.equal(diveLog.matchesDiveFilter(indexed, diveLog.sanitizeDiveFilter({ text: 'jane turtles' })), true);
+
+    // Rows written before the current shape have to trigger a rebuild, or a
+    // filter quietly matches nothing against stale rows.
+    assert.equal(indexed.v, diveLog.INDEX_ROW_VERSION, 'Every row is stamped with the shape it was written at.');
+    const logHook = read('src', 'features', 'diveLog', 'useDiveLog.js');
+    assert.match(logHook, /r\.v !== INDEX_ROW_VERSION/, 'A stale-shaped index row must trigger a rebuild.');
+
+    // Without a transmitter there is no log analytics, but hand-entered
+    // pressures still yield a SAC — and the index must agree with what the
+    // detail screen shows, or "SAC under 15" misses dives displaying SAC 12.
+    const handLogged = createDive({
+      startTime: '2026-08-27T11:22:00.000Z',
+      durationSeconds: 3600,
+      water: { maxDepthMeters: 20, avgDepthMeters: 12 },
+      gas: { tanks: [{ volumeLiters: 11, startBar: 200, endBar: 60 }] },
+    });
+    const handRow = diveLog.indexRowFromDive(handLogged, []);
+    assert.ok(handRow.sacBarPerMin > 0, 'A hand-logged dive still gets a SAC on its index row.');
+    assert.ok(handRow.rmvLitersPerMin > 0, 'and an RMV when the cylinder size is known.');
+    const expected = diveLog.surfaceConsumption({
+      startBar: 200, endBar: 60, durationSeconds: 3600, avgDepthMeters: 12, tankVolumeLiters: 11,
+    });
+    assert.equal(handRow.sacBarPerMin, expected.sacBarPerMin, 'Derived the same way the detail screen derives it.');
+    // SAC needs an average depth; without one it stays null rather than wrong.
+    const noAvg = createDive({
+      durationSeconds: 3600,
+      gas: { tanks: [{ volumeLiters: 11, startBar: 200, endBar: 60 }] },
+    });
+    assert.equal(diveLog.indexRowFromDive(noAvg, []).sacBarPerMin, null, 'No average depth means no invented SAC.');
+  }
+
+  // ---------------------------------------------------------------------------
+  // Every named import from the domain layer must actually be exported
+  //
+  // Bundling does not catch this: a missing named export is `undefined` at
+  // runtime, so the failure surfaces as "undefined is not a function" the
+  // first time the screen renders. That shipped once — a filter helper added
+  // to the wrong import block, next to the formatters it sits beside in the
+  // source but does not live with on disk.
+  // ---------------------------------------------------------------------------
+  {
+    const libDir = path.join(srcRoot, 'lib', 'diveLog');
+    const exportsByModule = new Map();
+    for (const file of fs.readdirSync(libDir).filter((name) => name.endsWith('.js'))) {
+      const source = fs.readFileSync(path.join(libDir, file), 'utf8');
+      const names = new Set();
+      for (const match of source.matchAll(/export\s+(?:async\s+)?(?:function|const|let|class)\s+(\w+)/g)) {
+        names.add(match[1]);
+      }
+      for (const match of source.matchAll(/export\s*\{([^}]+)\}/g)) {
+        for (const part of match[1].split(',')) {
+          const name = part.trim().split(/\s+as\s+/).pop().trim();
+          if (name) names.add(name);
+        }
+      }
+      exportsByModule.set(file.replace(/\.js$/, ''), names);
+    }
+    // index.js is a barrel of `export * from`, so it offers everything the
+    // modules it re-exports do.
+    const barrel = new Set();
+    const indexSource = fs.readFileSync(path.join(libDir, 'index.js'), 'utf8');
+    for (const match of indexSource.matchAll(/export \* from '\.\/(\w+)'/g)) {
+      for (const name of exportsByModule.get(match[1]) || []) barrel.add(name);
+    }
+    exportsByModule.set('index', barrel);
+    assert.ok(barrel.size > 40, 'The barrel should re-export the domain surface.');
+
+    const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) return walk(full);
+      return entry.isFile() && entry.name.endsWith('.js') ? [full] : [];
+    });
+
+    let checked = 0;
+    for (const file of walk(srcRoot)) {
+      if (file.startsWith(`${libDir}${path.sep}`)) continue;
+      const source = fs.readFileSync(file, 'utf8');
+      for (const match of source.matchAll(/import\s*\{([^}]+)\}\s*from\s*'([^']+)'/g)) {
+        const target = path.resolve(path.dirname(file), match[2]);
+        const relative = path.relative(libDir, target);
+        if (relative.startsWith('..') || path.isAbsolute(relative)) continue;
+        const moduleName = relative === '' ? 'index' : relative;
+        const available = exportsByModule.get(moduleName);
+        if (!available) continue;
+        for (const part of match[1].split(',')) {
+          const name = part.trim().split(/\s+as\s+/)[0].trim();
+          if (!name) continue;
+          checked += 1;
+          assert.ok(
+            available.has(name),
+            `${path.relative(projectRoot, file)} imports { ${name} } from '${match[2]}', which does not export it.`,
+          );
+        }
+      }
+    }
+    assert.ok(checked > 30, `Expected to check a real number of domain imports, checked ${checked}.`);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Logbook sorting
+  // ---------------------------------------------------------------------------
+  {
+    const {
+      DEFAULT_DIVE_SORT,
+      DIVE_SORT_FIELDS,
+      describeDiveSort,
+      getDiveSortField,
+      sanitizeDiveSort,
+      sortDiveRows,
+    } = diveLog;
+
+    const keys = DIVE_SORT_FIELDS.map((field) => field.key);
+    assert.equal(new Set(keys).size, keys.length, 'Sort field keys must be unique.');
+    for (const field of DIVE_SORT_FIELDS) {
+      assert.ok(['asc', 'desc'].includes(field.defaultDirection), `${field.key} needs a real default direction.`);
+      assert.ok(field.ascLabel && field.descLabel, `${field.key} needs both direction labels.`);
+    }
+
+    assert.deepEqual(sanitizeDiveSort(DEFAULT_DIVE_SORT), { key: 'date', direction: 'desc' });
+    // Picking a field without saying which way means that field's natural end.
+    assert.equal(sanitizeDiveSort({ key: 'sac' }).direction, 'asc', 'Best SAC first is what "SAC rate" means.');
+    assert.equal(sanitizeDiveSort({ key: 'depth' }).direction, 'desc');
+    assert.equal(sanitizeDiveSort({ key: 'nope' }).key, 'date', 'An unknown field falls back.');
+    assert.equal(sanitizeDiveSort({ key: 'depth', direction: 'sideways' }).direction, 'desc');
+    assert.equal(sanitizeDiveSort().key, 'date', 'No input at all still sanitizes.');
+    assert.equal(getDiveSortField('site').key, 'site');
+    assert.match(describeDiveSort({ key: 'sac', direction: 'asc' }), /SAC rate/);
+
+    const row = (id, over = {}) => ({
+      id,
+      startTime: `2026-08-${String(over.day || 1).padStart(2, '0')}T10:00:00.000Z`,
+      maxDepthMeters: 20,
+      durationSeconds: 3000,
+      tempMinC: 20,
+      sacBarPerMin: 14,
+      rating: 3,
+      siteName: 'Site',
+      number: 1,
+      ...over,
+    });
+    const ids = (rows) => rows.map((entry) => entry.id);
+
+    const byDepth = [row('a', { maxDepthMeters: 12 }), row('b', { maxDepthMeters: 41 }), row('c', { maxDepthMeters: 28 })];
+    assert.deepEqual(ids(sortDiveRows(byDepth, { key: 'depth', direction: 'desc' })), ['b', 'c', 'a']);
+    assert.deepEqual(ids(sortDiveRows(byDepth, { key: 'depth', direction: 'asc' })), ['a', 'c', 'b']);
+    // The input array must not be reordered in place — it is React state.
+    assert.deepEqual(ids(byDepth), ['a', 'b', 'c'], 'Sorting returns a new array.');
+
+    // A dive that never recorded the value sinks in BOTH directions. Treating
+    // a missing SAC as 0 would park every hand-logged dive at the top of
+    // "best SAC first", which is worse than not offering the sort.
+    const withGaps = [row('a', { sacBarPerMin: 18 }), row('b', { sacBarPerMin: null }), row('c', { sacBarPerMin: 11 })];
+    assert.deepEqual(ids(sortDiveRows(withGaps, { key: 'sac', direction: 'asc' })), ['c', 'a', 'b']);
+    assert.deepEqual(ids(sortDiveRows(withGaps, { key: 'sac', direction: 'desc' })), ['a', 'c', 'b']);
+    const noTemp = [row('a', { tempMinC: null }), row('b', { tempMinC: 8 })];
+    assert.deepEqual(ids(sortDiveRows(noTemp, { key: 'temp', direction: 'asc' })), ['b', 'a']);
+
+    // Text sorts case-insensitively.
+    const bySite = [row('a', { siteName: 'zebra reef' }), row('b', { siteName: 'Anemone City' })];
+    assert.deepEqual(ids(sortDiveRows(bySite, { key: 'site', direction: 'asc' })), ['b', 'a']);
+    const blankSite = [row('a', { siteName: '' }), row('b', { siteName: 'Wall' })];
+    assert.deepEqual(ids(sortDiveRows(blankSite, { key: 'site', direction: 'asc' })), ['b', 'a'], 'Unnamed sites sink.');
+
+    // Ties resolve to a fixed order, so equal rows never shuffle between
+    // renders. Same depth, different days: newest first, then id.
+    const ties = [row('a', { day: 3 }), row('b', { day: 9 }), row('c', { day: 3 })];
+    assert.deepEqual(ids(sortDiveRows(ties, { key: 'depth', direction: 'desc' })), ['b', 'a', 'c']);
+    assert.deepEqual(
+      ids(sortDiveRows(ties, { key: 'depth', direction: 'desc' })),
+      ids(sortDiveRows([...ties].reverse(), { key: 'depth', direction: 'desc' })),
+      'The order does not depend on the input order.',
+    );
+
+    assert.deepEqual(sortDiveRows(null, DEFAULT_DIVE_SORT), []);
+    assert.deepEqual(ids(sortDiveRows([row('a')], { key: 'bogus' })), ['a'], 'A bad sort still returns the rows.');
+
+    // Sort is a durable preference; filters are transient.
+    const sortHook = read('src', 'features', 'diveLog', 'useDiveListSort.js');
+    assert.match(sortHook, /DIVE_SORT_STORAGE_KEY/);
+    assert.match(sortHook, /if \(!loaded\) return;/, 'Never write the default over a saved preference.');
+    assert.match(sortHook, /sanitizeDiveSort\(JSON\.parse\(stored\)\)/);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Consumption across multiple cylinders
+  // ---------------------------------------------------------------------------
+  {
+    const { combinedConsumption } = diveLog;
+    const context = { durationSeconds: 3600, avgDepthMeters: 12 };
+
+    assert.deepEqual(combinedConsumption([], context).perTank, [], 'No cylinders, nothing to report.');
+    assert.equal(combinedConsumption(null, context).rmvLitersPerMin, null);
+    assert.equal(
+      combinedConsumption([{ volumeLiters: 12 }], context).usedBar,
+      null,
+      'A cylinder with no pressures contributes nothing.',
+    );
+
+    // Matched twinset: bar/min is comparable, so a combined SAC is real.
+    const twins = combinedConsumption(
+      [{ volumeLiters: 12, startBar: 200, endBar: 80 }, { volumeLiters: 12, startBar: 200, endBar: 90 }],
+      context,
+    );
+    assert.equal(twins.usedBar, 230, 'Used bar sums across matching cylinders.');
+    assert.equal(twins.usedLiters, 2760);
+    assert.ok(twins.sacBarPerMin > 0, 'Matching sizes give a combined SAC.');
+    assert.ok(twins.rmvLitersPerMin > 0);
+    assert.equal(twins.perTank.length, 2);
+
+    // Mixed sizes: RMV still adds up (it is litres of gas), SAC does not —
+    // 10 bar/min from a 7 L pony is not 10 bar/min from a 15 L twin.
+    const mixed = combinedConsumption(
+      [{ volumeLiters: 12, startBar: 200, endBar: 80 }, { volumeLiters: 7, startBar: 200, endBar: 150 }],
+      context,
+    );
+    assert.equal(mixed.sacBarPerMin, null, 'A summed SAC across different cylinder sizes would be a lie.');
+    assert.ok(mixed.rmvLitersPerMin > 0, 'RMV is the number that survives mixed sizes.');
+    assert.equal(mixed.usedLiters, 12 * 120 + 7 * 50);
+
+    // An unsized cylinder would silently undercount the totals.
+    const partial = combinedConsumption(
+      [{ volumeLiters: 12, startBar: 200, endBar: 80 }, { startBar: 200, endBar: 150 }],
+      context,
+    );
+    assert.equal(partial.usedLiters, null, 'Totals are withheld rather than undercounted.');
+    assert.equal(partial.rmvLitersPerMin, null);
+    assert.equal(partial.usedBar, 170, 'Bar still sums — it needs no volume.');
+
+    // SAC needs an average depth; without one nothing is invented.
+    const noDepth = combinedConsumption([{ volumeLiters: 12, startBar: 200, endBar: 80 }], { durationSeconds: 3600 });
+    assert.equal(noDepth.sacBarPerMin, null);
+    assert.equal(noDepth.usedBar, 120, 'Gas used needs no depth.');
+
+    // A refilled/miskeyed cylinder (end above start) is not negative gas.
+    assert.equal(combinedConsumption([{ volumeLiters: 12, startBar: 80, endBar: 200 }], context).usedBar, null);
+
+    // The index derives from every cylinder, not just the first.
+    const sidemount = createDive({
+      durationSeconds: 3600,
+      water: { maxDepthMeters: 30, avgDepthMeters: 12 },
+      gas: {
+        mixes: [{ o2: 0.32, he: 0 }, { o2: 0.5, he: 0 }],
+        tanks: [
+          { volumeLiters: 12, startBar: 200, endBar: 80, mixIndex: 0 },
+          { volumeLiters: 12, startBar: 200, endBar: 90, mixIndex: 1 },
+        ],
+      },
+    });
+    const row = diveLog.indexRowFromDive(sidemount, []);
+    assert.equal(row.sacBarPerMin, twins.sacBarPerMin, 'The index agrees with the detail screen.');
+    assert.equal(row.gasMaxO2, 0.5, 'The richest mix still classifies the dive.');
+    assert.ok(row.rmvLitersPerMin > 0);
+  }
+
+  // ---------------------------------------------------------------------------
+  // A computer log must not hide hand-entered cylinder pressures
+  // ---------------------------------------------------------------------------
+  {
+    const { mergeGas } = diveLog;
+
+    // A computer without a transmitter reports a mix but no pressures. Taking
+    // its gas wholesale threw away everything the diver typed in, so nothing
+    // showed on the detail screen for any downloaded dive.
+    const logGas = { mixes: [{ o2: 0.32, he: 0 }], tanks: [{ volumeLiters: null, startBar: null, endBar: null, mixIndex: 0 }] };
+    const diveGas = { mixes: [{ o2: 0.32, he: 0 }], tanks: [{ volumeLiters: 12, startBar: 200, endBar: 70, mixIndex: 0 }] };
+    const merged = mergeGas(logGas, diveGas);
+    assert.equal(merged.tanks[0].startBar, 200, 'A log null must not erase a hand-entered start pressure.');
+    assert.equal(merged.tanks[0].endBar, 70);
+    assert.equal(merged.tanks[0].volumeLiters, 12);
+
+    // Where the log did record something, the log wins — it measured it.
+    const withTransmitter = mergeGas(
+      { tanks: [{ startBar: 210, endBar: 65, volumeLiters: 12 }] },
+      { tanks: [{ startBar: 200, endBar: 70, volumeLiters: 15 }] },
+    );
+    assert.equal(withTransmitter.tanks[0].startBar, 210, 'A recorded pressure beats a typed one.');
+    assert.equal(withTransmitter.tanks[0].volumeLiters, 12);
+
+    // Either side may carry more cylinders than the other.
+    assert.equal(mergeGas({ tanks: [] }, diveGas).tanks.length, 1);
+    assert.equal(mergeGas(logGas, { tanks: [{}, { startBar: 190, endBar: 60 }] }).tanks.length, 2);
+    assert.equal(mergeGas(null, null).tanks.length, 0, 'Nothing at all is handled.');
+    assert.deepEqual(mergeGas(undefined, diveGas).tanks[0].startBar, 200);
+    assert.deepEqual(mergeGas({ mixes: [] }, diveGas).mixes, diveGas.mixes, 'An empty mix list falls back.');
+
+    // End to end: the download plus the typed cylinder must produce a SAC on
+    // the index row, or the dive is invisible to the SAC filter and sort even
+    // though the number is on screen.
+    const log = createComputerLog({
+      durationSeconds: 3600,
+      water: { maxDepthMeters: 30, avgDepthMeters: 12 },
+      gas: logGas,
+    });
+    const dive = createDive({
+      startTime: '2026-08-27T11:22:00.000Z',
+      durationSeconds: 3600,
+      water: { maxDepthMeters: 30, avgDepthMeters: 12 },
+      gas: diveGas,
+      logIds: [log.id],
+      primaryLogId: log.id,
+    });
+    const row = diveLog.indexRowFromDive(dive, [log]);
+    assert.ok(row.sacBarPerMin > 0, 'A downloaded dive with typed pressures still gets a SAC.');
+    assert.ok(row.rmvLitersPerMin > 0);
+    assert.equal(row.gasMaxO2, 0.32, 'The mix comes through the merge.');
+    // A log existing is not the same as a log having a transmitter: derivation
+    // must key off whether it produced a SAC, not off whether it exists.
+    assert.match(
+      read('src', 'lib', 'diveLog', 'storage.js'),
+      /a\?\.sacBarPerMin != null \? null :/,
+      'Derive whenever the log did not produce a SAC.',
+    );
+  }
+
+  // ---------------------------------------------------------------------------
+  // Transmitter pressures recovered from the profile curve
+  // ---------------------------------------------------------------------------
+  {
+    const { tankPressuresFromSamples } = diveLog;
+
+    // The shape that broke it: a real transmitter curve, but the computer sent
+    // begin/end pressure as 0, which mapTanks turns into null. Every gas row
+    // then rendered empty on a dive that plainly had pressure data.
+    const curve = [{ t: 0, pressureBar: 210 }, { t: 600, pressureBar: 150 }, { t: 1750, pressureBar: 70 }];
+    assert.deepEqual(tankPressuresFromSamples(curve), { startBar: 210, endBar: 70 });
+    // Samples are not guaranteed sorted.
+    assert.deepEqual(
+      tankPressuresFromSamples([{ t: 1750, pressureBar: 70 }, { t: 0, pressureBar: 210 }]),
+      { startBar: 210, endBar: 70 },
+    );
+    // Zero and missing readings are not pressures.
+    assert.deepEqual(tankPressuresFromSamples([{ t: 0 }, { t: 5 }]), { startBar: null, endBar: null });
+    assert.deepEqual(
+      tankPressuresFromSamples([{ t: 0, pressureBar: 0 }, { t: 5, pressureBar: 0 }]),
+      { startBar: null, endBar: null },
+    );
+    assert.deepEqual(tankPressuresFromSamples(null), { startBar: null, endBar: null });
+    // One reading is not a range — reporting start == end would claim zero gas used.
+    assert.deepEqual(tankPressuresFromSamples([{ t: 0, pressureBar: 200 }]), { startBar: null, endBar: null });
+
+    // Multi-transmitter profiles address cylinders by index.
+    const byTank = [
+      { t: 0, pressuresByTank: { 0: 200, 1: 190 } },
+      { t: 900, pressuresByTank: { 0: 90, 1: 120 } },
+    ];
+    assert.deepEqual(tankPressuresFromSamples(byTank, 0), { startBar: 200, endBar: 90 });
+    assert.deepEqual(tankPressuresFromSamples(byTank, 1), { startBar: 190, endBar: 120 });
+    // The flat pressureBar field only describes the first cylinder.
+    assert.deepEqual(tankPressuresFromSamples(curve, 1), { startBar: null, endBar: null });
+
+    // End to end on the real shape: volume known, begin/end null, curve present.
+    const log = createComputerLog({
+      durationSeconds: 1750,
+      water: { maxDepthMeters: 30, avgDepthMeters: 22 },
+      gas: { mixes: [{ o2: 0.21, he: 0 }], tanks: [{ volumeLiters: 11.8, startBar: null, endBar: null, mixIndex: 0 }] },
+      profile: { samples: curve },
+    });
+    const dive = createDive({
+      startTime: '2026-09-05T10:00:00.000Z',
+      durationSeconds: 1750,
+      water: { maxDepthMeters: 30, avgDepthMeters: 22 },
+      logIds: [log.id],
+      primaryLogId: log.id,
+    });
+    const row = diveLog.indexRowFromDive(dive, [log]);
+    assert.ok(row.sacBarPerMin > 0, 'A transmitter dive gets a SAC even with null begin/end pressure.');
+    assert.ok(row.rmvLitersPerMin > 0);
+  }
 
   console.log('Dive logbook checks passed.');
 })().catch((error) => {

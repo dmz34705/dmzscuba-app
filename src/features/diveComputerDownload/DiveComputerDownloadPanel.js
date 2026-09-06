@@ -7,10 +7,13 @@ import DownloadConsole from './DownloadConsole';
 import useDiveComputerDownload from './useDiveComputerDownload';
 
 const SUUNTO_PAIRING_HINT =
-  'Suunto EON / D5 bonds with one device at a time. Keep this screen open and put the '
-  + 'computer in its pairing screen. iOS asks to pair — enter the code shown on the computer; '
-  + 'the first attempt often drops, then reconnects. If it says "connection refused", first '
-  + 'remove the existing pairing on the computer and in iPhone Settings → Bluetooth.';
+  'Suunto EON / D5 bonds with one device at a time. If you have the Suunto app installed, '
+  + 'force-quit it first — it syncs in the background and can be the one holding that single '
+  + 'connection slot, which also keeps the computer from showing up here even with a fresh scan. '
+  + 'Then keep this screen open and put the computer in its pairing screen. iOS asks to pair — '
+  + 'enter the code shown on the computer; the first attempt often drops, then reconnects. If it '
+  + 'still says "connection refused", remove the existing pairing on the computer and in iPhone '
+  + 'Settings → Bluetooth.';
 
 function SignalDots({ rssi }) {
   if (rssi == null) return null;
@@ -35,7 +38,11 @@ function DeviceRow({ device, onConnect, disabled }) {
     >
       <View style={styles.deviceInfo}>
         <Text style={styles.deviceName}>{device.name}</Text>
-        <Text style={styles.deviceId}>{device.isLikely ? 'Likely dive computer' : device.id.slice(0, 17)}</Text>
+        <Text style={styles.deviceId}>
+          {device.remembered
+            ? 'Used before — not seen in this scan, tap to reconnect'
+            : device.serviceHint || (device.isLikely ? 'Likely dive computer' : device.id.slice(0, 17))}
+        </Text>
       </View>
       <SignalDots rssi={device.rssi} />
     </Pressable>
@@ -46,7 +53,16 @@ function DeviceRow({ device, onConnect, disabled }) {
 // pulls dives that aren't already saved (fast); "Full re-download" reads the
 // whole computer — needed the first time and to recover a dive deleted in the
 // app. A force re-import sits below as an escape hatch.
-function DownloadActions({ onDisconnect, download }) {
+//
+// The clock-sync action only appears when `connectedDevice.timeSyncSupported`
+// is true — set at connect time from the device's actual protocol family, not
+// guessed — so it's never offered on a computer that can only ever reject it
+// (the whole Aqualung/Oceanic/Sherwood family among others). Rendering here
+// (rather than a separate prompt) means it's available both as a standing
+// manual action and right after a download finishes, since this component
+// renders in both places already.
+function DownloadActions({ onDisconnect, download, connectedDevice, timeSync, onSyncClock }) {
+  const syncingClock = timeSync?.status === 'running';
   return (
     <>
       <View style={styles.doneActions}>
@@ -61,6 +77,21 @@ function DownloadActions({ onDisconnect, download }) {
           style={styles.flexButton}
         />
       </View>
+      {connectedDevice?.timeSyncSupported ? (
+        <>
+          <SecondaryButton
+            label={syncingClock ? 'Syncing clock…' : 'Sync computer clock to phone'}
+            onPress={onSyncClock}
+            disabled={syncingClock}
+            style={styles.backButton}
+          />
+          {timeSync?.status === 'done' ? (
+            <Text style={styles.timeSyncOk}>✓ Clock set to this phone's current time.</Text>
+          ) : timeSync?.status === 'error' && timeSync.error ? (
+            <Text style={styles.timeSyncErrorText}>{timeSync.error}</Text>
+          ) : null}
+        </>
+      ) : null}
       <SecondaryButton label="Disconnect" onPress={onDisconnect} style={styles.backButton} />
       <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
         <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
@@ -80,8 +111,8 @@ function DownloadActions({ onDisconnect, download }) {
  */
 export default function DiveComputerDownloadPanel({ onClose }) {
   const {
-    supported, status, devices, connectedDevice, progress, summary, error, log, baselineKnown,
-    scan, stopScan, connect, disconnect, download, cancel, clearLog,
+    supported, status, devices, connectedDevice, progress, summary, error, log, baselineKnown, timeSync,
+    scan, stopScan, connect, disconnect, download, cancel, clearLog, syncClock,
   } = useDiveComputerDownload();
 
   if (!supported) {
@@ -139,7 +170,7 @@ export default function DiveComputerDownloadPanel({ onClose }) {
                     + '. Any matches with another computer are on the next screen.'
                   : 'No dives read.'}
               </Text>
-              <DownloadActions onDisconnect={disconnect} download={download} />
+              <DownloadActions onDisconnect={disconnect} download={download} connectedDevice={connectedDevice} timeSync={timeSync} onSyncClock={syncClock} />
             </>
           ) : (
             <>
@@ -150,7 +181,7 @@ export default function DiveComputerDownloadPanel({ onClose }) {
                   : 'First time: “Full re-download” reads every dive on the computer — with a large log '
                     + 'this can take a while. After that, “Sync new dives” is quick.'}
               </Text>
-              <DownloadActions onDisconnect={disconnect} download={download} />
+              <DownloadActions onDisconnect={disconnect} download={download} connectedDevice={connectedDevice} timeSync={timeSync} onSyncClock={syncClock} />
             </>
           )}
         </View>
@@ -227,6 +258,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   progressText: { color: colors.muted, fontSize: 12, marginTop: 8 },
+  timeSyncOk: { color: colors.good, fontSize: 12, fontWeight: '700', marginTop: 8, textAlign: 'center' },
+  timeSyncErrorText: { color: colors.danger, fontSize: 12, fontWeight: '700', marginTop: 8, textAlign: 'center' },
   deviceList: { gap: 8, marginTop: 14 },
   deviceRow: {
     alignItems: 'center',

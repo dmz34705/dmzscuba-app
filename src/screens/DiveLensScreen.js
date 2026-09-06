@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { Card, PrimaryButton, SecondaryButton } from '../components/Ui';
 import { identifyPhoto } from '../lib/lensApi';
+import LensDetails from '../features/diveLens/LensDetails';
 import { colors, radii, shadow, spacing } from '../theme';
 
 const CONFIDENCE_LABEL = { high: 'High confidence', medium: 'Medium confidence', low: 'Low confidence' };
@@ -82,14 +83,14 @@ export default function DiveLensScreen({ onBack }) {
           <>
             <SectionLabel>AI PHOTO ID</SectionLabel>
             <Text style={styles.title}>What am I looking at?</Text>
-            <Text style={styles.subtitle}>Snap or upload a photo of a sea creature or piece of dive gear and Dive Lens will identify it for you.</Text>
+            <Text style={styles.subtitle}>Explore marine-life profiles or identify dive gear by type, configuration, and—when visible—brand and model.</Text>
 
             <PickerOption icon="📷" title="Take a photo" body="Use your camera to capture a creature or gear now." onPress={takePhoto} />
             <PickerOption icon="🖼️" title="Choose from library" body="Analyze a photo you already have saved." onPress={pickPhoto} />
 
             <Card style={styles.tipCard}>
               <Text style={styles.tipTitle}>Tips for a good ID</Text>
-              <Text style={styles.tipBody}>Fill the frame with the subject, keep it in focus, and avoid strong backlight. One clear subject works better than a wide scene.</Text>
+              <Text style={styles.tipBody}>For gear, include the complete item and keep logos or model labels readable. For marine life, show distinctive markings, fins, and body shape without approaching or disturbing it. One sharp subject works best.</Text>
             </Card>
             <Text style={styles.disclaimer}>AI identification is for educational purposes only. Never touch unfamiliar marine life—verify anything safety-critical, like a possible venomous or hazardous species, with your instructor or dive guide.</Text>
           </>
@@ -127,6 +128,7 @@ export default function DiveLensScreen({ onBack }) {
               <Text style={styles.resultName}>{result.commonName}</Text>
               {result.scientificName && <Text style={styles.resultScientific}>{result.scientificName}</Text>}
               {result.description ? <Text style={styles.resultDescription}>{result.description}</Text> : null}
+              {result.identificationLevel ? <Text style={styles.identificationLevel}>Identification level: {result.identificationLevel}</Text> : null}
             </Card>
 
             {result.safetyNote && (
@@ -135,6 +137,8 @@ export default function DiveLensScreen({ onBack }) {
                 <Text style={styles.safetyBody}>{result.safetyNote}</Text>
               </Card>
             )}
+
+            <LensDetails result={result} />
 
             {result.funFact && (
               <Card style={styles.factCard}>
@@ -146,7 +150,9 @@ export default function DiveLensScreen({ onBack }) {
             <View style={styles.resultActions}>
               <PrimaryButton label="Scan another" onPress={reset} style={styles.resultButtonFlex} />
             </View>
-            <Text style={styles.disclaimer}>AI identification is for educational purposes only and can be wrong—verify anything safety-critical with your instructor or dive guide.</Text>
+            <Text style={styles.disclaimer}>{result.category === 'gear'
+              ? 'AI visual identification—not manufacturer verification or a gear inspection. A photo cannot establish condition, service status, compatibility, or safe operation. Confirm the label and manufacturer documentation before relying on an identification.'
+              : 'AI-generated reference information, not a verified species record. Identification and ranges can be wrong. Do not touch marine life; verify safety-critical identification with your dive guide.'}</Text>
           </>
         )}
       </ScrollView>
@@ -177,7 +183,8 @@ const styles = StyleSheet.create({
   errorTitle: { color: colors.danger, fontSize: 16, fontWeight: '800' },
   errorBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
   resultCard: {},
-  resultBadgeRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  resultBadgeRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 },
+  identificationLevel: { color: colors.muted, fontSize: 12, marginTop: 10, textTransform: 'capitalize' },
   categoryBadge: { backgroundColor: 'rgba(112,221,246,0.12)', borderColor: colors.cyan, borderRadius: radii.pill, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 5 },
   categoryBadgeText: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1 },
   confidenceText: { color: colors.muted, fontSize: 11, fontWeight: '700' },

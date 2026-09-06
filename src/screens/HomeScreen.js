@@ -3,10 +3,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
 
-import { SectionHeading } from '../components/ScreenLayout';
+import { GroupedSection, NavigationRow, PrimaryButton } from '../components/Ui';
 import FeatureIcon from '../features/catalog/FeatureIcon';
 import { getFeaturedFeature, getFeaturesByArea } from '../features/catalog/featureCatalog';
-import { colors, radii, shadow, spacing } from '../theme';
+import { colors, spacing } from '../theme';
 
 const logo = require('../../assets/brand/dmz-scuba-logo.webp');
 const hero = require('../../assets/brand/education-hero.webp');
@@ -16,24 +16,6 @@ function ArrowIcon({ color = colors.text }) {
     <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
       <Path d="M5 12h14M13 6l6 6-6 6" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
     </Svg>
-  );
-}
-
-function CategoryCard({ area, accent, onPress, title }) {
-  const features = getFeaturesByArea(area);
-  const label = features.length === 1 ? 'FEATURE' : 'FEATURES';
-  return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${title}`} onPress={onPress} style={({ pressed }) => [styles.categoryCard, pressed && styles.pressed]}>
-      <View style={styles.categoryTop}>
-        <View style={[styles.categoryIcon, { borderColor: `${accent}55` }]}>
-          <FeatureIcon name={features[0]?.icon} />
-        </View>
-        <ArrowIcon color={accent} />
-      </View>
-      <Text style={[styles.categoryCount, { color: accent }]}>{features.length} {label}</Text>
-      <Text style={styles.categoryTitle}>{title}</Text>
-      <Text numberOfLines={2} style={styles.categoryBody}>{area === 'learn' ? 'Interactive dive science' : 'Planning and field utilities'}</Text>
-    </Pressable>
   );
 }
 
@@ -71,23 +53,23 @@ export default function HomeScreen({ onOpenTool, onSelectTab }) {
           </View>
           <View style={styles.heroCopy}>
             <Text style={styles.heroEyebrow}>YOUR DIVE COMPANION</Text>
-            <Text style={styles.heroTitle}>Dive knowledge, ready when you are.</Text>
-            <Text style={styles.heroBody}>Learn the science, plan with confidence, and keep your diving essentials together.</Text>
+            <Text style={styles.heroTitle}>Your dive companion.</Text>
+            <Text style={styles.heroBody}>Learn, plan, and keep your diving essentials together.</Text>
           </View>
         </ImageBackground>
 
         <View style={styles.main}>
-          <SectionHeading title="Quick access" />
-          <View style={styles.categoryRow}>
-            <CategoryCard accent={colors.gold} area="learn" onPress={() => onSelectTab('learn')} title="Learn" />
-            <CategoryCard accent={colors.good} area="tools" onPress={() => onSelectTab('tools')} title="Tools" />
-          </View>
+          <PrimaryButton label="Open logbook" onPress={() => onOpenTool('dive-log')} style={styles.primaryAction} />
 
-          <SectionHeading
-            action={<Pressable accessibilityRole="button" hitSlop={8} onPress={() => onSelectTab('learn')}><Text style={styles.viewAll}>SEE ALL</Text></Pressable>}
-            title="Featured lesson"
-          />
+          <GroupedSection title="Start here">
+            <NavigationRow accent={colors.gold} body="Interactive dive science and lessons" icon={<FeatureIcon name={getFeaturesByArea('learn')[0]?.icon} />} onPress={() => onSelectTab('learn')} title="Learn" />
+            <NavigationRow accent={colors.good} body="Planning and field utilities" icon={<FeatureIcon name={getFeaturesByArea('tools')[0]?.icon} />} onPress={() => onSelectTab('tools')} title="Tools" />
+            <NavigationRow accent={colors.cyan} body="Record, review, and export your dives" icon={<FeatureIcon name="logbook" />} onPress={() => onOpenTool('dive-log')} title="Logbook" last />
+          </GroupedSection>
+
+          <GroupedSection title="Featured lesson" action={<Pressable accessibilityRole="button" accessibilityLabel="See all lessons" style={styles.viewAllTarget} onPress={() => onSelectTab('learn')}><Text style={styles.viewAll}>SEE ALL</Text></Pressable>}>
           <SpotlightCard feature={featured} onPress={() => onOpenTool(featured?.id)} />
+          </GroupedSection>
         </View>
       </ScrollView>
     </View>
@@ -97,7 +79,7 @@ export default function HomeScreen({ onOpenTool, onSelectTab }) {
 const styles = StyleSheet.create({
   screen: { backgroundColor: colors.background, flex: 1 },
   content: { flexGrow: 1, paddingBottom: spacing.lg },
-  hero: { height: 318, justifyContent: 'space-between', overflow: 'hidden', paddingBottom: 36, paddingHorizontal: spacing.lg },
+  hero: { minHeight: 258, gap: spacing.lg, justifyContent: 'space-between', overflow: 'hidden', paddingBottom: 30, paddingHorizontal: spacing.lg },
   heroImage: { opacity: 0.9 },
   brandRow: { alignItems: 'center', flexDirection: 'row' },
   logo: { height: 54, width: 54 },
@@ -106,18 +88,13 @@ const styles = StyleSheet.create({
   brandTag: { color: colors.cyan, fontSize: 8, fontWeight: '800', letterSpacing: 1.15, marginTop: 2 },
   heroCopy: { maxWidth: 390 },
   heroEyebrow: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.8, marginBottom: 8 },
-  heroTitle: { color: colors.text, fontSize: 31, fontWeight: '900', letterSpacing: -0.8, lineHeight: 35 },
+  heroTitle: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.8, lineHeight: 33 },
   heroBody: { color: '#C8DDEB', fontSize: 13, lineHeight: 20, marginTop: 9, maxWidth: 350 },
-  main: { marginTop: -10, paddingHorizontal: spacing.md },
-  categoryRow: { flexDirection: 'row', gap: 10, marginBottom: spacing.lg },
-  categoryCard: { backgroundColor: colors.surfaceGlass, borderColor: colors.lineStrong, borderRadius: radii.lg, borderWidth: 1, flex: 1, minHeight: 162, padding: 14, ...shadow },
-  categoryTop: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
-  categoryIcon: { alignItems: 'center', backgroundColor: colors.backgroundRaised, borderRadius: 13, borderWidth: 1, height: 46, justifyContent: 'center', width: 46 },
-  categoryCount: { fontSize: 9, fontWeight: '900', letterSpacing: 1, marginTop: 11 },
-  categoryTitle: { color: colors.text, fontSize: 19, fontWeight: '900', marginTop: 2 },
-  categoryBody: { color: colors.muted, fontSize: 11, lineHeight: 16, marginTop: 3 },
+  main: { marginTop: -10, paddingHorizontal: spacing.lg },
+  primaryAction: { marginBottom: spacing.lg, marginTop: 2 },
   viewAll: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.1 },
-  spotlight: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: radii.lg, borderWidth: 1, flexDirection: 'row', minHeight: 108, overflow: 'hidden', padding: 14, ...shadow },
+  viewAllTarget: { minHeight: 44, minWidth: 60, alignItems: 'flex-end', justifyContent: 'center' },
+  spotlight: { alignItems: 'center', flexDirection: 'row', minHeight: 108, overflow: 'hidden', padding: 14 },
   spotlightIcon: { alignItems: 'center', backgroundColor: 'rgba(112,221,246,0.08)', borderColor: colors.line, borderRadius: 14, borderWidth: 1, height: 52, justifyContent: 'center', width: 52 },
   spotlightCopy: { flex: 1, paddingHorizontal: 12 },
   spotlightEyebrow: { color: colors.cyan, fontSize: 8, fontWeight: '900', letterSpacing: 1.1 },

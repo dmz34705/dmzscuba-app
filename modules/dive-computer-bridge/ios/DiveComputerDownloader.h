@@ -31,6 +31,27 @@ NS_ASSUME_NONNULL_BEGIN
                       onEvent:(void (^)(NSString *name, NSDictionary<NSString *, id> *body))onEvent
                    completion:(void (^)(NSDictionary *_Nullable result, NSString *_Nullable error))completion;
 
+/// Sets the dive computer's clock. `year`/`month`/`day`/`hour`/`minute`/`second`
+/// are plain wall-clock values (this class does no timezone math — the caller
+/// hands over whatever local time it wants the computer to show).
+///
+/// Runs on a background thread, same as -startDownloadWithName:…. `completion`
+/// fires once with either a non-nil result ({ @"vendor": …, @"product": … }) or
+/// a non-nil error string — including "This dive computer does not support
+/// setting its clock from an app." for a device whose libdivecomputer backend
+/// has no time-sync support at all (Aqualung/Oceanic/Sherwood among them).
+- (void)syncTimeWithName:(NSString *)name
+                   vendor:(nullable NSString *)vendor
+                  product:(nullable NSString *)product
+                     year:(NSInteger)year
+                    month:(NSInteger)month
+                      day:(NSInteger)day
+                     hour:(NSInteger)hour
+                   minute:(NSInteger)minute
+                   second:(NSInteger)second
+                  onEvent:(void (^)(NSString *name, NSDictionary<NSString *, id> *body))onEvent
+               completion:(void (^)(NSDictionary *_Nullable result, NSString *_Nullable error))completion;
+
 /// Feeds bytes received from a BLE notification to the download thread.
 - (void)provideBytes:(NSData *)data;
 

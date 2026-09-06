@@ -62,13 +62,80 @@ const DIVE_COMPUTER_NAME_HINTS = [
   'seac', 'sporasub', 'divesystem', 'idive', 'ix3m', // DiveSystem
 ];
 
+// Known BLE "serial" services for dive computers, in priority order. Ported from
+// Subsurface's core/qt-ble.cpp serial_service_uuids table. Shared by downloadRunner
+// (to pick GATT characteristics on a connected device), downloadService (to spot a
+// dive computer the OS still considers "connected" from a previous session before
+// scanning), and looksLikeDiveComputer/labelForKnownService below — some computers
+// (Pelagic-family Aqualung/Apeks models in particular) advertise their raw serial
+// number as the BLE name with no vendor/model text in it at all, so the name-hint
+// list above can't identify them; the GATT service they advertise can, and a scan
+// result exposes the advertised service UUIDs without needing to connect first.
+// `timeSync` reflects whether that device's libdivecomputer backend implements
+// dc_device_timesync at all — checked against the vendored source per family,
+// not a guess. Oceanic/Pelagic (ATOM2 and I330R), Mares, and Scubapro/Uwatec
+// have no time-sync support in the library for any model, at any BLE service;
+// setting the clock on those always fails, so the UI hides the option rather
+// than offering a button that can only ever error.
+const KNOWN_SERVICES = [
+  { uuid: '0000fefb-0000-1000-8000-00805f9b34fb', label: 'Heinrichs-Weikamp (Telit/Stollmann) — OSTC', timeSync: true },
+  { uuid: '2456e1b9-26e2-8f83-e744-f34f01e9d701', label: 'Heinrichs-Weikamp (U-Blox)', timeSync: true },
+  { uuid: '544e326b-5b72-c6b0-1c46-41c1bc448118', label: 'Mares BlueLink Pro', timeSync: false },
+  { uuid: '98ae7120-e62e-11e3-badd-0002a5d5c51b', label: 'Suunto EON Steel / EON Core / D5', timeSync: true },
+  { uuid: 'cb3c4555-d670-4670-bc20-b61dbc851e9a', label: 'Aqualung / Apeks / Oceanic (Pelagic — i770R, i200C, i300C, Pro Plus X, Geo 4.0)', timeSync: false },
+  { uuid: 'ca7b0001-f785-4c38-b599-c7c5fbadb034', label: 'Aqualung / Apeks (Pelagic — i330R, DSX)', timeSync: false },
+  { uuid: 'fdcdeaaa-295d-470e-bf15-04217b7aa0a0', label: 'Scubapro G2 / G3', timeSync: false },
+  { uuid: 'fe25c237-0ece-443c-b0aa-e02033e7029d', label: 'Shearwater Perdix / Teric / Peregrine / Tern', timeSync: true },
+  { uuid: '1aa44039-1667-4b29-87cc-dfecaaf31d97', label: 'Shearwater Perdix 3', timeSync: true },
+  { uuid: '0000fcef-0000-1000-8000-00805f9b34fb', label: 'Divesoft', timeSync: false },
+  { uuid: '6e400001-b5a3-f393-e0a9-e50e24dc10b8', label: 'Cressi', timeSync: true },
+  { uuid: '6e400001-b5a3-f393-e0a9-e50e24dcca9e', label: 'Nordic UART (generic dive computer)', timeSync: false },
+  { uuid: '00000001-8c3b-4f2c-a59e-8c08224f3253', label: 'Halcyon Symbios', timeSync: true },
+  { uuid: '84968ffe-d26d-478a-b953-5010bcf58bca', label: 'Seac', timeSync: false },
+];
+
+export const KNOWN_SERVICE_UUIDS = KNOWN_SERVICES.map((s) => s.uuid);
+
+const SERVICE_BY_UUID = new Map(KNOWN_SERVICES.map((s) => [s.uuid, s]));
+
+/** A friendly vendor label for a scanned device's advertised service UUIDs, or
+ * null if none match a known dive computer service. Works without connecting. */
+export function labelForKnownService(nameOrDevice) {
+  const uuids = typeof nameOrDevice === 'string' ? null : nameOrDevice?.serviceUUIDs;
+  if (!Array.isArray(uuids)) return null;
+  for (const uuid of uuids) {
+    const known = SERVICE_BY_UUID.get(String(uuid).toLowerCase());
+    if (known) return known.label;
+  }
+  return null;
+}
+
+/** Looks up which known dive-computer service a *connected* device (with
+ * discovered services) exposes, for capability checks like time-sync support.
+ * Returns null for an unrecognized device — never assume support by default. */
+export async function detectKnownService(device) {
+  try {
+    const services = await device.services();
+    const byUuid = new Set(services.map((s) => String(s.uuid).toLowerCase()));
+    for (const known of KNOWN_SERVICES) {
+      if (byUuid.has(known.uuid)) return known;
+    }
+  } catch {
+    // fall through to null — best-effort capability detection
+  }
+  return null;
+}
+
 export function looksLikeDiveComputer(nameOrDevice) {
   const raw = typeof nameOrDevice === 'string'
     ? nameOrDevice
     : (nameOrDevice?.name || nameOrDevice?.localName || '');
   const name = raw.toLowerCase().trim();
-  if (!name) return false;
-  return DIVE_COMPUTER_NAME_HINTS.some((hint) => name.includes(hint));
+  if (name && DIVE_COMPUTER_NAME_HINTS.some((hint) => name.includes(hint))) return true;
+  // A name with no vendor hint can still be identified by its advertised
+  // GATT service — the Pelagic family in particular advertises its serial
+  // number as the BLE name, with no model text in it at all.
+  return labelForKnownService(nameOrDevice) != null;
 }
 
 // Suunto EON Steel / Core / D5 (the suunto_eonsteel BLE backend) require a bonded

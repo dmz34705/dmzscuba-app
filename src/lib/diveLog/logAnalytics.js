@@ -110,6 +110,106 @@ export function surfaceConsumption({ startBar, endBar, durationSeconds, avgDepth
 }
 
 /**
+ * Start and end cylinder pressure taken from a transmitter's own pressure
+ * trace.
+ *
+ * Some computers report a full per-sample pressure curve but leave the tank's
+ * begin/end pressure fields at zero (libdivecomputer maps those to null). The
+ * numbers are still there — they are the first and last readings of the curve
+ * — and without recovering them the whole gas section stays blank on a dive
+ * that plainly has transmitter data.
+ *
+ * @param {Array} samples
+ * @param {number} [tankIndex]  which cylinder, for multi-transmitter profiles
+ */
+export function tankPressuresFromSamples(samples, tankIndex = 0) {
+  const rows = Array.isArray(samples)
+    ? [...samples].sort((a, b) => (finiteOr(a?.t, 0) ?? 0) - (finiteOr(b?.t, 0) ?? 0))
+    : [];
+  let startBar = null;
+  let endBar = null;
+  for (const sample of rows) {
+    let value = null;
+    const byTank = sample?.pressuresByTank;
+    if (byTank && typeof byTank === 'object') {
+      value = finiteOr(byTank[tankIndex] ?? byTank[String(tankIndex)]);
+    }
+    // The flat pressureBar field only ever describes the first cylinder.
+    if (value == null && tankIndex === 0) value = finiteOr(sample?.pressureBar);
+    if (value == null || value <= 0) continue;
+    if (startBar === null) startBar = value;
+    endBar = value;
+  }
+  // A single reading is not a range, and would report zero gas used.
+  return startBar === endBar ? { startBar: null, endBar: null } : { startBar, endBar };
+}
+
+/**
+ * Consumption across every cylinder on the dive — sidemount, twinset, a stage
+ * or a deco bottle.
+ *
+ * RMV is the number that survives multiple cylinders: free litres per minute
+ * at the surface, which is a property of the diver and simply adds up. SAC in
+ * bar/min is a property of the diver *and the cylinder* — 10 bar/min out of a
+ * 7 L pony and out of a 15 L twinset are completely different amounts of gas,
+ * so summing them across different sizes is meaningless. A combined SAC is
+ * therefore only reported when every contributing cylinder is the same size;
+ * otherwise it comes back null and RMV is the number to show.
+ *
+ * @param {Array} tanks
+ * @param {{ durationSeconds: number, avgDepthMeters: number }} context
+ */
+export function combinedConsumption(tanks, { durationSeconds, avgDepthMeters } = {}) {
+  const list = Array.isArray(tanks) ? tanks : [];
+  const empty = { usedBar: null, usedLiters: null, sacBarPerMin: null, rmvLitersPerMin: null, perTank: [] };
+
+  const perTank = list.map((tank, index) => {
+    const single = surfaceConsumption({
+      startBar: tank?.startBar,
+      endBar: tank?.endBar,
+      durationSeconds,
+      avgDepthMeters,
+      tankVolumeLiters: tank?.volumeLiters,
+    });
+    const start = finiteOr(tank?.startBar);
+    const end = finiteOr(tank?.endBar);
+    const usedBar = start != null && end != null && start > end ? start - end : null;
+    const volume = finiteOr(tank?.volumeLiters);
+    return {
+      index,
+      volumeLiters: volume,
+      usedBar,
+      usedLiters: usedBar != null && volume ? Math.round(usedBar * volume) : null,
+      sacBarPerMin: single.sacBarPerMin,
+      rmvLitersPerMin: single.rmvLitersPerMin,
+    };
+  });
+
+  const contributing = perTank.filter((entry) => entry.usedBar != null);
+  if (!contributing.length) return { ...empty, perTank };
+
+  const usedBar = contributing.reduce((total, entry) => total + entry.usedBar, 0);
+
+  // Any contributing cylinder without a size makes the totals an undercount,
+  // which is worse than declining to state them.
+  const allSized = contributing.every((entry) => entry.volumeLiters);
+  const usedLiters = allSized ? contributing.reduce((total, entry) => total + entry.usedLiters, 0) : null;
+
+  const rmvKnown = allSized && contributing.every((entry) => entry.rmvLitersPerMin != null);
+  const rmvLitersPerMin = rmvKnown
+    ? Math.round(contributing.reduce((total, entry) => total + entry.rmvLitersPerMin, 0) * 100) / 100
+    : null;
+
+  const sizes = new Set(contributing.map((entry) => entry.volumeLiters));
+  const sacComparable = sizes.size === 1 && contributing.every((entry) => entry.sacBarPerMin != null);
+  const sacBarPerMin = sacComparable
+    ? Math.round(contributing.reduce((total, entry) => total + entry.sacBarPerMin, 0) * 100) / 100
+    : null;
+
+  return { usedBar, usedLiters, sacBarPerMin, rmvLitersPerMin, perTank };
+}
+
+/**
  * A 0–100 "how clean was this dive" score with the reasons. Starts at 100 and
  * deducts for things a cautious instructor would flag. Deliberately simple and
  * transparent — it is a coaching nudge, not a medical instrument.

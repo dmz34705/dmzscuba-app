@@ -48,6 +48,19 @@ export function cancelDownload() {
 }
 
 /**
+ * Sets the dive computer's clock. Values are plain wall-clock numbers (no
+ * timezone conversion happens natively) — pass whatever local time the
+ * computer should show.
+ * @param {{ name: string, vendor?: string, product?: string, year: number, month: number, day: number, hour: number, minute: number, second: number }} options
+ * @returns {Promise<{ vendor: string, product: string }>} rejects with a
+ *   readable message, including "This dive computer does not support setting
+ *   its clock from an app." when the backend has no time-sync support.
+ */
+export function syncDeviceTime(options) {
+  return DiveComputerBridge.syncDeviceTime(options);
+}
+
+/**
  * Subscribe to a download event. Returns a subscription with `.remove()`.
  * @param {'onDownloadWrite'|'onDownloadProgress'|'onDownloadDevinfo'|'onDownloadDive'|'onDownloadLog'} event
  */

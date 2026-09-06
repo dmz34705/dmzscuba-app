@@ -1,6 +1,7 @@
 #import "DiveComputerDownloader.h"
 
 #import <strings.h>  // strcasecmp
+#import <ctype.h>    // toupper
 
 #import <libdivecomputer/context.h>
 #import <libdivecomputer/descriptor.h>
@@ -9,6 +10,7 @@
 #import <libdivecomputer/device.h>
 #import <libdivecomputer/parser.h>
 #import <libdivecomputer/datetime.h>
+#import <libdivecomputer/ble.h>
 
 // ---------------------------------------------------------------------------
 // Session state
@@ -32,6 +34,10 @@
 @property (nonatomic, copy, nullable) NSString *resolvedVendor;
 @property (nonatomic, copy, nullable) NSString *resolvedProduct;
 @property (nonatomic, copy, nullable) NSString *deviceSerial;
+// The advertised BLE name, exposed to libdivecomputer's oceanic_atom2 backend
+// via cb_ioctl's DC_IOCTL_BLE_GET_NAME — its BLE handshake derives a passphrase
+// from the serial digits encoded in this name (see oceanic_atom2_ble_handshake).
+@property (nonatomic, copy, nullable) NSString *bleName;
 @property (nonatomic, assign) dc_context_t *dcContext;
 @property (nonatomic, assign) dc_family_t openFamily;
 @end
@@ -209,7 +215,24 @@ static dc_status_t cb_configure(void *ud, unsigned int a, unsigned int b, dc_par
 static dc_status_t cb_set_uint(void *ud, unsigned int v) { (void)ud; (void)v; return DC_STATUS_SUCCESS; }
 static dc_status_t cb_get_lines(void *ud, unsigned int *v) { (void)ud; if (v) *v = 0; return DC_STATUS_SUCCESS; }
 static dc_status_t cb_ioctl(void *ud, unsigned int request, void *data, size_t size) {
-  (void)ud; (void)request; (void)data; (void)size; return DC_STATUS_UNSUPPORTED;
+  // The Oceanic/Pelagic BLE backend (oceanic_atom2_ble_handshake) needs the
+  // advertised BLE name back from the transport to derive its handshake
+  // passphrase from the serial digits encoded in it (e.g. "FH002112"). Without
+  // this, it silently skips the handshake — some models tolerate that, but
+  // ones that require it (the i300C among them) then reject later commands,
+  // surfacing as an opaque "Download failed (-1)" partway through the read.
+  if (request == DC_IOCTL_BLE_GET_NAME) {
+    DiveComputerDownloader *self = (__bridge DiveComputerDownloader *)ud;
+    const char *utf8 = self.bleName.UTF8String;
+    if (!utf8 || !data || size == 0) return DC_STATUS_UNSUPPORTED;
+    size_t len = strlen(utf8);
+    size_t copyLen = len < size - 1 ? len : size - 1; // always leave room for the null terminator
+    memcpy(data, utf8, copyLen);
+    ((char *)data)[copyLen] = 0;
+    return DC_STATUS_SUCCESS;
+  }
+  (void)data; (void)size;
+  return DC_STATUS_UNSUPPORTED;
 }
 
 // ---------------------------------------------------------------------------
@@ -542,8 +565,56 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 // Descriptor lookup
 // ---------------------------------------------------------------------------
 
+// Oceanic/Pelagic (Aqualung, Apeks, Sherwood/Oceanic-branded) BLE names carry
+// no product-name text at all — unlike Shearwater ("Peregrine TX1234") or
+// Suunto ("EON Core 12345"), the whole name is just a 2-letter model code
+// (the descriptor's model id, split into high/low bytes as ASCII) followed by
+// digits, e.g. "FH2112" for an Aqualung i300C (model 0x4648 = 'F' 'H'). Every
+// descriptor in this family shares one dc_filter_oceanic function that only
+// asks "is this ANY known Oceanic-family code", not "is this THIS model" — so
+// without decoding the code ourselves, the generic loop below can't tell one
+// Oceanic-family model from another and would silently settle for whichever
+// one happens to iterate first (see the isBest comment below for the same
+// problem solved differently for Shearwater/Suunto, whose names do embed the
+// product name and so can be told apart that way).
+static dc_descriptor_t *find_oceanic_descriptor(dc_context_t *context, const char *bleName) {
+  if (!bleName || strlen(bleName) < 3) return NULL;
+  for (const char *c = bleName + 2; *c; c++) {
+    if (*c < '0' || *c > '9') return NULL; // not the "<2 letters><digits>" scheme
+  }
+  unsigned int model = ((unsigned int)toupper((unsigned char)bleName[0]) << 8)
+      | (unsigned int)toupper((unsigned char)bleName[1]);
+
+  dc_iterator_t *iterator = NULL;
+  if (dc_descriptor_iterator_new(&iterator, context) != DC_STATUS_SUCCESS) return NULL;
+  dc_descriptor_t *item = NULL;
+  dc_descriptor_t *found = NULL;
+  while (dc_iterator_next(iterator, &item) == DC_STATUS_SUCCESS) {
+    dc_family_t family = dc_descriptor_get_type(item);
+    BOOL isOceanicFamily = family == DC_FAMILY_OCEANIC_ATOM2 || family == DC_FAMILY_PELAGIC_I330R;
+    if (!found && isOceanicFamily && dc_descriptor_get_model(item) == model
+        && (dc_descriptor_get_transports(item) & DC_TRANSPORT_BLE) != 0) {
+      found = item;
+    } else {
+      dc_descriptor_free(item);
+    }
+  }
+  dc_iterator_free(iterator);
+  return found;
+}
+
 static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
                                         NSString *vendor, NSString *product) {
+  BOOL haveExactMatch = vendor.length > 0 && product.length > 0;
+  if (!haveExactMatch) {
+    // A remembered exact vendor+product (from a previously successful
+    // download of this same device) is more authoritative than re-decoding
+    // the BLE name every time, so only try the Oceanic name heuristic when
+    // there isn't one yet.
+    dc_descriptor_t *oceanic = find_oceanic_descriptor(context, name.length ? name.UTF8String : NULL);
+    if (oceanic) return oceanic;
+  }
+
   dc_iterator_t *iterator = NULL;
   if (dc_descriptor_iterator_new(&iterator, context) != DC_STATUS_SUCCESS) return NULL;
 
@@ -617,6 +688,7 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
   self.resolvedVendor = nil;
   self.resolvedProduct = nil;
   self.deviceSerial = nil;
+  self.bleName = name;
   self.dcContext = NULL;
   [_rxCond lock]; _rx.length = 0; _closed = NO; _cancelled = NO; [_rxCond unlock];
   [_txCond lock]; _txPending = NO; [_txCond unlock];
@@ -699,16 +771,166 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
     dctx.product = matchedProduct;
 
     dc_status_t rc = dc_device_foreach(device, dive_cb, &dctx);
-    if (rc == DC_STATUS_CANCELLED || self->_cancelled) {
-      error = @"Download cancelled.";
-    } else if (rc != DC_STATUS_SUCCESS) {
-      error = [NSString stringWithFormat:@"Download failed (%d).", rc];
-    } else {
+    BOOL wasCancelled = (rc == DC_STATUS_CANCELLED || self->_cancelled);
+    if (rc == DC_STATUS_SUCCESS) {
       result = @{ @"fingerprint": self.firstFingerprint ?: [NSNull null],
                   @"count": @(dctx.number),
                   @"vendor": self.resolvedVendor ?: matchedVendor,
                   @"product": self.resolvedProduct ?: matchedProduct,
                   @"serial": self.deviceSerial ?: [NSNull null] };
+    } else if (self.firstFingerprint) {
+      // Interrupted (cancelled, or a dropped link) after at least the newest
+      // dive was read. firstFingerprint is captured off that very first dive,
+      // so it's a valid checkpoint no matter how far the read got — losing it
+      // here forced every retry to re-read the WHOLE log from the device
+      // again just to rediscover dives it already has, which on a large log
+      // (400+ dives) can take over an hour of BLE transfer for nothing.
+      result = @{ @"fingerprint": self.firstFingerprint,
+                  @"count": @(dctx.number),
+                  @"vendor": self.resolvedVendor ?: matchedVendor,
+                  @"product": self.resolvedProduct ?: matchedProduct,
+                  @"serial": self.deviceSerial ?: [NSNull null],
+                  @"partial": @YES,
+                  @"cancelled": @(wasCancelled) };
+    } else if (wasCancelled) {
+      error = @"Download cancelled.";
+    } else {
+      error = [NSString stringWithFormat:@"Download failed (%d).", rc];
+    }
+
+  done:
+    self.dcContext = NULL;
+    if (device) dc_device_close(device);
+    if (iostream) dc_iostream_close(iostream);
+    if (descriptor) dc_descriptor_free(descriptor);
+    if (context) dc_context_free(context);
+
+    [self teardown];
+    self.onEvent = nil;
+    self.running = NO;
+    completion(result, error);
+  });
+}
+
+// Deliberately NOT sharing -startDownloadWithName:…'s open sequence via a
+// helper: that method is hard-won and already verified against real hardware
+// (Suunto bonding, the Oceanic BLE handshake fix) — duplicating this ~30-line
+// open/close sequence here is a small cost next to the risk of a refactor
+// silently changing behavior in the download path with no way to test-build
+// against a real device from here.
+- (void)syncTimeWithName:(NSString *)name
+                   vendor:(NSString *)vendor
+                  product:(NSString *)product
+                     year:(NSInteger)year
+                    month:(NSInteger)month
+                      day:(NSInteger)day
+                     hour:(NSInteger)hour
+                   minute:(NSInteger)minute
+                   second:(NSInteger)second
+                  onEvent:(void (^)(NSString *, NSDictionary<NSString *, id> *))onEvent
+               completion:(void (^)(NSDictionary *_Nullable, NSString *_Nullable))completion {
+  if (self.running) {
+    completion(nil, @"A download is already in progress.");
+    return;
+  }
+
+  self.running = YES;
+  self.onEvent = onEvent;
+  self.firstFingerprint = nil;
+  self.resolvedVendor = nil;
+  self.resolvedProduct = nil;
+  self.deviceSerial = nil;
+  self.bleName = name;
+  self.dcContext = NULL;
+  [_rxCond lock]; _rx.length = 0; _closed = NO; _cancelled = NO; [_rxCond unlock];
+  [_txCond lock]; _txPending = NO; [_txCond unlock];
+
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+    NSString *error = nil;
+    NSDictionary *result = nil;
+    NSString *matchedVendor = vendor ?: @"";
+    NSString *matchedProduct = product ?: @"";
+
+    dc_context_t *context = NULL;
+    dc_descriptor_t *descriptor = NULL;
+    dc_iostream_t *iostream = NULL;
+    dc_device_t *device = NULL;
+
+    if (dc_context_new(&context) != DC_STATUS_SUCCESS || context == NULL) {
+      error = @"Could not create the libdivecomputer context.";
+      goto done;
+    }
+    dc_context_set_loglevel(context, DC_LOGLEVEL_WARNING);
+
+    descriptor = find_descriptor(context, name, vendor, product);
+    if (descriptor == NULL) {
+      error = @"This dive computer is not recognised by libdivecomputer.";
+      goto done;
+    }
+
+    {
+      const char *mv = dc_descriptor_get_vendor(descriptor);
+      const char *mp = dc_descriptor_get_product(descriptor);
+      if (mv) matchedVendor = @(mv);
+      if (mp) matchedProduct = @(mp);
+    }
+    [self log:[NSString stringWithFormat:@"opening as %@ %@ (BLE name \"%@\") to sync its clock",
+               matchedVendor, matchedProduct, name ?: @""]];
+    self.dcContext = context;
+    self.openFamily = dc_descriptor_get_type(descriptor);
+
+    dc_custom_cbs_t cbs = {0};
+    cbs.set_timeout = cb_set_timeout;
+    cbs.set_break = cb_set_uint;
+    cbs.set_dtr = cb_set_uint;
+    cbs.set_rts = cb_set_uint;
+    cbs.get_lines = cb_get_lines;
+    cbs.get_available = cb_get_available;
+    cbs.configure = cb_configure;
+    cbs.poll = cb_poll;
+    cbs.read = cb_read;
+    cbs.write = cb_write;
+    cbs.ioctl = cb_ioctl;
+    cbs.flush = cb_flush;
+    cbs.purge = cb_purge;
+    cbs.sleep = cb_sleep;
+    cbs.close = cb_close;
+
+    if (dc_custom_open(&iostream, context, DC_TRANSPORT_BLE, &cbs, (__bridge void *)self) != DC_STATUS_SUCCESS) {
+      error = @"Could not open the Bluetooth I/O stream.";
+      goto done;
+    }
+
+    if (dc_device_open(&device, context, descriptor, iostream) != DC_STATUS_SUCCESS || device == NULL) {
+      error = @"Could not open a session with the dive computer.";
+      goto done;
+    }
+
+    dc_device_set_events(device, DC_EVENT_PROGRESS | DC_EVENT_DEVINFO, event_cb, (__bridge void *)self);
+    dc_device_set_cancel(device, cancel_cb, (__bridge void *)self);
+
+    {
+      dc_datetime_t datetime = {0};
+      datetime.year = (int)year;
+      datetime.month = (int)month;
+      datetime.day = (int)day;
+      datetime.hour = (int)hour;
+      datetime.minute = (int)minute;
+      datetime.second = (int)second;
+      datetime.timezone = DC_TIMEZONE_NONE;
+
+      dc_status_t rc = dc_device_timesync(device, &datetime);
+      if (rc == DC_STATUS_SUCCESS) {
+        result = @{ @"vendor": self.resolvedVendor ?: matchedVendor,
+                    @"product": self.resolvedProduct ?: matchedProduct };
+        [self log:@"clock synced"];
+      } else if (rc == DC_STATUS_UNSUPPORTED) {
+        error = @"This dive computer does not support setting its clock from an app.";
+      } else if (rc == DC_STATUS_CANCELLED || self->_cancelled) {
+        error = @"Clock sync cancelled.";
+      } else {
+        error = [NSString stringWithFormat:@"Clock sync failed (%d).", rc];
+      }
     }
 
   done:

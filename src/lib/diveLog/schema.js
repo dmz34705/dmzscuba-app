@@ -518,6 +518,42 @@ export function normalizeDive(raw) {
   };
 }
 
+/**
+ * Combine a computer log's gas with the Dive's own, per field.
+ *
+ * A log is authoritative for what it actually recorded, but a computer
+ * without a transmitter reports no cylinder pressures at all — and taking its
+ * gas wholesale would throw away the start/end pressures the diver typed in
+ * by hand. Same rule the detail screen applies to water conditions: the log
+ * wins per field, the Dive fills the gaps.
+ *
+ * @param {object} [logGas]
+ * @param {object} [diveGas]
+ */
+export function mergeGas(logGas, diveGas) {
+  const log = isObject(logGas) ? logGas : {};
+  const dive = isObject(diveGas) ? diveGas : {};
+  const logTanks = Array.isArray(log.tanks) ? log.tanks : [];
+  const diveTanks = Array.isArray(dive.tanks) ? dive.tanks : [];
+  const logMixes = Array.isArray(log.mixes) ? log.mixes : [];
+  const diveMixes = Array.isArray(dive.mixes) ? dive.mixes : [];
+
+  const tanks = [];
+  for (let index = 0; index < Math.max(logTanks.length, diveTanks.length); index += 1) {
+    const fromLog = isObject(logTanks[index]) ? logTanks[index] : {};
+    const fromDive = isObject(diveTanks[index]) ? diveTanks[index] : {};
+    tanks.push({
+      volumeLiters: fromLog.volumeLiters ?? fromDive.volumeLiters ?? null,
+      workPressureBar: fromLog.workPressureBar ?? fromDive.workPressureBar ?? null,
+      startBar: fromLog.startBar ?? fromDive.startBar ?? null,
+      endBar: fromLog.endBar ?? fromDive.endBar ?? null,
+      mixIndex: fromLog.mixIndex ?? fromDive.mixIndex ?? 0,
+    });
+  }
+
+  return { mixes: logMixes.length ? logMixes : diveMixes, tanks };
+}
+
 export function createDive(partial = {}) {
   const timestamp = nowIso();
   return normalizeDive({

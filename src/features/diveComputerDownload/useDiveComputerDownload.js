@@ -26,6 +26,7 @@ export default function useDiveComputerDownload() {
     error: snapshot.error,
     log: snapshot.log,
     baselineKnown: snapshot.baselineKnown,
+    timeSync: snapshot.timeSync,
     scan: downloadService.scan,
     stopScan: downloadService.stopScan,
     connect: downloadService.connect,
@@ -33,6 +34,7 @@ export default function useDiveComputerDownload() {
     download: downloadService.download,
     cancel: downloadService.cancel,
     reset: downloadService.reset,
+    syncClock: downloadService.syncClock,
     clearLog,
   };
 }

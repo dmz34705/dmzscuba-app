@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
 
 import { BottomTabBar } from '../components/AppShell';
@@ -17,14 +17,15 @@ import LearnScreen from '../screens/LearnScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import MoreScreen from '../screens/MoreScreen';
 import ToolsScreen from '../screens/ToolsScreen';
 import WebDemoScreen, { DEMOS } from '../screens/WebDemoScreen';
 import { colors } from '../theme';
-import { ACCOUNT_ROUTES, APP_TABS, isAppTab } from './navigation';
+import { ACCOUNT_ROUTES, APP_TABS, INITIAL_NAVIGATION, reduceNavigation } from './navigation';
 
 export default function AppNavigator() {
-  const [activeTab, setActiveTab] = useState('home');
-  const [detailRoute, setDetailRoute] = useState(null);
+  const [navigation, dispatch] = useReducer(reduceNavigation, INITIAL_NAVIGATION);
+  const { activeTab, detailRoute, moreRoute, settingsSection } = navigation;
   const appSettings = useAppSettings();
   const accountSession = useAccountSession({
     appSettings: appSettings.settings,
@@ -32,32 +33,22 @@ export default function AppNavigator() {
     onRemoteSettings: appSettings.replaceSettings,
   });
 
-  const closeDetail = () => setDetailRoute(null);
-  const openDetail = (route) => setDetailRoute(route);
-  const selectTab = (tab) => {
-    if (!isAppTab(tab)) return;
-    setDetailRoute(null);
-    setActiveTab(tab);
-  };
-  const openAccount = () => {
-    setDetailRoute(null);
-    setActiveTab('account');
-  };
+  const closeDetail = () => dispatch({ type: 'closeDetail' });
+  const openDetail = (route) => dispatch({ type: 'open', route });
+  const selectTab = (tab) => dispatch({ type: 'tab', tab });
+  const openAccount = () => selectTab('account');
+  const goBack = () => dispatch({ type: 'back' });
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
-      if (detailRoute) {
-        closeDetail();
-        return true;
-      }
-      if (activeTab !== 'home') {
-        setActiveTab('home');
+      if (detailRoute || settingsSection || moreRoute || activeTab !== 'home') {
+        goBack();
         return true;
       }
       return false;
     });
     return () => subscription.remove();
-  }, [activeTab, detailRoute]);
+  }, [activeTab, detailRoute, moreRoute, settingsSection]);
 
   const feature = getFeature(detailRoute);
   if (feature?.routeType === 'web-demo') {
@@ -73,7 +64,7 @@ export default function AppNavigator() {
     return <DiveLensScreen onBack={closeDetail} />;
   }
   if (feature?.routeType === 'dive-log') {
-    return <DiveLogScreen appSettings={appSettings.settings} onBack={closeDetail} />;
+    return <DiveLogScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />;
   }
 
   if (detailRoute === ACCOUNT_ROUTES.login) {
@@ -123,8 +114,12 @@ export default function AppNavigator() {
         {activeTab === 'home' ? <HomeScreen onOpenTool={openDetail} onSelectTab={selectTab} /> : null}
         {activeTab === 'learn' ? <LearnScreen onOpenTool={openDetail} /> : null}
         {activeTab === 'tools' ? <ToolsScreen onOpenTool={openDetail} /> : null}
-        {activeTab === 'account' ? (
+        {activeTab === 'logbook' ? <DiveLogScreen appSettings={appSettings.settings} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
+        {activeTab === 'more' && !moreRoute ? <MoreScreen onOpen={selectTab} /> : null}
+        {activeTab === 'more' && moreRoute === 'account' ? (
           <AccountScreen
+            onBack={goBack}
+            onOpenSettings={() => selectTab('settings')}
             account={accountSession.account}
             authStatus={accountSession.authStatus}
             onCreateAccount={() => openDetail(ACCOUNT_ROUTES.create)}
@@ -133,8 +128,11 @@ export default function AppNavigator() {
             profile={accountSession.profile}
           />
         ) : null}
-        {activeTab === 'settings' ? (
+        {activeTab === 'more' && moreRoute === 'settings' ? (
           <SettingsScreen
+            onBack={goBack}
+            section={settingsSection}
+            onOpenSection={(section) => dispatch({ type: 'section', section })}
             accountEmail={accountSession.account?.profile?.email || ''}
             authStatus={accountSession.authStatus}
             onChange={appSettings.setSettings}

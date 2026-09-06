@@ -1,42 +1,35 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
-import { ScreenHeader } from '../../components/AppShell';
-import { ScreenIntro } from '../../components/ScreenLayout';
-import ToolCatalogCard from '../../components/ToolCatalogCard';
-import { colors, spacing } from '../../theme';
+import MenuPage from '../../components/MenuPage';
+import { GroupedSection, NavigationRow } from '../../components/Ui';
+import { colors } from '../../theme';
 import FeatureIcon from './FeatureIcon';
 import { getFeaturesByArea } from './featureCatalog';
 
-export default function FeatureCatalogScreen({ area, body, eyebrow, footer, headerEyebrow, title, onOpenFeature, children }) {
+export default function FeatureCatalogScreen({ area, body, footer, onOpenFeature, children }) {
   const features = getFeaturesByArea(area);
 
   return (
-    <View style={styles.screen}>
-      <ScreenHeader eyebrow={headerEyebrow} title={area === 'learn' ? 'Learn' : 'Tools'} />
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <ScreenIntro body={body} eyebrow={eyebrow} title={title} />
-        {features.map((feature) => (
-          <ToolCatalogCard
-            accent={colors[feature.accent] || colors.cyan}
-            action={feature.action}
-            badge={feature.badge}
-            body={feature.summary}
-            eyebrow={feature.eyebrow}
-            icon={<FeatureIcon name={feature.icon} />}
-            key={feature.id}
-            onPress={() => onOpenFeature(feature.id)}
-            title={feature.title}
-          />
-        ))}
+    <MenuPage title={area === 'learn' ? 'Learn' : 'Tools'} subtitle={body}>
+        <GroupedSection title={area === 'learn' ? 'Lessons' : 'Tools'}>
+          {features.map((feature, index) => (
+            <NavigationRow
+              accent={colors[feature.accent] || colors.cyan}
+              body={feature.shortSummary || feature.summary}
+              icon={<FeatureIcon name={feature.icon} />}
+              key={feature.id}
+              last={index === features.length - 1}
+              onPress={() => onOpenFeature(feature.id)}
+              title={feature.title}
+            />
+          ))}
+        </GroupedSection>
         {children}
         {footer ? <Text style={styles.footer}>{footer}</Text> : null}
-      </ScrollView>
-    </View>
+    </MenuPage>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: colors.background, flex: 1 },
-  content: { paddingBottom: spacing.lg, paddingHorizontal: spacing.md, paddingTop: spacing.lg },
   footer: { color: colors.faint, fontSize: 11, lineHeight: 17, marginHorizontal: 8, marginTop: 6, textAlign: 'center' },
 });

@@ -15,21 +15,28 @@ import {
   createDivesFromLogs,
   loadFingerprint,
   loadIndex,
+  loadKnownDevices,
+  loadKnownModel,
   rebuildIndex,
   saveFingerprint,
+  saveKnownModel,
+  saveLastDeviceId,
 } from '../../lib/diveLog/storage';
 import { computerDiveKey, computerLogFromDownload } from './computerLogFromDownload';
 import { markPendingReview } from './downloadReviewFlag';
 import {
   BLE_STATE,
+  KNOWN_SERVICE_UUIDS,
+  detectKnownService,
   ensureBlePermissions,
   getBleManager,
   isBleSupported,
+  labelForKnownService,
   looksLikeDiveComputer,
   looksLikeSuunto,
   waitForPoweredOn,
 } from './diveComputerBle';
-import { abortDownload, primePairing, runDownload } from './downloadRunner';
+import { abortDownload, primePairing, runDownload, runTimeSync } from './downloadRunner';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -58,6 +65,10 @@ let state = {
   // is safe and will be fast. false on a first-ever download (or after the
   // marker's dive was deleted), where only a full read makes sense.
   baselineKnown: false,
+  // Kept separate from the download status/error above so triggering a clock
+  // sync (a much shorter, independent operation) never gets confused with —
+  // or clobbers — the state of an actual dive download.
+  timeSync: { status: 'idle', error: '' }, // status: idle | running | done | error
 };
 
 function emit() {
@@ -103,11 +114,43 @@ let manager = null;
 let scanTimer = null;
 let seen = new Map();
 let device = null; // the connected react-native-ble-plx Device
+let disconnectSub = null; // onDeviceDisconnected subscription for `device`
 let downloadRunning = false;
 
 function ensureManager() {
   if (!manager && isBleSupported) manager = getBleManager();
   return manager;
+}
+
+function clearDisconnectWatch() {
+  disconnectSub?.remove();
+  disconnectSub = null;
+}
+
+// iOS excludes a peripheral from scan results as long as it believes the phone
+// still holds a connection to it — including a stale "bonded but the physical
+// radio link is long gone" connection left over from an earlier session (a
+// known Suunto EON/D5 quirk: the computer drops the link right after bonding,
+// and without this cleanup the phone keeps thinking it's connected until
+// Bluetooth itself is power-cycled, e.g. toggling Airplane Mode). Before every
+// scan, ask the OS which dive-computer-shaped peripherals it *thinks* are
+// still connected and force them closed, so a phantom link from last time
+// can't hide the device from this scan.
+async function releaseStaleConnections() {
+  if (!manager) return;
+  let stale = [];
+  try {
+    stale = await manager.connectedDevices(KNOWN_SERVICE_UUIDS);
+  } catch {
+    return; // best-effort — a lookup failure shouldn't block scanning
+  }
+  await Promise.all(stale.map(async (found) => {
+    if (found.id === device?.id) return; // a connection we're actively using
+    try {
+      await manager.cancelDeviceConnection(found.id);
+      log(`released a lingering connection to ${found.name || found.id}`, 'dim');
+    } catch { /* already gone */ }
+  }));
 }
 
 // Re-advertise / re-discover a peripheral so iOS hands us a fresh handle before a
@@ -163,8 +206,30 @@ export async function scan() {
     return;
   }
 
+  await releaseStaleConnections();
+
   set({ status: 'scanning' });
   log('scanning for dive computers…');
+
+  // A bonded dive computer can fail to reappear in live discovery at all (the
+  // same iOS/CoreBluetooth behavior releaseStaleConnections works around, or a
+  // peripheral that stops general advertising once bonded). Offer any
+  // previously-connected computer as a reconnect option alongside whatever the
+  // live scan finds, rather than requiring it to be rediscovered.
+  loadKnownDevices().then((known) => {
+    for (const k of known) {
+      if (seen.has(k.id)) continue; // live scan already found it — that data wins
+      seen.set(k.id, { id: k.id, name: k.name, rssi: null, isLikely: looksLikeDiveComputer(k.name), remembered: true });
+    }
+    if (known.length) {
+      set({
+        devices: [...seen.values()].sort(
+          (a, b) => Number(b.isLikely) - Number(a.isLikely) || (b.rssi ?? -999) - (a.rssi ?? -999),
+        ),
+      });
+    }
+  }).catch(() => {});
+
   manager.startDeviceScan(null, { allowDuplicates: false }, (scanError, found) => {
     if (scanError) {
       set({ error: scanError.message || 'Bluetooth scan failed.', status: 'error' });
@@ -178,6 +243,7 @@ export async function scan() {
       name,
       rssi: typeof found.rssi === 'number' ? found.rssi : null,
       isLikely: looksLikeDiveComputer(found),
+      serviceHint: labelForKnownService(found),
     });
     set({
       devices: [...seen.values()].sort(
@@ -192,6 +258,7 @@ export async function connect(deviceId, meta = {}) {
   ensureManager();
   if (!manager) return;
   stopScan();
+  clearDisconnectWatch();
   set({ error: '', status: 'connecting' });
 
   const suunto = looksLikeSuunto(meta.name || '');
@@ -218,9 +285,39 @@ export async function connect(deviceId, meta = {}) {
 
       device = ready;
       const resolvedName = ready.name || ready.localName || meta.name || 'Dive computer';
-      set({ connectedDevice: { id: ready.id, name: resolvedName }, status: 'connected' });
+      // Known up front, before ever attempting a download: whether this
+      // device's protocol backend supports setting its clock at all, so the
+      // UI can offer that action only where it can actually succeed.
+      const knownService = await detectKnownService(ready);
+      set({
+        connectedDevice: { id: ready.id, name: resolvedName, timeSyncSupported: knownService?.timeSync === true },
+        status: 'connected',
+        timeSync: { status: 'idle', error: '' },
+      });
       log('connected');
       refreshBaseline(resolvedName);
+      saveLastDeviceId(resolvedName, ready.id).catch(() => {});
+
+      // Suunto EON/D5 in particular are known to drop the link on their own
+      // (see primePairing above) — without watching for that, our state kept
+      // claiming "connected" long after the physical link was gone, which is
+      // itself part of why a later scan couldn't find the device again.
+      clearDisconnectWatch();
+      disconnectSub = manager.onDeviceDisconnected(ready.id, (disconnectError) => {
+        if (device?.id !== ready.id) return; // superseded by a newer connection
+        device = null;
+        clearDisconnectWatch();
+        if (disconnectError) {
+          log(`link dropped: ${disconnectError.message || 'connection lost'}`, 'warn');
+          if (!downloadRunning) {
+            set({ connectedDevice: null, status: 'idle', error: '' });
+          }
+          // else: let the in-flight download's own error handling report this —
+          // avoid a second, conflicting status update mid-transfer.
+        }
+        // disconnectError === null means our own cancelDeviceConnection caused
+        // this — that caller already updated state, nothing more to do.
+      });
       return;
     } catch (connectError) {
       lastError = connectError;
@@ -237,10 +334,12 @@ export async function connect(deviceId, meta = {}) {
   set({
     status: 'error',
     error: suunto && refused
-      ? 'The Suunto refused the connection. It bonds with only one device at a time. '
-        + 'On the dive computer: open its Bluetooth/Connectivity menu and remove any paired device. '
-        + 'On iPhone: Settings → Bluetooth, and if the EON / D5 is listed, tap it and "Forget This Device". '
-        + 'Then put the computer back in pairing mode and scan again — iOS should show a pairing code.'
+      ? 'The Suunto refused the connection. It bonds with only one device at a time — if the Suunto '
+        + 'app is installed on this phone, force-quit it first (its background sync can be holding '
+        + 'that one slot). If that doesn\'t help: on the dive computer, open its Bluetooth/Connectivity '
+        + 'menu and remove any paired device. On iPhone: Settings → Bluetooth, and if the EON / D5 is '
+        + 'listed, tap it and "Forget This Device". Then put the computer back in pairing mode and scan '
+        + 'again — iOS should show a pairing code.'
       : suunto
         ? 'Could not pair with the Suunto. Keep this screen open, put the computer in its pairing screen, '
           + 'and accept the iOS pairing request (enter the code shown on the dive computer).'
@@ -254,7 +353,8 @@ export async function connect(deviceId, meta = {}) {
 export async function disconnect() {
   const target = state.connectedDevice;
   device = null;
-  set({ connectedDevice: null, progress: null, status: 'idle', baselineKnown: false });
+  clearDisconnectWatch();
+  set({ connectedDevice: null, progress: null, status: 'idle', baselineKnown: false, timeSync: { status: 'idle', error: '' } });
   if (manager && target) {
     try { await manager.cancelDeviceConnection(target.id); } catch { /* already gone */ }
   }
@@ -324,10 +424,19 @@ export async function download({ incremental = false, force = false } = {}) {
   const mode = fingerprintBase64 ? 'incremental' : incremental ? 'incremental → full (no baseline yet)' : 'full read';
   log(`download start · ${name} · ${mode}`);
 
+  // A device whose advertised BLE name carries no vendor/model text (Pelagic/
+  // Aqualung in particular — it's just a serial number) can only be matched by
+  // libdivecomputer via fragile name-pattern rules. Once a download for this
+  // name has ever resolved a model, skip that guesswork on every later sync.
+  const knownModel = await loadKnownModel(name).catch(() => null);
+  if (knownModel) log(`using remembered model: ${knownModel.vendor} ${knownModel.product}`, 'dim');
+
   try {
     const result = await runDownload({
       device,
       name,
+      vendor: knownModel?.vendor,
+      product: knownModel?.product,
       fingerprintBase64,
       onProgress: (p) => set({ progress: p }),
       onLog: (m) => log(m),
@@ -356,6 +465,7 @@ export async function download({ incremental = false, force = false } = {}) {
     });
 
     if (result?.fingerprint) await saveFingerprint(name, result.fingerprint).catch(() => {});
+    if (result?.vendor && result?.product) await saveKnownModel(name, result.vendor, result.product).catch(() => {});
 
     if (pendingLogs.length) {
       const created = await createDivesFromLogs(pendingLogs).catch((e) => {
@@ -366,10 +476,26 @@ export async function download({ incremental = false, force = false } = {}) {
       log(`saved ${created.length} new ${created.length === 1 ? 'dive' : 'dives'} to the logbook`);
     }
 
-    // A clean finish means the newest dive's fingerprint is saved and its dive
-    // is in the book — future syncs can go incremental.
-    set({ summary: { ...tally }, status: 'done', baselineKnown: !!result?.fingerprint || state.baselineKnown });
-    log('download complete');
+    if (result?.partial) {
+      // Interrupted partway through (cancelled, or the link dropped) — but the
+      // newest dive's fingerprint is still saved, so the NEXT sync resumes
+      // from here via the device's own fingerprint check instead of re-reading
+      // everything again. Surface this as a clear, expected outcome, not a
+      // failure: the dives read so far are already saved.
+      set({
+        summary: { ...tally },
+        status: 'error',
+        error: `Stopped after ${tally.downloaded} ${tally.downloaded === 1 ? 'dive' : 'dives'} `
+          + `(${tally.saved} new) — progress is saved. Tap "Sync new dives" to pick up where this left off.`,
+        baselineKnown: true,
+      });
+      log(`download ${result.cancelled ? 'cancelled' : 'interrupted'} — progress saved for the next sync`, 'warn');
+    } else {
+      // A clean finish means the newest dive's fingerprint is saved and its dive
+      // is in the book — future syncs can go incremental.
+      set({ summary: { ...tally }, status: 'done', baselineKnown: !!result?.fingerprint || state.baselineKnown });
+      log('download complete');
+    }
   } catch (downloadError) {
     // Still persist whatever arrived before the failure.
     if (pendingLogs.length) {
@@ -377,14 +503,59 @@ export async function download({ incremental = false, force = false } = {}) {
       markPendingReview(created.length);
       log(`saved ${created.length} dives from the partial transfer`, 'warn');
     }
+    // If the link itself dropped mid-transfer (the disconnect watcher above
+    // already cleared `device`), don't leave the UI on a "connected" card
+    // whose Sync/Disconnect buttons would silently no-op on a dead handle.
     set({
       summary: { ...tally },
       error: downloadError?.message || 'The download did not finish.',
       status: 'error',
+      connectedDevice: device ? state.connectedDevice : null,
     });
     log(`download failed: ${downloadError?.message || 'error'}`, 'error');
   } finally {
     downloadRunning = false;
+  }
+}
+
+/**
+ * Sets the connected computer's clock to the phone's current local time. A
+ * much shorter operation than a download, but shares the same connection and
+ * BLE plumbing — the caller (UI) should only offer this when
+ * `connectedDevice.timeSyncSupported` is true, since plenty of protocol
+ * families (Aqualung/Oceanic/Sherwood among them) have no support for it at
+ * all and this would just fail cleanly.
+ */
+export async function syncClock() {
+  if (downloadRunning) return; // let an in-flight download finish first — same shared connection
+  if (!device || !state.connectedDevice) return;
+
+  const name = state.connectedDevice.name;
+  const knownModel = await loadKnownModel(name).catch(() => null);
+  const now = new Date(); // local wall-clock — exactly what the diver sees on their phone right now
+  set({ timeSync: { status: 'running', error: '' } });
+  log(`syncing clock · ${name} · ${now.toString()}`);
+
+  try {
+    await runTimeSync({
+      device,
+      name,
+      vendor: knownModel?.vendor,
+      product: knownModel?.product,
+      year: now.getFullYear(),
+      month: now.getMonth() + 1,
+      day: now.getDate(),
+      hour: now.getHours(),
+      minute: now.getMinutes(),
+      second: now.getSeconds(),
+      onLog: (m) => log(m),
+    });
+    set({ timeSync: { status: 'done', error: '' } });
+    log('clock sync complete');
+  } catch (syncError) {
+    const message = syncError?.message || 'Could not sync the clock.';
+    set({ timeSync: { status: 'error', error: message } });
+    log(`clock sync failed: ${message}`, 'error');
   }
 }
 

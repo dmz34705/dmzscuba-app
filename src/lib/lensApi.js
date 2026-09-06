@@ -1,4 +1,5 @@
 import { ACCOUNT_API_BASE_URL } from './accountApi';
+import { normalizeLensResult } from './lensResult';
 
 const REQUEST_TIMEOUT_MS = 30000;
 
@@ -14,6 +15,8 @@ export async function identifyPhoto({ base64, mimeType = 'image/jpeg' }) {
   if (!base64) {
     throw new LensApiError('No photo was captured to analyze.', 'LENS_NO_IMAGE');
   }
+
+  console.log('Dive Lens request', { base64Length: base64.length, mimeType });
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -32,6 +35,7 @@ export async function identifyPhoto({ base64, mimeType = 'image/jpeg' }) {
     if (error?.name === 'AbortError') {
       throw new LensApiError('The identification took too long to respond. Please try again.', 'LENS_TIMEOUT');
     }
+    console.error('Dive Lens fetch failed', error?.name, error?.message, error);
     throw new LensApiError('Dive Lens could not be reached. Check your connection and try again.', 'LENS_NETWORK_ERROR');
   } finally {
     clearTimeout(timeoutId);
@@ -42,14 +46,7 @@ export async function identifyPhoto({ base64, mimeType = 'image/jpeg' }) {
     throw new LensApiError(message && message.length <= 240 ? message : 'That photo could not be analyzed. Try a clearer, closer shot.', 'LENS_REQUEST_FAILED');
   }
 
-  const result = data?.result || {};
-  return {
-    category: result.category === 'gear' || result.category === 'marine_life' ? result.category : 'unclear',
-    commonName: String(result.commonName || 'Unidentified'),
-    scientificName: result.scientificName ? String(result.scientificName) : null,
-    confidence: result.confidence === 'high' || result.confidence === 'medium' || result.confidence === 'low' ? result.confidence : 'low',
-    description: String(result.description || ''),
-    safetyNote: result.safetyNote ? String(result.safetyNote) : null,
-    funFact: result.funFact ? String(result.funFact) : null,
-  };
+  const result = normalizeLensResult(data?.result);
+  if (!result) throw new LensApiError('Dive Lens returned an incomplete identification. Please try again.', 'LENS_INVALID_RESULT');
+  return result;
 }

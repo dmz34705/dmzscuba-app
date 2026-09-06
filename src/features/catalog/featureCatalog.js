@@ -60,10 +60,10 @@ export const FEATURE_CATALOG = Object.freeze([
     accent: 'cyan',
     eyebrow: 'DIVE HISTORY',
     badge: 'NATIVE TOOL',
-    title: 'Dive Log',
+    title: 'Logbook',
     summary: 'Record every dive with site, depth, time, gas, and conditions, then review your totals and history. Stored on this device.',
     shortSummary: 'Log your dives and track your totals.',
-    action: 'Open dive log',
+    action: 'Open logbook',
   },
   {
     id: 'dive-lens',

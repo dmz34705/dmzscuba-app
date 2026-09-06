@@ -13,6 +13,7 @@ import {
   loadAll,
   loadComputerPriority,
   loadDive,
+  INDEX_ROW_VERSION,
   loadIndex,
   loadLogsForDive,
   listSnapshots,
@@ -123,7 +124,12 @@ export default function useDiveLog() {
         let rows = await loadIndex();
         // Rebuild if the index is stale-shaped or missing dives that exist in
         // storage (e.g. left orphaned by an interrupted import).
-        if (rows.some((r) => r.computerKeys === undefined)
+        // Rebuild when a row predates the current index shape, or when the
+        // index is missing dives that exist in storage (e.g. left orphaned by
+        // an interrupted import). The version stamp covers both the fields a
+        // row carries and the values it derives, so a stale row can't leave a
+        // filter quietly matching nothing.
+        if (rows.some((r) => r.v !== INDEX_ROW_VERSION)
             || (await countStoredDives()) > rows.length) {
           rows = await rebuildIndex().catch(() => rows);
         }

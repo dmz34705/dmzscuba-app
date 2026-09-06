@@ -47,8 +47,32 @@ for (const field of ['area', 'routeType', 'title', 'summary', 'action']) {
 
 const tabSection = navigationSource.slice(navigationSource.indexOf('APP_TABS'), navigationSource.indexOf('ACCOUNT_ROUTES'));
 const tabKeys = [...tabSection.matchAll(/key: '([^']+)'/g)].map((match) => match[1]);
-assert.deepEqual(tabKeys, ['home', 'learn', 'tools', 'account', 'settings']);
+assert.deepEqual(tabKeys, ['home', 'learn', 'tools', 'logbook', 'more']);
 assert.equal(new Set(tabKeys).size, tabKeys.length, 'Tab keys must be unique.');
+
+const { loadSourceModule } = require('./lib/load-source-module.cjs');
+const { reduceNavigation, INITIAL_NAVIGATION, SETTINGS_SECTIONS } = loadSourceModule(path.join(root, 'src/application/navigation.js'), path.join(root, 'src'));
+const navigate = (state, type, extra = {}) => reduceNavigation(state, { type, ...extra });
+for (const from of ['home', 'tools']) {
+  const state = navigate(INITIAL_NAVIGATION, 'tab', { tab: from });
+  assert.deepEqual(navigate(state, 'open', { route: 'dive-log' }), navigate(state, 'tab', { tab: 'logbook' }), 'Every logbook shortcut selects the same tab.');
+}
+for (const section of Object.keys(SETTINGS_SECTIONS)) {
+  const settings = navigate(INITIAL_NAVIGATION, 'tab', { tab: 'settings' });
+  const nested = navigate(settings, 'section', { section });
+  assert.equal(nested.activeTab, 'more');
+  assert.deepEqual(navigate(nested, 'back'), settings, 'Back from a setting returns to the Settings menu.');
+  assert.equal(navigate(settings, 'back').moreRoute, null, 'Back from Settings returns to More.');
+  assert.equal(navigate(nested, 'tab', { tab: 'tools' }).settingsSection, null, 'Switching tabs clears the nested menu.');
+}
+const accountMenu = navigate(INITIAL_NAVIGATION, 'tab', { tab: 'account' });
+for (const route of ['account-login', 'account-create', 'account-profile']) {
+  assert.deepEqual(navigate(navigate(accountMenu, 'open', { route }), 'back'), accountMenu, 'Account flows return to Account.');
+}
+const toolsTab = navigate(INITIAL_NAVIGATION, 'tab', { tab: 'tools' });
+assert.deepEqual(navigate(navigate(toolsTab, 'open', { route: 'dive-calculator' }), 'closeDetail'), toolsTab);
+assert.equal(navigate(toolsTab, 'tab', { tab: 'invalid' }), toolsTab);
+assert.equal(navigate(toolsTab, 'section', { section: 'invalid' }), toolsTab);
 
 assert.match(homeSource, /getFeaturedFeature/);
 assert.match(homeSource, /getFeaturesByArea/);

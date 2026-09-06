@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Circle, Path } from 'react-native-svg';
 
 import { colors, radii, spacing } from '../theme';
 
@@ -13,6 +13,8 @@ function BackIcon() {
 }
 
 function TabIcon({ name, color }) {
+  if (name === 'more') return <>{[5, 12, 19].map((cx) => <Circle key={cx} cx={cx} cy="12" r="2" fill={color} />)}</>;
+  if (name === 'logbook') return <Path d="M6 3h13v18H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 14h13M8 7h7M8 11h7" fill="none" stroke={color} strokeWidth="1.8" strokeLinejoin="round" />;
   const path = name === 'home'
     ? 'M3.5 11.2 12 4l8.5 7.2V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1v-8.8Z'
     : name === 'learn'
@@ -38,11 +40,12 @@ export function BottomTabBar({ activeTab, items, onSelect }) {
             accessibilityLabel={`${label} tab`}
             accessibilityRole="tab"
             accessibilityState={{ selected }}
-            hitSlop={4}
             onPress={() => onSelect(key)}
             style={({ pressed }) => [styles.tabItem, pressed && styles.pressed]}
           >
-            <Svg width={22} height={22} viewBox="0 0 24 24"><TabIcon name={icon} color={color} /></Svg>
+            <View style={[styles.tabIcon, selected && styles.tabIconSelected]}>
+              <Svg width={22} height={22} viewBox="0 0 24 24"><TabIcon name={icon} color={color} /></Svg>
+            </View>
             <Text style={[styles.tabLabel, selected && styles.tabLabelSelected]}>{label}</Text>
           </Pressable>
         );
@@ -103,6 +106,8 @@ const styles = StyleSheet.create({
   sectionLabel: { color: colors.cyan, fontSize: 11, fontWeight: '800', letterSpacing: 1.7, marginBottom: spacing.sm },
   tabBar: { backgroundColor: 'rgba(5, 11, 20, 0.98)', borderTopColor: colors.lineStrong, borderTopWidth: StyleSheet.hairlineWidth, flexDirection: 'row', paddingHorizontal: 7, paddingTop: 7 },
   tabItem: { alignItems: 'center', flex: 1, gap: 3, justifyContent: 'center', minHeight: 50, paddingHorizontal: 3, paddingVertical: 4 },
-  tabLabel: { color: colors.faint, fontSize: 9, fontWeight: '700', letterSpacing: 0.1 },
+  tabIcon: { minWidth: 44, height: 28, alignItems: 'center', justifyContent: 'center', borderRadius: 10 },
+  tabIconSelected: { backgroundColor: 'rgba(112,221,246,0.12)' },
+  tabLabel: { color: colors.muted, fontSize: 11, fontWeight: '600' },
   tabLabelSelected: { color: colors.cyan },
 });

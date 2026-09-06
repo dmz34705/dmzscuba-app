@@ -255,7 +255,7 @@ function GuidedLesson({ depthUnit, onOpenPractice, visible = true }) {
       {['set-hour', 'set-minute', 'set-year', 'set-month', 'set-day'].includes(step.id) ? <View style={styles.referenceClock}>
         <Text style={styles.referenceClockLabel}>REFERENCE DATE &amp; TIME</Text>
         <Text style={styles.referenceClockValue}>{actualTime.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</Text>
-        <Text style={styles.referenceClockTime}>{actualTime.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</Text>
+        <Text style={styles.referenceClockTime}>{actualTime.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true })}</Text>
         <Text style={styles.referenceClockHint}>Set the computer within five minutes of this clock.</Text>
       </View> : null}
 

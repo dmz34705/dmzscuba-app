@@ -4,18 +4,19 @@
     "slug": "dmz-scuba-app",
     "scheme": "dmzscuba",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#050B14",
     "primaryColor": "#E21B23",
     "ios": {
       "bundleIdentifier": "com.dmzscuba.app",
+      "requireFullScreen": true,
       "supportsTablet": true,
       "userInterfaceStyle": "dark",
       "infoPlist": {
         "NSCameraUsageDescription": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens.",
-        "NSPhotoLibraryUsageDescription": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose."
+        "NSPhotoLibraryUsageDescription": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose, and so you can pick a background photo for a dive profile share card."
       }
     },
     "android": {
@@ -50,9 +51,15 @@
       "expo-secure-store",
       "expo-web-browser",
       [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "PORTRAIT_UP"
+        }
+      ],
+      [
         "expo-image-picker",
         {
-          "photosPermission": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose.",
+          "photosPermission": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose, and so you can pick a background photo for a dive profile share card.",
           "cameraPermission": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens."
         }
       ],
@@ -62,6 +69,24 @@
         "react-native-ble-plx",
         {
           "bluetoothAlwaysPermission": "DMZ Scuba connects to your dive computer over Bluetooth to download your dive log."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "DMZ Scuba can log coarse location in the background (only while this feature is turned on in Settings) so it can suggest a dive site location when you sync your dive computer.",
+          "locationAlwaysPermission": "DMZ Scuba can log coarse location in the background (only while this feature is turned on in Settings) so it can suggest a dive site location when you sync your dive computer.",
+          "locationWhenInUsePermission": "DMZ Scuba uses your location to suggest a dive site when you sync your dive computer.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true
+        }
+      ],
+      "expo-sharing",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose, and so you can pick a background photo for a dive profile share card.",
+          "savePhotosPermission": "DMZ Scuba saves the dive profile share cards you create to your Photos library."
         }
       ]
     ]

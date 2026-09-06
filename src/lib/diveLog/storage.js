@@ -19,14 +19,18 @@ import {
   computerDiveKeyOf,
   createComputerLog,
   createDive,
+  createId,
   deviceKeyOf,
+  mergeGas,
   normalizeComputerLog,
   normalizeDive,
   normalizeDiveRecord,
   surfaceLogOntoDive,
   touchRecord,
 } from './schema';
+import { createJsonBackup, createJsonExport, exportDivesToCsv, exportDivesToUddf, parseJsonBackup } from './exports';
 import { fuseComputerLogs } from './fuseLogs';
+import { combinedConsumption, tankPressuresFromSamples } from './logAnalytics';
 import { sameComputer } from './matchDives';
 
 export const DIVE_LOG_INDEX_KEY = '@dmz-scuba/dive-log/index-v2';
@@ -34,6 +38,8 @@ export const DIVE_LOG_DIVE_PREFIX = '@dmz-scuba/dive-log/dive-v2/';
 export const DIVE_LOG_LOG_PREFIX = '@dmz-scuba/dive-log/log-v2/';
 export const DIVE_LOG_CORRECTIONS_KEY = '@dmz-scuba/dive-log/corrections-v1';
 export const DIVE_LOG_FINGERPRINT_PREFIX = '@dmz-scuba/dive-log/fingerprint-v1/';
+export const DIVE_LOG_LAST_DEVICE_PREFIX = '@dmz-scuba/dive-log/last-ble-device-v1/';
+export const DIVE_LOG_MODEL_PREFIX = '@dmz-scuba/dive-log/known-model-v1/';
 export const DIVE_LOG_PRIORITY_KEY = '@dmz-scuba/dive-log/computer-priority-v1';
 export const DIVE_LOG_NEGATIVE_MATCH_KEY = '@dmz-scuba/dive-log/negative-v1';
 export const DIVE_LOG_SNAPSHOT_PREFIX = '@dmz-scuba/dive-log/snapshot-v1/';
@@ -64,12 +70,75 @@ function parseJson(raw, fallback) {
 // index rows
 // ---------------------------------------------------------------------------
 
+// Bump whenever indexRowFromDive's shape or derived values change: useDiveLog
+// rebuilds the whole index when a stored row carries an older stamp. Cheaper
+// to reason about than remembering which field arrived in which version.
+export const INDEX_ROW_VERSION = 5;
+
+/** The richest mix on the dive, used to classify air / nitrox / trimix. */
+function maxMixValue(mixes, key) {
+  if (!Array.isArray(mixes) || !mixes.length) return null;
+  let best = null;
+  for (const mix of mixes) {
+    const value = typeof mix?.[key] === 'number' && Number.isFinite(mix[key]) ? mix[key] : null;
+    if (value !== null && (best === null || value > best)) best = value;
+  }
+  return best;
+}
+
+// One lowercased haystack for free-text search. Capped because the index is
+// read and parsed on every launch and notes can run long — the opening of a
+// note is what people actually search for.
+const SEARCH_TEXT_LIMIT = 400;
+
+function buildSearchText(dive) {
+  return [
+    dive.site?.name,
+    dive.site?.location,
+    dive.site?.country,
+    dive.operator,
+    ...(Array.isArray(dive.buddies) ? dive.buddies : []),
+    ...(Array.isArray(dive.tags) ? dive.tags : []),
+    dive.notes,
+  ]
+    .filter((part) => typeof part === 'string' && part.trim())
+    .join(' ')
+    .toLowerCase()
+    .slice(0, SEARCH_TEXT_LIMIT);
+}
+
 /** Lightweight row for the list + stats, computed from a Dive and its logs. */
 export function indexRowFromDive(dive, logs = []) {
   const attachedLogs = Array.isArray(logs) ? logs.filter(Boolean) : [];
   const primary = attachedLogs.find((l) => l.id === dive.primaryLogId) || attachedLogs[0] || null;
   const a = primary?.analytics || null;
+  // A dive without a transmitter has no computed SAC, but a start and end
+  // pressure typed into the form is enough to derive one — and the detail
+  // screen shows exactly that. Deriving it here too keeps "SAC under 15" from
+  // missing dives whose SAC is sitting on screen.
+  // Merged the same way the detail screen merges it, so a downloaded dive with
+  // hand-entered pressures is filterable. Derive whenever the log didn't
+  // actually produce a SAC — a log existing is not the same as it having a
+  // transmitter.
+  const mergedGas = mergeGas(primary?.gas, dive.gas);
+  // A transmitter curve carries the pressures even when the computer left the
+  // tank's begin/end fields empty — recover them so this dive is filterable by
+  // SAC, the same way the detail screen displays it.
+  const tanksForGas = mergedGas.tanks.map((tank, index) => {
+    if (tank.startBar != null && tank.endBar != null) return tank;
+    const fromCurve = tankPressuresFromSamples(primary?.profile?.samples, index);
+    return {
+      ...tank,
+      startBar: tank.startBar ?? fromCurve.startBar,
+      endBar: tank.endBar ?? fromCurve.endBar,
+    };
+  });
+  const derived = a?.sacBarPerMin != null ? null : combinedConsumption(tanksForGas, {
+    durationSeconds: dive.durationSeconds,
+    avgDepthMeters: dive.water?.avgDepthMeters ?? primary?.water?.avgDepthMeters ?? null,
+  });
   return {
+    v: INDEX_ROW_VERSION,
     id: dive.id,
     startTime: dive.startTime,
     updatedAt: dive.updatedAt,
@@ -83,6 +152,18 @@ export function indexRowFromDive(dive, logs = []) {
     number: dive.number ?? null,
     gasLabel: dive.gas?.mixes?.[0]?.label || '',
     logCount: attachedLogs.length,
+
+    // --- filterable summary (see lib/diveLog/filterDives.js) -------------
+    // Denormalised onto the row on purpose: filtering the list must not have
+    // to open a single Dive record. Keep this cheap — the whole index is
+    // parsed on every app start.
+    tempMinC: dive.water?.tempMinC ?? null,
+    waterType: dive.water?.type ?? null,
+    diveMode: dive.diveMode ?? null,
+    types: Array.isArray(dive.types) ? [...dive.types] : [],
+    gasMaxO2: maxMixValue(mergedGas.mixes, 'o2'),
+    gasMaxHe: maxMixValue(mergedGas.mixes, 'he'),
+    search: buildSearchText(dive),
     deviceKeys: [...new Set(attachedLogs.map((l) => l.deviceKey).filter(Boolean))],
     computerKeys: [...new Set(attachedLogs.flatMap((l) => {
       const fps = [l.fingerprint, ...(l.mergedFingerprints || [])].filter(Boolean);
@@ -91,8 +172,8 @@ export function indexRowFromDive(dive, logs = []) {
     primaryDevice: primary ? { ...primary.device } : null,
     // primary-log analytics summary for the trends view (avoids loading every log)
     safetyScore: a && a.safetyScore != null ? a.safetyScore : null,
-    sacBarPerMin: a ? a.sacBarPerMin : null,
-    rmvLitersPerMin: a ? a.rmvLitersPerMin : null,
+    sacBarPerMin: a?.sacBarPerMin ?? derived?.sacBarPerMin ?? null,
+    rmvLitersPerMin: a?.rmvLitersPerMin ?? derived?.rmvLitersPerMin ?? null,
     ascentRateMaxMPerMin: a ? a.ascentRateMaxMPerMin : null,
   };
 }
@@ -169,6 +250,38 @@ export async function loadAll(storage = AsyncStorage) {
   const index = await loadIndex(storage);
   const dives = await Promise.all(index.map((row) => loadDive(row.id, storage)));
   return dives.filter(Boolean);
+}
+
+/** Load complete records for an interchange export without exposing storage details to UI. */
+export async function loadLogbookBundle(storage = AsyncStorage) {
+  const dives = await loadAll(storage);
+  const bundles = [];
+  for (const dive of dives) {
+    // eslint-disable-next-line no-await-in-loop
+    bundles.push({ dive, logs: await loadLogsForDive(dive, storage) });
+  }
+  return bundles;
+}
+
+export async function loadLogbookBundleForIds(ids, storage = AsyncStorage) {
+  const wanted = new Set(Array.isArray(ids) ? ids : []);
+  const bundles = await loadLogbookBundle(storage);
+  return bundles.filter((bundle) => wanted.has(bundle.dive.id));
+}
+
+export async function exportLogbookJson(storage = AsyncStorage, ids = null, options = {}) {
+  const bundles = ids ? await loadLogbookBundleForIds(ids, storage) : await loadLogbookBundle(storage);
+  return options.backup
+    ? createJsonBackup({ dives: bundles.map((item) => item.dive), logs: bundles.flatMap((item) => item.logs) })
+    : createJsonExport({ dives: bundles.map((item) => item.dive), logs: bundles.flatMap((item) => item.logs), detail: options.detail });
+}
+
+export async function exportLogbookCsv(storage = AsyncStorage, ids = null, options = {}) {
+  return exportDivesToCsv(ids ? await loadLogbookBundleForIds(ids, storage) : await loadLogbookBundle(storage), options);
+}
+
+export async function exportLogbookUddf(storage = AsyncStorage, ids = null, options = {}) {
+  return exportDivesToUddf(ids ? await loadLogbookBundleForIds(ids, storage) : await loadLogbookBundle(storage), options);
 }
 
 /**
@@ -463,6 +576,71 @@ export async function clearFingerprint(deviceName, storage = AsyncStorage) {
   await storage.removeItem(fingerprintKey(deviceName));
 }
 
+// ---------------------------------------------------------------------------
+// last-known BLE peripheral id (keyed by advertised name, like fingerprints)
+// ---------------------------------------------------------------------------
+//
+// Once a dive computer is bonded, iOS/CoreBluetooth can stop returning it from
+// a plain discovery scan (it excludes anything it still — or again — considers
+// connected/bonded from general scan results; a well-known Suunto EON/D5 BLE
+// quirk makes this common). Remembering the peripheral id from the last
+// successful connect lets the app reconnect to it directly (connectToDevice by
+// id, which iOS resolves via its bonded-peripheral list) instead of requiring
+// it to reappear in a fresh scan.
+
+function lastDeviceKey(deviceName) {
+  return `${DIVE_LOG_LAST_DEVICE_PREFIX}${deviceName || ''}`;
+}
+
+export async function saveLastDeviceId(deviceName, deviceId, storage = AsyncStorage) {
+  if (!deviceName || !deviceId) return;
+  await storage.setItem(lastDeviceKey(deviceName), String(deviceId));
+}
+
+/** Every previously-connected {name, id} pair, for a "reconnect to a computer
+ * you've used before" fallback offered alongside live scan results. */
+export async function loadKnownDevices(storage = AsyncStorage) {
+  const keys = (await storage.getAllKeys()) || [];
+  const mine = keys.filter((key) => key.startsWith(DIVE_LOG_LAST_DEVICE_PREFIX));
+  if (!mine.length) return [];
+  const pairs = typeof storage.multiGet === 'function'
+    ? await storage.multiGet(mine)
+    : await Promise.all(mine.map(async (key) => [key, await storage.getItem(key)]));
+  return pairs
+    .map(([key, id]) => ({ name: key.slice(DIVE_LOG_LAST_DEVICE_PREFIX.length), id }))
+    .filter((d) => d.name && d.id);
+}
+
+// ---------------------------------------------------------------------------
+// resolved vendor/model (keyed by advertised name, like fingerprints)
+// ---------------------------------------------------------------------------
+//
+// A BLE dive computer is matched to a libdivecomputer descriptor by pattern-
+// matching its advertised name — fragile for families (Pelagic/Aqualung in
+// particular) that advertise little more than a serial number. Once a
+// download actually succeeds, the native layer reports back exactly which
+// vendor/product it resolved to; remembering that lets future downloads for
+// the same name skip name-guessing entirely and ask for that exact model.
+
+function modelKey(deviceName) {
+  return `${DIVE_LOG_MODEL_PREFIX}${deviceName || ''}`;
+}
+
+export async function loadKnownModel(deviceName, storage = AsyncStorage) {
+  const raw = await storage.getItem(modelKey(deviceName));
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed?.vendor && parsed?.product ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+export async function saveKnownModel(deviceName, vendor, product, storage = AsyncStorage) {
+  if (!deviceName || !vendor || !product) return;
+  await storage.setItem(modelKey(deviceName), JSON.stringify({ vendor, product }));
+}
+
 function fingerprintTokens(log) {
   return [...new Set([log?.fingerprint, ...(log?.mergedFingerprints || [])]
     .filter(Boolean)
@@ -628,6 +806,43 @@ export async function restoreSnapshot(id, storage = AsyncStorage) {
 }
 
 /**
+ * Add a JSON backup to the current logbook. Existing records are never
+ * replaced: colliding ids are remapped and all references are rewritten.
+ * A raw snapshot is taken first so the additive import remains recoverable.
+ */
+export async function restoreJsonBackup(raw, storage = AsyncStorage) {
+  const backup = parseJsonBackup(raw);
+  await snapshotLogbook(storage);
+  const existingDiveIds = new Set((await loadIndex(storage)).map((row) => row.id));
+  const existingLogIds = new Set();
+  const allKeys = (await storage.getAllKeys()) || [];
+  for (const key of allKeys.filter((item) => item.startsWith(DIVE_LOG_LOG_PREFIX))) {
+    existingLogIds.add(key.slice(DIVE_LOG_LOG_PREFIX.length));
+  }
+  const diveIds = new Map();
+  const logIds = new Map();
+  for (const source of backup.dives) diveIds.set(source.id, existingDiveIds.has(source.id) ? createId() : source.id);
+  for (const source of backup.computerLogs) logIds.set(source.id, existingLogIds.has(source.id) ? createId() : source.id);
+
+  const importedLogs = [];
+  for (const source of backup.computerLogs) {
+    const log = normalizeComputerLog({ ...source, id: logIds.get(source.id), diveId: source.diveId ? (diveIds.get(source.diveId) || source.diveId) : null });
+    // eslint-disable-next-line no-await-in-loop
+    await saveLog(log, storage);
+    importedLogs.push(log);
+  }
+  const importedDives = [];
+  for (const source of backup.dives) {
+    const id = diveIds.get(source.id);
+    const dive = normalizeDive({ ...source, id, logIds: source.logIds.map((logId) => logIds.get(logId) || logId), primaryLogId: source.primaryLogId ? (logIds.get(source.primaryLogId) || source.primaryLogId) : null });
+    // eslint-disable-next-line no-await-in-loop
+    await saveDive(dive, storage);
+    importedDives.push(dive);
+  }
+  return { importedDives, importedLogs, remappedDives: [...diveIds].filter(([from, to]) => from !== to).length, remappedLogs: [...logIds].filter(([from, to]) => from !== to).length };
+}
+
+/**
  * Rebuild the index by scanning storage for every dive-v2 key — NOT from the
  * current index — so it also recovers dives that were written without an index
  * row. Used on mount when an orphan is detected and after a bulk import.
@@ -676,6 +891,8 @@ export async function clearAll(storage = AsyncStorage) {
       || key.startsWith(DIVE_LOG_DIVE_PREFIX)
       || key.startsWith(DIVE_LOG_LOG_PREFIX)
       || key.startsWith(DIVE_LOG_FINGERPRINT_PREFIX)
+      || key.startsWith(DIVE_LOG_LAST_DEVICE_PREFIX)
+      || key.startsWith(DIVE_LOG_MODEL_PREFIX)
       || key.startsWith(V1_ENTRY_PREFIX),
   );
   await removeKeys(mine, storage);

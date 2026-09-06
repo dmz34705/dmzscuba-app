@@ -3,6 +3,8 @@
 export * from './schema';
 export * from './logAnalytics';
 export * from './diveTrends';
+export * from './filterDives';
+export * from './sortDives';
 export * from './matchDives';
 export * from './reconcileLogbook';
 export * from './integrity';
@@ -11,3 +13,5 @@ export * from './storage';
 export * from './stats';
 export * from './format';
 export * from './profileChart';
+export * from './diveModeFields';
+export * from './exports';

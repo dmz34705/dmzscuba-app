@@ -114,6 +114,9 @@ export function formatDate(iso) {
   return `${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
+// 24-hour "HH:MM" — the raw, editable form. Kept as the round-trip pair for
+// the edit form's Time field (parsed back by combineDateTime), so this must
+// stay in the "H:MM"/"HH:MM" shape regardless of display preferences.
 export function formatTime(iso) {
   const time = Date.parse(iso);
   if (Number.isNaN(time)) return '';
@@ -121,6 +124,18 @@ export function formatTime(iso) {
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
   return `${hours}:${minutes}`;
+}
+
+// 12-hour with AM/PM — for read-only display everywhere a start time is shown.
+export function formatTimeOfDay(iso) {
+  const time = Date.parse(iso);
+  if (Number.isNaN(time)) return '';
+  const date = new Date(time);
+  const hours24 = date.getHours();
+  const period = hours24 < 12 ? 'AM' : 'PM';
+  const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  return `${hours12}:${minutes} ${period}`;
 }
 
 export function formatCoordinates(latitude, longitude) {

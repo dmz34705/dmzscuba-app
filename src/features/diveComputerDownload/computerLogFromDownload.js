@@ -54,6 +54,20 @@ function medianSampleInterval(samples) {
   return Math.round(deltas.length % 2 ? deltas[mid] : (deltas[mid - 1] + deltas[mid]) / 2);
 }
 
+function deriveTemperatures(source, samples) {
+  const readings = samples
+    .filter((sample) => num(sample.tempC) !== null)
+    .map((sample) => ({ depth: num(sample.depth), tempC: sample.tempC }));
+  const temperatures = readings.map((sample) => sample.tempC);
+  const nearSurface = readings.find((sample) => sample.depth !== null && sample.depth <= 1.5);
+
+  return {
+    tempSurfaceC: num(source.tempSurfaceC) ?? nearSurface?.tempC ?? null,
+    tempMinC: num(source.tempMinC) ?? (temperatures.length ? Math.min(...temperatures) : null),
+    tempMaxC: num(source.tempMaxC) ?? (temperatures.length ? Math.max(...temperatures) : null),
+  };
+}
+
 function mapMix(mix) {
   const o2 = num(mix?.oxygen) ?? 0.21;
   const he = num(mix?.helium) ?? 0;
@@ -122,6 +136,7 @@ export function computerLogFromDownload(raw) {
 
   const rawSamples = Array.isArray(source.samples) ? source.samples : [];
   const samples = rawSamples.map(mapSample).sort((a, b) => a.t - b.t);
+  const temperatures = deriveTemperatures(source, samples);
   const mixesRaw = Array.isArray(source.gasmixes) && source.gasmixes.length
     ? source.gasmixes
     : [{ oxygen: 0.21, helium: 0 }];
@@ -172,9 +187,7 @@ export function computerLogFromDownload(raw) {
       type: source.salinity === 'salt' || source.salinity === 'fresh' ? source.salinity : null,
       maxDepthMeters,
       avgDepthMeters,
-      tempSurfaceC: num(source.tempSurfaceC),
-      tempMinC: num(source.tempMinC),
-      tempMaxC: num(source.tempMaxC),
+      ...temperatures,
       visibilityMeters: null,
     },
     atmosphericBar: num(source.atmosphericBar),
