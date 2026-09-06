@@ -1284,6 +1284,7 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /ALL_DIVES_KEY/);
   assert.match(screen, /YOUR DIVES/);
   assert.match(screen, /BY COMPUTER/);
+  assert.match(screen, /MANUAL ENTRIES/);
   assert.match(screen, /f\.kind === 'all'/);
   assert.match(screen, /ReconcileCard/);
   assert.match(screen, /kind === 'reconcile'/);
@@ -1343,6 +1344,12 @@ function memoryStorage(seed = {}) {
   // The gap between the picker and the review sheet shows a spinner too.
   assert.match(screen, /photoScanning/);
   assert.match(screen, /Reading photos…/);
+  assert.match(screen, /Loading photos…/);
+  assert.ok(
+    screen.indexOf("setPhotoScanning({ phase: 'choosing', count: 0 })")
+      < screen.indexOf('ImagePicker.launchImageLibraryAsync'),
+    'The photo waiting overlay must mount before the native picker opens.',
+  );
   // Linking shows a blocking progress state (not a silent pause then a dialog).
   assert.match(screen, /photoLinkProgress/);
   assert.match(screen, /setPhotoLinkProgress\(\{ total, done \}\)/);
@@ -1385,8 +1392,12 @@ function memoryStorage(seed = {}) {
 
   assert.match(screen, /view === 'gallery'/);
   assert.match(screen, /function PhotoGalleryView/);
+  assert.match(screen, /function LogbookViewTabs/);
+  assert.match(screen, /function LogbookQuickActions/);
+  assert.match(screen, /function PhotoOrganizerRow/);
+  assert.match(screen, /diveMonthLabel/);
   assert.match(screen, /filterDiveRows\(rows, filter\)/);
-  assert.match(screen, /label="Gallery" onPress=\{\(\) => setView\('gallery'\)\}/);
+  assert.match(screen, /\{ key: 'gallery', label: 'Gallery' \}/);
   assert.match(screen, /depthAtPhotoTime/);
   assert.match(screen, /sortGalleryPhotos\(kept, diveById, sortKey\)/);
   assert.match(hook, /const loadGalleryPhotos = useCallback/);

@@ -5,6 +5,7 @@ import {
   Image,
   Keyboard,
   Modal,
+  Platform,
   Pressable,
   ScrollView,
   Share,
@@ -785,19 +786,23 @@ function FullscreenProfile({ dive, samples, maxDepthMeters, durationSeconds, tem
 function StatSummaryCard({ stats, units, onPress }) {
   const body = (
     <Card style={styles.summaryCard}>
-      <Text style={styles.detailCardTitle}>Your logbook</Text>
+      <View style={styles.summaryHeader}>
+        <View style={styles.summaryHeadingCopy}>
+          <Text style={styles.summaryEyebrow}>YOUR LOGBOOK</Text>
+          <Text style={styles.summaryTitle}>Dive history at a glance</Text>
+        </View>
+        {onPress ? <Text style={styles.summaryLink}>View stats ›</Text> : null}
+      </View>
       <View style={styles.statGrid}>
         <Stat label="Dives" value={String(stats.totalDives)} style={styles.statCell} />
         <Stat label="Bottom time" value={formatDuration(stats.totalBottomTimeSeconds)} style={styles.statCell} />
         <Stat label="Deepest" value={stats.deepestMeters ? formatDepth(stats.deepestMeters, units.depthUnit) : '—'} style={styles.statCell} />
-        <Stat label="Longest" value={stats.longestSeconds ? formatDuration(stats.longestSeconds) : '—'} style={styles.statCell} />
       </View>
       {stats.firstDiveDate ? (
         <Text style={styles.summaryFootnote}>
           {`${formatDate(stats.firstDiveDate)} – ${formatDate(stats.lastDiveDate)}`}
         </Text>
       ) : null}
-      {onPress ? <Text style={styles.summaryLink}>See all stats →</Text> : null}
     </Card>
   );
   if (!onPress) return body;
@@ -806,6 +811,67 @@ function StatSummaryCard({ stats, units, onPress }) {
       {body}
     </Pressable>
   );
+}
+
+function LogbookViewTabs({ active, onChange }) {
+  const tabs = [
+    { key: 'dives', label: 'Dives' },
+    { key: 'gallery', label: 'Gallery' },
+    { key: 'stats', label: 'Stats' },
+  ];
+  return (
+    <View accessibilityRole="tablist" style={styles.logbookTabs}>
+      {tabs.map((tab) => {
+        const selected = tab.key === active;
+        return (
+          <Pressable
+            key={tab.key}
+            accessibilityRole="tab"
+            accessibilityState={{ selected }}
+            onPress={() => onChange(tab.key)}
+            style={({ pressed }) => [styles.logbookTab, selected && styles.logbookTabOn, pressed && styles.pressed]}
+          >
+            <Text style={[styles.logbookTabText, selected && styles.logbookTabTextOn]}>{tab.label}</Text>
+          </Pressable>
+        );
+      })}
+    </View>
+  );
+}
+
+function LogbookQuickActions({ computerDownloadAvailable, onAdd, onDownload }) {
+  return (
+    <View style={styles.quickActions}>
+      <PrimaryButton label="Add dive" onPress={onAdd} style={styles.quickAction} />
+      {computerDownloadAvailable ? (
+        <SecondaryButton label="Download computer" onPress={onDownload} style={styles.quickAction} />
+      ) : null}
+    </View>
+  );
+}
+
+function PhotoOrganizerRow({ onPress }) {
+  return (
+    <Pressable
+      accessibilityLabel="Choose and match photos"
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [styles.photoOrganizerRow, pressed && styles.pressed]}
+    >
+      <View style={styles.photoOrganizerCopy}>
+        <Text style={styles.photoOrganizerEyebrow}>PHOTO ORGANIZER</Text>
+        <Text style={styles.photoOrganizerTitle}>Auto-sort dive photos</Text>
+        <Text style={styles.photoOrganizerBody}>Match camera-roll photos to dives using their capture times.</Text>
+      </View>
+      <Text style={styles.photoOrganizerChevron}>›</Text>
+    </Pressable>
+  );
+}
+
+function diveMonthLabel(iso) {
+  const time = Date.parse(iso);
+  if (Number.isNaN(time)) return '';
+  return new Date(time).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
 }
 
 function TrendArrow({ slope, goodDirection = 'down' }) {
@@ -958,9 +1024,21 @@ function FolderCard({ folder, onPress, onSetRank }) {
     ]);
   };
   return (
-    <Card style={[styles.diveCard, folder.kind === 'all' && styles.diveCardAll]}>
+    <Card style={[styles.folderCard, folder.kind === 'all' && styles.folderCardAll]}>
       <View style={styles.folderTopRow}>
-        <SecondaryButton label={folder.label} onPress={onPress} style={[styles.diveCardButton, styles.folderNameButton]} />
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={folder.label}
+          onPress={onPress}
+          style={({ pressed }) => [styles.folderMain, pressed && styles.pressed]}
+        >
+          <View style={styles.folderCopy}>
+            <Text style={[styles.folderName, folder.kind === 'all' && styles.folderNameAll]}>{folder.label}</Text>
+            {folder.sublabel ? <Text style={styles.folderSerial}>{folder.sublabel}</Text> : null}
+            <Text style={styles.folderMeta}>{bits.join('  ·  ')}</Text>
+          </View>
+          <Text style={styles.folderChevron}>›</Text>
+        </Pressable>
         {showRank ? (
           <Pressable onPress={pickRank} hitSlop={8} style={({ pressed }) => [styles.rankChip, folder.rank && styles.rankChipOn, pressed && styles.pressed]}>
             <Text style={[styles.rankChipText, folder.rank && styles.rankChipTextOn]}>
@@ -968,10 +1046,6 @@ function FolderCard({ folder, onPress, onSetRank }) {
             </Text>
           </Pressable>
         ) : null}
-      </View>
-      {folder.sublabel ? <Text style={styles.folderSerial}>{folder.sublabel}</Text> : null}
-      <View style={styles.diveCardMeta}>
-        <Text style={styles.diveCardMetaText}>{bits.join('  ·  ')}</Text>
       </View>
     </Card>
   );
@@ -2370,7 +2444,6 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [bulkEditOpen, setBulkEditOpen] = useState(false);
   const [bulkSaving, setBulkSaving] = useState(false);
 
-  const foldersMode = useMemo(() => folders.some((f) => f.kind === 'computer'), [folders]);
   const activeFolder = useMemo(
     () => folders.find((f) => f.key === folderKey) || null,
     [folders, folderKey],
@@ -2392,7 +2465,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const activeFilterCount = useMemo(() => countActiveFilters(filter), [filter]);
   // The folder grid is a browsing view; a search in progress means the user is
   // looking for one dive, so drop straight to the matching list.
-  const showFolderGrid = foldersMode && !activeFolder && !activeFilterCount;
+  const showFolderGrid = loaded && rows.length > 0 && !activeFolder && !activeFilterCount;
 
   const exitSelect = useCallback(() => {
     setSelectMode(false);
@@ -2501,27 +2574,32 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   }, [bulkEditDives, exitSelect, selectedIds]);
 
   const beginPhotoImport = useCallback(async () => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      Alert.alert('Photo access needed', 'Enable photo library access for DMZ Scuba in device settings to match photos with dives.');
-      return;
-    }
-    const picked = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsMultipleSelection: true,
-      orderedSelection: true,
-      selectionLimit: 0,
-      exif: true,
-      quality: 1,
-    });
-    if (picked.canceled || !picked.assets?.length) return;
-    // The picker is closed; the review sheet isn't ready yet. Reading each
-    // photo's timestamp and scanning it against every dive is synchronous and
-    // lags for a big selection — cover that gap with a spinner, and yield a
-    // frame first so it actually paints before the loop blocks the thread.
-    setPhotoScanning({ count: picked.assets.length });
+    // Paint the waiting state *before* presenting the native picker. The picker
+    // covers our app while it is open, then reveals this already-mounted
+    // overlay while iCloud/original-asset work finishes and matching begins.
+    setPhotoScanning({ phase: 'choosing', count: 0 });
     try {
-      // Grace so the overlay is definitely painted before the work starts.
+      // Keep web's picker call in the original user gesture; browsers may block
+      // it after an async pause. Native needs a moment for the overlay to paint.
+      if (Platform.OS !== 'web') await new Promise((resolve) => setTimeout(resolve, 64));
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert('Photo access needed', 'Enable photo library access for DMZ Scuba in device settings to match photos with dives.');
+        return;
+      }
+      const picked = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsMultipleSelection: true,
+        orderedSelection: true,
+        selectionLimit: 0,
+        exif: true,
+        quality: 1,
+      });
+      if (picked.canceled || !picked.assets?.length) return;
+
+      setPhotoScanning({ phase: 'processing', count: picked.assets.length });
+      // Let the revealed overlay update with the selected count before doing
+      // synchronous timestamp matching over a potentially large batch.
       await new Promise((resolve) => setTimeout(resolve, 64));
       const linkedPhotos = await loadGalleryPhotos();
       const deduped = dedupePhotoAssets(picked.assets, linkedPhotos);
@@ -2540,6 +2618,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         if (index % 6 === 5) await new Promise((resolve) => setTimeout(resolve, 0));
       }
       setPhotoImportReview({ items, skippedCount: deduped.skipped });
+    } catch (error) {
+      Alert.alert('Could not read photos', error?.message || 'The selected photos could not be prepared for matching.');
     } finally {
       setPhotoScanning(null);
     }
@@ -2756,21 +2836,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const headerAction = selectMode
     ? <SecondaryButton label="Done" onPress={exitSelect} style={styles.headerButton} />
     : canSelect
-      ? (
-        <View style={styles.headerActions}>
-          <SecondaryButton label="Gallery" onPress={() => setView('gallery')} style={styles.headerButton} />
-          <SecondaryButton label="Select" onPress={() => enterSelect(null)} style={styles.headerButton} />
-          <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
-        </View>
-      )
-      : view === 'list' && loaded && rows.length
-        ? (
-          <View style={styles.headerActions}>
-            <SecondaryButton label="Gallery" onPress={() => setView('gallery')} style={styles.headerButton} />
-            <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
-          </View>
-        )
-        : undefined;
+      ? <SecondaryButton label="Select" onPress={() => enterSelect(null)} style={styles.headerButton} />
+      : undefined;
 
   return (
     <View style={styles.screen}>
@@ -2817,75 +2884,77 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           </Pressable>
         ) : null}
 
+        {loaded && !selectMode && (view === 'list' || view === 'gallery' || view === 'stats') ? (
+          <LogbookViewTabs
+            active={view === 'gallery' ? 'gallery' : view === 'stats' ? 'stats' : 'dives'}
+            onChange={(next) => {
+              if (next === 'dives') openList();
+              else setView(next);
+            }}
+          />
+        ) : null}
+
         {view === 'list' && (
           <>
-            {!showFolderGrid ? (
-              <SectionLabel>{activeFolder ? 'DIVES' : 'DIVE HISTORY'}</SectionLabel>
-            ) : null}
-            <Text style={styles.title}>
-              {activeFolder
-                ? (activeFolder.sublabel ? `${activeFolder.label} · ${activeFolder.sublabel}` : activeFolder.label)
-                : showFolderGrid ? 'Your logbook.' : 'Every dive, on this device.'}
-            </Text>
-            {!activeFolder ? (
-              <Text style={styles.subtitle}>
-                {libdcVersion
-                  ? 'Log dives by hand, or download them from a Bluetooth dive computer.'
-                  : 'Log dives by hand now. Direct dive-computer download is coming next.'}
-              </Text>
-            ) : null}
-
-            {loaded && rows.length && !selectMode ? (
-              <Card style={styles.photoImportCard}>
-                <Text style={styles.photoImportEyebrow}>PHOTO ORGANIZER</Text>
-                <Text style={styles.photoImportTitle}>Auto-sort dive photos</Text>
-                <Text style={styles.photoImportBody}>
-                  Choose multiple camera-roll photos. DMZ Scuba will compare their capture times with your logged dives, show every suggested match, and let you confirm before anything is linked.
-                </Text>
-                <PrimaryButton
-                  label="Choose and match photos"
-                  onPress={beginPhotoImport}
-                  style={styles.photoImportButton}
-                />
-              </Card>
-            ) : null}
-
             {!loaded ? (
               <Text style={styles.muted}>Loading your logbook…</Text>
             ) : showFolderGrid ? (
               <>
                 <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} />
 
+                <LogbookQuickActions
+                  computerDownloadAvailable={Boolean(libdcVersion)}
+                  onAdd={openNew}
+                  onDownload={() => setView('download')}
+                />
+
                 <View style={styles.gridSection}><SectionLabel>YOUR DIVES</SectionLabel></View>
                 {folders.filter((f) => f.kind === 'all').map((folder) => (
                   <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
                 ))}
 
-                <View style={styles.gridSection}><SectionLabel>BY COMPUTER</SectionLabel></View>
-                {folders.filter((f) => f.kind !== 'all').map((folder) => (
-                  <FolderCard
-                    key={folder.key}
-                    folder={folder}
-                    onPress={() => setFolderKey(folder.key)}
-                    onSetRank={setComputerRank}
-                  />
-                ))}
-                <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} />
-                {libdcVersion ? (
+                {folders.some((f) => f.kind === 'computer') ? (
                   <>
-                    <SecondaryButton
-                      label="Download from dive computer"
-                      onPress={() => setView('download')}
-                      style={styles.downloadButton}
-                    />
-                    <Text style={styles.engineNote}>libdivecomputer {libdcVersion}</Text>
+                    <View style={styles.gridSection}><SectionLabel>BY COMPUTER</SectionLabel></View>
+                    {folders.filter((f) => f.kind === 'computer').map((folder) => (
+                      <FolderCard
+                        key={folder.key}
+                        folder={folder}
+                        onPress={() => setFolderKey(folder.key)}
+                        onSetRank={setComputerRank}
+                      />
+                    ))}
                   </>
                 ) : null}
+
+                {folders.some((f) => f.kind === 'manual') ? (
+                  <>
+                    <View style={styles.gridSection}><SectionLabel>MANUAL ENTRIES</SectionLabel></View>
+                    {folders.filter((f) => f.kind === 'manual').map((folder) => (
+                      <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
+                    ))}
+                  </>
+                ) : null}
+
+                <View style={styles.gridSection}><SectionLabel>ORGANIZE</SectionLabel></View>
+                <PhotoOrganizerRow onPress={beginPhotoImport} />
+                {libdcVersion ? <Text style={styles.engineNote}>Computer transfer powered by libdivecomputer {libdcVersion}</Text> : null}
               </>
             ) : (
               <>
+                <View style={styles.listContext}>
+                  <View style={styles.listContextCopy}>
+                    <SectionLabel>{activeFolder?.kind === 'computer' ? 'COMPUTER DIVES' : activeFolder?.kind === 'manual' ? 'MANUAL DIVES' : 'DIVE HISTORY'}</SectionLabel>
+                    <Text style={styles.listContextTitle}>{activeFolder?.label || 'All dives'}</Text>
+                    {activeFolder?.sublabel ? <Text style={styles.listContextSerial}>{activeFolder.sublabel}</Text> : null}
+                  </View>
+                  <View style={styles.listCountBadge}>
+                    <Text style={styles.listCountValue}>{listRows.length}</Text>
+                    <Text style={styles.listCountLabel}>{listRows.length === 1 ? 'dive' : 'dives'}</Text>
+                  </View>
+                </View>
                 {!selectMode ? (
-                  <View style={styles.searchRow}>
+                  <Card style={styles.listToolbar}>
                     <TextInput
                       accessibilityLabel="Search dives"
                       autoCapitalize="none"
@@ -2898,32 +2967,37 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                       style={styles.searchInput}
                       value={filter.text}
                     />
-                    <Pressable
-                      accessibilityLabel="Filter dives"
-                      accessibilityRole="button"
-                      onPress={() => setFilterOpen(true)}
-                      style={[styles.filterButton, activeFilterCount > 0 && styles.filterButtonOn]}
-                    >
-                      <Text style={[styles.filterButtonText, activeFilterCount > 0 && styles.filterButtonTextOn]}>
-                        {activeFilterCount > 0 ? `Filters · ${activeFilterCount}` : 'Filters'}
-                      </Text>
+                    <View style={styles.toolbarActions}>
+                      <Pressable
+                        accessibilityLabel="Filter dives"
+                        accessibilityRole="button"
+                        onPress={() => setFilterOpen(true)}
+                        style={[styles.toolbarButton, activeFilterCount > 0 && styles.toolbarButtonOn]}
+                      >
+                        <Text style={[styles.toolbarButtonText, activeFilterCount > 0 && styles.toolbarButtonTextOn]}>
+                          {activeFilterCount > 0 ? `Filters · ${activeFilterCount}` : 'Filter'}
+                        </Text>
+                      </Pressable>
+                      <Pressable
+                        accessibilityLabel={`Sorted by ${describeDiveSort(sort)}. Change sorting.`}
+                        accessibilityRole="button"
+                        onPress={() => setFilterOpen(true)}
+                        style={styles.toolbarButton}
+                      >
+                        <Text numberOfLines={1} style={styles.toolbarButtonText}>{describeDiveSort(sort)}</Text>
+                      </Pressable>
+                    </View>
+                  </Card>
+                ) : null}
+                {!selectMode && rows.length ? (
+                  <View style={styles.listUtilityRow}>
+                    <Text style={styles.listUtilityText}>
+                      {activeFilterCount ? `${listRows.length} of ${folderRows.length} shown` : `${folderRows.length} total`}
+                    </Text>
+                    <Pressable accessibilityRole="button" onPress={() => chooseExportFormat()} hitSlop={8}>
+                      <Text style={styles.listUtilityAction}>Export all</Text>
                     </Pressable>
                   </View>
-                ) : null}
-                {!selectMode ? (
-                  <Pressable
-                    accessibilityLabel={`Sorted by ${describeDiveSort(sort)}. Change sorting.`}
-                    accessibilityRole="button"
-                    onPress={() => setFilterOpen(true)}
-                    style={styles.sortRow}
-                  >
-                    <Text numberOfLines={1} style={styles.sortText}>{describeDiveSort(sort)}</Text>
-                    <Text style={styles.sortChange}>Change</Text>
-                  </Pressable>
-                ) : null}
-                {!activeFolder && !selectMode && !activeFilterCount ? <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} /> : null}
-                {!selectMode && rows.length ? (
-                  <SecondaryButton label="Export all dives" onPress={() => chooseExportFormat()} style={styles.exportAllButton} />
                 ) : null}
                 {listRows.length === 0 ? (
                   <Card style={styles.emptyCard}>
@@ -2940,17 +3014,24 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                     ) : null}
                   </Card>
                 ) : (
-                  listRows.map((row) => (
-                    <DiveListCard
-                      key={row.id}
-                      row={row}
-                      units={units}
-                      selectable={selectMode}
-                      selected={selectedIds.has(row.id)}
-                      onPress={() => (selectMode ? toggleSelected(row.id) : openDetail(row.id))}
-                      onLongPress={() => (selectMode ? toggleSelected(row.id) : enterSelect(row.id))}
-                    />
-                  ))
+                  listRows.map((row, index) => {
+                    const month = diveMonthLabel(row.startTime);
+                    const previousMonth = diveMonthLabel(listRows[index - 1]?.startTime);
+                    const showMonth = sort.key === 'date' && month && month !== previousMonth;
+                    return (
+                      <Fragment key={row.id}>
+                        {showMonth ? <Text style={styles.monthDivider}>{month}</Text> : null}
+                        <DiveListCard
+                          row={row}
+                          units={units}
+                          selectable={selectMode}
+                          selected={selectedIds.has(row.id)}
+                          onPress={() => (selectMode ? toggleSelected(row.id) : openDetail(row.id))}
+                          onLongPress={() => (selectMode ? toggleSelected(row.id) : enterSelect(row.id))}
+                        />
+                      </Fragment>
+                    );
+                  })
                 )}
                 {!selectMode ? <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} /> : null}
                 {!selectMode && !activeFolder && libdcVersion ? (
@@ -3166,11 +3247,15 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           <View style={styles.photoScanCard}>
             <ActivityIndicator size="large" color={colors.cyan} />
             <Text style={styles.photoScanText}>
-              {photoScanning.count > 0
+              {photoScanning.phase === 'choosing'
+                ? 'Loading photos…'
+                : photoScanning.count > 0
                 ? `Reading ${photoScanning.count} ${photoScanning.count === 1 ? 'photo' : 'photos'}…`
                 : 'Reading photos…'}
             </Text>
-            <Text style={styles.photoScanHint}>Matching capture times to your dives</Text>
+            {photoScanning.phase === 'choosing' ? null : (
+              <Text style={styles.photoScanHint}>Preparing originals and matching capture times to your dives</Text>
+            )}
           </View>
         </View>
       ) : null}
@@ -3179,11 +3264,15 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 }
 
 const styles = StyleSheet.create({
-  photoImportCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)', marginBottom: 16 },
-  photoImportEyebrow: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
-  photoImportTitle: { color: colors.text, fontSize: 18, fontWeight: '900', marginTop: 7 },
-  photoImportBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
-  photoImportButton: { marginTop: 12 },
+  photoOrganizerRow: {
+    alignItems: 'center', backgroundColor: colors.surfaceGlass, borderColor: colors.line, borderRadius: radii.lg,
+    borderWidth: 1, flexDirection: 'row', gap: 12, marginBottom: 12, padding: spacing.md, ...shadow,
+  },
+  photoOrganizerCopy: { flex: 1 },
+  photoOrganizerEyebrow: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.2 },
+  photoOrganizerTitle: { color: colors.text, fontSize: 15, fontWeight: '900', marginTop: 5 },
+  photoOrganizerBody: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4 },
+  photoOrganizerChevron: { color: colors.cyan, fontSize: 28, fontWeight: '300' },
   photoReviewBackdrop: { backgroundColor: 'rgba(0,0,0,0.7)', flex: 1, justifyContent: 'flex-end' },
   photoReviewSheet: { backgroundColor: colors.background, borderColor: colors.lineStrong, borderTopLeftRadius: 22, borderTopRightRadius: 22, borderWidth: 1, maxHeight: '85%', padding: spacing.lg },
   photoReviewTitle: { color: colors.text, fontSize: 22, fontWeight: '900' },
@@ -3270,11 +3359,26 @@ const styles = StyleSheet.create({
   muted: { color: colors.muted, fontSize: 13, marginTop: spacing.md },
   headerButton: { minHeight: 40, minWidth: 40, paddingHorizontal: 12, paddingVertical: 8 },
 
-  summaryCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.28)' },
+  logbookTabs: {
+    backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1,
+    flexDirection: 'row', marginBottom: spacing.md, padding: 4,
+  },
+  logbookTab: { alignItems: 'center', borderRadius: 12, flex: 1, minHeight: 38, justifyContent: 'center', paddingHorizontal: 8 },
+  logbookTabOn: { backgroundColor: 'rgba(112,221,246,0.14)' },
+  logbookTabText: { color: colors.faint, fontSize: 13, fontWeight: '800' },
+  logbookTabTextOn: { color: colors.cyan },
+  quickActions: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.lg },
+  quickAction: { flex: 1 },
+
+  summaryCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.28)', padding: 14 },
+  summaryHeader: { alignItems: 'center', flexDirection: 'row', gap: 10, justifyContent: 'space-between' },
+  summaryHeadingCopy: { flex: 1 },
+  summaryEyebrow: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.3 },
+  summaryTitle: { color: colors.text, fontSize: 17, fontWeight: '900', marginTop: 4 },
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
-  statCell: { flexBasis: '47%', flexGrow: 1 },
+  statCell: { flexBasis: '30%', flexGrow: 1, minHeight: 70, paddingHorizontal: 9 },
   summaryFootnote: { color: colors.faint, fontSize: 11, marginTop: 12 },
-  summaryLink: { color: colors.cyan, fontSize: 12, fontWeight: '800', marginTop: 10 },
+  summaryLink: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
   trendRow: { alignItems: 'center', borderTopColor: colors.line, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 9 },
   trendLabel: { color: colors.muted, fontSize: 12 },
   trendGood: { color: colors.good, fontSize: 12, fontWeight: '800' },
@@ -3282,17 +3386,23 @@ const styles = StyleSheet.create({
   trendFlat: { color: colors.faint, fontSize: 12, fontWeight: '700' },
 
   diveCard: { padding: 12 },
-  diveCardAll: { borderColor: colors.cyan, borderWidth: 1 },
   diveCardSelected: { borderColor: colors.cyan },
-  gridSection: { marginTop: 6 },
+  gridSection: { marginTop: 10 },
   diveCardButton: { alignItems: 'flex-start', minHeight: 40, paddingVertical: 9 },
   diveCardMeta: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
   diveCardMetaText: { color: colors.muted, fontSize: 12, fontWeight: '700' },
   diveCardRating: { color: colors.gold, fontSize: 12 },
-  folderSerial: { color: colors.faint, fontSize: 11, fontWeight: '700', marginLeft: 2, marginTop: 3 },
+  folderCard: { padding: 0 },
+  folderCardAll: { backgroundColor: '#0B2838', borderColor: colors.cyan },
+  folderMain: { alignItems: 'center', flex: 1, flexDirection: 'row', gap: 10, minHeight: 74, paddingHorizontal: 15, paddingVertical: 12 },
+  folderCopy: { flex: 1, minWidth: 0 },
+  folderName: { color: colors.text, fontSize: 16, fontWeight: '800' },
+  folderNameAll: { color: colors.cyan, fontSize: 18 },
+  folderSerial: { color: colors.faint, fontSize: 10, fontWeight: '700', marginTop: 3 },
+  folderMeta: { color: colors.muted, fontSize: 12, fontWeight: '700', marginTop: 6 },
+  folderChevron: { color: colors.cyan, fontSize: 27, fontWeight: '300' },
   pressed: { opacity: 0.6 },
 
-  headerActions: { flexDirection: 'row', gap: 8 },
   selectRow: { alignItems: 'center', flexDirection: 'row', gap: 10, minHeight: 40, paddingVertical: 9 },
   selectRowLabel: { color: colors.text, flex: 1, fontSize: 13, fontWeight: '700' },
   checkCircle: {
@@ -3325,32 +3435,49 @@ const styles = StyleSheet.create({
   selectionDeleteOff: { opacity: 0.4 },
   selectionDeleteText: { color: colors.danger, fontSize: 13, fontWeight: '800' },
   selectionDeleteTextOff: { color: colors.muted },
-  exportAllButton: { marginBottom: spacing.md },
-
-  searchRow: { alignItems: 'center', flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md },
+  listContext: { alignItems: 'center', flexDirection: 'row', gap: 14, marginBottom: 14, paddingHorizontal: 2 },
+  listContextCopy: { flex: 1, minWidth: 0 },
+  listContextTitle: { color: colors.text, fontSize: 24, fontWeight: '900', letterSpacing: -0.4 },
+  listContextSerial: { color: colors.faint, fontSize: 11, fontWeight: '700', marginTop: 4 },
+  listCountBadge: {
+    alignItems: 'center', backgroundColor: 'rgba(112,221,246,0.1)', borderColor: 'rgba(112,221,246,0.3)',
+    borderRadius: radii.md, borderWidth: 1, minWidth: 62, paddingHorizontal: 10, paddingVertical: 8,
+  },
+  listCountValue: { color: colors.cyan, fontSize: 18, fontWeight: '900' },
+  listCountLabel: { color: colors.muted, fontSize: 9, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase' },
+  listToolbar: { gap: 9, marginBottom: 8, padding: 10 },
   searchInput: {
     backgroundColor: colors.surface,
     borderColor: colors.line,
     borderRadius: radii.sm,
     borderWidth: 1,
     color: colors.text,
-    flex: 1,
     fontSize: 14,
     fontWeight: '600',
     paddingHorizontal: 12,
     paddingVertical: 9,
+    width: '100%',
   },
-  filterButton: {
+  toolbarActions: { flexDirection: 'row', gap: 8 },
+  toolbarButton: {
+    alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.lineStrong,
     borderRadius: radii.sm,
     borderWidth: 1,
+    flex: 1,
+    justifyContent: 'center',
+    minHeight: 38,
     paddingHorizontal: 13,
-    paddingVertical: 10,
+    paddingVertical: 8,
   },
-  filterButtonOn: { backgroundColor: colors.cyan, borderColor: colors.cyan },
-  filterButtonText: { color: colors.muted, fontSize: 13, fontWeight: '800' },
-  filterButtonTextOn: { color: colors.black },
+  toolbarButtonOn: { backgroundColor: colors.cyan, borderColor: colors.cyan },
+  toolbarButtonText: { color: colors.muted, fontSize: 12, fontWeight: '800' },
+  toolbarButtonTextOn: { color: colors.black },
+  listUtilityRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12, paddingHorizontal: 3 },
+  listUtilityText: { color: colors.faint, fontSize: 11, fontWeight: '700' },
+  listUtilityAction: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
+  monthDivider: { color: colors.muted, fontSize: 11, fontWeight: '900', letterSpacing: 1.1, marginBottom: 8, marginTop: 10, textTransform: 'uppercase' },
   clearFiltersButton: { marginTop: spacing.md },
   detailHint: { color: colors.faint, fontSize: 11, lineHeight: 16, marginTop: 4 },
   cylinderBlock: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, marginTop: spacing.md, paddingTop: spacing.md },
@@ -3358,16 +3485,6 @@ const styles = StyleSheet.create({
   cylinderTitle: { color: colors.muted, fontSize: 12, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase' },
   cylinderRemove: { color: colors.danger, fontSize: 12, fontWeight: '800' },
   addCylinder: { marginTop: spacing.md },
-  sortRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    gap: spacing.sm,
-    justifyContent: 'space-between',
-    marginBottom: spacing.md,
-    marginTop: -spacing.xs,
-  },
-  sortText: { color: colors.muted, flex: 1, fontSize: 12, fontWeight: '700' },
-  sortChange: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
   emptyCard: { alignItems: 'center', paddingVertical: 26 },
   emptyTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },
   emptyBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6, textAlign: 'center' },
@@ -3455,9 +3572,8 @@ const styles = StyleSheet.create({
   logRowSerial: { color: colors.faint, fontSize: 10, fontWeight: '700' },
   logRowMeta: { color: colors.muted, fontSize: 11, marginTop: 3 },
 
-  folderTopRow: { alignItems: 'center', flexDirection: 'row', gap: 8 },
-  folderNameButton: { flex: 1 },
-  rankChip: { borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 6 },
+  folderTopRow: { alignItems: 'center', flexDirection: 'row' },
+  rankChip: { borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, marginRight: 12, paddingHorizontal: 10, paddingVertical: 6 },
   rankChipOn: { backgroundColor: 'rgba(112,221,246,0.12)', borderColor: colors.cyan },
   rankChipText: { color: colors.faint, fontSize: 11, fontWeight: '800' },
   rankChipTextOn: { color: colors.cyan },
