@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert,
+  Image,
   Keyboard,
   Modal,
   Pressable,
@@ -1455,6 +1456,16 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, chartColors
         <DetailRow label="Visibility" value={water.visibilityMeters != null ? formatDepth(water.visibilityMeters, units.depthUnit) : ''} />
       </DetailCard>
 
+      {dive.photos?.length ? (
+        <DetailCard title={'Dive photos (' + dive.photos.length + ')'} defaultExpanded>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.photoStrip}>
+            {dive.photos.map((photo) => (
+              <Image key={photo.id} source={{ uri: photo.uri }} style={styles.divePhoto} accessibilityLabel="Linked dive photo" />
+            ))}
+          </ScrollView>
+        </DetailCard>
+      ) : null}
+
       {/* Always open. Gating this on "has gas data" was worse than useless:
           with no pressures recorded the card collapsed and hid the empty-state
           hint that explains why it is empty, so the screen looked identical
@@ -2421,6 +2432,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 }
 
 const styles = StyleSheet.create({
+  photoStrip: { gap: 10, paddingVertical: 4 },
+  divePhoto: { borderRadius: 12, height: 140, width: 140 },
   screen: { backgroundColor: colors.background, flex: 1 },
   content: { paddingHorizontal: spacing.md, paddingTop: spacing.lg },
   title: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 33 },

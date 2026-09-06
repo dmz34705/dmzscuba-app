@@ -11,6 +11,9 @@ const screenSource = read('src', 'screens', 'DiveLensScreen.js');
 const apiSource = read('src', 'lib', 'lensApi.js');
 const { loadSourceModule } = require('./lib/load-source-module.cjs');
 const { normalizeLensResult, lensDetailSections } = loadSourceModule(path.join(root, 'src/lib/lensResult.js'), path.join(root, 'src'));
+const { photoCapturedAt, findDivePhotoMatches } = loadSourceModule(
+  path.join(root, 'src/lib/diveLog/photoMatching.js'), path.join(root, 'src'),
+);
 
 assert.ok(packageJson.dependencies['expo-image-picker']);
 assert.match(catalogSource, /id: 'dive-lens'/);
@@ -55,5 +58,19 @@ assert.equal(unclear.gear, null);
 assert.equal(unclear.marineLife, null);
 assert.equal(unclear.evidence.length, 5);
 assert.equal(unclear.evidence[0].length, 600);
+
+const dive = {
+  id: 'dive-1',
+  startTime: '2026-09-05T15:00:00.000Z',
+  durationSeconds: 3600,
+  site: { name: 'Test Quarry' },
+};
+assert.equal(photoCapturedAt({ creationTime: 1757084400000 }), '2025-09-05T15:00:00.000Z');
+const inside = findDivePhotoMatches({ creationTime: Date.parse(dive.startTime) + 1800000 }, [dive]);
+assert.equal(inside[0].confidence, 'high');
+const buffered = findDivePhotoMatches({ creationTime: Date.parse(dive.startTime) - 30 * 60000 }, [dive]);
+assert.equal(buffered[0].confidence, 'medium');
+const outside = findDivePhotoMatches({ creationTime: Date.parse(dive.startTime) - 91 * 60000 }, [dive]);
+assert.equal(outside.length, 0);
 
 console.log('Dive Lens integration checks passed.');

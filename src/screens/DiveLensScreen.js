@@ -7,6 +7,8 @@ import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { Card, PrimaryButton, SecondaryButton } from '../components/Ui';
 import { identifyPhoto } from '../lib/lensApi';
 import LensDetails from '../features/diveLens/LensDetails';
+import { findDivePhotoMatches, photoCapturedAt } from '../lib/diveLog/photoMatching';
+import { loadAll, loadDive, saveDive } from '../lib/diveLog/storage';
 import { colors, radii, shadow, spacing } from '../theme';
 
 const CONFIDENCE_LABEL = { high: 'High confidence', medium: 'Medium confidence', low: 'Low confidence' };
@@ -30,16 +32,29 @@ export default function DiveLensScreen({ onBack }) {
   const [status, setStatus] = useState('idle');
   const [result, setResult] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [diveMatch, setDiveMatch] = useState(null);
+  const [linking, setLinking] = useState(false);
+  const [linked, setLinked] = useState(false);
 
-  const runIdentify = async (asset) => {
+  const suggestDiveLink = async (asset, capturedAtOverride = null) => {
+    const capturedAt = photoCapturedAt(asset, capturedAtOverride);
+    if (!capturedAt) return;
+    const matches = findDivePhotoMatches(asset, await loadAll(), capturedAt);
+    if (matches[0]) setDiveMatch({ ...matches[0], asset, capturedAt });
+  };
+
+  const runIdentify = async (asset, capturedAtOverride = null) => {
     setPhoto(asset);
     setResult(null);
+    setDiveMatch(null);
+    setLinked(false);
     setErrorMessage('');
     setStatus('loading');
     try {
       const identified = await identifyPhoto({ base64: asset.base64, mimeType: asset.mimeType || 'image/jpeg' });
       setResult(identified);
       setStatus('result');
+      suggestDiveLink(asset, capturedAtOverride).catch(() => {});
     } catch (error) {
       setErrorMessage(error?.message || 'That photo could not be analyzed. Try a clearer, closer shot.');
       setStatus('error');
@@ -54,7 +69,7 @@ export default function DiveLensScreen({ onBack }) {
     }
     const capture = await ImagePicker.launchCameraAsync({ base64: true, quality: 0.5, allowsEditing: true });
     if (capture.canceled || !capture.assets?.[0]) return;
-    await runIdentify(capture.assets[0]);
+    await runIdentify(capture.assets[0], new Date().toISOString());
   };
 
   const pickPhoto = async () => {
@@ -66,6 +81,33 @@ export default function DiveLensScreen({ onBack }) {
     const picked = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], base64: true, quality: 0.5, allowsEditing: true });
     if (picked.canceled || !picked.assets?.[0]) return;
     await runIdentify(picked.assets[0]);
+  };
+
+  const linkToDive = async () => {
+    if (!diveMatch?.dive?.id || !photo?.uri || linking) return;
+    setLinking(true);
+    try {
+      const current = await loadDive(diveMatch.dive.id);
+      if (!current) return;
+      const photoId = photo.assetId || photo.uri;
+      const existing = Array.isArray(current.photos) ? current.photos : [];
+      if (!existing.some((item) => item.id === photoId || item.uri === photo.uri)) {
+        await saveDive({
+          ...current,
+          photos: [...existing, {
+            id: photoId,
+            uri: photo.uri,
+            assetId: photo.assetId || null,
+            capturedAt: diveMatch.capturedAt,
+            linkedAt: new Date().toISOString(),
+            source: 'dive-lens',
+          }],
+        });
+      }
+      setLinked(true);
+    } finally {
+      setLinking(false);
+    }
   };
 
   const reset = () => {
@@ -140,6 +182,23 @@ export default function DiveLensScreen({ onBack }) {
 
             <LensDetails result={result} />
 
+            {diveMatch && (
+              <Card style={styles.linkCard}>
+                <Text style={styles.linkLabel}>PHOTO + DIVE LOG</Text>
+                <Text style={styles.linkTitle}>{linked ? 'Photo linked to this dive' : 'This photo may belong to a logged dive'}</Text>
+                <Text style={styles.linkBody}>
+                  {diveMatch.dive.site?.name || 'Logged dive'} · {new Date(diveMatch.dive.startTime).toLocaleDateString()}
+                  {'\\n'}Timestamp match: {diveMatch.confidence === 'high' ? 'inside the dive' : 'near the dive'}
+                </Text>
+                {!linked && (
+                  <View style={styles.linkActions}>
+                    <PrimaryButton label={linking ? 'Linking…' : 'Link to this dive'} onPress={linkToDive} disabled={linking} style={styles.linkButton} />
+                    <SecondaryButton label="Not now" onPress={() => setDiveMatch(null)} style={styles.linkButton} />
+                  </View>
+                )}
+              </Card>
+            )}
+
             {result.funFact && (
               <Card style={styles.factCard}>
                 <Text style={styles.factLabel}>DID YOU KNOW</Text>
@@ -197,6 +256,12 @@ const styles = StyleSheet.create({
   factCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)' },
   factLabel: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
   factBody: { color: colors.text, fontSize: 13, lineHeight: 19, marginTop: 6 },
+  linkCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)' },
+  linkLabel: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.2 },
+  linkTitle: { color: colors.text, fontSize: 16, fontWeight: '800', marginTop: 8 },
+  linkBody: { color: colors.muted, fontSize: 13, lineHeight: 20, marginTop: 6 },
+  linkActions: { flexDirection: 'row', gap: 9, marginTop: 12 },
+  linkButton: { flex: 1 },
   resultActions: { flexDirection: 'row', gap: 9, marginTop: 4 },
   resultButton: { flex: 1 },
   resultButtonFlex: { flex: 1 },

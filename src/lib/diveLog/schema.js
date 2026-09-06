@@ -76,6 +76,32 @@ function stringList(value) {
   return out;
 }
 
+const MAX_DIVE_PHOTOS = 200;
+
+function normalizeDivePhoto(raw) {
+  const source = isObject(raw) ? raw : {};
+  const uri = str(source.uri, '').trim();
+  if (!uri) return null;
+  return {
+    id: str(source.id, '').trim() || uri,
+    uri,
+    assetId: str(source.assetId, '').trim() || null,
+    capturedAt: str(source.capturedAt, '').trim() || null,
+    linkedAt: str(source.linkedAt, '').trim() || nowIso(),
+    source: str(source.source, '').trim() || 'manual',
+  };
+}
+
+function normalizeDivePhotos(value) {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  return value.map(normalizeDivePhoto).filter((photo) => {
+    if (!photo || seen.has(photo.id)) return false;
+    seen.add(photo.id);
+    return true;
+  }).slice(0, MAX_DIVE_PHOTOS);
+}
+
 function nowIso() {
   return new Date().toISOString();
 }
@@ -300,6 +326,7 @@ export function normalizeDiveRecord(raw) {
     rating: intOrNull(source.rating, 1, 5),
     notes: str(source.notes, '').trim(),
     tags: stringList(source.tags),
+    photos: normalizeDivePhotos(source.photos),
 
     profile: normalizeProfile(source.profile),
   };
