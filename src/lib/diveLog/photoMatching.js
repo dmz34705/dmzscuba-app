@@ -1,5 +1,7 @@
 const MATCH_BUFFER_MS = 90 * 60 * 1000;
 
+export { dedupePhotoAssets } from './photoIdentity';
+
 function numberTimestamp(value) {
   if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) return null;
   return value < 100000000000 ? value * 1000 : value;

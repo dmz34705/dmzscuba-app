@@ -82,6 +82,7 @@ import {
   findDivePhotoMatches,
   manualDivePhotoMatch,
   photoCapturedAt,
+  dedupePhotoAssets,
 } from '../lib/diveLog/photoMatching';
 import { hiddenDataSections, sectionIsVisible } from '../lib/diveLog/diveModeFields';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
@@ -2027,7 +2028,9 @@ function BatchPhotoReviewModal({ review, dives, units, saving, progress, onCance
           ) : (
             <>
               <Text accessibilityRole="header" style={styles.photoReviewTitle}>Review photo matches</Text>
-              <Text style={styles.photoReviewSummary}>{matched.length} to link · {unmatched} not linked</Text>
+              <Text style={styles.photoReviewSummary}>
+                {matched.length} to link · {unmatched} not linked{review.skippedCount ? ` · ${review.skippedCount} duplicate${review.skippedCount === 1 ? '' : 's'} skipped` : ''}
+              </Text>
               <Text style={styles.photoReviewPrivacy}>Matching used photo timestamps on this device. No photos were uploaded. Tap a photo to change its dive.</Text>
               <ScrollView style={styles.photoReviewList} contentContainerStyle={styles.photoReviewListContent}>
                 {review.items.map((item, index) => (
@@ -2520,9 +2523,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     try {
       // Grace so the overlay is definitely painted before the work starts.
       await new Promise((resolve) => setTimeout(resolve, 64));
+      const linkedPhotos = await loadGalleryPhotos();
+      const deduped = dedupePhotoAssets(picked.assets, linkedPhotos);
       const items = [];
-      for (let index = 0; index < picked.assets.length; index += 1) {
-        const asset = picked.assets[index];
+      for (let index = 0; index < deduped.assets.length; index += 1) {
+        const asset = deduped.assets[index];
         const capturedAt = photoCapturedAt(asset);
         const match = capturedAt ? findDivePhotoMatches(asset, rows, capturedAt)[0] || null : null;
         items.push({
@@ -2534,11 +2539,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         // Yield every few photos so the thread never locks up on a big batch.
         if (index % 6 === 5) await new Promise((resolve) => setTimeout(resolve, 0));
       }
-      setPhotoImportReview({ items });
+      setPhotoImportReview({ items, skippedCount: deduped.skipped });
     } finally {
       setPhotoScanning(null);
     }
-  }, [rows]);
+  }, [loadGalleryPhotos, rows]);
 
   const reassignPhotoMatch = useCallback((itemId, match) => {
     setPhotoImportReview((prev) => (prev ? {

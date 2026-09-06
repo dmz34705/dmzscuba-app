@@ -13,6 +13,8 @@
 //
 // The v1 shape (`normalizeDiveRecord`) is retained for the one-time migration.
 
+import { photoIdentityKeys } from './photoIdentity';
+
 export const SCHEMA_VERSION = 2;
 export const LEGACY_SCHEMA_VERSION = 1;
 
@@ -96,8 +98,9 @@ function normalizeDivePhotos(value) {
   if (!Array.isArray(value)) return [];
   const seen = new Set();
   return value.map(normalizeDivePhoto).filter((photo) => {
-    if (!photo || seen.has(photo.id)) return false;
-    seen.add(photo.id);
+    const keys = photoIdentityKeys(photo);
+    if (!photo || !keys.length || keys.some((key) => seen.has(key))) return false;
+    keys.forEach((key) => seen.add(key));
     return true;
   }).slice(0, MAX_DIVE_PHOTOS);
 }

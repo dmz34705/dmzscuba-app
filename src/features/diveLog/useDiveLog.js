@@ -5,6 +5,7 @@ import { computeDiveLogStats } from '../../lib/diveLog/stats';
 import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
 import { reconcileLogbook } from '../../lib/diveLog/reconcileLogbook';
 import { checkLogbookIntegrity, repairLogbook } from '../../lib/diveLog/integrity';
+import { photoIdentityKeys } from '../../lib/diveLog/photoIdentity';
 import {
   clearAll,
   countStoredDives,
@@ -206,9 +207,13 @@ export default function useDiveLog() {
     const current = await loadDive(id);
     if (!current || !Array.isArray(photos) || !photos.length) return current;
     const existing = Array.isArray(current.photos) ? current.photos : [];
-    const seen = new Set(existing.flatMap((photo) => [photo.id, photo.assetId, photo.uri]).filter(Boolean));
+    const allDives = await loadAll();
+    const seen = new Set(allDives
+      .filter((dive) => !dive.deletedAt)
+      .flatMap((dive) => (Array.isArray(dive.photos) ? dive.photos : []))
+      .flatMap(photoIdentityKeys));
     const additions = photos.filter((photo) => {
-      const keys = [photo?.id, photo?.assetId, photo?.uri].filter(Boolean);
+      const keys = photoIdentityKeys(photo);
       if (!keys.length || keys.some((key) => seen.has(key))) return false;
       keys.forEach((key) => seen.add(key));
       return true;

@@ -1295,6 +1295,14 @@ function memoryStorage(seed = {}) {
     path.join(srcRoot, 'lib', 'diveLog', 'photoMatching.js'), srcRoot,
   );
 
+  const dedupedPhotos = photoMatching.dedupePhotoAssets([
+    { assetId: 'same', uri: 'ph://one' },
+    { assetId: 'same', uri: 'ph://one-copy' },
+    { assetId: 'new', uri: 'ph://two' },
+  ], [{ assetId: 'already-linked', uri: 'ph://old' }]);
+  assert.deepEqual(dedupedPhotos.assets.map((asset) => asset.assetId), ['same', 'new']);
+  assert.equal(dedupedPhotos.skipped, 1);
+
   // buildPhotoImportPlan groups reviewed picker items into per-dive batches and
   // drops anything without a match.
   const planItems = [
