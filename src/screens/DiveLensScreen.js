@@ -78,7 +78,13 @@ export default function DiveLensScreen({ onBack }) {
       Alert.alert('Photo access needed', 'Enable photo library access for DMZ Scuba in your device settings to use Dive Lens.');
       return;
     }
-    const picked = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ['images'], base64: true, quality: 0.5, allowsEditing: true });
+    const picked = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      base64: true,
+      exif: true,
+      quality: 0.5,
+      allowsEditing: true,
+    });
     if (picked.canceled || !picked.assets?.[0]) return;
     await runIdentify(picked.assets[0]);
   };
