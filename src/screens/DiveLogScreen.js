@@ -2134,25 +2134,24 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       Alert.alert('Photo access needed', 'Enable photo library access for DMZ Scuba in device settings to match photos with dives.');
       return;
     }
-    // Show the spinner before the picker opens (it sits behind the native
-    // sheet) so it's already on screen for the gap between dismissing the
-    // picker and the review sheet appearing — reading EXIF for every asset and
-    // scanning each against every dive takes a beat for a big selection.
-    setPhotoScanning({ count: 0 });
+    const picked = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsMultipleSelection: true,
+      orderedSelection: true,
+      selectionLimit: 0,
+      exif: true,
+      quality: 1,
+    });
+    if (picked.canceled || !picked.assets?.length) return;
+    // The picker is closed; the review sheet isn't ready yet. Reading each
+    // photo's timestamp and scanning it against every dive is synchronous and
+    // lags for a big selection — cover that gap with a spinner, and yield a
+    // frame first so it actually paints before the loop blocks the thread.
+    setPhotoScanning({ count: picked.assets.length });
     try {
-      const picked = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
-        allowsMultipleSelection: true,
-        orderedSelection: true,
-        selectionLimit: 0,
-        exif: true,
-        quality: 1,
-      });
-      if (picked.canceled || !picked.assets?.length) return;
-      setPhotoScanning({ count: picked.assets.length });
-      // Yield a frame so the updated spinner paints before the sync loop below
-      // blocks the JS thread.
-      await new Promise((resolve) => setTimeout(resolve, 0));
+      // Two frames' grace so the spinner is definitely on screen (a single
+      // macrotask boundary can commit without the native layer having drawn).
+      await new Promise((resolve) => setTimeout(resolve, 48));
       const items = picked.assets.map((asset, index) => {
         const capturedAt = photoCapturedAt(asset);
         const match = capturedAt ? findDivePhotoMatches(asset, rows, capturedAt)[0] || null : null;
