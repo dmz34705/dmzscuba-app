@@ -75,6 +75,7 @@ import {
   weightToInput,
 } from '../lib/diveLog/format';
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
+import { DEFAULT_GALLERY_SORT, GALLERY_SORTS, sortGalleryPhotos } from '../lib/diveLog/galleryPhotos';
 import {
   buildPhotoImportPlan,
   depthAtPhotoTime,
@@ -977,25 +978,26 @@ function FolderCard({ folder, onPress, onSetRank }) {
 function SelectionBar({ count, total, allSelected, onToggleAll, onDelete, onMerge, onExport, onEdit }) {
   return (
     <Card style={styles.selectionBar}>
-      <Pressable onPress={onToggleAll} hitSlop={8} style={({ pressed }) => [styles.selectionToggle, pressed && styles.pressed]}>
-        <Text style={styles.selectionToggleText}>
-          {allSelected ? 'Deselect all' : count ? `${count} selected · all (${total})` : `Select all (${total})`}
-        </Text>
-      </Pressable>
-      <View style={styles.selectionRight}>
+      <View style={styles.selectionTopRow}>
+        <Text style={styles.selectionCount}>{count ? `${count} selected` : 'Select dives'}</Text>
+        <Pressable onPress={onToggleAll} hitSlop={8} style={({ pressed }) => pressed && styles.pressed}>
+          <Text style={styles.selectionToggleText}>{allSelected ? 'Deselect all' : `Select all (${total})`}</Text>
+        </Pressable>
+      </View>
+      <View style={styles.selectionActions}>
         {count ? (
-          <Pressable accessibilityRole="button" onPress={onEdit} hitSlop={8} style={({ pressed }) => [styles.selectionExport, pressed && styles.pressed]}>
-            <Text style={styles.selectionExportText}>Edit</Text>
+          <Pressable accessibilityRole="button" onPress={onEdit} hitSlop={8} style={({ pressed }) => [styles.selectionChip, pressed && styles.pressed]}>
+            <Text style={styles.selectionChipText}>Edit</Text>
           </Pressable>
         ) : null}
         {count ? (
-          <Pressable accessibilityRole="button" onPress={onExport} hitSlop={8} style={({ pressed }) => [styles.selectionExport, pressed && styles.pressed]}>
-            <Text style={styles.selectionExportText}>Export</Text>
+          <Pressable accessibilityRole="button" onPress={onExport} hitSlop={8} style={({ pressed }) => [styles.selectionChip, pressed && styles.pressed]}>
+            <Text style={styles.selectionChipText}>Export</Text>
           </Pressable>
         ) : null}
         {count >= 2 ? (
-          <Pressable accessibilityRole="button" onPress={onMerge} hitSlop={8} style={({ pressed }) => [styles.selectionMerge, pressed && styles.pressed]}>
-            <Text style={styles.selectionMergeText}>Merge</Text>
+          <Pressable accessibilityRole="button" onPress={onMerge} hitSlop={8} style={({ pressed }) => [styles.selectionChip, pressed && styles.pressed]}>
+            <Text style={styles.selectionChipText}>Merge</Text>
           </Pressable>
         ) : null}
         <Pressable
@@ -1003,7 +1005,7 @@ function SelectionBar({ count, total, allSelected, onToggleAll, onDelete, onMerg
           disabled={count === 0}
           onPress={onDelete}
           hitSlop={8}
-          style={({ pressed }) => [styles.selectionDelete, count === 0 && styles.selectionDeleteOff, pressed && styles.pressed]}
+          style={({ pressed }) => [styles.selectionChip, styles.selectionDeleteChip, count === 0 && styles.selectionDeleteOff, pressed && styles.pressed]}
         >
           <Text style={[styles.selectionDeleteText, count === 0 && styles.selectionDeleteTextOff]}>Delete</Text>
         </Pressable>
@@ -2188,6 +2190,7 @@ function PhotoGalleryView({
   const { width } = useWindowDimensions();
   const [photos, setPhotos] = useState(null); // null = still loading
   const [viewerIndex, setViewerIndex] = useState(null);
+  const [sortKey, setSortKey] = useState(DEFAULT_GALLERY_SORT);
 
   useEffect(() => {
     let active = true;
@@ -2205,10 +2208,11 @@ function PhotoGalleryView({
     () => new Set(filterDiveRows(rows, filter).map((row) => row.id)),
     [rows, filter],
   );
-  const visible = useMemo(
-    () => (photos || []).filter((photo) => matchingIds.has(photo.diveId)),
-    [photos, matchingIds],
-  );
+  const total = (photos || []).length;
+  const visible = useMemo(() => {
+    const kept = (photos || []).filter((photo) => matchingIds.has(photo.diveId));
+    return sortGalleryPhotos(kept, diveById, sortKey);
+  }, [photos, matchingIds, diveById, sortKey]);
   const diveCount = useMemo(() => new Set(visible.map((p) => p.diveId)).size, [visible]);
 
   const tile = Math.floor((width - spacing.md * 2 - 18) / 4);
@@ -2221,26 +2225,40 @@ function PhotoGalleryView({
 
       <View style={styles.galleryBar}>
         <Text style={styles.gallerySummary}>
-          {visible.length} {visible.length === 1 ? 'photo' : 'photos'}
+          {filterActiveCount ? `${visible.length} of ${total} photos` : `${visible.length} ${visible.length === 1 ? 'photo' : 'photos'}`}
           {diveCount ? ` · ${diveCount} ${diveCount === 1 ? 'dive' : 'dives'}` : ''}
         </Text>
-        <Pressable onPress={onOpenFilter} hitSlop={8} accessibilityRole="button">
-          <Text style={styles.galleryFilterText}>
+        <Pressable onPress={onOpenFilter} hitSlop={8} accessibilityRole="button" style={[styles.galleryFilterBtn, filterActiveCount && styles.galleryFilterBtnOn]}>
+          <Text style={[styles.galleryFilterText, filterActiveCount && styles.galleryFilterTextOn]}>
             Filter{filterActiveCount ? ` · ${filterActiveCount}` : ''}
           </Text>
         </Pressable>
       </View>
-      {filterActiveCount ? (
-        <Pressable onPress={onClearFilter} hitSlop={6}>
-          <Text style={styles.galleryClear}>Clear filters</Text>
-        </Pressable>
-      ) : null}
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.gallerySortRow} style={styles.gallerySortScroll}>
+        {GALLERY_SORTS.map((s) => (
+          <Pressable
+            key={s.key}
+            onPress={() => setSortKey(s.key)}
+            accessibilityRole="button"
+            accessibilityState={{ selected: s.key === sortKey }}
+            style={[styles.gallerySortChip, s.key === sortKey && styles.gallerySortChipOn]}
+          >
+            <Text style={[styles.gallerySortChipText, s.key === sortKey && styles.gallerySortChipTextOn]}>{s.label}</Text>
+          </Pressable>
+        ))}
+        {filterActiveCount ? (
+          <Pressable onPress={onClearFilter} hitSlop={6} style={styles.gallerySortChip}>
+            <Text style={styles.galleryClear}>Clear filters</Text>
+          </Pressable>
+        ) : null}
+      </ScrollView>
 
       {visible.length === 0 ? (
         <Text style={styles.muted}>
-          {photos.length === 0
+          {total === 0
             ? 'No photos linked yet. Use “Match camera roll photos” to pull some in from your camera roll.'
-            : 'No linked photos match the current filter.'}
+            : 'No linked photos match the current filter — tap Filter to change it.'}
         </Text>
       ) : (
         <View style={styles.galleryGrid}>
@@ -2751,6 +2769,20 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   return (
     <View style={styles.screen}>
       <ScreenHeader eyebrow="DMZ SCUBA TOOLS" title={headerTitle} onBack={handleBack} action={headerAction} />
+      {selectMode ? (
+        <View style={styles.selectionDock}>
+          <SelectionBar
+            count={selectedIds.size}
+            total={listRows.length}
+            allSelected={allSelected}
+            onToggleAll={toggleSelectAll}
+            onDelete={handleDeleteSelected}
+            onMerge={handleMergeSelected}
+            onEdit={() => setBulkEditOpen(true)}
+            onExport={() => chooseExportFormat([...selectedIds])}
+          />
+        </View>
+      ) : null}
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom, 16) + 32 }]}
@@ -2884,18 +2916,6 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                   </Pressable>
                 ) : null}
                 {!activeFolder && !selectMode && !activeFilterCount ? <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} /> : null}
-                {selectMode ? (
-                  <SelectionBar
-                    count={selectedIds.size}
-                    total={listRows.length}
-                    allSelected={allSelected}
-                    onToggleAll={toggleSelectAll}
-                    onDelete={handleDeleteSelected}
-                    onMerge={handleMergeSelected}
-                    onEdit={() => setBulkEditOpen(true)}
-                    onExport={() => chooseExportFormat([...selectedIds])}
-                  />
-                ) : null}
                 {!selectMode && rows.length ? (
                   <SecondaryButton label="Export all dives" onPress={() => chooseExportFormat()} style={styles.exportAllButton} />
                 ) : null}
@@ -3210,11 +3230,20 @@ const styles = StyleSheet.create({
   photoViewerButton: { flex: 1 },
   photoViewerMeta: { gap: 4, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
   galleryImport: { marginBottom: 14 },
-  galleryBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  galleryBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
   gallerySummary: { color: colors.text, fontSize: 13, fontWeight: '800' },
-  galleryFilterText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
-  galleryClear: { color: colors.faint, fontSize: 12, fontWeight: '700', marginBottom: 6 },
-  galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
+  galleryFilterBtn: { borderColor: colors.line, borderRadius: radii.sm, borderWidth: 1, paddingHorizontal: 12, paddingVertical: 6 },
+  galleryFilterBtnOn: { backgroundColor: 'rgba(112,221,246,0.16)', borderColor: colors.cyan },
+  galleryFilterText: { color: colors.muted, fontSize: 13, fontWeight: '800' },
+  galleryFilterTextOn: { color: colors.cyan },
+  gallerySortScroll: { flexGrow: 0, marginTop: 10 },
+  gallerySortRow: { alignItems: 'center', gap: 8, paddingRight: 12 },
+  gallerySortChip: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.pill, borderWidth: 1, paddingHorizontal: 14, paddingVertical: 7 },
+  gallerySortChipOn: { backgroundColor: 'rgba(112,221,246,0.16)', borderColor: colors.cyan },
+  gallerySortChipText: { color: colors.muted, fontSize: 12, fontWeight: '700' },
+  gallerySortChipTextOn: { color: colors.cyan },
+  galleryClear: { color: colors.faint, fontSize: 12, fontWeight: '700' },
+  galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 },
   galleryTile: { borderRadius: 10, overflow: 'hidden' },
   galleryThumb: { backgroundColor: colors.surface, height: '100%', width: '100%' },
   galleryTileTag: { backgroundColor: 'rgba(0,0,0,0.5)', bottom: 0, left: 0, paddingHorizontal: 4, paddingVertical: 2, position: 'absolute', right: 0 },
@@ -3267,27 +3296,29 @@ const styles = StyleSheet.create({
   checkCircleOn: { backgroundColor: colors.cyan, borderColor: colors.cyan },
   checkMark: { color: colors.black, fontSize: 14, fontWeight: '900' },
 
-  selectionBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', padding: 12 },
-  selectionToggle: { paddingVertical: 6 },
-  selectionToggleText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
-  selectionDelete: {
-    backgroundColor: 'rgba(255,127,127,0.12)', borderColor: 'rgba(255,127,127,0.4)', borderRadius: radii.sm,
-    borderWidth: 1, paddingHorizontal: 14, paddingVertical: 8,
+  selectionDock: {
+    backgroundColor: colors.background,
+    borderBottomColor: colors.line,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingBottom: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: 4,
+    zIndex: 10,
   },
+  selectionBar: { gap: 10, padding: 12 },
+  selectionTopRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  selectionCount: { color: colors.text, fontSize: 14, fontWeight: '800' },
+  selectionToggleText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
+  selectionActions: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  selectionChip: {
+    backgroundColor: 'rgba(112,221,246,0.12)', borderColor: 'rgba(112,221,246,0.4)', borderRadius: radii.sm,
+    borderWidth: 1, paddingHorizontal: 14, paddingVertical: 7,
+  },
+  selectionChipText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
+  selectionDeleteChip: { backgroundColor: 'rgba(255,127,127,0.12)', borderColor: 'rgba(255,127,127,0.4)', marginLeft: 'auto' },
   selectionDeleteOff: { opacity: 0.4 },
   selectionDeleteText: { color: colors.danger, fontSize: 13, fontWeight: '800' },
   selectionDeleteTextOff: { color: colors.muted },
-  selectionRight: { alignItems: 'center', flexDirection: 'row', gap: 8 },
-  selectionExport: {
-    backgroundColor: 'rgba(112,221,246,0.12)', borderColor: 'rgba(112,221,246,0.4)', borderRadius: radii.sm,
-    borderWidth: 1, paddingHorizontal: 12, paddingVertical: 8,
-  },
-  selectionExportText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
-  selectionMerge: {
-    backgroundColor: 'rgba(112,221,246,0.12)', borderColor: 'rgba(112,221,246,0.4)', borderRadius: radii.sm,
-    borderWidth: 1, paddingHorizontal: 12, paddingVertical: 8,
-  },
-  selectionMergeText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
   exportAllButton: { marginBottom: spacing.md },
 
   searchRow: { alignItems: 'center', flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.md },

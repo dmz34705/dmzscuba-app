@@ -1380,7 +1380,38 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /filterDiveRows\(rows, filter\)/);
   assert.match(screen, /label="Gallery" onPress=\{\(\) => setView\('gallery'\)\}/);
   assert.match(screen, /depthAtPhotoTime/);
+  assert.match(screen, /sortGalleryPhotos\(kept, diveById, sortKey\)/);
   assert.match(hook, /const loadGalleryPhotos = useCallback/);
+
+  // The gallery filter genuinely narrows the photo set (matched by diveId).
+  const gallerySort = loadSourceModule(path.join(srcRoot, 'lib', 'diveLog', 'galleryPhotos.js'), srcRoot);
+  const galRows = [
+    { id: 'd1', startTime: '2026-06-01T10:00:00.000Z', maxDepthMeters: 30, waterType: 'salt', types: [], search: 'blue hole' },
+    { id: 'd2', startTime: '2026-01-15T10:00:00.000Z', maxDepthMeters: 8, waterType: 'fresh', types: [], search: 'quarry' },
+  ];
+  const galPhotos = [
+    { id: 'p1', diveId: 'd1', capturedAt: '2026-06-01T10:20:00.000Z' },
+    { id: 'p2', diveId: 'd1', capturedAt: '2026-06-01T10:40:00.000Z' },
+    { id: 'p3', diveId: 'd2', capturedAt: '2026-01-15T10:10:00.000Z' },
+  ];
+  const galById = new Map(galRows.map((r) => [r.id, r]));
+  const deepFilter = diveLog.sanitizeDiveFilter({ depthMeters: { min: 20, max: null } });
+  const keptIds = new Set(diveLog.filterDiveRows(galRows, deepFilter).map((r) => r.id));
+  const keptPhotos = galPhotos.filter((p) => keptIds.has(p.diveId));
+  assert.deepEqual(keptPhotos.map((p) => p.id), ['p1', 'p2'], 'A depth filter drops the shallow dive’s photos.');
+
+  // sortGalleryPhotos orders by capture time and by dive depth.
+  assert.deepEqual(gallerySort.sortGalleryPhotos(galPhotos, galById, 'newest').map((p) => p.id), ['p2', 'p1', 'p3']);
+  assert.deepEqual(gallerySort.sortGalleryPhotos(galPhotos, galById, 'oldest').map((p) => p.id), ['p3', 'p1', 'p2']);
+  assert.equal(gallerySort.sortGalleryPhotos(galPhotos, galById, 'shallowest')[0].id, 'p3');
+  assert.equal(gallerySort.sortGalleryPhotos(galPhotos, galById, 'deepest')[0].diveId, 'd1');
+  assert.equal(gallerySort.GALLERY_SORTS.length, 4);
+
+  // The selection bar wraps its actions instead of running off the edge, and
+  // floats in its own dock above the scroll area.
+  assert.match(screen, /selectionActions:.*flexWrap: 'wrap'/);
+  assert.match(screen, /styles\.selectionDock/);
+  assert.doesNotMatch(screen, /selectMode \? \(\s*<SelectionBar/); // no longer rendered inside the ScrollView
 
   // depthAtPhotoTime interpolates the profile at the photo's capture offset.
   const dStart = '2026-09-05T15:00:00.000Z';
