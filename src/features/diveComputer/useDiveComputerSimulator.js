@@ -10,10 +10,7 @@ import {
   setPo2AlarmSetpoint,
   setSafetyStopDepthMeters,
   setSafetyStopSeconds,
-  setSimulationSpeed as setDomainSimulationSpeed,
-  setTargetDepth,
   setWaterType,
-  stepSimulation,
 } from '../../lib/diveSimulation';
 import {
   DEVICE_EVENTS,
@@ -23,6 +20,7 @@ import {
 } from '../../lib/virtualDiveComputer';
 import { getDiveComputerScenario, scenarioGuidance } from './scenarios';
 import { createSimulationForScenario } from './simulationProfiles';
+import { setTrainerSpeed, setTrainerTargetDepth, stepTrainerSimulation } from './surfaceAcceleration';
 
 const TICK_MILLISECONDS = 500;
 
@@ -96,7 +94,7 @@ export default function useDiveComputerSimulator({ initialDepthUnit = 'ft', init
   useEffect(() => {
     if (simulation.clock.status !== 'running') return undefined;
     const interval = setInterval(() => {
-      setSimulation((current) => stepSimulation(current, TICK_MILLISECONDS / 1000));
+      setSimulation((current) => stepTrainerSimulation(current, TICK_MILLISECONDS / 1000));
       setDevice((current) => transitionVirtualDiveComputer(current, {
         elapsedSeconds: TICK_MILLISECONDS / 1000,
         type: DEVICE_EVENTS.TICK,
@@ -171,15 +169,15 @@ export default function useDiveComputerSimulator({ initialDepthUnit = 'ft', init
   };
 
   const setTargetDepthMeters = (depthMeters) => {
-    setSimulation((current) => setTargetDepth(current, depthMeters));
+    setSimulation((current) => setTrainerTargetDepth(current, depthMeters));
   };
 
   const setTravelRateMpm = (ascentRateMpm) => {
-    setSimulation((current) => setTargetDepth(current, current.controls.targetDepthMeters, { ascentRateMpm }));
+    setSimulation((current) => setTrainerTargetDepth(current, current.controls.targetDepthMeters, { ascentRateMpm }));
   };
 
   const setSimulationSpeed = (speed) => {
-    setSimulation((current) => setDomainSimulationSpeed(current, speed));
+    setSimulation((current) => setTrainerSpeed(current, speed));
   };
 
   const dispatchDeviceEvent = (type) => {

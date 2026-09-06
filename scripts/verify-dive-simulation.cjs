@@ -485,4 +485,34 @@ for (const filename of fs.readdirSync(domainRoot).filter((name) => name.endsWith
   }
 }
 
+const trainerClock = loadSourceModule(
+  path.join(projectRoot, 'src/features/diveComputer/surfaceAcceleration.js'),
+  path.join(projectRoot, 'src'),
+);
+let interval = createSimulation({ running: true });
+assert.equal(trainerClock.stepTrainerSimulation(interval, 5).clock.speed, 1, 'Initial setup must stay at normal speed.');
+interval = advanceSimulation(setDepth(interval, 5), { elapsedSimulationSeconds: 2 });
+interval = advanceSimulation(setDepth(interval, 0), { elapsedSimulationSeconds: 1 });
+assert.equal(interval.dive.completedDiveCount, 1);
+interval = trainerClock.stepTrainerSimulation(interval, 3.5);
+assert.equal(interval.clock.speed, 1, 'Wait four real running seconds at the surface.');
+const pausedInterval = pauseSimulation(interval);
+assert.equal(trainerClock.stepTrainerSimulation(pausedInterval, 30), pausedInterval, 'Paused time must not advance the surface delay.');
+interval = trainerClock.stepTrainerSimulation(interval, 0.5);
+assert.equal(interval.clock.speed, 20);
+const intervalBefore = interval.dive.surfaceIntervalSeconds;
+interval = trainerClock.stepTrainerSimulation(interval, 1);
+almostEqual(interval.dive.surfaceIntervalSeconds - intervalBefore, 20);
+const override = trainerClock.setTrainerSpeed(interval, 5);
+assert.equal(trainerClock.stepTrainerSimulation(override, 5).clock.speed, 5, 'Respect a manual surface speed choice.');
+const departing = trainerClock.setTrainerTargetDepth(interval, 12);
+assert.equal(departing.clock.speed, 1, 'Automatic surface acceleration must end before descending.');
+const longInterval = trainerClock.stepTrainerSimulation(interval, 35);
+assert.equal(longInterval.dive.lifecycle, 'surface');
+assert.equal(longInterval.clock.speed, 20, 'The surface-menu transition must retain automatic acceleration.');
+let nextReturn = advanceSimulation(setDepth(departing, 5), { elapsedSimulationSeconds: 2 });
+nextReturn = advanceSimulation(setDepth(nextReturn, 0), { elapsedSimulationSeconds: 1 });
+nextReturn = trainerClock.setTrainerTargetDepth(nextReturn, 0);
+assert.equal(trainerClock.stepTrainerSimulation(nextReturn, 4).clock.speed, 20, 'A later return to the surface must arm a new delay.');
+
 console.log('Dive simulation Phase 1 behavioral checks passed.');

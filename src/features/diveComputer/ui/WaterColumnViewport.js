@@ -1,5 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 
 import { DEEP_STOP_STATUS, SAFETY_STOP_STATUS, SIMULATION_LIMITS } from '../../../lib/diveSimulation';
 import { colors } from '../../../theme';
@@ -14,11 +15,42 @@ import {
 const SURFACE_HEIGHT = 24;
 const MARKER_HEIGHT = 30;
 
-function DiverMarker({ orientation }) {
+function Bubble({ index, running, speed }) {
+  const phase = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    phase.setValue(0);
+    if (!running) return undefined;
+    const duration = 6000 / speed;
+    const animation = Animated.sequence([
+      Animated.delay(index * duration / 5),
+      Animated.loop(Animated.timing(phase, {
+        toValue: 1, duration, easing: Easing.linear, useNativeDriver: true,
+        isInteraction: false,
+      })),
+    ]);
+    animation.start();
+    return () => animation.stop();
+  }, [index, phase, running, speed]);
+  return (
+    <Animated.View style={[styles.bubble, {
+      opacity: phase.interpolate({ inputRange: [0, 0.08, 0.75, 1], outputRange: [0, 0.85, 0.6, 0] }),
+      transform: [
+        { translateY: phase.interpolate({ inputRange: [0, 1], outputRange: [0, -42] }) },
+        { translateX: phase.interpolate({ inputRange: [0, 0.5, 1], outputRange: [0, index % 2 ? -4 : 3, index % 2 ? -7 : 5] }) },
+        { scale: phase.interpolate({ inputRange: [0, 1], outputRange: [0.5, 1.3] }) },
+      ],
+    }]} />
+  );
+}
+
+function DiverMarker({ orientation, running, speed }) {
   const direction = orientation === 'ascending' ? 'ASC' : orientation === 'descending' ? 'DESC' : 'LEVEL';
   return (
     <View accessibilityLabel={`Diver ${orientation}`} style={styles.markerShell}>
       <View style={styles.diverIcon}>
+        <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants" pointerEvents="none">
+          {[0, 1, 2, 3, 4].map((index) => <Bubble key={index} index={index} running={running} speed={speed} />)}
+        </View>
         <View style={styles.tank} />
         <View style={styles.head} />
         <View style={styles.body} />
@@ -104,8 +136,11 @@ export default function WaterColumnViewport({ depthUnit = 'ft', focused = false,
       ) : null}
 
       <View pointerEvents="none" style={[styles.marker, { top: markerTop }]}>
-        <DiverMarker orientation={orientation} />
+        <DiverMarker orientation={orientation} running={simulation.clock.status === 'running'} speed={simulation.clock.speed} />
       </View>
+      <Text allowFontScaling={false} accessibilityLabel={simulation.clock.status === 'running' ? `Simulation speed ${simulation.clock.speed} times` : 'Simulation paused'} style={styles.speedLabel}>
+        {simulation.clock.status === 'running' ? `×${simulation.clock.speed}` : 'PAUSED'}
+      </Text>
       <Text allowFontScaling={false} style={styles.unit}>{depthRange.unit.toUpperCase()}</Text>
     </View>
   );
@@ -113,6 +148,8 @@ export default function WaterColumnViewport({ depthUnit = 'ft', focused = false,
 
 const styles = StyleSheet.create({
   body: { backgroundColor: '#86EAF4', height: 5, left: 12, position: 'absolute', top: 10, width: 15 },
+  bubble: { position: 'absolute', left: 4, top: 8, width: 3, height: 3, borderRadius: 2, borderWidth: 0.6, borderColor: '#C5FAFF', backgroundColor: 'rgba(197,250,255,0.25)' },
+  speedLabel: { position: 'absolute', bottom: 4, left: 3, color: colors.cyan, fontSize: 6, fontWeight: '900' },
   ceiling: { alignItems: 'center', borderTopColor: colors.danger, borderTopWidth: 2, left: 0, position: 'absolute', right: 0 },
   ceilingText: { backgroundColor: '#471B24', color: '#FFD0D0', fontSize: 6, fontWeight: '900', letterSpacing: 0.5, marginTop: 2, paddingHorizontal: 2 },
   deepStopZone: { backgroundColor: 'rgba(112,221,246,.14)', borderBottomColor: 'rgba(112,221,246,.55)', borderBottomWidth: 1, borderTopColor: 'rgba(112,221,246,.55)', borderTopWidth: 1, left: 0, position: 'absolute', right: 0 },
@@ -131,7 +168,7 @@ const styles = StyleSheet.create({
   stopZoneText: { color: 'rgba(255,232,154,.88)', fontSize: 5.5, fontWeight: '900', letterSpacing: 0.5, marginLeft: 3, marginTop: 2 },
   surface: { alignItems: 'center', backgroundColor: '#14303E', borderBottomColor: '#B4F5FF', borderBottomWidth: 2, height: SURFACE_HEIGHT, justifyContent: 'center' },
   surfaceText: { color: '#BDEEF6', fontSize: 6.5, fontWeight: '900', letterSpacing: 0.8 },
-  tank: { backgroundColor: '#E5B948', borderColor: '#44370E', borderRadius: 3, borderWidth: 1, height: 16, left: 11, position: 'absolute', top: 3, width: 7 },
+  tank: { backgroundColor: '#E5B948', borderColor: '#44370E', borderRadius: 3, borderWidth: 1, height: 7, left: 12, position: 'absolute', top: 3, width: 16 },
   tick: { alignItems: 'center', flexDirection: 'row', left: 2, position: 'absolute', right: 3 },
   tickLabel: { color: '#C8EAF2', fontSize: 7, fontVariant: ['tabular-nums'], fontWeight: '900', width: 22 },
   tickLine: { backgroundColor: 'rgba(212,246,255,.35)', flex: 1, height: StyleSheet.hairlineWidth },
