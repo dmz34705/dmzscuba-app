@@ -581,6 +581,16 @@ photo, and only for identification.
     — a full-screen swipeable pager over all the dive's photos, with a counter
     and "Remove from this dive" (unlink only — the photo stays in the camera
     roll).
+  - **All-photos gallery** (`view === 'gallery'`, "Gallery" header button):
+    `PhotoGalleryView` — a grid of every linked photo across the logbook
+    (`useDiveLog.loadGalleryPhotos()` flattens `loadAll()`), narrowed by the
+    *same* dive filter the list uses (`filterDiveRows(rows, filter)` matched by
+    `diveId`) so photos are searchable by depth / date / site / buddy / type /
+    temp. Tapping opens the pager; its footer (`GalleryPhotoMeta`) calls
+    `depthAtPhotoTime(capturedAt, startTime, samples)` — interpolates the dive
+    profile at the photo's capture time — to show "≈ N m when taken · M into the
+    dive", the site/date, and a jump to the dive. Grid is a plain wrapped View
+    for now; move to a virtualized list if photo counts get large.
   - **Share card** (`DiveShareCardScreen` / `ShareCardControls`): the Photo tab
     shows a "FROM THIS DIVE'S LOG" thumbnail strip alongside "Choose a photo" /
     "Plain background" — tap one to use a linked photo as the card background

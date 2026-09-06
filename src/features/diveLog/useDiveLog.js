@@ -246,6 +246,23 @@ export default function useDiveLog() {
     return saved;
   }, [refreshIndex]);
 
+  // Every linked photo across the whole logbook, newest first, each tagged with
+  // the id of the dive it belongs to. The gallery view filters these against
+  // the same dive filter the list uses (by diveId) and looks up per-dive detail
+  // from the index rows it already has.
+  const loadGalleryPhotos = useCallback(async () => {
+    const dives = await loadAll();
+    const out = [];
+    for (const dive of dives) {
+      if (dive.deletedAt || !Array.isArray(dive.photos) || !dive.photos.length) continue;
+      for (const photo of dive.photos) {
+        out.push({ ...photo, diveId: dive.id, diveStartTime: dive.startTime });
+      }
+    }
+    out.sort((a, b) => String(b.capturedAt || b.linkedAt || '').localeCompare(String(a.capturedAt || a.linkedAt || '')));
+    return out;
+  }, []);
+
   const deleteDive = useCallback(async (id) => {
     await softDeleteDive(id);
     diveCache.current.delete(id);
@@ -457,6 +474,7 @@ export default function useDiveLog() {
     updateDive,
     attachPhotosToDive,
     removePhotoFromDive,
+    loadGalleryPhotos,
     deleteDive,
     deleteDives,
     importComputerLogs,

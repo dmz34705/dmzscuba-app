@@ -53,6 +53,34 @@ export function manualDivePhotoMatch(dive, capturedAt = null) {
   return { dive, capturedAt: capturedAt || null, distanceMs: 0, confidence: 'manual' };
 }
 
+// Where in the dive a photo was taken: interpolate the depth profile at the
+// photo's capture time. Returns { offsetSeconds, depthMeters } or null when the
+// photo has no timestamp, the dive has no usable profile, or the photo falls
+// outside the dive (+/- a small grace at the ends).
+export function depthAtPhotoTime(capturedAt, diveStartTime, samples) {
+  const capMs = Date.parse(capturedAt || '');
+  const startMs = Date.parse(diveStartTime || '');
+  if (Number.isNaN(capMs) || Number.isNaN(startMs)) return null;
+  if (!Array.isArray(samples) || samples.length < 2) return null;
+  const ordered = [...samples].filter((s) => s && Number.isFinite(s.t) && Number.isFinite(s.depth)).sort((a, b) => a.t - b.t);
+  if (ordered.length < 2) return null;
+  const offsetSeconds = (capMs - startMs) / 1000;
+  const last = ordered[ordered.length - 1];
+  if (offsetSeconds < ordered[0].t - 300 || offsetSeconds > last.t + 300) return null;
+  if (offsetSeconds <= ordered[0].t) return { offsetSeconds, depthMeters: ordered[0].depth };
+  if (offsetSeconds >= last.t) return { offsetSeconds, depthMeters: last.depth };
+  for (let i = 1; i < ordered.length; i += 1) {
+    const b = ordered[i];
+    if (b.t >= offsetSeconds) {
+      const a = ordered[i - 1];
+      const span = b.t - a.t;
+      const f = span > 0 ? (offsetSeconds - a.t) / span : 0;
+      return { offsetSeconds, depthMeters: a.depth + f * (b.depth - a.depth) };
+    }
+  }
+  return { offsetSeconds, depthMeters: last.depth };
+}
+
 // Turn reviewed picker items ({ asset, capturedAt, match }) into the per-dive
 // photo batches `attachPhotosToDive` expects. Items with no match are dropped.
 export function buildPhotoImportPlan(items, linkedAtIso = null) {

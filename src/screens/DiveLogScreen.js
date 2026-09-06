@@ -76,6 +76,7 @@ import {
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
 import {
   buildPhotoImportPlan,
+  depthAtPhotoTime,
   findDivePhotoMatches,
   manualDivePhotoMatch,
   photoCapturedAt,
@@ -1934,7 +1935,7 @@ function BatchPhotoReviewModal({ review, dives, units, saving, progress, onCance
   );
 }
 
-function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove }) {
+function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMeta }) {
   const { width } = useWindowDimensions();
   const scrollRef = useRef(null);
   const current = photos[index] || null;
@@ -1973,11 +1974,168 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove }) {
             </View>
           ))}
         </ScrollView>
-        <View style={styles.photoViewerActions}>
-          <SecondaryButton label="Remove from this dive" onPress={() => onRemove(current)} style={styles.photoViewerButton} />
-        </View>
+        {renderMeta ? <View style={styles.photoViewerMeta}>{renderMeta(current)}</View> : null}
+        {onRemove ? (
+          <View style={styles.photoViewerActions}>
+            <SecondaryButton label="Remove from this dive" onPress={() => onRemove(current)} style={styles.photoViewerButton} />
+          </View>
+        ) : null}
       </View>
     </Modal>
+  );
+}
+
+// The footer under a photo in the all-photos gallery: interpolates the dive
+// profile at the photo's capture time to show how deep the diver was, then the
+// site/date and a jump to the full dive.
+function GalleryPhotoMeta({ photo, row, getDive, units, onOpenDive }) {
+  const [depth, setDepth] = useState(undefined); // undefined = loading, null = n/a
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const bundle = await getDive(photo.diveId);
+        const fromLog = (bundle?.logs || [])
+          .map((log) => log?.profile?.samples)
+          .find((s) => Array.isArray(s) && s.length > 1);
+        const samples = fromLog || bundle?.dive?.profile?.samples || [];
+        const start = bundle?.dive?.startTime || photo.diveStartTime;
+        if (active) setDepth(depthAtPhotoTime(photo.capturedAt, start, samples));
+      } catch {
+        if (active) setDepth(null);
+      }
+    })();
+    return () => { active = false; };
+  }, [photo, getDive]);
+
+  const site = row?.siteName || 'Logged dive';
+  const when = photo.capturedAt
+    ? new Date(photo.capturedAt).toLocaleString()
+    : (row ? formatDate(row.startTime) : '');
+  const maxDepth = row?.maxDepthMeters != null ? formatDepth(row.maxDepthMeters, units.depthUnit) : null;
+
+  return (
+    <>
+      <Text style={styles.galleryMetaPrimary}>
+        {depth === undefined
+          ? 'Finding depth…'
+          : depth
+            ? `≈ ${formatDepth(depth.depthMeters, units.depthUnit)} when taken · ${formatDuration(Math.max(0, Math.round(depth.offsetSeconds)))} into the dive`
+            : (maxDepth ? `Max depth ${maxDepth} · time not in the profile` : 'Depth not recorded for this dive')}
+      </Text>
+      <Text style={styles.galleryMetaSecondary}>{[site, when].filter(Boolean).join(' · ')}</Text>
+      <SecondaryButton label="Open this dive →" onPress={onOpenDive} style={styles.galleryMetaButton} />
+    </>
+  );
+}
+
+// The all-photos gallery: every linked photo across the logbook in a grid,
+// narrowed by the same dive filter the list uses (matched by diveId), each
+// photo carrying its dive's data.
+function PhotoGalleryView({
+  rows, filter, filterActiveCount, onOpenFilter, onClearFilter,
+  loadGalleryPhotos, getDive, units, onOpenDive, onImport,
+}) {
+  const { width } = useWindowDimensions();
+  const [photos, setPhotos] = useState(null); // null = still loading
+  const [viewerIndex, setViewerIndex] = useState(null);
+
+  useEffect(() => {
+    let active = true;
+    loadGalleryPhotos().then((list) => { if (active) setPhotos(list); }).catch(() => { if (active) setPhotos([]); });
+    return () => { active = false; };
+  }, [loadGalleryPhotos]);
+
+  const diveById = useMemo(() => {
+    const map = new Map();
+    for (const row of rows) map.set(row.id, row);
+    return map;
+  }, [rows]);
+
+  const matchingIds = useMemo(
+    () => new Set(filterDiveRows(rows, filter).map((row) => row.id)),
+    [rows, filter],
+  );
+  const visible = useMemo(
+    () => (photos || []).filter((photo) => matchingIds.has(photo.diveId)),
+    [photos, matchingIds],
+  );
+  const diveCount = useMemo(() => new Set(visible.map((p) => p.diveId)).size, [visible]);
+
+  const tile = Math.floor((width - spacing.md * 2 - 18) / 4);
+
+  if (photos == null) return <Text style={styles.muted}>Loading photos…</Text>;
+
+  return (
+    <>
+      <SecondaryButton label="Match camera roll photos" onPress={onImport} style={styles.galleryImport} />
+
+      <View style={styles.galleryBar}>
+        <Text style={styles.gallerySummary}>
+          {visible.length} {visible.length === 1 ? 'photo' : 'photos'}
+          {diveCount ? ` · ${diveCount} ${diveCount === 1 ? 'dive' : 'dives'}` : ''}
+        </Text>
+        <Pressable onPress={onOpenFilter} hitSlop={8} accessibilityRole="button">
+          <Text style={styles.galleryFilterText}>
+            Filter{filterActiveCount ? ` · ${filterActiveCount}` : ''}
+          </Text>
+        </Pressable>
+      </View>
+      {filterActiveCount ? (
+        <Pressable onPress={onClearFilter} hitSlop={6}>
+          <Text style={styles.galleryClear}>Clear filters</Text>
+        </Pressable>
+      ) : null}
+
+      {visible.length === 0 ? (
+        <Text style={styles.muted}>
+          {photos.length === 0
+            ? 'No photos linked yet. Use “Match camera roll photos” to pull some in from your camera roll.'
+            : 'No linked photos match the current filter.'}
+        </Text>
+      ) : (
+        <View style={styles.galleryGrid}>
+          {visible.map((photo, i) => {
+            const row = diveById.get(photo.diveId);
+            return (
+              <Pressable
+                key={photo.id + '#' + i}
+                onPress={() => setViewerIndex(i)}
+                accessibilityRole="button"
+                accessibilityLabel={`Photo from ${row?.siteName || 'a dive'}`}
+                style={[styles.galleryTile, { width: tile, height: tile }]}
+              >
+                <Image source={{ uri: photo.uri }} style={styles.galleryThumb} />
+                <View style={styles.galleryTileTag}>
+                  <Text numberOfLines={1} style={styles.galleryTileText}>
+                    {row?.siteName || (row ? formatDate(row.startTime) : 'Dive')}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
+      )}
+
+      {viewerIndex != null && visible[viewerIndex] ? (
+        <PhotoViewerModal
+          photos={visible}
+          index={Math.min(viewerIndex, visible.length - 1)}
+          onIndex={setViewerIndex}
+          onClose={() => setViewerIndex(null)}
+          renderMeta={(photo) => (
+            <GalleryPhotoMeta
+              photo={photo}
+              row={diveById.get(photo.diveId)}
+              getDive={getDive}
+              units={units}
+              onOpenDive={() => { setViewerIndex(null); onOpenDive(photo.diveId); }}
+            />
+          )}
+        />
+      ) : null}
+    </>
   );
 }
 
@@ -1985,7 +2143,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
-    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
+    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, loadGalleryPhotos, deleteDive, deleteDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
     getSnapshots, restoreBackup,
@@ -2038,6 +2196,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [photoImportSaving, setPhotoImportSaving] = useState(false);
   const [photoLinkProgress, setPhotoLinkProgress] = useState(null);
   const [photoScanning, setPhotoScanning] = useState(null);
+  const [galleryReloadKey, setGalleryReloadKey] = useState(0);
 
   const foldersMode = useMemo(() => folders.some((f) => f.kind === 'computer'), [folders]);
   const activeFolder = useMemo(
@@ -2191,6 +2350,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         setPhotoLinkProgress({ total, done });
       }
       setPhotoImportReview(null);
+      setGalleryReloadKey((k) => k + 1);
       Alert.alert('Photos linked', total + (total === 1 ? ' photo was added to its dive.' : ' photos were added to their dives.'));
     } catch (error) {
       Alert.alert('Could not link photos', error?.message || 'The selected photos could not be added to the logbook.');
@@ -2298,7 +2458,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       else openList();
       return;
     }
-    if (view === 'detail' || view === 'download' || view === 'stats') { openList(); return; }
+    if (view === 'detail' || view === 'download' || view === 'stats' || view === 'gallery') { openList(); return; }
     if (view === 'review') { clearProposals(); openList(); return; }
     if (view === 'list' && activeFolder) { setFolderKey(null); return; }
     onBack?.();
@@ -2345,6 +2505,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     try {
       const saved = await removePhotoFromDive(record.id, photo.id);
       if (saved) setRecord(saved);
+      setGalleryReloadKey((k) => k + 1);
     } catch (error) {
       Alert.alert('Could not remove photo', error?.message || 'The photo link could not be removed.');
     }
@@ -2372,7 +2533,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           ? 'Review matches'
           : view === 'stats'
             ? 'Stats'
-            : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
+            : view === 'gallery'
+              ? 'Dive photos'
+              : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
 
   const canSelect = view === 'list' && loaded && !showFolderGrid && listRows.length > 0;
   const headerAction = selectMode
@@ -2380,7 +2543,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     : canSelect
       ? (
         <View style={styles.headerActions}>
-          <SecondaryButton label="Photos" onPress={beginPhotoImport} style={styles.headerButton} />
+          <SecondaryButton label="Gallery" onPress={() => setView('gallery')} style={styles.headerButton} />
           <SecondaryButton label="Select" onPress={() => enterSelect(null)} style={styles.headerButton} />
           <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
         </View>
@@ -2388,7 +2551,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       : view === 'list' && loaded && rows.length
         ? (
           <View style={styles.headerActions}>
-            <SecondaryButton label="Photos" onPress={beginPhotoImport} style={styles.headerButton} />
+            <SecondaryButton label="Gallery" onPress={() => setView('gallery')} style={styles.headerButton} />
             <SecondaryButton label="Add" onPress={openNew} style={styles.headerButton} />
           </View>
         )
@@ -2617,6 +2780,22 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           <DiveComputerDownloadPanel onClose={() => setView('list')} />
         )}
 
+        {view === 'gallery' && (
+          <PhotoGalleryView
+            key={galleryReloadKey}
+            rows={rows}
+            filter={filter}
+            filterActiveCount={activeFilterCount}
+            onOpenFilter={() => setFilterOpen(true)}
+            onClearFilter={clearFilter}
+            loadGalleryPhotos={loadGalleryPhotos}
+            getDive={getDive}
+            units={units}
+            onOpenDive={(id) => openDetail(id)}
+            onImport={beginPhotoImport}
+          />
+        )}
+
         {view === 'review' && (
           <MatchReview
             proposals={pendingProposals}
@@ -2816,6 +2995,20 @@ const styles = StyleSheet.create({
   photoViewerImage: { height: '100%', width: '100%' },
   photoViewerActions: { flexDirection: 'row', gap: 12, padding: spacing.lg },
   photoViewerButton: { flex: 1 },
+  photoViewerMeta: { gap: 4, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
+  galleryImport: { marginBottom: 14 },
+  galleryBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
+  gallerySummary: { color: colors.text, fontSize: 13, fontWeight: '800' },
+  galleryFilterText: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
+  galleryClear: { color: colors.faint, fontSize: 12, fontWeight: '700', marginBottom: 6 },
+  galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 },
+  galleryTile: { borderRadius: 10, overflow: 'hidden' },
+  galleryThumb: { backgroundColor: colors.surface, height: '100%', width: '100%' },
+  galleryTileTag: { backgroundColor: 'rgba(0,0,0,0.5)', bottom: 0, left: 0, paddingHorizontal: 4, paddingVertical: 2, position: 'absolute', right: 0 },
+  galleryTileText: { color: '#fff', fontSize: 9, fontWeight: '700' },
+  galleryMetaPrimary: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
+  galleryMetaSecondary: { color: 'rgba(255,255,255,0.7)', fontSize: 12 },
+  galleryMetaButton: { marginTop: 8 },
   photoStrip: { gap: 10, paddingVertical: 4 },
   divePhotoWrap: { borderRadius: 12, overflow: 'hidden' },
   divePhoto: { borderRadius: 12, height: 140, width: 140 },

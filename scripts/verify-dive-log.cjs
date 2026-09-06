@@ -1351,6 +1351,27 @@ function memoryStorage(seed = {}) {
   assert.match(shareScreenSrc, /const pickLinkedPhoto/);
   assert.match(shareControlsSrc, /onPickLinkedPhoto/);
   assert.match(shareControlsSrc, /FROM THIS DIVE/);
+
+  // All-photos gallery: a grid of every linked photo, filtered by the same dive
+  // filter, with depth-at-photo-time in the viewer.
+  assert.match(screen, /view === 'gallery'/);
+  assert.match(screen, /function PhotoGalleryView/);
+  assert.match(screen, /filterDiveRows\(rows, filter\)/);
+  assert.match(screen, /label="Gallery" onPress=\{\(\) => setView\('gallery'\)\}/);
+  assert.match(screen, /depthAtPhotoTime/);
+  assert.match(hook, /const loadGalleryPhotos = useCallback/);
+
+  // depthAtPhotoTime interpolates the profile at the photo's capture offset.
+  const dStart = '2026-09-05T15:00:00.000Z';
+  const dSamples = [{ t: 0, depth: 0 }, { t: 600, depth: 20 }, { t: 1200, depth: 10 }];
+  const at5 = photoMatching.depthAtPhotoTime('2026-09-05T15:05:00.000Z', dStart, dSamples);
+  assert.equal(Math.round(at5.depthMeters), 10); // halfway to 20 m at t=300
+  assert.equal(at5.offsetSeconds, 300);
+  const at15 = photoMatching.depthAtPhotoTime('2026-09-05T15:15:00.000Z', dStart, dSamples);
+  assert.equal(Math.round(at15.depthMeters), 15); // t=900, between 20 and 10
+  assert.equal(photoMatching.depthAtPhotoTime('2026-09-05T18:00:00.000Z', dStart, dSamples), null); // way past the dive
+  assert.equal(photoMatching.depthAtPhotoTime(null, dStart, dSamples), null);
+  assert.equal(photoMatching.depthAtPhotoTime('2026-09-05T15:05:00.000Z', dStart, [{ t: 0, depth: 0 }]), null);
   assert.match(screen, /photos: Array\.isArray\(dive\.photos\)/);
 
   const pkg = JSON.parse(read('package.json'));
