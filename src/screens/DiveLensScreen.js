@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ActivityIndicator, Alert, Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
@@ -13,6 +14,24 @@ import { colors, radii, shadow, spacing } from '../theme';
 
 const CONFIDENCE_LABEL = { high: 'High confidence', medium: 'Medium confidence', low: 'Low confidence' };
 const CATEGORY_LABEL = { marine_life: 'MARINE LIFE', gear: 'DIVE GEAR', unclear: 'UNIDENTIFIED' };
+
+async function prepareAnalysisAsset(asset) {
+  if (!asset?.uri) return asset;
+  const prepared = await ImageManipulator.manipulateAsync(
+    asset.uri,
+    [{ resize: { width: 1280 } }],
+    {
+      compress: 0.65,
+      format: ImageManipulator.SaveFormat.JPEG,
+      base64: true,
+    },
+  );
+  return {
+    ...asset,
+    base64: prepared.base64,
+    mimeType: 'image/jpeg',
+  };
+}
 
 function PickerOption({ icon, title, body, onPress }) {
   return (
@@ -51,7 +70,8 @@ export default function DiveLensScreen({ onBack }) {
     setErrorMessage('');
     setStatus('loading');
     try {
-      const identified = await identifyPhoto({ base64: asset.base64, mimeType: asset.mimeType || 'image/jpeg' });
+      const analysisAsset = await prepareAnalysisAsset(asset);
+      const identified = await identifyPhoto({ base64: analysisAsset.base64, mimeType: analysisAsset.mimeType || 'image/jpeg' });
       setResult(identified);
       setStatus('result');
       suggestDiveLink(asset, capturedAtOverride).catch(() => {});
