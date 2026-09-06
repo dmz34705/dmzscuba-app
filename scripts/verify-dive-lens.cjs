@@ -14,6 +14,9 @@ const { normalizeLensResult, lensDetailSections } = loadSourceModule(path.join(r
 const { photoCapturedAt, findDivePhotoMatches } = loadSourceModule(
   path.join(root, 'src/lib/diveLog/photoMatching.js'), path.join(root, 'src'),
 );
+const { createDive } = loadSourceModule(
+  path.join(root, 'src/lib/diveLog/schema.js'), path.join(root, 'src'),
+);
 
 assert.ok(packageJson.dependencies['expo-image-picker']);
 assert.match(catalogSource, /id: 'dive-lens'/);
@@ -58,6 +61,19 @@ assert.equal(unclear.gear, null);
 assert.equal(unclear.marineLife, null);
 assert.equal(unclear.evidence.length, 5);
 assert.equal(unclear.evidence[0].length, 600);
+
+const normalizedPhotoDive = createDive({
+  photos: [{
+    id: 'asset-1',
+    uri: 'ph://asset-1',
+    assetId: 'asset-1',
+    capturedAt: '2026-09-05T15:30:00.000Z',
+    linkedAt: '2026-09-05T17:00:00.000Z',
+    source: 'dive-lens',
+  }],
+});
+assert.equal(normalizedPhotoDive.photos.length, 1);
+assert.equal(normalizedPhotoDive.photos[0].assetId, 'asset-1');
 
 const dive = {
   id: 'dive-1',

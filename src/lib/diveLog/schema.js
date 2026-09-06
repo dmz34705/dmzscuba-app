@@ -542,6 +542,7 @@ export function normalizeDive(raw) {
     rating: intOrNull(source.rating, 1, 5),
     notes: str(source.notes, '').trim(),
     tags: stringList(source.tags),
+    photos: normalizeDivePhotos(source.photos),
   };
 }
 
