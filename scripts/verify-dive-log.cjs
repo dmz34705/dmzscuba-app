@@ -1340,9 +1340,13 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /setPhotoLinkProgress\(\{ total, done \}\)/);
   assert.match(screen, /ActivityIndicator/);
   assert.match(screen, /Keep DMZ Scuba open until this finishes/);
-  // Full-screen viewer is a swipeable pager over all the dive's photos.
+  // Full-screen viewer is a swipeable pager over all the dive's photos, always
+  // has a Close button, and shows the same depth/site footer as the gallery.
   assert.match(screen, /pagingEnabled/);
   assert.match(screen, /<PhotoViewerModal\s+photos=\{dive\.photos\}/);
+  assert.match(screen, /label="Close" onPress=\{onClose\}/);
+  assert.match(screen, /function PhotoMetaBody/);
+  assert.match(screen, /renderMeta=\{\(photo\) => \(\s*<PhotoMetaBody/);
 
   // Share card can use a photo already linked to the dive as its background.
   const shareScreenSrc = read('src', 'features', 'diveShareCard', 'DiveShareCardScreen.js');

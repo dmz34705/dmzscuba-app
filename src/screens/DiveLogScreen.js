@@ -1493,6 +1493,20 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
           index={Math.min(viewerIndex, dive.photos.length - 1)}
           onIndex={setViewerIndex}
           onClose={() => setViewerIndex(null)}
+          renderMeta={(photo) => (
+            <PhotoMetaBody
+              depthState={depthAtPhotoTime(
+                photo.capturedAt,
+                dive.startTime,
+                samples.length > 1 ? samples : (dive.profile?.samples || []),
+              )}
+              siteName={dive.site?.name}
+              whenIso={photo.capturedAt}
+              fallbackDate={dive.startTime}
+              maxDepthMeters={water.maxDepthMeters}
+              units={units}
+            />
+          )}
           onRemove={(target) => {
             Alert.alert('Remove this photo?', 'It stays in your camera roll — only the link to this dive is removed.', [
               { text: 'Cancel', style: 'cancel' },
@@ -1937,6 +1951,7 @@ function BatchPhotoReviewModal({ review, dives, units, saving, progress, onCance
 
 function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMeta }) {
   const { width } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
   const scrollRef = useRef(null);
   const current = photos[index] || null;
 
@@ -1950,9 +1965,9 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMet
   return (
     <Modal animationType="fade" transparent visible onRequestClose={onClose}>
       <View style={styles.photoViewerBackdrop}>
-        <View style={styles.photoViewerBar}>
+        <View style={[styles.photoViewerBar, { paddingTop: Math.max(insets.top, 12) }]}>
           <Text style={styles.photoViewerCount}>{index + 1} / {photos.length}</Text>
-          <Pressable onPress={onClose} hitSlop={10} accessibilityRole="button" accessibilityLabel="Close photo">
+          <Pressable onPress={onClose} hitSlop={12} accessibilityRole="button" accessibilityLabel="Close photo">
             <Text style={styles.photoViewerClose}>Done</Text>
           </Pressable>
         </View>
@@ -1975,19 +1990,42 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMet
           ))}
         </ScrollView>
         {renderMeta ? <View style={styles.photoViewerMeta}>{renderMeta(current)}</View> : null}
-        {onRemove ? (
-          <View style={styles.photoViewerActions}>
+        <View style={[styles.photoViewerActions, { paddingBottom: Math.max(insets.bottom, spacing.lg) }]}>
+          {onRemove ? (
             <SecondaryButton label="Remove from this dive" onPress={() => onRemove(current)} style={styles.photoViewerButton} />
-          </View>
-        ) : null}
+          ) : null}
+          <SecondaryButton label="Close" onPress={onClose} style={styles.photoViewerButton} />
+        </View>
       </View>
     </Modal>
   );
 }
 
-// The footer under a photo in the all-photos gallery: interpolates the dive
-// profile at the photo's capture time to show how deep the diver was, then the
-// site/date and a jump to the full dive.
+// The dive-data footer under a photo in the viewer: how deep the diver was when
+// the shutter fired (interpolated from the profile), the site + date, and
+// optionally a jump to the full dive. `depthState`: undefined = still resolving,
+// null = no usable profile, else { depthMeters, offsetSeconds }.
+function PhotoMetaBody({ depthState, siteName, whenIso, fallbackDate, maxDepthMeters, units, onOpenDive }) {
+  const site = siteName || 'Logged dive';
+  const when = whenIso ? new Date(whenIso).toLocaleString() : (fallbackDate ? formatDate(fallbackDate) : '');
+  const maxDepth = maxDepthMeters != null ? formatDepth(maxDepthMeters, units.depthUnit) : null;
+  return (
+    <>
+      <Text style={styles.galleryMetaPrimary}>
+        {depthState === undefined
+          ? 'Finding depth…'
+          : depthState
+            ? `≈ ${formatDepth(depthState.depthMeters, units.depthUnit)} when taken · ${formatDuration(Math.max(0, Math.round(depthState.offsetSeconds)))} into the dive`
+            : (maxDepth ? `Max depth ${maxDepth}` : 'Depth not recorded for this dive')}
+      </Text>
+      <Text style={styles.galleryMetaSecondary}>{[site, when].filter(Boolean).join(' · ')}</Text>
+      {onOpenDive ? <SecondaryButton label="Open this dive →" onPress={onOpenDive} style={styles.galleryMetaButton} /> : null}
+    </>
+  );
+}
+
+// Gallery variant: pulls the dive (cached) to get its profile, then renders the
+// shared footer with a jump to the dive.
 function GalleryPhotoMeta({ photo, row, getDive, units, onOpenDive }) {
   const [depth, setDepth] = useState(undefined); // undefined = loading, null = n/a
 
@@ -2009,24 +2047,16 @@ function GalleryPhotoMeta({ photo, row, getDive, units, onOpenDive }) {
     return () => { active = false; };
   }, [photo, getDive]);
 
-  const site = row?.siteName || 'Logged dive';
-  const when = photo.capturedAt
-    ? new Date(photo.capturedAt).toLocaleString()
-    : (row ? formatDate(row.startTime) : '');
-  const maxDepth = row?.maxDepthMeters != null ? formatDepth(row.maxDepthMeters, units.depthUnit) : null;
-
   return (
-    <>
-      <Text style={styles.galleryMetaPrimary}>
-        {depth === undefined
-          ? 'Finding depth…'
-          : depth
-            ? `≈ ${formatDepth(depth.depthMeters, units.depthUnit)} when taken · ${formatDuration(Math.max(0, Math.round(depth.offsetSeconds)))} into the dive`
-            : (maxDepth ? `Max depth ${maxDepth} · time not in the profile` : 'Depth not recorded for this dive')}
-      </Text>
-      <Text style={styles.galleryMetaSecondary}>{[site, when].filter(Boolean).join(' · ')}</Text>
-      <SecondaryButton label="Open this dive →" onPress={onOpenDive} style={styles.galleryMetaButton} />
-    </>
+    <PhotoMetaBody
+      depthState={depth}
+      siteName={row?.siteName}
+      whenIso={photo.capturedAt}
+      fallbackDate={row?.startTime}
+      maxDepthMeters={row?.maxDepthMeters}
+      units={units}
+      onOpenDive={onOpenDive}
+    />
   );
 }
 
