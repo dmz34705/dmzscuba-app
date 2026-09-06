@@ -2149,19 +2149,22 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     // frame first so it actually paints before the loop blocks the thread.
     setPhotoScanning({ count: picked.assets.length });
     try {
-      // Two frames' grace so the spinner is definitely on screen (a single
-      // macrotask boundary can commit without the native layer having drawn).
-      await new Promise((resolve) => setTimeout(resolve, 48));
-      const items = picked.assets.map((asset, index) => {
+      // Grace so the overlay is definitely painted before the work starts.
+      await new Promise((resolve) => setTimeout(resolve, 64));
+      const items = [];
+      for (let index = 0; index < picked.assets.length; index += 1) {
+        const asset = picked.assets[index];
         const capturedAt = photoCapturedAt(asset);
         const match = capturedAt ? findDivePhotoMatches(asset, rows, capturedAt)[0] || null : null;
-        return {
+        items.push({
           id: asset.assetId || asset.uri || 'selected-photo-' + index,
           asset,
           capturedAt,
           match,
-        };
-      });
+        });
+        // Yield every few photos so the thread never locks up on a big batch.
+        if (index % 6 === 5) await new Promise((resolve) => setTimeout(resolve, 0));
+      }
       setPhotoImportReview({ items });
     } finally {
       setPhotoScanning(null);
@@ -2597,22 +2600,6 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           />
         ) : null}
 
-        {photoScanning ? (
-          <Modal transparent visible animationType="fade" onRequestClose={() => {}}>
-            <View style={styles.photoScanBackdrop}>
-              <View style={styles.photoScanCard}>
-                <ActivityIndicator size="large" color={colors.cyan} />
-                <Text style={styles.photoScanText}>
-                  {photoScanning.count > 0
-                    ? `Reading ${photoScanning.count} ${photoScanning.count === 1 ? 'photo' : 'photos'}…`
-                    : 'Reading photos…'}
-                </Text>
-                <Text style={styles.photoScanHint}>Matching capture times to your dives</Text>
-              </View>
-            </View>
-          </Modal>
-        ) : null}
-
         {filterOpen ? (
           <DiveFilterSheet
             filter={filter}
@@ -2765,6 +2752,22 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           </>
         )}
       </ScrollView>
+
+      {/* A plain overlay, not a <Modal>: presenting a native modal in the same
+          beat the image picker is dismissing hangs the app on iOS. */}
+      {photoScanning ? (
+        <View style={styles.photoScanOverlay} pointerEvents="auto">
+          <View style={styles.photoScanCard}>
+            <ActivityIndicator size="large" color={colors.cyan} />
+            <Text style={styles.photoScanText}>
+              {photoScanning.count > 0
+                ? `Reading ${photoScanning.count} ${photoScanning.count === 1 ? 'photo' : 'photos'}…`
+                : 'Reading photos…'}
+            </Text>
+            <Text style={styles.photoScanHint}>Matching capture times to your dives</Text>
+          </View>
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -2796,7 +2799,7 @@ const styles = StyleSheet.create({
   photoAssignActive: { backgroundColor: colors.surface, borderRadius: 10 },
   photoAssignCheck: { color: colors.cyan, fontSize: 16, fontWeight: '900' },
   photoAssignClear: { color: colors.faint, fontSize: 14, fontWeight: '700' },
-  photoScanBackdrop: { alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.55)', flex: 1, justifyContent: 'center' },
+  photoScanOverlay: { alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.55)', bottom: 0, justifyContent: 'center', left: 0, position: 'absolute', right: 0, top: 0, zIndex: 20 },
   photoScanCard: { alignItems: 'center', backgroundColor: colors.background, borderColor: colors.lineStrong, borderRadius: 18, borderWidth: 1, gap: 10, paddingHorizontal: 32, paddingVertical: 28 },
   photoScanText: { color: colors.text, fontSize: 15, fontWeight: '800', marginTop: 4 },
   photoScanHint: { color: colors.muted, fontSize: 12 },
