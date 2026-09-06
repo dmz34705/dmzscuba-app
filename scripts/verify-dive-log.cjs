@@ -1365,6 +1365,15 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /onEdit=\{\(\) => setBulkEditOpen\(true\)\}/);
   assert.doesNotMatch(screen, /BulkEditRow label="Max depth"/);
   assert.match(hook, /const bulkEditDives = useCallback/);
+  // Every useDiveLog value the screen calls must actually be destructured from
+  // the hook (a missing name only blows up at runtime, not at bundle time).
+  {
+    const destructure = (screen.match(/=\s*useDiveLog\(\);/) ? screen.slice(0, screen.indexOf('= useDiveLog();')) : '');
+    const block = destructure.slice(destructure.lastIndexOf('{'));
+    for (const name of ['bulkEditDives', 'loadGalleryPhotos', 'removePhotoFromDive', 'attachPhotosToDive']) {
+      assert.ok(new RegExp(`\\b${name}\\b`).test(block), `DiveLogScreen must destructure ${name} from useDiveLog`);
+    }
+  }
 
   assert.match(screen, /view === 'gallery'/);
   assert.match(screen, /function PhotoGalleryView/);
