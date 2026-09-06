@@ -2037,6 +2037,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [photoImportReview, setPhotoImportReview] = useState(null);
   const [photoImportSaving, setPhotoImportSaving] = useState(false);
   const [photoLinkProgress, setPhotoLinkProgress] = useState(null);
+  const [photoScanning, setPhotoScanning] = useState(null);
 
   const foldersMode = useMemo(() => folders.some((f) => f.kind === 'computer'), [folders]);
   const activeFolder = useMemo(
@@ -2133,26 +2134,39 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       Alert.alert('Photo access needed', 'Enable photo library access for DMZ Scuba in device settings to match photos with dives.');
       return;
     }
-    const picked = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
-      allowsMultipleSelection: true,
-      orderedSelection: true,
-      selectionLimit: 0,
-      exif: true,
-      quality: 1,
-    });
-    if (picked.canceled || !picked.assets?.length) return;
-    const items = picked.assets.map((asset, index) => {
-      const capturedAt = photoCapturedAt(asset);
-      const match = capturedAt ? findDivePhotoMatches(asset, rows, capturedAt)[0] || null : null;
-      return {
-        id: asset.assetId || asset.uri || 'selected-photo-' + index,
-        asset,
-        capturedAt,
-        match,
-      };
-    });
-    setPhotoImportReview({ items });
+    // Show the spinner before the picker opens (it sits behind the native
+    // sheet) so it's already on screen for the gap between dismissing the
+    // picker and the review sheet appearing — reading EXIF for every asset and
+    // scanning each against every dive takes a beat for a big selection.
+    setPhotoScanning({ count: 0 });
+    try {
+      const picked = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ['images'],
+        allowsMultipleSelection: true,
+        orderedSelection: true,
+        selectionLimit: 0,
+        exif: true,
+        quality: 1,
+      });
+      if (picked.canceled || !picked.assets?.length) return;
+      setPhotoScanning({ count: picked.assets.length });
+      // Yield a frame so the updated spinner paints before the sync loop below
+      // blocks the JS thread.
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      const items = picked.assets.map((asset, index) => {
+        const capturedAt = photoCapturedAt(asset);
+        const match = capturedAt ? findDivePhotoMatches(asset, rows, capturedAt)[0] || null : null;
+        return {
+          id: asset.assetId || asset.uri || 'selected-photo-' + index,
+          asset,
+          capturedAt,
+          match,
+        };
+      });
+      setPhotoImportReview({ items });
+    } finally {
+      setPhotoScanning(null);
+    }
   }, [rows]);
 
   const reassignPhotoMatch = useCallback((itemId, match) => {
@@ -2584,6 +2598,22 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           />
         ) : null}
 
+        {photoScanning ? (
+          <Modal transparent visible animationType="fade" onRequestClose={() => {}}>
+            <View style={styles.photoScanBackdrop}>
+              <View style={styles.photoScanCard}>
+                <ActivityIndicator size="large" color={colors.cyan} />
+                <Text style={styles.photoScanText}>
+                  {photoScanning.count > 0
+                    ? `Reading ${photoScanning.count} ${photoScanning.count === 1 ? 'photo' : 'photos'}…`
+                    : 'Reading photos…'}
+                </Text>
+                <Text style={styles.photoScanHint}>Matching capture times to your dives</Text>
+              </View>
+            </View>
+          </Modal>
+        ) : null}
+
         {filterOpen ? (
           <DiveFilterSheet
             filter={filter}
@@ -2767,6 +2797,10 @@ const styles = StyleSheet.create({
   photoAssignActive: { backgroundColor: colors.surface, borderRadius: 10 },
   photoAssignCheck: { color: colors.cyan, fontSize: 16, fontWeight: '900' },
   photoAssignClear: { color: colors.faint, fontSize: 14, fontWeight: '700' },
+  photoScanBackdrop: { alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.55)', flex: 1, justifyContent: 'center' },
+  photoScanCard: { alignItems: 'center', backgroundColor: colors.background, borderColor: colors.lineStrong, borderRadius: 18, borderWidth: 1, gap: 10, paddingHorizontal: 32, paddingVertical: 28 },
+  photoScanText: { color: colors.text, fontSize: 15, fontWeight: '800', marginTop: 4 },
+  photoScanHint: { color: colors.muted, fontSize: 12 },
   photoProgress: { alignItems: 'center', gap: 8, paddingHorizontal: spacing.lg, paddingVertical: 40 },
   photoProgressTitle: { color: colors.text, fontSize: 17, fontWeight: '800', marginTop: 6 },
   photoProgressMeta: { color: colors.cyan, fontSize: 14, fontWeight: '800' },

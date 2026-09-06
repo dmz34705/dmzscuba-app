@@ -1332,6 +1332,9 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /const attachPhotosToDive = useCallback/);
   assert.match(hook, /const removePhotoFromDive = useCallback/);
 
+  // The gap between the picker and the review sheet shows a spinner too.
+  assert.match(screen, /photoScanning/);
+  assert.match(screen, /Reading photos…/);
   // Linking shows a blocking progress state (not a silent pause then a dialog).
   assert.match(screen, /photoLinkProgress/);
   assert.match(screen, /setPhotoLinkProgress\(\{ total, done \}\)/);
