@@ -6,6 +6,8 @@ import { computeDiveTrends } from '../../lib/diveLog/diveTrends';
 import { reconcileLogbook } from '../../lib/diveLog/reconcileLogbook';
 import { checkLogbookIntegrity, repairLogbook } from '../../lib/diveLog/integrity';
 import { photoIdentityKeys } from '../../lib/diveLog/photoIdentity';
+import { depthAtPhotoTime } from '../../lib/diveLog/photoMatching';
+import { removeManagedDivePhoto } from '../../lib/diveLog/photoStorage';
 import {
   clearAll,
   countStoredDives,
@@ -239,9 +241,48 @@ export default function useDiveLog() {
       photo.id !== photoId && photo.assetId !== photoId && photo.uri !== photoId
     ));
     if (next.length === existing.length) return current;
+    const removed = existing.filter((photo) => !next.includes(photo));
     const saved = await saveDive(touchRecord(normalizeDive({
       ...current,
       photos: next,
+      id,
+      createdAt: current.createdAt,
+    })));
+    const logs = await loadLogsForDive(saved);
+    diveCache.current.set(saved.id, { dive: saved, logs });
+    await refreshIndex();
+    // The camera-roll original is never touched. This only reclaims copies in
+    // our private document directory after the link is removed. A defensive
+    // reference check also protects old imported data that linked one copy to
+    // more than one dive.
+    const stillLinkedUris = new Set((await loadAll())
+      .flatMap((dive) => (Array.isArray(dive.photos) ? dive.photos : []))
+      .map((photo) => photo.uri));
+    await Promise.all(removed
+      .filter((photo) => !stillLinkedUris.has(photo.uri))
+      .map((photo) => removeManagedDivePhoto(photo.uri).catch(() => {})));
+    return saved;
+  }, [refreshIndex]);
+
+  const replacePhotoOnDive = useCallback(async (id, photoId, replacement) => {
+    const current = await loadDive(id);
+    if (!current || !photoId || !replacement?.uri) return current;
+    const existing = Array.isArray(current.photos) ? current.photos : [];
+    const index = existing.findIndex((photo) => (
+      photo.id === photoId || photo.assetId === photoId || photo.uri === photoId
+    ));
+    if (index < 0) return current;
+    const photos = [...existing];
+    // Keep IDs intact: they are used for duplicate protection and are the
+    // retained handle for finding a camera-roll original during recovery.
+    photos[index] = {
+      ...replacement,
+      id: existing[index].id,
+      assetId: existing[index].assetId || replacement.assetId || null,
+    };
+    const saved = await saveDive(touchRecord(normalizeDive({
+      ...current,
+      photos,
       id,
       createdAt: current.createdAt,
     })));
@@ -252,18 +293,31 @@ export default function useDiveLog() {
   }, [refreshIndex]);
 
   // Every linked photo across the whole logbook, newest first, each tagged with
-  // the id of the dive it belongs to. The gallery view filters these against
-  // the same dive filter the list uses (by diveId) and looks up per-dive detail
-  // from the index rows it already has.
+  // the id of the dive it belongs to and — where the photo has a capture time
+  // and the dive has a depth profile — the interpolated depth at the moment it
+  // was taken. The gallery filters these by the same dive filter the list uses
+  // (by diveId); the depth sorts rank on `photoDepthMeters`, not the dive max.
   const loadGalleryPhotos = useCallback(async () => {
-    const dives = await loadAll();
+    const dives = (await loadAll()).filter(
+      (dive) => !dive.deletedAt && Array.isArray(dive.photos) && dive.photos.length,
+    );
     const out = [];
-    for (const dive of dives) {
-      if (dive.deletedAt || !Array.isArray(dive.photos) || !dive.photos.length) continue;
+    await Promise.all(dives.map(async (dive) => {
+      const logs = await loadLogsForDive(dive);
+      diveCache.current.set(dive.id, { dive, logs }); // pre-warm for GalleryPhotoMeta
+      const samples = logs
+        .map((log) => log?.profile?.samples)
+        .find((s) => Array.isArray(s) && s.length > 1) || [];
       for (const photo of dive.photos) {
-        out.push({ ...photo, diveId: dive.id, diveStartTime: dive.startTime });
+        const at = depthAtPhotoTime(photo.capturedAt, dive.startTime, samples);
+        out.push({
+          ...photo,
+          diveId: dive.id,
+          diveStartTime: dive.startTime,
+          photoDepthMeters: at && Number.isFinite(at.depthMeters) ? at.depthMeters : null,
+        });
       }
-    }
+    }));
     out.sort((a, b) => String(b.capturedAt || b.linkedAt || '').localeCompare(String(a.capturedAt || a.linkedAt || '')));
     return out;
   }, []);
@@ -505,6 +559,7 @@ export default function useDiveLog() {
     updateDive,
     attachPhotosToDive,
     removePhotoFromDive,
+    replacePhotoOnDive,
     loadGalleryPhotos,
     deleteDive,
     deleteDives,

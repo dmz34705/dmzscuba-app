@@ -17,6 +17,7 @@
     "expo-media-library": "~57.0.4",
     "expo-screen-orientation": "~57.0.2",
     "expo-secure-store": "~57.0.3",
+    "expo-sensors": "~57.0.2",
     "expo-sharing": "~57.0.18",
     "expo-splash-screen": "~57.0.8",
     "expo-status-bar": "~57.0.1",
@@ -31,6 +32,11 @@
     "react-native-webview": "13.16.1"
   },
   "scripts": {
+    "test:color-loss": "node scripts/verify-color-loss.cjs",
+    "test:boyles-law": "node scripts/verify-boyles-law.cjs",
+    "test:gear-setup": "node scripts/verify-gear-setup.cjs",
+    "test:gear-checklist": "node scripts/verify-gear-checklist.cjs",
+    "test:compass-nav": "node scripts/verify-compass-nav.cjs",
     "start": "expo start",
     "android": "expo run:android",
     "ios": "expo run:ios",

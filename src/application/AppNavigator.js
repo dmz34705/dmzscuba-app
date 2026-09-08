@@ -7,11 +7,17 @@ import { getFeature } from '../features/catalog/featureCatalog';
 import useAppSettings from '../features/settings/useAppSettings';
 import { createAccount, verifySignup } from '../lib/accountApi';
 import AccountScreen from '../screens/AccountScreen';
+import BoylesLawScreen from '../screens/BoylesLawScreen';
+import ColorLossScreen from '../screens/ColorLossScreen';
 import CreateAccountScreen from '../screens/CreateAccountScreen';
 import DiveCalculatorScreen from '../screens/DiveCalculatorScreen';
 import DiveComputerSimulatorScreen from '../screens/DiveComputerSimulatorScreen';
 import DiveLensScreen from '../screens/DiveLensScreen';
+import ComingSoonScreen from '../screens/ComingSoonScreen';
+import CompassNavScreen from '../screens/CompassNavScreen';
 import DiveLogScreen from '../screens/DiveLogScreen';
+import GearSetupScreen from '../screens/GearSetupScreen';
+import GearChecklistScreen from '../screens/GearChecklistScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LearnScreen from '../screens/LearnScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -22,6 +28,11 @@ import ToolsScreen from '../screens/ToolsScreen';
 import WebDemoScreen, { DEMOS } from '../screens/WebDemoScreen';
 import { colors } from '../theme';
 import { ACCOUNT_ROUTES, APP_TABS, INITIAL_NAVIGATION, reduceNavigation } from './navigation';
+
+// The "Build a Scuba Unit" lab is complete but held back pending finished
+// illustrations. Flip to true to re-enable GearSetupScreen; nothing else about
+// the feature has been removed.
+const GEAR_SETUP_ENABLED = false;
 
 export default function AppNavigator() {
   const [navigation, dispatch] = useReducer(reduceNavigation, INITIAL_NAVIGATION);
@@ -51,11 +62,35 @@ export default function AppNavigator() {
   }, [activeTab, detailRoute, moreRoute, settingsSection]);
 
   const feature = getFeature(detailRoute);
+  if (feature?.routeType === 'color-loss') {
+    return <ColorLossScreen appSettings={appSettings.settings} onBack={closeDetail} />;
+  }
+  if (feature?.routeType === 'boyles-law') {
+    return <BoylesLawScreen appSettings={appSettings.settings} onBack={closeDetail} />;
+  }
+  if (feature?.routeType === 'gear-setup') {
+    return GEAR_SETUP_ENABLED
+      ? <GearSetupScreen onBack={closeDetail} />
+      : (
+        <ComingSoonScreen
+          eyebrow="INTERACTIVE LAB"
+          title={feature.title}
+          note="Build a Scuba Unit is getting a full illustration pass. It’ll unlock in an upcoming update."
+          onBack={closeDetail}
+        />
+      );
+  }
+  if (feature?.routeType === 'compass-nav') {
+    return <CompassNavScreen onBack={closeDetail} />;
+  }
   if (feature?.routeType === 'web-demo') {
     return <WebDemoScreen demo={DEMOS[feature.id]} onBack={closeDetail} />;
   }
   if (feature?.routeType === 'calculator') {
     return <DiveCalculatorScreen appSettings={appSettings.settings} onBack={closeDetail} profileDefaults={accountSession.profile} />;
+  }
+  if (feature?.routeType === 'gear-checklist') {
+    return <GearChecklistScreen onBack={closeDetail} />;
   }
   if (feature?.routeType === 'dive-computer-simulator') {
     return <DiveComputerSimulatorScreen appSettings={appSettings.settings} onBack={closeDetail} />;

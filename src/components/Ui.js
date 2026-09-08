@@ -19,15 +19,16 @@ export function GroupedSection({ action, children, title }) {
   );
 }
 
-export function NavigationRow({ accent = colors.cyan, body, icon, onPress, title, last = false, badge, disabled = false }) {
+export function NavigationRow({ accent = colors.cyan, body, icon, onPress, onLongPress, title, last = false, badge, disabled = false, accessibilityLabel, right }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={title} accessibilityHint={body} accessibilityState={{ disabled }} disabled={disabled} onPress={onPress} style={({ pressed }) => [styles.navigationRow, !last && styles.navigationRowBorder, disabled && styles.disabled, pressed && styles.navigationPressed]}>
+    <Pressable accessibilityRole="button" accessibilityLabel={accessibilityLabel || title} accessibilityHint={body} accessibilityState={{ disabled }} disabled={disabled} onPress={onPress} onLongPress={onLongPress} style={({ pressed }) => [styles.navigationRow, !last && styles.navigationRowBorder, disabled && styles.disabled, pressed && styles.navigationPressed]}>
       {icon ? <View style={[styles.navigationIcon, { borderColor: `${accent}55`, backgroundColor: `${accent}12` }]}>{icon}</View> : null}
       <View style={styles.navigationCopy}>
-        <Text style={styles.navigationTitle}>{title}</Text>
-        {body ? <Text style={styles.navigationBody}>{body}</Text> : null}
+        <Text style={styles.navigationTitle} numberOfLines={1}>{title}</Text>
+        {body ? <Text style={styles.navigationBody} numberOfLines={2}>{body}</Text> : null}
         {badge ? <Text style={[styles.navigationBadge, { color: accent }]}>{badge}</Text> : null}
       </View>
+      {right != null ? <View style={styles.navigationRight}>{right}</View> : null}
       <Text style={[styles.navigationChevron, { color: accent }]}>›</Text>
     </Pressable>
   );
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
   navigationRowBorder: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth },
   navigationIcon: { alignItems: 'center', borderRadius: 11, height: 44, justifyContent: 'center', width: 44 },
   navigationCopy: { flex: 1, minWidth: 0 },
+  navigationRight: { marginLeft: 6 },
   navigationTitle: { color: colors.text, fontSize: 16, fontWeight: '600' },
   navigationBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 4 },
   navigationBadge: { fontSize: 10, fontWeight: '700', letterSpacing: 0.5, textTransform: 'uppercase', marginTop: 5 },

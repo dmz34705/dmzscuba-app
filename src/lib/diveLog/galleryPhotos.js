@@ -17,8 +17,13 @@ function photoTime(photo) {
   return Number.isFinite(t) ? t : 0;
 }
 
-function diveDepth(photo, rowById) {
-  const row = rowById && (rowById.get ? rowById.get(photo.diveId) : rowById[photo.diveId]);
+// Depth a photo is ranked by in the depth sorts: the interpolated depth at the
+// moment it was taken (computed once at load time, in useDiveLog), falling back
+// to the parent dive's max depth only when the photo has no usable capture time
+// or the dive has no depth profile.
+function photoDepth(photo, rowById) {
+  if (photo && Number.isFinite(photo.photoDepthMeters)) return photo.photoDepthMeters;
+  const row = rowById && (rowById.get ? rowById.get(photo?.diveId) : rowById[photo?.diveId]);
   return row && row.maxDepthMeters != null ? row.maxDepthMeters : -1;
 }
 
@@ -34,9 +39,9 @@ export function sortGalleryPhotos(photos, rowById, sortKey) {
     case 'oldest':
       return list.sort((a, b) => photoTime(a) - photoTime(b));
     case 'deepest':
-      return list.sort((a, b) => diveDepth(b, rowById) - diveDepth(a, rowById) || photoTime(b) - photoTime(a));
+      return list.sort((a, b) => photoDepth(b, rowById) - photoDepth(a, rowById) || photoTime(b) - photoTime(a));
     case 'shallowest':
-      return list.sort((a, b) => diveDepth(a, rowById) - diveDepth(b, rowById) || photoTime(b) - photoTime(a));
+      return list.sort((a, b) => photoDepth(a, rowById) - photoDepth(b, rowById) || photoTime(b) - photoTime(a));
     case 'newest':
     default:
       return list.sort((a, b) => photoTime(b) - photoTime(a));

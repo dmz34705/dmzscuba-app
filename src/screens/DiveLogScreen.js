@@ -16,12 +16,15 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library/legacy';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { FormError } from '../components/AccountForm';
-import { Card, PrimaryButton, SecondaryButton, Stat } from '../components/Ui';
+import { Card, GroupedSection, NavigationRow, PrimaryButton, SecondaryButton, Stat } from '../components/Ui';
+import FeatureIcon from '../features/catalog/FeatureIcon';
 import useDiveLog, { ALL_DIVES_KEY } from '../features/diveLog/useDiveLog';
 import useDiveListSort from '../features/diveLog/useDiveListSort';
 import { NUMBER_KEYBOARD_ACCESSORY_ID, usesNumberKeyboard } from '../lib/numberKeyboard';
@@ -77,6 +80,7 @@ import {
 } from '../lib/diveLog/format';
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
 import { DEFAULT_GALLERY_SORT, GALLERY_SORTS, sortGalleryPhotos } from '../lib/diveLog/galleryPhotos';
+import { isManagedDivePhotoUri, persistDivePhoto, repairDivePhoto } from '../lib/diveLog/photoStorage';
 import {
   buildPhotoImportPlan,
   depthAtPhotoTime,
@@ -784,31 +788,34 @@ function FullscreenProfile({ dive, samples, maxDepthMeters, durationSeconds, tem
 // ---------------------------------------------------------------------------
 
 function StatSummaryCard({ stats, units, onPress }) {
-  const body = (
-    <Card style={styles.summaryCard}>
-      <View style={styles.summaryHeader}>
-        <View style={styles.summaryHeadingCopy}>
-          <Text style={styles.summaryEyebrow}>YOUR LOGBOOK</Text>
-          <Text style={styles.summaryTitle}>Dive history at a glance</Text>
-        </View>
-        {onPress ? <Text style={styles.summaryLink}>View stats ›</Text> : null}
-      </View>
-      <View style={styles.statGrid}>
-        <Stat label="Dives" value={String(stats.totalDives)} style={styles.statCell} />
-        <Stat label="Bottom time" value={formatDuration(stats.totalBottomTimeSeconds)} style={styles.statCell} />
-        <Stat label="Deepest" value={stats.deepestMeters ? formatDepth(stats.deepestMeters, units.depthUnit) : '—'} style={styles.statCell} />
-      </View>
-      {stats.firstDiveDate ? (
-        <Text style={styles.summaryFootnote}>
-          {`${formatDate(stats.firstDiveDate)} – ${formatDate(stats.lastDiveDate)}`}
-        </Text>
-      ) : null}
-    </Card>
-  );
-  if (!onPress) return body;
+  const deepest = stats.deepestMeters ? formatDepth(stats.deepestMeters, units.depthUnit) : null;
+  const firstYear = stats.firstDiveDate ? new Date(stats.firstDiveDate).getFullYear() : null;
+  const lastYear = stats.lastDiveDate ? new Date(stats.lastDiveDate).getFullYear() : null;
+  const range = firstYear ? (firstYear === lastYear ? String(firstYear) : `${firstYear}–${lastYear}`) : null;
+  const sub = [deepest ? `Deepest ${deepest}` : null, range].filter(Boolean).join('  ·  ');
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel="See all stats" onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
-      {body}
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="See logbook stats"
+      onPress={onPress}
+      style={({ pressed }) => [styles.spotlight, pressed && styles.pressed]}
+    >
+      <LinearGradient
+        colors={['rgba(16,55,81,0.98)', 'rgba(7,24,40,0.98)']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={StyleSheet.absoluteFill}
+      />
+      <View style={styles.spotlightIcon}><FeatureIcon name="logbook" /></View>
+      <View style={styles.spotlightCopy}>
+        <Text style={styles.spotlightEyebrow}>YOUR LOGBOOK</Text>
+        <Text style={styles.spotlightTitle}>
+          {`${stats.totalDives} ${stats.totalDives === 1 ? 'dive' : 'dives'}`}
+          {stats.totalBottomTimeSeconds ? `  ·  ${formatDuration(stats.totalBottomTimeSeconds)}` : ''}
+        </Text>
+        <Text style={styles.spotlightBody} numberOfLines={1}>{sub || 'View stats'}</Text>
+      </View>
+      <Text style={styles.spotlightArrow}>›</Text>
     </Pressable>
   );
 }
@@ -839,32 +846,34 @@ function LogbookViewTabs({ active, onChange }) {
   );
 }
 
-function LogbookQuickActions({ computerDownloadAvailable, onAdd, onDownload }) {
+function PhotoOrganizerRow({ onPress, last = false }) {
   return (
-    <View style={styles.quickActions}>
-      <PrimaryButton label="Add dive" onPress={onAdd} style={styles.quickAction} />
-      {computerDownloadAvailable ? (
-        <SecondaryButton label="Download computer" onPress={onDownload} style={styles.quickAction} />
-      ) : null}
-    </View>
+    <NavigationRow
+      accent={colors.good}
+      accessibilityLabel="Choose and match photos"
+      icon={<FeatureIcon name="lens" />}
+      title="Auto-sort dive photos"
+      body="Match camera-roll photos to dives by capture time"
+      onPress={onPress}
+      last={last}
+    />
   );
 }
 
-function PhotoOrganizerRow({ onPress }) {
+function LogbookQuickActions({ computerDownloadAvailable, onDownload, onMatchPhotos, libdcVersion }) {
   return (
-    <Pressable
-      accessibilityLabel="Choose and match photos"
-      accessibilityRole="button"
-      onPress={onPress}
-      style={({ pressed }) => [styles.photoOrganizerRow, pressed && styles.pressed]}
-    >
-      <View style={styles.photoOrganizerCopy}>
-        <Text style={styles.photoOrganizerEyebrow}>PHOTO ORGANIZER</Text>
-        <Text style={styles.photoOrganizerTitle}>Auto-sort dive photos</Text>
-        <Text style={styles.photoOrganizerBody}>Match camera-roll photos to dives using their capture times.</Text>
-      </View>
-      <Text style={styles.photoOrganizerChevron}>›</Text>
-    </Pressable>
+    <GroupedSection title="Add to your logbook">
+      {computerDownloadAvailable ? (
+        <NavigationRow
+          accent={colors.cyan}
+          icon={<FeatureIcon name="dive-computer" />}
+          title="Download from dive computer"
+          body={libdcVersion ? `libdivecomputer ${libdcVersion}` : 'Import dives over Bluetooth'}
+          onPress={onDownload}
+        />
+      ) : null}
+      <PhotoOrganizerRow onPress={onMatchPhotos} last />
+    </GroupedSection>
   );
 }
 
@@ -973,81 +982,72 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
   );
 }
 
-function DiveListCard({ row, units, onPress, onLongPress, selectable, selected }) {
-  const parts = [formatDepth(row.maxDepthMeters, units.depthUnit), formatDuration(row.durationSeconds)];
+function DiveListCard({ row, units, onPress, onLongPress, selectable, selected, last = false }) {
   const dateLabel = formatDate(row.startTime) || 'Undated dive';
-  const timeLabel = formatTimeOfDay(row.startTime) || 'Unnamed dive';
-  // Date and start time always lead the card so dives on the same day (a
-  // repetitive-site training day especially) stay distinguishable; the site
+  const timeLabel = formatTimeOfDay(row.startTime) || '';
+  // Date and start time lead so same-day dives stay distinguishable; the site
   // name, when set, follows.
-  const title = row.siteName ? `${dateLabel} · ${timeLabel} · ${row.siteName}` : `${dateLabel} · ${timeLabel}`;
+  const lead = [dateLabel, timeLabel].filter(Boolean).join(' · ');
+  const title = row.siteName ? `${lead} · ${row.siteName}` : lead;
+  const meta = [formatDepth(row.maxDepthMeters, units.depthUnit), formatDuration(row.durationSeconds)].join('  ·  ');
   return (
-    <Card style={[styles.diveCard, selected && styles.diveCardSelected]}>
+    <Pressable
+      accessibilityRole={selectable ? 'checkbox' : 'button'}
+      accessibilityState={selectable ? { checked: selected } : undefined}
+      accessibilityLabel={title}
+      onPress={onPress}
+      onLongPress={onLongPress}
+      style={({ pressed }) => [styles.diveRow, !last && styles.diveRowBorder, selected && styles.diveRowSelected, pressed && styles.navRowPressed]}
+    >
       {selectable ? (
-        <Pressable
-          accessibilityRole="checkbox"
-          accessibilityState={{ checked: selected }}
-          accessibilityLabel={title}
-          onPress={onPress}
-          onLongPress={onLongPress}
-          style={({ pressed }) => [styles.selectRow, pressed && styles.pressed]}
-        >
-          <View style={[styles.checkCircle, selected && styles.checkCircleOn]}>
-            {selected ? <Text style={styles.checkMark}>✓</Text> : null}
-          </View>
-          <Text style={styles.selectRowLabel} numberOfLines={1}>{title}</Text>
-        </Pressable>
-      ) : (
-        <SecondaryButton label={title} onPress={onPress} onLongPress={onLongPress} style={styles.diveCardButton} />
-      )}
-      <View style={styles.diveCardMeta}>
-        <Text style={styles.diveCardMetaText}>{parts.join('  ·  ')}</Text>
-        {row.rating ? <Text style={styles.diveCardRating}>{'★'.repeat(row.rating)}</Text> : null}
+        <View style={[styles.checkCircle, selected && styles.checkCircleOn]}>
+          {selected ? <Text style={styles.checkMark}>✓</Text> : null}
+        </View>
+      ) : null}
+      <View style={styles.diveRowCopy}>
+        <Text style={styles.diveRowTitle} numberOfLines={1}>{title}</Text>
+        <View style={styles.diveRowMetaLine}>
+          <Text style={styles.diveRowMeta} numberOfLines={1}>{meta}</Text>
+          {row.rating ? <Text style={styles.diveRowRating}>{'★'.repeat(row.rating)}</Text> : null}
+        </View>
       </View>
-    </Card>
+      {selectable ? null : <Text style={styles.diveRowChevron}>›</Text>}
+    </Pressable>
   );
 }
 
 const RANK_LABELS = { 1: 'Primary', 2: 'Secondary', 3: 'Tertiary' };
 
-function FolderCard({ folder, onPress, onSetRank }) {
+function folderIcon(kind) {
+  return kind === 'computer' ? 'dive-computer' : 'logbook';
+}
+
+function FolderCard({ folder, onPress, onSetRank, last = false }) {
   const bits = [`${folder.count} ${folder.count === 1 ? 'dive' : 'dives'}`];
   if (folder.lastDiveDate) bits.push(`last ${formatDate(folder.lastDiveDate)}`);
-  const showRank = folder.kind === 'computer' && onSetRank;
-  const pickRank = () => {
-    Alert.alert(folder.label, 'Priority for the data shown on dives recorded by more than one computer.', [
-      { text: 'Primary', onPress: () => onSetRank(folder.key, 1) },
-      { text: 'Secondary', onPress: () => onSetRank(folder.key, 2) },
-      { text: 'Tertiary', onPress: () => onSetRank(folder.key, 3) },
-      { text: 'Not ranked', onPress: () => onSetRank(folder.key, null) },
-      { text: 'Cancel', style: 'cancel' },
-    ]);
-  };
+  const rankable = folder.kind === 'computer' && onSetRank;
+  const pickRank = rankable
+    ? () => {
+      Alert.alert(folder.label, 'Priority for the data shown on dives recorded by more than one computer.', [
+        { text: 'Primary', onPress: () => onSetRank(folder.key, 1) },
+        { text: 'Secondary', onPress: () => onSetRank(folder.key, 2) },
+        { text: 'Tertiary', onPress: () => onSetRank(folder.key, 3) },
+        { text: 'Not ranked', onPress: () => onSetRank(folder.key, null) },
+        { text: 'Cancel', style: 'cancel' },
+      ]);
+    }
+    : undefined;
   return (
-    <Card style={[styles.folderCard, folder.kind === 'all' && styles.folderCardAll]}>
-      <View style={styles.folderTopRow}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={folder.label}
-          onPress={onPress}
-          style={({ pressed }) => [styles.folderMain, pressed && styles.pressed]}
-        >
-          <View style={styles.folderCopy}>
-            <Text style={[styles.folderName, folder.kind === 'all' && styles.folderNameAll]}>{folder.label}</Text>
-            {folder.sublabel ? <Text style={styles.folderSerial}>{folder.sublabel}</Text> : null}
-            <Text style={styles.folderMeta}>{bits.join('  ·  ')}</Text>
-          </View>
-          <Text style={styles.folderChevron}>›</Text>
-        </Pressable>
-        {showRank ? (
-          <Pressable onPress={pickRank} hitSlop={8} style={({ pressed }) => [styles.rankChip, folder.rank && styles.rankChipOn, pressed && styles.pressed]}>
-            <Text style={[styles.rankChipText, folder.rank && styles.rankChipTextOn]}>
-              {folder.rank ? RANK_LABELS[folder.rank] : 'Set rank'}
-            </Text>
-          </Pressable>
-        ) : null}
-      </View>
-    </Card>
+    <NavigationRow
+      accent={folder.kind === 'all' ? colors.cyan : colors.muted}
+      icon={<FeatureIcon name={folderIcon(folder.kind)} />}
+      title={folder.label}
+      body={[folder.sublabel, bits.join('  ·  ')].filter(Boolean).join('  ·  ')}
+      right={rankable && folder.rank ? <Text style={styles.rankBadge}>{RANK_LABELS[folder.rank]}</Text> : null}
+      onPress={onPress}
+      onLongPress={pickRank}
+      last={last}
+    />
   );
 }
 
@@ -2263,7 +2263,7 @@ function GalleryPhotoMeta({ photo, row, getDive, units, onOpenDive }) {
 // photo carrying its dive's data.
 function PhotoGalleryView({
   rows, filter, filterActiveCount, onOpenFilter, onClearFilter,
-  loadGalleryPhotos, getDive, units, onOpenDive, onImport,
+  loadGalleryPhotos, getDive, units, onOpenDive, onImport, onRepair, repairing,
 }) {
   const { width } = useWindowDimensions();
   const [photos, setPhotos] = useState(null); // null = still loading
@@ -2292,6 +2292,7 @@ function PhotoGalleryView({
     return sortGalleryPhotos(kept, diveById, sortKey);
   }, [photos, matchingIds, diveById, sortKey]);
   const diveCount = useMemo(() => new Set(visible.map((p) => p.diveId)).size, [visible]);
+  const hasLegacyPhotoLinks = (photos || []).some((photo) => !isManagedDivePhotoUri(photo.uri));
 
   const tile = Math.floor((width - spacing.md * 2 - 18) / 4);
 
@@ -2300,6 +2301,14 @@ function PhotoGalleryView({
   return (
     <>
       <SecondaryButton label="Match camera roll photos" onPress={onImport} style={styles.galleryImport} />
+      {hasLegacyPhotoLinks ? (
+        <SecondaryButton
+          label={repairing ? 'Recovering photo links…' : 'Recover missing photo links'}
+          onPress={onRepair}
+          disabled={repairing}
+          style={styles.galleryImport}
+        />
+      ) : null}
 
       <View style={styles.galleryBar}>
         <Text style={styles.gallerySummary}>
@@ -2387,7 +2396,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
-    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, loadGalleryPhotos, deleteDive, deleteDives, bulkEditDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
+    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, replacePhotoOnDive, loadGalleryPhotos, deleteDive, deleteDives, bulkEditDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
     getSnapshots, restoreBackup,
@@ -2440,6 +2449,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [photoImportSaving, setPhotoImportSaving] = useState(false);
   const [photoLinkProgress, setPhotoLinkProgress] = useState(null);
   const [photoScanning, setPhotoScanning] = useState(null);
+  const [photoRepairing, setPhotoRepairing] = useState(false);
   const [galleryReloadKey, setGalleryReloadKey] = useState(0);
   const [bulkEditOpen, setBulkEditOpen] = useState(false);
   const [bulkSaving, setBulkSaving] = useState(false);
@@ -2640,7 +2650,17 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     try {
       let done = 0;
       for (const { diveId, photos } of plan) {
-        await attachPhotosToDive(diveId, photos);
+        // A picker URI may point to the OS cache or the camera roll. Copy each
+        // confirmed photo before saving its link, so a later cache eviction or
+        // photo-library permission change cannot turn this into a blank tile.
+        const durablePhotos = [];
+        for (const photo of photos) {
+          // Keep the loop sequential: large camera images otherwise cause a
+          // temporary memory/disk spike on phones with many selected photos.
+          // eslint-disable-next-line no-await-in-loop
+          durablePhotos.push(await persistDivePhoto(photo));
+        }
+        await attachPhotosToDive(diveId, durablePhotos);
         done += photos.length;
         setPhotoLinkProgress({ total, done });
       }
@@ -2654,6 +2674,43 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       setPhotoLinkProgress(null);
     }
   }, [attachPhotosToDive, photoImportReview, photoImportSaving]);
+
+  const recoverMissingPhotoLinks = useCallback(async () => {
+    if (photoRepairing) return;
+    const linkedPhotos = await loadGalleryPhotos();
+    const legacyPhotos = linkedPhotos.filter((photo) => !isManagedDivePhotoUri(photo.uri));
+    if (!legacyPhotos.length) return;
+    let permission = null;
+    const resolveAssetInfo = async (assetId) => {
+      if (!permission) permission = await MediaLibrary.requestPermissionsAsync(false, ['photo']);
+      if (!permission.granted) throw new Error('Photo library access was not granted.');
+      return MediaLibrary.getAssetInfoAsync(assetId);
+    };
+    setPhotoRepairing(true);
+    try {
+      let recovered = 0;
+      let unavailable = 0;
+      for (const photo of legacyPhotos) {
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          const durablePhoto = await repairDivePhoto(photo, resolveAssetInfo);
+          // eslint-disable-next-line no-await-in-loop
+          await replacePhotoOnDive(photo.diveId, photo.id, durablePhoto);
+          recovered += 1;
+        } catch {
+          unavailable += 1;
+        }
+      }
+      setGalleryReloadKey((key) => key + 1);
+      Alert.alert(
+        recovered ? 'Photo links recovered' : 'No photos could be recovered',
+        `${recovered} ${recovered === 1 ? 'photo was' : 'photos were'} copied into DMZ Scuba’s on-device storage.`
+          + (unavailable ? ` ${unavailable} ${unavailable === 1 ? 'photo could' : 'photos could'} not be found in the photo library; re-link ${unavailable === 1 ? 'it' : 'them'} manually if the original still exists.` : ''),
+      );
+    } finally {
+      setPhotoRepairing(false);
+    }
+  }, [loadGalleryPhotos, photoRepairing, replacePhotoOnDive]);
 
   const chooseExportFormat = useCallback((ids = null) => {
     const count = ids?.length || rows.length;
@@ -2900,61 +2957,74 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
               <Text style={styles.muted}>Loading your logbook…</Text>
             ) : showFolderGrid ? (
               <>
-                <StatSummaryCard stats={stats} units={units} onPress={() => setView("stats")} />
+                <StatSummaryCard stats={stats} units={units} onPress={() => setView('stats')} />
 
-                <LogbookQuickActions
-                  computerDownloadAvailable={Boolean(libdcVersion)}
-                  onAdd={openNew}
-                  onDownload={() => setView('download')}
-                />
+                <PrimaryButton label="Log a dive" onPress={openNew} style={styles.gridPrimary} />
 
-                <View style={styles.gridSection}><SectionLabel>YOUR DIVES</SectionLabel></View>
-                {folders.filter((f) => f.kind === 'all').map((folder) => (
-                  <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
-                ))}
+                <GroupedSection title="YOUR DIVES">
+                  {folders.filter((f) => f.kind === 'all').map((folder, i, arr) => (
+                    <FolderCard
+                      key={folder.key}
+                      folder={folder}
+                      onPress={() => setFolderKey(folder.key)}
+                      last={i === arr.length - 1}
+                    />
+                  ))}
+                </GroupedSection>
 
                 {folders.some((f) => f.kind === 'computer') ? (
-                  <>
-                    <View style={styles.gridSection}><SectionLabel>BY COMPUTER</SectionLabel></View>
-                    {folders.filter((f) => f.kind === 'computer').map((folder) => (
+                  <GroupedSection title="BY COMPUTER">
+                    {folders.filter((f) => f.kind === 'computer').map((folder, i, arr) => (
                       <FolderCard
                         key={folder.key}
                         folder={folder}
                         onPress={() => setFolderKey(folder.key)}
                         onSetRank={setComputerRank}
+                        last={i === arr.length - 1}
                       />
                     ))}
-                  </>
+                  </GroupedSection>
                 ) : null}
 
-                {folders.some((f) => f.kind === 'manual') ? (
-                  <>
-                    <View style={styles.gridSection}><SectionLabel>MANUAL ENTRIES</SectionLabel></View>
-                    {folders.filter((f) => f.kind === 'manual').map((folder) => (
-                      <FolderCard key={folder.key} folder={folder} onPress={() => setFolderKey(folder.key)} />
+                {folders.some((f) => f.kind === 'manual') && folders.some((f) => f.kind === 'computer') ? (
+                  <GroupedSection title="MANUAL ENTRIES">
+                    {folders.filter((f) => f.kind === 'manual').map((folder, i, arr) => (
+                      <FolderCard
+                        key={folder.key}
+                        folder={folder}
+                        onPress={() => setFolderKey(folder.key)}
+                        last={i === arr.length - 1}
+                      />
                     ))}
-                  </>
+                  </GroupedSection>
                 ) : null}
 
-                <View style={styles.gridSection}><SectionLabel>ORGANIZE</SectionLabel></View>
-                <PhotoOrganizerRow onPress={beginPhotoImport} />
-                {libdcVersion ? <Text style={styles.engineNote}>Computer transfer powered by libdivecomputer {libdcVersion}</Text> : null}
+                <LogbookQuickActions
+                  computerDownloadAvailable={Boolean(libdcVersion)}
+                  onDownload={() => setView('download')}
+                  onMatchPhotos={beginPhotoImport}
+                  libdcVersion={libdcVersion}
+                />
               </>
             ) : (
               <>
-                <View style={styles.listContext}>
-                  <View style={styles.listContextCopy}>
-                    <SectionLabel>{activeFolder?.kind === 'computer' ? 'COMPUTER DIVES' : activeFolder?.kind === 'manual' ? 'MANUAL DIVES' : 'DIVE HISTORY'}</SectionLabel>
-                    <Text style={styles.listContextTitle}>{activeFolder?.label || 'All dives'}</Text>
-                    {activeFolder?.sublabel ? <Text style={styles.listContextSerial}>{activeFolder.sublabel}</Text> : null}
+                <View style={styles.listHead}>
+                  <View style={styles.listHeadCopy}>
+                    <Text style={styles.listHeadEyebrow} numberOfLines={1}>
+                      {(activeFolder?.kind === 'computer' ? 'COMPUTER DIVES' : activeFolder?.kind === 'manual' ? 'MANUAL DIVES' : 'DIVE HISTORY')}
+                      {`  ·  ${listRows.length} ${listRows.length === 1 ? 'dive' : 'dives'}`}
+                    </Text>
+                    <Text style={styles.listHeadTitle} numberOfLines={1}>{activeFolder?.label || 'All dives'}</Text>
+                    {activeFolder?.sublabel ? <Text style={styles.listHeadSerial}>{activeFolder.sublabel}</Text> : null}
                   </View>
-                  <View style={styles.listCountBadge}>
-                    <Text style={styles.listCountValue}>{listRows.length}</Text>
-                    <Text style={styles.listCountLabel}>{listRows.length === 1 ? 'dive' : 'dives'}</Text>
-                  </View>
+                  {!selectMode && rows.length ? (
+                    <Pressable accessibilityRole="button" accessibilityLabel="Export all dives" onPress={() => chooseExportFormat()} hitSlop={8}>
+                      <Text style={styles.listHeadAction}>Export</Text>
+                    </Pressable>
+                  ) : null}
                 </View>
                 {!selectMode ? (
-                  <Card style={styles.listToolbar}>
+                  <View style={styles.toolbar}>
                     <TextInput
                       accessibilityLabel="Search dives"
                       autoCapitalize="none"
@@ -2987,17 +3057,10 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                         <Text numberOfLines={1} style={styles.toolbarButtonText}>{describeDiveSort(sort)}</Text>
                       </Pressable>
                     </View>
-                  </Card>
-                ) : null}
-                {!selectMode && rows.length ? (
-                  <View style={styles.listUtilityRow}>
-                    <Text style={styles.listUtilityText}>
-                      {activeFilterCount ? `${listRows.length} of ${folderRows.length} shown` : `${folderRows.length} total`}
-                    </Text>
-                    <Pressable accessibilityRole="button" onPress={() => chooseExportFormat()} hitSlop={8}>
-                      <Text style={styles.listUtilityAction}>Export all</Text>
-                    </Pressable>
                   </View>
+                ) : null}
+                {!selectMode && activeFilterCount ? (
+                  <Text style={styles.filterNote}>{`${listRows.length} of ${folderRows.length} shown`}</Text>
                 ) : null}
                 {listRows.length === 0 ? (
                   <Card style={styles.emptyCard}>
@@ -3014,36 +3077,29 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                     ) : null}
                   </Card>
                 ) : (
-                  listRows.map((row, index) => {
-                    const month = diveMonthLabel(row.startTime);
-                    const previousMonth = diveMonthLabel(listRows[index - 1]?.startTime);
-                    const showMonth = sort.key === 'date' && month && month !== previousMonth;
-                    return (
-                      <Fragment key={row.id}>
-                        {showMonth ? <Text style={styles.monthDivider}>{month}</Text> : null}
-                        <DiveListCard
-                          row={row}
-                          units={units}
-                          selectable={selectMode}
-                          selected={selectedIds.has(row.id)}
-                          onPress={() => (selectMode ? toggleSelected(row.id) : openDetail(row.id))}
-                          onLongPress={() => (selectMode ? toggleSelected(row.id) : enterSelect(row.id))}
-                        />
-                      </Fragment>
-                    );
-                  })
+                  <View style={styles.diveList}>
+                    {listRows.map((row, index) => {
+                      const month = diveMonthLabel(row.startTime);
+                      const previousMonth = diveMonthLabel(listRows[index - 1]?.startTime);
+                      const showMonth = sort.key === 'date' && month && month !== previousMonth;
+                      return (
+                        <Fragment key={row.id}>
+                          {showMonth ? <Text style={[styles.monthDivider, index === 0 && styles.monthDividerFirst]}>{month}</Text> : null}
+                          <DiveListCard
+                            row={row}
+                            units={units}
+                            selectable={selectMode}
+                            selected={selectedIds.has(row.id)}
+                            last={index === listRows.length - 1}
+                            onPress={() => (selectMode ? toggleSelected(row.id) : openDetail(row.id))}
+                            onLongPress={() => (selectMode ? toggleSelected(row.id) : enterSelect(row.id))}
+                          />
+                        </Fragment>
+                      );
+                    })}
+                  </View>
                 )}
                 {!selectMode ? <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} /> : null}
-                {!selectMode && !activeFolder && libdcVersion ? (
-                  <>
-                    <SecondaryButton
-                      label="Download from dive computer"
-                      onPress={() => setView('download')}
-                      style={styles.downloadButton}
-                    />
-                    <Text style={styles.engineNote}>libdivecomputer {libdcVersion}</Text>
-                  </>
-                ) : null}
               </>
             )}
           </>
@@ -3101,6 +3157,8 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             units={units}
             onOpenDive={(id) => openDetail(id)}
             onImport={beginPhotoImport}
+            onRepair={recoverMissingPhotoLinks}
+            repairing={photoRepairing}
           />
         )}
 
@@ -3264,15 +3322,6 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 }
 
 const styles = StyleSheet.create({
-  photoOrganizerRow: {
-    alignItems: 'center', backgroundColor: colors.surfaceGlass, borderColor: colors.line, borderRadius: radii.lg,
-    borderWidth: 1, flexDirection: 'row', gap: 12, marginBottom: 12, padding: spacing.md, ...shadow,
-  },
-  photoOrganizerCopy: { flex: 1 },
-  photoOrganizerEyebrow: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.2 },
-  photoOrganizerTitle: { color: colors.text, fontSize: 15, fontWeight: '900', marginTop: 5 },
-  photoOrganizerBody: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4 },
-  photoOrganizerChevron: { color: colors.cyan, fontSize: 28, fontWeight: '300' },
   photoReviewBackdrop: { backgroundColor: 'rgba(0,0,0,0.7)', flex: 1, justifyContent: 'flex-end' },
   photoReviewSheet: { backgroundColor: colors.background, borderColor: colors.lineStrong, borderTopLeftRadius: 22, borderTopRightRadius: 22, borderWidth: 1, maxHeight: '85%', padding: spacing.lg },
   photoReviewTitle: { color: colors.text, fontSize: 22, fontWeight: '900' },
@@ -3353,7 +3402,7 @@ const styles = StyleSheet.create({
   divePhotoExpandIcon: { color: '#fff', fontSize: 13, fontWeight: '900' },
   divePhotoHint: { color: colors.faint, fontSize: 11, marginTop: 8 },
   screen: { backgroundColor: colors.background, flex: 1 },
-  content: { paddingHorizontal: spacing.md, paddingTop: spacing.lg },
+  content: { paddingHorizontal: spacing.lg, paddingTop: spacing.lg },
   title: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 33 },
   subtitle: { color: colors.muted, fontSize: 14, lineHeight: 21, marginBottom: spacing.lg, marginTop: 9 },
   muted: { color: colors.muted, fontSize: 13, marginTop: spacing.md },
@@ -3361,50 +3410,62 @@ const styles = StyleSheet.create({
 
   logbookTabs: {
     backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1,
-    flexDirection: 'row', marginBottom: spacing.md, padding: 4,
+    flexDirection: 'row', marginBottom: spacing.lg, padding: 4,
   },
-  logbookTab: { alignItems: 'center', borderRadius: 12, flex: 1, minHeight: 38, justifyContent: 'center', paddingHorizontal: 8 },
+  logbookTab: { alignItems: 'center', borderRadius: 10, flex: 1, minHeight: 38, justifyContent: 'center', paddingHorizontal: 8 },
   logbookTabOn: { backgroundColor: 'rgba(112,221,246,0.14)' },
   logbookTabText: { color: colors.faint, fontSize: 13, fontWeight: '800' },
   logbookTabTextOn: { color: colors.cyan },
-  quickActions: { flexDirection: 'row', gap: spacing.sm, marginBottom: spacing.lg },
-  quickAction: { flex: 1 },
-
-  summaryCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.28)', padding: 14 },
-  summaryHeader: { alignItems: 'center', flexDirection: 'row', gap: 10, justifyContent: 'space-between' },
-  summaryHeadingCopy: { flex: 1 },
-  summaryEyebrow: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.3 },
-  summaryTitle: { color: colors.text, fontSize: 17, fontWeight: '900', marginTop: 4 },
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
   statCell: { flexBasis: '30%', flexGrow: 1, minHeight: 70, paddingHorizontal: 9 },
-  summaryFootnote: { color: colors.faint, fontSize: 11, marginTop: 12 },
-  summaryLink: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
+  summaryCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.28)', padding: 14 },
+
+  // folder-grid summary spotlight (Home SpotlightCard language)
+  spotlight: {
+    alignItems: 'center', borderColor: colors.line, borderRadius: radii.lg, borderWidth: 1,
+    flexDirection: 'row', marginBottom: spacing.lg, minHeight: 96, overflow: 'hidden', padding: 14,
+  },
+  spotlightIcon: {
+    alignItems: 'center', backgroundColor: 'rgba(112,221,246,0.08)', borderColor: colors.line,
+    borderRadius: 14, borderWidth: 1, height: 52, justifyContent: 'center', width: 52,
+  },
+  spotlightCopy: { flex: 1, paddingHorizontal: 12 },
+  spotlightEyebrow: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.2 },
+  spotlightTitle: { color: colors.text, fontSize: 17, fontWeight: '900', marginTop: 4 },
+  spotlightBody: { color: colors.muted, fontSize: 12, lineHeight: 16, marginTop: 4 },
+  spotlightArrow: { color: colors.cyan, fontSize: 24, fontWeight: '300' },
+  gridPrimary: { marginBottom: spacing.lg },
+  rankBadge: { color: colors.cyan, fontSize: 11, fontWeight: '800', letterSpacing: 0.3 },
   trendRow: { alignItems: 'center', borderTopColor: colors.line, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 9 },
   trendLabel: { color: colors.muted, fontSize: 12 },
   trendGood: { color: colors.good, fontSize: 12, fontWeight: '800' },
   trendBad: { color: colors.warning, fontSize: 12, fontWeight: '800' },
   trendFlat: { color: colors.faint, fontSize: 12, fontWeight: '700' },
 
-  diveCard: { padding: 12 },
-  diveCardSelected: { borderColor: colors.cyan },
-  gridSection: { marginTop: 10 },
-  diveCardButton: { alignItems: 'flex-start', minHeight: 40, paddingVertical: 9 },
-  diveCardMeta: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginTop: 8 },
-  diveCardMetaText: { color: colors.muted, fontSize: 12, fontWeight: '700' },
-  diveCardRating: { color: colors.gold, fontSize: 12 },
-  folderCard: { padding: 0 },
-  folderCardAll: { backgroundColor: '#0B2838', borderColor: colors.cyan },
-  folderMain: { alignItems: 'center', flex: 1, flexDirection: 'row', gap: 10, minHeight: 74, paddingHorizontal: 15, paddingVertical: 12 },
-  folderCopy: { flex: 1, minWidth: 0 },
-  folderName: { color: colors.text, fontSize: 16, fontWeight: '800' },
-  folderNameAll: { color: colors.cyan, fontSize: 18 },
-  folderSerial: { color: colors.faint, fontSize: 10, fontWeight: '700', marginTop: 3 },
-  folderMeta: { color: colors.muted, fontSize: 12, fontWeight: '700', marginTop: 6 },
-  folderChevron: { color: colors.cyan, fontSize: 27, fontWeight: '300' },
+  // dive rows — a single clipped surface container, hairline-separated rows
+  diveList: {
+    backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md,
+    borderWidth: 1, marginBottom: spacing.md, overflow: 'hidden',
+  },
+  diveRow: { alignItems: 'center', flexDirection: 'row', gap: 12, minHeight: 62, paddingHorizontal: 13, paddingVertical: 10 },
+  diveRowBorder: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth },
+  diveRowSelected: { backgroundColor: 'rgba(112,221,246,0.08)' },
+  diveRowCopy: { flex: 1, minWidth: 0 },
+  diveRowTitle: { color: colors.text, fontSize: 14, fontWeight: '700' },
+  diveRowMetaLine: { alignItems: 'center', flexDirection: 'row', gap: 8, marginTop: 3 },
+  diveRowMeta: { color: colors.muted, fontSize: 12, fontWeight: '600', flexShrink: 1 },
+  diveRowRating: { color: colors.gold, fontSize: 11 },
+  diveRowChevron: { color: colors.faint, fontSize: 22, fontWeight: '300' },
+  navRowPressed: { backgroundColor: colors.surfaceSoft },
+  monthDivider: {
+    backgroundColor: 'rgba(3,13,23,0.55)', borderBottomColor: colors.line,
+    borderBottomWidth: StyleSheet.hairlineWidth, borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth,
+    color: colors.faint, fontSize: 10, fontWeight: '900', letterSpacing: 1.1,
+    paddingHorizontal: 13, paddingVertical: 7, textTransform: 'uppercase',
+  },
+  monthDividerFirst: { borderTopWidth: 0 },
   pressed: { opacity: 0.6 },
 
-  selectRow: { alignItems: 'center', flexDirection: 'row', gap: 10, minHeight: 40, paddingVertical: 9 },
-  selectRowLabel: { color: colors.text, flex: 1, fontSize: 13, fontWeight: '700' },
   checkCircle: {
     alignItems: 'center', borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 2,
     height: 24, justifyContent: 'center', width: 24,
@@ -3435,17 +3496,13 @@ const styles = StyleSheet.create({
   selectionDeleteOff: { opacity: 0.4 },
   selectionDeleteText: { color: colors.danger, fontSize: 13, fontWeight: '800' },
   selectionDeleteTextOff: { color: colors.muted },
-  listContext: { alignItems: 'center', flexDirection: 'row', gap: 14, marginBottom: 14, paddingHorizontal: 2 },
-  listContextCopy: { flex: 1, minWidth: 0 },
-  listContextTitle: { color: colors.text, fontSize: 24, fontWeight: '900', letterSpacing: -0.4 },
-  listContextSerial: { color: colors.faint, fontSize: 11, fontWeight: '700', marginTop: 4 },
-  listCountBadge: {
-    alignItems: 'center', backgroundColor: 'rgba(112,221,246,0.1)', borderColor: 'rgba(112,221,246,0.3)',
-    borderRadius: radii.md, borderWidth: 1, minWidth: 62, paddingHorizontal: 10, paddingVertical: 8,
-  },
-  listCountValue: { color: colors.cyan, fontSize: 18, fontWeight: '900' },
-  listCountLabel: { color: colors.muted, fontSize: 9, fontWeight: '800', letterSpacing: 0.8, textTransform: 'uppercase' },
-  listToolbar: { gap: 9, marginBottom: 8, padding: 10 },
+  listHead: { alignItems: 'flex-start', flexDirection: 'row', gap: 12, marginBottom: 12, paddingHorizontal: 2 },
+  listHeadCopy: { flex: 1, minWidth: 0 },
+  listHeadEyebrow: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.1 },
+  listHeadTitle: { color: colors.text, fontSize: 20, fontWeight: '900', letterSpacing: -0.3, marginTop: 3 },
+  listHeadSerial: { color: colors.faint, fontSize: 11, fontWeight: '700', marginTop: 3 },
+  listHeadAction: { color: colors.cyan, fontSize: 12, fontWeight: '800', marginTop: 2 },
+  toolbar: { gap: 8, marginBottom: 10 },
   searchInput: {
     backgroundColor: colors.surface,
     borderColor: colors.line,
@@ -3455,7 +3512,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     paddingHorizontal: 12,
-    paddingVertical: 9,
+    paddingVertical: 10,
     width: '100%',
   },
   toolbarActions: { flexDirection: 'row', gap: 8 },
@@ -3474,10 +3531,7 @@ const styles = StyleSheet.create({
   toolbarButtonOn: { backgroundColor: colors.cyan, borderColor: colors.cyan },
   toolbarButtonText: { color: colors.muted, fontSize: 12, fontWeight: '800' },
   toolbarButtonTextOn: { color: colors.black },
-  listUtilityRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12, paddingHorizontal: 3 },
-  listUtilityText: { color: colors.faint, fontSize: 11, fontWeight: '700' },
-  listUtilityAction: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
-  monthDivider: { color: colors.muted, fontSize: 11, fontWeight: '900', letterSpacing: 1.1, marginBottom: 8, marginTop: 10, textTransform: 'uppercase' },
+  filterNote: { color: colors.faint, fontSize: 11, fontWeight: '700', marginBottom: 10, paddingHorizontal: 3 },
   clearFiltersButton: { marginTop: spacing.md },
   detailHint: { color: colors.faint, fontSize: 11, lineHeight: 16, marginTop: 4 },
   cylinderBlock: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, marginTop: spacing.md, paddingTop: spacing.md },
@@ -3490,7 +3544,6 @@ const styles = StyleSheet.create({
   emptyBody: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6, textAlign: 'center' },
 
   primaryCta: { marginTop: 8 },
-  downloadButton: { marginTop: 10 },
   dlBanner: {
     alignItems: 'center',
     backgroundColor: 'rgba(112,226,163,0.1)',
@@ -3572,11 +3625,6 @@ const styles = StyleSheet.create({
   logRowSerial: { color: colors.faint, fontSize: 10, fontWeight: '700' },
   logRowMeta: { color: colors.muted, fontSize: 11, marginTop: 3 },
 
-  folderTopRow: { alignItems: 'center', flexDirection: 'row' },
-  rankChip: { borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, marginRight: 12, paddingHorizontal: 10, paddingVertical: 6 },
-  rankChipOn: { backgroundColor: 'rgba(112,221,246,0.12)', borderColor: colors.cyan },
-  rankChipText: { color: colors.faint, fontSize: 11, fontWeight: '800' },
-  rankChipTextOn: { color: colors.cyan },
 
   profileCard: { overflow: 'hidden', paddingTop: 15 },
   profileCardFullscreen: { borderRadius: radii.lg, flex: 1, marginBottom: 0, paddingBottom: 8, paddingHorizontal: 12, paddingTop: 10 },

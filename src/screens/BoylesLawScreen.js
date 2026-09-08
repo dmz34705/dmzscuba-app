@@ -1,259 +1,431 @@
-import { useMemo, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScreenHeader } from '../components/AppShell';
+import BoyleScene from '../features/boylesLaw/BoyleScene';
+import {
+  BURST_AT,
+  MAX_DEPTH,
+  TOUR_STEPS,
+  boyle,
+  breathCost,
+  clamp,
+  depthLabel,
+  gasMinutesRemaining,
+  gasUseRate,
+  gateMet,
+  gateProgress,
+  localizeStep,
+} from '../features/boylesLaw/model';
+import { colors } from '../theme';
 
-import { ScreenHeader, SectionLabel } from '../components/AppShell';
-import { BalloonGraphic, BubbleField, DiverGraphic, WaveLine } from '../components/DiveIllustrations';
-import { Card, PrimaryButton, ProgressBar, SecondaryButton, Stat } from '../components/Ui';
-import { boylesState, clamp, depthLabel } from '../lib/divePhysics';
-import { colors, radii, shadow, spacing } from '../theme';
+const TOUR_SEEN_KEY = 'boylesLawTourSeen';
 
-const MAX_DEPTH = 30;
-const DIVER_GEAR = { mask: '#00D68F', wetsuit: '#E24A36', tank: '#8F7BFF', fins: '#F4EA24' };
-
-function ModeButton({ title, body, selected, onPress }) {
+function Dock({ symbol, label, active, onPress }) {
   return (
-    <Pressable accessibilityRole="tab" accessibilityState={{ selected }} onPress={onPress} style={({ pressed }) => [styles.modeButton, selected && styles.modeButtonActive, pressed && styles.pressed]}>
-      <Text style={[styles.modeTitle, selected && styles.modeTitleActive]}>{title}</Text>
-      <Text style={styles.modeBody}>{body}</Text>
+    <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ selected: Boolean(active) }} onPress={onPress} style={[styles.dockBtn, active && styles.dockBtnOn]}>
+      <Text style={styles.dockSymbol}>{symbol}</Text>
+      <Text style={[styles.dockLabel, active && styles.dockLabelOn]} numberOfLines={1}>{label}</Text>
     </Pressable>
   );
 }
 
-export default function BoylesLawScreen({ onBack }) {
+// A soft pulsing ring that nudges a stalled student toward the next action.
+function Pulse({ active, style, children }) {
+  const anim = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    if (!active) { anim.setValue(0); return undefined; }
+    const loop = Animated.loop(Animated.sequence([
+      Animated.timing(anim, { toValue: 1, duration: 700, useNativeDriver: true }),
+      Animated.timing(anim, { toValue: 0, duration: 700, useNativeDriver: true }),
+    ]));
+    loop.start();
+    return () => loop.stop();
+  }, [active]);
+  return (
+    <View style={style}>
+      {children}
+      {active ? <Animated.View pointerEvents="none" style={[StyleSheet.absoluteFill, styles.hintGlow, { opacity: anim.interpolate({ inputRange: [0, 1], outputRange: [0.25, 0.95] }) }]} /> : null}
+    </View>
+  );
+}
+
+export default function BoylesLawScreen({ onBack, appSettings = {} }) {
   const insets = useSafeAreaInsets();
-  const [depth, setDepth] = useState(0);
-  const [unit, setUnit] = useState('m');
+  const [stage, setStage] = useState({ width: 0, height: 0 });
+  const [consoleHeight, setConsoleHeight] = useState(150);
   const [mode, setMode] = useState('compression');
-  const [gasSurfaceEquivalent, setGasSurfaceEquivalent] = useState(1);
+  const [depth, setDepth] = useState(0);
+  const [unit, setUnit] = useState(appSettings.depthUnit === 'ft' ? 'ft' : 'm');
+  const [gasAtm, setGasAtm] = useState(1);
+  const [burst, setBurst] = useState(false);
   const [tankPercent, setTankPercent] = useState(100);
+  const [breathId, setBreathId] = useState(0);
+  const [tourStep, setTourStep] = useState(null);
+  const [tourAnswer, setTourAnswer] = useState(null);
+  // Per-step progress the guided flow gates on (reset on every step change).
+  const [stepProgress, setStepProgress] = useState({ breaths: 0, breathsShallow: 0, breathsDeep: 0, burstSeen: false });
 
-  const state = useMemo(() => boylesState(depth, gasSurfaceEquivalent), [depth, gasSurfaceEquivalent]);
-  const isOverexpanded = mode === 'compression' && state.overExpansion > 0.001;
-  const sceneObjectTop = 46 + (depth / MAX_DEPTH) * 160;
-  const balloonSize = clamp(104 * Math.sqrt(state.currentVolume), 48, 174);
+  const state = useMemo(() => boyle(depth, gasAtm), [depth, gasAtm]);
+  const over = mode === 'compression' && !burst && state.overExpansion > 0.02;
+  const rate = gasUseRate(depth);
+  const sealed = gasAtm > 1.02;
 
-  const setModeAndReset = (nextMode) => {
-    setMode(nextMode);
-    setGasSurfaceEquivalent(1);
-    setTankPercent(100);
-  };
+  // Once a sealed gas space swells past the burst threshold it ruptures, and
+  // stays ruptured until the student ties on a new balloon or resets.
+  useEffect(() => {
+    if (mode === 'compression' && !burst && state.volume >= BURST_AT) {
+      setBurst(true);
+      setStepProgress((p) => (p.burstSeen ? p : { ...p, burstSeen: true }));
+    }
+  }, [mode, burst, state.volume]);
+
+  useEffect(() => {
+    let active = true;
+    AsyncStorage.getItem(TOUR_SEEN_KEY).then((seen) => { if (active && !seen) goToTourStep(0); });
+    return () => { active = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Hook point for re-engagement nudges; the guided flow now gates on explicit
+  // task completion instead of an idle timer, so this is currently a no-op.
+  const bumpTourActivity = () => {};
+
+  const sceneHeight = Math.max(300, stage.height - consoleHeight - insets.bottom - 18);
 
   const reset = () => {
-    setDepth(0);
-    setGasSurfaceEquivalent(1);
-    setTankPercent(100);
+    setDepth(0); setGasAtm(1); setBurst(false); setTankPercent(100);
+  };
+  const switchMode = () => {
+    setMode((m) => (m === 'compression' ? 'breathing' : 'compression'));
+    setGasAtm(1); setBurst(false); setTankPercent(100);
   };
 
-  const inflateHere = () => setGasSurfaceEquivalent(state.pressure);
-  const takeBreath = () => setTankPercent((value) => clamp(value - 2.5 * state.pressure, 0, 100));
+  const contextAction = () => {
+    bumpTourActivity();
+    if (burst) { setBurst(false); setGasAtm(1); return; }
+    if (mode === 'breathing') {
+      setTankPercent((value) => clamp(value - breathCost(depth), 0, 100));
+      setBreathId((n) => n + 1);
+      setStepProgress((p) => ({
+        ...p,
+        breaths: p.breaths + 1,
+        breathsShallow: depth <= 5 ? p.breathsShallow + 1 : p.breathsShallow,
+        breathsDeep: depth >= 18 ? p.breathsDeep + 1 : p.breathsDeep,
+      }));
+      return;
+    }
+    setGasAtm((current) => (current > 1.02 ? 1 : state.pressure));
+  };
+  const contextLabel = burst
+    ? 'Tie on a new balloon'
+    : mode === 'breathing'
+      ? (tankPercent <= 0 ? 'Tank empty' : `Take a breath  −${Math.round(breathCost(depth))}%`)
+      : (sealed ? 'Release sealed gas' : 'Fully inflate here');
 
-  const coachText = mode === 'breathing'
-    ? `At ${state.pressure.toFixed(1)} ATA, the same breathing pattern uses about ${state.pressure.toFixed(1)}× the surface gas rate. Check your pressure often and adjust the plan early.`
-    : isOverexpanded
-      ? `The trapped gas is now ${(state.currentVolume).toFixed(2)}× its normal surface size. Never hold your breath during ascent; keep breathing and ascend slowly.`
-      : gasSurfaceEquivalent > 1
-        ? `The balloon was filled at depth. Ascend to watch the trapped gas expand as ambient pressure decreases.`
-        : depth < 5
-          ? 'The largest relative pressure change happens near the surface. Even a short ascent can produce meaningful gas expansion.'
-          : `At ${depthLabel(depth, unit)}, pressure is ${state.pressure.toFixed(1)} ATA and a flexible gas space is about ${state.normalVolume.toFixed(2)}× its surface volume.`;
+  const goToTourStep = (index) => {
+    const step = TOUR_STEPS[index];
+    if (!step) return;
+    setTourStep(index);
+    setTourAnswer(null);
+    setStepProgress({ breaths: 0, breathsShallow: 0, breathsDeep: 0, burstSeen: false });
+    // The closing step is just a hand-off to free play — leave the sim exactly
+    // where the student left it instead of snapping it to a new mode/depth.
+    if (step.isLast) return;
+    setMode(step.mode);
+    setDepth(step.depth);
+    setGasAtm(typeof step.gasAtm === 'number' ? step.gasAtm : 1);
+    setBurst(false);
+    setTankPercent(100);
+  };
+  const startTour = () => goToTourStep(0);
+  const endTour = () => { setTourStep(null); AsyncStorage.setItem(TOUR_SEEN_KEY, '1'); };
+  // Guided-flow copy with `{18m}` depth tokens expanded to the diver's unit.
+  const tourStepData = tourStep === null ? null : localizeStep(TOUR_STEPS[tourStep], unit);
+  const questionLocked = tourStepData?.kind === 'question';
+
+  // Student-flow lock-down: each step exposes only the control it needs.
+  const focus = tourStepData ? (tourStepData.focus || 'none') : 'all';
+  const allow = (control) => focus === 'all' || focus.split('+').includes(control);
+  const depthEnabled = !questionLocked && allow('depth');
+  const sceneLocked = Boolean(tourStepData) && !allow('depth');
+
+  // Action steps gate Next on completing a task on the real controls.
+  const gateCtx = { depth, mode, gasAtm, volume: state.volume, burst, burstSeen: stepProgress.burstSeen, tankPercent, breaths: stepProgress.breaths, breathsShallow: stepProgress.breathsShallow, breathsDeep: stepProgress.breathsDeep };
+  const checklist = tourStepData?.kind === 'action' ? gateProgress(tourStepData, gateCtx) : [];
+  const taskDone = tourStepData?.kind !== 'action' || gateMet(tourStepData, gateCtx);
+  const tourCanAdvance = !tourStepData
+    || (tourStepData.kind === 'question' ? tourAnswer !== null : taskDone);
+  const highlight = new Set(tourStepData && !taskDone ? (tourStepData.highlight || []) : []);
+
+  const selectTourAnswer = (index) => { setTourAnswer(index); bumpTourActivity(); };
+  const tourNext = () => { bumpTourActivity(); if (tourStepData?.isLast) endTour(); else goToTourStep(tourStep + 1); };
+  const tourBack = () => { bumpTourActivity(); goToTourStep(tourStep - 1); };
+
+  // Prediction questions move on by themselves ~2.5s after the student answers,
+  // so a correct/incorrect check doesn't stall waiting for a manual Next tap.
+  useEffect(() => {
+    if (tourStepData?.kind !== 'question' || tourAnswer === null) return undefined;
+    const timer = setTimeout(() => {
+      if (tourStepData.isLast) endTour();
+      else goToTourStep(tourStep + 1);
+    }, 2500);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tourStep, tourAnswer]);
+
+  const showContext = allow('context') || burst;
+  const showDock = focus === 'all' || focus === 'mode';
+
+  const gasMinutes = gasMinutesRemaining(depth, tankPercent);
+
+  // Always-on readout drawn onto the scene (replaces the card that used to
+  // cover the demo). Left corner for the balloon, right corner for the diver.
+  const hudLines = mode === 'compression'
+    ? (burst
+        ? [
+            { t: 'BOYLE’S LAW', k: 'title' },
+            { t: 'RUPTURED', k: 'value', danger: true },
+            { t: `sealed gas hit ${BURST_AT.toFixed(1)}×`, k: 'sub' },
+          ]
+        : sealed
+          ? [
+              { t: 'BOYLE’S LAW', k: 'title' },
+              { t: `sealed: ${gasAtm.toFixed(1)} L`, k: 'value' },
+              { t: `now ${state.volume.toFixed(2)} L`, k: 'value', danger: over },
+              { t: `${state.pressure.toFixed(1)} ATA · ${depthLabel(depth, unit)}`, k: 'sub' },
+            ]
+          : [
+              { t: 'BOYLE’S LAW', k: 'title' },
+              { t: 'P₁V₁ = P₂V₂', k: 'value' },
+              { t: `1.00 L → ${state.neutralVolume.toFixed(2)} L`, k: 'value' },
+              { t: `${state.pressure.toFixed(1)} ATA · ${depthLabel(depth, unit)}`, k: 'sub' },
+            ])
+    : [
+        { t: 'GAS USE', k: 'title' },
+        { t: `${rate.toFixed(1)}× surface rate`, k: 'value' },
+        { t: '1·2·3·4× at 1–4 ATA', k: 'sub' },
+        { t: `~${Math.round(gasMinutes)}m left (${Math.round(gasMinutes * rate)}m at top)`, k: 'sub' },
+      ];
+  const hudHighlight = highlight.has('law') || highlight.has('gas');
+
+  const headerAction = (
+    <Pressable accessibilityRole="button" accessibilityLabel="Take the guided tour" onPress={startTour} style={styles.headerAction}>
+      <Text style={styles.headerActionText}>TOUR</Text>
+    </Pressable>
+  );
 
   return (
     <View style={styles.screen}>
-      <ScreenHeader title="Boyle’s Law Lab" onBack={onBack} />
-      <ScrollView contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + 32 }]} showsVerticalScrollIndicator={false}>
-        <View style={styles.intro}>
-          <SectionLabel>DMZ SCUBA TRAINING</SectionLabel>
-          <Text style={styles.title}>Pressure changes everything.</Text>
-          <Text style={styles.subtitle}>Descend to compress a flexible gas space, inflate it at depth, or switch modes to compare breathing-gas use.</Text>
-        </View>
+      <ScreenHeader title="Boyle’s Law Lab" onBack={onBack} action={headerAction} />
+      <View style={styles.stage} onLayout={(e) => setStage(e.nativeEvent.layout)}>
+        {stage.width > 0 ? (
+          <BoyleScene
+            width={stage.width}
+            height={sceneHeight}
+            depth={depth}
+            onDepth={(d) => { setDepth(d); bumpTourActivity(); }}
+            mode={mode}
+            volume={state.volume}
+            over={over}
+            burst={burst}
+            tankPercent={tankPercent}
+            breathId={breathId}
+            unit={unit}
+            hudLines={hudLines}
+            hudHighlight={hudHighlight}
+            locked={sceneLocked}
+          />
+        ) : null}
 
-        <View accessibilityRole="tablist" style={styles.modeRow}>
-          <ModeButton body="See gas shrink and expand" onPress={() => setModeAndReset('compression')} selected={mode === 'compression'} title="Compression" />
-          <ModeButton body="Compare tank use by depth" onPress={() => setModeAndReset('breathing')} selected={mode === 'breathing'} title="Breathing" />
-        </View>
+        <View pointerEvents="box-none" style={[styles.bottomStack, { left: 12 + insets.left, right: 12 + insets.right, bottom: insets.bottom + 8 }]}>
 
-        <View style={styles.statsRow}>
-          <Stat accent={colors.cyan} label="Pressure" value={`${state.pressure.toFixed(1)} ATA`} style={styles.stat} />
-          <Stat label={mode === 'compression' ? 'Gas size now' : 'Gas-use rate'} value={`${(mode === 'compression' ? state.currentVolume : state.pressure).toFixed(2)}×`} style={styles.stat} />
-        </View>
-
-        <View style={[styles.sceneShell, isOverexpanded && styles.sceneShellDanger]}>
-          <LinearGradient colors={['#8BC9E7', '#126E9E', '#062A49']} locations={[0, 0.42, 1]} style={styles.scene}>
-            <BubbleField />
-            <View style={styles.surfaceLine}><WaveLine /></View>
-            <View style={styles.sceneHud}>
-              <Text style={styles.sceneHudDepth}>{depthLabel(depth, unit)}</Text>
-              <Text style={[styles.sceneHudMode, isOverexpanded && { color: colors.danger }]}>{isOverexpanded ? 'OVEREXPANSION' : mode === 'compression' ? 'COMPRESSION MODE' : 'BREATHING MODE'}</Text>
-            </View>
-            {mode === 'compression' ? (
-              <View style={[styles.balloonWrap, { top: sceneObjectTop, height: balloonSize * 1.42, width: balloonSize, marginLeft: -balloonSize / 2 }]}>
-                <BalloonGraphic color="#2F8BFF" overexpanded={isOverexpanded} size={balloonSize} />
-              </View>
-            ) : (
-              <View style={[styles.diverWrap, { top: sceneObjectTop + 15 }]}>
-                <DiverGraphic colors={DIVER_GEAR} width={185} />
-                <View style={styles.tankBadge}>
-                  <Text style={styles.tankBadgeLabel}>TANK</Text>
-                  <Text style={[styles.tankBadgeValue, tankPercent <= 20 && { color: colors.danger }]}>{Math.round(tankPercent)}%</Text>
+          <View style={styles.console} onLayout={(e) => setConsoleHeight(e.nativeEvent.layout.height)}>
+            {tourStepData ? (
+              <View style={styles.tourRibbon}>
+                <View style={styles.tourTopRow}>
+                  <View style={styles.tourDots}>{TOUR_STEPS.map((_, i) => <View key={i} style={[styles.tourDot, i === tourStep && styles.tourDotOn]} />)}</View>
+                  <Pressable accessibilityRole="button" accessibilityLabel="Skip tour" hitSlop={8} onPress={endTour}><Text style={styles.tourSkip}>✕</Text></Pressable>
                 </View>
-              </View>
-            )}
-            <View style={styles.depthRuler}>
-              {[0, 10, 20, 30].map((mark) => (
-                <View key={mark} style={[styles.rulerMark, { top: 21 + (mark / MAX_DEPTH) * 256 }]}>
-                  <View style={styles.rulerLine} />
-                  <Text style={styles.rulerText}>{unit === 'ft' ? Math.round(mark * 3.28084) : mark}</Text>
+                <View style={styles.tourTitleRow}>
+                  <Pressable accessibilityRole="button" accessibilityLabel="Previous step" disabled={tourStep === 0} hitSlop={6} onPress={tourBack} style={[styles.tourNavBtn, tourStep === 0 && styles.tourNavBtnHidden]}>
+                    <Text style={styles.tourNavGlyph}>‹</Text>
+                  </Pressable>
+                  {tourStepData.kind === 'question' ? <Text style={styles.tourTag} numberOfLines={1}>{tourStepData.tag}</Text> : <Text style={styles.tourTitle} numberOfLines={1}>{tourStepData.title}</Text>}
+                  <Pulse active={tourCanAdvance} style={styles.tourNavPulseWrap}>
+                    <Pressable accessibilityRole="button" accessibilityLabel={tourStepData.isLast ? 'Finish tour' : 'Next step'} disabled={!tourCanAdvance} hitSlop={6} onPress={tourNext} style={[styles.tourNavBtn, !tourCanAdvance && styles.tourNavBtnDisabled]}>
+                      <Text style={[styles.tourNavGlyph, !tourCanAdvance && styles.tourNavGlyphDisabled]}>{tourStepData.isLast ? '✓' : '›'}</Text>
+                    </Pressable>
+                  </Pulse>
                 </View>
-              ))}
-            </View>
-            {mode === 'breathing' && (
-              <View style={styles.tankBarWrap}>
-                <ProgressBar color={tankPercent <= 20 ? colors.danger : colors.good} value={tankPercent / 100} />
+                {tourStepData.kind === 'question' ? <Text style={styles.tourQuestionTitle} numberOfLines={1}>{tourStepData.title}</Text> : null}
+                <Text style={styles.tourBody} numberOfLines={3}>{tourStepData.body}</Text>
+                {tourStepData.kind === 'action' ? (
+                  <View style={styles.taskBox}>
+                    {taskDone ? (
+                      <Text style={styles.taskDoneHead}>✓ {tourStepData.done || 'Done — tap Next.'}</Text>
+                    ) : (
+                      <>
+                        <Text style={styles.taskHead}>▸ {tourStepData.task}</Text>
+                        {checklist.length > 1 ? checklist.map((item) => (
+                          <View key={item.label} style={styles.taskRow}>
+                            <Text style={[styles.taskCheck, item.done && styles.taskCheckDone]}>{item.done ? '✓' : '○'}</Text>
+                            <Text style={[styles.taskText, item.done && styles.taskTextDone]}>{item.label}</Text>
+                          </View>
+                        )) : null}
+                      </>
+                    )}
+                  </View>
+                ) : null}
+                {tourStepData.kind === 'question' ? (
+                  <>
+                    <Pulse active={tourAnswer === null} style={styles.tourPulseWrap}>
+                      <View style={styles.tourAnswerRow}>
+                        {tourStepData.choices.map((choice, i) => {
+                          const picked = tourAnswer === i;
+                          const showRight = tourAnswer !== null && i === tourStepData.correctIndex;
+                          const showWrong = picked && i !== tourStepData.correctIndex;
+                          return (
+                            <Pressable key={choice} accessibilityRole="button" accessibilityState={{ selected: picked }} disabled={tourAnswer !== null} onPress={() => selectTourAnswer(i)} style={[styles.tourAnswerChip, showRight && styles.tourAnswerRight, showWrong && styles.tourAnswerWrong]}>
+                              <Text style={[styles.tourAnswerText, (showRight || showWrong) && styles.tourAnswerTextOn]}>{choice}</Text>
+                            </Pressable>
+                          );
+                        })}
+                      </View>
+                    </Pulse>
+                    {tourAnswer !== null ? (
+                      <Text style={styles.tourFeedback}>{tourAnswer === tourStepData.correctIndex ? tourStepData.feedbackRight : tourStepData.feedbackWrong}</Text>
+                    ) : null}
+                  </>
+                ) : null}
               </View>
-            )}
-          </LinearGradient>
+            ) : null}
+
+            <View style={[styles.readoutRow, (over || burst) && styles.readoutRowDanger]}>
+              <View style={styles.readoutCell}><Text style={styles.readoutLabel}>PRESSURE</Text><Text style={styles.readoutValue}>{state.pressure.toFixed(1)} ATA</Text></View>
+              <View style={styles.readoutDivider} />
+              {mode === 'compression' ? (
+                <View style={styles.readoutCell}><Text style={styles.readoutLabel}>GAS SIZE</Text><Text style={[styles.readoutValue, (over || burst) && styles.readoutValueDanger]}>{burst ? 'BURST' : `${state.volume.toFixed(2)}×${over ? '  ⚠' : ''}`}</Text></View>
+              ) : (
+                <View style={styles.readoutCell}><Text style={styles.readoutLabel}>GAS USE</Text><Text style={styles.readoutValue}>{rate.toFixed(1)}× rate</Text></View>
+              )}
+              <View style={styles.readoutDivider} />
+              {mode === 'compression' ? (
+                <View style={styles.readoutCell}><Text style={styles.readoutLabel}>SEALED FILL</Text><Text style={styles.readoutValue}>{burst ? '—' : `${gasAtm.toFixed(2)}×`}</Text></View>
+              ) : (
+                <View style={styles.readoutCell}><Text style={styles.readoutLabel}>TANK</Text><Text style={[styles.readoutValue, tankPercent <= 20 && styles.readoutValueDanger]}>{Math.round(tankPercent)}%</Text></View>
+              )}
+            </View>
+
+            <Pulse active={highlight.has('depth')} style={styles.tourPulseWrap}>
+              <View style={styles.depthRow}>
+                <Pressable accessibilityRole="button" accessibilityLabel="Decrease depth" disabled={!depthEnabled} onPress={() => { setDepth((d) => Math.max(0, d - 1)); bumpTourActivity(); }} style={[styles.stepBtn, !depthEnabled && styles.stepBtnDisabled]}><Text style={styles.stepTxt}>−</Text></Pressable>
+                <View style={styles.depthCore}>
+                  <View style={styles.depthHeadRow}>
+                    <Text style={styles.depthText}>{depthLabel(depth, unit)}</Text>
+                    <Pressable accessibilityRole="button" accessibilityLabel="Toggle depth units" onPress={() => setUnit((u) => (u === 'ft' ? 'm' : 'ft'))} style={styles.unitChip}><Text style={styles.unitChipText}>{unit}</Text></Pressable>
+                  </View>
+                  <Slider accessibilityLabel="Depth" disabled={!depthEnabled} minimumValue={0} maximumValue={MAX_DEPTH} step={0.1} value={depth} onValueChange={(d) => { setDepth(d); bumpTourActivity(); }} minimumTrackTintColor={colors.cyan} maximumTrackTintColor="#26465D" thumbTintColor={colors.white} />
+                </View>
+                <Pressable accessibilityRole="button" accessibilityLabel="Increase depth" disabled={!depthEnabled} onPress={() => { setDepth((d) => Math.min(MAX_DEPTH, d + 1)); bumpTourActivity(); }} style={[styles.stepBtn, !depthEnabled && styles.stepBtnDisabled]}><Text style={styles.stepTxt}>+</Text></Pressable>
+              </View>
+            </Pulse>
+
+            {showContext ? (
+              <Pulse active={highlight.has('context')} style={styles.tourPulseWrap}>
+                <Pressable
+                  accessibilityRole="button"
+                  disabled={mode === 'breathing' && !burst && tankPercent <= 0}
+                  onPress={contextAction}
+                  style={[styles.contextBtn, ((sealed && mode === 'compression') || burst) && styles.contextBtnAlt, mode === 'breathing' && !burst && tankPercent <= 0 && styles.contextBtnDisabled]}
+                >
+                  <Text style={styles.contextText}>{contextLabel}</Text>
+                </Pressable>
+              </Pulse>
+            ) : null}
+
+            {showDock ? (
+              <Pulse active={highlight.has('mode')} style={styles.tourPulseWrap}>
+                <View style={styles.dockRow}>
+                  <Dock symbol={mode === 'compression' ? '🫁' : '🎈'} label={mode === 'compression' ? 'Breathing mode' : 'Balloon mode'} onPress={switchMode} />
+                  {focus === 'all' ? <Dock symbol="↺" label="Reset" onPress={reset} /> : null}
+                </View>
+              </Pulse>
+            ) : null}
+          </View>
         </View>
-
-        <Card style={styles.controlsCard}>
-          <View style={styles.controlHead}>
-            <View>
-              <Text style={styles.cardTitle}>Depth control</Text>
-              <Text style={styles.depthValue}>{depthLabel(depth, unit)}</Text>
-            </View>
-            <View style={styles.unitRow}>
-              <SecondaryButton label="m" onPress={() => setUnit('m')} selected={unit === 'm'} style={styles.unitButton} />
-              <SecondaryButton label="ft" onPress={() => setUnit('ft')} selected={unit === 'ft'} style={styles.unitButton} />
-            </View>
-          </View>
-          <Slider accessibilityLabel="Depth" maximumTrackTintColor="rgba(255,255,255,0.16)" maximumValue={MAX_DEPTH} minimumTrackTintColor={colors.cyan} minimumValue={0} onValueChange={setDepth} step={1} thumbTintColor={colors.white} value={depth} />
-          <View style={styles.presetRow}>
-            {[0, 10, 20, 30].map((value) => <SecondaryButton key={value} label={unit === 'ft' ? `${Math.round(value * 3.28084)} ft` : `${value} m`} onPress={() => setDepth(value)} selected={depth === value} style={styles.presetButton} />)}
-          </View>
-        </Card>
-
-        {mode === 'compression' ? (
-          <Card style={styles.actionCard}>
-            <Text style={styles.cardTitle}>Balloon setup</Text>
-            <Text style={styles.cardHelper}>“Fully inflate” adds enough gas at the current depth to make the balloon full-sized there. Then ascend without releasing that gas.</Text>
-            <PrimaryButton label="Fully inflate here" onPress={inflateHere} style={styles.primaryAction} />
-            <SecondaryButton label="Reset dive cycle" onPress={reset} />
-          </Card>
-        ) : (
-          <Card style={styles.actionCard}>
-            <View style={styles.controlHead}>
-              <View>
-                <Text style={styles.cardTitle}>Breathing-gas simulator</Text>
-                <Text style={styles.cardHelper}>Each tap represents the same breathing pattern.</Text>
-              </View>
-              <Text style={[styles.tankReadout, tankPercent <= 20 && { color: colors.danger }]}>{Math.round(tankPercent)}%</Text>
-            </View>
-            <PrimaryButton disabled={tankPercent <= 0} label={tankPercent <= 0 ? 'Tank empty' : 'Take a breath'} onPress={takeBreath} style={styles.primaryAction} />
-            <SecondaryButton label="Reset tank" onPress={() => setTankPercent(100)} />
-          </Card>
-        )}
-
-        <Card style={[styles.coachCard, isOverexpanded && styles.coachCardDanger]}>
-          <Text style={[styles.coachLabel, isOverexpanded && { color: colors.danger }]}>COACH CALLOUT</Text>
-          <Text style={styles.coachText}>{coachText}</Text>
-        </Card>
-
-        <Card style={styles.lawCard}>
-          <Text style={styles.cardTitle}>Quick law check</Text>
-          <View style={styles.formulaBox}><Text style={styles.formula}>P₁ × V₁ = P₂ × V₂</Text></View>
-          <View style={styles.lawRow}><Text style={styles.lawLabel}>Given</Text><Text style={styles.lawValue}>V₁ = 1.00 L at the surface</Text></View>
-          <View style={styles.lawRow}><Text style={styles.lawLabel}>At depth</Text><Text style={styles.lawValue}>P₂ = {state.pressure.toFixed(1)} ATA at {depthLabel(depth, unit)}</Text></View>
-          <View style={[styles.lawRow, styles.lawResultRow]}><Text style={styles.lawLabel}>Result</Text><Text style={styles.lawResult}>V₂ = {state.normalVolume.toFixed(2)} L</Text></View>
-        </Card>
-
-        <Card>
-          <Text style={styles.cardTitle}>{mode === 'compression' ? 'What the model shows' : 'Gas-use comparison'}</Text>
-          {mode === 'compression' ? (
-            <>
-              <View style={styles.readoutRow}><Text style={styles.readoutLabel}>Normal volume at this depth</Text><Text style={styles.readoutValue}>{state.normalVolume.toFixed(2)}×</Text></View>
-              <View style={styles.readoutRow}><Text style={styles.readoutLabel}>Current balloon volume</Text><Text style={styles.readoutValue}>{state.currentVolume.toFixed(2)}×</Text></View>
-              <View style={styles.readoutRow}><Text style={styles.readoutLabel}>Ascent expansion</Text><Text style={[styles.readoutValue, isOverexpanded && { color: colors.danger }]}>{isOverexpanded ? `${Math.round(state.overExpansion * 100)}% above surface size` : 'No overexpansion'}</Text></View>
-            </>
-          ) : (
-            <>
-              <Text style={styles.proportionCopy}>With the same breathing pattern, gas use rises roughly with ambient pressure.</Text>
-              {[1, 2, 3, 4].map((ata) => (
-                <View key={ata} style={styles.ataRow}><Text style={styles.ataLabel}>{ata} ATA</Text><ProgressBar color={ata === Math.round(state.pressure) ? colors.gold : colors.cyan} value={ata / 4} /><Text style={styles.ataValue}>{ata}×</Text></View>
-              ))}
-            </>
-          )}
-        </Card>
-
-        <Text style={styles.disclaimer}>Training visualization only. Use formal dive training, your dive computer, and an appropriate gas plan for real dives.</Text>
-      </ScrollView>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { backgroundColor: colors.background, flex: 1 },
-  content: { paddingHorizontal: spacing.md, paddingTop: spacing.lg },
-  intro: { marginBottom: spacing.lg },
-  title: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 33 },
-  subtitle: { color: colors.muted, fontSize: 14, lineHeight: 21, marginTop: 10 },
-  modeRow: { flexDirection: 'row', gap: 9, marginBottom: 12 },
-  modeButton: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flex: 1, minHeight: 80, padding: 12 },
-  modeButtonActive: { backgroundColor: 'rgba(112,221,246,.12)', borderColor: colors.cyan },
-  modeTitle: { color: colors.text, fontSize: 14, fontWeight: '800' },
-  modeTitleActive: { color: colors.cyan },
-  modeBody: { color: colors.muted, fontSize: 10, lineHeight: 14, marginTop: 4 },
-  statsRow: { flexDirection: 'row', gap: 10, marginBottom: 12 },
-  stat: { flex: 1 },
-  sceneShell: { borderColor: colors.lineStrong, borderRadius: radii.lg, borderWidth: 1, marginBottom: 12, overflow: 'hidden', ...shadow },
-  sceneShellDanger: { borderColor: colors.danger, shadowColor: colors.danger },
-  scene: { height: 340, overflow: 'hidden' },
-  surfaceLine: { left: 0, position: 'absolute', right: 0, top: 18 },
-  sceneHud: { backgroundColor: 'rgba(2,10,18,0.64)', borderColor: 'rgba(255,255,255,0.19)', borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', justifyContent: 'space-between', left: 12, paddingHorizontal: 12, paddingVertical: 8, position: 'absolute', right: 12, top: 12 },
-  sceneHudDepth: { color: colors.text, fontSize: 12, fontWeight: '900' },
-  sceneHudMode: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1 },
-  balloonWrap: { left: '50%', position: 'absolute' },
-  diverWrap: { alignItems: 'center', left: '17%', position: 'absolute' },
-  tankBadge: { alignItems: 'center', backgroundColor: 'rgba(2,10,18,.74)', borderColor: colors.lineStrong, borderRadius: radii.sm, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 6, position: 'absolute', right: -8, top: 4 },
-  tankBadgeLabel: { color: colors.muted, fontSize: 8, fontWeight: '900', letterSpacing: 1 },
-  tankBadgeValue: { color: colors.good, fontSize: 16, fontWeight: '900' },
-  tankBarWrap: { bottom: 14, left: 18, position: 'absolute', right: 55 },
-  depthRuler: { bottom: 13, position: 'absolute', right: 12, top: 20, width: 31 },
-  rulerMark: { alignItems: 'center', flexDirection: 'row', position: 'absolute', right: 0 },
-  rulerLine: { backgroundColor: 'rgba(255,255,255,.52)', height: 1, marginRight: 4, width: 8 },
-  rulerText: { color: 'rgba(255,255,255,.75)', fontSize: 8, fontWeight: '700', width: 19 },
-  controlsCard: { marginBottom: 12 },
-  controlHead: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
-  cardTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },
-  cardHelper: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4 },
-  depthValue: { color: colors.cyan, fontSize: 24, fontWeight: '900', marginTop: 2 },
-  unitRow: { flexDirection: 'row', gap: 6 },
-  unitButton: { minHeight: 36, minWidth: 48, paddingHorizontal: 11, paddingVertical: 7 },
-  presetRow: { flexDirection: 'row', gap: 6 },
-  presetButton: { flex: 1, minHeight: 38, paddingHorizontal: 3, paddingVertical: 7 },
-  actionCard: { marginBottom: 12 },
-  primaryAction: { marginBottom: 8, marginTop: 15 },
-  tankReadout: { color: colors.good, fontSize: 24, fontWeight: '900' },
-  coachCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)', marginBottom: 12 },
-  coachCardDanger: { backgroundColor: 'rgba(85,24,31,.92)', borderColor: 'rgba(255,127,127,.7)' },
-  coachLabel: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.5 },
-  coachText: { color: colors.text, fontSize: 15, fontWeight: '700', lineHeight: 22, marginTop: 8 },
-  lawCard: { marginBottom: 12 },
-  formulaBox: { alignItems: 'center', backgroundColor: colors.backgroundRaised, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, marginVertical: 14, padding: 13 },
-  formula: { color: colors.cyan, fontSize: 22, fontWeight: '900', letterSpacing: 1 },
-  lawRow: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, gap: 5, paddingVertical: 10 },
-  lawResultRow: { borderBottomWidth: 0 },
-  lawLabel: { color: colors.faint, fontSize: 10, fontWeight: '800', letterSpacing: 1, textTransform: 'uppercase' },
-  lawValue: { color: colors.muted, fontSize: 13, lineHeight: 18 },
-  lawResult: { color: colors.text, fontSize: 18, fontWeight: '900' },
-  readoutRow: { alignItems: 'center', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', justifyContent: 'space-between', minHeight: 49 },
-  readoutLabel: { color: colors.muted, flex: 1, fontSize: 12, paddingRight: 12 },
-  readoutValue: { color: colors.text, fontSize: 13, fontWeight: '800', maxWidth: '48%', textAlign: 'right' },
-  proportionCopy: { color: colors.muted, fontSize: 12, lineHeight: 18, marginBottom: 13, marginTop: 6 },
-  ataRow: { alignItems: 'center', flexDirection: 'row', gap: 9, marginBottom: 12 },
-  ataLabel: { color: colors.muted, fontSize: 11, fontWeight: '700', width: 39 },
-  ataValue: { color: colors.text, fontSize: 11, fontWeight: '800', textAlign: 'right', width: 22 },
-  disclaimer: { color: colors.faint, fontSize: 11, lineHeight: 17, marginHorizontal: 8, marginTop: 16, textAlign: 'center' },
-  pressed: { opacity: 0.75 },
+  screen: { flex: 1, backgroundColor: colors.background },
+  stage: { flex: 1, backgroundColor: '#031425' },
+  headerAction: { alignItems: 'center', justifyContent: 'center', height: 40, paddingHorizontal: 12, borderRadius: 999, borderWidth: 1, borderColor: colors.lineStrong },
+  headerActionText: { color: colors.cyan, fontSize: 11, fontWeight: '900', letterSpacing: 0.8 },
+  bottomStack: { position: 'absolute', gap: 8 },
+  readoutRow: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surfaceSoft, borderRadius: 12, borderWidth: 1, borderColor: colors.line, paddingVertical: 7 },
+  readoutRowDanger: { borderColor: colors.danger },
+  readoutCell: { flex: 1, alignItems: 'center', gap: 2 },
+  readoutDivider: { width: 1, height: 22, backgroundColor: colors.line },
+  readoutLabel: { color: colors.faint, fontSize: 8.5, fontWeight: '900', letterSpacing: 1 },
+  readoutValue: { color: colors.text, fontSize: 13, fontWeight: '800' },
+  readoutValueDanger: { color: colors.danger },
+  console: { backgroundColor: colors.surfaceGlass, borderRadius: 18, borderWidth: 1, borderColor: colors.line, padding: 10, gap: 8 },
+  tourRibbon: { gap: 3, marginBottom: 2, paddingBottom: 8, borderBottomWidth: 1, borderBottomColor: colors.line },
+  tourTopRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  tourDots: { flexDirection: 'row', gap: 4 },
+  tourDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: colors.line },
+  tourDotOn: { backgroundColor: colors.cyan },
+  tourSkip: { color: colors.faint, fontSize: 13, fontWeight: '700' },
+  tourTitleRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  tourNavBtn: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceSoft, borderWidth: 1, borderColor: colors.line },
+  tourNavBtnHidden: { opacity: 0 },
+  tourNavBtnDisabled: { opacity: 0.35 },
+  tourNavGlyph: { color: colors.cyan, fontSize: 14, fontWeight: '900', marginTop: -1 },
+  tourNavGlyphDisabled: { color: colors.muted },
+  tourNavPulseWrap: { borderRadius: 13 },
+  tourPulseWrap: { borderRadius: 13 },
+  tourTitle: { flex: 1, color: colors.text, fontSize: 14, fontWeight: '800', textAlign: 'center' },
+  tourTag: { flex: 1, color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.2, textTransform: 'uppercase', textAlign: 'center' },
+  tourQuestionTitle: { color: colors.text, fontSize: 13, fontWeight: '800', textAlign: 'center', marginTop: 1 },
+  tourBody: { color: colors.muted, fontSize: 11, lineHeight: 15, textAlign: 'center' },
+  tourAnswerRow: { flexDirection: 'row', gap: 7, marginTop: 6, justifyContent: 'center' },
+  tourAnswerChip: { minHeight: 32, paddingHorizontal: 16, borderRadius: 10, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surfaceSoft },
+  tourAnswerRight: { borderColor: colors.good, backgroundColor: '#123B2C' },
+  tourAnswerWrong: { borderColor: colors.warning, backgroundColor: '#3B2A12' },
+  tourAnswerText: { color: colors.muted, fontSize: 12, fontWeight: '800' },
+  tourAnswerTextOn: { color: colors.text },
+  tourFeedback: { color: colors.cyan, fontSize: 11, lineHeight: 15, textAlign: 'center', marginTop: 6 },
+  taskBox: { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.line, gap: 5 },
+  taskHead: { color: colors.gold, fontSize: 12, fontWeight: '800', textAlign: 'center' },
+  taskRow: { flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'center' },
+  taskCheck: { color: colors.faint, fontSize: 13, fontWeight: '900', width: 14, textAlign: 'center' },
+  taskCheckDone: { color: colors.good },
+  taskText: { color: colors.text, fontSize: 12, fontWeight: '700' },
+  taskTextDone: { color: colors.muted, textDecorationLine: 'line-through' },
+  taskDoneHead: { color: colors.good, fontSize: 11, lineHeight: 15, fontWeight: '700', textAlign: 'center' },
+  depthRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  stepBtn: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceSoft, borderWidth: 1, borderColor: colors.line },
+  stepBtnDisabled: { opacity: 0.35 },
+  stepTxt: { color: colors.text, fontSize: 18, fontWeight: '800', marginTop: -2 },
+  depthCore: { flex: 1, gap: 2 },
+  depthHeadRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  depthText: { color: colors.text, fontSize: 17, fontWeight: '800' },
+  unitChip: { paddingHorizontal: 10, paddingVertical: 3, borderRadius: 999, backgroundColor: colors.surfaceSoft, borderWidth: 1, borderColor: colors.line },
+  unitChipText: { color: colors.cyan, fontSize: 11, fontWeight: '800', textTransform: 'uppercase' },
+  contextBtn: { minHeight: 46, borderRadius: 13, alignItems: 'center', justifyContent: 'center', backgroundColor: '#16435B', borderWidth: 1, borderColor: colors.cyan },
+  contextBtnAlt: { backgroundColor: colors.surfaceSoft, borderColor: colors.line },
+  contextBtnDisabled: { opacity: 0.4, borderColor: colors.line },
+  contextText: { color: colors.text, fontSize: 14, fontWeight: '800' },
+  dockRow: { flexDirection: 'row', gap: 7 },
+  dockBtn: { flex: 1, minHeight: 50, alignItems: 'center', justifyContent: 'center', borderRadius: 13, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.surfaceSoft, paddingVertical: 6, gap: 2 },
+  dockBtnOn: { borderColor: colors.cyan, backgroundColor: '#15374A' },
+  dockSymbol: { fontSize: 16 },
+  dockLabel: { color: colors.muted, fontSize: 10, fontWeight: '700' },
+  dockLabelOn: { color: colors.cyan },
+  hintGlow: { borderRadius: 14, borderWidth: 2, borderColor: colors.gold },
 });

@@ -1335,11 +1335,22 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /allowsMultipleSelection: true/);
   assert.match(screen, /exif: true/);
   assert.match(screen, /buildPhotoImportPlan/);
+  assert.match(screen, /persistDivePhoto/);
+  assert.match(screen, /repairDivePhoto/);
+  assert.match(screen, /Recover missing photo links/);
   assert.match(screen, /reassignPhotoMatch/);
   assert.match(screen, /handleRemovePhoto/);
   assert.match(screen, /No photos were uploaded/);
   assert.match(hook, /const attachPhotosToDive = useCallback/);
   assert.match(hook, /const removePhotoFromDive = useCallback/);
+  assert.match(hook, /const replacePhotoOnDive = useCallback/);
+  const photoStorageSrc = read('src', 'lib', 'diveLog', 'photoStorage.js');
+  assert.match(photoStorageSrc, /expo-file-system\/legacy/);
+  assert.match(photoStorageSrc, /documentDirectory/);
+  assert.match(photoStorageSrc, /FileSystem\.copyAsync/);
+  assert.match(photoStorageSrc, /FileSystem\.getInfoAsync/);
+  assert.match(photoStorageSrc, /removeManagedDivePhoto/);
+  assert.match(photoStorageSrc, /repairDivePhoto/);
 
   // The gap between the picker and the review sheet shows a spinner too.
   assert.match(screen, /photoScanning/);
@@ -1419,12 +1430,29 @@ function memoryStorage(seed = {}) {
   const keptPhotos = galPhotos.filter((p) => keptIds.has(p.diveId));
   assert.deepEqual(keptPhotos.map((p) => p.id), ['p1', 'p2'], 'A depth filter drops the shallow dive’s photos.');
 
-  // sortGalleryPhotos orders by capture time and by dive depth.
+  // sortGalleryPhotos orders by capture time, and the depth sorts rank on the
+  // photo's own depth-at-capture (photoDepthMeters), falling back to the dive
+  // max only when the photo has no usable depth.
   assert.deepEqual(gallerySort.sortGalleryPhotos(galPhotos, galById, 'newest').map((p) => p.id), ['p2', 'p1', 'p3']);
   assert.deepEqual(gallerySort.sortGalleryPhotos(galPhotos, galById, 'oldest').map((p) => p.id), ['p3', 'p1', 'p2']);
   assert.equal(gallerySort.sortGalleryPhotos(galPhotos, galById, 'shallowest')[0].id, 'p3');
   assert.equal(gallerySort.sortGalleryPhotos(galPhotos, galById, 'deepest')[0].diveId, 'd1');
   assert.equal(gallerySort.GALLERY_SORTS.length, 4);
+
+  const depthPhotos = [
+    { id: 'shallow-shot', diveId: 'd1', capturedAt: '2026-06-01T10:05:00.000Z', photoDepthMeters: 4 },
+    { id: 'deep-shot', diveId: 'd2', capturedAt: '2026-01-15T10:30:00.000Z', photoDepthMeters: 22 },
+    { id: 'no-depth', diveId: 'd1', capturedAt: '2026-06-01T11:00:00.000Z' }, // -> d1 max (30)
+  ];
+  assert.deepEqual(
+    gallerySort.sortGalleryPhotos(depthPhotos, galById, 'deepest').map((p) => p.id),
+    ['no-depth', 'deep-shot', 'shallow-shot'],
+    'a 4 m photo from the 30 m dive ranks below a 22 m photo from the 8 m dive',
+  );
+  assert.deepEqual(
+    gallerySort.sortGalleryPhotos(depthPhotos, galById, 'shallowest').map((p) => p.id),
+    ['shallow-shot', 'deep-shot', 'no-depth'],
+  );
 
   // The selection bar wraps its actions instead of running off the edge, and
   // floats in its own dock above the scroll area.

@@ -25,6 +25,19 @@ export function BoyleIcon({ size = 44 }) {
   );
 }
 
+export function GearIcon({ size = 44 }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 48 48">
+      <Rect x="17" y="12" width="14" height="30" rx="7" fill="#9FB3BC" stroke="#5C6E7B" strokeWidth="2" />
+      <Rect x="16" y="20" width="16" height="4" fill="#0C1A24" />
+      <Rect x="16" y="33" width="16" height="4" fill="#0C1A24" />
+      <Rect x="20" y="7" width="8" height="7" rx="2" fill="#5C6E7B" />
+      <Circle cx="31" cy="10" r="4" fill="#70DDF6" />
+      <Path d="M12 30c0-8 4-12 5-12" stroke="#70E2A3" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+    </Svg>
+  );
+}
+
 export function CalculatorIcon({ size = 44 }) {
   return (
     <Svg width={size} height={size} viewBox="0 0 48 48">
@@ -72,6 +85,19 @@ export function LogbookIcon({ size = 44 }) {
       <Path d="M22 14h10M22 20h10M22 26h7" stroke="#BFE8FF" strokeWidth="2" strokeLinecap="round" />
       <Path d="M20 33l3.4 3.4L31 29" stroke="#70E2A3" strokeWidth="2.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
       <Circle cx="36" cy="12" r="3" fill="#E21B23" />
+    </Svg>
+  );
+}
+
+export function CompassIcon({ size = 44 }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 48 48">
+      <Circle cx="24" cy="24" r="19" fill="#071525" stroke="#70DDF6" strokeWidth="2" />
+      <Circle cx="24" cy="24" r="13" fill="#0E2431" stroke="#345267" strokeWidth="1.5" />
+      <Path d="M24 13l4 11-4 11-4-11z" fill="#E21B23" />
+      <Path d="M24 35l-4-11 4-11 4 11z" fill="#BFE8FF" opacity=".9" />
+      <Circle cx="24" cy="24" r="2" fill="#70DDF6" />
+      <Path d="M24 3v4M24 41v4M3 24h4M41 24h4" stroke="#70DDF6" strokeWidth="2" strokeLinecap="round" />
     </Svg>
   );
 }

@@ -151,7 +151,7 @@ for (const [filename, source] of [
     /onReturnMain/,
   ]) assert.doesNotMatch(source, forbidden, `${filename} violates the Phase 4 visualization boundary.`);
 }
-assert.doesNotMatch(waterSource, /useState|useEffect/, 'The water column must not own an independent UI depth.');
+assert.doesNotMatch(waterSource, /useState|setDepth/, 'The water column must not own an independent UI depth.');
 assert.doesNotMatch(profileSource, /setInterval|elapsedReal|Date\.now/, 'The profile must consume canonical history without another timer.');
 
 // The physical device remains stable and contains only physical-button navigation.

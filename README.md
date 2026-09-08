@@ -77,7 +77,13 @@ The Learn and Tools menus are generated from one feature catalog. Titles, summar
 
 #### Underwater Color Loss
 
-The color-loss lesson demonstrates how wavelengths disappear with depth and how a dive light restores nearby color. The app opens the live DMZScuba.com interactive inside a restricted WebView and injects mobile-integration CSS/JavaScript so the website experience fits the native shell.
+The color-loss lesson runs locally in React Native. Drag an original vector diver through a 0–40 m water column, recolor its mask, suit, tank, and fins, apply orange/pink/yellow safety colors, and move a flashlight over the diver, fish, and coral. Water presets change absorption; surface-versus-depth swatches and RGB transmission bars explain the result. The scene artwork is authored in `src/features/colorLoss/ColorScene.js`, with no downloaded sprite dependency.
+
+`src/features/colorLoss/model.js` supplies a shared 4×5 RGB transform for the scene and live camera. Its exponential absorption coefficients come from the website lab; the native implementation removes the website's color-specific visibility floors and uses a normalized haze matrix so depth zero preserves the original image. Safety colors remain ordinary pigments in this model, not a simulation of fluorescent materials. This is an educational approximation, not a calibrated visibility or product-safety predictor. Background objects use their own depth, and the movable beam restores nearby color with a short light path and soft distance falloff.
+
+Camera mode uses the local `modules/color-loss-camera` Expo module: AVFoundation plus Core Image on iOS, CameraX plus a TextureView color matrix on Android. Frames stay native, are never sent over the JavaScript bridge, and are not recorded or uploaded. The slider applies the same depth transform to real objects; holding Compare shows the original feed. Camera access is requested only after Enable Camera, and the camera view unmounts when the app backgrounds or the user leaves camera mode. Permission denial and unavailable hardware have explicit recovery states. Camera exposure and white balance affect the approximation.
+
+Because this feature adds native code, rebuild the development/production app (`npx expo run:ios` or `npx expo run:android`); an over-the-air JavaScript update cannot add the camera module. The reef scene remains available when that module is absent. Run `npm run test:color-loss` for the color model checks. Physical-device verification should cover camera permission, depth/color changes, compare-and-release, orientation, background/resume, and repeated entry/exit.
 
 #### Boyle’s Law Lab
 
@@ -281,7 +287,7 @@ The background task is registered at application entry because iOS may relaunch 
 - JavaScript source with React hooks and functional components
 - AsyncStorage for local application/domain data
 - SecureStore for account refresh credentials
-- React Native WebView for the maintained website interactives
+- React Native SVG for the offline color-loss lab; React Native WebView for the website Boyle’s Law interactive
 - React Native BLE PLX plus a custom Apple Expo module for dive computers
 - libdivecomputer `0.9.0`, pinned as a Git submodule
 - React Native SVG for graphs, icons, and instrument visuals
