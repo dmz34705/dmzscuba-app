@@ -1,21 +1,28 @@
-// Tiny cross-module flag: the background download service writes dives straight
+// Persistent review token: the background download service writes dives straight
 // to storage, so when the logbook screen next mounts (or regains focus) it needs
 // to know it should re-run index rebuild + cross-computer reconciliation.
 //
-// Deliberately dependency-free (no react-native, no BLE) so both the download
-// service and the logbook hook can import it without dragging native modules
-// into places that only want the flag.
+// Stored separately from logbook snapshots so restoring a backup cannot consume
+// an unfinished review. Storage injection keeps this testable without React.
 
-let pendingDives = 0;
+import { resolveLogbookStorage } from '../../lib/diveLog/storage';
 
-export function markPendingReview(count = 1) {
-  if (Number.isFinite(count) && count > 0) pendingDives += count;
+export const DOWNLOAD_REVIEW_KEY = '@dmz-scuba/download-review-v1';
+
+export async function markPendingReview(count = 1, storage) {
+  if (!(count > 0)) return;
+  const token = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+  await resolveLogbookStorage(storage).setItem(DOWNLOAD_REVIEW_KEY, token);
+  return token;
 }
 
-export function hasPendingReview() {
-  return pendingDives > 0;
+export async function hasPendingReview(storage) {
+  return resolveLogbookStorage(storage).getItem(DOWNLOAD_REVIEW_KEY);
 }
 
-export function clearPendingReview() {
-  pendingDives = 0;
+export async function clearPendingReview(token, storage) {
+  const backend = resolveLogbookStorage(storage);
+  if (token && await backend.getItem(DOWNLOAD_REVIEW_KEY) === token) {
+    await backend.removeItem(DOWNLOAD_REVIEW_KEY);
+  }
 }

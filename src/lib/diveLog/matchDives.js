@@ -580,7 +580,24 @@ export function reconcileComputers(a, b) {
 
   // 1. candidate clock offsets from every roughly-compatible dive pairing
   const candidates = [];
-  const pushCand = (ai, bj, offsetMs, kind, strong = true) => candidates.push({ ai, bj, offsetMs, kind, strong });
+  const pushCand = (ai, bj, offsetMs, kind, strong = true) => {
+    const samples = (entries) => entries.length === 1 ? entries[0].samples : stitchProfiles(
+      entries.map((entry) => ({ ...entry, wallStart: entry.startMs })),
+    );
+    const sa = samples(kind === 'a-split' ? A.slice(ai, ai + 2) : [A[ai]]);
+    const sb = samples(kind === 'b-split' ? B.slice(bj, bj + 2) : [B[bj]]);
+    let score = 0;
+    if (resampleDepth(sa).length >= 3 && resampleDepth(sb).length >= 3) {
+      score = bestOffset(sa, sb, -offsetMs / 1000).score;
+      if (kind === 'pair' && score < CONFIRM_SCORE) {
+        // Nearby recordings with inconsistent profiles can still be reviewed,
+        // but cannot supply evidence for moving a clock by hours.
+        if (!nearbyDurationMatch(A[ai], B[bj])) return;
+        strong = false;
+      }
+    }
+    candidates.push({ ai, bj, offsetMs, kind, strong, score });
+  };
   for (let i = 0; i < A.length; i += 1) {
     for (let j = 0; j < B.length; j += 1) {
       const dA = A[i];
@@ -634,11 +651,16 @@ export function reconcileComputers(a, b) {
     let monotonic = [ordered[0]];
     for (const c of ordered.slice(1)) {
       const prev = monotonic[monotonic.length - 1];
-      if (c.ai >= prev.ai && c.bj >= prev.bj && (c.ai > prev.ai || c.bj > prev.bj)) monotonic.push(c);
+      if (c.ai > prev.ai + (prev.kind === 'a-split' ? 1 : 0)
+          && c.bj > prev.bj + (prev.kind === 'b-split' ? 1 : 0)) monotonic.push(c);
     }
     const medianOffset = list.slice().sort((x, y) => x.offsetMs - y.offsetMs)[Math.floor(list.length / 2)].offsetMs;
-    const cand = { support: monotonic.length, all: list, chain: monotonic, offsetMs: medianOffset };
-    if (!best || cand.support > best.support) best = cand;
+    const evidence = monotonic.reduce((sum, item) => sum + item.score, 0);
+    const cand = { support: monotonic.length, evidence, all: list, chain: monotonic, offsetMs: medianOffset };
+    if (!best || cand.support > best.support
+        || (cand.support === best.support && cand.evidence > best.evidence)
+        || (cand.support === best.support && cand.evidence === best.evidence
+          && Math.abs(cand.offsetMs) < Math.abs(best.offsetMs))) best = cand;
   }
   if (!best) return null;
 
@@ -686,6 +708,13 @@ export function reconcileComputers(a, b) {
   //    offsetMs = b.start - a.start; subtract it to bring B onto A's timeline
   const bShift = B.map((d) => ({ ...d, startMs: d.startMs - offsetMs }));
   const groups = [];
+  // A clock anchor does not validate every overlapping interval. Each emitted
+  // group must itself have passed the summary/profile/fragment gates and agree
+  // with the selected clock. Never inherit another dive's evidence.
+  const validated = (ai, bj, kind) => candidates.some((candidate) => (
+    candidate.ai === ai && candidate.bj === bj && candidate.kind === kind
+    && Math.abs(candidate.offsetMs - offsetMs) <= STAGGERED_START_MAX_SEC * 1000
+  ));
   let i = 0;
   let j = 0;
   while (i < A.length && j < bShift.length) {
@@ -696,16 +725,20 @@ export function reconcileComputers(a, b) {
       continue;
     }
     // b-split: A[i] covers bShift[j] + bShift[j+1]
-    if (j + 1 < bShift.length && intervalsOverlap(ia, interval(bShift[j + 1]))
+    if (validated(i, j, 'b-split') && j + 1 < bShift.length && intervalsOverlap(ia, interval(bShift[j + 1]))
         && durationClose((A[i].durationSeconds || 0), runSpanMs([bShift[j], bShift[j + 1]]) / 1000)) {
       groups.push({ aIds: [A[i].id], bIds: [bShift[j].id, bShift[j + 1].id], kind: 'b-split' });
       i += 1; j += 2; continue;
     }
     // a-split: bShift[j] covers A[i] + A[i+1]
-    if (i + 1 < A.length && intervalsOverlap(interval(A[i + 1]), ib)
+    if (validated(i, j, 'a-split') && i + 1 < A.length && intervalsOverlap(interval(A[i + 1]), ib)
         && durationClose((bShift[j].durationSeconds || 0), runSpanMs([A[i], A[i + 1]]) / 1000)) {
       groups.push({ aIds: [A[i].id, A[i + 1].id], bIds: [bShift[j].id], kind: 'a-split' });
       i += 2; j += 1; continue;
+    }
+    if (!validated(i, j, 'pair')) {
+      if (ia[1] <= ib[1]) i += 1; else j += 1;
+      continue;
     }
     groups.push({ aIds: [A[i].id], bIds: [bShift[j].id], kind: 'pair' });
     i += 1; j += 1;

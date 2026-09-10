@@ -101,7 +101,7 @@ import {
 import { hiddenDataSections, sectionIsVisible } from '../lib/diveLog/diveModeFields';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
-import { captureCurrentLocationBreadcrumb } from '../lib/locationLog/locationTrackingService';
+import { captureCurrentLocationBreadcrumb, getLocationRecordingSummary } from '../lib/locationLog/locationTrackingService';
 import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComputerDownloadPanel';
 import useDiveComputerDownload from '../features/diveComputerDownload/useDiveComputerDownload';
 import DiveShareCardScreen from '../features/diveShareCard/DiveShareCardScreen';
@@ -2470,15 +2470,30 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [locationSuggestionQueue, setLocationSuggestionQueue] = useState([]);
   const locationAlertOpenRef = useRef(false);
   const deferLocationSuggestionsRef = useRef(false);
+  const reviewTokenRef = useRef(null);
+  const reviewRunningRef = useRef(false);
+  const [reviewRetry, setReviewRetry] = useState(0);
 
   const enqueueLocationSuggestions = useCallback(async () => {
-    if (!appSettings.locationLoggingEnabled) return;
+    if (!appSettings.locationLoggingEnabled) {
+      Alert.alert('Phone location logging is off', 'Enable location logging in Settings → Location to record locations for future dives.');
+      return;
+    }
     // Background delivery can be paused by iOS while the phone is stationary.
     // A fresh foreground point at download time gives the correlator a reliable
     // site/marina breadcrumb without widening its one-hour safety window.
     await captureCurrentLocationBreadcrumb();
     const suggestions = await getLocationSuggestions();
     if (suggestions.length) setLocationSuggestionQueue(suggestions);
+    else {
+      const evidence = await getLocationRecordingSummary();
+      Alert.alert('No location to link',
+        (evidence.lastRecordedAt
+          ? `Latest saved phone location: ${new Date(evidence.lastRecordedAt).toLocaleString()}. No unhandled dive without coordinates has a location within one hour of its dive window.`
+          : 'No phone locations have been recorded. A past dive location cannot be recovered from the phone’s current location.')
+        + (!evidence.running || evidence.permission !== 'granted'
+          ? '\nCheck Settings → Location and allow “Always” location access.' : ''));
+    }
   }, [appSettings.locationLoggingEnabled, getLocationSuggestions]);
 
   useEffect(() => {
@@ -2521,22 +2536,39 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   useEffect(() => {
     if (!loaded) return;
     const s = download.status;
-    const pendingReview = hasPendingReview();
-    if (!pendingReview && s !== 'done' && s !== 'error') { handledDownloadRef.current = null; return; }
-    if (handledDownloadRef.current === s) return;
-    handledDownloadRef.current = s;
+    if (['downloading', 'connecting', 'scanning'].includes(s)) {
+      handledDownloadRef.current = null;
+      return;
+    }
+    if (reviewRunningRef.current) return;
+    reviewRunningRef.current = true;
     (async () => {
       try {
+        const pendingReview = await hasPendingReview();
+        if (!pendingReview) return;
+        if (handledDownloadRef.current === pendingReview) return;
         await finishImport();
         const result = await recheckDuplicates();
-        if (result.proposals > 0) deferLocationSuggestionsRef.current = true;
-        else await enqueueLocationSuggestions();
-        clearPendingReview();
+        handledDownloadRef.current = pendingReview;
+        if (result.proposals > 0) {
+          reviewTokenRef.current = pendingReview;
+          deferLocationSuggestionsRef.current = true;
+        } else {
+          await enqueueLocationSuggestions();
+          await clearPendingReview(pendingReview);
+        }
       } catch (e) {
+        handledDownloadRef.current = null;
         console.log('[dive-log] post-download reconcile failed:', e?.message);
+        Alert.alert('Dive review could not finish', e?.message || 'Your downloaded dives are saved. Please retry the review.', [
+          { text: 'Later', style: 'cancel' },
+          { text: 'Retry', onPress: () => setReviewRetry((value) => value + 1) },
+        ]);
+      } finally {
+        reviewRunningRef.current = false;
       }
     })();
-  }, [loaded, download.status, finishImport, recheckDuplicates, enqueueLocationSuggestions]);
+  }, [loaded, download.status, finishImport, recheckDuplicates, enqueueLocationSuggestions, reviewRetry]);
 
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
@@ -2597,14 +2629,17 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   // Surface the post-download match review once the panel closes; leave it when
   // every proposal has been resolved.
   useEffect(() => {
-    if (view === 'list' && pendingProposals.length) setView('review');
+    if (pendingProposals.length && download.status !== 'downloading' && view !== 'review') setView('review');
     else if (view === 'review' && !pendingProposals.length) setView('list');
-  }, [view, pendingProposals.length]);
+  }, [view, pendingProposals.length, download.status]);
 
   useEffect(() => {
     if (pendingProposals.length || !deferLocationSuggestionsRef.current) return;
     deferLocationSuggestionsRef.current = false;
-    enqueueLocationSuggestions().catch((error) => {
+    enqueueLocationSuggestions().then(async () => {
+      await clearPendingReview(reviewTokenRef.current);
+      reviewTokenRef.current = null;
+    }).catch((error) => {
       console.log('[location-log] suggestion scan failed:', error?.message);
     });
   }, [pendingProposals.length, enqueueLocationSuggestions]);
@@ -3282,8 +3317,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         {view === 'review' && (
           <MatchReview
             proposals={pendingProposals}
-            onResolve={resolveProposal}
-            onDone={() => { clearProposals(); setView('list'); }}
+            onResolve={async (...args) => {
+              try { await resolveProposal(...args); }
+              catch (error) { Alert.alert('Could not resolve these dives', error?.message || 'Please retry.'); }
+            }}
+            onDone={() => { reviewTokenRef.current = null; clearProposals(); setView('list'); }}
           />
         )}
 

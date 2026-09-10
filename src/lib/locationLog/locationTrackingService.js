@@ -4,7 +4,7 @@
 // toggle drives.
 
 import { LOCATION_RETENTION_MS, LOCATION_TASK_NAME } from './backgroundTask';
-import { appendLocationPoint } from './storage';
+import { appendLocationPoint, loadLocationPoints } from './storage';
 
 // Both expo-location and expo-task-manager eagerly call requireNativeModule()
 // the moment they're imported — not just when a function runs — so a build
@@ -34,9 +34,9 @@ try {
 function trackingOptions() {
   return {
     accuracy: Location.Accuracy.Balanced,
-    distanceInterval: 750, // meters
+    distanceInterval: 250, // meters — retain a breadcrumb on arrival at a quarry
     timeInterval: 20 * 60 * 1000, // ms — Android only, iOS paces off distance/activity instead
-    pausesUpdatesAutomatically: true, // iOS: let the system idle the radio when stationary
+    pausesUpdatesAutomatically: false, // keep delivery eligible during stationary shore dives
     showsBackgroundLocationIndicator: false,
     activityType: Location.ActivityType.Other,
     foregroundService: {
@@ -106,7 +106,7 @@ export async function getLocationTrackingStatus() {
  */
 export async function ensureLocationTracking() {
   const status = await getLocationTrackingStatus();
-  if (!status.available || status.running || status.permission !== 'granted' || !status.servicesEnabled) {
+  if (!status.available || status.permission !== 'granted' || !status.servicesEnabled) {
     return { ...status, started: status.running };
   }
   try {
@@ -128,7 +128,11 @@ export async function captureCurrentLocationBreadcrumb() {
   try {
     const permission = await Location.getForegroundPermissionsAsync();
     if (permission.status !== 'granted') return null;
-    const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+    let timer;
+    const location = await Promise.race([
+      Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }),
+      new Promise((resolve) => { timer = setTimeout(() => resolve(null), 12000); }),
+    ]).finally(() => clearTimeout(timer));
     if (!location?.coords) return null;
     const point = {
       t: Number.isFinite(location.timestamp) ? location.timestamp : Date.now(),
@@ -141,6 +145,17 @@ export async function captureCurrentLocationBreadcrumb() {
   } catch {
     return null;
   }
+}
+
+/** Evidence of recorded points, rather than only task registration status. */
+export async function getLocationRecordingSummary() {
+  const [status, points] = await Promise.all([getLocationTrackingStatus(), loadLocationPoints()]);
+  const latest = points.reduce((value, point) => Math.max(value, point.t || 0), 0);
+  return {
+    ...status,
+    pointCount: points.length,
+    lastRecordedAt: latest ? new Date(latest).toISOString() : null,
+  };
 }
 
 /**

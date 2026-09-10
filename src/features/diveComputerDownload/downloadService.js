@@ -407,31 +407,32 @@ export async function download({ incremental = false, force = false } = {}) {
   set({ error: '', progress: null, summary: null, status: 'downloading' });
 
   const name = state.connectedDevice.name;
-  const allKnown = await loadKnownComputerKeys();
-  const known = force ? new Set() : allKnown;
   const pendingLogs = [];
   const tally = { downloaded: 0, saved: 0, merged: 0, duplicate: 0, failed: 0 };
-
-  // Always evaluate the saved marker: use it only for an incremental sync, but
-  // drop it only when it's provably stale (its dive is no longer in the book).
-  // A deliberate full read must NOT wipe a still-valid marker.
-  const marker = await loadFingerprint(name).catch(() => null);
-  const markerValid = !!marker && [...allKnown].some((k) => k.endsWith(`|${marker}`));
-  const fingerprintBase64 = incremental && markerValid ? marker : null;
-  if (marker && !markerValid) await clearFingerprint(name).catch(() => {});
-  set({ baselineKnown: markerValid });
-
-  const mode = fingerprintBase64 ? 'incremental' : incremental ? 'incremental → full (no baseline yet)' : 'full read';
-  log(`download start · ${name} · ${mode}`);
-
-  // A device whose advertised BLE name carries no vendor/model text (Pelagic/
-  // Aqualung in particular — it's just a serial number) can only be matched by
-  // libdivecomputer via fragile name-pattern rules. Once a download for this
-  // name has ever resolved a model, skip that guesswork on every later sync.
-  const knownModel = await loadKnownModel(name).catch(() => null);
-  if (knownModel) log(`using remembered model: ${knownModel.vendor} ${knownModel.product}`, 'dim');
-
+  let saveAttempted = false;
   try {
+    const allKnown = await loadKnownComputerKeys();
+    const known = force ? new Set() : allKnown;
+
+    // Always evaluate the saved marker: use it only for an incremental sync, but
+    // drop it only when it's provably stale (its dive is no longer in the book).
+    // A deliberate full read must NOT wipe a still-valid marker.
+    const marker = await loadFingerprint(name).catch(() => null);
+    const markerValid = !!marker && [...allKnown].some((k) => k.endsWith(`|${marker}`));
+    const fingerprintBase64 = incremental && markerValid ? marker : null;
+    if (marker && !markerValid) await clearFingerprint(name).catch(() => {});
+    set({ baselineKnown: markerValid });
+
+    const mode = fingerprintBase64 ? 'incremental' : incremental ? 'incremental → full (no baseline yet)' : 'full read';
+    log(`download start · ${name} · ${mode}`);
+
+    // A device whose advertised BLE name carries no vendor/model text (Pelagic/
+    // Aqualung in particular — it's just a serial number) can only be matched by
+    // libdivecomputer via fragile name-pattern rules. Once a download for this
+    // name has ever resolved a model, skip that guesswork on every later sync.
+    const knownModel = await loadKnownModel(name).catch(() => null);
+    if (knownModel) log(`using remembered model: ${knownModel.vendor} ${knownModel.product}`, 'dim');
+
     const result = await runDownload({
       device,
       name,
@@ -465,17 +466,20 @@ export async function download({ incremental = false, force = false } = {}) {
       },
     });
 
-    if (result?.fingerprint) await saveFingerprint(name, result.fingerprint).catch(() => {});
     if (result?.vendor && result?.product) await saveKnownModel(name, result.vendor, result.product).catch(() => {});
 
     if (pendingLogs.length) {
-      const created = await createDivesFromLogs(pendingLogs).catch((e) => {
-        log(`save failed: ${e?.message || 'error'}`, 'error');
-        return [];
-      });
-      markPendingReview(created.length);
+      await markPendingReview();
+      saveAttempted = true;
+      tally.saved = 0;
+      const created = await createDivesFromLogs(pendingLogs);
+      pendingLogs.length = 0;
+      tally.saved = created.length;
       log(`saved ${created.length} new ${created.length === 1 ? 'dive' : 'dives'} to the logbook`);
     }
+
+    await markPendingReview();
+    if (result?.fingerprint) await saveFingerprint(name, result.fingerprint).catch(() => {});
 
     if (result?.partial) {
       // Interrupted partway through (cancelled, or the link dropped) — but the
@@ -499,9 +503,11 @@ export async function download({ incremental = false, force = false } = {}) {
     }
   } catch (downloadError) {
     // Still persist whatever arrived before the failure.
-    if (pendingLogs.length) {
+    if (pendingLogs.length && !saveAttempted) {
+      await markPendingReview().catch(() => {});
       const created = await createDivesFromLogs(pendingLogs).catch(() => []);
-      markPendingReview(created.length);
+      tally.saved = created.length;
+      await markPendingReview().catch(() => {});
       log(`saved ${created.length} dives from the partial transfer`, 'warn');
     }
     // If the link itself dropped mid-transfer (the disconnect watcher above

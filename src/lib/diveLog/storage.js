@@ -32,6 +32,7 @@ import { createJsonBackup, createJsonExport, exportDivesToCsv, exportDivesToUddf
 import { fuseComputerLogs } from './fuseLogs';
 import { combinedConsumption, tankPressuresFromSamples } from './logAnalytics';
 import { sameComputer } from './matchDives';
+import { dedupePhotoAssets } from './photoIdentity';
 
 // Keeps native storage out of the React hook and maintenance modules while
 // still allowing every public operation to default to the app's real store.
@@ -388,13 +389,19 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
   if (mergeIds.length > 2) await snapshotLogbook(storage);
   const keep = await loadDive(keepDiveId, storage);
   if (!keep) return null;
+  if (keep.deletedAt) throw new Error('This dive has already been merged or deleted. Check for matches again.');
+  const sources = await Promise.all([...new Set(fromDiveIds)].filter((id) => id !== keepDiveId)
+    .map((id) => loadDive(id, storage)));
+  if (!sources.some((dive) => dive && !dive.deletedAt)) return keep;
   const logIds = new Set(keep.logIds);
+  let mergedPhotos = [...(keep.photos || [])];
   let mergedSite = { ...keep.site };
   for (const fromId of fromDiveIds) {
     if (fromId === keepDiveId) continue;
     // eslint-disable-next-line no-await-in-loop
     const from = await loadDive(fromId, storage);
-    if (!from) continue;
+    if (!from || from.deletedAt) continue;
+    mergedPhotos = [...mergedPhotos, ...dedupePhotoAssets(from.photos || [], mergedPhotos).assets];
     const keepHasCoordinates = Number.isFinite(mergedSite.latitude) && Number.isFinite(mergedSite.longitude);
     const fromHasCoordinates = Number.isFinite(from.site?.latitude) && Number.isFinite(from.site?.longitude);
     if (!keepHasCoordinates && fromHasCoordinates) {
@@ -437,6 +444,7 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
 
   let next = normalizeDive({
     ...keep,
+    photos: mergedPhotos,
     site: mergedSite,
     logIds: [...logIds],
     source: keep.source === 'manual' ? 'mixed' : keep.source,
@@ -860,6 +868,8 @@ export async function restoreSnapshot(id, storage = AsyncStorage) {
   if (!parsed || parsed.id !== id || !parsed.entries || typeof parsed.entries !== 'object') {
     throw new Error('Logbook backup not found or invalid.');
   }
+  // Preserve the state being replaced, including photo links, for undo.
+  await snapshotLogbook(storage);
   const currentKeys = ((await storage.getAllKeys()) || []).filter(isLogbookDataKey);
   await removeKeys(currentKeys, storage);
   for (const [key, value] of Object.entries(parsed.entries)) {

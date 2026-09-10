@@ -395,7 +395,7 @@ export default function useDiveLog() {
   /** Re-run the matcher across the whole book (recovers dives split before the
    *  matcher improved). Populates pendingProposals; nothing is written yet. */
   const recheckDuplicates = useCallback(async ({ reconsiderSeparations = false } = {}) => {
-    const result = await reconcileLogbook(undefined, { reconsiderNegativeMatches: reconsiderSeparations });
+    const result = await reconcileLogbook(undefined, { reconsiderNegativeMatches: reconsiderSeparations, reviewAll: true });
     setPendingProposals(result.proposals);
     if (result.fused || result.autoMerged) {
       diveCache.current.clear();
@@ -554,32 +554,39 @@ export default function useDiveLog() {
    * @param {'merge'|'separate'} action
    * @param {{ correctDeviceKey?: string }} [choice]  which computer's clock is right
    */
+  const resolvingProposalRef = useRef(false);
   const resolveProposal = useCallback(async (proposal, action, choice = {}) => {
-    if (action === 'merge') {
-      let correction = null;
-      if (proposal.offsetMinutes && choice.correctDeviceKey) {
-        // offsetMinutes = minutes to add to B's clock to match A; correct the other one.
-        const bIsWrong = choice.correctDeviceKey === proposal.deviceKeyA;
-        correction = bIsWrong
-          ? { deviceKey: proposal.deviceKeyB, offsetMinutes: proposal.offsetMinutes }
-          : { deviceKey: proposal.deviceKeyA, offsetMinutes: -proposal.offsetMinutes };
-        await saveDeviceTimeCorrection({
-          ...correction, appliesFrom: proposal.firstDate, appliesTo: proposal.lastDate,
-        });
+    if (resolvingProposalRef.current) return;
+    resolvingProposalRef.current = true;
+    try {
+      if (action === 'merge') {
+        let correction = null;
+        if (proposal.offsetMinutes && choice.correctDeviceKey) {
+          // offsetMinutes = minutes to add to B's clock to match A; correct the other one.
+          const bIsWrong = choice.correctDeviceKey === proposal.deviceKeyA;
+          correction = bIsWrong
+            ? { deviceKey: proposal.deviceKeyB, offsetMinutes: proposal.offsetMinutes }
+            : { deviceKey: proposal.deviceKeyA, offsetMinutes: -proposal.offsetMinutes };
+          await saveDeviceTimeCorrection({
+            ...correction, appliesFrom: proposal.firstDate, appliesTo: proposal.lastDate,
+          });
+        }
+        for (const mg of proposal.merges) {
+          // eslint-disable-next-line no-await-in-loop
+          await mergeDives(mg.keepId, mg.absorbIds, { correction });
+          [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
+        }
+      } else if (action === 'separate') {
+        for (const merge of proposal.merges || []) {
+          // eslint-disable-next-line no-await-in-loop
+          await recordNegativeMatchesForDives([merge.keepId, ...merge.absorbIds]);
+        }
       }
-      for (const mg of proposal.merges) {
-        // eslint-disable-next-line no-await-in-loop
-        await mergeDives(mg.keepId, mg.absorbIds, { correction });
-        [mg.keepId, ...mg.absorbIds].forEach((id) => diveCache.current.delete(id));
-      }
-    } else if (action === 'separate') {
-      for (const merge of proposal.merges || []) {
-        // eslint-disable-next-line no-await-in-loop
-        await recordNegativeMatchesForDives([merge.keepId, ...merge.absorbIds]);
-      }
+      setPendingProposals((prev) => prev.filter((p) => p.id !== proposal.id));
+      await refreshIndex();
+    } finally {
+      resolvingProposalRef.current = false;
     }
-    setPendingProposals((prev) => prev.filter((p) => p.id !== proposal.id));
-    await refreshIndex();
   }, [refreshIndex]);
 
   return {

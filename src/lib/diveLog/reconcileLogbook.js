@@ -71,7 +71,7 @@ function comparePlans(a, b) {
  * Confident matches whose clocks agree are merged immediately. Clock conflicts
  * and low-confidence matches are returned as proposals for the caller to show.
  */
-export async function reconcileLogbook(storage, { reconsiderNegativeMatches = false } = {}) {
+export async function reconcileLogbook(storage, { reconsiderNegativeMatches = false, reviewAll = false } = {}) {
   await rebuildIndex(storage).catch(() => {});
   let dives = (await loadAll(storage)).filter((dive) => !dive.deletedAt);
   const negativeMatches = await loadNegativeMatches(storage);
@@ -184,7 +184,7 @@ export async function reconcileLogbook(storage, { reconsiderNegativeMatches = fa
     const clocksAgree = Math.abs(result.offsetMinutes) < 1;
 
     const requiresReview = merges.some((merge) => merge.previouslySeparated);
-    if (result.confidence === 'high' && clocksAgree && !requiresReview) {
+    if (!reviewAll && result.confidence === 'high' && clocksAgree && !requiresReview) {
       for (const merge of merges) {
         // eslint-disable-next-line no-await-in-loop
         await mergeDives(merge.keepId, merge.absorbIds, {}, storage);

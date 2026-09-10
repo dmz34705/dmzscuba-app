@@ -35,7 +35,18 @@ export function isManagedDivePhotoUri(uri) {
  * is a native-app concept and cannot persist a browser-selected file here.
  */
 export async function persistDivePhoto(photo) {
-  if (!photo?.uri || Platform.OS === 'web' || isManagedDivePhotoUri(photo.uri)) return photo;
+  if (!photo?.uri || Platform.OS === 'web') return photo;
+  // iOS may change the app-container prefix after an install/restore. Resolve
+  // our own filename under today's Documents path before trying the old URI.
+  const marker = '/dive-photos/';
+  if (photo.uri.includes(marker)) {
+    const filename = photo.uri.slice(photo.uri.lastIndexOf(marker) + marker.length);
+    if (filename && !filename.includes('/') && filename !== '..') {
+      const relocated = `${DIVE_PHOTO_DIRECTORY}${filename}`;
+      const info = await FileSystem.getInfoAsync(relocated);
+      if (info.exists && !info.isDirectory) return { ...photo, uri: relocated };
+    }
+  }
   if (!DIVE_PHOTO_DIRECTORY) throw new Error('Persistent photo storage is unavailable on this device.');
 
   await FileSystem.makeDirectoryAsync(DIVE_PHOTO_DIRECTORY, { intermediates: true });

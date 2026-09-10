@@ -637,6 +637,21 @@ assert.equal(closeTimingOnly.groups.length, 1);
 assert.equal(closeTimingOnly.confidence, 'low');
 assert.equal(closeTimingOnly.offsetMinutes, 0);
 
+// A valid clock anchor must not sweep unrelated overlapping dives into its
+// result. Summary gates belong to each pair, not just the first anchor.
+const anchored = reconcileComputers(
+  [A[0], { ...A[0], id: 'bad-a', startMs: AT + 3 * H, durationSeconds: 600 }],
+  [{ ...A[0], id: 'good-b', startMs: AT + H },
+    { ...A[0], id: 'bad-b', startMs: AT + 4 * H, durationSeconds: 7200 }],
+);
+assert.equal(anchored.groups.length, 1);
+assert.deepEqual(anchored.groups[0].bIds, ['good-b']);
+const wrongProfile = prof(3600).map((point) => ({ ...point, depth: 2 }));
+assert.equal(reconcileComputers(
+  [{ ...A[0], samples: prof(3600) }],
+  [{ ...A[0], id: 'wrong-profile', startMs: AT + H, samples: wrongProfile }],
+), null, 'similar summaries cannot justify a clock correction when profiles disagree');
+
 // Similar durations/depth traces hundreds of days apart are different dives,
 // never evidence that a computer clock is wrong by years. This used to outvote
 // the real Sept. 9 pair in a large logbook.
@@ -989,6 +1004,67 @@ function memoryStorage(seed = {}) {
   assert.equal((await loadIndex(closeStore)).filter((row) => !row.deletedAt).length, 2);
   await assertIntegrity(closeStore, 'close-time review proposal');
 
+  // Full user workflow: download both computers, review even a strong match,
+  // choose either clock, retain both computers' photos, then correlate GPS
+  // against the corrected dive. Re-running must not apply correction twice.
+  for (const correctA of [true, false]) {
+    const workflowStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+    const start = '2026-09-09T20:44:00.000Z';
+    const devices = [
+      { vendor: 'Suunto', product: 'EON Core', serial: 'flow-a' },
+      { vendor: 'Shearwater', product: 'Peregrine', serial: 'flow-b' },
+    ];
+    const logs = devices.map((device, i) => ({
+      device, fingerprint: `WORKFLOW-${i}`,
+      reportedStartTime: shiftIso(start, i * 60), durationSeconds: 4200,
+      water: { maxDepthMeters: 30 }, profile: { samples: prof(4200) },
+    }));
+    const [a] = await diveLog.createDivesFromLogs([logs[0]], workflowStore);
+    assert.equal((await diveLog.reconcileLogbook(workflowStore, { reviewAll: true })).proposals.length, 0);
+    const [b] = await diveLog.createDivesFromLogs([logs[1]], workflowStore);
+    for (const [i, item] of [a, b].entries()) {
+      await saveDive({ ...item.dive, photos: [{ id: `photo-${i}`, uri: `file:///photo-${i}.jpg` }] }, workflowStore);
+    }
+    const pass = await diveLog.reconcileLogbook(workflowStore, { reviewAll: true });
+    assert.equal(pass.autoMerged, 0);
+    assert.equal(pass.proposals.length, 1);
+    const proposal = pass.proposals[0];
+    const rightKey = deviceKeyOf(devices[correctA ? 0 : 1]);
+    const correction = rightKey === proposal.deviceKeyA
+      ? { deviceKey: proposal.deviceKeyB, offsetMinutes: proposal.offsetMinutes }
+      : { deviceKey: proposal.deviceKeyA, offsetMinutes: -proposal.offsetMinutes };
+    const mg = proposal.merges[0];
+    await diveLog.mergeDives(mg.keepId, mg.absorbIds, { correction }, workflowStore);
+    await diveLog.mergeDives(mg.keepId, mg.absorbIds, { correction }, workflowStore);
+    await diveLog.purgeDeleted(workflowStore);
+    const live = (await loadAll(workflowStore)).filter((dive) => !dive.deletedAt);
+    assert.equal(live.length, 1);
+    assert.equal(live[0].photos.length, 2, 'photos survive merge and purge');
+    const attached = await loadLogsForDive(live[0], workflowStore);
+    assert.equal(attached.length, 2);
+    assert.ok(attached.every((log) => log.startTime === shiftIso(start, correctA ? 0 : 60)));
+    const gps = locationSuggestions.buildLocationSuggestions([
+      { t: Date.parse(live[0].startTime), lat: 41.03, lon: -87.67 },
+    ], live);
+    assert.equal(gps.length, 1, 'corrected timeline links recorded phone location');
+    assert.equal((await diveLog.reconcileLogbook(workflowStore, { reviewAll: true })).proposals.length, 0);
+    const known = new Set((await rebuildIndex(workflowStore)).filter((row) => !row.deletedAt).flatMap((row) => row.computerKeys));
+    const redownload = logs.filter((log) => !known.has(computerDiveKeyOf(log.device, log.fingerprint)));
+    assert.equal(redownload.length, 0, 'download dedup still recognizes merged logs after purge');
+    await assertIntegrity(workflowStore, 'review, choose clock, merge, GPS, photos, redownload');
+  }
+
+  const reviewState = loadSourceModule(path.join(srcRoot, 'features/diveComputerDownload/downloadReviewFlag.js'), srcRoot);
+  const reviewStore = memoryStorage();
+  const firstReview = await reviewState.markPendingReview(1, reviewStore);
+  const reloadedReviewState = loadSourceModule(path.join(srcRoot, 'features/diveComputerDownload/downloadReviewFlag.js'), srcRoot);
+  assert.equal(await reloadedReviewState.hasPendingReview(reviewStore), firstReview, 'review survives module reload');
+  const secondReview = await reviewState.markPendingReview(1, reviewStore);
+  await reviewState.clearPendingReview(firstReview, reviewStore);
+  assert.equal(await reviewState.hasPendingReview(reviewStore), secondReview, 'old completion cannot consume new download');
+  await reviewState.clearPendingReview(secondReview, reviewStore);
+  assert.equal(await reviewState.hasPendingReview(reviewStore), null);
+
   // Clock offsets are trip-local. Dives from April and September must produce
   // separate proposals even for the same two computers; September is shown
   // first, and each session derives its own correction.
@@ -1045,6 +1121,9 @@ function memoryStorage(seed = {}) {
     reportedStartTime: '2026-09-09T20:44:00.000Z', durationSeconds: 3600,
     water: { maxDepthMeters: 30 }, profile: { samples: prof(3600) },
   }, rankedStore);
+  const rankedReview = await diveLog.reconcileLogbook(rankedStore, { reviewAll: true });
+  assert.equal(rankedReview.autoMerged, 0, 'matching clocks still require the requested review');
+  assert.equal(rankedReview.proposals.length, 1);
   const rankedPass = await diveLog.reconcileLogbook(rankedStore);
   assert.equal(rankedPass.autoMerged, 1, 'strong profile match should win');
   assert.equal(rankedPass.proposals.length, 0, 'weak competitor must not claim the matched dive');
@@ -1684,8 +1763,8 @@ function memoryStorage(seed = {}) {
   assert.doesNotMatch(dlHook, /useRef\(new Map/);       // BLE state no longer lives in the hook
 
   const dlFlag = read('src', 'features', 'diveComputerDownload', 'downloadReviewFlag.js');
-  assert.match(dlFlag, /export function hasPendingReview/);
-  assert.doesNotMatch(dlFlag, /^import /m);             // must stay dependency-free
+  assert.match(dlFlag, /export async function hasPendingReview/);
+  assert.doesNotMatch(dlFlag, /from ['"]react-native['"]/); // testable with injected storage
 
   const dlConsole = read('src', 'features', 'diveComputerDownload', 'DownloadConsole.js');
   assert.match(dlConsole, /scrollToEnd/);               // console sticks to the latest line

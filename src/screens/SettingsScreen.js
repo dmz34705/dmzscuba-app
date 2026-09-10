@@ -8,6 +8,7 @@ import { GroupedSection, NavigationRow, SecondaryButton } from '../components/Ui
 import {
   ensureLocationTracking,
   getLocationTrackingStatus,
+  getLocationRecordingSummary,
   startLocationTracking,
   stopLocationTracking,
 } from '../lib/locationLog/locationTrackingService';
@@ -101,9 +102,11 @@ function LocationLoggingCard({ enabled, onChange }) {
   const [statusKnown, setStatusKnown] = useState(false);
   const [pending, setPending] = useState(false);
   const [notice, setNotice] = useState('');
+  const [recording, setRecording] = useState(null);
 
   useEffect(() => {
     let active = true;
+    getLocationRecordingSummary().then((value) => { if (active) setRecording(value); });
     (enabled ? ensureLocationTracking() : getLocationTrackingStatus()).then((status) => {
       if (!active) return;
       setAvailable(status.available);
@@ -182,6 +185,11 @@ function LocationLoggingCard({ enabled, onChange }) {
         <Text style={styles.locationActive}>Background tracking is active.</Text>
       ) : null}
       {notice ? <Text style={styles.locationNotice}>{notice}</Text> : null}
+      {recording ? <Text style={styles.settingBody}>
+        {recording.lastRecordedAt
+          ? `${recording.pointCount} locations saved. Latest: ${new Date(recording.lastRecordedAt).toLocaleString()}.`
+          : 'No phone locations have been recorded yet.'}
+      </Text> : null}
     </View>
   );
 }
