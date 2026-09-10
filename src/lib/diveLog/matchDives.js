@@ -153,7 +153,9 @@ export function cleanOffsetMinutes(offsetSec) {
   if (Math.abs(offsetSec) > PLAUSIBLE_OFFSET_MAX_MIN * 60) return null;
   const unit = CLEAN_OFFSET_UNIT_MIN * 60;
   const snapped = Math.round(offsetSec / unit) * unit;
-  return Math.abs(offsetSec - snapped) <= CLEAN_OFFSET_TOL_SEC ? Math.round(snapped / 60) : null;
+  if (Math.abs(offsetSec - snapped) > CLEAN_OFFSET_TOL_SEC) return null;
+  const minutes = Math.round(snapped / 60);
+  return Object.is(minutes, -0) ? 0 : minutes;
 }
 
 /** A clean offset small enough to be an ordinary timezone error (auto-mergeable). */
@@ -180,6 +182,20 @@ function staggeredProfileMatch(a, b) {
   if (!(a.samples || []).length || !(b.samples || []).length) return false;
   const reportedDeltaSec = (a.startMs - b.startMs) / 1000;
   return bestOffset(a.samples, b.samples, reportedDeltaSec).score >= CONFIRM_SCORE;
+}
+
+// Conservative human-review fallback for a one-off dive. Two computers can
+// disagree on max depth (one entered dive mode late, or samples at a different
+// cadence) and their normalized profiles can score poorly even though the
+// recordings start together and cover essentially the same interval. This is
+// deliberately weak evidence: it creates a proposal, never high-confidence
+// evidence on its own.
+function nearbyDurationMatch(a, b) {
+  if (Math.abs(a.startMs - b.startMs) > STAGGERED_START_MAX_SEC * 1000) return false;
+  const shorterDuration = Math.min(a.durationSeconds || 0, b.durationSeconds || 0);
+  const longerDuration = Math.max(a.durationSeconds || 0, b.durationSeconds || 0);
+  if (!longerDuration || shorterDuration / longerDuration < STAGGERED_MIN_DURATION_FRAC) return false;
+  return intervalsOverlap(interval(a), interval(b));
 }
 
 function iso(ms) {
@@ -563,15 +579,17 @@ export function reconcileComputers(a, b) {
 
   // 1. candidate clock offsets from every roughly-compatible dive pairing
   const candidates = [];
-  const pushCand = (ai, bj, offsetMs, kind) => candidates.push({ ai, bj, offsetMs, kind });
+  const pushCand = (ai, bj, offsetMs, kind, strong = true) => candidates.push({ ai, bj, offsetMs, kind, strong });
   for (let i = 0; i < A.length; i += 1) {
     for (let j = 0; j < B.length; j += 1) {
       const dA = A[i];
       const dB = B[j];
       const summariesMatch = durationClose(dA.durationSeconds || 0, dB.durationSeconds || 0)
         && depthClose(dA.maxDepthMeters || 0, dB.maxDepthMeters || 0);
-      if (summariesMatch || staggeredProfileMatch(dA, dB)) {
-        pushCand(i, j, dB.startMs - dA.startMs, 'pair');
+      const profileMatch = !summariesMatch && staggeredProfileMatch(dA, dB);
+      const nearbyMatch = !summariesMatch && !profileMatch && nearbyDurationMatch(dA, dB);
+      if (summariesMatch || profileMatch || nearbyMatch) {
+        pushCand(i, j, dB.startMs - dA.startMs, 'pair', !nearbyMatch);
       }
       // B[j] is A[i] + A[i+1] split at the surface
       if (i + 1 < A.length) {
@@ -654,7 +672,8 @@ export function reconcileComputers(a, b) {
   // didn't) but the tight duration + surface-gap + sequence-position match is
   // itself strong evidence, so it gets a lower bar.
   const scoreBar = bestKind === 'pair' ? 0.9 : 0.72;
-  const confidence = (best.support >= 2 || profileScore >= scoreBar) ? 'high' : 'low';
+  const strongSupport = best.chain.filter((candidate) => candidate.strong).length;
+  const confidence = (strongSupport >= 2 || profileScore >= scoreBar) ? 'high' : 'low';
 
   // 4. walk both sequences on the shared clock and group them
   //    offsetMs = b.start - a.start; subtract it to bring B onto A's timeline

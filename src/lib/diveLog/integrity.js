@@ -13,6 +13,7 @@ import {
   indexRowFromDive,
   logKey,
   rebuildIndex,
+  resolveLogbookStorage,
 } from './storage';
 
 function parseJson(raw, fallback = null) {
@@ -63,6 +64,7 @@ function problem(code, ids, detail) {
 }
 
 export async function checkLogbookIntegrity(storage) {
+  storage = resolveLogbookStorage(storage);
   const { dives, rawDives, logs, index } = await readRecords(storage);
   const problems = [];
   const liveReferences = new Map();
@@ -138,14 +140,15 @@ export async function checkLogbookIntegrity(storage) {
 }
 
 export async function repairLogbook(storage) {
+  storage = resolveLogbookStorage(storage);
   const { dives, logs } = await readRecords(storage);
   const actions = [];
   const liveReferences = new Map();
   for (const dive of dives.values()) {
     if (dive.deletedAt) continue;
     for (const logId of dive.logIds) {
-      if (!liveReferences.has(logId)) liveReferences.set(logId, []);
-      liveReferences.get(logId).push(dive.id);
+      if (!liveReferences.has(logId)) liveReferences.set(logId, new Set());
+      liveReferences.get(logId).add(dive.id);
     }
   }
 
@@ -157,7 +160,7 @@ export async function repairLogbook(storage) {
     if (dive.deletedAt && logIds.length) {
       for (const logId of logIds) {
         const log = logs.get(logId);
-        const otherLiveOwners = (liveReferences.get(logId) || []).filter((id) => id !== dive.id);
+        const otherLiveOwners = [...(liveReferences.get(logId) || [])].filter((id) => id !== dive.id);
         if (log?.diveId === dive.id && !otherLiveOwners.length) {
           // eslint-disable-next-line no-await-in-loop
           await storage.removeItem(logKey(logId));
@@ -172,13 +175,14 @@ export async function repairLogbook(storage) {
     const next = normalizeDive({ ...dive, logIds, primaryLogId });
     // eslint-disable-next-line no-await-in-loop
     await storage.setItem(diveKey(next.id), JSON.stringify(next));
+    dives.set(next.id, next);
   }
 
   // Restore unambiguous bidirectional links, preferring the log's declared live
   // owner and otherwise its sole live Dive reference.
   for (const log of logs.values()) {
     const declared = log.diveId ? dives.get(log.diveId) : null;
-    const refs = (liveReferences.get(log.id) || []).filter((id) => dives.has(id));
+    const refs = [...(liveReferences.get(log.id) || [])].filter((id) => dives.has(id));
     let ownerId = declared && !declared.deletedAt ? declared.id : null;
     if (!ownerId && refs.length === 1) ownerId = refs[0];
     if (!ownerId) continue;

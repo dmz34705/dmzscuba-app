@@ -6,7 +6,8 @@ import { SETTINGS_SECTIONS } from '../application/navigation';
 import { StatusBanner } from '../components/ScreenLayout';
 import { GroupedSection, NavigationRow, SecondaryButton } from '../components/Ui';
 import {
-  isLocationTrackingAvailable,
+  ensureLocationTracking,
+  getLocationTrackingStatus,
   startLocationTracking,
   stopLocationTracking,
 } from '../lib/locationLog/locationTrackingService';
@@ -96,16 +97,30 @@ function ColorChoices({ label, value, onChange, choices }) {
 // on/off intent.
 function LocationLoggingCard({ enabled, onChange }) {
   const [available, setAvailable] = useState(true); // assume yes until checked, to avoid a flash of "unavailable"
+  const [running, setRunning] = useState(false);
+  const [statusKnown, setStatusKnown] = useState(false);
   const [pending, setPending] = useState(false);
   const [notice, setNotice] = useState('');
 
   useEffect(() => {
     let active = true;
-    isLocationTrackingAvailable().then((value) => {
-      if (active) setAvailable(value);
+    (enabled ? ensureLocationTracking() : getLocationTrackingStatus()).then((status) => {
+      if (!active) return;
+      setAvailable(status.available);
+      setRunning(status.running);
+      setStatusKnown(true);
+      if (enabled && status.available && !status.running) {
+        setNotice(!status.servicesEnabled
+          ? 'Location Services are off, so no dive-site breadcrumbs are being recorded.'
+          : status.permission === 'foreground-only'
+            ? 'Background tracking is not active. Set Location to “Always” for DMZ Scuba in iPhone Settings, then turn this off and on again.'
+            : status.permission === 'denied'
+              ? 'Location permission is not active. Turn this off and on again to request it.'
+              : 'Background tracking is not active. Turn this off and on again to restart it.');
+      }
     });
     return () => { active = false; };
-  }, []);
+  }, [enabled]);
 
   const handleToggle = async (value) => {
     setNotice('');
@@ -113,6 +128,7 @@ function LocationLoggingCard({ enabled, onChange }) {
       setPending(true);
       await stopLocationTracking();
       setPending(false);
+      setRunning(false);
       onChange(false);
       return;
     }
@@ -120,6 +136,7 @@ function LocationLoggingCard({ enabled, onChange }) {
     const { started, permission } = await startLocationTracking();
     setPending(false);
     if (started) {
+      setRunning(true);
       onChange(true);
       return;
     }
@@ -161,6 +178,9 @@ function LocationLoggingCard({ enabled, onChange }) {
           value={enabled}
         />
       </View>
+      {enabled && statusKnown && running ? (
+        <Text style={styles.locationActive}>Background tracking is active.</Text>
+      ) : null}
       {notice ? <Text style={styles.locationNotice}>{notice}</Text> : null}
     </View>
   );
@@ -282,5 +302,6 @@ const styles = StyleSheet.create({
     marginTop: 12,
     padding: 10,
   },
+  locationActive: { color: colors.good, fontSize: 11, fontWeight: '800', marginTop: 12 },
   footer: { color: colors.faint, fontSize: 12, lineHeight: 18, marginHorizontal: 2, textAlign: 'center' },
 });

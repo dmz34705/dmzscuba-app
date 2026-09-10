@@ -101,6 +101,7 @@ import {
 import { hiddenDataSections, sectionIsVisible } from '../lib/diveLog/diveModeFields';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
+import { captureCurrentLocationBreadcrumb } from '../lib/locationLog/locationTrackingService';
 import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComputerDownloadPanel';
 import useDiveComputerDownload from '../features/diveComputerDownload/useDiveComputerDownload';
 import DiveShareCardScreen from '../features/diveShareCard/DiveShareCardScreen';
@@ -2472,6 +2473,10 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 
   const enqueueLocationSuggestions = useCallback(async () => {
     if (!appSettings.locationLoggingEnabled) return;
+    // Background delivery can be paused by iOS while the phone is stationary.
+    // A fresh foreground point at download time gives the correlator a reliable
+    // site/marina breadcrumb without widening its one-hour safety window.
+    await captureCurrentLocationBreadcrumb();
     const suggestions = await getLocationSuggestions();
     if (suggestions.length) setLocationSuggestionQueue(suggestions);
   }, [appSettings.locationLoggingEnabled, getLocationSuggestions]);

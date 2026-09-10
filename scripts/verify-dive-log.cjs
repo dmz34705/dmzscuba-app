@@ -624,6 +624,19 @@ assert.ok(staggered, 'profile should rescue a staggered-start match');
 assert.equal(staggered.groups.length, 1);
 assert.equal(staggered.confidence, 'high');
 
+// Real-world fallback: two computers start one minute apart and report nearly
+// identical durations, but max-depth/profile normalization disagrees enough to
+// fail the strong gates. It must still reach human review, never auto-merge on
+// timing evidence alone.
+const closeTimingOnly = reconcileComputers(
+  [{ id: 'CTA', startMs: AT, durationSeconds: 72 * 60, maxDepthMeters: 31, samples: [] }],
+  [{ id: 'CTB', startMs: AT + MIN, durationSeconds: 70 * 60, maxDepthMeters: 18, samples: [] }],
+);
+assert.ok(closeTimingOnly, 'close starts and overlapping durations should create a review candidate');
+assert.equal(closeTimingOnly.groups.length, 1);
+assert.equal(closeTimingOnly.confidence, 'low');
+assert.equal(closeTimingOnly.offsetMinutes, 0);
+
 // findMatch wires it together; ignores same-device candidates
 const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
 const fm = findMatch(fmNew, [
@@ -936,6 +949,27 @@ function memoryStorage(seed = {}) {
   assert.equal((await loadIndex(splitStore)).filter((row) => !row.deletedAt).length, 2);
   await assertIntegrity(splitStore, 'split with negative match');
 
+  // The actual post-download pass must surface a one-dive proposal even when
+  // profile/depth normalization is poor, provided two different computers
+  // started together and covered the same long interval.
+  const closeStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  await createDiveFromLog({
+    device: { vendor: 'Suunto', product: 'EON Core', serial: '2127100139' }, fingerprint: 'SEP9-SUUNTO',
+    reportedStartTime: '2026-09-09T20:44:00.000Z', durationSeconds: 72 * 60,
+    water: { maxDepthMeters: 31 }, profile: { samples: [] },
+  }, closeStore);
+  await createDiveFromLog({
+    device: { vendor: 'Shearwater', product: 'Peregrine', serial: '2622659486' }, fingerprint: 'SEP9-SHEARWATER',
+    reportedStartTime: '2026-09-09T20:45:00.000Z', durationSeconds: 70 * 60,
+    water: { maxDepthMeters: 18 }, profile: { samples: [] },
+  }, closeStore);
+  const closePass = await diveLog.reconcileLogbook(closeStore);
+  assert.equal(closePass.autoMerged, 0, 'timing-only evidence must not auto-merge');
+  assert.equal(closePass.proposals.length, 1, 'close cross-computer dive should be offered for review');
+  assert.equal(closePass.proposals[0].sharedDiveCount, 1);
+  assert.equal((await loadIndex(closeStore)).filter((row) => !row.deletedAt).length, 2);
+  await assertIntegrity(closeStore, 'close-time review proposal');
+
   // --- end to end: Aug 27 split-dive recovery ---
   const rstore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
   // Shearwater: one 60-min dive
@@ -1183,7 +1217,7 @@ function memoryStorage(seed = {}) {
   const badLive = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'BAD-live' }), badStore);
   const badDead = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'BAD-dead', vendor: 'Suunto', product: 'D5', serial: 'dead' }), badStore);
   const badLiveRaw = JSON.parse(await badStore.getItem(`${DIVE_LOG_DIVE_PREFIX}${badLive.dive.id}`));
-  badLiveRaw.logIds.push('missing-log');
+  badLiveRaw.logIds = ['missing-log'];
   await badStore.setItem(`${DIVE_LOG_DIVE_PREFIX}${badLive.dive.id}`, JSON.stringify(badLiveRaw));
   const badDeadRaw = JSON.parse(await badStore.getItem(`${DIVE_LOG_DIVE_PREFIX}${badDead.dive.id}`));
   badDeadRaw.deletedAt = '2026-09-03T00:00:00.000Z';
@@ -1195,6 +1229,7 @@ function memoryStorage(seed = {}) {
   const unhealthy = await checkLogbookIntegrity(badStore);
   assert.equal(unhealthy.ok, false);
   assert.ok(unhealthy.problems.some((p) => p.code === 'DANGLING_DIVE_LOG'));
+  assert.ok(unhealthy.problems.some((p) => p.code === 'LOG_NOT_LISTED'));
   assert.ok(unhealthy.problems.some((p) => p.code === 'DELETED_DIVE_HAS_LOGS'));
   assert.ok(unhealthy.problems.some((p) => p.code === 'INDEX_WITHOUT_DIVE'));
   const repaired = await repairLogbook(badStore);
@@ -1252,6 +1287,7 @@ function memoryStorage(seed = {}) {
   const navigator = read('src', 'application', 'AppNavigator.js');
   assert.match(navigator, /routeType === 'dive-log'/);
   assert.match(navigator, /import DiveLogScreen from '\.\.\/screens\/DiveLogScreen'/);
+  assert.match(navigator, /ensureLocationTracking/);
 
   const screen = read('src', 'screens', 'DiveLogScreen.js');
   assert.match(screen, /useDiveLog/);
@@ -1304,6 +1340,13 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /Run health check/);
   assert.match(screen, /Split — not the same dive/);
   assert.match(screen, /Restore a backup/);
+  assert.match(screen, /captureCurrentLocationBreadcrumb/);
+
+  const integritySource = read('src', 'lib', 'diveLog', 'integrity.js');
+  assert.match(integritySource, /resolveLogbookStorage\(storage\)/);
+  const locationTracking = read('src', 'lib', 'locationLog', 'locationTrackingService.js');
+  assert.match(locationTracking, /export async function ensureLocationTracking/);
+  assert.match(locationTracking, /export async function captureCurrentLocationBreadcrumb/);
 
   // "All dives" — a unified list of the reconciled dives, alongside the
   // per-computer folders.

@@ -3,7 +3,8 @@
 // TaskManager callback — this module is the control surface the Settings
 // toggle drives.
 
-import { LOCATION_TASK_NAME } from './backgroundTask';
+import { LOCATION_RETENTION_MS, LOCATION_TASK_NAME } from './backgroundTask';
+import { appendLocationPoint } from './storage';
 
 // Both expo-location and expo-task-manager eagerly call requireNativeModule()
 // the moment they're imported — not just when a function runs — so a build
@@ -49,7 +50,11 @@ function trackingOptions() {
 export async function isLocationTrackingAvailable() {
   if (!Location || !TaskManager) return false;
   try {
-    return await TaskManager.isAvailableAsync();
+    const [taskManagerAvailable, backgroundLocationAvailable] = await Promise.all([
+      TaskManager.isAvailableAsync(),
+      Location.isBackgroundLocationAvailableAsync(),
+    ]);
+    return taskManagerAvailable && backgroundLocationAvailable;
   } catch {
     return false;
   }
@@ -61,6 +66,80 @@ export async function isLocationTrackingRunning() {
     return await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME);
   } catch {
     return false;
+  }
+}
+
+function permissionLabel(foreground, background) {
+  if (background?.status === 'granted') return 'granted';
+  if (foreground?.status === 'granted') return 'foreground-only';
+  return 'denied';
+}
+
+/** Read the real native state without displaying a permission prompt. */
+export async function getLocationTrackingStatus() {
+  const available = await isLocationTrackingAvailable();
+  if (!available || !Location) {
+    return { available: false, running: false, permission: 'unavailable', servicesEnabled: false };
+  }
+  try {
+    const [foreground, background, running, servicesEnabled] = await Promise.all([
+      Location.getForegroundPermissionsAsync(),
+      Location.getBackgroundPermissionsAsync(),
+      isLocationTrackingRunning(),
+      Location.hasServicesEnabledAsync(),
+    ]);
+    return {
+      available: true,
+      running,
+      permission: permissionLabel(foreground, background),
+      servicesEnabled,
+    };
+  } catch {
+    return { available: true, running: false, permission: 'denied', servicesEnabled: false };
+  }
+}
+
+/**
+ * Restore an opted-in background task after an app/client rebuild. This never
+ * asks for new permission: it only restarts when the user has already granted
+ * background access.
+ */
+export async function ensureLocationTracking() {
+  const status = await getLocationTrackingStatus();
+  if (!status.available || status.running || status.permission !== 'granted' || !status.servicesEnabled) {
+    return { ...status, started: status.running };
+  }
+  try {
+    await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, trackingOptions());
+    return { ...status, running: true, started: true };
+  } catch {
+    return { ...status, running: false, started: false };
+  }
+}
+
+/**
+ * Record a foreground breadcrumb while the user is actively downloading.
+ * This covers the common case where iOS paused background delivery at a dock,
+ * while the one-hour correlation window still prevents a later point at home
+ * from being attached to an old dive.
+ */
+export async function captureCurrentLocationBreadcrumb() {
+  if (!Location) return null;
+  try {
+    const permission = await Location.getForegroundPermissionsAsync();
+    if (permission.status !== 'granted') return null;
+    const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+    if (!location?.coords) return null;
+    const point = {
+      t: Number.isFinite(location.timestamp) ? location.timestamp : Date.now(),
+      lat: location.coords.latitude,
+      lon: location.coords.longitude,
+      accuracyMeters: Number.isFinite(location.coords.accuracy) ? location.coords.accuracy : null,
+    };
+    await appendLocationPoint(point, LOCATION_RETENTION_MS);
+    return point;
+  } catch {
+    return null;
   }
 }
 

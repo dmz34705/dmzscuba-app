@@ -33,6 +33,13 @@ import { fuseComputerLogs } from './fuseLogs';
 import { combinedConsumption, tankPressuresFromSamples } from './logAnalytics';
 import { sameComputer } from './matchDives';
 
+// Keeps native storage out of the React hook and maintenance modules while
+// still allowing every public operation to default to the app's real store.
+// Tests continue to inject their in-memory AsyncStorage-shaped backend.
+export function resolveLogbookStorage(storage) {
+  return storage || AsyncStorage;
+}
+
 export const DIVE_LOG_INDEX_KEY = '@dmz-scuba/dive-log/index-v2';
 export const DIVE_LOG_DIVE_PREFIX = '@dmz-scuba/dive-log/dive-v2/';
 export const DIVE_LOG_LOG_PREFIX = '@dmz-scuba/dive-log/log-v2/';

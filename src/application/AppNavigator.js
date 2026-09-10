@@ -6,6 +6,7 @@ import useAccountSession from '../features/account/useAccountSession';
 import { getFeature } from '../features/catalog/featureCatalog';
 import useAppSettings from '../features/settings/useAppSettings';
 import { createAccount, verifySignup } from '../lib/accountApi';
+import { ensureLocationTracking } from '../lib/locationLog/locationTrackingService';
 import AccountScreen from '../screens/AccountScreen';
 import BoylesLawScreen from '../screens/BoylesLawScreen';
 import ColorLossScreen from '../screens/ColorLossScreen';
@@ -43,6 +44,14 @@ export default function AppNavigator() {
     settingsLoaded: appSettings.loaded,
     onRemoteSettings: appSettings.replaceSettings,
   });
+
+  // Rebuilding/reinstalling a development client can clear the native task
+  // registration while preserving the user's saved opt-in and iOS permission.
+  // Reconcile the real task with that setting on every app launch.
+  useEffect(() => {
+    if (!appSettings.loaded || !appSettings.settings.locationLoggingEnabled) return;
+    ensureLocationTracking().catch(() => {});
+  }, [appSettings.loaded, appSettings.settings.locationLoggingEnabled]);
 
   const closeDetail = () => dispatch({ type: 'closeDetail' });
   const openDetail = (route) => dispatch({ type: 'open', route });
