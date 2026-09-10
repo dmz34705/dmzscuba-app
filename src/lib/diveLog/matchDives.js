@@ -539,6 +539,7 @@ export function findMatch(newLog, candidates) {
 
 const RECONCILE_BUCKET_MS = 5 * 60 * 1000;   // group candidate offsets this coarsely
 const OVERLAP_SLACK_MS = 90 * 1000;          // recording-start jitter between computers
+const RECONCILE_OFFSET_MAX_MS = PLAUSIBLE_OFFSET_MAX_MIN * 60 * 1000;
 
 /** [start, end] in ms for a dive entry ({ startMs, durationSeconds }). */
 function interval(d) {
@@ -584,12 +585,18 @@ export function reconcileComputers(a, b) {
     for (let j = 0; j < B.length; j += 1) {
       const dA = A[i];
       const dB = B[j];
+      const candidateOffsetMs = dB.startMs - dA.startMs;
+      // A clock can be wrong by a timezone, DST, or even half a day after a
+      // battery reset. It cannot plausibly be hundreds of days wrong. Without
+      // this gate, a few ordinary-looking profiles from different years can
+      // outvote today's real one-dive match and claim it first.
+      if (Math.abs(candidateOffsetMs) > RECONCILE_OFFSET_MAX_MS) continue;
       const summariesMatch = durationClose(dA.durationSeconds || 0, dB.durationSeconds || 0)
         && depthClose(dA.maxDepthMeters || 0, dB.maxDepthMeters || 0);
       const profileMatch = !summariesMatch && staggeredProfileMatch(dA, dB);
       const nearbyMatch = !summariesMatch && !profileMatch && nearbyDurationMatch(dA, dB);
       if (summariesMatch || profileMatch || nearbyMatch) {
-        pushCand(i, j, dB.startMs - dA.startMs, 'pair', !nearbyMatch);
+        pushCand(i, j, candidateOffsetMs, 'pair', !nearbyMatch);
       }
       // B[j] is A[i] + A[i+1] split at the surface
       if (i + 1 < A.length) {
@@ -597,7 +604,7 @@ export function reconcileComputers(a, b) {
         const gapSec = (A[i + 1].startMs - A[i].startMs) / 1000 - (A[i].durationSeconds || 0);
         if (gapSec >= 0 && gapSec <= SPLIT_MAX_GAP_SEC
             && durationClose(runSpanMs(run) / 1000, dB.durationSeconds || 0)) {
-          pushCand(i, j, dB.startMs - dA.startMs, 'a-split');
+          pushCand(i, j, candidateOffsetMs, 'a-split');
         }
       }
       // A[i] is B[j] + B[j+1] split
@@ -606,7 +613,7 @@ export function reconcileComputers(a, b) {
         const gapSec = (B[j + 1].startMs - B[j].startMs) / 1000 - (B[j].durationSeconds || 0);
         if (gapSec >= 0 && gapSec <= SPLIT_MAX_GAP_SEC
             && durationClose(dA.durationSeconds || 0, runSpanMs(run) / 1000)) {
-          pushCand(i, j, dB.startMs - dA.startMs, 'b-split');
+          pushCand(i, j, candidateOffsetMs, 'b-split');
         }
       }
     }

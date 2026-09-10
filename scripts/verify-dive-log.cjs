@@ -637,6 +637,15 @@ assert.equal(closeTimingOnly.groups.length, 1);
 assert.equal(closeTimingOnly.confidence, 'low');
 assert.equal(closeTimingOnly.offsetMinutes, 0);
 
+// Similar durations/depth traces hundreds of days apart are different dives,
+// never evidence that a computer clock is wrong by years. This used to outvote
+// the real Sept. 9 pair in a large logbook.
+const days793 = 793 * 24 * H;
+assert.equal(reconcileComputers(
+  [{ id: 'OLD-A', startMs: AT, durationSeconds: 72 * 60, maxDepthMeters: 31, samples: prof(72 * 60) }],
+  [{ id: 'OLD-B', startMs: AT + days793, durationSeconds: 72 * 60, maxDepthMeters: 31, samples: prof(72 * 60) }],
+), null);
+
 // findMatch wires it together; ignores same-device candidates
 const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
 const fm = findMatch(fmNew, [
