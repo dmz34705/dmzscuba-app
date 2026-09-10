@@ -13,6 +13,58 @@ import {
   rebuildIndex,
 } from './storage';
 
+// A computer's clock setting is stable during a dive trip, not necessarily for
+// its whole lifetime. Keep nearby diving days together so multi-day trips still
+// provide several anchors, but start a new clock epoch after a long dry spell.
+const RECONCILE_SESSION_GAP_MS = 72 * 60 * 60 * 1000;
+
+/**
+ * Partition two computers' observed timelines into local trip sessions.
+ *
+ * The union is used because either clock may be wrong by many hours. A 72-hour
+ * adjacent gap is still comfortably wider than the matcher's maximum plausible
+ * clock error, while preventing dives months apart from voting on one offset or
+ * appearing in one proposal.
+ */
+export function partitionReconcileSessions(entriesA, entriesB, gapMs = RECONCILE_SESSION_GAP_MS) {
+  const rows = [
+    ...(Array.isArray(entriesA) ? entriesA : []).map((entry) => ({ side: 'a', entry })),
+    ...(Array.isArray(entriesB) ? entriesB : []).map((entry) => ({ side: 'b', entry })),
+  ]
+    .filter((row) => row.entry && Number.isFinite(row.entry.startMs))
+    .sort((x, y) => x.entry.startMs - y.entry.startMs);
+  if (!rows.length) return [];
+
+  const sessions = [];
+  let current = [];
+  let previousStart = null;
+  for (const row of rows) {
+    if (current.length && row.entry.startMs - previousStart > gapMs) {
+      sessions.push(current);
+      current = [];
+    }
+    current.push(row);
+    previousStart = row.entry.startMs;
+  }
+  if (current.length) sessions.push(current);
+
+  return sessions.map((session) => ({
+    a: session.filter((row) => row.side === 'a').map((row) => row.entry),
+    b: session.filter((row) => row.side === 'b').map((row) => row.entry),
+    firstStartMs: session[0].entry.startMs,
+    lastStartMs: session[session.length - 1].entry.startMs,
+  })).filter((session) => session.a.length && session.b.length);
+}
+
+function comparePlans(a, b) {
+  const confidence = (plan) => (plan.result.confidence === 'high' ? 1 : 0);
+  return confidence(b) - confidence(a)
+    || (b.result.profileScore || 0) - (a.result.profileScore || 0)
+    || (b.result.anchors || 0) - (a.result.anchors || 0)
+    || b.result.groups.length - a.result.groups.length
+    || b.lastStartMs - a.lastStartMs;
+}
+
 /**
  * Reconcile all single-computer dives in a logbook.
  *
@@ -76,68 +128,92 @@ export async function reconcileLogbook(storage, { reconsiderNegativeMatches = fa
     samples: entry.log.profile?.samples || [],
   });
 
+  // First evaluate every local trip. Only then reserve dives, strongest plan
+  // first. This prevents a weak candidate from a third computer from claiming a
+  // dive before a better profile-backed match merely because it was loaded first.
+  const plans = [];
   for (let x = 0; x < clusters.length; x += 1) {
     for (let y = x + 1; y < clusters.length; y += 1) {
       const clusterA = clusters[x];
       const clusterB = clusters[y];
-      const result = reconcileComputers(
-        clusterA.entries.map(toReconcileEntry),
-        clusterB.entries.map(toReconcileEntry),
-      );
-      if (!result || !result.groups.length) continue;
-
-      const merges = [];
-      for (const group of result.groups) {
-        const ids = [...group.aIds, ...group.bIds]
-          .filter((id) => !claimed.has(id) && entryById.has(id));
-        if (ids.length < 2) continue;
-        const members = ids.map((id) => entryById.get(id))
-          .sort((a, b) => (b.log.durationSeconds || 0) - (a.log.durationSeconds || 0));
-        const forbidden = members.some((member, i) => members.slice(i + 1)
-          .some((other) => logsHaveNegativeMatch([member.log], [other.log], negativeMatches)));
-        if (forbidden && !reconsiderNegativeMatches) continue;
-        merges.push({
-          keepId: members[0].diveId,
-          absorbIds: members.slice(1).map((member) => member.diveId),
-          previouslySeparated: forbidden,
+      const entriesA = clusterA.entries.map(toReconcileEntry);
+      const entriesB = clusterB.entries.map(toReconcileEntry);
+      for (const session of partitionReconcileSessions(entriesA, entriesB)) {
+        const result = reconcileComputers(session.a, session.b);
+        if (!result || !result.groups.length) continue;
+        plans.push({
+          clusterA,
+          clusterB,
+          result,
+          firstStartMs: session.firstStartMs,
+          lastStartMs: session.lastStartMs,
         });
-        ids.forEach((id) => claimed.add(id));
       }
-      if (!merges.length) continue;
-
-      const dates = result.groups.flatMap((group) => [...group.aIds, ...group.bIds])
-        .map((id) => entryById.get(id)?.dive.startTime).filter(Boolean).sort();
-      const clocksAgree = Math.abs(result.offsetMinutes) < 1;
-
-      const requiresReview = merges.some((merge) => merge.previouslySeparated);
-      if (result.confidence === 'high' && clocksAgree && !requiresReview) {
-        for (const merge of merges) {
-          // eslint-disable-next-line no-await-in-loop
-          await mergeDives(merge.keepId, merge.absorbIds, {}, storage);
-        }
-        autoMerged += merges.length;
-        continue;
-      }
-
-      const nameOf = (device) => `${device.vendor} ${device.product}`.trim() || 'Dive computer';
-      proposals.push({
-        id: `reconcile:${deviceKeyOf(clusterA.device)}::${deviceKeyOf(clusterB.device)}`,
-        kind: 'reconcile',
-        deviceNameA: nameOf(clusterA.device),
-        deviceKeyA: deviceKeyOf(clusterA.device),
-        deviceNameB: nameOf(clusterB.device),
-        deviceKeyB: deviceKeyOf(clusterB.device),
-        offsetMinutes: result.offsetMinutes,
-        cleanOffset: result.cleanOffset,
-        confidence: result.confidence,
-        anchors: result.anchors,
-        sharedDiveCount: merges.length,
-        firstDate: dates[0] || '',
-        lastDate: dates[dates.length - 1] || '',
-        merges,
-      });
     }
   }
+
+  plans.sort(comparePlans);
+  for (const plan of plans) {
+    const { clusterA, clusterB, result } = plan;
+    const merges = [];
+    const acceptedIds = [];
+    for (const group of result.groups) {
+      const aIds = group.aIds.filter((id) => entryById.has(id));
+      const bIds = group.bIds.filter((id) => entryById.has(id));
+      const ids = [...aIds, ...bIds];
+      // Never accept a partial group after a competing plan has claimed one of
+      // its members; doing so could combine fragments from only one computer.
+      if (!aIds.length || !bIds.length || ids.some((id) => claimed.has(id))) continue;
+      const members = ids.map((id) => entryById.get(id))
+        .sort((a, b) => (b.log.durationSeconds || 0) - (a.log.durationSeconds || 0));
+      const forbidden = members.some((member, i) => members.slice(i + 1)
+        .some((other) => logsHaveNegativeMatch([member.log], [other.log], negativeMatches)));
+      if (forbidden && !reconsiderNegativeMatches) continue;
+      merges.push({
+        keepId: members[0].diveId,
+        absorbIds: members.slice(1).map((member) => member.diveId),
+        previouslySeparated: forbidden,
+      });
+      acceptedIds.push(...ids);
+      ids.forEach((id) => claimed.add(id));
+    }
+    if (!merges.length) continue;
+
+    const dates = acceptedIds
+      .map((id) => entryById.get(id)?.dive.startTime).filter(Boolean).sort();
+    const clocksAgree = Math.abs(result.offsetMinutes) < 1;
+
+    const requiresReview = merges.some((merge) => merge.previouslySeparated);
+    if (result.confidence === 'high' && clocksAgree && !requiresReview) {
+      for (const merge of merges) {
+        // eslint-disable-next-line no-await-in-loop
+        await mergeDives(merge.keepId, merge.absorbIds, {}, storage);
+      }
+      autoMerged += merges.length;
+      continue;
+    }
+
+    const nameOf = (device) => `${device.vendor} ${device.product}`.trim() || 'Dive computer';
+    const sessionId = acceptedIds.slice().sort()[0] || String(plan.firstStartMs);
+    proposals.push({
+      id: `reconcile:${deviceKeyOf(clusterA.device)}::${deviceKeyOf(clusterB.device)}::${sessionId}`,
+      kind: 'reconcile',
+      deviceNameA: nameOf(clusterA.device),
+      deviceKeyA: deviceKeyOf(clusterA.device),
+      deviceNameB: nameOf(clusterB.device),
+      deviceKeyB: deviceKeyOf(clusterB.device),
+      offsetMinutes: result.offsetMinutes,
+      cleanOffset: result.cleanOffset,
+      confidence: result.confidence,
+      anchors: result.anchors,
+      sharedDiveCount: merges.length,
+      firstDate: dates[0] || '',
+      lastDate: dates[dates.length - 1] || '',
+      merges,
+    });
+  }
+
+  proposals.sort((a, b) => Date.parse(b.lastDate) - Date.parse(a.lastDate));
 
   return { merged: autoMerged, fused, autoMerged, proposals };
 }

@@ -989,6 +989,71 @@ function memoryStorage(seed = {}) {
   assert.equal((await loadIndex(closeStore)).filter((row) => !row.deletedAt).length, 2);
   await assertIntegrity(closeStore, 'close-time review proposal');
 
+  // Clock offsets are trip-local. Dives from April and September must produce
+  // separate proposals even for the same two computers; September is shown
+  // first, and each session derives its own correction.
+  const epochStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  const epochA = { vendor: 'Shearwater', product: 'Peregrine', serial: 'epoch-a' };
+  const epochB = { vendor: 'Suunto', product: 'EON Core', serial: 'epoch-b' };
+  const addEpochPair = async (start, offsetMinutes, duration, suffix) => {
+    await createDiveFromLog({
+      device: epochA, fingerprint: `EPOCH-A-${suffix}`,
+      reportedStartTime: start, durationSeconds: duration,
+      water: { maxDepthMeters: 25 }, profile: { samples: [] },
+    }, epochStore);
+    await createDiveFromLog({
+      device: epochB, fingerprint: `EPOCH-B-${suffix}`,
+      reportedStartTime: new Date(Date.parse(start) + offsetMinutes * MIN).toISOString(),
+      durationSeconds: duration,
+      water: { maxDepthMeters: 25 }, profile: { samples: [] },
+    }, epochStore);
+  };
+  await addEpochPair('2026-04-23T14:00:00.000Z', 60, 2400, 'APR-1');
+  await addEpochPair('2026-04-24T15:00:00.000Z', 60, 3000, 'APR-2');
+  await addEpochPair('2026-04-25T16:00:00.000Z', 60, 2700, 'APR-3');
+  await addEpochPair('2026-09-09T20:44:00.000Z', 120, 4200, 'SEP-1');
+  const epochPass = await diveLog.reconcileLogbook(epochStore);
+  assert.equal(epochPass.autoMerged, 0);
+  assert.equal(epochPass.proposals.length, 2, 'separate trips need separate proposals');
+  assert.equal(epochPass.proposals[0].sharedDiveCount, 1, 'newest proposal is September only');
+  assert.match(epochPass.proposals[0].firstDate, /^2026-09-09/);
+  assert.match(epochPass.proposals[0].lastDate, /^2026-09-09/);
+  assert.equal(Math.abs(epochPass.proposals[0].offsetMinutes), 120);
+  assert.equal(epochPass.proposals[1].sharedDiveCount, 3, 'April remains its own trip');
+  assert.match(epochPass.proposals[1].firstDate, /^2026-04-23/);
+  assert.match(epochPass.proposals[1].lastDate, /^2026-04-25/);
+  assert.equal(Math.abs(epochPass.proposals[1].offsetMinutes), 60);
+  assert.notEqual(epochPass.proposals[0].id, epochPass.proposals[1].id);
+  await assertIntegrity(epochStore, 'trip-local reconciliation');
+
+  // Candidate quality wins over insertion order. A weak timing-only third
+  // computer is loaded before the real profile-backed mate, but cannot reserve
+  // the dive and suppress the stronger automatic match.
+  const rankedStore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
+  await createDiveFromLog({
+    device: { vendor: 'Shearwater', product: 'Peregrine', serial: 'rank-a' }, fingerprint: 'RANK-A',
+    reportedStartTime: '2026-09-09T20:44:00.000Z', durationSeconds: 3600,
+    water: { maxDepthMeters: 30 }, profile: { samples: prof(3600) },
+  }, rankedStore);
+  await createDiveFromLog({
+    device: { vendor: 'Aqualung', product: 'i300C', serial: 'rank-weak' }, fingerprint: 'RANK-WEAK',
+    reportedStartTime: '2026-09-09T20:45:00.000Z', durationSeconds: 3540,
+    water: { maxDepthMeters: 12 }, profile: { samples: [] },
+  }, rankedStore);
+  await createDiveFromLog({
+    device: { vendor: 'Suunto', product: 'EON Core', serial: 'rank-b' }, fingerprint: 'RANK-B',
+    reportedStartTime: '2026-09-09T20:44:00.000Z', durationSeconds: 3600,
+    water: { maxDepthMeters: 30 }, profile: { samples: prof(3600) },
+  }, rankedStore);
+  const rankedPass = await diveLog.reconcileLogbook(rankedStore);
+  assert.equal(rankedPass.autoMerged, 1, 'strong profile match should win');
+  assert.equal(rankedPass.proposals.length, 0, 'weak competitor must not claim the matched dive');
+  const rankedRows = (await loadIndex(rankedStore)).filter((row) => !row.deletedAt);
+  assert.equal(rankedRows.length, 2);
+  assert.equal(rankedRows.filter((row) => row.logCount === 2).length, 1);
+  assert.equal(rankedRows.filter((row) => row.logCount === 1).length, 1);
+  await assertIntegrity(rankedStore, 'ranked reconciliation plans');
+
   // --- end to end: Aug 27 split-dive recovery ---
   const rstore = memoryStorage({ [DIVE_LOG_INDEX_KEY]: '[]' });
   // Shearwater: one 60-min dive
