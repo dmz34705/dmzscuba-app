@@ -11,6 +11,30 @@ export const GALLERY_SORTS = Object.freeze([
 
 export const GALLERY_SORT_KEYS = Object.freeze(GALLERY_SORTS.map((s) => s.key));
 export const DEFAULT_GALLERY_SORT = 'newest';
+export const DEFAULT_GALLERY_COLUMNS = 4;
+export const MIN_GALLERY_COLUMNS = 2;
+export const MAX_GALLERY_COLUMNS = 6;
+export const GALLERY_GRID_GAP = 6;
+
+const clampColumns = (value) => Math.max(
+  MIN_GALLERY_COLUMNS,
+  Math.min(MAX_GALLERY_COLUMNS, Math.round(value)),
+);
+
+/** Exact square size that fits `columns` tiles inside the measured grid width. */
+export function galleryTileSize(containerWidth, columns, gap = GALLERY_GRID_GAP) {
+  const width = Number.isFinite(containerWidth) ? Math.max(0, containerWidth) : 0;
+  const count = clampColumns(columns);
+  return Math.max(1, Math.floor((width - gap * (count - 1)) / count));
+}
+
+/** Convert a two-finger pinch scale into a stable, discrete grid density. */
+export function galleryColumnsForPinch(startColumns, scale) {
+  const start = clampColumns(startColumns);
+  if (!Number.isFinite(scale) || scale <= 0) return start;
+  const steps = Math.round(Math.log(scale) / Math.log(1.22));
+  return clampColumns(start - steps);
+}
 
 function photoTime(photo) {
   const t = Date.parse(photo?.capturedAt || photo?.linkedAt || photo?.diveStartTime || '');

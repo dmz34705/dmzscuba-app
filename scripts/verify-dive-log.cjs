@@ -1411,6 +1411,9 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /\{ key: 'gallery', label: 'Gallery' \}/);
   assert.match(screen, /depthAtPhotoTime/);
   assert.match(screen, /sortGalleryPhotos\(kept, diveById, sortKey\)/);
+  assert.match(screen, /PanResponder\.create/);
+  assert.match(screen, /Pinch to resize/);
+  assert.match(screen, /onLayout=\{\(event\) => setGridWidth/);
   assert.match(hook, /const loadGalleryPhotos = useCallback/);
 
   // The gallery filter genuinely narrows the photo set (matched by diveId).
@@ -1438,6 +1441,13 @@ function memoryStorage(seed = {}) {
   assert.equal(gallerySort.sortGalleryPhotos(galPhotos, galById, 'shallowest')[0].id, 'p3');
   assert.equal(gallerySort.sortGalleryPhotos(galPhotos, galById, 'deepest')[0].diveId, 'd1');
   assert.equal(gallerySort.GALLERY_SORTS.length, 4);
+  assert.equal(gallerySort.DEFAULT_GALLERY_COLUMNS, 4);
+  assert.equal(gallerySort.galleryTileSize(343, 4), 81);
+  assert.ok(gallerySort.galleryTileSize(343, 4) * 4 + gallerySort.GALLERY_GRID_GAP * 3 <= 343);
+  assert.equal(gallerySort.galleryColumnsForPinch(4, 1.3), 3);
+  assert.equal(gallerySort.galleryColumnsForPinch(4, 0.78), 5);
+  assert.equal(gallerySort.galleryColumnsForPinch(2, 2), 2);
+  assert.equal(gallerySort.galleryColumnsForPinch(6, 0.5), 6);
 
   const depthPhotos = [
     { id: 'shallow-shot', diveId: 'd1', capturedAt: '2026-06-01T10:05:00.000Z', photoDepthMeters: 4 },

@@ -5,6 +5,7 @@ import {
   Image,
   Keyboard,
   Modal,
+  PanResponder,
   Platform,
   Pressable,
   ScrollView,
@@ -79,7 +80,15 @@ import {
   weightToInput,
 } from '../lib/diveLog/format';
 import { buildLogProfileGeometry } from '../lib/diveLog/profileChart';
-import { DEFAULT_GALLERY_SORT, GALLERY_SORTS, sortGalleryPhotos } from '../lib/diveLog/galleryPhotos';
+import {
+  DEFAULT_GALLERY_COLUMNS,
+  DEFAULT_GALLERY_SORT,
+  GALLERY_GRID_GAP,
+  GALLERY_SORTS,
+  galleryColumnsForPinch,
+  galleryTileSize,
+  sortGalleryPhotos,
+} from '../lib/diveLog/galleryPhotos';
 import { isManagedDivePhotoUri, persistDivePhoto, repairDivePhoto } from '../lib/diveLog/photoStorage';
 import {
   buildPhotoImportPlan,
@@ -2269,6 +2278,50 @@ function PhotoGalleryView({
   const [photos, setPhotos] = useState(null); // null = still loading
   const [viewerIndex, setViewerIndex] = useState(null);
   const [sortKey, setSortKey] = useState(DEFAULT_GALLERY_SORT);
+  const [columnCount, setColumnCount] = useState(DEFAULT_GALLERY_COLUMNS);
+  const [gridWidth, setGridWidth] = useState(0);
+  const columnCountRef = useRef(DEFAULT_GALLERY_COLUMNS);
+  const pinchRef = useRef(null);
+
+  const pinchResponder = useMemo(() => {
+    const distance = (touches) => {
+      if (!touches || touches.length < 2) return 0;
+      return Math.hypot(
+        touches[0].pageX - touches[1].pageX,
+        touches[0].pageY - touches[1].pageY,
+      );
+    };
+    const begin = (touches) => {
+      const startDistance = distance(touches);
+      pinchRef.current = startDistance > 0
+        ? { startDistance, startColumns: columnCountRef.current }
+        : null;
+    };
+    const end = () => { pinchRef.current = null; };
+    return PanResponder.create({
+      onStartShouldSetPanResponderCapture: (event) => event.nativeEvent.touches?.length >= 2,
+      onMoveShouldSetPanResponderCapture: (event) => event.nativeEvent.touches?.length >= 2,
+      onPanResponderGrant: (event) => begin(event.nativeEvent.touches),
+      onPanResponderMove: (event) => {
+        const touches = event.nativeEvent.touches;
+        if (!pinchRef.current && touches?.length >= 2) begin(touches);
+        const pinch = pinchRef.current;
+        const currentDistance = distance(touches);
+        if (!pinch || !currentDistance) return;
+        const next = galleryColumnsForPinch(
+          pinch.startColumns,
+          currentDistance / pinch.startDistance,
+        );
+        if (next !== columnCountRef.current) {
+          columnCountRef.current = next;
+          setColumnCount(next);
+        }
+      },
+      onPanResponderRelease: end,
+      onPanResponderTerminate: end,
+      onPanResponderTerminationRequest: () => false,
+    });
+  }, []);
 
   useEffect(() => {
     let active = true;
@@ -2294,7 +2347,8 @@ function PhotoGalleryView({
   const diveCount = useMemo(() => new Set(visible.map((p) => p.diveId)).size, [visible]);
   const hasLegacyPhotoLinks = (photos || []).some((photo) => !isManagedDivePhotoUri(photo.uri));
 
-  const tile = Math.floor((width - spacing.md * 2 - 18) / 4);
+  const availableGridWidth = gridWidth || Math.max(0, width - spacing.lg * 2);
+  const tile = galleryTileSize(availableGridWidth, columnCount);
 
   if (photos == null) return <Text style={styles.muted}>Loading photos…</Text>;
 
@@ -2348,27 +2402,37 @@ function PhotoGalleryView({
             : 'No linked photos match the current filter — tap Filter to change it.'}
         </Text>
       ) : (
-        <View style={styles.galleryGrid}>
-          {visible.map((photo, i) => {
-            const row = diveById.get(photo.diveId);
-            return (
-              <Pressable
-                key={photo.id + '#' + i}
-                onPress={() => setViewerIndex(i)}
-                accessibilityRole="button"
-                accessibilityLabel={`Photo from ${row?.siteName || 'a dive'}`}
-                style={[styles.galleryTile, { width: tile, height: tile }]}
-              >
-                <Image source={{ uri: photo.uri }} style={styles.galleryThumb} />
-                <View style={styles.galleryTileTag}>
-                  <Text numberOfLines={1} style={styles.galleryTileText}>
-                    {row?.siteName || (row ? formatDate(row.startTime) : 'Dive')}
-                  </Text>
-                </View>
-              </Pressable>
-            );
-          })}
-        </View>
+        <>
+          <View style={styles.galleryZoomHint}>
+            <Text style={styles.galleryZoomHintText}>Pinch to resize</Text>
+            <Text style={styles.galleryZoomHintText}>{columnCount} across</Text>
+          </View>
+          <View
+            {...pinchResponder.panHandlers}
+            onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}
+            style={[styles.galleryGrid, { gap: GALLERY_GRID_GAP }]}
+          >
+            {visible.map((photo, i) => {
+              const row = diveById.get(photo.diveId);
+              return (
+                <Pressable
+                  key={photo.id + '#' + i}
+                  onPress={() => setViewerIndex(i)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Photo from ${row?.siteName || 'a dive'}`}
+                  style={[styles.galleryTile, { width: tile, height: tile }]}
+                >
+                  <Image source={{ uri: photo.uri }} style={styles.galleryThumb} />
+                  <View style={styles.galleryTileTag}>
+                    <Text numberOfLines={1} style={styles.galleryTileText}>
+                      {row?.siteName || (row ? formatDate(row.startTime) : 'Dive')}
+                    </Text>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
+        </>
       )}
 
       {viewerIndex != null && visible[viewerIndex] ? (
@@ -3387,7 +3451,9 @@ const styles = StyleSheet.create({
   gallerySortChipText: { color: colors.muted, fontSize: 12, fontWeight: '700' },
   gallerySortChipTextOn: { color: colors.cyan },
   galleryClear: { color: colors.faint, fontSize: 12, fontWeight: '700' },
-  galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 12 },
+  galleryZoomHint: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
+  galleryZoomHintText: { color: colors.faint, fontSize: 10, fontWeight: '700' },
+  galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 6 },
   galleryTile: { borderRadius: 10, overflow: 'hidden' },
   galleryThumb: { backgroundColor: colors.surface, height: '100%', width: '100%' },
   galleryTileTag: { backgroundColor: 'rgba(0,0,0,0.5)', bottom: 0, left: 0, paddingHorizontal: 4, paddingVertical: 2, position: 'absolute', right: 0 },
