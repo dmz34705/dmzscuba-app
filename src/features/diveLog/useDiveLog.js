@@ -394,8 +394,8 @@ export default function useDiveLog() {
 
   /** Re-run the matcher across the whole book (recovers dives split before the
    *  matcher improved). Populates pendingProposals; nothing is written yet. */
-  const recheckDuplicates = useCallback(async () => {
-    const result = await reconcileLogbook();
+  const recheckDuplicates = useCallback(async ({ reconsiderSeparations = false } = {}) => {
+    const result = await reconcileLogbook(undefined, { reconsiderNegativeMatches: reconsiderSeparations });
     setPendingProposals(result.proposals);
     if (result.fused || result.autoMerged) {
       diveCache.current.clear();

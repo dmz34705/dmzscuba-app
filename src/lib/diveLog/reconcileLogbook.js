@@ -19,7 +19,7 @@ import {
  * Confident matches whose clocks agree are merged immediately. Clock conflicts
  * and low-confidence matches are returned as proposals for the caller to show.
  */
-export async function reconcileLogbook(storage) {
+export async function reconcileLogbook(storage, { reconsiderNegativeMatches = false } = {}) {
   await rebuildIndex(storage).catch(() => {});
   let dives = (await loadAll(storage)).filter((dive) => !dive.deletedAt);
   const negativeMatches = await loadNegativeMatches(storage);
@@ -95,8 +95,12 @@ export async function reconcileLogbook(storage) {
           .sort((a, b) => (b.log.durationSeconds || 0) - (a.log.durationSeconds || 0));
         const forbidden = members.some((member, i) => members.slice(i + 1)
           .some((other) => logsHaveNegativeMatch([member.log], [other.log], negativeMatches)));
-        if (forbidden) continue;
-        merges.push({ keepId: members[0].diveId, absorbIds: members.slice(1).map((member) => member.diveId) });
+        if (forbidden && !reconsiderNegativeMatches) continue;
+        merges.push({
+          keepId: members[0].diveId,
+          absorbIds: members.slice(1).map((member) => member.diveId),
+          previouslySeparated: forbidden,
+        });
         ids.forEach((id) => claimed.add(id));
       }
       if (!merges.length) continue;
@@ -105,7 +109,8 @@ export async function reconcileLogbook(storage) {
         .map((id) => entryById.get(id)?.dive.startTime).filter(Boolean).sort();
       const clocksAgree = Math.abs(result.offsetMinutes) < 1;
 
-      if (result.confidence === 'high' && clocksAgree) {
+      const requiresReview = merges.some((merge) => merge.previouslySeparated);
+      if (result.confidence === 'high' && clocksAgree && !requiresReview) {
         for (const merge of merges) {
           // eslint-disable-next-line no-await-in-loop
           await mergeDives(merge.keepId, merge.absorbIds, {}, storage);

@@ -3371,7 +3371,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             onRecheck={async () => {
               setRechecking(true);
               try {
-                const { proposals, fused, autoMerged } = await recheckDuplicates();
+                const { proposals, fused, autoMerged } = await recheckDuplicates({ reconsiderSeparations: true });
                 if (proposals > 0) {
                   setView('review');
                 } else {

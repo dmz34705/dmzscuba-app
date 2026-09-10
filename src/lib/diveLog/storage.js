@@ -322,8 +322,13 @@ export async function softDeleteDive(id, storage = AsyncStorage) {
   const current = await loadDive(id, storage);
   if (!current) return null;
   const logs = await loadLogsForDive(current, storage);
-  for (const log of logs) {
-    if (log.diveId !== id) continue;
+  const ownedLogs = logs.filter((log) => log.diveId === id);
+  // Deleting a dive means the user is discarding this incarnation of its
+  // downloads. Forget any "keep separate" decisions involving those exact
+  // logs before removing them, otherwise a later purge + re-download recreates
+  // the same fingerprints and the old decision silently vetoes matching.
+  await removeNegativeMatchesForLogs(ownedLogs, storage);
+  for (const log of ownedLogs) {
     // eslint-disable-next-line no-await-in-loop
     await storage.removeItem(logKey(log.id));
   }
@@ -681,6 +686,48 @@ async function saveNegativeMatches(matches, storage) {
   return values;
 }
 
+function negativeMatchTokens(value) {
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) && parsed.length === 2 && parsed.every((token) => typeof token === 'string')
+      ? parsed
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Remove separation decisions involving logs that are being discarded. */
+export async function removeNegativeMatchesForLogs(logs, storage = AsyncStorage) {
+  const removedTokens = new Set((logs || []).flatMap(fingerprintTokens));
+  if (!removedTokens.size) return loadNegativeMatches(storage);
+  const matches = await loadNegativeMatches(storage);
+  const kept = new Set([...matches].filter((value) => (
+    !negativeMatchTokens(value).some((token) => removedTokens.has(token))
+  )));
+  if (kept.size !== matches.size) await saveNegativeMatches(kept, storage);
+  return kept;
+}
+
+/** Drop markers whose fingerprint tokens no longer exist in any stored log. */
+export async function pruneNegativeMatches(storage = AsyncStorage) {
+  const keys = (await storage.getAllKeys()) || [];
+  const liveTokens = new Set();
+  for (const key of keys.filter((value) => value.startsWith(DIVE_LOG_LOG_PREFIX))) {
+    const id = key.slice(DIVE_LOG_LOG_PREFIX.length);
+    // eslint-disable-next-line no-await-in-loop
+    const log = await loadLog(id, storage);
+    if (log) fingerprintTokens(log).forEach((token) => liveTokens.add(token));
+  }
+  const matches = await loadNegativeMatches(storage);
+  const kept = new Set([...matches].filter((value) => {
+    const pair = negativeMatchTokens(value);
+    return pair.length === 2 && pair.every((token) => liveTokens.has(token));
+  }));
+  if (kept.size !== matches.size) await saveNegativeMatches(kept, storage);
+  return kept;
+}
+
 export function logsHaveNegativeMatch(logsA, logsB, matches) {
   const known = matches instanceof Set ? matches : new Set(matches || []);
   for (const a of (logsA || []).flatMap(fingerprintTokens)) {
@@ -949,6 +996,7 @@ export async function purgeDeleted(storage = AsyncStorage) {
   await removeKeys(allKeys.filter((k) => k.startsWith(DIVE_LOG_FINGERPRINT_PREFIX)), storage);
 
   await rebuildIndex(storage);
+  await pruneNegativeMatches(storage);
 
   return dead.length;
 }

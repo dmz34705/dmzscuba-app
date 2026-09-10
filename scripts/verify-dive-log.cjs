@@ -948,6 +948,16 @@ function memoryStorage(seed = {}) {
   assert.equal(splitRecheck.proposals.length, 0);
   assert.equal((await loadIndex(splitStore)).filter((row) => !row.deletedAt).length, 2);
   await assertIntegrity(splitStore, 'split with negative match');
+  const reconsideredSplit = await diveLog.reconcileLogbook(
+    splitStore,
+    { reconsiderNegativeMatches: true },
+  );
+  assert.equal(reconsideredSplit.autoMerged, 0, 'manual reconsideration must never silently undo a split');
+  assert.equal(reconsideredSplit.proposals.length, 1);
+  assert.equal(reconsideredSplit.proposals[0].merges[0].previouslySeparated, true);
+  await softDeleteDive(splitRows[0].id, splitStore);
+  assert.equal((await diveLog.loadNegativeMatches(splitStore)).size, 0, 'deleting a download clears its stale separation marker');
+  await assertIntegrity(splitStore, 'delete clears negative match');
 
   // The actual post-download pass must surface a one-dive proposal even when
   // profile/depth normalization is poor, provided two different computers
@@ -1325,6 +1335,7 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /countStoredDives/);
   assert.match(hook, /resolveProposal/);
   assert.match(hook, /recheckDuplicates/);
+  assert.match(hook, /reconsiderSeparations/);
   assert.match(hook, /reconcileLogbook/);
   assert.match(hook, /mergeDives/);
   assert.match(hook, /purgeDeleted/);
