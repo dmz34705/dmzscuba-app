@@ -105,7 +105,7 @@ import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComp
 import useDiveComputerDownload from '../features/diveComputerDownload/useDiveComputerDownload';
 import DiveShareCardScreen from '../features/diveShareCard/DiveShareCardScreen';
 import DiveFilterSheet from '../features/diveLog/DiveFilterSheet';
-import { clearPendingReview } from '../features/diveComputerDownload/downloadReviewFlag';
+import { clearPendingReview, hasPendingReview } from '../features/diveComputerDownload/downloadReviewFlag';
 import { colors, radii, shadow, spacing } from '../theme';
 import { shareLogbookExport } from '../features/diveLog/shareLogbookExport';
 
@@ -2460,12 +2460,50 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
-    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, replacePhotoOnDive, loadGalleryPhotos, deleteDive, deleteDives, bulkEditDives, importComputerLogs, finishImport, resolveProposal, clearProposals,
+    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, replacePhotoOnDive, loadGalleryPhotos, deleteDive, deleteDives, bulkEditDives, importComputerLogs, finishImport, getLocationSuggestions, resolveLocationSuggestion, resolveProposal, clearProposals,
     recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
     getSnapshots, restoreBackup,
   } = useDiveLog();
   const [rechecking, setRechecking] = useState(false);
+  const [locationSuggestionQueue, setLocationSuggestionQueue] = useState([]);
+  const locationAlertOpenRef = useRef(false);
+  const deferLocationSuggestionsRef = useRef(false);
+
+  const enqueueLocationSuggestions = useCallback(async () => {
+    if (!appSettings.locationLoggingEnabled) return;
+    const suggestions = await getLocationSuggestions();
+    if (suggestions.length) setLocationSuggestionQueue(suggestions);
+  }, [appSettings.locationLoggingEnabled, getLocationSuggestions]);
+
+  useEffect(() => {
+    const suggestion = locationSuggestionQueue[0];
+    if (!suggestion || locationAlertOpenRef.current) return;
+    locationAlertOpenRef.current = true;
+    const minutes = Math.round(suggestion.distanceMs / 60000);
+    const timing = suggestion.distanceMs === 0
+      ? 'during the dive window'
+      : `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} from the dive`;
+    const finish = async (accept) => {
+      try {
+        await resolveLocationSuggestion(suggestion, accept);
+      } catch (error) {
+        Alert.alert('Could not link location', error?.message || 'The phone location was not saved.');
+      } finally {
+        locationAlertOpenRef.current = false;
+        setLocationSuggestionQueue((current) => current.filter((item) => item.id !== suggestion.id));
+      }
+    };
+    Alert.alert(
+      'Link phone location to this dive?',
+      `${suggestion.siteName || formatDate(suggestion.diveStartTime) || 'Downloaded dive'}\n`
+        + `${suggestion.latitude.toFixed(5)}, ${suggestion.longitude.toFixed(5)} · recorded ${timing}`,
+      [
+        { text: 'Skip', style: 'cancel', onPress: () => finish(false) },
+        { text: 'Link location', onPress: () => finish(true) },
+      ],
+    );
+  }, [locationSuggestionQueue, resolveLocationSuggestion]);
 
   // The dive-computer transfer runs in a module-level singleton, so it survives
   // leaving this screen. Each time a download settles (here, or in the
@@ -2478,20 +2516,22 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   useEffect(() => {
     if (!loaded) return;
     const s = download.status;
-    if (s !== 'done' && s !== 'error') { handledDownloadRef.current = null; return; }
+    const pendingReview = hasPendingReview();
+    if (!pendingReview && s !== 'done' && s !== 'error') { handledDownloadRef.current = null; return; }
     if (handledDownloadRef.current === s) return;
     handledDownloadRef.current = s;
     (async () => {
       try {
         await finishImport();
-        await recheckDuplicates();
+        const result = await recheckDuplicates();
+        if (result.proposals > 0) deferLocationSuggestionsRef.current = true;
+        else await enqueueLocationSuggestions();
+        clearPendingReview();
       } catch (e) {
         console.log('[dive-log] post-download reconcile failed:', e?.message);
-      } finally {
-        clearPendingReview();
       }
     })();
-  }, [loaded, download.status, finishImport, recheckDuplicates]);
+  }, [loaded, download.status, finishImport, recheckDuplicates, enqueueLocationSuggestions]);
 
   const units = useMemo(() => ({
     depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
@@ -2555,6 +2595,14 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     if (view === 'list' && pendingProposals.length) setView('review');
     else if (view === 'review' && !pendingProposals.length) setView('list');
   }, [view, pendingProposals.length]);
+
+  useEffect(() => {
+    if (pendingProposals.length || !deferLocationSuggestionsRef.current) return;
+    deferLocationSuggestionsRef.current = false;
+    enqueueLocationSuggestions().catch((error) => {
+      console.log('[location-log] suggestion scan failed:', error?.message);
+    });
+  }, [pendingProposals.length, enqueueLocationSuggestions]);
 
   const toggleSelected = useCallback((id) => {
     setSelectedIds((prev) => {

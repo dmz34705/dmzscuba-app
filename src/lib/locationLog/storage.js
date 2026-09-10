@@ -11,6 +11,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const LOCATION_LOG_KEY = '@dmz-scuba/location-log-v1';
+export const LOCATION_SUGGESTION_HANDLED_KEY = '@dmz-scuba/location-suggestion-handled-v1';
 
 // A point is { t: <ms epoch>, lat, lon, accuracyMeters }. Kept as one JSON
 // blob (not one AsyncStorage key per point) — coarse background sampling
@@ -57,4 +58,23 @@ export async function pruneLocationPoints(maxAgeMs, storage = AsyncStorage) {
 
 export async function clearLocationPoints(storage = AsyncStorage) {
   await storage.removeItem(LOCATION_LOG_KEY);
+}
+
+export async function loadHandledLocationDiveIds(storage = AsyncStorage) {
+  try {
+    const raw = await storage.getItem(LOCATION_SUGGESTION_HANDLED_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed.filter((id) => typeof id === 'string' && id) : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Remember both accepted and explicitly skipped suggestions. */
+export async function markLocationSuggestionHandled(diveId, storage = AsyncStorage) {
+  if (!diveId) return;
+  const ids = await loadHandledLocationDiveIds(storage);
+  if (ids.includes(diveId)) return;
+  ids.push(diveId);
+  await storage.setItem(LOCATION_SUGGESTION_HANDLED_KEY, JSON.stringify(ids));
 }

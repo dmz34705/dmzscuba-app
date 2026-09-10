@@ -8,6 +8,12 @@ import { checkLogbookIntegrity, repairLogbook } from '../../lib/diveLog/integrit
 import { photoIdentityKeys } from '../../lib/diveLog/photoIdentity';
 import { depthAtPhotoTime } from '../../lib/diveLog/photoMatching';
 import { removeManagedDivePhoto } from '../../lib/diveLog/photoStorage';
+import { buildLocationSuggestions } from '../../lib/locationLog/suggestions';
+import {
+  loadHandledLocationDiveIds,
+  loadLocationPoints,
+  markLocationSuggestionHandled,
+} from '../../lib/locationLog/storage';
 import {
   clearAll,
   countStoredDives,
@@ -398,6 +404,39 @@ export default function useDiveLog() {
     return { ...result, proposals: result.proposals.length };
   }, [refreshIndex]);
 
+  const getLocationSuggestions = useCallback(async () => {
+    const [points, dives, handled] = await Promise.all([
+      loadLocationPoints(),
+      loadAll(),
+      loadHandledLocationDiveIds(),
+    ]);
+    return buildLocationSuggestions(points, dives, handled);
+  }, []);
+
+  const resolveLocationSuggestion = useCallback(async (suggestion, accept) => {
+    if (!suggestion?.diveId) return null;
+    let saved = null;
+    if (accept) {
+      const current = await loadDive(suggestion.diveId);
+      if (!current || current.deletedAt) return null;
+      saved = await saveDive(touchRecord(normalizeDive({
+        ...current,
+        site: {
+          ...current.site,
+          latitude: suggestion.latitude,
+          longitude: suggestion.longitude,
+        },
+        id: current.id,
+        createdAt: current.createdAt,
+      })));
+      const logs = await loadLogsForDive(saved);
+      diveCache.current.set(saved.id, { dive: saved, logs });
+      await refreshIndex();
+    }
+    await markLocationSuggestionHandled(suggestion.diveId);
+    return saved;
+  }, [refreshIndex]);
+
   /** Dev: hard-delete soft-deleted dives + their logs + fingerprint markers. */
   const purgeDeletedDownloads = useCallback(async () => {
     const n = await purgeDeleted();
@@ -566,6 +605,8 @@ export default function useDiveLog() {
     bulkEditDives,
     importComputerLogs,
     finishImport,
+    getLocationSuggestions,
+    resolveLocationSuggestion,
     resolveProposal,
     clearProposals,
     recheckDuplicates,

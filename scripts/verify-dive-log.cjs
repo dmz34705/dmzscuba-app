@@ -17,6 +17,10 @@ const shareCardOptions = loadSourceModule(
   path.join(srcRoot, 'features', 'diveShareCard', 'shareCardOptions.js'),
   srcRoot,
 );
+const locationSuggestions = loadSourceModule(
+  path.join(srcRoot, 'lib', 'locationLog', 'suggestions.js'),
+  srcRoot,
+);
 const {
   SCHEMA_VERSION,
   LEGACY_SCHEMA_VERSION,
@@ -177,6 +181,7 @@ assert.equal(corrected.startTime, '2026-05-01T02:00:00.000Z');
 assert.equal(shiftIso('2026-05-01T09:00:00.000Z', 90), '2026-05-01T10:30:00.000Z');
 assert.equal(shiftIso('', 90), '');
 assert.equal(deviceKeyOf({ vendor: 'Suunto', product: 'EON Core', serial: '' }), 'Suunto|EON Core|');
+assert.equal(deviceKeyOf({ vendor: 'Suunto', product: 'EON Core', transportId: 'peripheral-1' }), 'Suunto|EON Core|ble:peripheral-1');
 assert.equal(deviceKeyOf({ vendor: '', product: '' }), null);
 assert.equal(computerDiveKeyOf({ vendor: 'A', product: 'B' }, 'fp'), 'A|B|fp');
 assert.equal(computerDiveKeyOf({ vendor: 'A', product: 'B' }, ''), null);
@@ -524,6 +529,8 @@ assert.equal(fmSameSn.bestMatch, null, 'same-computer dives must never be cross-
 // sameComputer is serial-tolerant: a missing serial on one side still = one unit
 assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core', serial: '123' }, { vendor: 'Suunto', product: 'EON Core', serial: '' }), true);
 assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core', serial: '123' }, { vendor: 'Suunto', product: 'EON Core', serial: '999' }), false);
+assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core', transportId: 'one' }, { vendor: 'Suunto', product: 'EON Core', transportId: 'two' }), false);
+assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core', serial: '123', transportId: 'old' }, { vendor: 'Suunto', product: 'EON Core', serial: '123', transportId: 'new' }), true);
 assert.equal(sameComputer({ vendor: 'Suunto', product: 'EON Core' }, { vendor: 'Shearwater', product: 'Perdix' }), false);
 
 // A Suunto dive with a battery-pull clock (years off) must NOT match another
@@ -598,6 +605,24 @@ assert.ok(recOne, 'one-shared-dive reconciliation');
 assert.equal(recOne.confidence, 'high', `confidence ${recOne.confidence} score ${recOne.profileScore}`);
 assert.equal(Math.abs(recOne.offsetMinutes) < 1, true);
 assert.deepEqual(recOne.groups[0].bIds.sort(), ['B1a', 'B1b']);
+
+// A delayed dive-mode trigger can make both duration and max-depth summaries
+// miss their normal gates. A strongly aligned, close-in-time profile still
+// needs to become a reconciliation candidate.
+const staggerSeconds = 180;
+const staggerPhysical = prof(3600);
+const staggerA = [{ id: 'STA', startMs: AT, durationSeconds: 3600, maxDepthMeters: 30, samples: staggerPhysical }];
+const staggerB = [{
+  id: 'STB',
+  startMs: AT + staggerSeconds * 1000,
+  durationSeconds: 3000,
+  maxDepthMeters: 26,
+  samples: staggerPhysical.filter((s) => s.t >= staggerSeconds).map((s) => ({ ...s, t: s.t - staggerSeconds })),
+}];
+const staggered = reconcileComputers(staggerA, staggerB);
+assert.ok(staggered, 'profile should rescue a staggered-start match');
+assert.equal(staggered.groups.length, 1);
+assert.equal(staggered.confidence, 'high');
 
 // findMatch wires it together; ignores same-device candidates
 const fmNew = { deviceKey: 'Shearwater|Perdix|9', reportedStartTime: '2025-03-10T21:00:00.000Z', durationSeconds: 2400, water: { maxDepthMeters: 30 }, profile: { samples: clone() } };
@@ -871,8 +896,11 @@ function memoryStorage(seed = {}) {
   // mergeDives folds one dive's logs into another and soft-deletes the emptied one
   const mA = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-A', vendor: 'Shearwater', product: 'Perdix', serial: '1' }), store);
   const mB = await createDiveFromLog(computerLogFromDownload({ ...rawComputerDive, fingerprint: 'MG-B', vendor: 'Suunto', product: 'EON Core', serial: '2' }), store);
+  await saveDive({ ...mB.dive, site: { ...mB.dive.site, latitude: 41.5, longitude: -83.2 } }, store);
   const kept = await diveLog.mergeDives(mA.dive.id, [mB.dive.id], {}, store);
   assert.equal(kept.logIds.length, 2);
+  assert.equal(kept.site.latitude, 41.5, 'a linked phone location survives when its dive is absorbed');
+  assert.equal(kept.site.longitude, -83.2);
   assert.equal((await loadDive(mB.dive.id, store)).deletedAt != null, true);
   const keptRow = (await loadIndex(store)).find((r) => r.id === mA.dive.id);
   assert.equal(keptRow.logCount, 2);
@@ -1512,6 +1540,7 @@ function memoryStorage(seed = {}) {
   assert.match(dlService, /export function subscribe/);
   assert.match(dlService, /createDivesFromLogs/);       // engine writes dives itself
   assert.match(dlService, /markPendingReview/);         // flags the logbook to reconcile
+  assert.match(dlService, /transportId: device\.id/);   // distinguish same-model units without serials
   assert.match(dlService, /LOG_LIMIT/);                 // bounded console ring buffer
   assert.match(dlService, /if \(downloadRunning\) return/); // no re-entrant download
   assert.match(dlService, /baselineKnown/);             // incremental-safe only with a live marker
@@ -1535,8 +1564,25 @@ function memoryStorage(seed = {}) {
 
   // Every download settle (live or background) re-runs reconciliation, edge-triggered.
   assert.match(screen, /handledDownloadRef/);
+  assert.match(screen, /hasPendingReview\(\)/);
   assert.match(screen, /await recheckDuplicates\(\)/);
+  assert.match(screen, /Link phone location to this dive\?/);
+  assert.match(screen, /getLocationSuggestions/);
   assert.match(screen, /dlBanner/);                     // "downloading in background" affordance
+
+  const suggested = locationSuggestions.buildLocationSuggestions(
+    [{ t: Date.parse('2026-09-10T15:55:00.000Z'), lat: 41.5, lon: -83.2, accuracyMeters: 25 }],
+    [{ id: 'gps-dive', logIds: ['gps-log'], startTime: '2026-09-10T16:00:00.000Z', durationSeconds: 2400, site: {} }],
+  );
+  assert.equal(suggested.length, 1);
+  assert.equal(suggested[0].distanceMs, 5 * 60 * 1000);
+  assert.equal(suggested[0].latitude, 41.5);
+  assert.equal(locationSuggestions.buildLocationSuggestions([], [], []).length, 0);
+  assert.equal(locationSuggestions.buildLocationSuggestions(
+    [{ t: Date.parse('2026-09-10T16:00:00.000Z'), lat: 41.5, lon: -83.2 }],
+    [{ id: 'gps-dive', logIds: ['gps-log'], startTime: '2026-09-10T16:00:00.000Z', durationSeconds: 2400, site: {} }],
+    ['gps-dive'],
+  ).length, 0);
 
   const runner = read('src', 'features', 'diveComputerDownload', 'downloadRunner.js');
   assert.match(runner, /monitorCharacteristicForService/);

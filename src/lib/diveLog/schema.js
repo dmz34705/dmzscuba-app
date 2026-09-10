@@ -374,8 +374,9 @@ export function deviceKeyOf(device) {
   const vendor = str(d.vendor, '').trim();
   const product = str(d.product, '').trim();
   const serial = str(d.serial, '').trim();
+  const transportId = str(d.transportId, '').trim();
   if (!vendor && !product) return null;
-  return `${vendor}|${product}|${serial}`;
+  return `${vendor}|${product}|${serial || (transportId ? `ble:${transportId}` : '')}`;
 }
 
 /** vendor|product|fingerprint — identifies one dive on one model (same-device de-dup). */
@@ -392,6 +393,9 @@ function normalizeLogDevice(raw) {
     vendor: str(source.vendor, '').trim(),
     product: str(source.product, '').trim(),
     serial: str(source.serial, '').trim(),
+    // CoreBluetooth's per-peripheral identifier distinguishes two computers of
+    // the same model when a protocol download omits their serial numbers.
+    transportId: str(source.transportId, '').trim(),
   };
 }
 

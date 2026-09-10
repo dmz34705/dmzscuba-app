@@ -32,6 +32,8 @@ const MIN_OVERLAP_FRAC = 0.6;
 const SPLIT_MAX_GAP_SEC = 12 * 60;     // a surface gap shorter than this can be one dive
 const FRAGMENT_MAX_FRAC = 0.9;         // a "fragment" is meaningfully shorter than the whole
 const FRAGMENT_MIN_SEC = 120;          // ignore trivially short blips
+const STAGGERED_START_MAX_SEC = 15 * 60;
+const STAGGERED_MIN_DURATION_FRAC = 0.65;
 
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
 
@@ -49,6 +51,10 @@ export function sameComputer(a, b) {
   if (norm(da.vendor) !== norm(db.vendor) || norm(da.product) !== norm(db.product)) return false;
   const sa = norm(da.serial);
   const sb = norm(db.serial);
+  if (sa && sb) return sa === sb;
+  const ta = norm(da.transportId);
+  const tb = norm(db.transportId);
+  if (ta && tb) return ta === tb;
   return !sa || !sb || sa === sb;
 }
 
@@ -160,6 +166,20 @@ function durationClose(a, b) {
 }
 function depthClose(a, b) {
   return Math.abs(a - b) <= Math.max(DEPTH_TOL_M, DEPTH_TOL_FRAC * Math.max(a, b));
+}
+
+// Two computers can enter dive mode several minutes apart and consequently
+// disagree on duration and max depth. For close wall-clock starts, let the
+// actual depth trace rescue the candidate instead of rejecting it on those
+// summaries before profile alignment ever runs.
+function staggeredProfileMatch(a, b) {
+  if (Math.abs(a.startMs - b.startMs) > STAGGERED_START_MAX_SEC * 1000) return false;
+  const shorterDuration = Math.min(a.durationSeconds || 0, b.durationSeconds || 0);
+  const longerDuration = Math.max(a.durationSeconds || 0, b.durationSeconds || 0);
+  if (!longerDuration || shorterDuration / longerDuration < STAGGERED_MIN_DURATION_FRAC) return false;
+  if (!(a.samples || []).length || !(b.samples || []).length) return false;
+  const reportedDeltaSec = (a.startMs - b.startMs) / 1000;
+  return bestOffset(a.samples, b.samples, reportedDeltaSec).score >= CONFIRM_SCORE;
 }
 
 function iso(ms) {
@@ -548,8 +568,9 @@ export function reconcileComputers(a, b) {
     for (let j = 0; j < B.length; j += 1) {
       const dA = A[i];
       const dB = B[j];
-      if (durationClose(dA.durationSeconds || 0, dB.durationSeconds || 0)
-          && depthClose(dA.maxDepthMeters || 0, dB.maxDepthMeters || 0)) {
+      const summariesMatch = durationClose(dA.durationSeconds || 0, dB.durationSeconds || 0)
+        && depthClose(dA.maxDepthMeters || 0, dB.maxDepthMeters || 0);
+      if (summariesMatch || staggeredProfileMatch(dA, dB)) {
         pushCand(i, j, dB.startMs - dA.startMs, 'pair');
       }
       // B[j] is A[i] + A[i+1] split at the surface

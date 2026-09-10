@@ -444,6 +444,7 @@ export async function download({ incremental = false, force = false } = {}) {
         tally.downloaded += 1;
         try {
           const logPartial = computerLogFromDownload(rawDive);
+          logPartial.device = { ...logPartial.device, transportId: device.id };
           const key = computerDiveKey(
             logPartial.device.vendor, logPartial.device.product, logPartial.fingerprint,
           );

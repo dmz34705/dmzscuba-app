@@ -377,11 +377,21 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
   const keep = await loadDive(keepDiveId, storage);
   if (!keep) return null;
   const logIds = new Set(keep.logIds);
+  let mergedSite = { ...keep.site };
   for (const fromId of fromDiveIds) {
     if (fromId === keepDiveId) continue;
     // eslint-disable-next-line no-await-in-loop
     const from = await loadDive(fromId, storage);
     if (!from) continue;
+    const keepHasCoordinates = Number.isFinite(mergedSite.latitude) && Number.isFinite(mergedSite.longitude);
+    const fromHasCoordinates = Number.isFinite(from.site?.latitude) && Number.isFinite(from.site?.longitude);
+    if (!keepHasCoordinates && fromHasCoordinates) {
+      mergedSite = {
+        ...mergedSite,
+        latitude: from.site.latitude,
+        longitude: from.site.longitude,
+      };
+    }
     for (const lid of from.logIds) {
       // eslint-disable-next-line no-await-in-loop
       const log = await loadLog(lid, storage);
@@ -415,6 +425,7 @@ export async function mergeDives(keepDiveId, fromDiveIds, { correction = null } 
 
   let next = normalizeDive({
     ...keep,
+    site: mergedSite,
     logIds: [...logIds],
     source: keep.source === 'manual' ? 'mixed' : keep.source,
   });
