@@ -1490,6 +1490,7 @@ function memoryStorage(seed = {}) {
   assert.match(hook, /recheckDuplicates/);
   assert.match(hook, /reconsiderSeparations/);
   assert.match(hook, /reconcileLogbook/);
+  assert.match(hook, /recheckPromiseRef/); // auto + manual checks share one result
   assert.match(hook, /mergeDives/);
   assert.match(hook, /purgeDeleted/);
   assert.match(hook, /eraseAllDiveData/);

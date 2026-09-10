@@ -124,6 +124,7 @@ export default function useDiveLog() {
   const [pendingProposals, setPendingProposals] = useState([]); // cross-computer matches to review
   const [computerPriority, setComputerPriority] = useState([]); // ordered deviceKeys, [0] = primary
   const diveCache = useRef(new Map()); // id -> { dive, logs }
+  const recheckPromiseRef = useRef(null);
 
   useEffect(() => {
     let active = true;
@@ -395,13 +396,28 @@ export default function useDiveLog() {
   /** Re-run the matcher across the whole book (recovers dives split before the
    *  matcher improved). Populates pendingProposals; nothing is written yet. */
   const recheckDuplicates = useCallback(async ({ reconsiderSeparations = false } = {}) => {
-    const result = await reconcileLogbook(undefined, { reconsiderNegativeMatches: reconsiderSeparations, reviewAll: true });
-    setPendingProposals(result.proposals);
-    if (result.fused || result.autoMerged) {
-      diveCache.current.clear();
-      await refreshIndex();
+    // The download completion effect and the manual health tool can fire in
+    // the same render. They must observe one reconciliation result; otherwise
+    // one caller can announce zero while the other has already opened review.
+    if (recheckPromiseRef.current) return recheckPromiseRef.current;
+    const run = (async () => {
+      const result = await reconcileLogbook(undefined, {
+        reconsiderNegativeMatches: reconsiderSeparations,
+        reviewAll: true,
+      });
+      setPendingProposals(result.proposals);
+      if (result.fused || result.autoMerged) {
+        diveCache.current.clear();
+        await refreshIndex();
+      }
+      return { ...result, proposals: result.proposals.length };
+    })();
+    recheckPromiseRef.current = run;
+    try {
+      return await run;
+    } finally {
+      if (recheckPromiseRef.current === run) recheckPromiseRef.current = null;
     }
-    return { ...result, proposals: result.proposals.length };
   }, [refreshIndex]);
 
   const getLocationSuggestions = useCallback(async () => {

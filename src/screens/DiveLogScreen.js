@@ -971,9 +971,9 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
           style={styles.primaryCta}
         />
         <Text style={styles.engineNote}>
-          Deleted dive records stay hidden until purge. Their exclusively owned
-          computer logs are removed so a fresh download can import them again. Purge
-          removes the remaining records and clears per-computer sync markers.
+          A merge leaves the absorbed duplicate here as an empty, hidden record;
+          seeing one item after merging is expected. Purge removes those hidden
+          records and clears per-computer sync markers.
         </Text>
         <Pressable onPress={onDiagnostic} hitSlop={8} style={styles.reviewSkip}>
           <Text style={styles.reviewSkipText}>Share logbook diagnostic (dev)</Text>
@@ -3335,7 +3335,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             onPurge={() => {
               Alert.alert(
                 `Purge ${deletedCount} deleted ${deletedCount === 1 ? 'dive' : 'dives'}?`,
-                'Permanently removes soft-deleted dive records and clears the per-computer sync markers so they can be re-downloaded.',
+                'A recently merged dive may leave one empty hidden record here. Purge removes hidden records and clears the per-computer sync markers so deleted downloads can be imported again.',
                 [
                   { text: 'Cancel', style: 'cancel' },
                   { text: 'Purge', style: 'destructive', onPress: async () => { const n = await purgeDeletedDownloads(); Alert.alert('Purged', `Removed ${n} ${n === 1 ? 'dive' : 'dives'}.`); } },
