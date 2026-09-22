@@ -7,12 +7,16 @@ const root = path.join(__dirname, '..');
 const srcRoot = path.join(root, 'src');
 const model = loadSourceModule(path.join(srcRoot, 'features/gearChecklist/model.js'), srcRoot);
 const {
+  COMPONENT_TYPES,
+  EXPOSURE_SUIT_TYPES,
   GEAR_CATEGORIES,
   GEAR_STATE_VERSION,
+  GUIDED_CATEGORIES,
   assignItemToSetups,
   createInitialGearState,
   emptyGearComponent,
   emptyGearItem,
+  exposureComponentTemplate,
   gearSummary,
   normalizeGearComponent,
   normalizeGearItem,
@@ -74,6 +78,19 @@ const cylinder = { condition: 'Ready', nextServiceDate: '2027-01-01', visualInsp
 assert.equal(serviceDueForItem(cylinder).label, 'Visual inspection');
 assert.equal(serviceStatusForItem({ condition: 'Out of service' }).key, 'blocked');
 
+for (const guided of ['Regulator', 'BCD', 'Exposure suit']) {
+  assert.ok(GUIDED_CATEGORIES.includes(guided), `${guided} should have a guided add flow`);
+}
+assert.deepEqual(EXPOSURE_SUIT_TYPES, ['Wetsuit', 'Drysuit']);
+assert.ok(COMPONENT_TYPES['Exposure suit'].includes('Dry gloves'));
+const exposureItem = normalizeGearItem({
+  ...emptyGearItem(), id: 'exp-1', name: 'Trilam drysuit', category: 'Exposure suit', configuration: 'Drysuit', isAssembly: true,
+  components: exposureComponentTemplate(),
+}, new Date('2026-01-01T12:00:00Z'));
+assert.equal(exposureItem.configuration, 'Drysuit');
+assert.equal(exposureItem.components.length, 4);
+assert.ok(exposureItem.components.some((component) => component.type === 'Hood'));
+
 const setup = { itemIds: ['a', 'b', 'c'], checkedIds: ['a', 'c', 'missing'] };
 assert.deepEqual(setupProgress(setup), { total: 3, checked: 2, ratio: 2 / 3 });
 assert.equal(serviceEntriesForItem(item).length, 2, 'assembly and component both appear in service tracking');
@@ -96,6 +113,9 @@ for (const expected of ['What are you adding?', 'first stage', 'second stage', '
   assert.match(wizard, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${expected} must appear in the guided regulator wizard`);
 }
 assert.match(wizard, /CATEGORY_GROUPS/, 'the wizard uses the shared category groups');
+for (const expected of ['Wetsuit or drysuit', 'Cut & thickness', 'Suit material', 'Replaceable seals', 'Built-in boots or socks', 'Dry glove system', 'exposureStepsFor']) {
+  assert.match(wizard, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${expected} must appear in the guided exposure suit wizard`);
+}
 
 const catalog = fs.readFileSync(path.join(srcRoot, 'features/catalog/featureCatalog.js'), 'utf8');
 const navigator = fs.readFileSync(path.join(srcRoot, 'application/AppNavigator.js'), 'utf8');

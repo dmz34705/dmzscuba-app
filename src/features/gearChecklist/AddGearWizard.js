@@ -10,19 +10,50 @@ import {
   BCD_STYLES,
   CATEGORY_GROUPS,
   COMPONENT_TYPES,
+  DRYSUIT_FEET_OPTIONS,
+  DRYSUIT_MATERIALS,
+  EXPOSURE_SUIT_TYPES,
   GEAR_CONDITIONS,
+  SEAL_MATERIALS,
   SERVICE_INTERVALS,
+  WETSUIT_CUTS,
   createGearId,
   emptyGearComponent,
   emptyGearItem,
 } from './model';
 
 // Ordered steps for the guided Regulator and BCD flows. "category" is handled by the picker screen above these lists.
+// The Exposure suit flow branches on wetsuit vs. drysuit, so its steps are computed by exposureStepsFor() instead.
 const REGULATOR_STEPS = ['basics', 'first-stage', 'second-stage', 'alternate', 'inflator', 'drysuit', 'spg', 'transmitter', 'extras', 'details'];
 const BCD_STEPS = ['basics', 'style', 'weights', 'altair', 'extras', 'details'];
 
 const REGULATOR_EXTRA_PART_TYPES = COMPONENT_TYPES.Regulator.filter((type) => !['First stage', 'Primary second stage'].includes(type));
 const BCD_EXTRA_PART_TYPES = COMPONENT_TYPES.BCD.filter((type) => !['Bladder', 'Inflator (LPI)'].includes(type));
+const EXPOSURE_EXTRA_PART_TYPES = COMPONENT_TYPES['Exposure suit'].filter((type) => !['Suit body', 'Hood', 'Gloves', 'Dry gloves', 'Boots', 'Seals'].includes(type));
+
+const EXPOSURE_SUIT_TYPE_OPTIONS = EXPOSURE_SUIT_TYPES.map((value) => ({ value, label: value }));
+const WETSUIT_CUT_OPTIONS = WETSUIT_CUTS.map((value) => ({ value, label: value }));
+const DRYSUIT_FEET_OPTION_LIST = DRYSUIT_FEET_OPTIONS.map((value) => ({ value, label: value }));
+
+// Wetsuit and drysuit ask different follow-up questions, and a couple of earlier answers (built-in
+// hood, built-in boots, a dry-glove system) make a later yes/no step redundant — so the step list
+// is computed from the draft instead of being a fixed array like REGULATOR_STEPS/BCD_STEPS.
+function exposureStepsFor(exp) {
+  if (exp.suitType === 'Drysuit') {
+    const steps = ['basics', 'suit-type', 'drysuit-material', 'drysuit-seals', 'drysuit-feet', 'dry-gloves', 'hood'];
+    if (!exp.drysuit.dryGloves.included) steps.push('gloves');
+    if (exp.drysuit.feet.type !== 'Built-in boots') steps.push('boots');
+    steps.push('layers', 'details');
+    return steps;
+  }
+  if (exp.suitType === 'Wetsuit') {
+    const steps = ['basics', 'suit-type', 'wetsuit-cut'];
+    if (!exp.wetsuit.builtInHood) steps.push('hood');
+    steps.push('gloves', 'boots', 'layers', 'details');
+    return steps;
+  }
+  return ['basics', 'suit-type'];
+}
 
 function emptyRegulatorState(defaultSetupId) {
   return {
@@ -174,6 +205,78 @@ function buildBcdDraft(bcd) {
   };
 }
 
+function emptyExposureState(defaultSetupId) {
+  return {
+    name: '', manufacturer: '', model: '', size: '',
+    suitType: null,
+    wetsuit: { cut: null, thickness: '', builtInHood: null },
+    drysuit: {
+      material: null,
+      seals: { included: null, material: null },
+      feet: { type: null, size: '' },
+      dryGloves: { included: null, ringSystem: '', manufacturer: '', model: '' },
+    },
+    hood: { included: null, manufacturer: '', model: '', thickness: '' },
+    gloves: { included: null, manufacturer: '', model: '', thickness: '' },
+    boots: { included: null, manufacturer: '', model: '', size: '' },
+    extras: [],
+    serialNumber: '', condition: GEAR_CONDITIONS[0],
+    lastServiceDate: '', nextServiceDate: '', serviceIntervalMonths: '',
+    purchaseDate: '', purchasePrice: '', retailer: '', warrantyUntil: '', notes: '',
+    setupIds: defaultSetupId ? [defaultSetupId] : [],
+  };
+}
+
+function buildExposureDraft(exp) {
+  const bodyNotes = exp.suitType === 'Drysuit'
+    ? exp.drysuit.material || ''
+    : [exp.wetsuit.cut, exp.wetsuit.thickness.trim() ? `${exp.wetsuit.thickness.trim()} thickness` : '', exp.wetsuit.builtInHood ? 'Built-in hood' : ''].filter(Boolean).join(' · ');
+  const components = [
+    { ...emptyGearComponent('Exposure suit', 'Suit body'), id: createGearId('component'), name: exp.suitType || 'Suit', notes: bodyNotes },
+  ];
+  if (exp.suitType === 'Drysuit') {
+    if (exp.drysuit.seals.included) {
+      components.push({ ...emptyGearComponent('Exposure suit', 'Seals'), id: createGearId('component'), name: 'Neck & wrist seals', notes: exp.drysuit.seals.material ? `${exp.drysuit.seals.material} seals` : 'Replaceable seals' });
+    }
+    if (exp.drysuit.feet.type === 'Built-in boots') {
+      components.push({ ...emptyGearComponent('Exposure suit', 'Boots'), id: createGearId('component'), name: 'Built-in boots', notes: exp.drysuit.feet.size.trim() ? `Size ${exp.drysuit.feet.size.trim()}` : '' });
+    }
+    if (exp.drysuit.dryGloves.included) {
+      components.push({
+        ...emptyGearComponent('Exposure suit', 'Dry gloves'), id: createGearId('component'), name: 'Dry glove system',
+        manufacturer: exp.drysuit.dryGloves.manufacturer.trim(), model: exp.drysuit.dryGloves.model.trim(),
+        notes: exp.drysuit.dryGloves.ringSystem.trim() ? `${exp.drysuit.dryGloves.ringSystem.trim()} ring system` : '',
+      });
+    }
+  }
+  if (exp.hood.included) components.push({ ...emptyGearComponent('Exposure suit', 'Hood'), id: createGearId('component'), name: 'Hood', manufacturer: exp.hood.manufacturer.trim(), model: exp.hood.model.trim(), notes: exp.hood.thickness.trim() ? `${exp.hood.thickness.trim()} thickness` : '' });
+  if (exp.gloves.included) components.push({ ...emptyGearComponent('Exposure suit', 'Gloves'), id: createGearId('component'), name: 'Gloves', manufacturer: exp.gloves.manufacturer.trim(), model: exp.gloves.model.trim(), notes: exp.gloves.thickness.trim() ? `${exp.gloves.thickness.trim()} thickness` : '' });
+  if (exp.boots.included) components.push({ ...emptyGearComponent('Exposure suit', 'Boots'), id: createGearId('component'), name: 'Boots', manufacturer: exp.boots.manufacturer.trim(), model: exp.boots.model.trim(), notes: exp.boots.size.trim() ? `Size ${exp.boots.size.trim()}` : '' });
+  exp.extras.forEach((extra) => {
+    if (!extra.name.trim() && !extra.manufacturer.trim() && !extra.model.trim()) return;
+    components.push({ ...emptyGearComponent('Exposure suit', extra.type), id: extra.id, name: extra.name.trim() || extra.type, manufacturer: extra.manufacturer.trim(), model: extra.model.trim() });
+  });
+
+  return {
+    ...emptyGearItem(),
+    name: exp.name.trim(),
+    category: 'Exposure suit',
+    manufacturer: exp.manufacturer.trim(),
+    model: exp.model.trim(),
+    serialNumber: exp.serialNumber.trim(),
+    condition: exp.condition,
+    configuration: exp.suitType || '',
+    size: exp.size.trim(),
+    thickness: exp.suitType === 'Wetsuit' ? exp.wetsuit.thickness.trim() : '',
+    isAssembly: true,
+    components,
+    lastServiceDate: exp.lastServiceDate.trim(), nextServiceDate: exp.nextServiceDate.trim(), serviceIntervalMonths: exp.serviceIntervalMonths,
+    purchaseDate: exp.purchaseDate.trim(), purchasePrice: exp.purchasePrice.trim(), retailer: exp.retailer.trim(), warrantyUntil: exp.warrantyUntil.trim(),
+    notes: exp.notes.trim(),
+    setupIds: exp.setupIds,
+  };
+}
+
 function StepDots({ index, count }) {
   return (
     <View style={styles.dots}>
@@ -202,7 +305,7 @@ function CategoryPicker({ onBack, onPick, onUseFullForm }) {
       <ScreenHeader eyebrow="GEAR LOCKER" title="Add Gear" onBack={onBack} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.introTitle}>What are you adding?</Text>
-        <Text style={styles.stepBody}>Pick a category. Regulators and BCDs walk through part by part — everything else opens ready to fill in.</Text>
+        <Text style={styles.stepBody}>Pick a category. Regulators, BCDs, and exposure suits walk through part by part — everything else opens ready to fill in.</Text>
         {CATEGORY_GROUPS.map((group) => (
           <View key={group.label} style={styles.categoryGroup}>
             <Text style={styles.categoryGroupLabel}>{group.label}</Text>
@@ -271,6 +374,27 @@ function bcdChips(bcd) {
   ];
 }
 
+function exposureChips(exp) {
+  const chips = [exp.suitType ? `Type · ${exp.suitType}` : 'Type –'];
+  if (exp.suitType === 'Drysuit') {
+    chips.push(
+      exp.drysuit.material ? `Material · ${exp.drysuit.material}` : 'Material –',
+      `Seals ${exp.drysuit.seals.included ? `✓ (${exp.drysuit.seals.material || 'replaceable'})` : '–'}`,
+      exp.drysuit.feet.type ? `Feet · ${exp.drysuit.feet.type}` : 'Feet –',
+      `Dry gloves ${exp.drysuit.dryGloves.included ? '✓' : '–'}`,
+    );
+  } else if (exp.suitType === 'Wetsuit') {
+    chips.push(exp.wetsuit.cut ? `Cut · ${exp.wetsuit.cut}` : 'Cut –');
+    if (exp.wetsuit.thickness.trim()) chips.push(`Thickness · ${exp.wetsuit.thickness.trim()}`);
+    chips.push(`Built-in hood ${exp.wetsuit.builtInHood ? '✓' : '–'}`);
+  }
+  const hasGloves = exp.gloves.included || (exp.suitType === 'Drysuit' && exp.drysuit.dryGloves.included);
+  const hasBoots = exp.boots.included || (exp.suitType === 'Drysuit' && exp.drysuit.feet.type === 'Built-in boots');
+  chips.push(`Hood ${exp.hood.included ? '✓' : '–'}`, `Gloves ${hasGloves ? '✓' : '–'}`, `Boots ${hasBoots ? '✓' : '–'}`);
+  if (exp.extras.length) chips.push(`${exp.extras.length} more part${exp.extras.length === 1 ? '' : 's'}`);
+  return chips;
+}
+
 function SummaryStrip({ chips }) {
   return (
     <View style={styles.summaryStrip}>
@@ -328,12 +452,14 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
   const [step, setStep] = useState('basics');
   const [reg, setReg] = useState(() => emptyRegulatorState(defaultSetupId));
   const [bcd, setBcd] = useState(() => emptyBcdState(defaultSetupId));
+  const [exp, setExp] = useState(() => emptyExposureState(defaultSetupId));
   const [busy, setBusy] = useState(false);
   // Stepping Back from the first step of a guided flow drops you at the category picker so you
   // can change your mind about the category — but re-tapping the same category there resumes
   // the same draft rather than wiping it, since that's not a fresh start, just a detour.
   const regulatorStarted = useRef(false);
   const bcdStarted = useRef(false);
+  const exposureStarted = useRef(false);
 
   const pickCategory = (nextCategory) => {
     if (nextCategory === 'Regulator') {
@@ -351,6 +477,15 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
       if (!bcdStarted.current) {
         setBcd(emptyBcdState(defaultSetupId));
         bcdStarted.current = true;
+      }
+      return;
+    }
+    if (nextCategory === 'Exposure suit') {
+      setCategory('Exposure suit');
+      setStep('basics');
+      if (!exposureStarted.current) {
+        setExp(emptyExposureState(defaultSetupId));
+        exposureStarted.current = true;
       }
       return;
     }
@@ -469,6 +604,233 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
           <View style={styles.half}><FormField label="Retailer / shop" maxLength={100} onChangeText={(value) => updateBcd({ retailer: value })} placeholder="Optional" value={bcd.retailer} /></View>
         </View>
         <NotesField onChangeText={(value) => updateBcd({ notes: value })} value={bcd.notes} />
+      </StepShell>
+    );
+  }
+
+  if (category === 'Exposure suit') {
+    const exposureSteps = exposureStepsFor(exp);
+    const index = exposureSteps.indexOf(step);
+    const goBack = () => (index <= 0 ? setCategory('') : setStep(exposureSteps[index - 1]));
+    // Some answers (suit type, dry-glove system, built-in boots) change which later steps apply,
+    // so goNext recomputes the step list from the freshest draft — nextExp when a caller just
+    // changed something that affects branching, otherwise the current exp is already up to date.
+    const goNext = (nextExp) => {
+      const steps = exposureStepsFor(nextExp || exp);
+      const i = steps.indexOf(step);
+      setStep(steps[i + 1]);
+    };
+    const updateExp = (patch) => setExp((current) => ({ ...current, ...patch }));
+    const chooseSuitType = (suitType) => {
+      const nextExp = { ...exp, suitType };
+      setExp(nextExp);
+      goNext(nextExp);
+    };
+    const chooseHood = (included) => {
+      updateExp({ hood: { ...exp.hood, included } });
+      if (included === false) goNext();
+    };
+    const chooseGloves = (included) => {
+      updateExp({ gloves: { ...exp.gloves, included } });
+      if (included === false) goNext();
+    };
+    const chooseBoots = (included) => {
+      updateExp({ boots: { ...exp.boots, included } });
+      if (included === false) goNext();
+    };
+    const chooseSeals = (included) => {
+      const nextExp = { ...exp, drysuit: { ...exp.drysuit, seals: { ...exp.drysuit.seals, included } } };
+      setExp(nextExp);
+      if (included === false) goNext(nextExp);
+    };
+    const chooseFeet = (type) => {
+      const nextExp = { ...exp, drysuit: { ...exp.drysuit, feet: { ...exp.drysuit.feet, type } } };
+      setExp(nextExp);
+      if (type === 'Socks') goNext(nextExp);
+    };
+    const chooseDryGloves = (included) => {
+      const nextExp = { ...exp, drysuit: { ...exp.drysuit, dryGloves: { ...exp.drysuit.dryGloves, included } } };
+      setExp(nextExp);
+      if (included === false) goNext(nextExp);
+    };
+    const save = async () => {
+      setBusy(true);
+      try {
+        await onSave(buildExposureDraft(exp));
+      } catch {
+        setBusy(false);
+      }
+    };
+
+    if (step === 'basics') {
+      const canContinue = Boolean(exp.name.trim());
+      return (
+        <StepShell body="Give it a name you'll recognize in your locker. Brand and model are optional — you'll set the type and any add-ons next." count={exposureSteps.length} footer={<PrimaryButton disabled={!canContinue} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Great, exposure protection">
+          <FormField autoCapitalize="words" label="Name" maxLength={120} onChangeText={(value) => updateExp({ name: value })} placeholder="Primary wetsuit" value={exp.name} />
+          <View style={styles.twoColumn}>
+            <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ manufacturer: value })} placeholder="Optional" value={exp.manufacturer} /></View>
+            <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ model: value })} placeholder="Optional" value={exp.model} /></View>
+          </View>
+        </StepShell>
+      );
+    }
+
+    if (step === 'suit-type') {
+      return (
+        <StepShell body="This decides what we ask about next." count={exposureSteps.length} footer={<PrimaryButton disabled={!exp.suitType} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Wetsuit or drysuit?">
+          <PillOptionRow onChange={chooseSuitType} options={EXPOSURE_SUIT_TYPE_OPTIONS} value={exp.suitType} />
+        </StepShell>
+      );
+    }
+
+    if (step === 'wetsuit-cut') {
+      return (
+        <StepShell body="Shorty or full length, and how thick." count={exposureSteps.length} footer={<PrimaryButton disabled={!exp.wetsuit.cut} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Cut & thickness">
+          <PillOptionRow label="Cut" onChange={(cut) => updateExp({ wetsuit: { ...exp.wetsuit, cut } })} options={WETSUIT_CUT_OPTIONS} value={exp.wetsuit.cut} />
+          <View style={styles.twoColumn}>
+            <View style={styles.half}><FormField label="Thickness" maxLength={40} onChangeText={(value) => updateExp({ wetsuit: { ...exp.wetsuit, thickness: value } })} placeholder="e.g. 3mm, 5/4mm" value={exp.wetsuit.thickness} /></View>
+            <View style={styles.half}><FormField label="Size" maxLength={40} onChangeText={(value) => updateExp({ size: value })} placeholder="e.g. M, MT" value={exp.size} /></View>
+          </View>
+          <Text style={styles.pillLabel}>Built-in hood?</Text>
+          <YesNoRow onChange={(builtInHood) => updateExp({ wetsuit: { ...exp.wetsuit, builtInHood } })} value={exp.wetsuit.builtInHood} />
+        </StepShell>
+      );
+    }
+
+    if (step === 'drysuit-material') {
+      return (
+        <StepShell body="What the suit itself is made of." count={exposureSteps.length} footer={<PrimaryButton disabled={!exp.drysuit.material} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Suit material">
+          <ChoiceGroup choices={DRYSUIT_MATERIALS} label="Material" onChange={(material) => updateExp({ drysuit: { ...exp.drysuit, material } })} value={exp.drysuit.material} />
+          <FormField label="Size" maxLength={40} onChangeText={(value) => updateExp({ size: value })} placeholder="e.g. M, L Tall" value={exp.size} />
+        </StepShell>
+      );
+    }
+
+    if (step === 'drysuit-seals') {
+      return (
+        <StepShell body="Neck and wrist seals you can replace yourself, versus a suit built with fixed seals." count={exposureSteps.length} footer={<PrimaryButton disabled={exp.drysuit.seals.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Replaceable seals?">
+          <YesNoRow onChange={chooseSeals} value={exp.drysuit.seals.included} />
+          {exp.drysuit.seals.included ? (
+            <ChoiceGroup choices={SEAL_MATERIALS} label="Seal material" onChange={(material) => updateExp({ drysuit: { ...exp.drysuit, seals: { ...exp.drysuit.seals, material } } })} value={exp.drysuit.seals.material} />
+          ) : null}
+        </StepShell>
+      );
+    }
+
+    if (step === 'drysuit-feet') {
+      return (
+        <StepShell body="How the suit seals around your feet." count={exposureSteps.length} footer={<PrimaryButton disabled={!exp.drysuit.feet.type} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Built-in boots or socks?">
+          <PillOptionRow onChange={chooseFeet} options={DRYSUIT_FEET_OPTION_LIST} value={exp.drysuit.feet.type} />
+          {exp.drysuit.feet.type === 'Built-in boots' ? (
+            <FormField label="Boot size" maxLength={40} onChangeText={(value) => updateExp({ drysuit: { ...exp.drysuit, feet: { ...exp.drysuit.feet, size: value } } })} placeholder="Optional" value={exp.drysuit.feet.size} />
+          ) : null}
+        </StepShell>
+      );
+    }
+
+    if (step === 'dry-gloves') {
+      return (
+        <StepShell body="A dry glove system, sealed at the wrist with a ring — Si-Tech, Kubi, and similar." count={exposureSteps.length} footer={<PrimaryButton disabled={exp.drysuit.dryGloves.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Dry glove system?">
+          <YesNoRow onChange={chooseDryGloves} value={exp.drysuit.dryGloves.included} />
+          {exp.drysuit.dryGloves.included ? (
+            <>
+              <FormField label="Ring system" maxLength={100} onChangeText={(value) => updateExp({ drysuit: { ...exp.drysuit, dryGloves: { ...exp.drysuit.dryGloves, ringSystem: value } } })} placeholder="e.g. Si-Tech, Kubi" value={exp.drysuit.dryGloves.ringSystem} />
+              <View style={styles.twoColumn}>
+                <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ drysuit: { ...exp.drysuit, dryGloves: { ...exp.drysuit.dryGloves, manufacturer: value } } })} placeholder="Optional" value={exp.drysuit.dryGloves.manufacturer} /></View>
+                <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ drysuit: { ...exp.drysuit, dryGloves: { ...exp.drysuit.dryGloves, model: value } } })} placeholder="Optional" value={exp.drysuit.dryGloves.model} /></View>
+              </View>
+            </>
+          ) : null}
+        </StepShell>
+      );
+    }
+
+    if (step === 'hood') {
+      return (
+        <StepShell body="Does this setup include a hood?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.hood.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Hood?">
+          <YesNoRow onChange={chooseHood} value={exp.hood.included} />
+          {exp.hood.included ? (
+            <>
+              <View style={styles.twoColumn}>
+                <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ hood: { ...exp.hood, manufacturer: value } })} placeholder="Optional" value={exp.hood.manufacturer} /></View>
+                <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ hood: { ...exp.hood, model: value } })} placeholder="Optional" value={exp.hood.model} /></View>
+              </View>
+              <FormField label="Thickness" maxLength={40} onChangeText={(value) => updateExp({ hood: { ...exp.hood, thickness: value } })} placeholder="e.g. 5mm" value={exp.hood.thickness} />
+            </>
+          ) : null}
+        </StepShell>
+      );
+    }
+
+    if (step === 'gloves') {
+      return (
+        <StepShell body="Does this setup include gloves?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.gloves.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Gloves?">
+          <YesNoRow onChange={chooseGloves} value={exp.gloves.included} />
+          {exp.gloves.included ? (
+            <>
+              <View style={styles.twoColumn}>
+                <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, manufacturer: value } })} placeholder="Optional" value={exp.gloves.manufacturer} /></View>
+                <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, model: value } })} placeholder="Optional" value={exp.gloves.model} /></View>
+              </View>
+              <FormField label="Thickness" maxLength={40} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, thickness: value } })} placeholder="e.g. 3mm" value={exp.gloves.thickness} />
+            </>
+          ) : null}
+        </StepShell>
+      );
+    }
+
+    if (step === 'boots') {
+      return (
+        <StepShell body="Does this setup include boots?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.boots.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Boots?">
+          <YesNoRow onChange={chooseBoots} value={exp.boots.included} />
+          {exp.boots.included ? (
+            <>
+              <View style={styles.twoColumn}>
+                <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ boots: { ...exp.boots, manufacturer: value } })} placeholder="Optional" value={exp.boots.manufacturer} /></View>
+                <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ boots: { ...exp.boots, model: value } })} placeholder="Optional" value={exp.boots.model} /></View>
+              </View>
+              <FormField label="Size" maxLength={40} onChangeText={(value) => updateExp({ boots: { ...exp.boots, size: value } })} placeholder="Optional" value={exp.boots.size} />
+            </>
+          ) : null}
+        </StepShell>
+      );
+    }
+
+    if (step === 'layers') {
+      const addExtra = () => updateExp({ extras: [...exp.extras, { id: createGearId('component'), type: EXPOSURE_EXTRA_PART_TYPES[0], name: '', manufacturer: '', model: '' }] });
+      const updateExtra = (partId, next) => updateExp({ extras: exp.extras.map((entry) => (entry.id === partId ? next : entry)) });
+      const removeExtra = (partId) => updateExp({ extras: exp.extras.filter((entry) => entry.id !== partId) });
+      const body = exp.suitType === 'Drysuit'
+        ? 'Undergarments, base layers, anything else worth tracking as its own part.'
+        : 'Rashguards, underlayers, socks — anything else worth tracking as its own part.';
+      return (
+        <StepShell body={body} count={exposureSteps.length} footer={<PrimaryButton label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Anything else?">
+          {exp.extras.map((part) => <ExtraPartRow key={part.id} onChange={(next) => updateExtra(part.id, next)} onRemove={() => removeExtra(part.id)} part={part} partTypes={EXPOSURE_EXTRA_PART_TYPES} />)}
+          <SecondaryButton label="Add another part" onPress={addExtra} />
+        </StepShell>
+      );
+    }
+
+    // step === 'details'
+    return (
+      <StepShell body="Optional — fill in now, or skip and add it later from the item's page." count={exposureSteps.length} footer={<PrimaryButton disabled={busy} label={busy ? 'Saving…' : 'Save gear item'} onPress={save} />} index={index} onBack={goBack} title="Serial & service">
+        <SummaryStrip chips={exposureChips(exp)} />
+        <FormField autoCapitalize="characters" label="Serial number" maxLength={120} onChangeText={(value) => updateExp({ serialNumber: value })} placeholder="Optional" value={exp.serialNumber} />
+        <ChoiceGroup choices={GEAR_CONDITIONS} label="Current condition" onChange={(value) => updateExp({ condition: value })} value={exp.condition} />
+        <View style={styles.twoColumn}>
+          <View style={styles.half}><DateField label="Last service" onChange={(value) => updateExp({ lastServiceDate: value })} value={exp.lastServiceDate} /></View>
+          <View style={styles.half}><DateField label="Next service" onChange={(value) => updateExp({ nextServiceDate: value })} value={exp.nextServiceDate} /></View>
+        </View>
+        <ChoiceGroup choices={SERVICE_INTERVALS.map((value) => value || 'None')} label="Repeat every (months)" onChange={(value) => updateExp({ serviceIntervalMonths: value === 'None' ? '' : value })} value={exp.serviceIntervalMonths || 'None'} />
+        <View style={styles.twoColumn}>
+          <View style={styles.half}><DateField label="Purchase date" onChange={(value) => updateExp({ purchaseDate: value })} value={exp.purchaseDate} /></View>
+          <View style={styles.half}><DateField label="Warranty until" onChange={(value) => updateExp({ warrantyUntil: value })} value={exp.warrantyUntil} /></View>
+        </View>
+        <View style={styles.twoColumn}>
+          <View style={styles.half}><FormField label="Purchase price" maxLength={40} onChangeText={(value) => updateExp({ purchasePrice: value })} placeholder="$0.00" value={exp.purchasePrice} /></View>
+          <View style={styles.half}><FormField label="Retailer / shop" maxLength={100} onChangeText={(value) => updateExp({ retailer: value })} placeholder="Optional" value={exp.retailer} /></View>
+        </View>
+        <NotesField onChangeText={(value) => updateExp({ notes: value })} value={exp.notes} />
       </StepShell>
     );
   }

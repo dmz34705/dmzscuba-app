@@ -15,7 +15,7 @@ export const CATEGORY_GROUPS = Object.freeze([
 
 // Categories with a guided, step-by-step add flow. Everything else in CATEGORY_GROUPS still opens
 // the full form, pre-set to the chosen category, until its own guided flow is built.
-export const GUIDED_CATEGORIES = Object.freeze(['Regulator', 'BCD']);
+export const GUIDED_CATEGORIES = Object.freeze(['Regulator', 'BCD', 'Exposure suit']);
 
 export const GEAR_CONDITIONS = Object.freeze(['Ready', 'Needs attention', 'Out of service', 'Retired']);
 export const SERVICE_INTERVALS = Object.freeze(['', '6', '12', '18', '24', '36', '60']);
@@ -23,10 +23,16 @@ export const SETUP_TYPES = Object.freeze(['Single tank', 'Doubles', 'Sidemount',
 export const REGULATOR_CONFIGURATIONS = Object.freeze(['Single tank', 'Doubles', 'Sidemount', 'Pony / bailout', 'Stage / deco', 'Custom']);
 export const TANK_CONFIGURATIONS = Object.freeze(['Single cylinder', 'Manifolded doubles', 'Independent doubles', 'Sidemount pair', 'Pony / bailout', 'Stage / deco', 'Custom']);
 export const BCD_STYLES = Object.freeze(['Jacket', 'Back-inflate', 'Wing', 'Backplate & wing', 'Sidemount']);
+export const EXPOSURE_SUIT_TYPES = Object.freeze(['Wetsuit', 'Drysuit']);
+export const WETSUIT_CUTS = Object.freeze(['Shorty', 'Full']);
+export const DRYSUIT_MATERIALS = Object.freeze(['Neoprene', 'Trilaminate', 'Membrane', 'Hybrid']);
+export const SEAL_MATERIALS = Object.freeze(['Latex', 'Silicone', 'Neoprene']);
+export const DRYSUIT_FEET_OPTIONS = Object.freeze(['Built-in boots', 'Socks']);
 export const COMPONENT_TYPES = Object.freeze({
   Regulator: ['First stage', 'Primary second stage', 'Alternate second stage', 'Second stage', 'Breathing hose', 'Inflator hose', 'Drysuit hose', 'High-pressure hose', 'SPG / pressure gauge', 'Gauge console', 'Wireless transmitter', 'Other'],
   'Cylinder / tank': ['Cylinder', 'Valve', 'Manifold', 'Bands', 'Boot', 'Other'],
   BCD: ['Bladder', 'Inflator (LPI)', 'Integrated alternate (Air2/Airsource)', 'Weight pocket', 'Trim pocket', 'Corrugated hose', 'Dump valve', 'Cam / tank strap', 'D-ring', 'Other'],
+  'Exposure suit': ['Suit body', 'Hood', 'Gloves', 'Dry gloves', 'Boots', 'Seals', 'Undergarment', 'Base layer', 'Mid layer', 'Rashguard', 'Socks', 'Other'],
   default: ['Primary component', 'Accessory', 'Hardware', 'Other'],
 });
 export const GEAR_STATE_VERSION = 2;
@@ -82,6 +88,11 @@ export function tankComponentTemplate(configuration = 'Single cylinder') {
 export function bcdComponentTemplate() {
   return [['Bladder', 'Bladder'], ['Inflator (LPI)', 'Inflator (LPI)'], ['Weight pocket', 'Releasable weight pockets'], ['Trim pocket', 'Fixed trim pockets']]
     .map(([type, name]) => ({ ...emptyGearComponent('BCD', type), type, name }));
+}
+
+export function exposureComponentTemplate() {
+  return [['Suit body', 'Suit'], ['Hood', 'Hood'], ['Gloves', 'Gloves'], ['Boots', 'Boots']]
+    .map(([type, name]) => ({ ...emptyGearComponent('Exposure suit', type), type, name }));
 }
 
 export function emptyGearItem() {
@@ -142,7 +153,7 @@ export function normalizeGearItem(value = {}, now = new Date()) {
   const fallback = emptyGearItem();
   const category = GEAR_CATEGORIES.includes(value.category) ? value.category : 'Accessories';
   const components = (Array.isArray(value.components) ? value.components : []).map((component) => normalizeGearComponent(component, category));
-  const configurationOptions = category === 'Regulator' ? REGULATOR_CONFIGURATIONS : category === 'Cylinder / tank' ? TANK_CONFIGURATIONS : category === 'BCD' ? BCD_STYLES : [];
+  const configurationOptions = category === 'Regulator' ? REGULATOR_CONFIGURATIONS : category === 'Cylinder / tank' ? TANK_CONFIGURATIONS : category === 'BCD' ? BCD_STYLES : category === 'Exposure suit' ? EXPOSURE_SUIT_TYPES : [];
   const normalized = {
     ...fallback,
     ...Object.fromEntries(Object.keys(fallback).filter((key) => typeof fallback[key] === 'string').map((key) => [key, cleanText(value[key])])),

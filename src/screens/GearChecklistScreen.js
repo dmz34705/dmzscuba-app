@@ -22,6 +22,7 @@ import { Card, PrimaryButton, ProgressBar, SecondaryButton, Stat } from '../comp
 import {
   BCD_STYLES,
   COMPONENT_TYPES,
+  EXPOSURE_SUIT_TYPES,
   GEAR_CATEGORIES,
   GEAR_CONDITIONS,
   REGULATOR_CONFIGURATIONS,
@@ -33,6 +34,7 @@ import {
   emptyGearComponent,
   emptyGearItem,
   emptyGearSetup,
+  exposureComponentTemplate,
   formatDateOnly,
   gearSummary,
   regulatorComponentTemplate,
@@ -297,7 +299,7 @@ function GearItemForm({ item, setups, defaultSetupId, presetCategory, onBack, on
   const updateComponent = (index, component) => update('components', draft.components.map((entry, i) => (i === index ? component : entry)));
   const removeComponent = (index) => update('components', draft.components.filter((_, i) => i !== index));
   const addRegulatorTemplate = () => {
-    const template = isRegulator ? regulatorComponentTemplate(draft.configuration) : isCylinder ? tankComponentTemplate(draft.configuration) : bcdComponentTemplate();
+    const template = isRegulator ? regulatorComponentTemplate(draft.configuration) : isCylinder ? tankComponentTemplate(draft.configuration) : isBcd ? bcdComponentTemplate() : exposureComponentTemplate();
     update('components', template.map((component) => ({ ...component, id: createGearId('component') })));
   };
 
@@ -375,7 +377,8 @@ function GearItemForm({ item, setups, defaultSetupId, presetCategory, onBack, on
   const isCylinder = draft.category === 'Cylinder / tank';
   const isRegulator = draft.category === 'Regulator';
   const isBcd = draft.category === 'BCD';
-  const configurationOptions = isRegulator ? REGULATOR_CONFIGURATIONS : isCylinder ? TANK_CONFIGURATIONS : isBcd ? BCD_STYLES : [];
+  const isExposure = draft.category === 'Exposure suit';
+  const configurationOptions = isRegulator ? REGULATOR_CONFIGURATIONS : isCylinder ? TANK_CONFIGURATIONS : isBcd ? BCD_STYLES : isExposure ? EXPOSURE_SUIT_TYPES : [];
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
       <ScreenHeader eyebrow="GEAR LOCKER" title={isEditing ? 'Edit Gear' : 'Add Gear'} onBack={onBack} />
@@ -394,7 +397,7 @@ function GearItemForm({ item, setups, defaultSetupId, presetCategory, onBack, on
           <ChoiceGroup choices={['Single item', 'Track individual parts']} label="Item structure" onChange={(value) => setDraft((current) => ({ ...current, isAssembly: value === 'Track individual parts', components: value === 'Single item' ? [] : current.components }))} value={draft.isAssembly ? 'Track individual parts' : 'Single item'} />
           {draft.isAssembly ? (
             <>
-              {(isRegulator || isCylinder || isBcd) && !draft.components.length ? <SecondaryButton label={isRegulator ? `Add ${draft.configuration || 'single tank'} regulator parts` : isCylinder ? 'Add typical tank parts' : 'Add typical BCD parts'} onPress={addRegulatorTemplate} style={styles.componentTemplateButton} /> : null}
+              {(isRegulator || isCylinder || isBcd || isExposure) && !draft.components.length ? <SecondaryButton label={isRegulator ? `Add ${draft.configuration || 'single tank'} regulator parts` : isCylinder ? 'Add typical tank parts' : isBcd ? 'Add typical BCD parts' : 'Add typical exposure suit parts'} onPress={addRegulatorTemplate} style={styles.componentTemplateButton} /> : null}
               {draft.components.map((component, index) => (
                 <ComponentEditor category={draft.category} component={component} key={component.id || index} onChange={(value) => updateComponent(index, value)} onRemove={() => removeComponent(index)} />
               ))}
