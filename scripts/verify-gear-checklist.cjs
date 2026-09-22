@@ -128,6 +128,12 @@ assert.match(screen, /accessoryItemsForItem/, 'the detail view shows linked acce
 assert.match(screen, /parentItemsForAccessory/, 'the detail view shows what an item is linked into');
 assert.match(screen, /onOpenAccessory/, 'a linked accessory opens its own detail view');
 
+// The edit form is tabbed horizontally instead of one long vertical scroll through every section.
+assert.match(screen, /const FORM_SECTIONS = \[/, 'the edit form must define its horizontal tab sections');
+assert.match(screen, /<ScrollView horizontal contentContainerStyle=\{styles\.formTabs\}/, 'the edit form must have a horizontally-scrolling tab bar');
+assert.match(screen, /activeSection === 'identity'/, 'the edit form must show one section at a time by activeSection');
+assert.match(screen, /setActiveSection\('identity'\)/, 'a failed save must surface on the tab holding the invalid field');
+
 const wizard = fs.readFileSync(path.join(srcRoot, 'features/gearChecklist/AddGearWizard.js'), 'utf8');
 for (const expected of ['What are you adding?', 'first stage', 'second stage', 'alternate second stage', 'BCD inflator hose', 'SPG', 'wireless transmitter', 'Save gear item']) {
   assert.match(wizard, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${expected} must appear in the guided regulator wizard`);

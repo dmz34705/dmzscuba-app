@@ -283,6 +283,19 @@ function ComponentEditor({ category, component, onChange, onRemove }) {
   );
 }
 
+// Tabbed horizontally so editing a fully-assembled item (8 sections) doesn't mean scrolling
+// through all of them vertically to find one field — each tab's content is short on its own.
+const FORM_SECTIONS = [
+  { key: 'identity', label: 'Identity' },
+  { key: 'parts', label: 'Parts' },
+  { key: 'setups', label: 'Setups' },
+  { key: 'service', label: 'Service' },
+  { key: 'fit', label: 'Fit & specs' },
+  { key: 'ownership', label: 'Ownership' },
+  { key: 'files', label: 'Files' },
+  { key: 'notes', label: 'Notes' },
+];
+
 function GearItemForm({ item, setups, defaultSetupId, presetCategory, onBack, onDelete, onSave }) {
   const isEditing = Boolean(item?.id);
   const [draft, setDraft] = useState(() => ({
@@ -295,6 +308,7 @@ function GearItemForm({ item, setups, defaultSetupId, presetCategory, onBack, on
   }));
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [activeSection, setActiveSection] = useState('identity');
   const update = (key, value) => setDraft((current) => ({ ...current, [key]: value }));
   const toggleSetup = (setupId) => update('setupIds', draft.setupIds.includes(setupId) ? draft.setupIds.filter((id) => id !== setupId) : [...draft.setupIds, setupId]);
   const addComponent = (type) => update('components', [...draft.components, { ...emptyGearComponent(draft.category, type), id: createGearId('component') }]);
@@ -359,6 +373,7 @@ function GearItemForm({ item, setups, defaultSetupId, presetCategory, onBack, on
   const save = async () => {
     if (!draft.name.trim()) {
       setError('Give this gear item a recognizable name.');
+      setActiveSection('identity');
       return;
     }
     setBusy(true);
@@ -384,101 +399,123 @@ function GearItemForm({ item, setups, defaultSetupId, presetCategory, onBack, on
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
       <ScreenHeader eyebrow="GEAR LOCKER" title={isEditing ? 'Edit Gear' : 'Add Gear'} onBack={onBack} />
+      <ScrollView horizontal contentContainerStyle={styles.formTabs} showsHorizontalScrollIndicator={false} style={styles.formTabsScroll}>
+        {FORM_SECTIONS.map((section) => (
+          <SecondaryButton key={section.key} label={section.label} onPress={() => setActiveSection(section.key)} selected={activeSection === section.key} style={styles.formTab} />
+        ))}
+      </ScrollView>
       <ScrollView contentContainerStyle={styles.formContent} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        <FieldSection title="Identity & readiness" body="The essentials you need to recognize this item and know whether it should enter the water.">
-          <FormField autoCapitalize="words" label="Item name" maxLength={120} onChangeText={(value) => update('name', value)} placeholder="My primary regulator" value={draft.name} />
-          <ChoiceGroup choices={GEAR_CATEGORIES} label="Category" onChange={(value) => setDraft((current) => ({ ...current, category: value, configuration: '', components: [] }))} value={draft.category} />
-          <ChoiceGroup choices={GEAR_CONDITIONS} label="Current condition" onChange={(value) => update('condition', value)} value={draft.condition} />
-          <FormField label="Manufacturer" maxLength={100} onChangeText={(value) => update('manufacturer', value)} placeholder="Optional" value={draft.manufacturer} />
-          <FormField label="Model" maxLength={100} onChangeText={(value) => update('model', value)} placeholder="Optional" value={draft.model} />
-          <FormField autoCapitalize="characters" label="Serial number" maxLength={120} onChangeText={(value) => update('serialNumber', value)} placeholder="Optional" value={draft.serialNumber} />
-        </FieldSection>
+        {activeSection === 'identity' ? (
+          <FieldSection title="Identity & readiness" body="The essentials you need to recognize this item and know whether it should enter the water.">
+            <FormField autoCapitalize="words" label="Item name" maxLength={120} onChangeText={(value) => update('name', value)} placeholder="My primary regulator" value={draft.name} />
+            <ChoiceGroup choices={GEAR_CATEGORIES} label="Category" onChange={(value) => setDraft((current) => ({ ...current, category: value, configuration: '', components: [] }))} value={draft.category} />
+            <ChoiceGroup choices={GEAR_CONDITIONS} label="Current condition" onChange={(value) => update('condition', value)} value={draft.condition} />
+            <FormField label="Manufacturer" maxLength={100} onChangeText={(value) => update('manufacturer', value)} placeholder="Optional" value={draft.manufacturer} />
+            <FormField label="Model" maxLength={100} onChangeText={(value) => update('model', value)} placeholder="Optional" value={draft.model} />
+            <FormField autoCapitalize="characters" label="Serial number" maxLength={120} onChangeText={(value) => update('serialNumber', value)} placeholder="Optional" value={draft.serialNumber} />
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Assembly & parts" body="Keep simple gear as one item. Turn on parts for regulators, doubles, cameras, rebreathers, or anything you service and configure piece by piece.">
-          {configurationOptions.length ? <ChoiceGroup choices={configurationOptions} label="Configuration" onChange={(value) => update('configuration', value)} value={draft.configuration} /> : null}
-          <ChoiceGroup choices={['Single item', 'Track individual parts']} label="Item structure" onChange={(value) => setDraft((current) => ({ ...current, isAssembly: value === 'Track individual parts', components: value === 'Single item' ? [] : current.components }))} value={draft.isAssembly ? 'Track individual parts' : 'Single item'} />
-          {draft.isAssembly ? (
-            <>
-              {(isRegulator || isCylinder || isBcd || isExposure) && !draft.components.length ? <SecondaryButton label={isRegulator ? `Add ${draft.configuration || 'single tank'} regulator parts` : isCylinder ? 'Add typical tank parts' : isBcd ? 'Add typical BCD parts' : 'Add typical exposure suit parts'} onPress={addRegulatorTemplate} style={styles.componentTemplateButton} /> : null}
-              {draft.components.map((component, index) => (
-                <ComponentEditor category={draft.category} component={component} key={component.id || index} onChange={(value) => updateComponent(index, value)} onRemove={() => removeComponent(index)} />
-              ))}
-              <SecondaryButton label="Add a part" onPress={() => addComponent()} />
-            </>
-          ) : null}
-        </FieldSection>
+        {activeSection === 'parts' ? (
+          <FieldSection title="Assembly & parts" body="Keep simple gear as one item. Turn on parts for regulators, doubles, cameras, rebreathers, or anything you service and configure piece by piece.">
+            {configurationOptions.length ? <ChoiceGroup choices={configurationOptions} label="Configuration" onChange={(value) => update('configuration', value)} value={draft.configuration} /> : null}
+            <ChoiceGroup choices={['Single item', 'Track individual parts']} label="Item structure" onChange={(value) => setDraft((current) => ({ ...current, isAssembly: value === 'Track individual parts', components: value === 'Single item' ? [] : current.components }))} value={draft.isAssembly ? 'Track individual parts' : 'Single item'} />
+            {draft.isAssembly ? (
+              <>
+                {(isRegulator || isCylinder || isBcd || isExposure) && !draft.components.length ? <SecondaryButton label={isRegulator ? `Add ${draft.configuration || 'single tank'} regulator parts` : isCylinder ? 'Add typical tank parts' : isBcd ? 'Add typical BCD parts' : 'Add typical exposure suit parts'} onPress={addRegulatorTemplate} style={styles.componentTemplateButton} /> : null}
+                {draft.components.map((component, index) => (
+                  <ComponentEditor category={draft.category} component={component} key={component.id || index} onChange={(value) => updateComponent(index, value)} onRemove={() => removeComponent(index)} />
+                ))}
+                <SecondaryButton label="Add a part" onPress={() => addComponent()} />
+              </>
+            ) : null}
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Dive setups" body="Place this item in every configuration where you use it. Its tracked parts travel with it.">
-          {setups.length ? setups.map((setup) => <SelectRow checked={draft.setupIds.includes(setup.id)} key={setup.id} label={setup.name} body={[setup.type, setup.description].filter(Boolean).join(' · ')} onPress={() => toggleSetup(setup.id)} />) : <Text style={styles.formEmpty}>Create a setup after saving this item to assign it later.</Text>}
-        </FieldSection>
+        {activeSection === 'setups' ? (
+          <FieldSection title="Dive setups" body="Place this item in every configuration where you use it. Its tracked parts travel with it.">
+            {setups.length ? setups.map((setup) => <SelectRow checked={draft.setupIds.includes(setup.id)} key={setup.id} label={setup.name} body={[setup.type, setup.description].filter(Boolean).join(' · ')} onPress={() => toggleSetup(setup.id)} />) : <Text style={styles.formEmpty}>Create a setup after saving this item to assign it later.</Text>}
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Service & inspections" body="Use a fixed next date, a recurring interval from the last service, or both. A fixed date takes priority.">
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><DateField label="Last service" onChange={(value) => update('lastServiceDate', value)} value={draft.lastServiceDate} /></View>
-            <View style={styles.half}><DateField label="Next service" onChange={(value) => update('nextServiceDate', value)} value={draft.nextServiceDate} /></View>
-          </View>
-          <ChoiceGroup choices={SERVICE_INTERVALS.map((value) => value || 'None')} label="Repeat every (months)" onChange={(value) => update('serviceIntervalMonths', value === 'None' ? '' : value)} value={draft.serviceIntervalMonths || 'None'} />
-          {isCylinder ? (
+        {activeSection === 'service' ? (
+          <FieldSection title="Service & inspections" body="Use a fixed next date, a recurring interval from the last service, or both. A fixed date takes priority.">
             <View style={styles.twoColumn}>
-              <View style={styles.half}><DateField label="Visual due" onChange={(value) => update('visualInspectionDue', value)} value={draft.visualInspectionDue} /></View>
-              <View style={styles.half}><DateField label="Hydro due" onChange={(value) => update('hydrostaticTestDue', value)} value={draft.hydrostaticTestDue} /></View>
+              <View style={styles.half}><DateField label="Last service" onChange={(value) => update('lastServiceDate', value)} value={draft.lastServiceDate} /></View>
+              <View style={styles.half}><DateField label="Next service" onChange={(value) => update('nextServiceDate', value)} value={draft.nextServiceDate} /></View>
             </View>
-          ) : null}
-          <NotesField label="Service notes" onChangeText={(value) => update('serviceNotes', value)} placeholder="Shop, work performed, parts replaced…" value={draft.serviceNotes} />
-        </FieldSection>
+            <ChoiceGroup choices={SERVICE_INTERVALS.map((value) => value || 'None')} label="Repeat every (months)" onChange={(value) => update('serviceIntervalMonths', value === 'None' ? '' : value)} value={draft.serviceIntervalMonths || 'None'} />
+            {isCylinder ? (
+              <View style={styles.twoColumn}>
+                <View style={styles.half}><DateField label="Visual due" onChange={(value) => update('visualInspectionDue', value)} value={draft.visualInspectionDue} /></View>
+                <View style={styles.half}><DateField label="Hydro due" onChange={(value) => update('hydrostaticTestDue', value)} value={draft.hydrostaticTestDue} /></View>
+              </View>
+            ) : null}
+            <NotesField label="Service notes" onChangeText={(value) => update('serviceNotes', value)} placeholder="Shop, work performed, parts replaced…" value={draft.serviceNotes} />
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Fit & specifications" body="Optional details help distinguish similar equipment and pack the correct configuration.">
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField keyboardType="number-pad" label="Quantity" maxLength={3} onChangeText={(value) => update('quantity', value)} value={draft.quantity} /></View>
-            <View style={styles.half}><FormField label="Size" maxLength={40} onChangeText={(value) => update('size', value)} placeholder="M, L, 9–10…" value={draft.size} /></View>
-          </View>
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField label="Thickness" maxLength={40} onChangeText={(value) => update('thickness', value)} placeholder="3 mm" value={draft.thickness} /></View>
-            <View style={styles.half}><FormField label="Color" maxLength={40} onChangeText={(value) => update('color', value)} placeholder="Optional" value={draft.color} /></View>
-          </View>
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField label="Weight" maxLength={40} onChangeText={(value) => update('weight', value)} placeholder="4 lb / 1.8 kg" value={draft.weight} /></View>
-            <View style={styles.half}><FormField label="Capacity / lift" maxLength={50} onChangeText={(value) => update('capacity', value)} placeholder="80 cu ft / 30 lb" value={draft.capacity} /></View>
-          </View>
-          <FormField label="Working pressure" maxLength={50} onChangeText={(value) => update('workingPressure', value)} placeholder="3000 psi / 207 bar" value={draft.workingPressure} />
-        </FieldSection>
-
-        <FieldSection title="Ownership & warranty">
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><DateField label="Purchase date" onChange={(value) => update('purchaseDate', value)} value={draft.purchaseDate} /></View>
-            <View style={styles.half}><DateField label="Warranty until" onChange={(value) => update('warrantyUntil', value)} value={draft.warrantyUntil} /></View>
-          </View>
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField label="Purchase price" maxLength={40} onChangeText={(value) => update('purchasePrice', value)} placeholder="$0.00" value={draft.purchasePrice} /></View>
-            <View style={styles.half}><FormField label="Retailer / shop" maxLength={100} onChangeText={(value) => update('retailer', value)} placeholder="Optional" value={draft.retailer} /></View>
-          </View>
-        </FieldSection>
-
-        <FieldSection title="Photos & documents" body="Save photos, manuals, receipts, service records, and work orders with this item. Files are copied into private app storage when you save.">
-          <View style={styles.attachmentActions}>
-            <SecondaryButton label="Add photos" onPress={addPhoto} style={styles.attachmentAction} />
-            <SecondaryButton label="Add document" onPress={addDocument} style={styles.attachmentAction} />
-          </View>
-          {draft.attachments.map((attachment) => (
-            <View key={attachment.id} style={styles.attachmentRow}>
-              {attachment.kind === 'photo' ? <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} /> : <View style={styles.documentIcon}><Text style={styles.documentIconText}>DOC</Text></View>}
-              <Pressable accessibilityRole="button" onPress={() => openAttachment(attachment)} style={styles.attachmentCopy}>
-                <Text numberOfLines={1} style={styles.attachmentName}>{attachment.name}</Text>
-                <Text style={styles.attachmentMeta}>{attachment.kind === 'photo' ? 'PHOTO' : (attachment.mimeType || 'DOCUMENT').toUpperCase()}</Text>
-              </Pressable>
-              <TinyAction label="Remove" danger onPress={() => update('attachments', draft.attachments.filter((entry) => entry.id !== attachment.id))} />
+        {activeSection === 'fit' ? (
+          <FieldSection title="Fit & specifications" body="Optional details help distinguish similar equipment and pack the correct configuration.">
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField keyboardType="number-pad" label="Quantity" maxLength={3} onChangeText={(value) => update('quantity', value)} value={draft.quantity} /></View>
+              <View style={styles.half}><FormField label="Size" maxLength={40} onChangeText={(value) => update('size', value)} placeholder="M, L, 9–10…" value={draft.size} /></View>
             </View>
-          ))}
-        </FieldSection>
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField label="Thickness" maxLength={40} onChangeText={(value) => update('thickness', value)} placeholder="3 mm" value={draft.thickness} /></View>
+              <View style={styles.half}><FormField label="Color" maxLength={40} onChangeText={(value) => update('color', value)} placeholder="Optional" value={draft.color} /></View>
+            </View>
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField label="Weight" maxLength={40} onChangeText={(value) => update('weight', value)} placeholder="4 lb / 1.8 kg" value={draft.weight} /></View>
+              <View style={styles.half}><FormField label="Capacity / lift" maxLength={50} onChangeText={(value) => update('capacity', value)} placeholder="80 cu ft / 30 lb" value={draft.capacity} /></View>
+            </View>
+            <FormField label="Working pressure" maxLength={50} onChangeText={(value) => update('workingPressure', value)} placeholder="3000 psi / 207 bar" value={draft.workingPressure} />
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Notes" body="Keep configuration details, markings, spare-part references, or anything else worth remembering.">
-          <NotesField label="Private gear notes" onChangeText={(value) => update('notes', value)} placeholder="Optional notes…" value={draft.notes} />
-        </FieldSection>
+        {activeSection === 'ownership' ? (
+          <FieldSection title="Ownership & warranty">
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><DateField label="Purchase date" onChange={(value) => update('purchaseDate', value)} value={draft.purchaseDate} /></View>
+              <View style={styles.half}><DateField label="Warranty until" onChange={(value) => update('warrantyUntil', value)} value={draft.warrantyUntil} /></View>
+            </View>
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField label="Purchase price" maxLength={40} onChangeText={(value) => update('purchasePrice', value)} placeholder="$0.00" value={draft.purchasePrice} /></View>
+              <View style={styles.half}><FormField label="Retailer / shop" maxLength={100} onChangeText={(value) => update('retailer', value)} placeholder="Optional" value={draft.retailer} /></View>
+            </View>
+          </FieldSection>
+        ) : null}
 
+        {activeSection === 'files' ? (
+          <FieldSection title="Photos & documents" body="Save photos, manuals, receipts, service records, and work orders with this item. Files are copied into private app storage when you save.">
+            <View style={styles.attachmentActions}>
+              <SecondaryButton label="Add photos" onPress={addPhoto} style={styles.attachmentAction} />
+              <SecondaryButton label="Add document" onPress={addDocument} style={styles.attachmentAction} />
+            </View>
+            {draft.attachments.map((attachment) => (
+              <View key={attachment.id} style={styles.attachmentRow}>
+                {attachment.kind === 'photo' ? <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} /> : <View style={styles.documentIcon}><Text style={styles.documentIconText}>DOC</Text></View>}
+                <Pressable accessibilityRole="button" onPress={() => openAttachment(attachment)} style={styles.attachmentCopy}>
+                  <Text numberOfLines={1} style={styles.attachmentName}>{attachment.name}</Text>
+                  <Text style={styles.attachmentMeta}>{attachment.kind === 'photo' ? 'PHOTO' : (attachment.mimeType || 'DOCUMENT').toUpperCase()}</Text>
+                </Pressable>
+                <TinyAction label="Remove" danger onPress={() => update('attachments', draft.attachments.filter((entry) => entry.id !== attachment.id))} />
+              </View>
+            ))}
+          </FieldSection>
+        ) : null}
+
+        {activeSection === 'notes' ? (
+          <FieldSection title="Notes" body="Keep configuration details, markings, spare-part references, or anything else worth remembering.">
+            <NotesField label="Private gear notes" onChangeText={(value) => update('notes', value)} placeholder="Optional notes…" value={draft.notes} />
+          </FieldSection>
+        ) : null}
+      </ScrollView>
+      <View style={styles.footer}>
         <FormError message={error} />
         <PrimaryButton disabled={busy} label={busy ? 'Saving gear…' : 'Save gear item'} onPress={save} />
         {isEditing ? <SecondaryButton label="Delete gear item" onPress={confirmDelete} style={styles.deleteButton} /> : null}
-      </ScrollView>
+      </View>
     </KeyboardAvoidingView>
   );
 }
@@ -805,7 +842,11 @@ export default function GearChecklistScreen({ onBack }) {
 const styles = StyleSheet.create({
   screen: { backgroundColor: colors.background, flex: 1 },
   content: { padding: spacing.md, paddingBottom: spacing.xxl },
-  formContent: { padding: spacing.md, paddingBottom: 60 },
+  formContent: { padding: spacing.md, paddingBottom: 24 },
+  formTabsScroll: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexGrow: 0 },
+  formTabs: { gap: 7, paddingHorizontal: spacing.md, paddingVertical: 10 },
+  formTab: { minHeight: 38, paddingHorizontal: 13, paddingVertical: 8 },
+  footer: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, gap: 10, padding: spacing.md },
   pageTitle: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 34 },
   pageBody: { color: colors.muted, fontSize: 14, lineHeight: 21, marginBottom: 16, marginTop: 6 },
   tabs: { flexDirection: 'row', gap: 7, marginBottom: 14 },
