@@ -755,14 +755,12 @@ export default function GearChecklistScreen({ onBack }) {
         onCancel={() => setRoute(leaveTo)}
         onPickOtherCategory={(category) => setRoute({ name: 'gear-form', setupId: route.setupId, presetCategory: category || undefined })}
         onSave={async ({ item, pendingAccessories }) => {
-          const created = [];
-          for (const accessory of pendingAccessories) {
-            // Sequential on purpose: each new accessory needs a real id before the parent can link it.
-            // eslint-disable-next-line no-await-in-loop
-            created.push(await gear.saveItem(accessory));
-          }
-          const saved = await gear.saveItem({ ...item, accessoryItemIds: [...item.accessoryItemIds, ...created.map((entry) => entry.id)] });
-          setRoute({ name: 'gear-detail', itemId: saved.id, setupId: route.setupId });
+          // One batch, one commit: the wizard already assigned each new accessory's id up front
+          // (see accessoryLink in AddGearWizard), so item.accessoryItemIds is already complete —
+          // no separate save-then-merge step, and nothing for a stale saveItem closure to clobber.
+          const saved = await gear.saveItems([...pendingAccessories, item]);
+          const savedItem = saved[saved.length - 1];
+          setRoute({ name: 'gear-detail', itemId: savedItem.id, setupId: route.setupId });
         }}
       />
     );

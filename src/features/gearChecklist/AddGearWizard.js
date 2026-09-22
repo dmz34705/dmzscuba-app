@@ -237,10 +237,13 @@ function accessoryLink(selection, category, extraFields) {
   if (selection.mode === 'existing' && selection.itemId) return { accessoryItemId: selection.itemId, pendingAccessory: null };
   const manufacturer = selection.manufacturer.trim();
   const model = selection.model.trim();
+  // Assigned up front so the parent's accessoryItemIds is complete before saving — the parent and
+  // every quick-added accessory then save together in one batch, with nothing to reconcile after.
+  const id = createGearId();
   return {
-    accessoryItemId: null,
+    accessoryItemId: id,
     pendingAccessory: {
-      ...emptyGearItem(), name: [manufacturer, model].filter(Boolean).join(' ') || category, category, manufacturer, model, ...extraFields,
+      ...emptyGearItem(), id, name: [manufacturer, model].filter(Boolean).join(' ') || category, category, manufacturer, model, ...extraFields,
     },
   };
 }

@@ -63,6 +63,39 @@ export default function useGearChecklist() {
     }
   };
 
+  // Saves several items in one commit — a wizard-built assembly plus any accessories it just
+  // quick-added. Calling saveItem in a loop would race itself: each call closes over the same
+  // `state` from this render, so a later call can't see what an earlier call in the same batch
+  // just wrote, and its commit clobbers it. Folding every draft into one items array before the
+  // single commit() avoids that entirely.
+  const saveItems = async (drafts) => {
+    let nextItems = state.items;
+    let nextSetups = state.setups;
+    const saved = [];
+    const uploaded = [];
+    try {
+      for (const draft of drafts) {
+        const itemId = draft.id || createGearId();
+        const existing = nextItems.find((entry) => entry.id === itemId);
+        const attachments = [];
+        for (const attachment of draft.attachments || []) {
+          // eslint-disable-next-line no-await-in-loop
+          attachments.push(await persistGearAttachment(attachment, itemId));
+        }
+        uploaded.push(...attachments);
+        const item = normalizeGearItem({ ...draft, id: itemId, attachments, createdAt: existing?.createdAt });
+        nextItems = existing ? nextItems.map((entry) => (entry.id === itemId ? item : entry)) : [...nextItems, item];
+        nextSetups = assignItemToSetups(nextSetups, itemId, draft.setupIds || []);
+        saved.push(item);
+      }
+    } catch (error) {
+      await Promise.all(uploaded.map((attachment) => removeManagedGearAttachment(attachment.uri).catch(() => {})));
+      throw error;
+    }
+    await commit({ ...state, items: nextItems, setups: nextSetups });
+    return saved;
+  };
+
   const deleteItem = async (itemId) => {
     const item = state.items.find((entry) => entry.id === itemId);
     const setups = state.setups.map((setup) => ({
@@ -105,6 +138,7 @@ export default function useGearChecklist() {
     loaded,
     error,
     saveItem,
+    saveItems,
     deleteItem,
     saveSetup,
     deleteSetup,

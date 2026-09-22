@@ -134,6 +134,10 @@ assert.match(screen, /<ScrollView horizontal contentContainerStyle=\{styles\.for
 assert.match(screen, /activeSection === 'identity'/, 'the edit form must show one section at a time by activeSection');
 assert.match(screen, /setActiveSection\('identity'\)/, 'a failed save must surface on the tab holding the invalid field');
 
+const hook = fs.readFileSync(path.join(srcRoot, 'features/gearChecklist/useGearChecklist.js'), 'utf8');
+assert.match(hook, /const saveItems = async \(drafts\) =>/, 'a batch save must exist so a wizard-built assembly and its accessories commit together atomically');
+assert.match(hook, /^\s*saveItems,\s*$/m, 'saveItems must be exposed from the hook');
+
 const wizard = fs.readFileSync(path.join(srcRoot, 'features/gearChecklist/AddGearWizard.js'), 'utf8');
 for (const expected of ['What are you adding?', 'first stage', 'second stage', 'alternate second stage', 'BCD inflator hose', 'SPG', 'wireless transmitter', 'Save gear item']) {
   assert.match(wizard, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${expected} must appear in the guided regulator wizard`);
@@ -147,6 +151,13 @@ assert.match(wizard, /Which one\?/, 'the wizard must offer picking an existing l
 assert.match(wizard, /candidatesFor\('Boots'\)/, 'the boots step must list existing standalone Boots items to link');
 assert.match(wizard, /accessoryItemId/, 'a linked existing item must be referenced, not re-described as a component');
 assert.match(wizard, /pendingAccessories/, 'a quick-added new accessory must be created as its own locker item, not a components[] entry');
+assert.match(wizard, /const id = createGearId\(\);\s*\n\s*return \{\s*\n\s*accessoryItemId: id,/, 'a quick-added accessory must get its id up front, before the parent item is built, so the batch save needs no follow-up merge step');
+
+// A save-in-a-loop (saveItem, saveItem, saveItem…) clobbers itself: each call closes over the
+// state from render time, so a later call in the same batch can't see what an earlier call just
+// wrote. The wizard route must save the assembly and its new accessories in one atomic batch.
+assert.match(screen, /gear\.saveItems\(\[\.\.\.pendingAccessories, item\]\)/, 'the wizard route must save the assembly and its new accessories in a single atomic batch, not a loop of individual saves');
+assert.doesNotMatch(screen, /for \(const accessory of pendingAccessories\)/, 'must not go back to a per-accessory save loop, which clobbers itself');
 
 const catalog = fs.readFileSync(path.join(srcRoot, 'features/catalog/featureCatalog.js'), 'utf8');
 const navigator = fs.readFileSync(path.join(srcRoot, 'application/AppNavigator.js'), 'utf8');
