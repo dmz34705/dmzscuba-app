@@ -12,6 +12,7 @@ const {
   GEAR_CATEGORIES,
   GEAR_STATE_VERSION,
   GUIDED_CATEGORIES,
+  accessoryItemsForItem,
   assignItemToSetups,
   createInitialGearState,
   emptyGearComponent,
@@ -21,6 +22,7 @@ const {
   normalizeGearComponent,
   normalizeGearItem,
   normalizeGearState,
+  parentItemsForAccessory,
   regulatorComponentTemplate,
   serviceDueForItem,
   serviceEntriesForItem,
@@ -91,6 +93,15 @@ assert.equal(exposureItem.configuration, 'Drysuit');
 assert.equal(exposureItem.components.length, 4);
 assert.ok(exposureItem.components.some((component) => component.type === 'Hood'));
 
+const bootsItem = normalizeGearItem({ ...emptyGearItem(), id: 'boots-1', name: 'Whites boots', category: 'Boots' }, new Date('2026-01-01T12:00:00Z'));
+const suitWithAccessory = normalizeGearItem({ ...emptyGearItem(), id: 'suit-1', name: 'Whites Fusion Bullet', category: 'Exposure suit', accessoryItemIds: ['boots-1', 'boots-1', 'missing-item'] }, new Date('2026-01-01T12:00:00Z'));
+const linkedState = normalizeGearState({ items: [bootsItem, suitWithAccessory], setups: [] });
+const linkedSuit = linkedState.items.find((entry) => entry.id === 'suit-1');
+assert.deepEqual(linkedSuit.accessoryItemIds, ['boots-1'], 'accessoryItemIds dedupe and drop references to items that no longer exist');
+assert.deepEqual(accessoryItemsForItem(linkedState.items, linkedSuit).map((entry) => entry.id), ['boots-1'], 'a linked accessory resolves to the real locker item, not a copy');
+assert.deepEqual(parentItemsForAccessory(linkedState.items, 'boots-1').map((entry) => entry.id), ['suit-1'], 'the reverse lookup finds what an item is linked into');
+assert.equal(linkedState.items.length, 2, 'linking an accessory must not create a second top-level item for it');
+
 const setup = { itemIds: ['a', 'b', 'c'], checkedIds: ['a', 'c', 'missing'] };
 assert.deepEqual(setupProgress(setup), { total: 3, checked: 2, ratio: 2 / 3 });
 assert.equal(serviceEntriesForItem(item).length, 2, 'assembly and component both appear in service tracking');
@@ -108,6 +119,15 @@ assert.match(screen, /<SetupDetail[\s\S]{0,300}onAddGear=\{\(\) => setRoute\(\{ 
 assert.match(screen, /AddGearWizard/, 'the guided add-gear wizard is wired into the gear screen');
 assert.match(screen, /onAdd=\{\(\) => setRoute\(\{ name: 'add-gear-wizard' \}\)\}/, 'inventory Add a gear item opens the guided add-gear wizard');
 
+// Tapping a gear item must land on a read-only detail view, not straight into the editor.
+assert.match(screen, /function GearItemDetail/, 'a dedicated read-only gear detail view must exist');
+assert.match(screen, /route\.name === 'gear-detail'/, 'the gear detail view must be a routed screen');
+const detailOpenCount = (screen.match(/onOpen=\{\(item\) => setRoute\(\{ name: 'gear-detail', itemId: item\.id \}\)\}/g) || []).length;
+assert.equal(detailOpenCount, 2, 'both the inventory row and the service entry must open the detail view, not the edit form');
+assert.match(screen, /accessoryItemsForItem/, 'the detail view shows linked accessory items');
+assert.match(screen, /parentItemsForAccessory/, 'the detail view shows what an item is linked into');
+assert.match(screen, /onOpenAccessory/, 'a linked accessory opens its own detail view');
+
 const wizard = fs.readFileSync(path.join(srcRoot, 'features/gearChecklist/AddGearWizard.js'), 'utf8');
 for (const expected of ['What are you adding?', 'first stage', 'second stage', 'alternate second stage', 'BCD inflator hose', 'SPG', 'wireless transmitter', 'Save gear item']) {
   assert.match(wizard, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${expected} must appear in the guided regulator wizard`);
@@ -116,6 +136,11 @@ assert.match(wizard, /CATEGORY_GROUPS/, 'the wizard uses the shared category gro
 for (const expected of ['Wetsuit or drysuit', 'Cut & thickness', 'Suit material', 'Replaceable seals', 'Built-in boots or socks', 'Dry glove system', 'exposureStepsFor']) {
   assert.match(wizard, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i'), `${expected} must appear in the guided exposure suit wizard`);
 }
+// Hood/Gloves/Boots must offer linking an existing locker item, not just re-describing a new one.
+assert.match(wizard, /Which one\?/, 'the wizard must offer picking an existing locker item for hood\\/gloves\\/boots');
+assert.match(wizard, /candidatesFor\('Boots'\)/, 'the boots step must list existing standalone Boots items to link');
+assert.match(wizard, /accessoryItemId/, 'a linked existing item must be referenced, not re-described as a component');
+assert.match(wizard, /pendingAccessories/, 'a quick-added new accessory must be created as its own locker item, not a components[] entry');
 
 const catalog = fs.readFileSync(path.join(srcRoot, 'features/catalog/featureCatalog.js'), 'utf8');
 const navigator = fs.readFileSync(path.join(srcRoot, 'application/AppNavigator.js'), 'utf8');

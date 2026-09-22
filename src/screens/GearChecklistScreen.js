@@ -29,6 +29,7 @@ import {
   SERVICE_INTERVALS,
   SETUP_TYPES,
   TANK_CONFIGURATIONS,
+  accessoryItemsForItem,
   bcdComponentTemplate,
   createGearId,
   emptyGearComponent,
@@ -37,6 +38,7 @@ import {
   exposureComponentTemplate,
   formatDateOnly,
   gearSummary,
+  parentItemsForAccessory,
   regulatorComponentTemplate,
   serviceEntriesForItem,
   serviceStatusForAssembly,
@@ -119,7 +121,7 @@ function SelectRow({ checked, label, body, onPress }) {
   );
 }
 
-function InventoryHome({ state, onAdd, onEdit }) {
+function InventoryHome({ state, onAdd, onOpen }) {
   const [category, setCategory] = useState('All');
   const items = sortGear(category === 'All' ? state.items : state.items.filter((item) => item.category === category));
   const usedCategories = GEAR_CATEGORIES.filter((entry) => state.items.some((item) => item.category === entry));
@@ -141,7 +143,7 @@ function InventoryHome({ state, onAdd, onEdit }) {
       <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Your gear</Text><Text style={styles.sectionMeta}>{items.length} ITEMS</Text></View>
       {items.length ? (
         <View style={styles.rowGroup}>
-          {items.map((item, index) => <GearRow item={item} key={item.id} last={index === items.length - 1} setups={state.setups} onPress={() => onEdit(item)} />)}
+          {items.map((item, index) => <GearRow item={item} key={item.id} last={index === items.length - 1} setups={state.setups} onPress={() => onOpen(item)} />)}
         </View>
       ) : (
         <EmptyState title="Your gear locker is empty" body="Add your first piece of gear, then place it in any setup where you use it." action="Add first item" onPress={onAdd} />
@@ -178,7 +180,7 @@ function SetupsHome({ state, onAdd, onOpen }) {
   );
 }
 
-function ServiceHome({ state, onEdit }) {
+function ServiceHome({ state, onOpen }) {
   const groups = {
     urgent: [],
     upcoming: [],
@@ -212,7 +214,7 @@ function ServiceHome({ state, onEdit }) {
         <View key={title} style={styles.serviceGroup}>
           <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{title}</Text><Text style={styles.sectionMeta}>{entries.length}</Text></View>
           <View style={styles.rowGroup}>{entries.map((entry, index) => (
-            <Pressable key={entry.id} onPress={() => onEdit(entry.owner)} style={[styles.serviceEntry, index < entries.length - 1 && styles.rowBorder]}>
+            <Pressable key={entry.id} onPress={() => onOpen(entry.owner)} style={[styles.serviceEntry, index < entries.length - 1 && styles.rowBorder]}>
               <View style={styles.serviceEntryCopy}>
                 <Text style={styles.selectTitle}>{entry.name}</Text>
                 <Text style={styles.selectBody}>{entry.parentId ? `${entry.category} · part of ${entry.owner.name}` : entry.category}</Text>
@@ -549,6 +551,157 @@ function SetupDetail({ setup, items, onAddGear, onBack, onEdit, onReset, onToggl
   );
 }
 
+function DetailField({ label, value }) {
+  if (!value) return null;
+  return (
+    <View style={styles.detailField}>
+      <Text style={styles.detailLabel}>{label}</Text>
+      <Text style={styles.detailValue}>{value}</Text>
+    </View>
+  );
+}
+
+function ComponentRow({ component, last }) {
+  return (
+    <View style={[styles.componentRow, !last && styles.rowBorder]}>
+      <View style={styles.gearRowCopy}>
+        <Text style={styles.selectTitle}>{component.name}</Text>
+        <Text style={styles.selectBody}>{[component.type, component.manufacturer, component.model].filter(Boolean).join(' · ')}</Text>
+        {component.notes ? <Text style={styles.componentNotes}>{component.notes}</Text> : null}
+        <ServiceBadge item={component} />
+      </View>
+    </View>
+  );
+}
+
+// A locker item that's linked in (a hood, boots) — not a buried description, its own gear with
+// its own service history — so tapping it opens that item's own detail view, not this one's edit form.
+function AccessoryRow({ item, last, onPress }) {
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={onPress} style={({ pressed }) => [styles.gearRow, !last && styles.rowBorder, pressed && styles.rowPressed]}>
+      <View style={styles.categoryGlyph}><Text style={styles.categoryGlyphText}>{item.category.slice(0, 2).toUpperCase()}</Text></View>
+      <View style={styles.gearRowCopy}>
+        <Text numberOfLines={1} style={styles.gearName}>{item.name}</Text>
+        <Text numberOfLines={1} style={styles.gearMeta}>{[item.manufacturer, item.model, item.category].filter(Boolean).join(' · ')}</Text>
+        <ServiceBadge item={item} />
+      </View>
+      <Text style={styles.chevron}>›</Text>
+    </Pressable>
+  );
+}
+
+function GearItemDetail({ item, items, setups, onBack, onEdit, onOpenAccessory }) {
+  const memberships = setups.filter((setup) => setup.itemIds.includes(item.id));
+  const accessories = accessoryItemsForItem(items, item);
+  const usedIn = parentItemsForAccessory(items, item.id);
+  const openAttachment = async (attachment) => {
+    try {
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(attachment.uri, { mimeType: attachment.mimeType || undefined, dialogTitle: attachment.name });
+      } else Alert.alert('File saved', 'This device cannot open the system file sheet, but the attachment remains saved with this gear item.');
+    } catch {
+      Alert.alert('Could not open file', 'The attachment is still listed, but the system file sheet could not open it.');
+    }
+  };
+  return (
+    <View style={styles.screen}>
+      <ScreenHeader eyebrow={item.category.toUpperCase()} title={item.name} onBack={onBack} action={<TinyAction label="EDIT" onPress={onEdit} />} />
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Card style={styles.detailHero}>
+          <ServiceBadge item={item} includeParts />
+          <Text style={styles.detailMeta}>{[item.manufacturer, item.model, item.configuration].filter(Boolean).join(' · ') || 'No manufacturer or model set'}</Text>
+          <View style={styles.detailGrid}>
+            <DetailField label="Serial" value={item.serialNumber} />
+            <DetailField label="Size" value={item.size} />
+            <DetailField label="Thickness" value={item.thickness} />
+            <DetailField label="Color" value={item.color} />
+            <DetailField label="Weight" value={item.weight} />
+            <DetailField label="Capacity / lift" value={item.capacity} />
+            <DetailField label="Working pressure" value={item.workingPressure} />
+            <DetailField label="Quantity" value={item.quantity && item.quantity !== '1' ? item.quantity : ''} />
+          </View>
+        </Card>
+
+        {item.components.length ? (
+          <View style={styles.sectionGroup}>
+            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Tracked parts</Text><Text style={styles.sectionMeta}>{item.components.length}</Text></View>
+            <View style={styles.rowGroup}>{item.components.map((component, index) => <ComponentRow component={component} key={component.id || index} last={index === item.components.length - 1} />)}</View>
+          </View>
+        ) : null}
+
+        {accessories.length ? (
+          <View style={styles.sectionGroup}>
+            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Includes</Text><Text style={styles.sectionMeta}>{accessories.length}</Text></View>
+            <View style={styles.rowGroup}>{accessories.map((accessory, index) => <AccessoryRow item={accessory} key={accessory.id} last={index === accessories.length - 1} onPress={() => onOpenAccessory(accessory.id)} />)}</View>
+          </View>
+        ) : null}
+
+        {usedIn.length ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Part of</Text>
+            <Text numberOfLines={2} style={styles.listMembership}>{usedIn.map((parent) => parent.name).join('  ·  ')}</Text>
+          </View>
+        ) : null}
+
+        {memberships.length ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>In these setups</Text>
+            <Text numberOfLines={2} style={styles.listMembership}>{memberships.map((setup) => setup.name).join('  ·  ')}</Text>
+          </View>
+        ) : null}
+
+        {item.lastServiceDate || item.nextServiceDate || item.serviceIntervalMonths || item.serviceNotes || item.visualInspectionDue || item.hydrostaticTestDue ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Service</Text>
+            <View style={styles.detailGrid}>
+              <DetailField label="Last service" value={item.lastServiceDate} />
+              <DetailField label="Next service" value={item.nextServiceDate} />
+              <DetailField label="Repeat every" value={item.serviceIntervalMonths ? `${item.serviceIntervalMonths} months` : ''} />
+              <DetailField label="Visual due" value={item.visualInspectionDue} />
+              <DetailField label="Hydro due" value={item.hydrostaticTestDue} />
+            </View>
+            {item.serviceNotes ? <Text style={styles.detailValue}>{item.serviceNotes}</Text> : null}
+          </View>
+        ) : null}
+
+        {item.purchaseDate || item.purchasePrice || item.retailer || item.warrantyUntil ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Ownership & warranty</Text>
+            <View style={styles.detailGrid}>
+              <DetailField label="Purchased" value={item.purchaseDate} />
+              <DetailField label="Price" value={item.purchasePrice} />
+              <DetailField label="Retailer" value={item.retailer} />
+              <DetailField label="Warranty until" value={item.warrantyUntil} />
+            </View>
+          </View>
+        ) : null}
+
+        {item.attachments.length ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Photos & documents</Text>
+            {item.attachments.map((attachment) => (
+              <Pressable key={attachment.id} onPress={() => openAttachment(attachment)} style={styles.attachmentRow}>
+                {attachment.kind === 'photo' ? <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} /> : <View style={styles.documentIcon}><Text style={styles.documentIconText}>DOC</Text></View>}
+                <View style={styles.attachmentCopy}>
+                  <Text numberOfLines={1} style={styles.attachmentName}>{attachment.name}</Text>
+                  <Text style={styles.attachmentMeta}>{attachment.kind === 'photo' ? 'PHOTO' : (attachment.mimeType || 'DOCUMENT').toUpperCase()}</Text>
+                </View>
+              </Pressable>
+            ))}
+          </View>
+        ) : null}
+
+        {item.notes ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Notes</Text>
+            <Text style={styles.detailValue}>{item.notes}</Text>
+          </View>
+        ) : null}
+      </ScrollView>
+    </View>
+  );
+}
+
 export default function GearChecklistScreen({ onBack }) {
   const gear = useGearChecklist();
   const [tab, setTab] = useState('inventory');
@@ -561,22 +714,45 @@ export default function GearChecklistScreen({ onBack }) {
     return (
       <AddGearWizard
         defaultSetupId={route.setupId}
+        items={gear.state.items}
         onCancel={() => setRoute(leaveTo)}
         onPickOtherCategory={(category) => setRoute({ name: 'gear-form', setupId: route.setupId, presetCategory: category || undefined })}
-        onSave={async (draft) => { await gear.saveItem(draft); setRoute(leaveTo); }}
+        onSave={async ({ item, pendingAccessories }) => {
+          const created = [];
+          for (const accessory of pendingAccessories) {
+            // Sequential on purpose: each new accessory needs a real id before the parent can link it.
+            // eslint-disable-next-line no-await-in-loop
+            created.push(await gear.saveItem(accessory));
+          }
+          const saved = await gear.saveItem({ ...item, accessoryItemIds: [...item.accessoryItemIds, ...created.map((entry) => entry.id)] });
+          setRoute({ name: 'gear-detail', itemId: saved.id, setupId: route.setupId });
+        }}
+      />
+    );
+  }
+  if (route.name === 'gear-detail' && activeItem) {
+    return (
+      <GearItemDetail
+        item={activeItem}
+        items={gear.state.items}
+        setups={gear.state.setups}
+        onBack={() => setRoute(route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' })}
+        onEdit={() => setRoute({ name: 'gear-form', itemId: activeItem.id, setupId: route.setupId })}
+        onOpenAccessory={(accessoryId) => setRoute({ name: 'gear-detail', itemId: accessoryId })}
       />
     );
   }
   if (route.name === 'gear-form') {
+    const returnRoute = activeItem ? { name: 'gear-detail', itemId: activeItem.id, setupId: route.setupId } : (route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' });
     return (
       <GearItemForm
         item={activeItem}
         setups={gear.state.setups}
         defaultSetupId={route.setupId}
         presetCategory={route.presetCategory}
-        onBack={() => setRoute(route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' })}
+        onBack={() => setRoute(returnRoute)}
         onDelete={activeItem ? async () => { await gear.deleteItem(activeItem.id); setRoute({ name: 'home' }); } : undefined}
-        onSave={async (draft) => { await gear.saveItem(draft); setRoute(route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' }); }}
+        onSave={async (draft) => { const saved = await gear.saveItem(draft); setRoute({ name: 'gear-detail', itemId: saved.id, setupId: route.setupId }); }}
       />
     );
   }
@@ -618,9 +794,9 @@ export default function GearChecklistScreen({ onBack }) {
         </View>
         <FormError message={gear.error} />
         {!gear.loaded ? <Text style={styles.loading}>Opening your gear locker…</Text> : null}
-        {gear.loaded && tab === 'inventory' ? <InventoryHome state={gear.state} onAdd={() => setRoute({ name: 'add-gear-wizard' })} onEdit={(item) => setRoute({ name: 'gear-form', itemId: item.id })} /> : null}
+        {gear.loaded && tab === 'inventory' ? <InventoryHome state={gear.state} onAdd={() => setRoute({ name: 'add-gear-wizard' })} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
         {gear.loaded && tab === 'setups' ? <SetupsHome state={gear.state} onAdd={() => setRoute({ name: 'setup-form' })} onOpen={(setup) => setRoute({ name: 'setup', setupId: setup.id })} /> : null}
-        {gear.loaded && tab === 'service' ? <ServiceHome state={gear.state} onEdit={(item) => setRoute({ name: 'gear-form', itemId: item.id })} /> : null}
+        {gear.loaded && tab === 'service' ? <ServiceHome state={gear.state} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
       </ScrollView>
     </View>
   );
@@ -727,5 +903,14 @@ const styles = StyleSheet.create({
   checklistDescription: { color: colors.muted, fontSize: 11, lineHeight: 17, marginBottom: 11, marginTop: 11 },
   setupActions: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   checkCategory: { marginBottom: 5 },
+  detailHero: { gap: 8, padding: 15 },
+  detailMeta: { color: colors.muted, fontSize: 13, fontWeight: '600' },
+  detailGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 14, marginTop: 8 },
+  detailField: { minWidth: '30%' },
+  detailLabel: { color: colors.faint, fontSize: 9, fontWeight: '900', letterSpacing: 0.6, marginBottom: 2, textTransform: 'uppercase' },
+  detailValue: { color: colors.text, fontSize: 13, fontWeight: '700', lineHeight: 19 },
+  sectionGroup: { marginBottom: 4, marginTop: 18 },
+  componentRow: { flexDirection: 'row', gap: 11, padding: 11 },
+  componentNotes: { color: colors.faint, fontSize: 10, lineHeight: 15, marginTop: 3 },
   pressed: { opacity: 0.74, transform: [{ scale: 0.985 }] },
 });

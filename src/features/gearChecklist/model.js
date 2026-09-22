@@ -101,7 +101,7 @@ export function emptyGearItem() {
     quantity: '1', size: '', thickness: '', color: '', weight: '', capacity: '', workingPressure: '', configuration: '',
     isAssembly: false, components: [], lastServiceDate: '', nextServiceDate: '', serviceIntervalMonths: '', visualInspectionDue: '',
     hydrostaticTestDue: '', serviceNotes: '', purchaseDate: '', purchasePrice: '', retailer: '', warrantyUntil: '', notes: '',
-    attachments: [], setupIds: [],
+    attachments: [], setupIds: [], accessoryItemIds: [],
   };
 }
 
@@ -161,6 +161,7 @@ export function normalizeGearItem(value = {}, now = new Date()) {
     condition: GEAR_CONDITIONS.includes(value.condition) ? value.condition : 'Ready', quantity: cleanText(value.quantity) || '1',
     configuration: configurationOptions.includes(value.configuration) ? value.configuration : '', isAssembly: Boolean(value.isAssembly || components.length),
     components, attachments: (Array.isArray(value.attachments) ? value.attachments : []).map(normalizeAttachment).filter(Boolean),
+    accessoryItemIds: uniqueIds(value.accessoryItemIds),
     createdAt: cleanText(value.createdAt) || now.toISOString(), updatedAt: now.toISOString(),
   };
   delete normalized.listIds;
@@ -182,8 +183,11 @@ export const normalizeGearList = normalizeGearSetup;
 
 export function normalizeGearState(value) {
   if (!value || typeof value !== 'object') return createInitialGearState();
-  const items = (Array.isArray(value.items) ? value.items : []).map((item) => normalizeGearItem(item));
-  const itemIds = new Set(items.map((item) => item.id));
+  const rawItems = (Array.isArray(value.items) ? value.items : []).map((item) => normalizeGearItem(item));
+  const itemIds = new Set(rawItems.map((item) => item.id));
+  const items = rawItems.map((item) => ({
+    ...item, accessoryItemIds: item.accessoryItemIds.filter((id) => itemIds.has(id) && id !== item.id),
+  }));
   const sourceSetups = Array.isArray(value.setups) ? value.setups : Array.isArray(value.lists) ? value.lists : [];
   const setups = sourceSetups.map((setup) => {
     const normalized = normalizeGearSetup(setup);
@@ -198,6 +202,19 @@ export function setupIdsForItem(setups, itemId) {
   return (Array.isArray(setups) ? setups : []).filter((setup) => setup.itemIds.includes(itemId)).map((setup) => setup.id);
 }
 export const listIdsForItem = setupIdsForItem;
+
+// Assemblies (a drysuit, a BCD) can link out to real standalone locker items — a hood or a pair
+// of boots you already own or quick-add through the guided wizard — instead of describing them a
+// second time as a buried component. The link lives as accessoryItemIds on the parent; these two
+// helpers walk it in each direction for the detail view.
+export function accessoryItemsForItem(items, item) {
+  const byId = new Map((Array.isArray(items) ? items : []).map((entry) => [entry.id, entry]));
+  return (item?.accessoryItemIds || []).map((id) => byId.get(id)).filter(Boolean);
+}
+
+export function parentItemsForAccessory(items, itemId) {
+  return (Array.isArray(items) ? items : []).filter((entry) => (entry.accessoryItemIds || []).includes(itemId));
+}
 
 export function assignItemToSetups(setups, itemId, selectedSetupIds, now = new Date()) {
   const selected = new Set(uniqueIds(selectedSetupIds));

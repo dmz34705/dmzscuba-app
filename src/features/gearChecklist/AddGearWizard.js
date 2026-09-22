@@ -216,14 +216,32 @@ function emptyExposureState(defaultSetupId) {
       feet: { type: null, size: '' },
       dryGloves: { included: null, ringSystem: '', manufacturer: '', model: '' },
     },
-    hood: { included: null, manufacturer: '', model: '', thickness: '' },
-    gloves: { included: null, manufacturer: '', model: '', thickness: '' },
-    boots: { included: null, manufacturer: '', model: '', size: '' },
+    hood: { included: null, mode: null, itemId: '', manufacturer: '', model: '', thickness: '' },
+    gloves: { included: null, mode: null, itemId: '', manufacturer: '', model: '', thickness: '' },
+    boots: { included: null, mode: null, itemId: '', manufacturer: '', model: '', size: '' },
     extras: [],
     serialNumber: '', condition: GEAR_CONDITIONS[0],
     lastServiceDate: '', nextServiceDate: '', serviceIntervalMonths: '',
     purchaseDate: '', purchasePrice: '', retailer: '', warrantyUntil: '', notes: '',
     setupIds: defaultSetupId ? [defaultSetupId] : [],
+  };
+}
+
+// Hood/Gloves/Boots are real, independently-ownable gear categories — unlike a first stage or a
+// suit's bladder, they shouldn't be re-described as a buried, un-browsable component every time
+// they show up in a wizard. "existing" links the item you already own by id; "new" quick-creates
+// a real standalone locker item (returned via pendingAccessories) and links that instead. Either
+// way the link lives in accessoryItemIds, never as a components[] entry.
+function accessoryLink(selection, category, extraFields) {
+  if (!selection.included) return { accessoryItemId: null, pendingAccessory: null };
+  if (selection.mode === 'existing' && selection.itemId) return { accessoryItemId: selection.itemId, pendingAccessory: null };
+  const manufacturer = selection.manufacturer.trim();
+  const model = selection.model.trim();
+  return {
+    accessoryItemId: null,
+    pendingAccessory: {
+      ...emptyGearItem(), name: [manufacturer, model].filter(Boolean).join(' ') || category, category, manufacturer, model, ...extraFields,
+    },
   };
 }
 
@@ -249,15 +267,18 @@ function buildExposureDraft(exp) {
       });
     }
   }
-  if (exp.hood.included) components.push({ ...emptyGearComponent('Exposure suit', 'Hood'), id: createGearId('component'), name: 'Hood', manufacturer: exp.hood.manufacturer.trim(), model: exp.hood.model.trim(), notes: exp.hood.thickness.trim() ? `${exp.hood.thickness.trim()} thickness` : '' });
-  if (exp.gloves.included) components.push({ ...emptyGearComponent('Exposure suit', 'Gloves'), id: createGearId('component'), name: 'Gloves', manufacturer: exp.gloves.manufacturer.trim(), model: exp.gloves.model.trim(), notes: exp.gloves.thickness.trim() ? `${exp.gloves.thickness.trim()} thickness` : '' });
-  if (exp.boots.included) components.push({ ...emptyGearComponent('Exposure suit', 'Boots'), id: createGearId('component'), name: 'Boots', manufacturer: exp.boots.manufacturer.trim(), model: exp.boots.model.trim(), notes: exp.boots.size.trim() ? `Size ${exp.boots.size.trim()}` : '' });
   exp.extras.forEach((extra) => {
     if (!extra.name.trim() && !extra.manufacturer.trim() && !extra.model.trim()) return;
     components.push({ ...emptyGearComponent('Exposure suit', extra.type), id: extra.id, name: extra.name.trim() || extra.type, manufacturer: extra.manufacturer.trim(), model: extra.model.trim() });
   });
 
-  return {
+  const hoodLink = accessoryLink(exp.hood, 'Hood', { thickness: exp.hood.thickness.trim() });
+  const glovesLink = accessoryLink(exp.gloves, 'Gloves', { thickness: exp.gloves.thickness.trim() });
+  const bootsLink = accessoryLink(exp.boots, 'Boots', { size: exp.boots.size.trim() });
+  const accessoryItemIds = [hoodLink.accessoryItemId, glovesLink.accessoryItemId, bootsLink.accessoryItemId].filter(Boolean);
+  const pendingAccessories = [hoodLink.pendingAccessory, glovesLink.pendingAccessory, bootsLink.pendingAccessory].filter(Boolean);
+
+  const item = {
     ...emptyGearItem(),
     name: exp.name.trim(),
     category: 'Exposure suit',
@@ -270,11 +291,13 @@ function buildExposureDraft(exp) {
     thickness: exp.suitType === 'Wetsuit' ? exp.wetsuit.thickness.trim() : '',
     isAssembly: true,
     components,
+    accessoryItemIds,
     lastServiceDate: exp.lastServiceDate.trim(), nextServiceDate: exp.nextServiceDate.trim(), serviceIntervalMonths: exp.serviceIntervalMonths,
     purchaseDate: exp.purchaseDate.trim(), purchasePrice: exp.purchasePrice.trim(), retailer: exp.retailer.trim(), warrantyUntil: exp.warrantyUntil.trim(),
     notes: exp.notes.trim(),
     setupIds: exp.setupIds,
   };
+  return { item, pendingAccessories };
 }
 
 function StepDots({ index, count }) {
@@ -345,6 +368,17 @@ const YES_NO_OPTIONS = [{ value: true, label: 'Yes' }, { value: false, label: 'N
 
 function YesNoRow({ value, onChange }) {
   return <PillOptionRow onChange={onChange} options={YES_NO_OPTIONS} value={value} />;
+}
+
+// One row in the "which one?" list under a Hood/Gloves/Boots yes — either an existing locker
+// item (tap to link it) or the trailing "Add a new …" row (tap to reveal quick-add fields below).
+function AccessoryOptionRow({ label, body, selected, onPress }) {
+  return (
+    <Pressable accessibilityRole="button" onPress={onPress} style={[styles.accessoryOption, selected && styles.yesNoButtonActive]}>
+      <Text style={[styles.yesNoText, selected && styles.yesNoTextActive]}>{label}</Text>
+      {body ? <Text style={styles.accessoryOptionBody}>{body}</Text> : null}
+    </Pressable>
+  );
 }
 
 const TRANSMITTER_MODE_OPTIONS = [{ value: true, label: 'Yes' }, { value: false, label: 'No' }, { value: 'floating', label: 'Floating' }];
@@ -447,7 +481,7 @@ function ExtraPartRow({ part, partTypes, onChange, onRemove }) {
   );
 }
 
-export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCategory, onSave }) {
+export default function AddGearWizard({ defaultSetupId, items, onCancel, onPickOtherCategory, onSave }) {
   const [category, setCategory] = useState('');
   const [step, setStep] = useState('basics');
   const [reg, setReg] = useState(() => emptyRegulatorState(defaultSetupId));
@@ -512,7 +546,7 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
     const save = async () => {
       setBusy(true);
       try {
-        await onSave(buildBcdDraft(bcd));
+        await onSave({ item: buildBcdDraft(bcd), pendingAccessories: [] });
       } catch {
         setBusy(false);
       }
@@ -661,6 +695,7 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
         setBusy(false);
       }
     };
+    const candidatesFor = (category) => (items || []).filter((candidate) => candidate.category === category);
 
     if (step === 'basics') {
       const canContinue = Boolean(exp.name.trim());
@@ -746,16 +781,26 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
     }
 
     if (step === 'hood') {
+      const candidates = candidatesFor('Hood');
       return (
-        <StepShell body="Does this setup include a hood?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.hood.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Hood?">
+        <StepShell body="Does this setup include a hood?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.hood.included === null || (exp.hood.included && !exp.hood.mode)} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Hood?">
           <YesNoRow onChange={chooseHood} value={exp.hood.included} />
           {exp.hood.included ? (
             <>
-              <View style={styles.twoColumn}>
-                <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ hood: { ...exp.hood, manufacturer: value } })} placeholder="Optional" value={exp.hood.manufacturer} /></View>
-                <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ hood: { ...exp.hood, model: value } })} placeholder="Optional" value={exp.hood.model} /></View>
-              </View>
-              <FormField label="Thickness" maxLength={40} onChangeText={(value) => updateExp({ hood: { ...exp.hood, thickness: value } })} placeholder="e.g. 5mm" value={exp.hood.thickness} />
+              <Text style={styles.pillLabel}>Which one?</Text>
+              {candidates.map((candidate) => (
+                <AccessoryOptionRow body={[candidate.manufacturer, candidate.model].filter(Boolean).join(' · ')} key={candidate.id} label={candidate.name} onPress={() => updateExp({ hood: { ...exp.hood, mode: 'existing', itemId: candidate.id } })} selected={exp.hood.mode === 'existing' && exp.hood.itemId === candidate.id} />
+              ))}
+              <AccessoryOptionRow label="Add a new hood" onPress={() => updateExp({ hood: { ...exp.hood, mode: 'new', itemId: '' } })} selected={exp.hood.mode === 'new'} />
+              {exp.hood.mode === 'new' ? (
+                <>
+                  <View style={styles.twoColumn}>
+                    <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ hood: { ...exp.hood, manufacturer: value } })} placeholder="Optional" value={exp.hood.manufacturer} /></View>
+                    <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ hood: { ...exp.hood, model: value } })} placeholder="Optional" value={exp.hood.model} /></View>
+                  </View>
+                  <FormField label="Thickness" maxLength={40} onChangeText={(value) => updateExp({ hood: { ...exp.hood, thickness: value } })} placeholder="e.g. 5mm" value={exp.hood.thickness} />
+                </>
+              ) : null}
             </>
           ) : null}
         </StepShell>
@@ -763,16 +808,26 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
     }
 
     if (step === 'gloves') {
+      const candidates = candidatesFor('Gloves');
       return (
-        <StepShell body="Does this setup include gloves?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.gloves.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Gloves?">
+        <StepShell body="Does this setup include gloves?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.gloves.included === null || (exp.gloves.included && !exp.gloves.mode)} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Gloves?">
           <YesNoRow onChange={chooseGloves} value={exp.gloves.included} />
           {exp.gloves.included ? (
             <>
-              <View style={styles.twoColumn}>
-                <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, manufacturer: value } })} placeholder="Optional" value={exp.gloves.manufacturer} /></View>
-                <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, model: value } })} placeholder="Optional" value={exp.gloves.model} /></View>
-              </View>
-              <FormField label="Thickness" maxLength={40} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, thickness: value } })} placeholder="e.g. 3mm" value={exp.gloves.thickness} />
+              <Text style={styles.pillLabel}>Which one?</Text>
+              {candidates.map((candidate) => (
+                <AccessoryOptionRow body={[candidate.manufacturer, candidate.model].filter(Boolean).join(' · ')} key={candidate.id} label={candidate.name} onPress={() => updateExp({ gloves: { ...exp.gloves, mode: 'existing', itemId: candidate.id } })} selected={exp.gloves.mode === 'existing' && exp.gloves.itemId === candidate.id} />
+              ))}
+              <AccessoryOptionRow label="Add new gloves" onPress={() => updateExp({ gloves: { ...exp.gloves, mode: 'new', itemId: '' } })} selected={exp.gloves.mode === 'new'} />
+              {exp.gloves.mode === 'new' ? (
+                <>
+                  <View style={styles.twoColumn}>
+                    <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, manufacturer: value } })} placeholder="Optional" value={exp.gloves.manufacturer} /></View>
+                    <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, model: value } })} placeholder="Optional" value={exp.gloves.model} /></View>
+                  </View>
+                  <FormField label="Thickness" maxLength={40} onChangeText={(value) => updateExp({ gloves: { ...exp.gloves, thickness: value } })} placeholder="e.g. 3mm" value={exp.gloves.thickness} />
+                </>
+              ) : null}
             </>
           ) : null}
         </StepShell>
@@ -780,16 +835,26 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
     }
 
     if (step === 'boots') {
+      const candidates = candidatesFor('Boots');
       return (
-        <StepShell body="Does this setup include boots?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.boots.included === null} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Boots?">
+        <StepShell body="Does this setup include boots?" count={exposureSteps.length} footer={<PrimaryButton disabled={exp.boots.included === null || (exp.boots.included && !exp.boots.mode)} label="Continue" onPress={() => goNext()} />} index={index} onBack={goBack} title="Boots?">
           <YesNoRow onChange={chooseBoots} value={exp.boots.included} />
           {exp.boots.included ? (
             <>
-              <View style={styles.twoColumn}>
-                <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ boots: { ...exp.boots, manufacturer: value } })} placeholder="Optional" value={exp.boots.manufacturer} /></View>
-                <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ boots: { ...exp.boots, model: value } })} placeholder="Optional" value={exp.boots.model} /></View>
-              </View>
-              <FormField label="Size" maxLength={40} onChangeText={(value) => updateExp({ boots: { ...exp.boots, size: value } })} placeholder="Optional" value={exp.boots.size} />
+              <Text style={styles.pillLabel}>Which one?</Text>
+              {candidates.map((candidate) => (
+                <AccessoryOptionRow body={[candidate.manufacturer, candidate.model].filter(Boolean).join(' · ')} key={candidate.id} label={candidate.name} onPress={() => updateExp({ boots: { ...exp.boots, mode: 'existing', itemId: candidate.id } })} selected={exp.boots.mode === 'existing' && exp.boots.itemId === candidate.id} />
+              ))}
+              <AccessoryOptionRow label="Add new boots" onPress={() => updateExp({ boots: { ...exp.boots, mode: 'new', itemId: '' } })} selected={exp.boots.mode === 'new'} />
+              {exp.boots.mode === 'new' ? (
+                <>
+                  <View style={styles.twoColumn}>
+                    <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => updateExp({ boots: { ...exp.boots, manufacturer: value } })} placeholder="Optional" value={exp.boots.manufacturer} /></View>
+                    <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => updateExp({ boots: { ...exp.boots, model: value } })} placeholder="Optional" value={exp.boots.model} /></View>
+                  </View>
+                  <FormField label="Size" maxLength={40} onChangeText={(value) => updateExp({ boots: { ...exp.boots, size: value } })} placeholder="Optional" value={exp.boots.size} />
+                </>
+              ) : null}
             </>
           ) : null}
         </StepShell>
@@ -868,7 +933,7 @@ export default function AddGearWizard({ defaultSetupId, onCancel, onPickOtherCat
   const save = async () => {
     setBusy(true);
     try {
-      await onSave(buildRegulatorDraft(reg));
+      await onSave({ item: buildRegulatorDraft(reg), pendingAccessories: [] });
     } catch {
       setBusy(false);
     }
@@ -1023,6 +1088,8 @@ const styles = StyleSheet.create({
   yesNoButtonActive: { backgroundColor: 'rgba(112,221,246,0.14)', borderColor: colors.cyan },
   yesNoText: { color: colors.text, fontSize: 14, fontWeight: '800' },
   yesNoTextActive: { color: colors.cyan },
+  accessoryOption: { backgroundColor: colors.surface, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, marginBottom: 8, minHeight: 54, paddingHorizontal: 14, paddingVertical: 10 },
+  accessoryOptionBody: { color: colors.faint, fontSize: 10, marginTop: 2 },
   summaryStrip: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 18 },
   summaryChip: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.pill, borderWidth: 1, paddingHorizontal: 10, paddingVertical: 6 },
   summaryChipText: { color: colors.muted, fontSize: 10, fontWeight: '700' },
