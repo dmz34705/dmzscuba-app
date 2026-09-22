@@ -174,7 +174,7 @@ export function normalizeGearSetup(value = {}, now = new Date()) {
   return {
     id: cleanText(value.id) || createGearId('setup'), name: cleanText(value.name) || 'Untitled setup',
     type: SETUP_TYPES.includes(value.type) ? value.type : 'Custom', description: cleanText(value.description), itemIds,
-    checkedIds: uniqueIds(value.checkedIds).filter((id) => itemIds.includes(id)), createdAt: cleanText(value.createdAt) || now.toISOString(),
+    checkedIds: uniqueIds(value.checkedIds).filter((id) => itemIds.includes(checklistItemIdForKey(id))), createdAt: cleanText(value.createdAt) || now.toISOString(),
     updatedAt: now.toISOString(),
   };
 }
@@ -192,7 +192,7 @@ export function normalizeGearState(value) {
   const setups = sourceSetups.map((setup) => {
     const normalized = normalizeGearSetup(setup);
     normalized.itemIds = normalized.itemIds.filter((id) => itemIds.has(id));
-    normalized.checkedIds = normalized.checkedIds.filter((id) => itemIds.has(id));
+    normalized.checkedIds = normalized.checkedIds.filter((id) => itemIds.has(checklistItemIdForKey(id)));
     return normalized;
   });
   return { version: GEAR_STATE_VERSION, items, setups };
@@ -214,6 +214,27 @@ export function accessoryItemsForItem(items, item) {
 
 export function parentItemsForAccessory(items, itemId) {
   return (Array.isArray(items) ? items : []).filter((entry) => (entry.accessoryItemIds || []).includes(itemId));
+}
+
+const CHECKLIST_KEY_SEPARATOR = '::';
+
+// A setup's packing checklist checks off whole items by id — fine for a mask or a single fin, but
+// a drysuit with a hood, dry gloves, and boots is one item hiding several forgettable pieces.
+// checklistEntriesForItem expands an item into every checkable piece: the item itself, each
+// tracked component, and each linked accessory — so checking "the drysuit" off doesn't silently
+// mark the hood and boots as packed too. Keys are itemId::component::id / itemId::accessory::id;
+// a plain item with no parts keeps its bare id as its only (and whole) entry.
+export function checklistEntriesForItem(item, items) {
+  const parts = [
+    ...(item?.components || []).map((component) => ({ key: `${item.id}${CHECKLIST_KEY_SEPARATOR}component${CHECKLIST_KEY_SEPARATOR}${component.id}`, label: component.name, meta: component.type })),
+    ...accessoryItemsForItem(items, item).map((accessory) => ({ key: `${item.id}${CHECKLIST_KEY_SEPARATOR}accessory${CHECKLIST_KEY_SEPARATOR}${accessory.id}`, label: accessory.name, meta: accessory.category, linkedItemId: accessory.id })),
+  ];
+  return { itemKey: item.id, parts };
+}
+
+export function checklistItemIdForKey(key) {
+  const separatorIndex = typeof key === 'string' ? key.indexOf(CHECKLIST_KEY_SEPARATOR) : -1;
+  return separatorIndex === -1 ? key : key.slice(0, separatorIndex);
 }
 
 export function assignItemToSetups(setups, itemId, selectedSetupIds, now = new Date()) {
@@ -296,9 +317,22 @@ export function gearSummary(state, now = new Date()) {
   };
 }
 
-export function setupProgress(setup) {
-  const total = Array.isArray(setup?.itemIds) ? setup.itemIds.length : 0;
-  const checked = Array.isArray(setup?.checkedIds) ? setup.checkedIds.filter((id) => setup.itemIds.includes(id)).length : 0;
+// Counts every checkable piece (each item, plus each of its tracked parts and linked
+// accessories) rather than just top-level items, so "packed" reflects the hood and boots too,
+// not just whether the drysuit itself got checked.
+export function setupProgress(setup, items) {
+  const byId = new Map((Array.isArray(items) ? items : []).map((entry) => [entry.id, entry]));
+  const checkedSet = new Set(Array.isArray(setup?.checkedIds) ? setup.checkedIds : []);
+  let total = 0;
+  let checked = 0;
+  (Array.isArray(setup?.itemIds) ? setup.itemIds : []).forEach((itemId) => {
+    const item = byId.get(itemId);
+    if (!item) return;
+    const { itemKey, parts } = checklistEntriesForItem(item, items);
+    total += 1 + parts.length;
+    if (checkedSet.has(itemKey)) checked += 1;
+    parts.forEach((part) => { if (checkedSet.has(part.key)) checked += 1; });
+  });
   return { total, checked, ratio: total ? checked / total : 0 };
 }
 export const checklistProgress = setupProgress;

@@ -14,6 +14,8 @@ const {
   GUIDED_CATEGORIES,
   accessoryItemsForItem,
   assignItemToSetups,
+  checklistEntriesForItem,
+  checklistItemIdForKey,
   createInitialGearState,
   emptyGearComponent,
   emptyGearItem,
@@ -102,8 +104,28 @@ assert.deepEqual(accessoryItemsForItem(linkedState.items, linkedSuit).map((entry
 assert.deepEqual(parentItemsForAccessory(linkedState.items, 'boots-1').map((entry) => entry.id), ['suit-1'], 'the reverse lookup finds what an item is linked into');
 assert.equal(linkedState.items.length, 2, 'linking an accessory must not create a second top-level item for it');
 
-const setup = { itemIds: ['a', 'b', 'c'], checkedIds: ['a', 'c', 'missing'] };
-assert.deepEqual(setupProgress(setup), { total: 3, checked: 2, ratio: 2 / 3 });
+// A drysuit's dry-glove system (a component) and its linked hood/boots (accessories) must each be
+// their own checkable checklist entry, so checking the drysuit itself off can't silently mark
+// them packed too.
+const bootsAccessory = normalizeGearItem({ ...emptyGearItem(), id: 'boots-2', name: 'Whites Boots', category: 'Boots' }, new Date('2026-01-01T12:00:00Z'));
+const hoodAccessory = normalizeGearItem({ ...emptyGearItem(), id: 'hood-2', name: 'Whites Hood', category: 'Hood' }, new Date('2026-01-01T12:00:00Z'));
+const drysuitItem = normalizeGearItem({
+  ...emptyGearItem(), id: 'drysuit-1', name: 'Fusion Bullet', category: 'Exposure suit', isAssembly: true,
+  components: [{ ...emptyGearComponent('Exposure suit', 'Dry gloves'), id: 'dg-1', type: 'Dry gloves', name: 'Dry glove system' }],
+  accessoryItemIds: ['boots-2', 'hood-2'],
+}, new Date('2026-01-01T12:00:00Z'));
+const maskItem = normalizeGearItem({ ...emptyGearItem(), id: 'mask-1', name: 'Mask', category: 'Mask' }, new Date('2026-01-01T12:00:00Z'));
+const checklistItems = [drysuitItem, bootsAccessory, hoodAccessory, maskItem];
+
+const drysuitEntries = checklistEntriesForItem(drysuitItem, checklistItems);
+assert.equal(drysuitEntries.parts.length, 3, 'the drysuit checklist must expand into its dry-glove component plus its linked hood and boots');
+assert.deepEqual(drysuitEntries.parts.map((part) => part.label).sort(), ['Dry glove system', 'Whites Boots', 'Whites Hood']);
+assert.equal(checklistItemIdForKey(drysuitEntries.parts[0].key), 'drysuit-1', 'a part key must resolve back to its parent item id');
+assert.equal(checklistItemIdForKey('mask-1'), 'mask-1', 'a bare item id with no parts must resolve to itself');
+
+const dryGlovesKey = drysuitEntries.parts.find((part) => part.label === 'Dry glove system').key;
+const setup = { itemIds: ['drysuit-1', 'mask-1'], checkedIds: ['drysuit-1', dryGlovesKey, 'mask-1'] };
+assert.deepEqual(setupProgress(setup, checklistItems), { total: 5, checked: 3, ratio: 3 / 5 }, 'checking the drysuit itself off must not silently count its unchecked hood and boots as packed');
 assert.equal(serviceEntriesForItem(item).length, 2, 'assembly and component both appear in service tracking');
 assert.equal(serviceStatusForAssembly(item, new Date('2026-01-15T12:00:00Z')).label, 'PART: SERVICE DUE SOON');
 assert.deepEqual(gearSummary({ items: [item, { id: 'simple', name: 'Mask', category: 'Mask', condition: 'Ready', attachments: [{}, {}], components: [] }] }, new Date('2026-01-15T12:00:00Z')), { total: 2, components: 1, ready: 2, alerts: 1, documents: 3 });
@@ -124,6 +146,15 @@ assert.match(screen, /function GearItemDetail/, 'a dedicated read-only gear deta
 assert.match(screen, /route\.name === 'gear-detail'/, 'the gear detail view must be a routed screen');
 const detailOpenCount = (screen.match(/onOpen=\{\(item\) => setRoute\(\{ name: 'gear-detail', itemId: item\.id \}\)\}/g) || []).length;
 assert.equal(detailOpenCount, 2, 'both the inventory row and the service entry must open the detail view, not the edit form');
+
+// A setup's packing checklist must expand an assembly into its parts, not offer one checkbox
+// that silently stands in for gear that was never actually verified as packed.
+assert.match(screen, /function ChecklistItemRows/, 'the setup checklist must render each item\'s parts, not just the item');
+assert.match(screen, /checklistEntriesForItem\(item, items\)/, 'the checklist must expand components and linked accessories per item');
+assert.match(screen, /onSetChecked\(allKeys, !allChecked\)/, 'checking a parent row must set all of its part keys together, not just the item\'s own key');
+assert.match(screen, /gear\.setCheckedKeys\(activeSetup\.id, keys, checked\)/, 'the batch checklist toggle must be wired to the atomic setCheckedKeys, not a loop of toggleChecked');
+assert.match(screen, /setupProgress\(setup, items\)/, 'setup packing progress must count parts, matching the expanded checklist');
+assert.match(screen, /ADD EXISTING GEAR/, 'adding gear already in the locker to a setup must be a clearly labeled, discoverable action');
 assert.match(screen, /accessoryItemsForItem/, 'the detail view shows linked accessory items');
 assert.match(screen, /parentItemsForAccessory/, 'the detail view shows what an item is linked into');
 assert.match(screen, /onOpenAccessory/, 'a linked accessory opens its own detail view');

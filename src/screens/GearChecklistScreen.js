@@ -31,6 +31,7 @@ import {
   TANK_CONFIGURATIONS,
   accessoryItemsForItem,
   bcdComponentTemplate,
+  checklistEntriesForItem,
   createGearId,
   emptyGearComponent,
   emptyGearItem,
@@ -159,7 +160,7 @@ function SetupsHome({ state, onAdd, onOpen }) {
       <Text style={styles.helperLead}>Build reusable single-tank, doubles, sidemount, travel, or custom configurations. Packing checks stay independent for each setup.</Text>
       <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Dive setups</Text><Text style={styles.sectionMeta}>{state.setups.length} SETUPS</Text></View>
       {state.setups.length ? state.setups.map((setup) => {
-        const progress = setupProgress(setup);
+        const progress = setupProgress(setup, state.items);
         return (
           <Pressable accessibilityRole="button" accessibilityLabel={`Open ${setup.name} setup`} key={setup.id} onPress={() => onOpen(setup)} style={({ pressed }) => [styles.listCard, pressed && styles.pressed]}>
             <View style={styles.listTop}>
@@ -539,7 +540,9 @@ function SetupForm({ setup, items, onBack, onDelete, onSave }) {
     { text: 'Cancel', style: 'cancel' },
     { text: 'Delete', style: 'destructive', onPress: onDelete },
   ]);
-  const sorted = sortGear(items);
+  // Grouped by category — same as the inventory and the "what's in this setup" checklist below —
+  // so finding one piece of gear among everything you own doesn't mean scanning one long list.
+  const groupedPicker = GEAR_CATEGORIES.map((category) => ({ category, items: sortGear(items.filter((item) => item.category === category)) })).filter((group) => group.items.length);
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
       <ScreenHeader eyebrow="DIVE SETUP" title={isEditing ? 'Edit Setup' : 'New Setup'} onBack={onBack} />
@@ -549,8 +552,13 @@ function SetupForm({ setup, items, onBack, onDelete, onSave }) {
           <ChoiceGroup choices={SETUP_TYPES} label="Setup type" onChange={(value) => update('type', value)} value={draft.type} />
           <NotesField label="Description" onChangeText={(value) => update('description', value)} placeholder="What this setup is intended for…" value={draft.description} />
         </FieldSection>
-        <FieldSection title="Gear in this setup" body={`${draft.itemIds.length} of ${items.length} locker items selected. Assemblies include their tracked parts.`}>
-          {sorted.length ? sorted.map((item) => <SelectRow checked={draft.itemIds.includes(item.id)} key={item.id} label={item.name} body={[item.category, item.manufacturer, item.model].filter(Boolean).join(' · ')} onPress={() => toggleItem(item.id)} />) : <Text style={styles.formEmpty}>Your gear locker is empty. Save this setup, then add gear to it from the inventory.</Text>}
+        <FieldSection title="Gear in this setup" body={`${draft.itemIds.length} of ${items.length} locker items selected. Assemblies include their tracked parts and linked accessories.`}>
+          {groupedPicker.length ? groupedPicker.map((group) => (
+            <View key={group.category} style={styles.pickerGroup}>
+              <Text style={styles.pickerGroupLabel}>{group.category}</Text>
+              {group.items.map((item) => <SelectRow checked={draft.itemIds.includes(item.id)} key={item.id} label={item.name} body={[item.manufacturer, item.model].filter(Boolean).join(' · ')} onPress={() => toggleItem(item.id)} />)}
+            </View>
+          )) : <Text style={styles.formEmpty}>Your gear locker is empty. Save this setup, then add gear to it from the inventory.</Text>}
         </FieldSection>
         <FormError message={error} />
         <PrimaryButton disabled={busy} label={busy ? 'Saving setup…' : 'Save setup'} onPress={save} />
@@ -560,10 +568,41 @@ function SetupForm({ setup, items, onBack, onDelete, onSave }) {
   );
 }
 
-function SetupDetail({ setup, items, onAddGear, onBack, onEdit, onReset, onToggle }) {
+// One item's row, plus one indented row per tracked part / linked accessory — so a drysuit's
+// hood, dry gloves, and boots are each their own checkbox instead of hiding behind one line for
+// "the drysuit." Tapping the item's own row checks or unchecks everything under it at once;
+// tapping a part checks just that part.
+function ChecklistItemRows({ item, items, checkedIds, onSetChecked, onToggle }) {
+  const { itemKey, parts } = checklistEntriesForItem(item, items);
+  const allKeys = [itemKey, ...parts.map((part) => part.key)];
+  const allChecked = allKeys.every((key) => checkedIds.includes(key));
+  const someChecked = allKeys.some((key) => checkedIds.includes(key));
+  return (
+    <>
+      <SelectRow
+        checked={parts.length ? allChecked : checkedIds.includes(itemKey)}
+        label={item.name}
+        body={[item.manufacturer, item.model, item.configuration, parts.length ? `${parts.length} part${parts.length === 1 ? '' : 's'} below${someChecked && !allChecked ? ' · partly packed' : ''}` : ''].filter(Boolean).join(' · ')}
+        onPress={() => (parts.length ? onSetChecked(allKeys, !allChecked) : onToggle(itemKey))}
+      />
+      {parts.map((part) => (
+        <View key={part.key} style={styles.checklistPartRow}>
+          <SelectRow checked={checkedIds.includes(part.key)} label={part.label} body={part.meta} onPress={() => onToggle(part.key)} />
+        </View>
+      ))}
+    </>
+  );
+}
+
+function SetupDetail({ setup, items, onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle }) {
   const available = sortGear(items.filter((item) => setup.itemIds.includes(item.id)));
-  const progress = setupProgress(setup);
+  const progress = setupProgress(setup, items);
   const grouped = GEAR_CATEGORIES.map((category) => ({ category, items: available.filter((item) => item.category === category) })).filter((group) => group.items.length);
+  const groupProgress = (group) => group.items.reduce((sum, item) => {
+    const { itemKey, parts } = checklistEntriesForItem(item, items);
+    const checked = (setup.checkedIds.includes(itemKey) ? 1 : 0) + parts.filter((part) => setup.checkedIds.includes(part.key)).length;
+    return { checked: sum.checked + checked, total: sum.total + 1 + parts.length };
+  }, { checked: 0, total: 0 });
   return (
     <View style={styles.screen}>
       <ScreenHeader eyebrow={setup.type.toUpperCase()} title={setup.name} onBack={onBack} action={<TinyAction label="EDIT" onPress={onEdit} />} />
@@ -573,16 +612,22 @@ function SetupDetail({ setup, items, onAddGear, onBack, onEdit, onReset, onToggl
           <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
           {setup.description ? <Text style={styles.checklistDescription}>{setup.description}</Text> : null}
           <View style={styles.setupActions}>
+            <TinyAction label="ADD EXISTING GEAR" onPress={onAddExisting} />
             <TinyAction label="ADD NEW GEAR" onPress={onAddGear} />
             {progress.checked ? <TinyAction label="RESET CHECKS" onPress={onReset} /> : null}
           </View>
         </Card>
-        {grouped.length ? grouped.map((group) => (
-          <View key={group.category} style={styles.checkCategory}>
-            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{group.category}</Text><Text style={styles.sectionMeta}>{group.items.filter((item) => setup.checkedIds.includes(item.id)).length}/{group.items.length}</Text></View>
-            <View style={styles.rowGroup}>{group.items.map((item) => <SelectRow checked={setup.checkedIds.includes(item.id)} key={item.id} label={item.name} body={[item.manufacturer, item.model, item.configuration, item.components?.length ? `${item.components.length} parts` : ''].filter(Boolean).join(' · ')} onPress={() => onToggle(item.id)} />)}</View>
-          </View>
-        )) : <EmptyState title="This setup is empty" body="Add a new locker item here, or tap Edit above to select gear you already own." action="Add new gear" onPress={onAddGear} />}
+        {grouped.length ? grouped.map((group) => {
+          const groupTotals = groupProgress(group);
+          return (
+            <View key={group.category} style={styles.checkCategory}>
+              <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{group.category}</Text><Text style={styles.sectionMeta}>{groupTotals.checked}/{groupTotals.total}</Text></View>
+              <View style={styles.rowGroup}>
+                {group.items.map((item) => <ChecklistItemRows checkedIds={setup.checkedIds} item={item} items={items} key={item.id} onSetChecked={onSetChecked} onToggle={onToggle} />)}
+              </View>
+            </View>
+          );
+        }) : <EmptyState title="This setup is empty" body="Add gear you already own, or add a new locker item here." action="Add existing gear" onPress={onAddExisting} />}
       </ScrollView>
     </View>
   );
@@ -807,11 +852,13 @@ export default function GearChecklistScreen({ onBack }) {
       <SetupDetail
         items={gear.state.items}
         setup={activeSetup}
+        onAddExisting={() => setRoute({ name: 'setup-form', setupId: activeSetup.id })}
         onAddGear={() => setRoute({ name: 'add-gear-wizard', setupId: activeSetup.id })}
         onBack={() => setRoute({ name: 'home' })}
         onEdit={() => setRoute({ name: 'setup-form', setupId: activeSetup.id })}
         onReset={() => gear.resetSetup(activeSetup.id)}
-        onToggle={(itemId) => gear.toggleChecked(activeSetup.id, itemId)}
+        onSetChecked={(keys, checked) => gear.setCheckedKeys(activeSetup.id, keys, checked)}
+        onToggle={(checklistKey) => gear.toggleChecked(activeSetup.id, checklistKey)}
       />
     );
   }
@@ -905,6 +952,8 @@ const styles = StyleSheet.create({
   formTitle: { color: colors.text, fontSize: 18, fontWeight: '900' },
   formBody: { color: colors.muted, fontSize: 11, lineHeight: 17, marginBottom: 15, marginTop: 4 },
   formEmpty: { color: colors.faint, fontSize: 11, lineHeight: 17, paddingVertical: 4 },
+  pickerGroup: { marginBottom: 16 },
+  pickerGroupLabel: { color: colors.faint, fontSize: 10, fontWeight: '900', letterSpacing: 0.8, marginBottom: 2, marginTop: 8, textTransform: 'uppercase' },
   componentTemplateButton: { marginBottom: 12 },
   componentEditor: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, marginBottom: 12, padding: 12 },
   componentHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 },
@@ -942,6 +991,7 @@ const styles = StyleSheet.create({
   checklistDescription: { color: colors.muted, fontSize: 11, lineHeight: 17, marginBottom: 11, marginTop: 11 },
   setupActions: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   checkCategory: { marginBottom: 5 },
+  checklistPartRow: { paddingLeft: 26 },
   detailHero: { gap: 8, padding: 15 },
   detailMeta: { color: colors.muted, fontSize: 13, fontWeight: '600' },
   detailGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 14, marginTop: 8 },

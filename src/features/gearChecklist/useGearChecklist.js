@@ -119,11 +119,24 @@ export default function useGearChecklist() {
 
   const deleteSetup = (setupId) => commit({ ...state, setups: state.setups.filter((setup) => setup.id !== setupId) });
 
-  const toggleChecked = (setupId, itemId) => {
+  const toggleChecked = (setupId, checklistKey) => {
     const setups = state.setups.map((setup) => {
-      if (setup.id !== setupId || !setup.itemIds.includes(itemId)) return setup;
-      const checked = setup.checkedIds.includes(itemId);
-      return { ...setup, checkedIds: checked ? setup.checkedIds.filter((id) => id !== itemId) : [...setup.checkedIds, itemId] };
+      if (setup.id !== setupId) return setup;
+      const checked = setup.checkedIds.includes(checklistKey);
+      return { ...setup, checkedIds: checked ? setup.checkedIds.filter((id) => id !== checklistKey) : [...setup.checkedIds, checklistKey] };
+    });
+    return commit({ ...state, setups });
+  };
+
+  // Checking a parent row (the drysuit) toggles every one of its checklist keys — itself, its
+  // tracked parts, its linked accessories — together. A loop of toggleChecked calls would clobber
+  // itself the same way the wizard's save used to; this sets them all in the one commit instead.
+  const setCheckedKeys = (setupId, keys, checked) => {
+    const keySet = new Set(keys);
+    const setups = state.setups.map((setup) => {
+      if (setup.id !== setupId) return setup;
+      const withoutKeys = setup.checkedIds.filter((id) => !keySet.has(id));
+      return { ...setup, checkedIds: checked ? [...withoutKeys, ...keys] : withoutKeys };
     });
     return commit({ ...state, setups });
   };
@@ -143,6 +156,7 @@ export default function useGearChecklist() {
     saveSetup,
     deleteSetup,
     toggleChecked,
+    setCheckedKeys,
     resetSetup,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [state, loaded, error]);
