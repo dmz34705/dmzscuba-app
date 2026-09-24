@@ -51,3 +51,8 @@ tmp-*/
 # build / bundler logs
 build.log
 metro.log
+
+# local agent worktrees, reference media, and machine-only helpers
+/.claude/worktrees/
+/.codex/
+/clean-rebuild.sh

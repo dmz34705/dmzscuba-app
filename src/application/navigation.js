@@ -21,7 +21,10 @@ export const SETTINGS_SECTIONS = Object.freeze({
   location: 'Location', backup: 'Export & backup',
 });
 
-export const INITIAL_NAVIGATION = Object.freeze({ activeTab: 'home', detailRoute: null, moreRoute: null, settingsSection: null });
+export const INITIAL_NAVIGATION = Object.freeze({ activeTab: 'home', detailRoute: null, moreRoute: null, settingsSection: null, logbookIntent: null });
+
+// Shortcuts that open the logbook straight into a task (Home's "Log a dive" / "Download").
+export const LOGBOOK_INTENTS = Object.freeze({ 'dive-log:new': 'new', 'dive-log:download': 'download' });
 
 // All entry points (Home, catalog, tabs, and feature shortcuts) share a
 // destination, so Back returns through the menu that actually opened it.
@@ -33,9 +36,11 @@ export function reduceNavigation(state, action) {
     return isAppTab(action.tab) ? { ...INITIAL_NAVIGATION, activeTab: action.tab } : state;
   }
   if (action.type === 'open') {
-    return action.route === 'dive-log'
-      ? { ...INITIAL_NAVIGATION, activeTab: 'logbook' }
-      : { ...state, detailRoute: action.route };
+    if (action.route === 'dive-log') return { ...INITIAL_NAVIGATION, activeTab: 'logbook' };
+    // Open the logbook on one dive computer's folder (from that computer's page in the gear locker).
+    if (action.route === 'dive-log:folder' && action.folder) return { ...INITIAL_NAVIGATION, activeTab: 'logbook', logbookIntent: { action: 'folder', folder: action.folder, at: action.at ?? 0 } };
+    if (LOGBOOK_INTENTS[action.route]) return { ...INITIAL_NAVIGATION, activeTab: 'logbook', logbookIntent: { action: LOGBOOK_INTENTS[action.route], at: action.at ?? 0 } };
+    return { ...state, detailRoute: action.route };
   }
   if (action.type === 'section') {
     return Object.hasOwn(SETTINGS_SECTIONS, action.section)

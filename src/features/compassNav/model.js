@@ -22,6 +22,28 @@ export function turnTo(a, b) {
 }
 
 export const HOLD_ON_COURSE_DEG = 18;
+export const SIDE_WINDOW_LEVEL_TOLERANCE = 6;
+
+// The side-window card is read as a horizontal strip. Return the nearby 5-degree
+// marks and their signed distance from the lubber line so the UI can smoothly
+// slide the card without special casing the 359 -> 000 transition.
+export function sideWindowTicks(heading, radius = 12) {
+  const normalized = norm360(heading);
+  const centerMark = Math.round(normalized / 5) * 5;
+  return Array.from({ length: radius * 2 + 1 }, (_, index) => {
+    const value = norm360(centerMark + (index - radius) * 5);
+    return { value, delta: turnTo(normalized, value) };
+  });
+}
+
+// In camera mode the phone is held upright like a sighting window. Its sideways
+// gravity component is the useful level signal; forward/back pitch should not
+// make an otherwise level sight picture fail.
+export function sideWindowLevel(tiltVec = {}) {
+  const x = Math.max(-1, Math.min(1, Number(tiltVec.x) || 0));
+  const roll = Math.asin(x) * (180 / Math.PI);
+  return { roll, level: Math.abs(roll) <= SIDE_WINDOW_LEVEL_TOLERANCE };
+}
 
 // Generate two ten-degree practice headings whose shortest separation is at
 // least 90 degrees. Each lesson restart produces a fresh pair.

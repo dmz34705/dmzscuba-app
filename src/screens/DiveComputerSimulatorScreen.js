@@ -3,6 +3,7 @@ import { AccessibilityInfo, Animated, Easing, Keyboard, Modal, Pressable, Scroll
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import LabLanding from '../components/LabLanding';
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { PrimaryButton, ProgressBar, SecondaryButton } from '../components/Ui';
 import { NUMBER_KEYBOARD_ACCESSORY_ID, usesNumberKeyboard } from '../lib/numberKeyboard';
@@ -175,19 +176,25 @@ function GuidedLesson({ depthUnit, onOpenPractice, visible = true }) {
   if (orientationVisible) {
     return (
       <View accessibilityElementsHidden={!visible} importantForAccessibility={visible ? 'auto' : 'no-hide-descendants'} style={[styles.experience, !visible && styles.hiddenExperience]}>
-        <ScrollView contentContainerStyle={[styles.orientationContent, { paddingBottom: insets.bottom + 28 }]} showsVerticalScrollIndicator={false}>
-          <View style={styles.orientationCard}>
-            <SectionLabel>WELCOME</SectionLabel>
-            <Text style={styles.orientationTitle}>Welcome to the Dive Computer Trainer.</Text>
-            <Text style={styles.orientationText}>This guided lesson builds familiarity with the information you rely on underwater: depth, elapsed dive time, and no-decompression limit (NDL).</Text>
-            <Text style={styles.orientationText}>Learning these fields here helps you recognize them more confidently during underwater instruction and on rental computers, which can be less intuitive to operate and read.</Text>
-            <View style={styles.orientationDivider} />
-            <Text style={styles.orientationSection}>HOW THIS WORKS</Text>
-            <Text style={styles.orientationText}>We will walk through the computer’s menus, settings, dive display, stops, and planner in a deliberate sequence.</Text>
-            <Text style={styles.orientationText}>Free Practice is separate: it is the unrestricted simulator for open-ended exploration and more advanced settings after the guided lesson.</Text>
-            <PrimaryButton accessibilityLabel="Begin guided lesson" label="Begin guided lesson" onPress={() => setOrientationVisible(false)} style={styles.orientationButton} />
-          </View>
-        </ScrollView>
+        <LabLanding
+          icon="dive-computer"
+          meta="Guided lesson · then free practice"
+          title="Welcome to the Dive Computer Trainer."
+          intro={[
+            'This guided lesson builds familiarity with the information you rely on underwater: depth, elapsed dive time, and no-decompression limit (NDL).',
+            'Learning these fields here helps you recognize them more confidently during underwater instruction and on rental computers, which can be less intuitive to operate and read.',
+          ]}
+          learn={['Read depth, dive time and NDL at a glance', 'Set the clock, date and settings with the buttons', 'Respond to safety stops and ascent-rate alarms', 'Use the dive planner before you dive']}
+          howText={[
+            'We will walk through the computer’s menus, settings, dive display, stops, and planner in a deliberate sequence.',
+            'Free Practice is separate: it is the unrestricted simulator for open-ended exploration and more advanced settings after the guided lesson.',
+          ]}
+          note="Educational simulator only. Do not use these values to plan, conduct, or modify an actual dive."
+          primaryLabel="Begin guided lesson"
+          onPrimary={() => setOrientationVisible(false)}
+          secondaryLabel="Go to free practice"
+          onSecondary={onOpenPractice}
+        />
       </View>
     );
   }
@@ -575,13 +582,6 @@ const styles = StyleSheet.create({
   subtitle: { color: colors.muted, fontSize: 14, lineHeight: 21, marginTop: 10 },
 
   guidedContent: { paddingHorizontal: spacing.md, paddingTop: spacing.lg },
-  orientationContent: { flexGrow: 1, justifyContent: 'center', paddingHorizontal: spacing.md, paddingTop: spacing.lg },
-  orientationCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)', borderRadius: radii.lg, borderWidth: 1, padding: spacing.lg, ...shadow },
-  orientationTitle: { color: colors.text, fontSize: 26, fontWeight: '900', letterSpacing: -0.7, lineHeight: 31, marginTop: 4 },
-  orientationText: { color: colors.muted, fontSize: 14, lineHeight: 21, marginTop: 14 },
-  orientationDivider: { backgroundColor: colors.lineStrong, height: StyleSheet.hairlineWidth, marginTop: 22 },
-  orientationSection: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.2, marginTop: 20 },
-  orientationButton: { marginTop: 24 },
   guidedHeader: { marginBottom: spacing.md },
   stageProgress: { marginBottom: 10 },
   progressLabel: { color: colors.faint, fontSize: 10, fontWeight: '900', letterSpacing: 1, marginBottom: 8, textTransform: 'uppercase' },

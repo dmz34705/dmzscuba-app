@@ -17,6 +17,10 @@ Owns cohesive product capabilities:
 - `account/` manages session restoration, profile state, certification changes, and account settings sync.
 - `settings/` manages local preference hydration and persistence.
 - `catalog/` is the single source of truth for discoverable lessons and tools.
+- `oceanAtlas/` owns the isolated map runtime, bundled datasets, place/site guides,
+  seasons, exposure guidance, journey planning, and its native bridge contracts.
+- `gearChecklist/` owns inventory, assemblies, service state, setups, packing,
+  and read-only Atlas gear recommendations.
 
 Add a new feature folder when a capability has its own state, API workflow, or reusable domain behavior.
 
@@ -73,7 +77,11 @@ Home counts, Learn/Tools listings, labels, summaries, and feature routing all de
 
 - Use one clear screen title and one short explanatory sentence.
 - Group related controls into cards or inset groups.
-- Keep the Home tab short; discovery belongs in Learn and Tools.
+- Home is a personal dashboard, not a catalog: greeting, dive summary with the two most common
+  actions (Download dives, Log manually), gear that needs attention, four quick-access tools, what's in
+  season this month (from the atlas's sourced guides) and a lesson rail. Full listings stay in
+  Learn and Tools. Home shortcuts open the logbook straight into a task via `dive-log:new` /
+  `dive-log:download` routes (`LOGBOOK_INTENTS` in `navigation.js`).
 - Use the bottom tab bar only for stable top-level destinations.
 - Use cyan for navigation and information, red for primary actions, green for success, amber for warnings, and the dark blue palette for surfaces.
 - Keep tap targets at least 44 points tall and respect safe-area insets.

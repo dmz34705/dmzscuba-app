@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import LabLanding from '../components/LabLanding';
 import { ScreenHeader } from '../components/AppShell';
 import BoyleScene from '../features/boylesLaw/BoyleScene';
 import {
@@ -21,7 +21,6 @@ import {
 } from '../features/boylesLaw/model';
 import { colors } from '../theme';
 
-const TOUR_SEEN_KEY = 'boylesLawTourSeen';
 
 function Dock({ symbol, label, active, onPress }) {
   return (
@@ -82,12 +81,8 @@ export default function BoylesLawScreen({ onBack, appSettings = {} }) {
     }
   }, [mode, burst, state.volume]);
 
-  useEffect(() => {
-    let active = true;
-    AsyncStorage.getItem(TOUR_SEEN_KEY).then((seen) => { if (active && !seen) goToTourStep(0); });
-    return () => { active = false; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Every visit opens on the landing page; the guided lesson starts from there (or the TOUR button).
+  const [landing, setLanding] = useState(true);
 
   // Hook point for re-engagement nudges; the guided flow now gates on explicit
   // task completion instead of an idle timer, so this is currently a no-op.
@@ -141,7 +136,7 @@ export default function BoylesLawScreen({ onBack, appSettings = {} }) {
     setTankPercent(100);
   };
   const startTour = () => goToTourStep(0);
-  const endTour = () => { setTourStep(null); AsyncStorage.setItem(TOUR_SEEN_KEY, '1'); };
+  const endTour = () => setTourStep(null);
   // Guided-flow copy with `{18m}` depth tokens expanded to the diver's unit.
   const tourStepData = tourStep === null ? null : localizeStep(TOUR_STEPS[tourStep], unit);
   const questionLocked = tourStepData?.kind === 'question';
@@ -216,6 +211,31 @@ export default function BoylesLawScreen({ onBack, appSettings = {} }) {
       <Text style={styles.headerActionText}>TOUR</Text>
     </Pressable>
   );
+
+  if (landing) {
+    return (
+      <View style={styles.screen}>
+        <ScreenHeader eyebrow="INTERACTIVE LAB" title="Boyle’s Law Lab" onBack={onBack} />
+        <LabLanding
+          icon="boyle"
+          meta="Guided lesson · about 4 minutes"
+          title="Welcome to the Boyle’s Law Lab."
+          intro={['As you descend, water pressure squeezes every gas space: your ears, mask, BCD, lungs and the air you breathe from your tank. Boyle’s law — P₁V₁ = P₂V₂ — predicts exactly how much.']}
+          learn={['Why a gas space halves in volume by 10 m / 33 ft', 'Why the biggest changes happen near the surface', 'Why you never hold your breath on the way up', 'Why your tank empties faster the deeper you go']}
+          steps={[
+            'Drag the balloon down and watch it shrink as pressure rises.',
+            'Seal it at depth, then bring it up and see what the expanding gas does.',
+            'Switch to Breathing mode and compare how fast the tank drains shallow and deep.',
+            'Answer a few quick predictions along the way — the lesson moves on when you’ve tried each step.',
+          ]}
+          primaryLabel="Start guided lesson"
+          onPrimary={() => { setLanding(false); goToTourStep(0); }}
+          secondaryLabel="Explore on my own"
+          onSecondary={() => { setLanding(false); setTourStep(null); }}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>

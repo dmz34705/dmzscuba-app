@@ -439,6 +439,9 @@ export default function useDiveLog() {
         ...current,
         site: {
           ...current.site,
+          // Keep a name entered/imported by the diver. An offline match only
+          // fills an otherwise blank site field after the link is confirmed.
+          name: String(current.site?.name || '').trim() || suggestion.nearbySiteName || '',
           latitude: suggestion.latitude,
           longitude: suggestion.longitude,
         },

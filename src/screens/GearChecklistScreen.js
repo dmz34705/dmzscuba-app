@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import {
   Alert,
   Image,
+  Modal,
   KeyboardAvoidingView,
   Platform,
   Pressable,
@@ -14,26 +15,77 @@ import {
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import * as Sharing from 'expo-sharing';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ChoiceGroup, FormError, FormField } from '../components/AccountForm';
+import { ChoiceGroup, FormError, FormField as AccountFormField } from '../components/AccountForm';
 import { ScreenHeader } from '../components/AppShell';
+import DateField from '../components/DateField';
 import { Card, PrimaryButton, ProgressBar, SecondaryButton, Stat } from '../components/Ui';
 import {
+  BCD_STYLES,
+  COMPONENT_TYPES,
+  CYLINDER_MATERIALS,
+  HYDRO_INTERVAL_MONTHS,
+  VALVE_TYPES,
+  VISUAL_INTERVAL_MONTHS,
+  addMonthsToDateOnly,
+  filterGear,
+  floatingLocation,
+  isCylinderSet,
+  searchGear,
+  serviceStatusForSet,
+  EXPOSURE_SUIT_TYPES,
   GEAR_CATEGORIES,
   GEAR_CONDITIONS,
+  GEAR_LOCATION_FILTERS,
+  GEAR_SERVICE_FILTERS,
+  GEAR_SORT_OPTIONS,
+  REGULATOR_CONFIGURATIONS,
   SERVICE_INTERVALS,
-  checklistProgress,
+  SETUP_TYPES,
+  TANK_CONFIGURATIONS,
+  UNDERGARMENT_STYLES,
+  undergarmentComponentTemplate,
+  accessoryAlternatives,
+  alternativesOfSelection,
+  cylinderSetFor,
+  includedWithSelection,
+  withoutIncluded,
+  cylinderSetMemberIds,
+  topLevelGear,
+  accessoryItemsForItem,
+  setupQuestions,
+  setupRequirements,
+  bcdComponentTemplate,
+  checklistEntriesForItem,
+  componentCanHaveSerial,
   createGearId,
+  emptyGearComponent,
   emptyGearItem,
-  emptyGearList,
+  emptyGearSetup,
+  exposureComponentTemplate,
   formatDateOnly,
   gearSummary,
-  listIdsForItem,
+  parentItemsForAccessory,
+  regulatorComponentTemplate,
+  serviceEntriesForItem,
+  serviceStatusForAssembly,
   serviceStatusForItem,
+  setupIdsForItem,
+  setupProgress,
   sortGear,
+  sortGearBy,
+  tankComponentTemplate,
+  updateServiceSchedule,
 } from '../features/gearChecklist/model';
+import AddGearWizard from '../features/gearChecklist/AddGearWizard';
+import { LinkExistingItems } from '../features/gearChecklist/wizardParts';
 import useGearChecklist from '../features/gearChecklist/useGearChecklist';
+import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
+import { NUMBER_KEYBOARD_ACCESSORY_ID } from '../lib/numberKeyboard';
 import { colors, radii, spacing } from '../theme';
+
+const FormField = (props) => <AccountFormField {...props} inputAccessoryViewID={NUMBER_KEYBOARD_ACCESSORY_ID} />;
 
 const TONE_COLORS = {
   danger: colors.danger,
@@ -60,8 +112,8 @@ function EmptyState({ title, body, action, onPress }) {
   );
 }
 
-function ServiceBadge({ item }) {
-  const status = serviceStatusForItem(item);
+function ServiceBadge({ item, items, includeParts = false }) {
+  const status = includeParts ? (items ? serviceStatusForSet(item, items) : serviceStatusForAssembly(item)) : serviceStatusForItem(item);
   const color = TONE_COLORS[status.tone] || colors.faint;
   const date = status.due ? formatDateOnly(status.due.date) : '';
   return (
@@ -72,8 +124,22 @@ function ServiceBadge({ item }) {
   );
 }
 
-function GearRow({ item, lists, onPress, last = false }) {
-  const memberships = lists.filter((list) => list.itemIds.includes(item.id));
+// Where a floating item is right now, and which cylinder set an item belongs to.
+function WhereLine({ item, items, setups }) {
+  const where = floatingLocation(item, setups);
+  const sets = (items || []).filter((entry) => isCylinderSet(entry) && (entry.accessoryItemIds || []).includes(item.id));
+  if (!item.floating && !sets.length) return null;
+  return (
+    <Text numberOfLines={1} style={styles.whereLine}>
+      {item.floating ? `⇄ FLOATING · ${where ? `ON ${where.name.toUpperCase()}` : 'NOT ON A SETUP'}` : ''}
+      {item.floating && sets.length ? '  ·  ' : ''}
+      {sets.length ? `IN SET · ${sets.map((set) => set.name.toUpperCase()).join(', ')}` : ''}
+    </Text>
+  );
+}
+
+function GearRow({ item, items, setups, onPress, last = false }) {
+  const memberships = setups.filter((setup) => setup.itemIds.includes(item.id));
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={onPress} style={({ pressed }) => [styles.gearRow, !last && styles.rowBorder, pressed && styles.rowPressed]}>
       <View style={styles.categoryGlyph}><Text style={styles.categoryGlyphText}>{item.category.slice(0, 2).toUpperCase()}</Text></View>
@@ -82,9 +148,12 @@ function GearRow({ item, lists, onPress, last = false }) {
           <Text numberOfLines={1} style={styles.gearName}>{item.name}</Text>
           {item.quantity && item.quantity !== '1' ? <Text style={styles.quantity}>×{item.quantity}</Text> : null}
         </View>
-        <Text numberOfLines={1} style={styles.gearMeta}>{[item.manufacturer, item.model, item.category].filter(Boolean).join(' · ')}</Text>
-        <ServiceBadge item={item} />
-        {memberships.length ? <Text numberOfLines={1} style={styles.listMembership}>{memberships.map((list) => list.name).join('  ·  ')}</Text> : null}
+        <Text numberOfLines={1} style={styles.gearMeta}>{[item.manufacturer, item.model, item.category, item.configuration].filter(Boolean).join(' · ')}</Text>
+        {item.components?.length ? <Text style={styles.componentCount}>{item.components.length} TRACKED PARTS</Text> : null}
+        {isCylinderSet(item) ? <Text style={styles.componentCount}>{(item.accessoryItemIds || []).length} LINKED CYLINDERS</Text> : null}
+        <WhereLine item={item} items={items} setups={setups} />
+        <ServiceBadge item={item} items={items} includeParts />
+        {memberships.length ? <Text numberOfLines={1} style={styles.listMembership}>{memberships.map((setup) => setup.name).join('  ·  ')}</Text> : null}
       </View>
       <Text style={styles.chevron}>›</Text>
     </Pressable>
@@ -103,52 +172,103 @@ function SelectRow({ checked, label, body, onPress }) {
   );
 }
 
-function InventoryHome({ state, onAdd, onEdit }) {
+function InventoryHome({ state, onAdd, onOpen, appSettings }) {
+  const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [category, setCategory] = useState('All');
-  const items = sortGear(category === 'All' ? state.items : state.items.filter((item) => item.category === category));
-  const usedCategories = GEAR_CATEGORIES.filter((entry) => state.items.some((item) => item.category === entry));
+  const [query, setQuery] = useState('');
+  const [condition, setCondition] = useState('Any condition');
+  const [service, setService] = useState('Any service status');
+  const [location, setLocation] = useState('Any setup status');
+  const [sort, setSort] = useState('Category');
+  const [sortOpen, setSortOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const searched = topLevelGear(state.items, searchGear(state.items, query));
+  const items = sortGearBy(filterGear(searched, { category, condition, service, location }, state.setups), sort);
+  const usedCategories = [...(state.items.some((item) => item.floating) ? ['Floating'] : []), ...GEAR_CATEGORIES.filter((entry) => topLevelGear(state.items).some((item) => item.category === entry))];
+  const activeFilters = [category !== 'All', condition !== 'Any condition', service !== 'Any service status', location !== 'Any setup status'].filter(Boolean).length;
+  const clearFilters = () => { setCategory('All'); setCondition('Any condition'); setService('Any service status'); setLocation('Any setup status'); };
   const summary = gearSummary(state);
   return (
     <>
       <View style={styles.statGrid}>
-        <Stat label="Gear items" value={summary.total} style={styles.stat} />
+        <Stat label="Gear / parts" value={`${summary.total} / ${summary.components}`} style={styles.stat} />
         <Stat label="Service alerts" value={summary.alerts} accent={summary.alerts ? colors.warning : colors.good} style={styles.stat} />
         <Stat label="Ready" value={summary.ready} accent={colors.good} style={styles.stat} />
         <Stat label="Files & photos" value={summary.documents} style={styles.stat} />
       </View>
       <PrimaryButton label="Add a gear item" onPress={onAdd} />
+      <SecondaryButton label="Dive preferences · Atlas gear suggestions" onPress={() => setPreferencesOpen(true)} />
+      <Modal visible={preferencesOpen} animationType="slide" onRequestClose={() => setPreferencesOpen(false)}>
+        {preferencesOpen ? <GearAdviceSheet preferencesOnly appSettings={appSettings} onClose={() => setPreferencesOpen(false)} /> : null}
+      </Modal>
+      {state.items.length ? (
+        <TextInput
+          accessibilityLabel="Search your gear"
+          autoCorrect={false}
+          clearButtonMode="while-editing"
+          inputAccessoryViewID={NUMBER_KEYBOARD_ACCESSORY_ID}
+          onChangeText={setQuery}
+          placeholder="Search name, brand, serial, color…"
+          placeholderTextColor={colors.faint}
+          returnKeyType="search"
+          style={styles.searchInput}
+          value={query}
+        />
+      ) : null}
+      {state.items.length ? (
+        <View style={styles.inventoryControls}>
+          <SecondaryButton label={`Sort · ${sort}`} onPress={() => { setSortOpen((open) => !open); setFiltersOpen(false); }} selected={sortOpen} style={styles.inventoryControl} />
+          <SecondaryButton label={`Filters${activeFilters ? ` · ${activeFilters}` : ''}`} onPress={() => { setFiltersOpen((open) => !open); setSortOpen(false); }} selected={filtersOpen || activeFilters > 0} style={styles.inventoryControl} />
+        </View>
+      ) : null}
+      {sortOpen ? (
+        <View style={styles.inventoryPanel}>
+          <ChoiceGroup choices={GEAR_SORT_OPTIONS} label="Sort gear by" onChange={(value) => { setSort(value); setSortOpen(false); }} value={sort} />
+        </View>
+      ) : null}
+      {filtersOpen ? (
+        <View style={styles.inventoryPanel}>
+          <ChoiceGroup choices={['Any condition', ...GEAR_CONDITIONS]} label="Condition" onChange={setCondition} value={condition} />
+          <ChoiceGroup choices={GEAR_SERVICE_FILTERS} label="Service" onChange={setService} value={service} />
+          <ChoiceGroup choices={GEAR_LOCATION_FILTERS} label="Setup status" onChange={setLocation} value={location} />
+          {activeFilters ? <SecondaryButton label="Clear all filters" onPress={clearFilters} /> : null}
+        </View>
+      ) : null}
       {usedCategories.length ? (
         <ScrollView horizontal contentContainerStyle={styles.filters} showsHorizontalScrollIndicator={false}>
           {['All', ...usedCategories].map((entry) => <SecondaryButton key={entry} label={entry} onPress={() => setCategory(entry)} selected={category === entry} style={styles.filter} />)}
         </ScrollView>
       ) : null}
-      <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Your gear</Text><Text style={styles.sectionMeta}>{items.length} ITEMS</Text></View>
+      <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{query.trim() ? 'Results' : 'Your gear'}</Text><Text style={styles.sectionMeta}>{items.length} ITEMS</Text></View>
       {items.length ? (
         <View style={styles.rowGroup}>
-          {items.map((item, index) => <GearRow item={item} key={item.id} last={index === items.length - 1} lists={state.lists} onPress={() => onEdit(item)} />)}
+          {items.map((item, index) => <GearRow item={item} items={state.items} key={item.id} last={index === items.length - 1} setups={state.setups} onPress={() => onOpen(item)} />)}
         </View>
+      ) : state.items.length ? (
+        <EmptyState title="Nothing matches" body={query.trim() ? `No gear matches “${query.trim()}” with these filters. Try a brand, serial number or color.` : 'No gear matches the selected filters.'} action="Clear search & filters" onPress={() => { setQuery(''); clearFilters(); }} />
       ) : (
-        <EmptyState title="Your gear locker is empty" body="Add your first piece of gear, then place it on as many dive checklists as you need." action="Add first item" onPress={onAdd} />
+        <EmptyState title="Your gear locker is empty" body="Add your first piece of gear, then place it in any setup where you use it." action="Add first item" onPress={onAdd} />
       )}
     </>
   );
 }
 
-function ChecklistsHome({ state, onAdd, onOpen }) {
+function SetupsHome({ state, onAdd, onOpen }) {
   return (
     <>
-      <PrimaryButton label="Create a checklist" onPress={onAdd} />
-      <Text style={styles.helperLead}>An item can live on several lists. Checking it here only changes this list, not the gear record.</Text>
-      <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Dive checklists</Text><Text style={styles.sectionMeta}>{state.lists.length} LISTS</Text></View>
-      {state.lists.length ? state.lists.map((list) => {
-        const progress = checklistProgress(list);
+      <PrimaryButton label="Create a setup" onPress={onAdd} />
+      <Text style={styles.helperLead}>Build reusable single-tank, doubles, sidemount, travel, or custom configurations. Packing checks stay independent for each setup.</Text>
+      <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Dive setups</Text><Text style={styles.sectionMeta}>{state.setups.length} SETUPS</Text></View>
+      {state.setups.length ? state.setups.map((setup) => {
+        const progress = setupProgress(setup, state.items);
         return (
-          <Pressable accessibilityRole="button" accessibilityLabel={`Open ${list.name} checklist`} key={list.id} onPress={() => onOpen(list)} style={({ pressed }) => [styles.listCard, pressed && styles.pressed]}>
+          <Pressable accessibilityRole="button" accessibilityLabel={`Open ${setup.name} setup`} key={setup.id} onPress={() => onOpen(setup)} style={({ pressed }) => [styles.listCard, pressed && styles.pressed]}>
             <View style={styles.listTop}>
               <View style={styles.listIcon}><Text style={styles.listIconText}>✓</Text></View>
               <View style={styles.listCopy}>
-                <Text style={styles.listName}>{list.name}</Text>
-                <Text numberOfLines={2} style={styles.listDescription}>{list.description || 'Custom dive gear checklist'}</Text>
+                <Text style={styles.listName}>{setup.name}</Text>
+                <Text style={styles.setupType}>{setup.type.toUpperCase()}</Text>
+                <Text numberOfLines={2} style={styles.listDescription}>{setup.description || 'Reusable dive configuration'}</Text>
               </View>
               <Text style={styles.chevron}>›</Text>
             </View>
@@ -156,22 +276,25 @@ function ChecklistsHome({ state, onAdd, onOpen }) {
             <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
           </Pressable>
         );
-      }) : <EmptyState title="No checklists yet" body="Create lists for warm water, cold water, travel, classes, or any setup you use." action="Create checklist" onPress={onAdd} />}
+      }) : <EmptyState title="No setups yet" body="Create a reusable configuration, then add the exact gear you dive with." action="Create setup" onPress={onAdd} />}
     </>
   );
 }
 
-function ServiceHome({ state, onEdit }) {
+function ServiceHome({ state, onOpen }) {
   const groups = {
     urgent: [],
     upcoming: [],
     untracked: [],
   };
   sortGear(state.items).forEach((item) => {
-    const status = serviceStatusForItem(item);
-    if (['blocked', 'attention', 'overdue', 'due-soon'].includes(status.key)) groups.urgent.push(item);
-    else if (status.key === 'current') groups.upcoming.push(item);
-    else if (status.key === 'none') groups.untracked.push(item);
+    serviceEntriesForItem(item).forEach((entry) => {
+      const status = serviceStatusForItem(entry.record);
+      const value = { ...entry, owner: item, status };
+      if (['blocked', 'attention', 'overdue', 'due-soon'].includes(status.key)) groups.urgent.push(value);
+      else if (status.key === 'current') groups.upcoming.push(value);
+      else if (status.key === 'none') groups.untracked.push(value);
+    });
   });
   if (!state.items.length) return <EmptyState title="No service records yet" body="Service reminders appear as you add gear and maintenance information." />;
   return (
@@ -188,10 +311,19 @@ function ServiceHome({ state, onEdit }) {
         ['Needs attention', groups.urgent],
         ['Scheduled service', groups.upcoming],
         ['Service not tracked', groups.untracked],
-      ].map(([title, items]) => items.length ? (
+      ].map(([title, entries]) => entries.length ? (
         <View key={title} style={styles.serviceGroup}>
-          <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{title}</Text><Text style={styles.sectionMeta}>{items.length}</Text></View>
-          <View style={styles.rowGroup}>{items.map((item, index) => <GearRow item={item} key={item.id} last={index === items.length - 1} lists={state.lists} onPress={() => onEdit(item)} />)}</View>
+          <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{title}</Text><Text style={styles.sectionMeta}>{entries.length}</Text></View>
+          <View style={styles.rowGroup}>{entries.map((entry, index) => (
+            <Pressable key={entry.id} onPress={() => onOpen(entry.owner)} style={[styles.serviceEntry, index < entries.length - 1 && styles.rowBorder]}>
+              <View style={styles.serviceEntryCopy}>
+                <Text style={styles.selectTitle}>{entry.name}</Text>
+                <Text style={styles.selectBody}>{entry.parentId ? `${entry.category} · part of ${entry.owner.name}` : entry.category}</Text>
+                <ServiceBadge item={entry.record} />
+              </View>
+              <Text style={styles.chevron}>›</Text>
+            </Pressable>
+          ))}</View>
         </View>
       ) : null)}
     </>
@@ -203,6 +335,7 @@ function NotesField({ label, value, onChangeText, placeholder }) {
     <View style={styles.field}>
       <Text style={styles.fieldLabel}>{label}</Text>
       <TextInput
+        inputAccessoryViewID={NUMBER_KEYBOARD_ACCESSORY_ID}
         multiline
         onChangeText={onChangeText}
         placeholder={placeholder}
@@ -225,18 +358,70 @@ function FieldSection({ title, body, children }) {
   );
 }
 
-function GearItemForm({ item, lists, onBack, onDelete, onSave }) {
+function ComponentEditor({ category, component, onChange, onRemove }) {
+  const types = COMPONENT_TYPES[category] || COMPONENT_TYPES.default;
+  const update = (key, value) => onChange({ ...component, [key]: value });
+  const updateService = (patch) => onChange(updateServiceSchedule(component, patch));
+  return (
+    <View style={styles.componentEditor}>
+      <View style={styles.componentHeader}>
+        <Text style={styles.componentTitle}>{component.name || component.type || 'New part'}</Text>
+        <TinyAction label="REMOVE" danger onPress={onRemove} />
+      </View>
+      <ChoiceGroup choices={types} label="Part type" onChange={(value) => update('type', value)} value={component.type} />
+      <FormField autoCapitalize="words" label="Part name" maxLength={120} onChangeText={(value) => update('name', value)} placeholder={component.type} value={component.name} />
+      <View style={styles.twoColumn}>
+        <View style={styles.half}><FormField label="Manufacturer" maxLength={100} onChangeText={(value) => update('manufacturer', value)} placeholder="Optional" value={component.manufacturer} /></View>
+        <View style={styles.half}><FormField label="Model" maxLength={100} onChangeText={(value) => update('model', value)} placeholder="Optional" value={component.model} /></View>
+      </View>
+      {componentCanHaveSerial(component.type) ? <FormField autoCapitalize="characters" label="Serial number" maxLength={120} onChangeText={(value) => update('serialNumber', value)} placeholder="Optional" value={component.serialNumber} /> : null}
+      <ChoiceGroup choices={GEAR_CONDITIONS} label="Condition" onChange={(value) => update('condition', value)} value={component.condition} />
+      <View style={styles.twoColumn}>
+        <View style={styles.half}><DateField label="Last service" onChange={(value) => updateService({ lastServiceDate: value })} value={component.lastServiceDate} /></View>
+        <View style={styles.half}><DateField label="Next service" onChange={(value) => update('nextServiceDate', value)} value={component.nextServiceDate} /></View>
+      </View>
+      <ChoiceGroup choices={SERVICE_INTERVALS.map((value) => value || 'None')} label="Repeat every (months)" onChange={(value) => updateService({ serviceIntervalMonths: value === 'None' ? '' : value })} value={component.serviceIntervalMonths || 'None'} />
+      <NotesField label="Part notes" onChangeText={(value) => update('notes', value)} placeholder="Hose length, port, markings, service details…" value={component.notes} />
+    </View>
+  );
+}
+
+// Tabbed horizontally so editing a fully-assembled item (8 sections) doesn't mean scrolling
+// through all of them vertically to find one field — each tab's content is short on its own.
+const FORM_SECTIONS = [
+  { key: 'identity', label: 'Identity' },
+  { key: 'parts', label: 'Parts' },
+  { key: 'setups', label: 'Setups' },
+  { key: 'service', label: 'Service' },
+  { key: 'fit', label: 'Fit & specs' },
+  { key: 'ownership', label: 'Ownership' },
+  { key: 'files', label: 'Files' },
+  { key: 'notes', label: 'Notes' },
+];
+
+function GearItemForm({ item, items = [], setups, defaultSetupId, presetCategory, onBack, onDelete, onSave, fromLogbook = false }) {
   const isEditing = Boolean(item?.id);
   const [draft, setDraft] = useState(() => ({
     ...emptyGearItem(),
+    ...(!isEditing && presetCategory ? { category: presetCategory } : {}),
     ...item,
     attachments: [...(item?.attachments || [])],
-    listIds: isEditing ? listIdsForItem(lists, item.id) : [],
+    components: (item?.components || []).map((component) => ({ ...component })),
+    setupIds: isEditing ? setupIdsForItem(setups, item.id) : (defaultSetupId ? [defaultSetupId] : []),
   }));
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
+  const [activeSection, setActiveSection] = useState('identity');
   const update = (key, value) => setDraft((current) => ({ ...current, [key]: value }));
-  const toggleList = (listId) => update('listIds', draft.listIds.includes(listId) ? draft.listIds.filter((id) => id !== listId) : [...draft.listIds, listId]);
+  const updateService = (patch) => setDraft((current) => updateServiceSchedule(current, patch));
+  const toggleSetup = (setupId) => update('setupIds', draft.setupIds.includes(setupId) ? draft.setupIds.filter((id) => id !== setupId) : [...draft.setupIds, setupId]);
+  const addComponent = (type) => update('components', [...draft.components, { ...emptyGearComponent(draft.category, type), id: createGearId('component') }]);
+  const updateComponent = (index, component) => update('components', draft.components.map((entry, i) => (i === index ? component : entry)));
+  const removeComponent = (index) => update('components', draft.components.filter((_, i) => i !== index));
+  const addRegulatorTemplate = () => {
+    const template = isRegulator ? regulatorComponentTemplate(draft.configuration) : isCylinder ? tankComponentTemplate(draft.configuration) : isBcd ? bcdComponentTemplate() : isUndergarment ? undergarmentComponentTemplate(draft.configuration || 'Two-piece') : exposureComponentTemplate();
+    update('components', template.map((component) => ({ ...component, id: createGearId('component') })));
+  };
 
   const addPhoto = async () => {
     try {
@@ -292,6 +477,7 @@ function GearItemForm({ item, lists, onBack, onDelete, onSave }) {
   const save = async () => {
     if (!draft.name.trim()) {
       setError('Give this gear item a recognizable name.');
+      setActiveSection('identity');
       return;
     }
     setBusy(true);
@@ -304,202 +490,774 @@ function GearItemForm({ item, lists, onBack, onDelete, onSave }) {
     }
   };
 
-  const confirmDelete = () => Alert.alert('Delete gear item?', 'The item and app-owned copies of its attachments will be removed from this device and every checklist.', [
+  const confirmDelete = () => Alert.alert('Delete gear item?', 'The item, its tracked parts, and app-owned attachment copies will be removed from this device and every setup.', [
     { text: 'Cancel', style: 'cancel' },
     { text: 'Delete', style: 'destructive', onPress: onDelete },
   ]);
 
   const isCylinder = draft.category === 'Cylinder / tank';
+  const isRegulator = draft.category === 'Regulator';
+  const isBcd = draft.category === 'BCD';
+  const isExposure = draft.category === 'Exposure suit';
+  const isUndergarment = draft.category === 'Undergarment';
+  const configurationOptions = isRegulator ? REGULATOR_CONFIGURATIONS : isCylinder ? TANK_CONFIGURATIONS : isBcd ? BCD_STYLES : isExposure ? EXPOSURE_SUIT_TYPES : isUndergarment ? UNDERGARMENT_STYLES : [];
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
       <ScreenHeader eyebrow="GEAR LOCKER" title={isEditing ? 'Edit Gear' : 'Add Gear'} onBack={onBack} />
-      <ScrollView contentContainerStyle={styles.formContent} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        <FieldSection title="Identity & readiness" body="The essentials you need to recognize this item and know whether it should enter the water.">
-          <FormField label="Item name" maxLength={120} onChangeText={(value) => update('name', value)} placeholder="My primary regulator" value={draft.name} />
-          <ChoiceGroup choices={GEAR_CATEGORIES} label="Category" onChange={(value) => update('category', value)} value={draft.category} />
-          <ChoiceGroup choices={GEAR_CONDITIONS} label="Current condition" onChange={(value) => update('condition', value)} value={draft.condition} />
-          <FormField label="Manufacturer" maxLength={100} onChangeText={(value) => update('manufacturer', value)} placeholder="Optional" value={draft.manufacturer} />
-          <FormField label="Model" maxLength={100} onChangeText={(value) => update('model', value)} placeholder="Optional" value={draft.model} />
-          <FormField autoCapitalize="characters" label="Serial number" maxLength={120} onChangeText={(value) => update('serialNumber', value)} placeholder="Optional" value={draft.serialNumber} />
-        </FieldSection>
+      <ScrollView horizontal contentContainerStyle={styles.formTabs} showsHorizontalScrollIndicator={false} style={styles.formTabsScroll}>
+        {FORM_SECTIONS.map((section) => (
+          <SecondaryButton key={section.key} label={section.label} onPress={() => setActiveSection(section.key)} selected={activeSection === section.key} style={styles.formTab} />
+        ))}
+      </ScrollView>
+      <ScrollView contentContainerStyle={styles.formContent} keyboardDismissMode="interactive" keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+        {activeSection === 'identity' ? (
+          <FieldSection title="Identity & readiness" body="The essentials you need to recognize this item and know whether it should enter the water.">
+            <FormField autoCapitalize="words" label="Item name" maxLength={120} onChangeText={(value) => update('name', value)} placeholder="My primary regulator" value={draft.name} />
+            {fromLogbook ? (
+              <Text style={styles.lockedNote}>Added from your logbook — it stays a dive computer in your locker while dives from it are in your logbook.</Text>
+            ) : <ChoiceGroup choices={GEAR_CATEGORIES} label="Category" onChange={(value) => setDraft((current) => ({ ...current, category: value, configuration: '', components: [] }))} value={draft.category} />}
+            <ChoiceGroup choices={GEAR_CONDITIONS} label="Current condition" onChange={(value) => update('condition', value)} value={draft.condition} />
+            <SelectRow checked={draft.floating} label="Floating item" body="It moves between setups — a transmitter, a full-face mask, a light. The locker tracks which setup it's on." onPress={() => update('floating', !draft.floating)} />
+            <FormField label="Manufacturer" maxLength={100} onChangeText={(value) => update('manufacturer', value)} placeholder="Optional" value={draft.manufacturer} />
+            <FormField label="Model" maxLength={100} onChangeText={(value) => update('model', value)} placeholder="Optional" value={draft.model} />
+            <FormField autoCapitalize="characters" label="Serial number" maxLength={120} onChangeText={(value) => update('serialNumber', value)} placeholder="Optional" value={draft.serialNumber} />
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Checklists" body="Place this item on every setup where it belongs.">
-          {lists.length ? lists.map((list) => <SelectRow checked={draft.listIds.includes(list.id)} key={list.id} label={list.name} body={list.description} onPress={() => toggleList(list.id)} />) : <Text style={styles.formEmpty}>Create a checklist after saving this item to assign it later.</Text>}
-        </FieldSection>
+        {activeSection === 'parts' ? (
+          <FieldSection title="Assembly & parts" body="Keep simple gear as one item. Turn on parts for regulators, doubles, cameras, rebreathers, or anything you service and configure piece by piece.">
+            {configurationOptions.length ? <ChoiceGroup choices={configurationOptions} label="Configuration" onChange={(value) => update('configuration', value)} value={draft.configuration} /> : null}
+            <ChoiceGroup choices={['Single item', 'Track individual parts']} label="Item structure" onChange={(value) => setDraft((current) => ({ ...current, isAssembly: value === 'Track individual parts', components: value === 'Single item' ? [] : current.components }))} value={draft.isAssembly ? 'Track individual parts' : 'Single item'} />
+            {draft.isAssembly ? (
+              <>
+                {(isRegulator || isCylinder || isBcd || isExposure || isUndergarment) && !draft.components.length ? <SecondaryButton label={isRegulator ? `Add ${draft.configuration || 'single tank'} regulator parts` : isCylinder ? 'Add typical tank parts' : isBcd ? 'Add typical BCD parts' : isUndergarment ? 'Add typical undergarment pieces' : 'Add typical exposure suit parts'} onPress={addRegulatorTemplate} style={styles.componentTemplateButton} /> : null}
+                {draft.components.map((component, index) => (
+                  <ComponentEditor category={draft.category} component={component} key={component.id || index} onChange={(value) => updateComponent(index, value)} onRemove={() => removeComponent(index)} />
+                ))}
+                <SecondaryButton label="Add a part" onPress={() => addComponent()} />
+              </>
+            ) : null}
+            <LinkExistingItems
+              candidates={items.filter((entry) => entry.id !== draft.id
+                && !(draft.category === 'Exposure suit' && entry.category === 'Undergarment')
+                && !(draft.category === 'Undergarment' && entry.category === 'Exposure suit')
+                && !([draft.category, entry.category].includes('Regulator') && [draft.category, entry.category].includes('Cylinder / tank')))}
+              label={draft.category === 'Exposure suit' ? 'Linked locker items (hood, boots…) — undergarments are picked per setup' : 'Linked locker items'}
+              onChange={(ids) => update('accessoryItemIds', ids)}
+              selectedIds={draft.accessoryItemIds || []}
+            />
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Service & inspections" body="Use a fixed next date, a recurring interval from the last service, or both. A fixed date takes priority.">
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField autoCapitalize="none" label="Last service" maxLength={10} onChangeText={(value) => update('lastServiceDate', value)} placeholder="YYYY-MM-DD" value={draft.lastServiceDate} /></View>
-            <View style={styles.half}><FormField autoCapitalize="none" label="Next service" maxLength={10} onChangeText={(value) => update('nextServiceDate', value)} placeholder="YYYY-MM-DD" value={draft.nextServiceDate} /></View>
-          </View>
-          <ChoiceGroup choices={SERVICE_INTERVALS.map((value) => value || 'None')} label="Repeat every (months)" onChange={(value) => update('serviceIntervalMonths', value === 'None' ? '' : value)} value={draft.serviceIntervalMonths || 'None'} />
-          {isCylinder ? (
+        {activeSection === 'setups' ? (
+          <FieldSection title="Dive setups" body="Place this item in every configuration where you use it. Its tracked parts travel with it.">
+            {setups.length ? setups.map((setup) => <SelectRow checked={draft.setupIds.includes(setup.id)} key={setup.id} label={setup.name} body={[setup.type, setup.description].filter(Boolean).join(' · ')} onPress={() => toggleSetup(setup.id)} />) : <Text style={styles.formEmpty}>Create a setup after saving this item to assign it later.</Text>}
+          </FieldSection>
+        ) : null}
+
+        {activeSection === 'service' ? (
+          <FieldSection title="Service & inspections" body="Use a fixed next date, a recurring interval from the last service, or both. A fixed date takes priority.">
             <View style={styles.twoColumn}>
-              <View style={styles.half}><FormField autoCapitalize="none" label="Visual due" maxLength={10} onChangeText={(value) => update('visualInspectionDue', value)} placeholder="YYYY-MM-DD" value={draft.visualInspectionDue} /></View>
-              <View style={styles.half}><FormField autoCapitalize="none" label="Hydro due" maxLength={10} onChangeText={(value) => update('hydrostaticTestDue', value)} placeholder="YYYY-MM-DD" value={draft.hydrostaticTestDue} /></View>
+              <View style={styles.half}><DateField label="Last service" onChange={(value) => updateService({ lastServiceDate: value })} value={draft.lastServiceDate} /></View>
+              <View style={styles.half}><DateField label="Next service" onChange={(value) => update('nextServiceDate', value)} value={draft.nextServiceDate} /></View>
             </View>
-          ) : null}
-          <NotesField label="Service notes" onChangeText={(value) => update('serviceNotes', value)} placeholder="Shop, work performed, parts replaced…" value={draft.serviceNotes} />
-        </FieldSection>
+            <ChoiceGroup choices={SERVICE_INTERVALS.map((value) => value || 'None')} label="Repeat every (months)" onChange={(value) => updateService({ serviceIntervalMonths: value === 'None' ? '' : value })} value={draft.serviceIntervalMonths || 'None'} />
+            {isCylinder ? (
+              <>
+                <View style={styles.twoColumn}>
+                  <View style={styles.half}><DateField label="Last hydro test" onChange={(value) => setDraft((current) => ({ ...current, lastHydrostaticTest: value, hydrostaticTestDue: addMonthsToDateOnly(value, HYDRO_INTERVAL_MONTHS) || current.hydrostaticTestDue }))} value={draft.lastHydrostaticTest} /></View>
+                  <View style={styles.half}><DateField label="Hydro due" onChange={(value) => update('hydrostaticTestDue', value)} value={draft.hydrostaticTestDue} /></View>
+                </View>
+                <View style={styles.twoColumn}>
+                  <View style={styles.half}><DateField label="Last visual (VIP)" onChange={(value) => setDraft((current) => ({ ...current, lastVisualInspection: value, visualInspectionDue: addMonthsToDateOnly(value, VISUAL_INTERVAL_MONTHS) || current.visualInspectionDue }))} value={draft.lastVisualInspection} /></View>
+                  <View style={styles.half}><DateField label="Visual due" onChange={(value) => update('visualInspectionDue', value)} value={draft.visualInspectionDue} /></View>
+                </View>
+              </>
+            ) : null}
+            <NotesField label="Service notes" onChangeText={(value) => update('serviceNotes', value)} placeholder="Shop, work performed, parts replaced…" value={draft.serviceNotes} />
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Fit & specifications" body="Optional details help distinguish similar equipment and pack the correct configuration.">
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField keyboardType="number-pad" label="Quantity" maxLength={3} onChangeText={(value) => update('quantity', value)} value={draft.quantity} /></View>
-            <View style={styles.half}><FormField label="Size" maxLength={40} onChangeText={(value) => update('size', value)} placeholder="M, L, 9–10…" value={draft.size} /></View>
-          </View>
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField label="Thickness" maxLength={40} onChangeText={(value) => update('thickness', value)} placeholder="3 mm" value={draft.thickness} /></View>
-            <View style={styles.half}><FormField label="Color" maxLength={40} onChangeText={(value) => update('color', value)} placeholder="Optional" value={draft.color} /></View>
-          </View>
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField label="Weight" maxLength={40} onChangeText={(value) => update('weight', value)} placeholder="4 lb / 1.8 kg" value={draft.weight} /></View>
-            <View style={styles.half}><FormField label="Capacity / lift" maxLength={50} onChangeText={(value) => update('capacity', value)} placeholder="80 cu ft / 30 lb" value={draft.capacity} /></View>
-          </View>
-          <FormField label="Working pressure" maxLength={50} onChangeText={(value) => update('workingPressure', value)} placeholder="3000 psi / 207 bar" value={draft.workingPressure} />
-        </FieldSection>
-
-        <FieldSection title="Ownership & warranty">
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField autoCapitalize="none" label="Purchase date" maxLength={10} onChangeText={(value) => update('purchaseDate', value)} placeholder="YYYY-MM-DD" value={draft.purchaseDate} /></View>
-            <View style={styles.half}><FormField autoCapitalize="none" label="Warranty until" maxLength={10} onChangeText={(value) => update('warrantyUntil', value)} placeholder="YYYY-MM-DD" value={draft.warrantyUntil} /></View>
-          </View>
-          <View style={styles.twoColumn}>
-            <View style={styles.half}><FormField label="Purchase price" maxLength={40} onChangeText={(value) => update('purchasePrice', value)} placeholder="$0.00" value={draft.purchasePrice} /></View>
-            <View style={styles.half}><FormField label="Retailer / shop" maxLength={100} onChangeText={(value) => update('retailer', value)} placeholder="Optional" value={draft.retailer} /></View>
-          </View>
-        </FieldSection>
-
-        <FieldSection title="Photos & documents" body="Save photos, manuals, receipts, service records, and work orders with this item. Files are copied into private app storage when you save.">
-          <View style={styles.attachmentActions}>
-            <SecondaryButton label="Add photos" onPress={addPhoto} style={styles.attachmentAction} />
-            <SecondaryButton label="Add document" onPress={addDocument} style={styles.attachmentAction} />
-          </View>
-          {draft.attachments.map((attachment) => (
-            <View key={attachment.id} style={styles.attachmentRow}>
-              {attachment.kind === 'photo' ? <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} /> : <View style={styles.documentIcon}><Text style={styles.documentIconText}>DOC</Text></View>}
-              <Pressable accessibilityRole="button" onPress={() => openAttachment(attachment)} style={styles.attachmentCopy}>
-                <Text numberOfLines={1} style={styles.attachmentName}>{attachment.name}</Text>
-                <Text style={styles.attachmentMeta}>{attachment.kind === 'photo' ? 'PHOTO' : (attachment.mimeType || 'DOCUMENT').toUpperCase()}</Text>
-              </Pressable>
-              <TinyAction label="Remove" danger onPress={() => update('attachments', draft.attachments.filter((entry) => entry.id !== attachment.id))} />
+        {activeSection === 'fit' ? (
+          <FieldSection title="Fit & specifications" body="Optional details help distinguish similar equipment and pack the correct configuration.">
+            {isCylinder ? (
+              <>
+                <ChoiceGroup choices={CYLINDER_MATERIALS} label="Material" onChange={(value) => update('material', value)} value={draft.material} />
+                <ChoiceGroup choices={VALVE_TYPES} label="Valve" onChange={(value) => update('valveType', value)} value={draft.valveType} />
+              </>
+            ) : null}
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField keyboardType="number-pad" label="Quantity" maxLength={3} onChangeText={(value) => update('quantity', value)} value={draft.quantity} /></View>
+              <View style={styles.half}><FormField label="Size" maxLength={40} onChangeText={(value) => update('size', value)} placeholder="M, L, 9–10…" value={draft.size} /></View>
             </View>
-          ))}
-        </FieldSection>
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField label="Thickness" maxLength={40} onChangeText={(value) => update('thickness', value)} placeholder="3 mm" value={draft.thickness} /></View>
+              <View style={styles.half}><FormField label="Color" maxLength={40} onChangeText={(value) => update('color', value)} placeholder="Optional" value={draft.color} /></View>
+            </View>
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField label="Weight" maxLength={40} onChangeText={(value) => update('weight', value)} placeholder="4 lb / 1.8 kg" value={draft.weight} /></View>
+              <View style={styles.half}><FormField label="Capacity / lift" maxLength={50} onChangeText={(value) => update('capacity', value)} placeholder="80 cu ft / 30 lb" value={draft.capacity} /></View>
+            </View>
+            <FormField label="Working pressure" maxLength={50} onChangeText={(value) => update('workingPressure', value)} placeholder="3000 psi / 207 bar" value={draft.workingPressure} />
+          </FieldSection>
+        ) : null}
 
-        <FieldSection title="Notes" body="Keep configuration details, markings, spare-part references, or anything else worth remembering.">
-          <NotesField label="Private gear notes" onChangeText={(value) => update('notes', value)} placeholder="Optional notes…" value={draft.notes} />
-        </FieldSection>
+        {activeSection === 'ownership' ? (
+          <FieldSection title="Ownership & warranty">
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><DateField label="Purchase date" onChange={(value) => update('purchaseDate', value)} value={draft.purchaseDate} /></View>
+              <View style={styles.half}><DateField label="Warranty until" onChange={(value) => update('warrantyUntil', value)} value={draft.warrantyUntil} /></View>
+            </View>
+            <View style={styles.twoColumn}>
+              <View style={styles.half}><FormField label="Purchase price" maxLength={40} onChangeText={(value) => update('purchasePrice', value)} placeholder="$0.00" value={draft.purchasePrice} /></View>
+              <View style={styles.half}><FormField label="Retailer / shop" maxLength={100} onChangeText={(value) => update('retailer', value)} placeholder="Optional" value={draft.retailer} /></View>
+            </View>
+          </FieldSection>
+        ) : null}
 
+        {activeSection === 'files' ? (
+          <FieldSection title="Photos & documents" body="Save photos, manuals, receipts, service records, and work orders with this item. Files are copied into private app storage when you save.">
+            <View style={styles.attachmentActions}>
+              <SecondaryButton label="Add photos" onPress={addPhoto} style={styles.attachmentAction} />
+              <SecondaryButton label="Add document" onPress={addDocument} style={styles.attachmentAction} />
+            </View>
+            {draft.attachments.map((attachment) => (
+              <View key={attachment.id} style={styles.attachmentRow}>
+                {attachment.kind === 'photo' ? <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} /> : <View style={styles.documentIcon}><Text style={styles.documentIconText}>DOC</Text></View>}
+                <Pressable accessibilityRole="button" onPress={() => openAttachment(attachment)} style={styles.attachmentCopy}>
+                  <Text numberOfLines={1} style={styles.attachmentName}>{attachment.name}</Text>
+                  <Text style={styles.attachmentMeta}>{attachment.kind === 'photo' ? 'PHOTO' : (attachment.mimeType || 'DOCUMENT').toUpperCase()}</Text>
+                </Pressable>
+                <TinyAction label="Remove" danger onPress={() => update('attachments', draft.attachments.filter((entry) => entry.id !== attachment.id))} />
+              </View>
+            ))}
+          </FieldSection>
+        ) : null}
+
+        {activeSection === 'notes' ? (
+          <FieldSection title="Notes" body="Keep configuration details, markings, spare-part references, or anything else worth remembering.">
+            <NotesField label="Private gear notes" onChangeText={(value) => update('notes', value)} placeholder="Optional notes…" value={draft.notes} />
+          </FieldSection>
+        ) : null}
+      </ScrollView>
+      <View style={styles.footer}>
         <FormError message={error} />
         <PrimaryButton disabled={busy} label={busy ? 'Saving gear…' : 'Save gear item'} onPress={save} />
-        {isEditing ? <SecondaryButton label="Delete gear item" onPress={confirmDelete} style={styles.deleteButton} /> : null}
-      </ScrollView>
+        {isEditing && !fromLogbook ? <SecondaryButton label="Delete gear item" onPress={confirmDelete} style={styles.deleteButton} /> : null}
+        {isEditing && fromLogbook ? <Text style={styles.lockedNote}>Dive computers from your logbook can’t be deleted. Mark it Retired if you no longer dive with it.</Text> : null}
+      </View>
     </KeyboardAvoidingView>
   );
 }
 
-function ListForm({ list, items, onBack, onDelete, onSave }) {
-  const isEditing = Boolean(list?.id);
-  const [draft, setDraft] = useState(() => ({ ...emptyGearList(), ...list, itemIds: [...(list?.itemIds || [])], checkedIds: [...(list?.checkedIds || [])] }));
+function SetupForm({ setup, items, onBack, onDelete, onSave }) {
+  const insets = useSafeAreaInsets();
+  const isEditing = Boolean(setup?.id);
+  const [draft, setDraft] = useState(() => ({ ...emptyGearSetup(), ...setup, itemIds: [...(setup?.itemIds || [])], checkedIds: [...(setup?.checkedIds || [])] }));
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const update = (key, value) => setDraft((current) => ({ ...current, [key]: value }));
-  const toggleItem = (itemId) => update('itemIds', draft.itemIds.includes(itemId) ? draft.itemIds.filter((id) => id !== itemId) : [...draft.itemIds, itemId]);
+  // Linked gear comes along: selecting the drysuit includes its hood and boots, so they are never
+  // added a second time (and one already added on its own merges into the drysuit).
+  const included = includedWithSelection(draft.itemIds, items, draft.accessoryChoices);
+  const alternativeOf = alternativesOfSelection(draft.itemIds, items);
+  const toggleItem = (itemId) => setDraft((current) => {
+    const choices = current.accessoryChoices || {};
+    const alternative = alternativesOfSelection(current.itemIds, items).get(itemId);
+    // An undergarment for a selected drysuit is picked for that drysuit, not added on its own.
+    if (alternative && !current.itemIds.includes(itemId)) {
+      const chosen = choices[alternative.item.id] || [];  // unanswered counts as nothing chosen yet
+      return { ...current, accessoryChoices: { ...choices, [alternative.item.id]: chosen.includes(itemId) ? chosen.filter((id) => id !== itemId) : [...chosen, itemId] } };
+    }
+    if (includedWithSelection(current.itemIds, items, choices).has(itemId)) return current; // packed with something already selected
+    const itemIds = current.itemIds.includes(itemId) ? current.itemIds.filter((id) => id !== itemId) : [...current.itemIds, itemId];
+    return { ...current, itemIds: withoutIncluded(itemIds, items, choices) };
+  });
   const save = async () => {
     if (!draft.name.trim()) {
-      setError('Give this checklist a name.');
+      setError('Give this setup a name.');
       return;
     }
     setBusy(true);
-    try { await onSave(draft); } catch (nextError) { setError(nextError?.message || 'The checklist could not be saved.'); setBusy(false); }
+    try { await onSave(draft); } catch (nextError) { setError(nextError?.message || 'The setup could not be saved.'); setBusy(false); }
   };
-  const confirmDelete = () => Alert.alert('Delete checklist?', 'The checklist will be removed. Your gear items and files will stay in the gear locker.', [
+  const confirmDelete = () => Alert.alert('Delete setup?', 'The setup and its packing checks will be removed. Your gear and files will stay in the locker.', [
     { text: 'Cancel', style: 'cancel' },
     { text: 'Delete', style: 'destructive', onPress: onDelete },
   ]);
-  const sorted = sortGear(items);
+  // Grouped by category — same as the inventory and the "what's in this setup" checklist below —
+  // so finding one piece of gear among everything you own doesn't mean scanning one long list.
+  const [query, setQuery] = useState('');
+  const [selectedOnly, setSelectedOnly] = useState(false);
+  // Cylinders inside a set are packed with it, so only the set is offered (unless one was already added on its own).
+  const setMembers = cylinderSetMemberIds(items);
+  const offered = items.filter((item) => !setMembers.has(item.id) || draft.itemIds.includes(item.id));
+  const inSetup = (item) => draft.itemIds.includes(item.id) || included.has(item.id);
+  const pickable = searchGear(selectedOnly ? offered.filter(inSetup) : offered, query);
+  // Gear that packs with a selected item (a drysuit's hood and boots) is listed right under it —
+  // then the undergarment question — instead of in its own group further down.
+  const pickableIds = new Set(pickable.map((item) => item.id));
+  const nestedUnder = (parent) => sortGear(items.filter((item) => included.get(item.id)?.id === parent.id && item.category !== 'Undergarment'));
+  const nestedIds = new Set(pickable.filter((item) => included.has(item.id) && item.category !== 'Undergarment' && pickableIds.has(included.get(item.id).id)).map((item) => item.id));
+  const groupedPicker = GEAR_CATEGORIES.map((category) => ({ category, items: sortGear(pickable.filter((item) => item.category === category && !nestedIds.has(item.id))) })).filter((group) => group.items.length);
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
-      <ScreenHeader eyebrow="GEAR CHECKLIST" title={isEditing ? 'Edit List' : 'New List'} onBack={onBack} />
-      <ScrollView contentContainerStyle={styles.formContent} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
-        <FieldSection title="Checklist details" body="Use a destination, temperature range, type of dive, or setup as the list name.">
-          <FormField label="List name" maxLength={100} onChangeText={(value) => update('name', value)} placeholder="Cold Water Shore Dive" value={draft.name} />
+      <ScreenHeader eyebrow="DIVE SETUP" title={isEditing ? 'Edit Setup' : 'New Setup'} onBack={onBack} />
+      <ScrollView contentContainerStyle={[styles.formContent, { paddingBottom: spacing.lg }]} keyboardDismissMode="interactive" keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+        <FieldSection title="Setup details" body="Name the complete configuration the way you talk about it before a dive.">
+          <FormField autoCapitalize="words" label="Setup name" maxLength={100} onChangeText={(value) => update('name', value)} placeholder="Lake doubles" value={draft.name} />
+          <ChoiceGroup choices={SETUP_TYPES} label="Setup type" onChange={(value) => update('type', value)} value={draft.type} />
           <NotesField label="Description" onChangeText={(value) => update('description', value)} placeholder="What this setup is intended for…" value={draft.description} />
         </FieldSection>
-        <FieldSection title="Gear on this list" body={`${draft.itemIds.length} of ${items.length} inventory items selected.`}>
-          {sorted.length ? sorted.map((item) => <SelectRow checked={draft.itemIds.includes(item.id)} key={item.id} label={item.name} body={[item.category, item.manufacturer, item.model].filter(Boolean).join(' · ')} onPress={() => toggleItem(item.id)} />) : <Text style={styles.formEmpty}>Your gear locker is empty. Save this list, then add gear to it from the inventory.</Text>}
+        <FieldSection title="Gear in this setup" body={`${draft.itemIds.length + included.size} of ${items.length} locker items in this setup. Linked gear (a drysuit's hood and boots) comes along automatically.`}>
+          {items.length ? (
+            <>
+              <TextInput
+                accessibilityLabel="Search your gear"
+                autoCorrect={false}
+                clearButtonMode="while-editing"
+                inputAccessoryViewID={NUMBER_KEYBOARD_ACCESSORY_ID}
+                onChangeText={setQuery}
+                placeholder="Search name, brand, serial, color…"
+                placeholderTextColor={colors.faint}
+                returnKeyType="search"
+                style={[styles.searchInput, styles.pickerSearch]}
+                value={query}
+              />
+              <View style={styles.pickerFilters}>
+                <SecondaryButton label="All gear" onPress={() => setSelectedOnly(false)} selected={!selectedOnly} style={styles.filter} />
+                <SecondaryButton label={`Selected only (${draft.itemIds.length + included.size})`} onPress={() => setSelectedOnly(true)} selected={selectedOnly} style={styles.filter} />
+              </View>
+            </>
+          ) : null}
+          {items.length && !groupedPicker.length ? (
+            <Text style={styles.formEmpty}>{selectedOnly && !draft.itemIds.length && !included.size ? 'Nothing selected yet.' : `No gear matches “${query.trim()}”${selectedOnly ? ' in this setup' : ''}.`}</Text>
+          ) : null}
+          {groupedPicker.length ? groupedPicker.map((group) => (
+            <View key={group.category} style={styles.pickerGroup}>
+              <Text style={styles.pickerGroupLabel}>{group.category}</Text>
+              {group.items.map((item) => (
+                <View key={item.id}>
+                  <SelectRow
+                    checked={inSetup(item)}
+                    label={item.name}
+                    body={included.has(item.id) ? `Packed with ${included.get(item.id).name}` : alternativeOf.has(item.id) ? `Tap to wear it with ${alternativeOf.get(item.id).item.name}` : [item.manufacturer, item.model].filter(Boolean).join(' · ')}
+                    onPress={() => (included.has(item.id) && !alternativeOf.has(item.id) ? Alert.alert('Packed with linked gear', `${item.name} is linked to ${included.get(item.id).name}, so it's already in this setup with it.`) : toggleItem(item.id))}
+                  />
+                  {inSetup(item) ? nestedUnder(item).map((child) => (
+                    <View key={child.id} style={styles.nestedRow}>
+                      <SelectRow checked label={child.name} body={`${child.category} · packed with ${item.name}`} onPress={() => Alert.alert('Packed with linked gear', `${child.name} is linked to ${item.name}, so it's already in this setup with it.`)} />
+                    </View>
+                  )) : null}
+                  {/* Then, for a drysuit: which undergarment this setup packs. */}
+                  {draft.itemIds.includes(item.id) ? accessoryAlternatives(item, items).map((alternative) => (
+                    <View key={alternative.category} style={styles.inlineChooser}>
+                      <AlternativeChooser chosenIds={choiceFor(draft.accessoryChoices, item.id)} item={item} onChange={(ids) => setDraft((current) => ({ ...current, accessoryChoices: { ...(current.accessoryChoices || {}), [item.id]: ids } }))} options={alternative.options} />
+                    </View>
+                  )) : null}
+                </View>
+              ))}
+            </View>
+          )) : !items.length ? <Text style={styles.formEmpty}>Your gear locker is empty. Save this setup, then add gear to it from the inventory.</Text> : null}
         </FieldSection>
-        <FormError message={error} />
-        <PrimaryButton disabled={busy} label={busy ? 'Saving checklist…' : 'Save checklist'} onPress={save} />
-        {isEditing ? <SecondaryButton label="Delete checklist" onPress={confirmDelete} style={styles.deleteButton} /> : null}
+        {isEditing ? <SecondaryButton label="Delete setup" onPress={confirmDelete} style={styles.deleteButton} /> : null}
       </ScrollView>
+      {/* The locker can grow very long; saving stays reachable while the gear choices scroll. */}
+      <View style={[styles.setupPickerFooter, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}>
+        <FormError message={error} />
+        <PrimaryButton disabled={busy} label={busy ? 'Saving setup…' : 'Save setup'} onPress={save} />
+      </View>
     </KeyboardAvoidingView>
   );
 }
 
-function ChecklistDetail({ list, items, onBack, onEdit, onReset, onToggle }) {
-  const available = sortGear(items.filter((item) => list.itemIds.includes(item.id)));
-  const progress = checklistProgress(list);
+// One item's row, plus one indented row per tracked part / linked accessory — so a drysuit's
+// hood, dry gloves, and boots are each their own checkbox instead of hiding behind one line for
+// "the drysuit." Tapping the item's own row checks or unchecks everything under it at once;
+// tapping a part checks just that part.
+function ChecklistItemRows({ item, items, checkedIds, onSetChecked, onToggle, setup = null, choiceSlot = null }) {
+  const { itemKey, parts } = checklistEntriesForItem(item, items, setup);
+  // The undergarment line (and its CHANGE) sits right above the undergarment it controls — after the
+  // drysuit's own parts and linked hood/boots — or at the end when no undergarment is packed.
+  const categoryOf = new Map((items || []).map((entry) => [entry.id, entry.category]));
+  const firstUndergarment = parts.findIndex((part) => part.linkedItemId && categoryOf.get(part.linkedItemId) === 'Undergarment');
+  const slotAt = choiceSlot ? (firstUndergarment === -1 ? parts.length : firstUndergarment) : -1;
+  const allKeys = [itemKey, ...parts.map((part) => part.key)];
+  const allChecked = allKeys.every((key) => checkedIds.includes(key));
+  const someChecked = allKeys.some((key) => checkedIds.includes(key));
+  return (
+    <>
+      <SelectRow
+        checked={parts.length ? allChecked : checkedIds.includes(itemKey)}
+        label={item.name}
+        body={[item.manufacturer, item.model, item.configuration, parts.length ? `${parts.length} part${parts.length === 1 ? '' : 's'} below${someChecked && !allChecked ? ' · partly packed' : ''}` : ''].filter(Boolean).join(' · ')}
+        onPress={() => (parts.length ? onSetChecked(allKeys, !allChecked) : onToggle(itemKey))}
+      />
+      {parts.map((part, index) => (
+        <Fragment key={part.key}>
+          {index === slotAt ? choiceSlot : null}
+          <View style={styles.checklistPartRow}>
+            <SelectRow checked={checkedIds.includes(part.key)} label={part.label} body={part.meta} onPress={() => onToggle(part.key)} />
+          </View>
+        </Fragment>
+      ))}
+      {slotAt === parts.length ? choiceSlot : null}
+    </>
+  );
+}
+
+// Pick which of an item's alternatives this setup packs — "Which undergarment goes with the drysuit?"
+// chosenIds === null: not answered yet; [] = no undergarment for this setup.
+function AlternativeChooser({ item, options, chosenIds, onChange }) {
+  const chosen = chosenIds || [];
+  const toggle = (id) => onChange(chosen.includes(id) ? chosen.filter((entry) => entry !== id) : [...chosen, id]);
+  return (
+    <View style={styles.chooser}>
+      <Text style={styles.chooserTitle}>Which undergarment for {item.name}?</Text>
+      <Text style={styles.chooserBody}>Pick what this setup packs — one set, a few layers, or none.</Text>
+      {options.map((option) => <SelectRow checked={chosen.includes(option.id)} key={option.id} label={option.name} body={[option.manufacturer, option.model, option.configuration, option.thickness].filter(Boolean).join(' · ')} onPress={() => toggle(option.id)} />)}
+      <SelectRow checked={chosenIds !== null && !chosen.length} label="No undergarment" body="Warm water, or you'll decide later" onPress={() => onChange([])} />
+    </View>
+  );
+}
+const choiceFor = (choices, itemId) => (choices && Object.prototype.hasOwnProperty.call(choices, itemId) ? choices[itemId] : null);
+
+// "Is this setup complete?" — a compact checklist, and one question at a time (undergarment choices
+// first, then each gap) until they're all answered; after that it's just the summary.
+function SetupCheck({ setup, items, onChooseAccessories, onAdd, onLeaveOut, onAddNew, onReviewAgain }) {
+  if (!setup.itemIds.length) return null;
+  const requirements = setupRequirements(setup, items);
+  const questions = setupQuestions(setup, items);
+  if (!requirements.length && !questions.length) return null;
+  const metCount = requirements.filter((req) => req.met).length;
+  const question = questions[0];
+  return (
+    <View style={styles.checkCategory}>
+      <View style={styles.sectionRow}>
+        <Text style={styles.sectionTitle}>Setup check</Text>
+        {requirements.length ? <Text style={styles.sectionMeta}>{metCount} OF {requirements.length} READY</Text> : null}
+      </View>
+      {requirements.length ? (
+        <View style={styles.reqChips}>
+          {requirements.map((req) => (
+            <View key={req.key} style={[styles.reqChip, req.met ? styles.reqChipMet : req.skipped ? styles.reqChipSkipped : styles.reqChipOpen]}>
+              <Text style={[styles.reqChipText, req.met ? styles.reqChipTextMet : req.skipped ? styles.reqChipTextSkipped : styles.reqChipTextOpen]}>
+                {req.met ? '✓ ' : req.skipped ? '– ' : '! '}{req.label}{req.need > 1 && !req.met ? ` ${req.have}/${req.need}` : ''}
+              </Text>
+            </View>
+          ))}
+        </View>
+      ) : null}
+      {question ? (
+        <View style={styles.questionWrap}>
+          {questions.length > 1 ? <Text style={styles.questionCount}>QUESTION 1 OF {questions.length}</Text> : null}
+          {question.kind === 'choice' ? (
+            <AlternativeChooser chosenIds={null} item={question.item} onChange={(ids) => onChooseAccessories(setup.id, question.item.id, ids)} options={question.options} />
+          ) : (
+            <View style={styles.chooser}>
+              <Text style={styles.chooserTitle}>{question.title}</Text>
+              <Text style={styles.chooserBody}>{question.body}</Text>
+              {question.candidates.map((candidate) => (
+                <SelectRow checked={false} key={candidate.id} label={candidate.name} body={`Add to this setup${[candidate.manufacturer, candidate.model].filter(Boolean).length ? ` · ${[candidate.manufacturer, candidate.model].filter(Boolean).join(' ')}` : ''}`} onPress={() => onAdd(setup.id, candidate.id)} />
+              ))}
+              <View style={styles.questionActions}>
+                {!question.candidates.length && question.category ? <SecondaryButton label={`Add new ${question.category.toLowerCase()}`} onPress={onAddNew} style={styles.questionButton} /> : null}
+                <SecondaryButton label="Leave it out" onPress={() => onLeaveOut(setup.id, question.key)} style={styles.questionButton} />
+              </View>
+            </View>
+          )}
+        </View>
+      ) : setup.completeness?.done ? (
+        <Pressable accessibilityRole="button" onPress={() => onReviewAgain(setup.id)} style={styles.reviewAgain}><Text style={styles.reviewAgainText}>Setup checked · review again</Text></Pressable>
+      ) : null}
+    </View>
+  );
+}
+
+function SetupDetail({ setup, items, setups = [], onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle, onMoveFloating, onChooseAccessories, onAddForRequirement, onLeaveOut, onReviewAgain }) {
+  const [changing, setChanging] = useState(null); // `${itemId}|${category}` being re-chosen
+  // Items already packed with another selected item (a hood linked to the drysuit) aren't listed twice.
+  const packedWith = includedWithSelection(setup.itemIds, items, setup.accessoryChoices);
+  const available = sortGear(items.filter((item) => setup.itemIds.includes(item.id) && !packedWith.has(item.id)));
+  const progress = setupProgress(setup, items);
   const grouped = GEAR_CATEGORIES.map((category) => ({ category, items: available.filter((item) => item.category === category) })).filter((group) => group.items.length);
+  const groupProgress = (group) => group.items.reduce((sum, item) => {
+    const { itemKey, parts } = checklistEntriesForItem(item, items, setup);
+    const checked = (setup.checkedIds.includes(itemKey) ? 1 : 0) + parts.filter((part) => setup.checkedIds.includes(part.key)).length;
+    return { checked: sum.checked + checked, total: sum.total + 1 + parts.length };
+  }, { checked: 0, total: 0 });
   return (
     <View style={styles.screen}>
-      <ScreenHeader eyebrow="PACK FOR THE DIVE" title={list.name} onBack={onBack} action={<TinyAction label="EDIT" onPress={onEdit} />} />
+      <ScreenHeader eyebrow={setup.type.toUpperCase()} title={setup.name} onBack={onBack} action={<TinyAction label="EDIT" onPress={onEdit} />} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Card style={styles.checklistHero}>
           <View style={styles.checklistHeroTop}><View style={styles.checklistCount}><Text style={styles.checklistCountValue}>{progress.checked}/{progress.total}</Text><Text style={styles.checklistCountLabel}>PACKED</Text></View><Text style={styles.checklistPercent}>{Math.round(progress.ratio * 100)}%</Text></View>
           <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
-          {list.description ? <Text style={styles.checklistDescription}>{list.description}</Text> : null}
-          {progress.checked ? <TinyAction label="RESET CHECKS" onPress={onReset} /> : null}
-        </Card>
-        {grouped.length ? grouped.map((group) => (
-          <View key={group.category} style={styles.checkCategory}>
-            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{group.category}</Text><Text style={styles.sectionMeta}>{group.items.filter((item) => list.checkedIds.includes(item.id)).length}/{group.items.length}</Text></View>
-            <View style={styles.rowGroup}>{group.items.map((item) => <SelectRow checked={list.checkedIds.includes(item.id)} key={item.id} label={item.name} body={[item.manufacturer, item.model].filter(Boolean).join(' · ')} onPress={() => onToggle(item.id)} />)}</View>
+          {setup.description ? <Text style={styles.checklistDescription}>{setup.description}</Text> : null}
+          <View style={styles.setupActions}>
+            <TinyAction label="ADD EXISTING GEAR" onPress={onAddExisting} />
+            <TinyAction label="ADD NEW GEAR" onPress={onAddGear} />
+            {progress.checked ? <TinyAction label="RESET CHECKS" onPress={onReset} /> : null}
           </View>
-        )) : <EmptyState title="This checklist is empty" body="Edit the list to add gear from your inventory, or assign this list while editing a gear item." action="Add gear to list" onPress={onEdit} />}
+        </Card>
+        <SetupCheck items={items} onAdd={onAddForRequirement} onAddNew={onAddGear} onChooseAccessories={onChooseAccessories} onLeaveOut={onLeaveOut} onReviewAgain={onReviewAgain} setup={setup} />
+        {available.some((item) => item.floating) ? (
+          <View style={styles.checkCategory}>
+            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Floating gear</Text><Text style={styles.sectionMeta}>MOVES BETWEEN SETUPS</Text></View>
+            <View style={styles.rowGroup}>
+              {available.filter((item) => item.floating).map((item, index, list) => {
+                const where = floatingLocation(item, setups);
+                const here = item.currentSetupId === setup.id;
+                return (
+                  <View key={item.id} style={[styles.floatRow, index < list.length - 1 && styles.rowBorder]}>
+                    <View style={styles.gearRowCopy}>
+                      <Text numberOfLines={1} style={styles.selectTitle}>{item.name}</Text>
+                      <Text style={[styles.floatStatus, { color: here ? colors.good : where ? colors.warning : colors.faint }]}>{here ? '✓ On this setup' : where ? `On ${where.name} — move it before you pack` : 'Not on a setup'}</Text>
+                    </View>
+                    {!here ? <TinyAction label="MOVE HERE" onPress={() => onMoveFloating(item.id, setup.id)} /> : null}
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        ) : null}
+        {grouped.length ? grouped.map((group) => {
+          const groupTotals = groupProgress(group);
+          return (
+            <View key={group.category} style={styles.checkCategory}>
+              <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{group.category}</Text><Text style={styles.sectionMeta}>{groupTotals.checked}/{groupTotals.total}</Text></View>
+              <View style={styles.rowGroup}>
+                {group.items.map((item) => (
+                  <View key={item.id}>
+                    <ChecklistItemRows
+                      checkedIds={setup.checkedIds}
+                      choiceSlot={<>
+                        {accessoryAlternatives(item, items).filter(() => choiceFor(setup.accessoryChoices, item.id) !== null).map((group) => {
+                          const key = `${item.id}|${group.category}`;
+                          const chosen = setup.accessoryChoices?.[item.id] || [];
+                          return changing === key ? (
+                            <View key={key} style={styles.inlineChooser}>
+                              <AlternativeChooser chosenIds={chosen} item={item} onChange={(ids) => onChooseAccessories(setup.id, item.id, ids)} options={group.options} />
+                              <TinyAction label="DONE" onPress={() => setChanging(null)} />
+                            </View>
+                          ) : (
+                            <Pressable accessibilityRole="button" key={key} onPress={() => setChanging(key)} style={styles.choiceLine}>
+                              <Text numberOfLines={1} style={styles.choiceLineText}>UNDERGARMENT · {group.options.filter((option) => chosen.includes(option.id)).map((option) => option.name).join(', ') || 'None'}</Text>
+                              <Text style={styles.choiceLineAction}>CHANGE</Text>
+                            </Pressable>
+                          );
+                        })}
+                      </>}
+                      item={item}
+                      items={items}
+                      onSetChecked={onSetChecked}
+                      onToggle={onToggle}
+                      setup={setup}
+                    />
+                  </View>
+                ))}
+              </View>
+            </View>
+          );
+        }) : <EmptyState title="This setup is empty" body="Add gear you already own, or add a new locker item here." action="Add existing gear" onPress={onAddExisting} />}
       </ScrollView>
     </View>
   );
 }
 
-export default function GearChecklistScreen({ onBack }) {
+function DetailField({ label, value }) {
+  if (!value) return null;
+  return (
+    <View style={styles.detailField}>
+      <Text style={styles.detailLabel}>{label}</Text>
+      <Text style={styles.detailValue}>{value}</Text>
+    </View>
+  );
+}
+
+function ComponentRow({ component, last }) {
+  return (
+    <View style={[styles.componentRow, !last && styles.rowBorder]}>
+      <View style={styles.gearRowCopy}>
+        <Text style={styles.selectTitle}>{component.name}</Text>
+        <Text style={styles.selectBody}>{[component.type, component.manufacturer, component.model, componentCanHaveSerial(component.type) && component.serialNumber ? `S/N ${component.serialNumber}` : ''].filter(Boolean).join(' · ')}</Text>
+        {component.notes ? <Text style={styles.componentNotes}>{component.notes}</Text> : null}
+        <ServiceBadge item={component} />
+      </View>
+    </View>
+  );
+}
+
+// A locker item that's linked in (a hood, boots) — not a buried description, its own gear with
+// its own service history — so tapping it opens that item's own detail view, not this one's edit form.
+function AccessoryRow({ item, last, onPress }) {
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={onPress} style={({ pressed }) => [styles.gearRow, !last && styles.rowBorder, pressed && styles.rowPressed]}>
+      <View style={styles.categoryGlyph}><Text style={styles.categoryGlyphText}>{item.category.slice(0, 2).toUpperCase()}</Text></View>
+      <View style={styles.gearRowCopy}>
+        <Text numberOfLines={1} style={styles.gearName}>{item.name}</Text>
+        <Text numberOfLines={1} style={styles.gearMeta}>{[item.manufacturer, item.model, item.category].filter(Boolean).join(' · ')}</Text>
+        <ServiceBadge item={item} />
+      </View>
+      <Text style={styles.chevron}>›</Text>
+    </Pressable>
+  );
+}
+
+function GearItemDetail({ item, items, setups, onBack, onEdit, onOpenAccessory, onMoveFloating, diveComputerStats, onOpenDives, onUnlinkFromSet }) {
+  const parentSet = cylinderSetFor(items, item.id);
+  const confirmUnlink = () => Alert.alert('Track this cylinder on its own?', `It leaves ${parentSet?.name} and shows up as its own item in your locker and setups. Its serial and inspection dates come with it.`, [
+    { text: 'Cancel', style: 'cancel' },
+    { text: 'Track on its own', onPress: () => onUnlinkFromSet(item.id) },
+  ]);
+  const memberships = setups.filter((setup) => setup.itemIds.includes(item.id));
+  const accessories = accessoryItemsForItem(items, item);
+  const usedIn = parentItemsForAccessory(items, item.id);
+  const openAttachment = async (attachment) => {
+    try {
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(attachment.uri, { mimeType: attachment.mimeType || undefined, dialogTitle: attachment.name });
+      } else Alert.alert('File saved', 'This device cannot open the system file sheet, but the attachment remains saved with this gear item.');
+    } catch {
+      Alert.alert('Could not open file', 'The attachment is still listed, but the system file sheet could not open it.');
+    }
+  };
+  return (
+    <View style={styles.screen}>
+      <ScreenHeader eyebrow={item.category.toUpperCase()} title={item.name} onBack={onBack} action={<TinyAction label="EDIT" onPress={onEdit} />} />
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Card style={styles.detailHero}>
+          <ServiceBadge item={item} items={items} includeParts />
+          <Text style={styles.detailMeta}>{[item.manufacturer, item.model, item.configuration].filter(Boolean).join(' · ') || 'No manufacturer or model set'}</Text>
+          <View style={styles.detailGrid}>
+            <DetailField label="Serial" value={item.serialNumber} />
+            <DetailField label="Size" value={item.size} />
+            <DetailField label="Thickness" value={item.thickness} />
+            <DetailField label="Color" value={item.color} />
+            <DetailField label="Weight" value={item.weight} />
+            <DetailField label="Capacity / lift" value={item.capacity} />
+            <DetailField label="Working pressure" value={item.workingPressure} />
+            <DetailField label="Material" value={item.material} />
+            <DetailField label="Valve" value={item.valveType} />
+            <DetailField label="Quantity" value={item.quantity && item.quantity !== '1' ? item.quantity : ''} />
+          </View>
+        </Card>
+
+        {parentSet ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Part of a cylinder set</Text>
+            <Card style={styles.floatCard}>
+              <Text style={styles.floatNow}>{parentSet.name}</Text>
+              <Text style={styles.floatBody}>Tracked here with its own serial and inspection dates, but packed and listed as part of the set.</Text>
+              <View style={styles.floatActions}>
+                <SecondaryButton label="Open the set" onPress={() => onOpenAccessory(parentSet.id)} style={styles.floatButton} />
+                <SecondaryButton label="Track on its own" onPress={confirmUnlink} style={styles.floatButton} />
+              </View>
+            </Card>
+          </View>
+        ) : null}
+
+        {item.floating ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Floating gear</Text>
+            <Card style={styles.floatCard}>
+              <Text style={styles.floatNow}>{floatingLocation(item, setups) ? `On ${floatingLocation(item, setups).name}` : 'Not on a setup right now'}</Text>
+              <Text style={styles.floatBody}>{memberships.length ? 'It moves between these setups. Checking it off while packing a setup also moves it there.' : 'Add it to the setups it moves between (Edit → Setups), then track which one it’s on.'}</Text>
+              {memberships.length ? (
+                <View style={styles.floatActions}>
+                  {memberships.map((setup) => (
+                    <SecondaryButton key={setup.id} label={item.currentSetupId === setup.id ? `✓ ${setup.name}` : `Move to ${setup.name}`} onPress={() => onMoveFloating(item.id, setup.id)} selected={item.currentSetupId === setup.id} style={styles.floatButton} />
+                  ))}
+                  {item.currentSetupId ? <SecondaryButton label="Take it off" onPress={() => onMoveFloating(item.id, '')} style={styles.floatButton} /> : null}
+                </View>
+              ) : null}
+            </Card>
+          </View>
+        ) : null}
+
+        {diveComputerStats ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>From your logbook</Text>
+            <View style={styles.detailGrid}>
+              <DetailField label="Dives downloaded" value={String(diveComputerStats.count)} />
+              <DetailField label="First dive" value={diveComputerStats.first} />
+              <DetailField label="Last dive" value={diveComputerStats.last} />
+              <DetailField label="Deepest" value={diveComputerStats.deepest} />
+            </View>
+            {onOpenDives ? <PrimaryButton label={`View ${diveComputerStats.count} ${diveComputerStats.count === 1 ? 'dive' : 'dives'} from this computer`} onPress={onOpenDives} style={styles.openDives} /> : null}
+          </View>
+        ) : null}
+
+        {item.components.length ? (
+          <View style={styles.sectionGroup}>
+            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Tracked parts</Text><Text style={styles.sectionMeta}>{item.components.length}</Text></View>
+            <View style={styles.rowGroup}>{item.components.map((component, index) => <ComponentRow component={component} key={component.id || index} last={index === item.components.length - 1} />)}</View>
+          </View>
+        ) : null}
+
+        {accessories.length ? (
+          <View style={styles.sectionGroup}>
+            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{isCylinderSet(item) ? 'Cylinders' : 'Includes'}</Text><Text style={styles.sectionMeta}>{accessories.length}</Text></View>
+            <View style={styles.rowGroup}>{accessories.map((accessory, index) => <AccessoryRow item={accessory} key={accessory.id} last={index === accessories.length - 1} onPress={() => onOpenAccessory(accessory.id)} />)}</View>
+          </View>
+        ) : null}
+
+        {usedIn.filter((parent) => parent.id !== parentSet?.id).length ? (
+          <View style={styles.sectionGroup}>
+            <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Part of</Text><Text style={styles.sectionMeta}>{usedIn.length}</Text></View>
+            <View style={styles.rowGroup}>{usedIn.filter((parent) => parent.id !== parentSet?.id).map((parent, index, list) => <AccessoryRow item={parent} key={parent.id} last={index === list.length - 1} onPress={() => onOpenAccessory(parent.id)} />)}</View>
+          </View>
+        ) : null}
+
+        {memberships.length ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>In these setups</Text>
+            <Text numberOfLines={2} style={styles.listMembership}>{memberships.map((setup) => setup.name).join('  ·  ')}</Text>
+          </View>
+        ) : null}
+
+        {item.lastServiceDate || item.nextServiceDate || item.serviceIntervalMonths || item.serviceNotes || item.visualInspectionDue || item.hydrostaticTestDue || item.lastHydrostaticTest || item.lastVisualInspection ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Service</Text>
+            <View style={styles.detailGrid}>
+              <DetailField label="Last service" value={item.lastServiceDate} />
+              <DetailField label="Next service" value={item.nextServiceDate} />
+              <DetailField label="Repeat every" value={item.serviceIntervalMonths ? `${item.serviceIntervalMonths} months` : ''} />
+              <DetailField label="Last visual" value={item.lastVisualInspection} />
+              <DetailField label="Visual due" value={item.visualInspectionDue} />
+              <DetailField label="Last hydro" value={item.lastHydrostaticTest} />
+              <DetailField label="Hydro due" value={item.hydrostaticTestDue} />
+            </View>
+            {item.serviceNotes ? <Text style={styles.detailValue}>{item.serviceNotes}</Text> : null}
+          </View>
+        ) : null}
+
+        {item.purchaseDate || item.purchasePrice || item.retailer || item.warrantyUntil ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Ownership & warranty</Text>
+            <View style={styles.detailGrid}>
+              <DetailField label="Purchased" value={item.purchaseDate} />
+              <DetailField label="Price" value={item.purchasePrice} />
+              <DetailField label="Retailer" value={item.retailer} />
+              <DetailField label="Warranty until" value={item.warrantyUntil} />
+            </View>
+          </View>
+        ) : null}
+
+        {item.attachments.length ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Photos & documents</Text>
+            {item.attachments.map((attachment) => (
+              <Pressable key={attachment.id} onPress={() => openAttachment(attachment)} style={styles.attachmentRow}>
+                {attachment.kind === 'photo' ? <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} /> : <View style={styles.documentIcon}><Text style={styles.documentIconText}>DOC</Text></View>}
+                <View style={styles.attachmentCopy}>
+                  <Text numberOfLines={1} style={styles.attachmentName}>{attachment.name}</Text>
+                  <Text style={styles.attachmentMeta}>{attachment.kind === 'photo' ? 'PHOTO' : (attachment.mimeType || 'DOCUMENT').toUpperCase()}</Text>
+                </View>
+              </Pressable>
+            ))}
+          </View>
+        ) : null}
+
+        {item.notes ? (
+          <View style={styles.sectionGroup}>
+            <Text style={styles.sectionTitle}>Notes</Text>
+            <Text style={styles.detailValue}>{item.notes}</Text>
+          </View>
+        ) : null}
+      </ScrollView>
+    </View>
+  );
+}
+
+export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSettings }) {
   const gear = useGearChecklist();
   const [tab, setTab] = useState('inventory');
   const [route, setRoute] = useState({ name: 'home' });
   const activeItem = route.itemId ? gear.state.items.find((item) => item.id === route.itemId) : null;
-  const activeList = route.listId ? gear.state.lists.find((list) => list.id === route.listId) : null;
+  const activeSetup = route.setupId ? gear.state.setups.find((setup) => setup.id === route.setupId) : null;
 
+  if (route.name === 'add-gear-wizard') {
+    const leaveTo = route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' };
+    return (
+      <AddGearWizard
+        defaultSetupId={route.setupId}
+        items={gear.state.items}
+        setups={gear.state.setups}
+        onCancel={() => setRoute(leaveTo)}
+        onPickOtherCategory={(category) => setRoute({ name: 'gear-form', setupId: route.setupId, presetCategory: category || undefined })}
+        onSave={async ({ item, pendingAccessories }) => {
+          // One batch, one commit: the wizard already assigned each new accessory's id up front
+          // (see accessoryLink in AddGearWizard), so item.accessoryItemIds is already complete —
+          // no separate save-then-merge step, and nothing for a stale saveItem closure to clobber.
+          const saved = await gear.saveItems([...pendingAccessories, item]);
+          const savedItem = saved[saved.length - 1];
+          setRoute({ name: 'gear-detail', itemId: savedItem.id, setupId: route.setupId });
+        }}
+      />
+    );
+  }
+  if (route.name === 'gear-detail' && activeItem) {
+    return (
+      <GearItemDetail
+        item={activeItem}
+        items={gear.state.items}
+        setups={gear.state.setups}
+        onBack={() => setRoute(route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' })}
+        onEdit={() => setRoute({ name: 'gear-form', itemId: activeItem.id, setupId: route.setupId })}
+        onOpenAccessory={(accessoryId) => setRoute({ name: 'gear-detail', itemId: accessoryId })}
+        onMoveFloating={gear.moveFloating}
+        onUnlinkFromSet={gear.unlinkCylinder}
+        diveComputerStats={activeItem.deviceKey ? gear.diveComputerStats(activeItem.deviceKey) : null}
+        onOpenDives={activeItem.deviceKey && onOpenComputerDives ? () => onOpenComputerDives(activeItem.deviceKey) : undefined}
+      />
+    );
+  }
   if (route.name === 'gear-form') {
+    const returnRoute = activeItem ? { name: 'gear-detail', itemId: activeItem.id, setupId: route.setupId } : (route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' });
     return (
       <GearItemForm
         item={activeItem}
-        lists={gear.state.lists}
-        onBack={() => setRoute({ name: 'home' })}
+        items={gear.state.items}
+        setups={gear.state.setups}
+        defaultSetupId={route.setupId}
+        presetCategory={route.presetCategory}
+        onBack={() => setRoute(returnRoute)}
+        fromLogbook={gear.isLocked(activeItem)}
         onDelete={activeItem ? async () => { await gear.deleteItem(activeItem.id); setRoute({ name: 'home' }); } : undefined}
-        onSave={async (draft) => { await gear.saveItem(draft); setRoute({ name: 'home' }); }}
+        onSave={async (draft) => { const saved = await gear.saveItem(draft); setRoute({ name: 'gear-detail', itemId: saved.id, setupId: route.setupId }); }}
       />
     );
   }
-  if (route.name === 'list-form') {
+  if (route.name === 'setup-form') {
     return (
-      <ListForm
+      <SetupForm
         items={gear.state.items}
-        list={activeList}
-        onBack={() => setRoute(activeList ? { name: 'checklist', listId: activeList.id } : { name: 'home' })}
-        onDelete={activeList ? async () => { await gear.deleteList(activeList.id); setRoute({ name: 'home' }); } : undefined}
-        onSave={async (draft) => { const saved = await gear.saveList(draft); setRoute({ name: 'checklist', listId: saved.id }); }}
+        setup={activeSetup}
+        onBack={() => setRoute(activeSetup ? { name: 'setup', setupId: activeSetup.id } : { name: 'home' })}
+        onDelete={activeSetup ? async () => { await gear.deleteSetup(activeSetup.id); setRoute({ name: 'home' }); } : undefined}
+        onSave={async (draft) => { const saved = await gear.saveSetup(draft); setRoute({ name: 'setup', setupId: saved.id }); }}
       />
     );
   }
-  if (route.name === 'checklist' && activeList) {
+  if (route.name === 'setup' && activeSetup) {
     return (
-      <ChecklistDetail
+      <SetupDetail
         items={gear.state.items}
-        list={activeList}
+        setup={activeSetup}
+        setups={gear.state.setups}
+        onMoveFloating={gear.moveFloating}
+        onChooseAccessories={gear.chooseAccessories}
+        onAddForRequirement={gear.addForRequirement}
+        onLeaveOut={gear.leaveOut}
+        onReviewAgain={gear.reviewAgain}
+        onAddExisting={() => setRoute({ name: 'setup-form', setupId: activeSetup.id })}
+        onAddGear={() => setRoute({ name: 'add-gear-wizard', setupId: activeSetup.id })}
         onBack={() => setRoute({ name: 'home' })}
-        onEdit={() => setRoute({ name: 'list-form', listId: activeList.id })}
-        onReset={() => gear.resetList(activeList.id)}
-        onToggle={(itemId) => gear.toggleChecked(activeList.id, itemId)}
+        onEdit={() => setRoute({ name: 'setup-form', setupId: activeSetup.id })}
+        onReset={() => gear.resetSetup(activeSetup.id)}
+        onSetChecked={(keys, checked) => gear.setCheckedKeys(activeSetup.id, keys, checked)}
+        onToggle={(checklistKey) => gear.toggleChecked(activeSetup.id, checklistKey)}
       />
     );
   }
@@ -509,17 +1267,17 @@ export default function GearChecklistScreen({ onBack }) {
       <ScreenHeader eyebrow="DIVE WORKBENCH" title="Gear Locker" onBack={onBack} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.pageTitle}>Pack with confidence.</Text>
-        <Text style={styles.pageBody}>Track equipment, documents, service, and reusable checklists—all stored privately on this device.</Text>
+        <Text style={styles.pageBody}>Track complete gear, its individual parts, service needs, and reusable dive setups—all stored privately on this device.</Text>
         <View style={styles.tabs}>
           <SecondaryButton label="Inventory" onPress={() => setTab('inventory')} selected={tab === 'inventory'} style={styles.tab} />
-          <SecondaryButton label="Checklists" onPress={() => setTab('checklists')} selected={tab === 'checklists'} style={styles.tab} />
+          <SecondaryButton label="Setups" onPress={() => setTab('setups')} selected={tab === 'setups'} style={styles.tab} />
           <SecondaryButton label="Service" onPress={() => setTab('service')} selected={tab === 'service'} style={styles.tab} />
         </View>
         <FormError message={gear.error} />
         {!gear.loaded ? <Text style={styles.loading}>Opening your gear locker…</Text> : null}
-        {gear.loaded && tab === 'inventory' ? <InventoryHome state={gear.state} onAdd={() => setRoute({ name: 'gear-form' })} onEdit={(item) => setRoute({ name: 'gear-form', itemId: item.id })} /> : null}
-        {gear.loaded && tab === 'checklists' ? <ChecklistsHome state={gear.state} onAdd={() => setRoute({ name: 'list-form' })} onOpen={(list) => setRoute({ name: 'checklist', listId: list.id })} /> : null}
-        {gear.loaded && tab === 'service' ? <ServiceHome state={gear.state} onEdit={(item) => setRoute({ name: 'gear-form', itemId: item.id })} /> : null}
+        {gear.loaded && tab === 'inventory' ? <InventoryHome state={gear.state} appSettings={appSettings} onAdd={() => setRoute({ name: 'add-gear-wizard' })} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
+        {gear.loaded && tab === 'setups' ? <SetupsHome state={gear.state} onAdd={() => setRoute({ name: 'setup-form' })} onOpen={(setup) => setRoute({ name: 'setup', setupId: setup.id })} /> : null}
+        {gear.loaded && tab === 'service' ? <ServiceHome state={gear.state} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
       </ScrollView>
     </View>
   );
@@ -528,7 +1286,12 @@ export default function GearChecklistScreen({ onBack }) {
 const styles = StyleSheet.create({
   screen: { backgroundColor: colors.background, flex: 1 },
   content: { padding: spacing.md, paddingBottom: spacing.xxl },
-  formContent: { padding: spacing.md, paddingBottom: 60 },
+  formContent: { padding: spacing.md, paddingBottom: 24 },
+  setupPickerFooter: { backgroundColor: colors.surfaceGlass, borderTopColor: colors.lineStrong, borderTopWidth: StyleSheet.hairlineWidth, paddingHorizontal: spacing.md, paddingTop: spacing.sm },
+  formTabsScroll: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexGrow: 0 },
+  formTabs: { gap: 7, paddingHorizontal: spacing.md, paddingVertical: 10 },
+  formTab: { minHeight: 38, paddingHorizontal: 13, paddingVertical: 8 },
+  footer: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, gap: 10, padding: spacing.md },
   pageTitle: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 34 },
   pageBody: { color: colors.muted, fontSize: 14, lineHeight: 21, marginBottom: 16, marginTop: 6 },
   tabs: { flexDirection: 'row', gap: 7, marginBottom: 14 },
@@ -538,6 +1301,9 @@ const styles = StyleSheet.create({
   stat: { flexBasis: '47%', flexGrow: 1 },
   filters: { gap: 7, paddingVertical: 13 },
   filter: { minHeight: 38, paddingHorizontal: 11, paddingVertical: 7 },
+  inventoryControls: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  inventoryControl: { flex: 1, minHeight: 40, paddingHorizontal: 9 },
+  inventoryPanel: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, marginTop: 9, padding: 12, paddingBottom: 2 },
   sectionRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8, marginTop: 18 },
   sectionTitle: { color: colors.text, fontSize: 16, fontWeight: '900' },
   sectionMeta: { color: colors.faint, fontSize: 9, fontWeight: '900', letterSpacing: 1 },
@@ -552,6 +1318,43 @@ const styles = StyleSheet.create({
   gearName: { color: colors.text, flexShrink: 1, fontSize: 15, fontWeight: '800' },
   quantity: { color: colors.cyan, fontSize: 11, fontWeight: '900' },
   gearMeta: { color: colors.muted, fontSize: 10, lineHeight: 15, marginTop: 2 },
+  chooser: { backgroundColor: 'rgba(240,200,75,0.07)', borderColor: 'rgba(240,200,75,0.35)', borderRadius: radii.md, borderWidth: 1, marginBottom: 10, paddingBottom: 6, paddingHorizontal: 16, paddingTop: 14 },
+  chooserTitle: { color: colors.text, fontSize: 15, fontWeight: '800', lineHeight: 20, marginBottom: 4 },
+  chooserBody: { color: colors.muted, fontSize: 12, lineHeight: 17, marginBottom: 6 },
+  inlineChooser: { paddingBottom: 10, paddingTop: 4 },
+  nestedRow: { paddingLeft: 28 },
+  reqChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 12 },
+  reqChip: { borderRadius: radii.pill, borderWidth: 1, paddingHorizontal: 9, paddingVertical: 5 },
+  reqChipMet: { backgroundColor: 'rgba(112,226,163,0.08)', borderColor: 'rgba(112,226,163,0.35)' },
+  reqChipOpen: { backgroundColor: 'rgba(255,179,106,0.1)', borderColor: 'rgba(255,179,106,0.45)' },
+  reqChipSkipped: { backgroundColor: 'transparent', borderColor: colors.line },
+  reqChipText: { fontSize: 10, fontWeight: '800' },
+  reqChipTextMet: { color: colors.good },
+  reqChipTextOpen: { color: colors.warning },
+  reqChipTextSkipped: { color: colors.faint },
+  questionWrap: { marginBottom: 4 },
+  questionCount: { color: colors.faint, fontSize: 9, fontWeight: '900', letterSpacing: 0.8, marginBottom: 6 },
+  questionActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, paddingBottom: 8, paddingTop: 10 },
+  questionButton: { flexGrow: 1, minHeight: 42, paddingHorizontal: 12 },
+  reviewAgain: { alignSelf: 'flex-start', paddingVertical: 4 },
+  reviewAgainText: { color: colors.cyan, fontSize: 12, fontWeight: '700' },
+  choiceLine: { alignItems: 'center', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, flexDirection: 'row', gap: 8, marginLeft: 46, paddingRight: 12, paddingVertical: 12 },
+  choiceLineText: { color: colors.gold, flex: 1, fontSize: 9, fontWeight: '800', letterSpacing: 0.5 },
+  choiceLineAction: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 0.6 },
+  openDives: { marginTop: 12 },
+  pickerSearch: { marginBottom: 8, marginTop: 0 },
+  pickerFilters: { flexDirection: 'row', gap: 7, marginBottom: 10 },
+  lockedNote: { color: colors.muted, fontSize: 12, lineHeight: 18, marginBottom: 14, marginTop: 4 },
+  whereLine: { color: colors.cyan, fontSize: 8, fontWeight: '900', letterSpacing: 0.6, marginTop: 4 },
+  searchInput: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, color: colors.text, fontSize: 15, marginTop: 12, minHeight: 44, paddingHorizontal: 12 },
+  floatCard: { marginTop: 8 },
+  floatNow: { color: colors.text, fontSize: 16, fontWeight: '800' },
+  floatBody: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4 },
+  floatActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
+  floatButton: { minHeight: 38, paddingHorizontal: 12 },
+  floatRow: { alignItems: 'center', flexDirection: 'row', gap: 10, minHeight: 60, paddingHorizontal: 12, paddingVertical: 10 },
+  floatStatus: { fontSize: 11, fontWeight: '700', marginTop: 3 },
+  componentCount: { color: colors.gold, fontSize: 8, fontWeight: '900', letterSpacing: 0.7, marginTop: 4 },
   listMembership: { color: colors.faint, fontSize: 9, marginTop: 5 },
   chevron: { color: colors.cyan, fontSize: 25, fontWeight: '300' },
   serviceBadge: { alignItems: 'center', alignSelf: 'flex-start', borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', gap: 5, marginTop: 6, paddingHorizontal: 7, paddingVertical: 3 },
@@ -568,6 +1371,7 @@ const styles = StyleSheet.create({
   listIconText: { color: colors.good, fontSize: 20, fontWeight: '900' },
   listCopy: { flex: 1 },
   listName: { color: colors.text, fontSize: 16, fontWeight: '900' },
+  setupType: { color: colors.cyan, fontSize: 8, fontWeight: '900', letterSpacing: 0.9, marginTop: 2 },
   listDescription: { color: colors.muted, fontSize: 10, lineHeight: 15, marginTop: 3 },
   progressRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 7, marginTop: 13 },
   progressText: { color: colors.muted, fontSize: 10, fontWeight: '700' },
@@ -578,6 +1382,8 @@ const styles = StyleSheet.create({
   goodLabel: { color: colors.good, fontSize: 9, fontWeight: '900', letterSpacing: 1.1 },
   alertText: { color: colors.muted, fontSize: 11, lineHeight: 17, marginTop: 4 },
   serviceGroup: { marginBottom: 4 },
+  serviceEntry: { alignItems: 'center', flexDirection: 'row', minHeight: 78, padding: 12 },
+  serviceEntryCopy: { flex: 1 },
   field: { marginBottom: 14 },
   fieldLabel: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 0.45, marginBottom: 7, textTransform: 'uppercase' },
   notesInput: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, color: colors.text, fontSize: 15, fontWeight: '600', minHeight: 94, padding: 13 },
@@ -585,6 +1391,12 @@ const styles = StyleSheet.create({
   formTitle: { color: colors.text, fontSize: 18, fontWeight: '900' },
   formBody: { color: colors.muted, fontSize: 11, lineHeight: 17, marginBottom: 15, marginTop: 4 },
   formEmpty: { color: colors.faint, fontSize: 11, lineHeight: 17, paddingVertical: 4 },
+  pickerGroup: { marginBottom: 16 },
+  pickerGroupLabel: { color: colors.faint, fontSize: 10, fontWeight: '900', letterSpacing: 0.8, marginBottom: 2, marginTop: 8, textTransform: 'uppercase' },
+  componentTemplateButton: { marginBottom: 12 },
+  componentEditor: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, marginBottom: 12, padding: 12 },
+  componentHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 },
+  componentTitle: { color: colors.cyan, flex: 1, fontSize: 14, fontWeight: '900', marginRight: 8 },
   twoColumn: { flexDirection: 'row', gap: 9 },
   half: { flex: 1 },
   selectRow: { alignItems: 'center', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', gap: 11, minHeight: 58, paddingVertical: 9 },
@@ -616,6 +1428,17 @@ const styles = StyleSheet.create({
   checklistCountLabel: { color: colors.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1 },
   checklistPercent: { color: colors.cyan, fontSize: 17, fontWeight: '900' },
   checklistDescription: { color: colors.muted, fontSize: 11, lineHeight: 17, marginBottom: 11, marginTop: 11 },
+  setupActions: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   checkCategory: { marginBottom: 5 },
+  checklistPartRow: { paddingLeft: 26 },
+  detailHero: { gap: 8, padding: 15 },
+  detailMeta: { color: colors.muted, fontSize: 13, fontWeight: '600' },
+  detailGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 14, marginTop: 8 },
+  detailField: { minWidth: '30%' },
+  detailLabel: { color: colors.faint, fontSize: 9, fontWeight: '900', letterSpacing: 0.6, marginBottom: 2, textTransform: 'uppercase' },
+  detailValue: { color: colors.text, fontSize: 13, fontWeight: '700', lineHeight: 19 },
+  sectionGroup: { marginBottom: 4, marginTop: 18 },
+  componentRow: { flexDirection: 'row', gap: 11, padding: 11 },
+  componentNotes: { color: colors.faint, fontSize: 10, lineHeight: 15, marginTop: 3 },
   pressed: { opacity: 0.74, transform: [{ scale: 0.985 }] },
 });

@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Animated, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import LabLanding from '../components/LabLanding';
 import { ScreenHeader } from '../components/AppShell';
 import CameraLab from '../features/colorLoss/CameraLab';
 import ColorScene, { SCENE_BOTTOM_MARGIN, SCENE_TOP, SCENE_W } from '../features/colorLoss/ColorScene';
@@ -10,7 +10,6 @@ import { DEFAULT_GEAR, GEAR_LABELS, MAX_DEPTH, PALETTE, SAFETY_GEAR, colorMatrix
 import { depthLabel } from '../lib/divePhysics';
 import { colors } from '../theme';
 
-const TOUR_SEEN_KEY = 'colorLossTourSeen';
 
 // A short guided walkthrough: "info" steps drive the real controls so
 // newcomers see the concept happen instead of reading about it; "question"
@@ -172,12 +171,8 @@ export default function ColorLossScreen({ onBack, appSettings = {} }) {
   const matrix = useMemo(() => colorMatrix(depth, clarity), [depth, clarity]);
   const transmission = spectrum(depth, clarity);
 
-  useEffect(() => {
-    let active = true;
-    AsyncStorage.getItem(TOUR_SEEN_KEY).then((seen) => { if (active && !seen) goToTourStep(0); });
-    return () => { active = false; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Every visit opens on the landing page; the guided tour starts from there (or the TOUR button).
+  const [landing, setLanding] = useState(true);
 
   // Nudges (a soft glow on the expected control) kick in after a few quiet
   // seconds on a tour step, so a stuck student has somewhere obvious to look.
@@ -230,7 +225,7 @@ export default function ColorLossScreen({ onBack, appSettings = {} }) {
     setTourAnswer(null);
   };
   const startTour = () => goToTourStep(0);
-  const endTour = () => { setTourStep(null); AsyncStorage.setItem(TOUR_SEEN_KEY, '1'); };
+  const endTour = () => setTourStep(null);
   const tourStepData = tourStep === null ? null : TOUR_STEPS[tourStep];
   const tourCanAdvance = !tourStepData || tourStepData.kind !== 'question' || tourAnswer !== null;
   const selectTourAnswer = (index) => { setTourAnswer(index); bumpTourActivity(); };
@@ -255,6 +250,31 @@ export default function ColorLossScreen({ onBack, appSettings = {} }) {
       <Text style={styles.headerActionText}>TOUR</Text>
     </Pressable>
   );
+
+  if (landing) {
+    return (
+      <View style={styles.screen}>
+        <ScreenHeader eyebrow="INTERACTIVE LAB" title="Color Loss Lab" onBack={onBack} />
+        <LabLanding
+          icon="color-loss"
+          meta="Guided tour · about 3 minutes"
+          title="Welcome to the Color Loss Lab."
+          intro={['Water soaks up sunlight one color at a time. Red is gone within the first few metres, then orange and yellow, until the light that reaches you is mostly blue-green. This lab lets you watch it happen as you descend.']}
+          learn={['Why red fades first — and how quickly', 'How water clarity changes what you see', 'Why a dive light brings colors back up close', 'Which gear colors stay easy to spot at depth']}
+          steps={[
+            'Drag the diver deeper and watch the reef, fish and your gear change color.',
+            'Open Water to change clarity and see how much red, green and blue light is left.',
+            'Turn on the dive light and aim it to bring back color up close.',
+            'Use Colors to try different gear colors, or Camera to see color loss on things around you.',
+          ]}
+          primaryLabel="Start guided tour"
+          onPrimary={() => { setLanding(false); goToTourStep(0); }}
+          secondaryLabel="Explore on my own"
+          onSecondary={() => { setLanding(false); setTourStep(null); }}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>

@@ -10,7 +10,7 @@ export default function NumberKeyboardAccessory() {
     <InputAccessoryView nativeID={NUMBER_KEYBOARD_ACCESSORY_ID}>
       <View style={styles.toolbar}>
         <Pressable
-          accessibilityLabel="Close number keyboard"
+          accessibilityLabel="Close keyboard"
           accessibilityRole="button"
           hitSlop={8}
           onPress={Keyboard.dismiss}

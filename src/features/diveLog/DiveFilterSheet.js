@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { InlineIosPicker, formatDateDisplay, useDatePicker } from '../../components/DateField';
 import { PrimaryButton } from '../../components/Ui';
 import useKeyboardOverlap from '../../components/useKeyboardOverlap';
 import { colors, radii, spacing } from '../../theme';
@@ -86,6 +87,26 @@ function RangeRow({ label, range, onChange, unit, toInput, fromInput, keyboardTy
         {unit ? <Text style={styles.rangeUnit}>{unit}</Text> : null}
       </View>
     </View>
+  );
+}
+
+function DateRangeInputs({ from, to, onChange }) {
+  const fromPicker = useDatePicker({ value: from || '', onChange: (value) => onChange({ dateFrom: value || null }), maximumDate: to || undefined });
+  const toPicker = useDatePicker({ value: to || '', onChange: (value) => onChange({ dateTo: value || null }), minimumDate: from || undefined });
+  return (
+    <>
+      <View style={styles.rangeInputs}>
+        <Pressable accessibilityLabel="From date" accessibilityRole="button" onPress={fromPicker.openPicker} style={styles.rangeInput}>
+          <Text numberOfLines={1} style={from ? styles.rangeInputText : styles.rangeInputPlaceholder}>{from ? formatDateDisplay(from) : 'From'}</Text>
+        </Pressable>
+        <Text style={styles.rangeDash}>–</Text>
+        <Pressable accessibilityLabel="To date" accessibilityRole="button" onPress={toPicker.openPicker} style={styles.rangeInput}>
+          <Text numberOfLines={1} style={to ? styles.rangeInputText : styles.rangeInputPlaceholder}>{to ? formatDateDisplay(to) : 'To'}</Text>
+        </Pressable>
+      </View>
+      <InlineIosPicker onChange={(value) => onChange({ dateFrom: value || null })} picker={fromPicker} />
+      <InlineIosPicker onChange={(value) => onChange({ dateTo: value || null })} picker={toPicker} />
+    </>
   );
 }
 
@@ -179,29 +200,7 @@ export default function DiveFilterSheet({ filter, onChange, onClear, onClose, ma
           </Section>
 
           <Section title="Date">
-            <View style={styles.rangeInputs}>
-              <TextInput
-                accessibilityLabel="From date"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={(text) => onChange({ dateFrom: text.trim() || null })}
-                placeholder="YYYY-MM-DD"
-                placeholderTextColor={colors.faint}
-                style={styles.rangeInput}
-                value={filter.dateFrom || ''}
-              />
-              <Text style={styles.rangeDash}>–</Text>
-              <TextInput
-                accessibilityLabel="To date"
-                autoCapitalize="none"
-                autoCorrect={false}
-                onChangeText={(text) => onChange({ dateTo: text.trim() || null })}
-                placeholder="YYYY-MM-DD"
-                placeholderTextColor={colors.faint}
-                style={styles.rangeInput}
-                value={filter.dateTo || ''}
-              />
-            </View>
+            <DateRangeInputs from={filter.dateFrom} onChange={onChange} to={filter.dateTo} />
           </Section>
 
           <Section title="The numbers">
@@ -365,6 +364,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
   },
+  rangeInputText: { color: colors.text, fontSize: 14, fontWeight: '700' },
+  rangeInputPlaceholder: { color: colors.faint, fontSize: 14, fontWeight: '700' },
   rangeDash: { color: colors.faint, fontSize: 14, fontWeight: '800' },
   rangeUnit: { color: colors.muted, fontSize: 12, fontWeight: '800', minWidth: 46 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },

@@ -1,0 +1,375 @@
+{
+  "about": "Curated names of well-known US inland dive sites. Only names, search place, state and kind are listed here; every position comes from OpenStreetMap (Nominatim) at import time and unresolved entries are dropped. Access changes — every imported site tells divers to confirm access before visiting. Optional maxDepthFt is the operator- or agency-posted maximum depth, with depthSource; depthIsWholeLake marks a lake’s deepest point rather than the dive’s.",
+  "sites": [
+    {
+      "name": "Haigh Quarry",
+      "query": "Haigh Quarry, Kankakee, Illinois",
+      "kind": "quarry",
+      "state": "Illinois",
+      "maxDepthFt": 85,
+      "depthSource": "https://dtmag.com/scuba-diving-destinations/haigh-quarry/"
+    },
+    {
+      "name": "Mermet Springs",
+      "query": "Mermet Springs, Belknap, Illinois",
+      "kind": "quarry",
+      "state": "Illinois",
+      "maxDepthFt": 120,
+      "depthSource": "https://www.mermetsprings.com/about"
+    },
+    {
+      "name": "Pearl Lake",
+      "query": "Pearl Lake, South Beloit, Illinois",
+      "kind": "lake",
+      "state": "Illinois",
+      "maxDepthFt": 85,
+      "depthSource": "https://pearllakebeach.com/scuba-diving/"
+    },
+    {
+      "name": "Three Oaks Recreation Area",
+      "query": "Three Oaks Recreation Area, Crystal Lake, Illinois",
+      "kind": "quarry",
+      "state": "Illinois"
+    },
+    {
+      "name": "Geneva Lake",
+      "query": "Geneva Lake, Walworth County, Wisconsin",
+      "kind": "lake",
+      "state": "Wisconsin",
+      "maxDepthFt": 135,
+      "depthSource": "https://apps.dnr.wi.gov/lakes/lakepages/LakeDetail.aspx?wbic=758300",
+      "depthIsWholeLake": true
+    },
+    {
+      "name": "Devil's Lake",
+      "query": "Devil's Lake, Sauk County, Wisconsin",
+      "kind": "lake",
+      "state": "Wisconsin"
+    },
+    {
+      "name": "Lake Wazee",
+      "query": "Lake Wazee, Jackson County, Wisconsin",
+      "kind": "mine",
+      "state": "Wisconsin"
+    },
+    {
+      "name": "France Park",
+      "query": "France Park, Indiana",
+      "kind": "quarry",
+      "state": "Indiana"
+    },
+    {
+      "name": "Philips Quarry",
+      "query": "Philips Quarry, Muncie, Indiana",
+      "kind": "quarry",
+      "state": "Indiana"
+    },
+    {
+      "name": "White Star Quarry",
+      "query": "White Star Park, Gibsonburg, Ohio",
+      "kind": "quarry",
+      "state": "Ohio",
+      "maxDepthFt": 80,
+      "depthSource": "https://www.whitestarquarry.com/about-us.html"
+    },
+    {
+      "name": "Portage Quarry",
+      "query": "Portage Quarry, Bowling Green, Ohio",
+      "kind": "quarry",
+      "state": "Ohio",
+      "maxDepthFt": 70,
+      "depthSource": "https://dan.org/alert-diver/article/the-quarries-of-northwest-ohio/"
+    },
+    {
+      "name": "Nelson Ledges Quarry Park",
+      "query": "Nelson Ledges Quarry Park, Garrettsville, Ohio",
+      "kind": "quarry",
+      "state": "Ohio",
+      "maxDepthFt": 60,
+      "depthSource": "https://nlqp.com/scuba/"
+    },
+    {
+      "name": "Bonne Terre Mine",
+      "query": "Bonne Terre Mine, Bonne Terre, Missouri",
+      "kind": "mine",
+      "state": "Missouri"
+    },
+    {
+      "name": "Table Rock Lake",
+      "query": "Table Rock State Park, Missouri",
+      "kind": "lake",
+      "state": "Missouri"
+    },
+    {
+      "name": "Roubidoux Spring",
+      "query": "Roubidoux Spring, Waynesville, Missouri",
+      "kind": "spring-cave",
+      "state": "Missouri"
+    },
+    {
+      "name": "Lake Ouachita",
+      "query": "Lake Ouachita State Park, Arkansas",
+      "kind": "lake",
+      "state": "Arkansas"
+    },
+    {
+      "name": "Beaver Lake",
+      "query": "Beaver Lake, Benton County, Arkansas",
+      "kind": "lake",
+      "state": "Arkansas"
+    },
+    {
+      "name": "Greers Ferry Lake",
+      "query": "Greers Ferry Lake, Arkansas",
+      "kind": "lake",
+      "state": "Arkansas"
+    },
+    {
+      "name": "Lake Travis — Windy Point",
+      "query": "Windy Point Park, Texas",
+      "kind": "lake",
+      "state": "Texas"
+    },
+    {
+      "name": "Balmorhea State Park (San Solomon Springs)",
+      "query": "Balmorhea State Park, Texas",
+      "kind": "spring",
+      "state": "Texas"
+    },
+    {
+      "name": "Blue Lagoon",
+      "query": "Blue Lagoon, Walker County, Texas",
+      "kind": "quarry",
+      "state": "Texas",
+      "maxDepthFt": 30,
+      "depthSource": "https://maximum-scuba.com/blue-lagoon-scuba"
+    },
+    {
+      "name": "Clear Springs Scuba Park",
+      "query": "Clear Springs Scuba Park, Terrell, Texas",
+      "kind": "lake",
+      "state": "Texas"
+    },
+    {
+      "name": "Athens Scuba Park",
+      "query": "Athens Scuba Park, Athens, Texas",
+      "kind": "lake",
+      "state": "Texas",
+      "maxDepthFt": 28,
+      "depthSource": "https://athensscubapark.com/"
+    },
+    {
+      "name": "Canyon Lake",
+      "query": "Canyon Lake, Comal County, Texas",
+      "kind": "lake",
+      "state": "Texas"
+    },
+    {
+      "name": "Possum Kingdom Lake",
+      "query": "Possum Kingdom Lake, Texas",
+      "kind": "lake",
+      "state": "Texas"
+    },
+    {
+      "name": "Tenkiller Ferry Lake",
+      "query": "Tenkiller Ferry Lake, Oklahoma",
+      "kind": "lake",
+      "state": "Oklahoma"
+    },
+    {
+      "name": "Blue Hole",
+      "query": "Blue Hole, Santa Rosa, New Mexico",
+      "kind": "spring",
+      "state": "New Mexico",
+      "maxDepthFt": 80,
+      "depthSource": "https://www.santarosabluehole.com/blue-hole/"
+    },
+    {
+      "name": "Lake Mead — Boulder Beach",
+      "query": "Boulder Beach, Lake Mead, Nevada",
+      "kind": "lake",
+      "state": "Nevada"
+    },
+    {
+      "name": "Lake Mohave",
+      "query": "Lake Mohave",
+      "kind": "lake",
+      "state": "Nevada"
+    },
+    {
+      "name": "Lake Pleasant",
+      "query": "Lake Pleasant Regional Park, Arizona",
+      "kind": "lake",
+      "state": "Arizona"
+    },
+    {
+      "name": "Lake Tahoe — Sand Harbor",
+      "query": "Sand Harbor, Nevada",
+      "kind": "lake",
+      "state": "Nevada"
+    },
+    {
+      "name": "Homestead Crater",
+      "query": "Homestead Crater, Midway, Utah",
+      "kind": "spring",
+      "state": "Utah",
+      "maxDepthFt": 65,
+      "depthSource": "https://homesteadmidwayutah.com/adventures/crater/",
+      "mapNames": [
+        "Homestead caldera"
+      ]
+    },
+    {
+      "name": "Bonneville Seabase",
+      "query": "Bonneville Seabase, Grantsville, Utah",
+      "kind": "spring",
+      "state": "Utah",
+      "maxDepthFt": 62,
+      "depthSource": "https://www.padi.com/dive-site/united-states-of-america-usa/bonneville-seabase/"
+    },
+    {
+      "name": "Bear Lake",
+      "query": "Bear Lake, Rich County, Utah",
+      "kind": "lake",
+      "state": "Utah"
+    },
+    {
+      "name": "Flathead Lake",
+      "query": "Flathead Lake, Montana",
+      "kind": "lake",
+      "state": "Montana"
+    },
+    {
+      "name": "Lake Pend Oreille",
+      "query": "Lake Pend Oreille, Idaho",
+      "kind": "lake",
+      "state": "Idaho"
+    },
+    {
+      "name": "Aurora Reservoir",
+      "query": "Aurora Reservoir, Colorado",
+      "kind": "lake",
+      "state": "Colorado"
+    },
+    {
+      "name": "Cuyuna mine pit lakes",
+      "query": "Cuyuna Country State Recreation Area, Minnesota",
+      "kind": "mine",
+      "state": "Minnesota"
+    },
+    {
+      "name": "Lake Rawlings",
+      "query": "Lake Rawlings, Virginia",
+      "kind": "quarry",
+      "state": "Virginia",
+      "maxDepthFt": 65,
+      "depthSource": "https://www.zentacle.com/Beach/2865/lake-rawlings"
+    },
+    {
+      "name": "Philpott Lake",
+      "query": "Philpott Lake, Virginia",
+      "kind": "lake",
+      "state": "Virginia"
+    },
+    {
+      "name": "Fantasy Lake Scuba Park",
+      "query": "Fantasy Lake Scuba Park, Hope Mills, North Carolina",
+      "kind": "quarry",
+      "state": "North Carolina"
+    },
+    {
+      "name": "Lake Jocassee",
+      "query": "Lake Jocassee, South Carolina",
+      "kind": "lake",
+      "state": "South Carolina"
+    },
+    {
+      "name": "Lake George",
+      "query": "Lake George, Warren County, New York",
+      "kind": "lake",
+      "state": "New York"
+    },
+    {
+      "name": "Peacock Springs",
+      "query": "Peacock Springs State Park, Florida",
+      "kind": "spring-cave",
+      "state": "Florida"
+    },
+    {
+      "name": "Troy Spring",
+      "query": "Troy Spring State Park, Florida",
+      "kind": "spring",
+      "state": "Florida"
+    },
+    {
+      "name": "Devil's Den",
+      "query": "Devil's Den, Williston, Florida",
+      "kind": "spring-cave",
+      "state": "Florida",
+      "maxDepthFt": 54,
+      "depthSource": "https://devilsden.com/about"
+    },
+    {
+      "name": "Rainbow River",
+      "query": "Rainbow Springs State Park, Florida",
+      "kind": "spring",
+      "state": "Florida"
+    },
+    {
+      "name": "Crystal River — Kings Bay",
+      "query": "Kings Bay, Crystal River, Florida",
+      "kind": "spring",
+      "state": "Florida"
+    },
+    {
+      "name": "Blue Spring",
+      "query": "Blue Spring State Park, Orange City, Florida",
+      "kind": "spring",
+      "state": "Florida"
+    },
+    {
+      "name": "Morrison Springs",
+      "query": "Morrison Springs County Park, Florida",
+      "kind": "spring-cave",
+      "state": "Florida"
+    },
+    {
+      "name": "Alexander Springs",
+      "query": "Alexander Springs, Lake County, Florida",
+      "kind": "spring",
+      "state": "Florida"
+    },
+    {
+      "name": "Madison Blue Spring",
+      "query": "Madison Blue Spring, Florida",
+      "kind": "spring-cave",
+      "state": "Florida"
+    },
+    {
+      "name": "Manatee Springs",
+      "query": "Manatee Springs State Park, Florida",
+      "kind": "spring-cave",
+      "state": "Florida"
+    },
+    {
+      "name": "Jackson Blue Spring",
+      "query": "Jackson Blue Spring, Florida",
+      "kind": "spring-cave",
+      "state": "Florida"
+    },
+    {
+      "name": "Little River Spring",
+      "query": "Little River Spring, Suwannee County, Florida",
+      "kind": "spring-cave",
+      "state": "Florida"
+    },
+    {
+      "name": "Gilboa Quarry",
+      "query": "Gilboa Quarry, Ottawa, Ohio",
+      "kind": "quarry",
+      "state": "Ohio",
+      "maxDepthFt": 140,
+      "depthSource": "https://gilboaquarry.com/scuba-diving/"
+    }
+  ]
+}

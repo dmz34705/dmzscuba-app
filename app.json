@@ -3,7 +3,7 @@
     "name": "DMZ Scuba",
     "slug": "dmz-scuba-app",
     "scheme": "dmzscuba",
-    "version": "1.0.0",
+    "version": "0.0.104",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -15,7 +15,7 @@
       "supportsTablet": true,
       "userInterfaceStyle": "dark",
       "infoPlist": {
-        "NSCameraUsageDescription": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens.",
+        "NSCameraUsageDescription": "DMZ Scuba uses the camera for side-window compass practice, to demonstrate how underwater depth affects visible colors, and to identify marine life or gear in Dive Lens.",
         "NSPhotoLibraryUsageDescription": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose, and so you can pick a background photo for a dive profile share card."
       }
     },
@@ -60,7 +60,7 @@
         "expo-image-picker",
         {
           "photosPermission": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose, and so you can pick a background photo for a dive profile share card.",
-          "cameraPermission": "DMZ Scuba uses the camera to demonstrate how underwater depth affects visible colors and to identify marine life or gear in Dive Lens."
+          "cameraPermission": "DMZ Scuba uses the camera for side-window compass practice, to demonstrate how underwater depth affects visible colors, and to identify marine life or gear in Dive Lens."
         }
       ],
       "./plugins/withLibDiveComputer",
@@ -88,7 +88,8 @@
           "photosPermission": "DMZ Scuba needs photo access so Dive Lens can identify marine life or gear from a picture you choose, and so you can pick a background photo for a dive profile share card.",
           "savePhotosPermission": "DMZ Scuba saves the dive profile share cards you create to your Photos library."
         }
-      ]
+      ],
+      "@react-native-community/datetimepicker"
     ]
   }
 }

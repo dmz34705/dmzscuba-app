@@ -17,6 +17,7 @@ import DiveLensScreen from '../screens/DiveLensScreen';
 import ComingSoonScreen from '../screens/ComingSoonScreen';
 import CompassNavScreen from '../screens/CompassNavScreen';
 import DiveLogScreen from '../screens/DiveLogScreen';
+import OceanAtlasScreen from '../screens/OceanAtlasScreen';
 import GearSetupScreen from '../screens/GearSetupScreen';
 import GearChecklistScreen from '../screens/GearChecklistScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -37,7 +38,7 @@ const GEAR_SETUP_ENABLED = false;
 
 export default function AppNavigator() {
   const [navigation, dispatch] = useReducer(reduceNavigation, INITIAL_NAVIGATION);
-  const { activeTab, detailRoute, moreRoute, settingsSection } = navigation;
+  const { activeTab, detailRoute, moreRoute, settingsSection, logbookIntent } = navigation;
   const appSettings = useAppSettings();
   const accountSession = useAccountSession({
     appSettings: appSettings.settings,
@@ -54,7 +55,7 @@ export default function AppNavigator() {
   }, [appSettings.loaded, appSettings.settings.locationLoggingEnabled]);
 
   const closeDetail = () => dispatch({ type: 'closeDetail' });
-  const openDetail = (route) => dispatch({ type: 'open', route });
+  const openDetail = (route) => dispatch({ type: 'open', route, at: Date.now() });
   const selectTab = (tab) => dispatch({ type: 'tab', tab });
   const openAccount = () => selectTab('account');
   const goBack = () => dispatch({ type: 'back' });
@@ -71,6 +72,9 @@ export default function AppNavigator() {
   }, [activeTab, detailRoute, moreRoute, settingsSection]);
 
   const feature = getFeature(detailRoute);
+  if (feature?.routeType === 'ocean-atlas') {
+    return <OceanAtlasScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />;
+  }
   if (feature?.routeType === 'color-loss') {
     return <ColorLossScreen appSettings={appSettings.settings} onBack={closeDetail} />;
   }
@@ -99,7 +103,7 @@ export default function AppNavigator() {
     return <DiveCalculatorScreen appSettings={appSettings.settings} onBack={closeDetail} profileDefaults={accountSession.profile} />;
   }
   if (feature?.routeType === 'gear-checklist') {
-    return <GearChecklistScreen onBack={closeDetail} />;
+    return <GearChecklistScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenComputerDives={(deviceKey) => dispatch({ type: 'open', route: 'dive-log:folder', folder: deviceKey, at: Date.now() })} />;
   }
   if (feature?.routeType === 'dive-computer-simulator') {
     return <DiveComputerSimulatorScreen appSettings={appSettings.settings} onBack={closeDetail} />;
@@ -155,10 +159,10 @@ export default function AppNavigator() {
   return (
     <View style={styles.shell}>
       <View style={styles.tabContent}>
-        {activeTab === 'home' ? <HomeScreen onOpenTool={openDetail} onSelectTab={selectTab} /> : null}
+        {activeTab === 'home' ? <HomeScreen appSettings={appSettings.settings} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
         {activeTab === 'learn' ? <LearnScreen onOpenTool={openDetail} /> : null}
         {activeTab === 'tools' ? <ToolsScreen onOpenTool={openDetail} /> : null}
-        {activeTab === 'logbook' ? <DiveLogScreen appSettings={appSettings.settings} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
+        {activeTab === 'logbook' ? <DiveLogScreen key={logbookIntent?.at || 'logbook'} appSettings={appSettings.settings} initialAction={logbookIntent?.action || null} initialFolder={logbookIntent?.folder || null} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
         {activeTab === 'more' && !moreRoute ? <MoreScreen onOpen={selectTab} /> : null}
         {activeTab === 'more' && moreRoute === 'account' ? (
           <AccountScreen

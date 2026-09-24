@@ -24,6 +24,7 @@ import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { FormError } from '../components/AccountForm';
+import { InlineIosPicker, formatDateDisplay, useDatePicker } from '../components/DateField';
 import { Card, GroupedSection, NavigationRow, PrimaryButton, SecondaryButton, Stat } from '../components/Ui';
 import FeatureIcon from '../features/catalog/FeatureIcon';
 import useDiveLog, { ALL_DIVES_KEY } from '../features/diveLog/useDiveLog';
@@ -328,6 +329,20 @@ function Field({ label, value, onChangeText, suffix, placeholder, helper, keyboa
         />
         {suffix ? <Text style={styles.inputSuffix}>{suffix}</Text> : null}
       </View>
+      {helper ? <Text style={styles.fieldHelper}>{helper}</Text> : null}
+    </View>
+  );
+}
+
+function DateOnlyField({ label, value, onChangeText, helper }) {
+  const picker = useDatePicker({ value, onChange: onChangeText });
+  return (
+    <View style={styles.field}>
+      <Text style={styles.fieldLabel}>{label}</Text>
+      <Pressable accessibilityLabel={label} accessibilityRole="button" onPress={picker.openPicker} style={styles.inputShell}>
+        <Text numberOfLines={1} style={value ? styles.input : [styles.input, styles.inputPlaceholder]}>{value ? formatDateDisplay(value) : 'Select date'}</Text>
+      </Pressable>
+      <InlineIosPicker onChange={onChangeText} picker={picker} />
       {helper ? <Text style={styles.fieldHelper}>{helper}</Text> : null}
     </View>
   );
@@ -870,20 +885,35 @@ function PhotoOrganizerRow({ onPress, last = false }) {
   );
 }
 
-function LogbookQuickActions({ computerDownloadAvailable, onDownload, onMatchPhotos, libdcVersion }) {
+function LogbookQuickActions({ onMatchPhotos }) {
   return (
-    <GroupedSection title="Add to your logbook">
-      {computerDownloadAvailable ? (
-        <NavigationRow
-          accent={colors.cyan}
-          icon={<FeatureIcon name="dive-computer" />}
-          title="Download from dive computer"
-          body={libdcVersion ? `libdivecomputer ${libdcVersion}` : 'Import dives over Bluetooth'}
-          onPress={onDownload}
-        />
-      ) : null}
+    <GroupedSection title="Organize">
       <PhotoOrganizerRow onPress={onMatchPhotos} last />
     </GroupedSection>
+  );
+}
+
+// Adding dives: downloading from a dive computer is the main path, manual entry the fallback.
+// Without Bluetooth download support (e.g. a build without libdivecomputer), manual entry leads.
+function AddDivesActions({ available, computer, onDownload, onManual, style }) {
+  if (!available) return <PrimaryButton label="Log a dive" onPress={onManual} style={style} />;
+  const detail = computer ? `Last used: ${computer.label}` : 'Pair over Bluetooth to pull in your dives';
+  return (
+    <View style={style}>
+      <Pressable accessibilityRole="button" accessibilityLabel={`Download from dive computer. ${detail}`} onPress={onDownload} style={({ pressed }) => [styles.downloadHero, pressed && styles.downloadHeroPressed]}>
+        <LinearGradient colors={[colors.accent, colors.accentDark]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
+        <View style={styles.downloadHeroIcon}><FeatureIcon name="dive-computer" /></View>
+        <View style={styles.downloadHeroCopy}>
+          <Text style={styles.downloadHeroTitle}>Download from dive computer</Text>
+          <Text style={styles.downloadHeroBody} numberOfLines={1}>{detail}</Text>
+        </View>
+        <Text style={styles.downloadHeroChevron}>›</Text>
+      </Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel="Log a dive manually" onPress={onManual} style={({ pressed }) => [styles.manualLink, pressed && styles.downloadHeroPressed]}>
+        <Text style={styles.manualLinkPlus}>+</Text>
+        <Text style={styles.manualLinkText}>Log a dive manually</Text>
+      </Pressable>
+    </View>
   );
 }
 
@@ -1817,7 +1847,7 @@ function DiveEditForm({ form, units, onChange, error }) {
 
       <FormSection title="When & where">
         <View style={styles.twoColumn}>
-          <Field label="Date" value={form.date} onChangeText={set('date')} placeholder="YYYY-MM-DD" keyboardType="numbers-and-punctuation" />
+          <DateOnlyField label="Date" onChangeText={set('date')} value={form.date} />
           <Field label="Time" value={form.time} onChangeText={set('time')} placeholder="HH:MM" keyboardType="numbers-and-punctuation" />
         </View>
         <View style={styles.twoColumn}>
@@ -2457,7 +2487,7 @@ function PhotoGalleryView({
   );
 }
 
-export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings = () => {} }) {
+export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings = () => {}, initialDiveId = null, initialAction = null, initialFolder = null }) {
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
@@ -2516,7 +2546,10 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     };
     Alert.alert(
       'Link phone location to this dive?',
-      `${suggestion.siteName || formatDate(suggestion.diveStartTime) || 'Downloaded dive'}\n`
+      `${suggestion.siteName || suggestion.nearbySiteName || formatDate(suggestion.diveStartTime) || 'Downloaded dive'}\n`
+        + (suggestion.nearbySiteName && !suggestion.siteName
+          ? `Nearby site: ${suggestion.nearbySiteName}${suggestion.nearbySiteDistanceMeters != null ? ` (${suggestion.nearbySiteDistanceMeters} m away)` : ''}\n`
+          : '')
         + `${suggestion.latitude.toFixed(5)}, ${suggestion.longitude.toFixed(5)} · recorded ${timing}`,
       [
         { text: 'Skip', style: 'cancel', onPress: () => finish(false) },
@@ -2581,9 +2614,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
 
   const libdcVersion = useMemo(() => getLibdivecomputerVersion(), []);
 
-  const [view, setView] = useState('list');
+  const [view, setView] = useState(initialDiveId ? 'detail' : 'list');
   const [folderKey, setFolderKey] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState(initialDiveId);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [photoImportReview, setPhotoImportReview] = useState(null);
@@ -2948,6 +2981,13 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     setView('edit');
   }, []);
 
+  // Opened from a shortcut (Home): go straight to logging a dive or downloading from a computer.
+  useEffect(() => {
+    if (initialAction === 'new') openNew();
+    else if (initialAction === 'download') setView('download');
+    else if (initialAction === 'folder' && initialFolder) setFolderKey(initialFolder);
+  }, [initialAction, initialFolder, openNew]);
+
   const openEdit = useCallback(() => {
     if (!record) return;
     setForm(recordToForm(record, units));
@@ -2962,11 +3002,12 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       else openList();
       return;
     }
+    if (view === 'detail' && initialDiveId && selectedId === initialDiveId) { onBack?.(); return; }
     if (view === 'detail' || view === 'download' || view === 'stats' || view === 'gallery') { openList(); return; }
     if (view === 'review') { clearProposals(); openList(); return; }
     if (view === 'list' && activeFolder) { setFolderKey(null); return; }
     onBack?.();
-  }, [activeFolder, clearProposals, exitSelect, onBack, openList, selectMode, selectedId, view]);
+  }, [activeFolder, clearProposals, exitSelect, initialDiveId, onBack, openList, selectMode, selectedId, view]);
 
   const handleSave = useCallback(async () => {
     if (!form) return;
@@ -3111,7 +3152,13 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
               <>
                 <StatSummaryCard stats={stats} units={units} onPress={() => setView('stats')} />
 
-                <PrimaryButton label="Log a dive" onPress={openNew} style={styles.gridPrimary} />
+                <AddDivesActions
+                  available={Boolean(libdcVersion)}
+                  computer={folders.find((f) => f.kind === 'computer') || null}
+                  onDownload={() => setView('download')}
+                  onManual={openNew}
+                  style={styles.gridPrimary}
+                />
 
                 <GroupedSection title="YOUR DIVES">
                   {folders.filter((f) => f.kind === 'all').map((folder, i, arr) => (
@@ -3151,12 +3198,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                   </GroupedSection>
                 ) : null}
 
-                <LogbookQuickActions
-                  computerDownloadAvailable={Boolean(libdcVersion)}
-                  onDownload={() => setView('download')}
-                  onMatchPhotos={beginPhotoImport}
-                  libdcVersion={libdcVersion}
-                />
+                <LogbookQuickActions onMatchPhotos={beginPhotoImport} />
               </>
             ) : (
               <>
@@ -3222,7 +3264,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                     <Text style={styles.emptyBody}>
                       {activeFilterCount
                         ? `${folderRows.length} ${folderRows.length === 1 ? 'dive is' : 'dives are'} hidden by the filters you've set.`
-                        : 'Add your first dive to start building your history and totals.'}
+                        : (libdcVersion ? 'Download your dives from your dive computer — or log one by hand — to start building your history and totals.' : 'Add your first dive to start building your history and totals.')}
                     </Text>
                     {activeFilterCount ? (
                       <SecondaryButton label="Clear filters" onPress={clearFilter} style={styles.clearFiltersButton} />
@@ -3251,7 +3293,15 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                     })}
                   </View>
                 )}
-                {!selectMode ? <PrimaryButton label="Log a dive" onPress={openNew} style={styles.primaryCta} /> : null}
+                {!selectMode ? (
+                  <AddDivesActions
+                    available={Boolean(libdcVersion)}
+                    computer={activeFolder?.kind === 'computer' ? activeFolder : folders.find((f) => f.kind === 'computer') || null}
+                    onDownload={() => setView('download')}
+                    onManual={openNew}
+                    style={styles.primaryCta}
+                  />
+                ) : null}
               </>
             )}
           </>
@@ -3592,6 +3642,16 @@ const styles = StyleSheet.create({
   spotlightBody: { color: colors.muted, fontSize: 12, lineHeight: 16, marginTop: 4 },
   spotlightArrow: { color: colors.cyan, fontSize: 24, fontWeight: '300' },
   gridPrimary: { marginBottom: spacing.lg },
+  downloadHero: { alignItems: 'center', borderRadius: 18, flexDirection: 'row', gap: 12, minHeight: 72, overflow: 'hidden', paddingHorizontal: 14, paddingVertical: 12 },
+  downloadHeroPressed: { opacity: 0.85, transform: [{ scale: 0.99 }] },
+  downloadHeroIcon: { alignItems: 'center', backgroundColor: 'rgba(5,11,20,0.45)', borderRadius: 14, height: 48, justifyContent: 'center', width: 48 },
+  downloadHeroCopy: { flex: 1 },
+  downloadHeroTitle: { color: colors.white, fontSize: 16, fontWeight: '800' },
+  downloadHeroBody: { color: 'rgba(255,255,255,0.82)', fontSize: 12, marginTop: 3 },
+  downloadHeroChevron: { color: colors.white, fontSize: 28, fontWeight: '300', marginTop: -2 },
+  manualLink: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: 14, borderWidth: 1, flexDirection: 'row', gap: 8, justifyContent: 'center', marginTop: 10, minHeight: 46 },
+  manualLinkPlus: { color: colors.cyan, fontSize: 20, fontWeight: '500', marginTop: -2 },
+  manualLinkText: { color: colors.text, fontSize: 14, fontWeight: '700' },
   rankBadge: { color: colors.cyan, fontSize: 11, fontWeight: '800', letterSpacing: 0.3 },
   trendRow: { alignItems: 'center', borderTopColor: colors.line, borderTopWidth: 1, flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 9 },
   trendLabel: { color: colors.muted, fontSize: 12 },
@@ -3849,6 +3909,7 @@ const styles = StyleSheet.create({
   fieldLabel: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 0.4, marginBottom: 6, textTransform: 'uppercase' },
   inputShell: { alignItems: 'center', backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', minHeight: 47, paddingHorizontal: 11 },
   input: { color: colors.text, flex: 1, fontSize: 16, fontWeight: '700', paddingVertical: 10 },
+  inputPlaceholder: { color: colors.faint },
   inputSuffix: { color: colors.cyan, fontSize: 11, fontWeight: '800', marginLeft: 7 },
   fieldHelper: { color: colors.faint, fontSize: 10, lineHeight: 14, marginTop: 4 },
   twoColumn: { flexDirection: 'row', flexWrap: 'wrap', gap: 9 },

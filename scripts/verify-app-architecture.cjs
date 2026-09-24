@@ -74,7 +74,15 @@ assert.deepEqual(navigate(navigate(toolsTab, 'open', { route: 'dive-calculator' 
 assert.equal(navigate(toolsTab, 'tab', { tab: 'invalid' }), toolsTab);
 assert.equal(navigate(toolsTab, 'section', { section: 'invalid' }), toolsTab);
 
-assert.match(homeSource, /getFeaturedFeature/);
+assert.match(homeSource, /getFeature\b/, 'Home tiles come from the feature catalog.');
+// Home's shortcuts open the logbook straight into a task, and Back still returns Home.
+const logNew = navigate(INITIAL_NAVIGATION, 'open', { route: 'dive-log:new', at: 1 });
+assert.equal(logNew.activeTab, 'logbook'); assert.deepEqual(logNew.logbookIntent, { action: 'new', at: 1 });
+assert.equal(navigate(INITIAL_NAVIGATION, 'open', { route: 'dive-log:download', at: 2 }).logbookIntent.action, 'download');
+assert.equal(navigate(INITIAL_NAVIGATION, 'open', { route: 'dive-log' }).logbookIntent, null);
+assert.deepEqual(navigate(logNew, 'back'), INITIAL_NAVIGATION);
+const computerDives = navigate(INITIAL_NAVIGATION, 'open', { route: 'dive-log:folder', folder: 'Shearwater|Perdix 2|1234', at: 3 });
+assert.equal(computerDives.activeTab, 'logbook'); assert.deepEqual(computerDives.logbookIntent, { action: 'folder', folder: 'Shearwater|Perdix 2|1234', at: 3 }, 'a dive computer in the gear locker opens its logbook folder');
 assert.match(homeSource, /getFeaturesByArea/);
 assert.match(learnSource, /FeatureCatalogScreen/);
 assert.match(toolsSource, /FeatureCatalogScreen/);
@@ -84,4 +92,8 @@ assert.doesNotMatch(toolsSource, /dive-calculator|dive-lens/);
 assert.match(architectureSource, /Adding a lesson or tool/);
 assert.match(architectureSource, /Regression expectations/);
 
+// Every open educational lab starts on the shared landing page (what it is, what you'll learn, how to start).
+for (const screen of ['ColorLossScreen', 'BoylesLawScreen', 'CompassNavScreen', 'DiveComputerSimulatorScreen']) {
+  assert.match(read('src', 'screens', `${screen}.js`), /<LabLanding/, `${screen} opens on LabLanding.`);
+}
 console.log('App architecture checks passed.');

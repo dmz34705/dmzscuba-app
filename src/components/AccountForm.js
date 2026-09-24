@@ -9,6 +9,7 @@ export function FormField({
   autoComplete,
   editable = true,
   helper,
+  inputAccessoryViewID,
   keyboardType = 'default',
   label,
   maxLength,
@@ -28,14 +29,14 @@ export function FormField({
         autoComplete={autoComplete}
         autoCorrect={false}
         editable={editable}
-        inputAccessoryViewID={hasNumberKeyboard ? NUMBER_KEYBOARD_ACCESSORY_ID : undefined}
+        inputAccessoryViewID={inputAccessoryViewID || (hasNumberKeyboard ? NUMBER_KEYBOARD_ACCESSORY_ID : undefined)}
         keyboardType={keyboardType}
         maxLength={maxLength}
         onChangeText={onChangeText}
-        onSubmitEditing={hasNumberKeyboard ? Keyboard.dismiss : undefined}
+        onSubmitEditing={hasNumberKeyboard || inputAccessoryViewID ? Keyboard.dismiss : undefined}
         placeholder={placeholder}
         placeholderTextColor={colors.faint}
-        returnKeyType={hasNumberKeyboard ? 'done' : undefined}
+        returnKeyType={hasNumberKeyboard || inputAccessoryViewID ? 'done' : undefined}
         secureTextEntry={secureTextEntry}
         style={[styles.input, !editable && styles.inputDisabled]}
         textContentType={textContentType}

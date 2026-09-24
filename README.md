@@ -1,19 +1,27 @@
 # DMZ Scuba
 
-DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion app for scuba
-divers. It brings together interactive dive education, planning calculators,
-compass-navigation practice, a fully simulated training dive computer, direct
-Bluetooth downloads from real dive computers, a deep local logbook, equipment
-tracking, timestamp-based photo organization, AI-assisted photo identification,
-account/settings sync, and shareable dive cards — in a local-first design that
-stays useful with no account and no connection.
+> **Pre-alpha 0.0.104** — active development. Data models, workflows and visual
+> design can still change before the first public alpha.
 
-This README is written for two audiences:
+DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion for divers who
+have outgrown a pile of disconnected single-purpose apps. It combines a serious
+local-first logbook, direct dive-computer downloads, a setup-aware Gear Locker,
+the data-rich Ocean Atlas, travel planning, calculators, practical training labs,
+photo organization, Dive Lens identification and shareable dive cards.
 
-- **[Plain-language tour](#plain-language-tour)** — what the app does and how the
-  pieces fit together, no software experience assumed.
+The important part is not the feature count. The same dive computers that create
+logbook records become tracked equipment. Logged coordinates appear in the Atlas.
+The Atlas connects site conditions and the diver's own temperature preferences to
+real saved gear setups. Travel guidance starts from the same location being
+researched. Home turns all of that into a personal dashboard. DMZ Scuba is being
+built as one connected diving system rather than a folder of unrelated tools.
+
+This README serves two audiences:
+
+- **[Product tour](#product-tour)** — what the app can do and how its parts work
+  together, without requiring software knowledge.
 - **[Under the hood](#under-the-hood)** — architecture, data models, native
-  integrations, storage, algorithms, and the development workflow.
+  integrations, storage, datasets, algorithms and the development workflow.
 
 > [!IMPORTANT]
 > DMZ Scuba's calculators, simulations, navigation practice, safety scores, and
@@ -24,41 +32,68 @@ This README is written for two audiences:
 
 ---
 
+## Current status
+
+This is a functional **pre-alpha**, not a store-ready release. The major native
+workflows are implemented and covered by focused regression scripts, but the app
+still needs broader physical-device testing, accessibility work, content review,
+production service hardening and public-alpha migration guarantees. The current
+version deliberately uses the repository commit number as its patch version:
+this release is commit 104, therefore `0.0.104`.
+
+DMZ Scuba is local-first and useful while signed out. Network access is needed
+for detailed OpenStreetMap tiles, account sync, Dive Lens, some travel links and
+the remaining hosted content. Direct dive-computer download requires a full iOS
+build and compatible hardware; it does not run in Expo Go.
+
 ## Project at a glance
 
 | Tab | What the diver sees | How it works |
 | --- | --- | --- |
-| **Home** | A hero, a "start here" list, and a featured lesson | Catalog-driven navigation over reusable native UI |
-| **Learn** | Color-loss and Boyle's Law labs, a compass-navigation lab, a dive-computer trainer (and a "coming soon" gear-assembly lab) | Two website embeds; three fully native interactive labs; one deterministic simulator |
-| **Tools** | Dive calculator, Gear Locker, Logbook, and Dive Lens | Framework-independent calculation/domain modules wrapped in native screens |
-| **Logbook** | Manual dives, computer downloads, profile charts, photos, filters, statistics, exports, backups | A versioned local data model in AsyncStorage plus an Apple native bridge to libdivecomputer |
+| **Home** | Greeting, dive totals, last dive, download/manual actions, gear-service alerts, quick tools, seasonal wildlife and lessons | Live summaries from the logbook, Gear Locker, Ocean Atlas seasons and feature catalog |
+| **Learn** | Native Color Loss, Boyle's Law, Compass Navigation and Dive Computer labs; Build a Scuba Unit remains coming soon | Shared lab landings, guided tasks and free exploration over testable domain models |
+| **Tools** | Ocean Atlas, calculator, Gear Locker, Logbook and Dive Lens | Connected native workflows backed by pure calculation, planning and storage modules |
+| **Logbook** | Manual dives, real computer downloads, reconciliation, charts, gallery, filters, statistics, exports and backups | Canonical dives plus preserved per-computer evidence and an Apple libdivecomputer bridge |
 | **More** | Account and app settings | Supabase auth, DMZScuba.com account APIs, Turnstile, SecureStore, debounced settings sync |
 
-Everything reachable from Learn and Tools is generated from **one feature
-catalog** (`src/features/catalog/featureCatalog.js`), so the Home screen, the two
-menus, and the router never drift into separate lists.
+Everything discoverable in Learn and Tools is generated from **one feature
+catalog** (`src/features/catalog/featureCatalog.js`), so public labels and routes
+do not become separate, conflicting lists.
 
----
+## Product tour
 
-## Plain-language tour
+### One connected system
 
-### The basic idea
+| What happens | What DMZ Scuba connects |
+| --- | --- |
+| A dive is downloaded from two computers | Both raw machine logs are retained, their profiles and clocks are compared, and one human-facing dive is shown instead of double-counting it |
+| One computer records a long dive while another splits it | Profile shape, timing and sequence evidence can propose one canonical dive with multiple logs; uncertain decisions go to the diver |
+| The diver imports camera-roll photos | Capture time is compared with dive intervals, likely matches are reviewed on-device, duplicates are skipped and photo depth is interpolated from the profile |
+| A computer appears in downloaded dives | It is automatically represented in the Gear Locker and links back to the dives recorded with it |
+| A diver builds a saved setup | Linked components, cylinder sets, floating items, drysuit undergarments, packing state and one-time completeness questions stay organized together |
+| A site is opened in the Ocean Atlas | Conditions, depth, terrain, seasons, travel complexity and the diver's declared setup uses inform a read-only gear proposal |
+| A cold- or warm-running diver plans exposure protection | Personal suit ranges or detailed suit/layer/hood/glove combinations refine the generic guidance without changing the saved setup |
+| A logged dive has coordinates | It appears as a private Atlas pin and opens the real editable logbook record; full notes, profiles and photos never enter the map WebView |
+| Home opens | It summarizes the logbook, surfaces equipment service needs, links directly into download/manual logging and highlights what is seasonally relevant now |
 
-Think of the app as five stable rooms held by the bottom tab bar:
+These are planning and organization connections, not automated authority. The
+app never infers technical training from owning doubles, never treats a saved
+setup as proof that a dive is appropriate, and never silently edits a setup from
+an Atlas suggestion.
 
-1. **Home** is the front desk — it points at the most useful destinations without
-   trying to show everything.
-2. **Learn** explains dive science visually and lets a diver *practice* skills:
-   reading a simulated computer, and running a compass out-and-back.
-3. **Tools** holds the calculators, the equipment locker, the logbook, and Dive
-   Lens.
-4. **Logbook** is the centre of gravity: dives are entered by hand or downloaded
-   from a real computer, then searched, reviewed, analysed, photographed,
-   exported, or turned into a share card.
-5. **More** holds account and app settings.
+### The five main spaces
 
-A lesson or tool opens as a temporary detail screen; **Back** always returns to
-whatever opened it (including Android's hardware Back button).
+1. **Home** is the dashboard: recent diving, the two fastest logbook actions,
+   equipment needing attention, quick tools, wildlife in season and lessons.
+2. **Learn** turns dive concepts and instrument skills into guided interaction,
+   then leaves the controls open for exploration.
+3. **Tools** collects the Atlas, calculator, Gear Locker, Logbook and Dive Lens.
+4. **Logbook** is the historical center: manual and downloaded dives are
+   reconciled, reviewed, searched, analyzed, photographed, exported and shared.
+5. **More** holds account, profile and app settings.
+
+A lesson or tool opens as a temporary detail screen; **Back** returns to what
+opened it, including Android's hardware Back button.
 
 ### What stays on the phone and what leaves it
 
@@ -68,8 +103,8 @@ are always opt-in or explicit.
 | Information or feature | Local or online? |
 | --- | --- |
 | Dive records, downloaded profile samples, reconciliation decisions | Stored locally on the device |
-| Gear inventory, service records, checklists, attached photos and PDFs | Stored locally on the device |
-| Logbook photos | The app stores links to camera-roll assets; matching never uploads the photos |
+| Gear inventory, components, setups, packing state, service records, photos and PDFs | Stored locally on the device |
+| Logbook photos | Matching stays on-device; confirmed photos are copied into app-managed storage and never uploaded |
 | Coarse location breadcrumbs | Stored locally, only after the diver opts in, kept 90 days |
 | Unit / calculator / graph / location preferences | Stored locally; supported settings also sync to a signed-in account |
 | Compass heading and device tilt | Read from the phone's own sensors; nothing is transmitted |
@@ -77,7 +112,9 @@ are always opt-in or explicit.
 | Account profile and certifications | Stored through the online DMZ Scuba account service |
 | Account refresh token | Stored in the device's secure credential storage |
 | Dive Lens image | Sent to the DMZ media API **only** when the diver taps identify |
-| Color-loss and Boyle's Law labs | Loaded from DMZScuba.com inside an in-app browser view |
+| Color-loss, Boyle's Law, Compass and Dive Computer labs | Native app experiences; sensor/camera modes use only the local device |
+| Ocean Atlas core datasets and world map | Bundled in the app; detailed OpenStreetMap tiles and outbound source/travel links use the network |
+| Atlas gear preferences and proposals | Stored and calculated locally; locker inventory never enters the Atlas WebView |
 | Real dive-computer download | Runs locally over Bluetooth in a full iOS build |
 
 ### A typical diver journey
@@ -93,13 +130,20 @@ do, it shows one dive in the logbook while keeping both computers' evidence
 underneath — the diver picks which computer is primary, inspects each recorded
 profile, and corrects clock differences when needed.
 
-Afterward the diver can select a large batch of camera-roll images. Capture times
+Downloaded computers also appear in the Gear Locker, where the diver can build
+real single-tank, doubles, sidemount, rebreather, bailout or custom setups rather
+than maintaining a flat inventory. The same locker can later provide a read-only
+packing proposal for a site opened in the Ocean Atlas, including personal
+exposure combinations and service/condition warnings.
+
+After a trip the diver can select a large batch of camera-roll images. Capture times
 are compared with dive times, likely matches are shown for review, duplicates are
 skipped, and uncertain photos are assigned by hand. A linked image can be viewed
 in the gallery or used as the background for a share card.
 
 JSON backups, CSV exports, and UDDF exports give the diver a path to move or
-inspect their data outside the app at any time.
+inspect their data outside the app. Those same logged sites become the diver's
+private map layer, connecting history with future destination research.
 
 ---
 
@@ -118,8 +162,14 @@ route through a small **reducer** — no third-party navigation library. The fiv
 persistent tabs are Home, Learn, Tools, Logbook, and More. Android's hardware
 Back button drives the same navigation state as the on-screen controls.
 
-The Home screen renders an image hero, a `GroupedSection` of "start here" rows,
-and a featured-lesson spotlight — all pulled from the feature catalog.
+Home is a dashboard rather than another menu. Its hero combines the greeting
+with live dive count, bottom time, deepest dive and most recent dive. **Download
+dives** is the primary action and remembers the last-used computer; **Log
+manually** is secondary. Below that, Home surfaces equipment service due soon,
+four quick-access tools, an **In season** rail from the Atlas's sourced seasonal
+guides, and a lesson rail. Task-specific logbook routes open directly into new,
+download or computer-folder workflows instead of making the diver navigate the
+logbook again.
 
 ### Education
 
@@ -156,15 +206,16 @@ rebuild (`npx expo run:ios` / `run:android`); an over-the-air JS update cannot a
 it. The reef scene still works when the module is absent. `npm run test:color-loss`
 covers the colour model.
 
-#### Boyle's Law Lab (website embed)
+#### Boyle's Law Lab (native lab)
 
-Makes the pressure ↔ gas-volume relationship visible, with a compression view and
-a breathing-gas-use comparison. The catalog route loads the maintained website
-version inside a `WebView`.
-
-The WebView permits secure navigation on `www.dmzscuba.com`, hands unrelated web /
-mail / telephone links to the OS, rejects mixed content, shows loading and
-connection states, and can reload after a WebView process termination.
+Makes pressure ↔ gas-volume behavior visible in a fully native scene. The
+compression mode lets the student carry an open or sealed gas space through the
+water column and observe expansion, compression and a deliberately simplified
+burst demonstration. Breathing mode makes depth-dependent gas use tangible by
+spending a finite cylinder one breath at a time. The guided flow asks for real
+control actions and prediction checks; Explore leaves the lab open for free play.
+All calculations remain in `src/features/boylesLaw/model.js` and are covered by
+`npm run test:boyles-law`.
 
 #### Compass Navigation (native lab)
 
@@ -202,9 +253,11 @@ The guided lesson (`model.js`, `buildLessonSteps`) has four sections:
 
 During any "hold" step, drifting more than 18° off course **stops the pace count**
 and shows a "turn left/right N°" cue with a curved on-screen arrow until the diver
-corrects. A separate **Explore** mode drops all lesson gating so the compass can
-be handled freely. `npm run test:compass-nav` covers the heading math, step
-shape, and every gate.
+corrects. A side-window camera view can place the compass against the diver's
+surroundings while keeping the instrument controls available. A separate
+**Explore** mode drops all lesson gating so the compass can be handled freely.
+`npm run test:compass-nav` covers heading math, side-window behavior, step shape
+and every gate.
 
 #### Build a Scuba Unit (coming soon)
 
@@ -248,37 +301,92 @@ input and display boundary — calculations run in canonical metric internally.
 Trimix mode is opt-in so helium controls stay out of the way for recreational
 Nitrox users. `npm run test:calculator` and `npm run test:tanks` cover this area.
 
+### Ocean Atlas
+
+The Atlas is an exploration and planning system, not just a site-pin map. It
+combines bundled world geometry and dive-site records with detailed online
+OpenStreetMap tiles, monthly NOAA sea-surface climatology, seasonal marine life,
+visibility estimates, published depths, freshwater conditions, altitude,
+openly licensed site photos and the diver's own logbook coordinates.
+
+Its main connections are deliberate:
+
+- **Logbook → Atlas:** confirmed non-deleted dives with coordinates form a
+  private map layer. Co-located dives group cleanly and open the existing
+  editable logbook detail; notes, complete profiles and photos are not copied
+  into the WebView.
+- **Atlas → travel:** **Get me here** resolves likely gateway airports, overland
+  options, ferries, remoteness, nearby operators and stay-and-dive options. It
+  can hand a filled origin/destination pair to live flight search while leaving
+  dates and purchasing outside the app.
+- **Atlas → Gear Locker:** **Gear for this dive** starts with saved setups and
+  the diver's declared uses, then proposes exposure substitutions from actual
+  locker items. Proposals are read-only and call out packing gaps, service
+  problems and floating gear that would need to move.
+- **Personal exposure model:** divers can identify as cold-running, typical or
+  warm-running, record simple suit comfort ranges, or define exact combinations
+  of suit, undergarment layers, hood and gloves. Explicit personal combinations
+  outrank generic guidance. The included very-cold-sensitive template is opt-in,
+  never the default.
+
+Exposure guidance separates warmth from coverage. A warm wreck may suggest a
+thin full suit for incidental abrasion protection without pretending it is cold;
+a deep inland site does not trust a warm surface estimate below the thermocline.
+An entered bottom temperature overrides the surface estimate. Technical and
+overhead setup matches require the diver to designate that use explicitly—depth,
+a wreck tag or ownership of doubles never proves training.
+
+Site cards explain rather than merely score: major marine life, experience,
+travel and exposure show their reasons. Inland sites replace ocean assumptions
+with lake/quarry/spring/mine/geothermal logic, including cold depth uncertainty
+and altitude flags. Place guides aggregate islands, states and countries without
+pretending a regional value is a site-level measurement. See
+[docs/OCEAN_ATLAS.md](docs/OCEAN_ATLAS.md) for datasets, licenses, derivation,
+privacy boundaries and verification.
+
 ### Gear Locker
 
 Private, on-device equipment management with three tabs
 (`GearChecklistScreen.js`, `src/features/gearChecklist/`):
 
-- **Inventory** — one record per item across 22 categories (exposure suit, BCD,
-  regulator, cylinder, computer, lights, camera, cutting/signaling, surface
-  safety, rebreather, DPV, spare parts, …). Each item carries manufacturer /
-  model / serial, quantity and physical specs (size, thickness, capacity,
-  working pressure, weight), a condition state (**Ready / Needs attention / Out
-  of service / Retired**), purchase and warranty info, free-text notes, and
-  attachments. A summary strip shows total items, ready count, open service
-  alerts, and document count.
-- **Service** — every item resolves to a single "next due" event from an explicit
-  next-service date, or a recurring interval measured from the last service, plus
-  separate **visual-inspection** and **hydrostatic-test** dates for cylinders. An
-  explicit date always wins over the interval. Items are badged
-  **current / due soon (≤ 30 days) / overdue**, or flagged straight from their
-  condition state.
-- **Checklists** — reusable packing lists (three are seeded: *Warm Water*,
-  *Cold Water*, *Pool & Training*). An item can belong to many lists; the checked
-  state is per-list and can be reset without touching the gear record. Progress
-  is shown as a ratio bar.
+- **Inventory** — guided wizards model regulators, BCDs, exposure suits,
+  undergarments and cylinders as divers actually own them. A regulator set can
+  retain separate serials and service dates for first stages, second stages,
+  gauges and transmitters while hoses remain un-serialized parts. A doubles or
+  sidemount cylinder pair is one usable inventory item with both member serials,
+  visual inspections and hydro dates preserved underneath. Search includes
+  hidden member serials; sort and filters cover category, condition, service
+  urgency, setup assignment, manufacturer, name and recent additions.
+- **Service** — the next due date can be explicit or calculated immediately from
+  the last service plus a 6/12/18/etc.-month interval. Visual and hydro cycles
+  are tracked separately for cylinders. A problem on a component or set member
+  rolls up to the assembly, so an overdue second stage or member tank cannot hide
+  behind a ready parent.
+- **Setups and packing** — Single tank, Doubles, Sidemount, Rebreather,
+  Pony/bailout, Stage/deco, Freedive, Travel and Custom describe intended rig
+  structure. A one-time setup check asks only after gear has been added, offers
+  matching locker items for real gaps, and remembers deliberate omissions.
+  Packing state belongs to the setup and can be reset without altering inventory.
+- **Relationships without clutter** — linked suit boots/hoods or other
+  accessories are packed with their parent but remain real searchable items.
+  Drysuit undergarments are chosen per setup because the same suit can need a
+  different layer system. Floating gear such as a transmitter, light or
+  full-face mask has one current setup and moves when packed elsewhere.
+- **Bailout and stage equipment** — regulators and cylinders can be designated
+  for bailout/pony or stage/deco use and remain peer items in setup views instead
+  of displaying a cylinder as though it were a regulator sub-part.
+- **Dive computers** — a computer seen in downloaded logs is synchronized into
+  the locker by device identity. It cannot be deleted while its dives exist, and
+  its detail view opens the exact logbook folder containing those dives.
 
 Attachments (photos via `expo-image-picker`, PDFs / documents via
 `expo-document-picker`) are copied into
 `documentDirectory/gear-attachments/<itemId>/` so a cache or camera-roll change
 can't break the link; they open through the native share sheet. Deleting an item
-removes only the app's managed copies. State is one normalised blob at
+removes only the app's managed copies. State is one normalized, versioned blob at
 `@dmz-scuba/gear-checklist/v1` in AsyncStorage. `npm run test:gear-checklist`
-covers categories, list assignment, and service-date math.
+covers migration, assemblies, cylinder sets, linked/floating gear, setup
+requirements, computer synchronization, recommendations and service-date math.
 
 ### Dive Logbook
 
@@ -523,14 +631,14 @@ an older build, Expo Go, or web without those modules does not crash on startup.
 
 ### Technology and platform baseline
 
-- Expo SDK `~57.0.19`, React Native `0.86.3`, React `19.2.3`
+- Expo SDK `~57.0.24`, React Native `0.86.3`, React `19.2.3`
 - React Native Web `0.21` via the Expo toolchain
 - JavaScript source, React hooks, functional components — no TypeScript
 - `@react-native-async-storage/async-storage` for local application / domain data
 - `expo-secure-store` for the account refresh token
 - `react-native-svg` for graphs, icons, instrument visuals, the color-loss lab,
   the compass rose, and the diver/gear artwork
-- `react-native-webview` for the website Boyle's Law interactive
+- `react-native-webview` for the isolated Ocean Atlas map runtime
 - `react-native-ble-plx` + a custom Apple Expo module for dive computers
 - **libdivecomputer `0.9.0`**, pinned as a Git submodule under `vendor/`
 - `expo-location` for compass heading and coarse breadcrumbs;
@@ -560,7 +668,7 @@ flowchart TD
     Features --> Storage[("AsyncStorage / SecureStore / FileSystem")]
     Screens --> Sensors["expo-location / expo-sensors (compass)"]
     Screens --> Expo["Expo & React Native device APIs"]
-    Screens --> Web["DMZScuba.com WebView lessons"]
+    Screens --> Atlas["Isolated Ocean Atlas WebView"]
     Features --> APIs["Account & Dive Lens HTTPS APIs"]
     Features --> BLE["react-native-ble-plx"]
     BLE <--> Bridge["Apple Expo module"]
@@ -607,8 +715,9 @@ src/features/                   Stateful workflows and cohesive capabilities
   diveLens/                     Photo-identification screen state
   diveLog/                      Logbook hook, filters/sort hook, filter sheet
   diveShareCard/                Share-card editor, layouts, capture pipeline
-  gearChecklist/                Gear Locker model, storage, hook
+  gearChecklist/                Gear Locker, setup checks, Atlas gear advice
   gearSetup/                    "Build a Scuba Unit" lab (behind Coming Soon)
+  oceanAtlas/                   Map runtime, conditions, seasons, travel, places
   settings/                     App settings hook
   shared/                       Cross-feature artwork
 src/components/                 Reusable UI patterns and interaction helpers
@@ -745,7 +854,9 @@ rather than assuming the root license covers that dependency.
 | Device fingerprints / models / history | AsyncStorage | Incremental sync and reconnects |
 | Clock corrections, priority, negative matches | AsyncStorage | Reconciliation decisions |
 | Snapshots | AsyncStorage | Recoverable raw logbook state |
-| Gear Locker state | AsyncStorage (`@dmz-scuba/gear-checklist/v1`) | Items, checklists, and check state in one blob |
+| Gear Locker state | AsyncStorage (`@dmz-scuba/gear-checklist/v1`) | Items, parts, setups, choices and packing state in one versioned blob |
+| Atlas gear preferences | AsyncStorage (`@dmz-scuba/gear-advice/v1`) | Thermal tendency, suit ranges, exposure combinations and declared setup uses |
+| Atlas preferences / travel origin | AsyncStorage | Map layers plus the on-device starting point for personal travel ratings |
 | Logbook photos | `documentDirectory/dive-photos/` | Copied from the picker; links survive cache eviction |
 | Gear attachments | `documentDirectory/gear-attachments/<itemId>/` | Photos and PDFs copied on save |
 | Location breadcrumbs | Separate AsyncStorage value | Opt-in, coarse, 90-day retention |
@@ -757,7 +868,7 @@ rather than assuming the root license covers that dependency.
 This repository is the **mobile client**. It depends on systems maintained
 elsewhere:
 
-- `www.dmzscuba.com` — live interactive labs and authenticated account endpoints
+- `www.dmzscuba.com` — authenticated account endpoints and linked project content
 - Supabase — account authentication / session APIs
 - A Cloudflare-hosted challenge flow — Turnstile verification, returning through
   the app scheme
@@ -856,13 +967,16 @@ npm run test:boyles-law
 npm run test:compass-nav
 npm run test:gear-checklist
 npm run test:gear-setup
+npm run test:ocean-atlas
+npm run test:atlas-journey
+npm run test:atlas-places
 ```
 
 Then the Expo and bundle checks:
 
 ```bash
 npx expo-doctor
-npx expo export --platform ios
+npx expo export --platform ios --output-dir /tmp/dmz-export
 ```
 
 A successful bundle is **not** proof of runtime behaviour. Native changes must
@@ -935,6 +1049,8 @@ routing should keep deriving from the catalog.
 ## Further reading
 
 - [Architecture](docs/ARCHITECTURE.md)
+- [Ocean Atlas data, planning and privacy model](docs/OCEAN_ATLAS.md)
+- [Dive-site sourcing policy](docs/DIVE_SITE_SOURCING.md)
 - [Dive logbook plan and native handoff](docs/LOGBOOK_PLAN.md)
 - [Dive Lens structured result contract](docs/DIVE_LENS.md)
 - [Dive simulation domain](docs/DIVE_SIMULATION_PHASE_1.md)

@@ -1,0 +1,4 @@
+{
+  "schemaVersion": 1,
+  "sources": [{ "id": "geonames-gilboa-fixture", "name": "GeoNames", "retrievedAt": "2026-09-14", "version": "GeoNames record 2564638", "license": "CC BY 4.0", "attribution": "Contains GeoNames data, licensed under CC BY 4.0.", "sourceUrl": "https://www.geonames.org/2564638/gilboa-quarry.html", "input": "sources/geonames-gilboa-fixture.json", "format": "normalized-json" }]
+}
