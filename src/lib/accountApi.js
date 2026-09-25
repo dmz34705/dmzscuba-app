@@ -76,7 +76,7 @@ async function requestSupabaseSession(grantType, body) {
   if (!response.ok) {
     throw new AccountApiError(
       authErrorMessage(data, grantType === 'password' ? 'The email or password is incorrect.' : 'Your session has expired. Please sign in again.'),
-      grantType === 'password' ? 'LOGIN_FAILED' : 'AUTH_REQUIRED',
+      grantType === 'password' ? 'LOGIN_FAILED' : response.status >= 500 ? 'ACCOUNT_UNAVAILABLE' : 'AUTH_REQUIRED',
       response.status
     );
   }
@@ -151,7 +151,7 @@ export async function refreshSession() {
     try {
       return await requestSupabaseSession('refresh_token', { refresh_token: refreshToken });
     } catch (error) {
-      await clearSession();
+      if (error?.code === 'AUTH_REQUIRED' && [400, 401, 403].includes(error.status)) await clearSession();
       if (error instanceof AccountApiError) throw error;
       throw new AccountApiError('Your session has expired. Please sign in again.', 'AUTH_REQUIRED');
     }
@@ -197,7 +197,8 @@ async function accountRequest(path, options = {}, retry = true) {
     try {
       await refreshSession();
       return accountRequest(path, options, false);
-    } catch (_error) {
+    } catch (error) {
+      if (error?.code !== 'AUTH_REQUIRED') throw error;
       await clearSession();
       throw new AccountApiError('Your session has expired. Please sign in again.', 'AUTH_REQUIRED', 401);
     }
@@ -210,6 +211,28 @@ async function accountRequest(path, options = {}, retry = true) {
 
 export function fetchAccount() {
   return accountRequest('/api/account', { method: 'GET' });
+}
+
+// Development data sync is isolated from the shared live account API.
+export async function syncAccountRequest(path = '', options = {}, expectedUserId, retry = true) {
+  const accessToken = await getValidAccessToken();
+  if (!expectedUserId || activeSession?.user?.id !== expectedUserId) {
+    throw new AccountApiError('The account changed. Sync has stopped.', 'AUTH_REQUIRED', 401);
+  }
+  const { data, response } = await fetchJson(`https://dmzscuba-com.pages.dev/api/account/sync${path}`, {
+    ...options, headers: { Accept: 'application/json', Authorization: `Bearer ${accessToken}`,
+      ...(options.body ? { 'Content-Type': 'application/json' } : {}) },
+  });
+  if (response.status === 401 && retry) {
+    await refreshSession();
+    return syncAccountRequest(path, options, expectedUserId, false);
+  }
+  if (!response.ok || data?.ok !== true) {
+    const error = new AccountApiError(data?.error || 'Sync could not finish. Your device data is safe.', data?.code || 'SYNC_FAILED', response.status);
+    error.record = data?.record;
+    throw error;
+  }
+  return data;
 }
 
 export function saveAccountSettings(settings) {

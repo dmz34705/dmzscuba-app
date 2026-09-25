@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { DEFAULT_PROFILE } from '../../lib/accountProfile';
+import { prepareAccountData, startAccountDataSync, stopAccountDataSync } from '../../lib/accountDataSync';
 import { sanitizeAppSettings } from '../../lib/appSettings';
 import {
   addCustomerCertification,
@@ -39,10 +40,14 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
   const [settingsSyncStatus, setSettingsSyncStatus] = useState('local');
   const appSettingsRef = useRef(appSettings);
   const onRemoteSettingsRef = useRef(onRemoteSettings);
+  const preparedOwnerRef = useRef(null);
+  const retryRestoreRef = useRef(false);
   appSettingsRef.current = appSettings;
   onRemoteSettingsRef.current = onRemoteSettings;
 
   const resetSessionState = useCallback(() => {
+    stopAccountDataSync();
+    preparedOwnerRef.current = null;
     setAccount(null);
     setAuthStatus('signedOut');
     setSettingsSyncReady(false);
@@ -50,6 +55,10 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
   }, []);
 
   const applyAccount = useCallback(async (accountData) => {
+    if (preparedOwnerRef.current !== accountData?.profile?.userId) {
+      await prepareAccountData(accountData?.profile?.userId);
+      preparedOwnerRef.current = accountData?.profile?.userId;
+    }
     setAccount(accountData);
     setProfile((current) => profileFromAccount(accountData?.profile, current));
     if (accountData?.appSettings) {
@@ -62,6 +71,11 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
     setAuthStatus('signedIn');
     return accountData;
   }, []);
+
+  useEffect(() => {
+    if (authStatus !== 'signedIn') return undefined;
+    return startAccountDataSync();
+  }, [authStatus]);
 
   useEffect(() => {
     if (!settingsLoaded) return undefined;
@@ -78,10 +92,28 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
         await applyAccount(accountData);
       })
       .catch(() => {
-        if (active) resetSessionState();
+        if (active) { retryRestoreRef.current = true; resetSessionState(); }
       });
     return () => { active = false; };
   }, [applyAccount, resetSessionState, settingsLoaded]);
+
+  useEffect(() => {
+    if (authStatus !== 'signedOut') return undefined;
+    let active = true, busy = false;
+    const timer = setInterval(async () => {
+      if (!retryRestoreRef.current || busy) return;
+      busy = true;
+      try {
+        const session = await restoreSession();
+        const data = session ? await fetchAccount() : null;
+        if (!active || !retryRestoreRef.current) return;
+        if (data) await applyAccount(data);
+        retryRestoreRef.current = false;
+      } catch { /* A temporary network failure can recover without another sign-in. */ }
+      finally { busy = false; }
+    }, 30000);
+    return () => { active = false; clearInterval(timer); };
+  }, [authStatus, applyAccount]);
 
   useEffect(() => {
     if (!settingsLoaded || authStatus !== 'signedIn' || !settingsSyncReady) return undefined;
@@ -112,6 +144,8 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
   }, [applyAccount, resetSessionState]);
 
   const completeSignOut = useCallback(async () => {
+    retryRestoreRef.current = false;
+    stopAccountDataSync();
     await signOut();
     resetSessionState();
   }, [resetSessionState]);

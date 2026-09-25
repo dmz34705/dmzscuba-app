@@ -1,4 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, Linking, StyleSheet, Text, View } from 'react-native';
+import { getDataSyncStatus, subscribeDataSync, syncAccountData, nextSyncConflict, resolveSyncConflict } from '../lib/accountDataSync';
 import MenuPage from '../components/MenuPage';
 import { GroupedSection, NavigationRow } from '../components/Ui';
 import { colors, spacing } from '../theme';
@@ -8,6 +10,18 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
   const signedIn = authStatus === 'signedIn';
   const restoring = authStatus === 'restoring';
   const certifications = account?.certifications?.length || 0;
+  const [sync, setSync] = useState(getDataSyncStatus);
+  useEffect(() => subscribeDataSync(setSync), []);
+  const reviewConflict = async () => {
+    const conflict = await nextSyncConflict();
+    if (!conflict) return;
+    const data = conflict.local?.data || conflict.remote?.data || {};
+    Alert.alert('Choose the version to keep', `${data.name || data.site?.name || conflict.key}\nThis record changed on both devices. The original versions remain in a local recovery copy.`, [
+      { text: 'Later', style: 'cancel' },
+      { text: 'Use account version', onPress: () => resolveSyncConflict(conflict.key, 'cloud').catch((e) => Alert.alert('Sync', e.message)) },
+      { text: 'Use this device', onPress: () => resolveSyncConflict(conflict.key, 'local').catch((e) => Alert.alert('Sync', e.message)) },
+    ]);
+  };
   return (
     <MenuPage title="Account" onBack={onBack} backLabel="More">
       <View style={styles.identity}>
@@ -26,10 +40,15 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
           <NavigationRow disabled={restoring} title="Create an account" body="Save your diver profile and certifications" onPress={onCreateAccount} last />
         </>}
       </GroupedSection>
+      {signedIn ? <GroupedSection title="Logbook & gear sync">
+        <NavigationRow title={sync.state === 'syncing' ? 'Syncing…' : 'Sync now'} body={sync.message} disabled={sync.state === 'syncing'} onPress={syncAccountData} />
+        {sync.conflicts ? <NavigationRow title="Review changed records" body={`${sync.conflicts} records need your choice`} onPress={reviewConflict} /> : null}
+        <NavigationRow title="Open my web logbook" body="Development website · Same DMZ Scuba account" onPress={() => Linking.openURL('https://dmzscuba-com.pages.dev/pages/account/#logbook')} last />
+      </GroupedSection> : null}
       {signedIn ? <GroupedSection title="Session">
         <NavigationRow title="Sign out" onPress={onSignOut} accent={colors.danger} last />
       </GroupedSection> : null}
-      <Text style={styles.footer}>{signedIn ? 'Your profile and supported settings are connected to your account. Your logbook is stored on this device; save a backup from Settings.' : 'An account carries supported settings and profile details between devices.'}</Text>
+      <Text style={styles.footer}>{signedIn ? 'Logbook, computer profiles, gear, and setups sync while the app is open and connected. Offline changes stay on this device until sync succeeds. Photos and documents remain on this device for now.' : 'Use the app offline without an account. Sign in to sync your logbook and gear locker to the development website.'}</Text>
     </MenuPage>
   );
 }

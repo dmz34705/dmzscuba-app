@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { subscribeAccountData } from '../../lib/accountDataSync';
 
 import {
   addToSetupForRequirement,
@@ -30,6 +31,11 @@ export default function useGearChecklist() {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
   const [diveRows, setDiveRows] = useState([]);
+
+  useEffect(() => subscribeAccountData(() => {
+    loadGearState().then(setState).catch(() => {});
+    loadIndex().then(setDiveRows).catch(() => {});
+  }), []);
 
   // Opening the locker also picks up any dive computer the logbook has downloaded from.
   useEffect(() => {

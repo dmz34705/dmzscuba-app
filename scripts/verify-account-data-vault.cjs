@@ -1,0 +1,47 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const src = path.join(__dirname,'../src/lib');
+(async () => {
+  const engine = await import(`data:text/javascript;base64,${Buffer.from(fs.readFileSync(path.join(src,'accountSyncEngine.js'),'utf8')).toString('base64')}`);
+  const store = new Map(), clouds = new Map(); let offline = false, rebuilds = 0;
+  const storage = { getItem:async (key) => store.get(key) ?? null,setItem:async (key,value) => store.set(key,value),removeItem:async (key) => store.delete(key),getAllKeys:async () => [...store.keys()],multiGet:async (keys) => keys.map((key) => [key,store.get(key) ?? null]),multiSet:async (pairs) => pairs.forEach(([k,v]) => store.set(k,v)),multiRemove:async (keys) => keys.forEach((key) => store.delete(key)) };
+  const request = async (path,options,user) => {
+    assert.ok(['alice','bob'].includes(user));
+    if (offline) throw new Error('Offline');
+    if (!clouds.has(user)) clouds.set(user,new Map());
+    const cloud = clouds.get(user),key = path.slice(1);
+    if (!path) return { records:[...cloud.values()],next:null };
+    if (!options) return { record:structuredClone(cloud.get(key)) };
+    const body = JSON.parse(options.body),prior = cloud.get(key);
+    if ((prior?.revision || 0) !== body.baseRevision) throw Object.assign(new Error('Conflict'),{ status:409,record:prior });
+    const [kind,id] = key.split('/'); const record = { kind,id,data:body.data,deleted:body.deleted,revision:body.baseRevision+1 };
+    cloud.set(key,record); return { record };
+  };
+  const service = fs.readFileSync(path.join(src,'accountDataSync.js'),'utf8').replace(/^import .*;\r?\n/gm,'').replace(/export /g,'');
+  const api = new Function('AsyncStorage','AppState','syncAccountRequest','canonical','reconcile','createId','rebuildIndex','migrateToV2',service + '\nreturn { prepareAccountData,syncAccountData,stopAccountDataSync,getDataSyncStatus };')(
+    storage,{},request,engine.canonical,engine.reconcile,() => crypto.randomUUID(),async () => { rebuilds++; },async () => {});
+  const gearKey = '@dmz-scuba/gear-checklist/v1',diveKey = '@dmz-scuba/dive-log/dive-v2/d1';
+  const gear = { version:2,items:[{ id:'g1',name:'Guest regulator',attachments:[{ id:'a1',uri:'file://manual.pdf' }] }],setups:[],dismissedDeviceKeys:[] };
+  store.set(gearKey,JSON.stringify(gear)); store.set(diveKey,JSON.stringify({ id:'d1',site:{ name:'Guest dive' },photos:[{ uri:'file://photo.jpg' }] }));
+  await api.prepareAccountData('alice'); await api.syncAccountData();
+  assert.equal(clouds.get('alice').get('gear/g1').data.name,'Guest regulator');
+  assert.equal(clouds.get('alice').get('gear/g1').data.attachments,undefined);
+  assert.equal(clouds.get('alice').get('dive/d1').data.photos,undefined);
+  let remote = clouds.get('alice').get('gear/g1'); remote.data.name = 'Edited on web'; remote.revision++;
+  await api.syncAccountData();
+  assert.equal(JSON.parse(store.get(gearKey)).items[0].name,'Edited on web');
+  assert.equal(JSON.parse(store.get(gearKey)).items[0].attachments[0].uri,'file://manual.pdf');
+  await api.prepareAccountData('bob'); await api.syncAccountData();
+  assert.equal(store.has(diveKey),false,'switching accounts must isolate local records');
+  assert.equal(clouds.get('bob').size,0,'must not upload Alice records into Bob');
+  store.set(gearKey,JSON.stringify({ ...gear,items:[{ id:'b1',name:'Bob mask' }] })); await api.syncAccountData();
+  await api.prepareAccountData('alice');
+  assert.equal(JSON.parse(store.get(gearKey)).items[0].name,'Edited on web');
+  assert.equal(JSON.parse(store.get(diveKey)).photos[0].uri,'file://photo.jpg');
+  offline = true; await api.syncAccountData(); assert.equal(api.getDataSyncStatus().state,'error');
+  offline = false; await api.syncAccountData(); assert.equal(api.getDataSyncStatus().state,'synced');
+  api.stopAccountDataSync(); assert.equal(api.getDataSyncStatus().state,'local');
+  assert.ok(rebuilds > 0);
+  console.log('PASS: guest adoption, account vault switching, no cross-account uploads, web-to-app edits, local media preserved, offline retry, and sign-out.');
+})().catch((error) => { console.error(error); process.exitCode = 1; });

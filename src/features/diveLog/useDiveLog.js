@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { subscribeAccountData } from '../../lib/accountDataSync';
 
 import { createDive, normalizeDive, touchRecord } from '../../lib/diveLog/schema';
 import { computeDiveLogStats } from '../../lib/diveLog/stats';
@@ -125,6 +126,12 @@ export default function useDiveLog() {
   const [computerPriority, setComputerPriority] = useState([]); // ordered deviceKeys, [0] = primary
   const diveCache = useRef(new Map()); // id -> { dive, logs }
   const recheckPromiseRef = useRef(null);
+
+  useEffect(() => subscribeAccountData(() => {
+    diveCache.current.clear();
+    loadIndex().then(setIndexRows).catch(() => {});
+    loadComputerPriority().then(setComputerPriority).catch(() => {});
+  }), []);
 
   useEffect(() => {
     let active = true;
