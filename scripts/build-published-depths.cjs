@@ -49,23 +49,53 @@ async function api(base, params) {
 const chunks = (list, size) => Array.from({ length: Math.ceil(list.length / size) }, (_, i) => list.slice(i * size, (i + 1) * size));
 
 // Depth statements in an article's lead, most specific first. Each captures number(s) and a unit.
-const NUM = '(\\d[\\d,]*(?:\\.\\d+)?)', RANGE = `${NUM}(?:\\s*(?:–|-|to)\\s*${NUM})?`, UNIT = '(feet|foot|ft|metres|meters|metre|meter|m)\\b(?:\\s*\\([^)]*\\))?';
+const NUM = '(\\d[\\d,]*(?:\\.\\d+)?)', RANGE = `${NUM}(?:\\s*(?:–|-|to)\\s*${NUM})?`, UNIT = '(feet|foot|ft|fathoms?|metres|meters|metre|meter|m)\\b(?:\\s*\\([^)]*\\))?';
+const FATHOM = 1.8288;
 const PATTERNS = [
   new RegExp(`\\b(?:maximum|max\\.?|greatest) depth (?:of |is |reaches |about |approximately |around |roughly )*${RANGE}\\s*${UNIT}`, 'i'),
   new RegExp(`\\bin (?:about |approximately |roughly |some |around |over |nearly |just over |only )?${RANGE}[\\s-]*${UNIT}\\s+of (?:fresh |open )?water`, 'i'),
   new RegExp(`\\b(?:at|to) a depth of (?:about |approximately |roughly |around |up to |over |nearly )?${RANGE}\\s*${UNIT}`, 'i'),
   new RegExp(`\\b(?:depths? (?:of|reaching|up to) )(?:about |approximately |around )?${RANGE}\\s*${UNIT}`, 'i'),
   new RegExp(`\\b${RANGE}[\\s-]*${UNIT}\\s+(?:deep|below the surface)\\b`, 'i'),
+  // "lying on the bottom at 73 m", "rests in 30 m", "sits at a depth of 40 ft", "sank in 200 feet"
+  new RegExp(`\\b(?:lying|lies|lay|rests?|resting|sits?|sitting|sank|sunk|settled)\\s+(?:upright |upside down |on (?:her|its) (?:side|keel) )?(?:on the (?:sea ?floor|sea ?bed|bottom|ocean floor) )?(?:at|in) (?:a depth of )?(?:about |approximately |roughly |around |some |over |nearly )?${RANGE}\\s*${UNIT}`, 'i'),
 ];
+const metresOf = (value, unit) => value * (/^fa/i.test(unit) ? FATHOM : /^f/i.test(unit) ? FT : 1);
 function depthFromText(text) {
   for (const pattern of PATTERNS) {
     const m = String(text || '').match(pattern);
     if (!m) continue;
     const values = [m[1], m[2]].filter(Boolean).map(v => Number(v.replace(/,/g, '')));
-    const metres = Math.max(...values) * (/^f/i.test(m[3]) ? FT : 1);
+    const metres = metresOf(Math.max(...values), m[3]);
     if (metres >= 1) return { metres: Math.round(metres), quote: m[0] };
   }
   return null;
+}
+// Beyond the lead: the article's sections about the wreck or the diving ("Wreck site", "Diving",
+// "Sinking", "Discovery" …), never the collision or the ship's specifications, and never a sentence about
+// the hull, draft or size ("penetrated the hull to a depth of nearly 40 feet"). Every depth statement in
+// those sections counts and the deepest wins: the seabed, not the top of the wreck ("top … in 27 fathoms
+// (49 m) … the bell lying on the bottom at 73 m" → 73 m).
+const DEPTH_SECTION = /wreck|div(e|ing)|sinking|sank|scuttl|discover|remains|site|today|current|status|salvage|explor|fate|location|artificial reef|geography|description/i;
+const NOT_THE_DIVE = /\b(hull|draft|draught|keel|beam|length|height|tall|long|wide|penetrat|gash|hole in|freeboard|displacement|tonnage|mast|funnel|anchor chain|cable)\b/i;
+// The ship's design ("test depth of 300 feet"), and — for a reef or cave — the sections about ships
+// that sank there, which give their depth, not the site's.
+const DESIGN_SECTION = /design|specification|characteristic|armament|propulsion|construction|particulars/i;
+const OTHER_SHIPS_SECTION = /wreck|sinking|sank|scuttl|salvage|fate/i;
+// "Shipwrecks", "Notable wrecks": a list of ships lost there, each at its own depth — never the site's.
+const WRECK_LIST_SECTION = /\b(ship)?wrecks\b|list of/i;
+function depthFromArticle(text, isWreck) {
+  const sections = String(text || '').split(/\n={2,}\s*([^=\n]+?)\s*={2,}\n/);
+  const found = [];
+  for (let i = 1; i < sections.length; i += 2) {
+    if (!DEPTH_SECTION.test(sections[i]) || DESIGN_SECTION.test(sections[i]) || WRECK_LIST_SECTION.test(sections[i]) || (!isWreck && OTHER_SHIPS_SECTION.test(sections[i]))) continue;
+    for (const sentence of sections[i + 1].split(/(?<=[.!?])\s+/)) {
+      if (NOT_THE_DIVE.test(sentence)) continue;
+      const hit = depthFromText(sentence);
+      if (hit) found.push({ ...hit, quote: `${sections[i]}: ${hit.quote}` });
+    }
+  }
+  return found.filter(hit => hit.metres <= MAX_DIVE_DEPTH_M).sort((a, b) => b.metres - a.metres)[0] || null;
 }
 function wikidataDepth(entity) {
   const value = entity?.claims?.P4511?.[0]?.mainsnak?.datavalue?.value;
@@ -94,12 +124,15 @@ const km = (a, b) => { const rad = v => v * Math.PI / 180; const h = Math.sin(ra
   const { catalogSites } = loadSourceModule(path.join(src, 'features/oceanAtlas/catalog.js'), src);
   const sites = catalogSites();
   const byId = new Map(sites.map(site => [site.id, site]));
+  // The catalog already carries the last run's published depths (with a depthSource); only a depth in the
+  // site's own record means there's nothing to look up — otherwise each run would drop the last run's finds.
+  const ownDepth = site => Boolean(site.maxDepthMeters && !site.depthSource);
   const extra = require(path.join(dataDir, 'extraSites.json'));
   const titles = new Map(), qids = new Map(); // title/qid → site ids
   const link = (map, key, id) => { if (!key) return; if (!map.has(key)) map.set(key, []); map.get(key).push(id); };
 
   for (const [id, , , , depth, , , , source, url] of extra.sites) {
-    if (depth) continue;
+    if (depth || !byId.has(`x-${id}`)) continue; // merged into another record: that one is looked up
     if (/en\.wikipedia\.org\/wiki\//.test(url)) link(titles, decodeURIComponent(url.split('/wiki/')[1]).replace(/_/g, ' '), `x-${id}`);
     else if (/wikidata\.org\/(wiki|entity)\/Q\d+/.test(url)) link(qids, url.match(/Q\d+/)[0], `x-${id}`);
     else if (source === 'curated') {
@@ -115,17 +148,43 @@ const km = (a, b) => { const rad = v => v * Math.PI / 180; const h = Math.sin(ra
       }
     }
   }
+  // Articles the site-facts build already matched to a site.
+  const facts = fs.existsSync(path.join(dataDir, 'siteFacts.json')) ? require(path.join(dataDir, 'siteFacts.json')).facts : {};
+  const linked = new Set([...titles.values(), ...qids.values()].flat());
+  for (const [id, [, article]] of Object.entries(facts)) {
+    if (!byId.has(id) || ownDepth(byId.get(id)) || linked.has(id) || !/en\.wikipedia\.org\/wiki\//.test(article || '')) continue;
+    link(titles, decodeURIComponent(article.split('/wiki/')[1]).replace(/_/g, ' '), id);
+    linked.add(id);
+  }
+  // Wrecks, caves and springs with no linked article: the English article of the same ship or place,
+  // found by name — the core name must be identical (SS / MV / USS prefixes and "(Wreck)" aside), the
+  // article must lie within SEARCH_KM and its first sentence must be about a vessel, wreck, cave or spring.
+  const core = name => String(name).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\([^)]*\)|,.*$|\s[-–—]\s.*$/g, ' ').replace(/\b(wreck|shipwreck|wreck of|the|ss|mv|ms|uss|hms|hmas|hmcs|usat|usns|uscgc|sas|rms|sms|fv|tug|dive site)\b/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+  const VESSEL = /\b(ship|steamship|steamer|freighter|schooner|liner|tug(boat)?|barge|ferry|vessel|destroyer|cruiser|submarine|battleship|frigate|corvette|minesweeper|gunboat|tanker|trawler|yacht|sloop|brig|barque|bark|wreck|shipwreck|aircraft|cave|cavern|spring|sinkhole|cenote|quarry)\b/i;
+  const SEARCH_KM = 25;
+  const searchable = sites.filter(site => !ownDepth(site) && !linked.has(site.id) && core(site.name).length >= 3
+    && (site.topologies.includes('wreck') || site.topologies.includes('cave') || POINT_NAME.test(site.name) || /^(ss|mv|ms|uss|hms|hmas|usat|sas|rms|sms)\s/i.test(site.name)));
+  console.log(`searching Wikipedia for ${searchable.length} wrecks / caves / springs by name`);
+  for (const site of searchable) {
+    const r = await api(WIKI, { action: 'query', generator: 'search', gsrsearch: core(site.name), gsrlimit: '5', gsrnamespace: '0', prop: 'coordinates|extracts', exintro: '1', explaintext: '1', exsentences: '1', exlimit: '5' });
+    const hit = Object.values(r.query?.pages || {}).sort((a, b) => a.index - b.index)
+      .find(page => core(page.title) === core(site.name) && page.coordinates?.[0] && km(site, page.coordinates[0]) <= SEARCH_KM && VESSEL.test(page.extract || ''));
+    if (hit) { link(titles, hit.title, site.id); linked.add(site.id); }
+  }
   const osmFile = process.argv[2];
   if (osmFile && fs.existsSync(osmFile)) {
     for (const element of JSON.parse(fs.readFileSync(osmFile, 'utf8')).elements) {
       const id = `osm-${element.type[0]}${element.id}`, tags = element.tags || {};
-      if (!byId.has(id) || byId.get(id).maxDepthMeters) continue;
+      if (!byId.has(id) || ownDepth(byId.get(id))) continue;
       if (/^en:/.test(tags.wikipedia || '')) link(titles, tags.wikipedia.slice(3), id);
       else if (/^Q\d+$/.test(tags.wikidata || '')) link(qids, tags.wikidata, id);
     }
   }
 
   const found = new Map(); // site id → [metres, source, url, lake?]
+  const needBody = new Map(); // site id → [article title, url]
   const pageQid = new Map();
   for (const batch of chunks([...titles.keys()], 20)) {
     const r = await api(WIKI, { action: 'query', redirects: '1', prop: 'extracts|pageprops|coordinates', exintro: '1', explaintext: '1', exlimit: '20', ppprop: 'wikibase_item', colimit: 'max', titles: batch.join('|') });
@@ -142,9 +201,19 @@ const km = (a, b) => { const rad = v => v * Math.PI / 180; const h = Math.sin(ra
         const kind = aboutKind(page.extract, site);
         if (kind === 'area') continue;
         if (text && text.metres <= MAX_DIVE_DEPTH_M) found.set(id, [text.metres, 'Wikipedia', url, kind === 'lake' ? 1 : 0, text.quote]);
-        else if (page.pageprops?.wikibase_item) { pageQid.set(id, [page.pageprops.wikibase_item, url, kind]); link(qids, page.pageprops.wikibase_item, id); }
+        else {
+          if (kind === 'site') needBody.set(id, [page.title, url]);
+          if (page.pageprops?.wikibase_item) { pageQid.set(id, [page.pageprops.wikibase_item, url, kind]); link(qids, page.pageprops.wikibase_item, id); }
+        }
       }
     }
+  }
+  // No depth in the lead: read the wreck / diving sections of the full article (one page per request).
+  for (const [id, [title, url]] of needBody) {
+    const r = await api(WIKI, { action: 'query', redirects: '1', prop: 'extracts', explaintext: '1', titles: title });
+    const site = byId.get(id);
+    const hit = depthFromArticle(Object.values(r.query?.pages || {})[0]?.extract, site.topologies.includes('wreck') || /\b(wreck|ss|mv|uss|hms|shipwreck)\b/i.test(site.name) || facts[id]?.[2]);
+    if (hit) found.set(id, [hit.metres, 'Wikipedia', url, 0, hit.quote]);
   }
   for (const batch of chunks([...qids.keys()], 50)) {
     const r = await api(WIKIDATA, { action: 'wbgetentities', ids: batch.join('|'), props: 'claims' });

@@ -16,6 +16,7 @@ import { colors, spacing } from '../theme';
 import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
 import { restoreJsonBackup } from '../lib/diveLog/storage';
 import { shareLogbookExport } from '../features/diveLog/shareLogbookExport';
+import { backupNow, devBackupStatus, devBackupsAvailable, listDevBackups, reloadApp, restoreDevBackup } from '../lib/devBackup';
 
 async function restoreLogbookFile() {
   let DocumentPicker;
@@ -52,6 +53,58 @@ function LogbookExportCard() {
         if (result) Alert.alert('Restore complete', `${result.importedDives.length} dives added. Existing dives were kept.`);
       })} last />
       {busy ? <Text accessibilityLiveRegion="polite" style={[styles.settingBody, styles.sectionContent]}>Working…</Text> : null}
+    </View>
+  );
+}
+
+// Development builds: every app record and photo, copied to the Mac through Metro (src/lib/devBackup.js).
+const REASONS = { manual: 'Manual', automatic: 'Automatic', 'before-restore': 'Before a restore' };
+const backupWhen = (iso) => { const date = new Date(iso); return Number.isFinite(date.getTime()) ? date.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : iso; };
+const backupContents = (counts = {}) => [`${counts.dives || 0} dives`, `${counts.gear || 0} gear items`, `${counts.photos || 0} photos`].join(' · ');
+function DevBackupCard() {
+  const [status, setStatus] = useState(null);
+  const [backups, setBackups] = useState([]);
+  const [busy, setBusy] = useState('');
+  const refresh = async () => {
+    const next = await devBackupStatus();
+    setStatus(next);
+    setBackups(next.reachable ? await listDevBackups().catch(() => []) : []);
+  };
+  useEffect(() => { refresh(); }, []);
+  const backup = async () => {
+    setBusy('Backing up…');
+    try {
+      const result = await backupNow('manual', { onProgress: ({ sent, total }) => setBusy(`Uploading files ${sent} of ${total}…`) });
+      Alert.alert('Backed up', `${backupContents(result.counts)} saved on your Mac.`);
+      await refresh();
+    } catch (error) { Alert.alert('Backup', error?.message || 'The backup could not be completed.'); }
+    finally { setBusy(''); }
+  };
+  const restore = (item) => Alert.alert('Restore this backup?', `Replace everything on this phone with the backup from ${backupWhen(item.createdAt)} (${backupContents(item.counts)}). What's here now is backed up first.`, [
+    { text: 'Cancel', style: 'cancel' },
+    { text: 'Restore', style: 'destructive', onPress: async () => {
+      setBusy('Restoring…');
+      try {
+        await restoreDevBackup(item.id, { onProgress: ({ done, total }) => setBusy(`Downloading files ${done} of ${total}…`) });
+        Alert.alert('Restored', 'The app will reload with the restored data.', [{ text: 'OK', onPress: reloadApp }]);
+      } catch (error) { Alert.alert('Restore', error?.message || 'The restore could not be completed. Your data was not changed.'); }
+      finally { setBusy(''); }
+    } },
+  ]);
+  const latest = backups[0];
+  return (
+    <View>
+      <Text style={[styles.settingBody, styles.sectionContent]}>
+        {status == null ? 'Checking for your Mac…'
+          : status.reachable ? `Everything — logbook, gear locker, photos and settings — is copied to ${status.dir} on your Mac, automatically when you leave the app and whenever you tap Back up now. Deleting the app never touches it.${latest ? ` Last backup: ${backupWhen(latest.createdAt)}.` : ' No backups yet.'}`
+            : status.error || 'Your Mac isn\'t reachable. Start the development server (npx expo start) and open the app from it to back up or restore.'}
+      </Text>
+      <NavigationRow disabled={Boolean(busy) || !status?.reachable} title="Back up now" body="Copy all app data and photos to your Mac" onPress={backup} last={!backups.length} />
+      {backups.slice(0, 8).map((item, index) => (
+        <NavigationRow key={item.id} disabled={Boolean(busy)} title={`${backupWhen(item.createdAt)} · ${REASONS[item.reason] || item.reason}`} body={`${backupContents(item.counts)} · tap to restore`}
+          onPress={() => restore(item)} last={index === Math.min(backups.length, 8) - 1} />
+      ))}
+      {busy ? <Text accessibilityLiveRegion="polite" style={[styles.settingBody, styles.sectionContent]}>{busy}</Text> : null}
     </View>
   );
 }
@@ -272,6 +325,9 @@ export default function SettingsScreen({ accountEmail = '', authStatus = 'signed
         </View>
         </GroupedSection> : null}
 
+        {section === 'backup' && devBackupsAvailable() ? <GroupedSection title="Backups on your Mac · development">
+          <DevBackupCard />
+        </GroupedSection> : null}
         {section === 'backup' ? <GroupedSection title="Logbook backup">
           <LogbookExportCard />
         </GroupedSection> : null}

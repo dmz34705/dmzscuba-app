@@ -81,7 +81,7 @@ function parseJson(raw, fallback) {
 // Bump whenever indexRowFromDive's shape or derived values change: useDiveLog
 // rebuilds the whole index when a stored row carries an older stamp. Cheaper
 // to reason about than remembering which field arrived in which version.
-export const INDEX_ROW_VERSION = 5;
+export const INDEX_ROW_VERSION = 6;
 
 /** The richest mix on the dive, used to classify air / nitrox / trimix. */
 function maxMixValue(mixes, key) {
@@ -152,6 +152,9 @@ export function indexRowFromDive(dive, logs = []) {
     updatedAt: dive.updatedAt,
     deletedAt: dive.deletedAt,
     siteName: dive.site?.name || '',
+    // The linked dive site (atlas or pinned) and whether the link is verified — for site counts.
+    siteId: dive.site?.siteId || '',
+    siteVerification: dive.site?.verification?.status || '',
     maxDepthMeters: dive.water?.maxDepthMeters ?? 0,
     avgDepthMeters: dive.water?.avgDepthMeters ?? null,
     durationSeconds: dive.durationSeconds ?? 0,

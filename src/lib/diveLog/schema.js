@@ -235,14 +235,33 @@ function normalizeDevice(raw) {
   };
 }
 
+const SITE_SOURCES = ['atlas', 'mine'];
+const VERIFICATION_METHODS = ['computer', 'location', 'plan'];
+// A dive linked to a dive site (an Ocean Atlas site or one the diver pinned) and the evidence for it.
+function normalizeVerification(raw) {
+  if (!isObject(raw)) return null;
+  const methods = Array.isArray(raw.methods) ? [...new Set(raw.methods.filter((m) => VERIFICATION_METHODS.includes(m)))] : [];
+  return {
+    status: raw.status === 'verified' ? 'verified' : 'linked',
+    methods,
+    planId: str(raw.planId, '').trim().slice(0, 80),
+    distanceMeters: clampNum(raw.distanceMeters, 0, 100000, null),
+    linkedAt: str(raw.linkedAt, '').trim().slice(0, 40),
+  };
+}
+
 function normalizeSite(raw) {
   const source = isObject(raw) ? raw : {};
+  const siteId = str(source.siteId, '').trim().slice(0, 100);
   return {
     name: str(source.name, '').trim(),
     location: str(source.location, '').trim(),
     country: str(source.country, '').trim(),
     latitude: clampNum(source.latitude, -90, 90, null),
     longitude: clampNum(source.longitude, -180, 180, null),
+    siteId,
+    siteSource: siteId && SITE_SOURCES.includes(source.siteSource) ? source.siteSource : '',
+    verification: siteId ? normalizeVerification(source.verification) : null,
   };
 }
 

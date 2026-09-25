@@ -9,6 +9,8 @@ import { getFeature, getFeaturesByArea } from '../features/catalog/featureCatalo
 import { gearSummary, serviceEntriesForItem, serviceStatusForItem } from '../features/gearChecklist/model';
 import { loadGearState } from '../features/gearChecklist/storage';
 import { inSeasonNow } from '../features/oceanAtlas/seasons';
+import { formatDay, formatRange, formatTime, planAlerts, planPhase, planTitle, readinessSummary, sortPlans } from '../features/planner/model';
+import { loadPlannerState } from '../features/planner/usePlanner';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
 import { loadIndex } from '../lib/diveLog/storage';
 import { computeDiveLogStats } from '../lib/diveLog/stats';
@@ -26,6 +28,7 @@ const PLUS = 'M12 5v14M5 12h14';
 const DOWNLOAD = 'M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14';
 const CHEVRON = 'M9 6l6 6-6 6';
 const WRENCH = 'M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17v3h3l5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.5-2.5 2.5-2.5Z';
+const CALENDAR = 'M5 7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7Zm0 3h14M9 3v4m6-4v4';
 
 function Avatar({ initials, onPress }) {
   return (
@@ -70,11 +73,11 @@ function daysAgo(iso) {
 
 // Loaded every time Home is shown, so returning from the logbook or gear locker updates it.
 function useHomeData() {
-  const [data, setData] = useState({ loaded: false, stats: null, lastDive: null, gear: null });
+  const [data, setData] = useState({ loaded: false, stats: null, lastDive: null, gear: null, plans: [], gearState: null, rows: [] });
   useEffect(() => {
     let alive = true;
     (async () => {
-      const [rows, gearState] = await Promise.all([loadIndex().catch(() => []), loadGearState().catch(() => null)]);
+      const [rows, gearState, planner] = await Promise.all([loadIndex().catch(() => []), loadGearState().catch(() => null), loadPlannerState().catch(() => ({ plans: [] }))]);
       const live = (Array.isArray(rows) ? rows : []).filter((row) => row && !row.deletedAt);
       const lastDive = live.reduce((latest, row) => (!latest || Date.parse(row.startTime) > Date.parse(latest.startTime) ? row : latest), null);
       let gear = null;
@@ -85,7 +88,7 @@ function useHomeData() {
           .sort((a, b) => ['blocked', 'overdue', 'attention', 'due-soon'].indexOf(a.status.key) - ['blocked', 'overdue', 'attention', 'due-soon'].indexOf(b.status.key));
         gear = { ...summary, first: urgent[0] || null };
       }
-      if (alive) setData({ loaded: true, stats: computeDiveLogStats(live), lastDive, gear });
+      if (alive) setData({ loaded: true, stats: computeDiveLogStats(live), lastDive, gear, plans: planner.plans, gearState, rows: live });
     })();
     return () => { alive = false; };
   }, []);
@@ -181,9 +184,43 @@ function GearNotice({ gear, onPress }) {
   );
 }
 
+// The next dive day or trip, with its countdown and the most important thing to sort out.
+function UpNext({ plan, alerts, onPress, onPlan }) {
+  if (!plan) {
+    return (
+      <Pressable accessibilityRole="button" accessibilityLabel="Plan your next dive" onPress={onPlan} style={({ pressed }) => [styles.upNextEmpty, pressed && styles.pressed]}>
+        <View style={[styles.noticeIcon, { backgroundColor: 'rgba(240,200,75,0.14)' }]}><Glyph d={CALENDAR} color={colors.gold} size={18} /></View>
+        <View style={styles.noticeCopy}>
+          <Text numberOfLines={1} style={styles.noticeTitle}>Plan your next dive</Text>
+          <Text numberOfLines={1} style={styles.noticeBody}>Dive days and trips, checked against your gear and cards</Text>
+        </View>
+        <Glyph d={CHEVRON} color={colors.faint} size={16} />
+      </Pressable>
+    );
+  }
+  const summary = readinessSummary(alerts);
+  const tone = { danger: colors.danger, warning: colors.warning, info: colors.cyan, good: colors.good }[summary.tone];
+  const trip = plan.kind === 'trip';
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={`Up next: ${planTitle(plan)}. ${summary.label}`} onPress={onPress} style={({ pressed }) => [styles.upNext, pressed && styles.pressed]}>
+      <LinearGradient colors={trip ? ['rgba(240,200,75,0.16)', 'rgba(11,28,46,0.2)'] : ['rgba(22,133,193,0.24)', 'rgba(11,28,46,0.2)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
+      <View style={styles.upNextTop}>
+        <Text style={[styles.upNextKind, { color: trip ? colors.gold : colors.cyan }]}>{trip ? 'TRIP' : 'DIVE DAY'} · {planPhase(plan).label.toUpperCase()}</Text>
+        <Glyph d={CHEVRON} color={colors.faint} size={16} />
+      </View>
+      <Text numberOfLines={1} style={styles.upNextTitle}>{planTitle(plan)}</Text>
+      <Text numberOfLines={1} style={styles.upNextWhen}>{trip ? formatRange(plan.startDate, plan.endDate) : [formatDay(plan.startDate, { weekday: true }), formatTime(plan.startTime), plan.operator.name].filter(Boolean).join(' · ')}</Text>
+      <View style={styles.upNextStatus}>
+        <View style={[styles.upNextDot, { backgroundColor: tone }]} />
+        <Text numberOfLines={1} style={styles.upNextStatusText}><Text style={{ color: tone, fontWeight: '800' }}>{summary.label}</Text>{alerts.length ? ` · ${summary.headline}` : ''}</Text>
+      </View>
+    </Pressable>
+  );
+}
+
 function SeasonCard({ pick, onPress }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${pick.name}, ${pick.places.join(' and ')}, ${pick.window}. Open Ocean Atlas`} onPress={onPress} style={({ pressed }) => [styles.seasonCard, pressed && styles.pressed]}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${pick.name}, ${pick.places.join(' and ')}, ${pick.window}. Explore in Ocean Atlas`} onPress={onPress} style={({ pressed }) => [styles.seasonCard, pressed && styles.pressed]}>
       {pick.photo?.url ? <Image source={{ uri: pick.photo.url }} style={styles.seasonPhoto} resizeMode="cover" accessibilityIgnoresInvertColors />
         : <LinearGradient colors={['#123A55', '#0B1C2E']} style={styles.seasonPhoto} />}
       <LinearGradient colors={['rgba(5,11,20,0)', 'rgba(5,11,20,0.92)']} locations={[0.35, 1]} style={StyleSheet.absoluteFill} />
@@ -210,9 +247,11 @@ function LessonCard({ feature, onPress }) {
 }
 
 // --- screen -----------------------------------------------------------------
-export default function HomeScreen({ appSettings = {}, profile = {}, signedIn = false, onOpenTool, onSelectTab }) {
+export default function HomeScreen({ appSettings = {}, certifications = null, profile = {}, signedIn = false, onOpenTool, onSelectTab }) {
   const insets = useSafeAreaInsets();
-  const { loaded, stats, lastDive, gear } = useHomeData();
+  const { loaded, stats, lastDive, gear, plans, gearState, rows } = useHomeData();
+  const nextPlan = useMemo(() => sortPlans(plans).upcoming.find((plan) => plan.startDate) || null, [plans]);
+  const nextAlerts = useMemo(() => (nextPlan ? planAlerts(nextPlan, { gear: gearState || { items: [], setups: [] }, certifications, dives: rows }) : []), [nextPlan, gearState, certifications, rows]);
   const month = new Date().getMonth();
   const inSeason = useMemo(() => { try { return inSeasonNow(month, 8); } catch { return []; } }, [month]);
   // Lessons that are actually open (the gear lab is waiting on artwork).
@@ -255,6 +294,13 @@ export default function HomeScreen({ appSettings = {}, profile = {}, signedIn = 
 
           <GearNotice gear={gear} onPress={() => onOpenTool('gear-checklist')} />
 
+          {loaded ? (
+            <>
+              <SectionHeader title="Up next" action={nextPlan ? 'Planner' : null} onAction={() => onOpenTool('dive-planner')} />
+              <UpNext alerts={nextAlerts} onPlan={() => onOpenTool('dive-planner')} onPress={() => onOpenTool('dive-planner', { focus: { planId: nextPlan.id } })} plan={nextPlan} />
+            </>
+          ) : null}
+
           <SectionHeader title="Quick access" />
           <View style={styles.grid}>
             <QuickTile feature={tile('ocean-atlas')} detail="Dive sites, seasons & your dives on a map" onPress={() => onOpenTool('ocean-atlas')} />
@@ -272,7 +318,7 @@ export default function HomeScreen({ appSettings = {}, profile = {}, signedIn = 
             <>
               <SectionHeader title={`In season · ${MONTHS[month]}`} action="Atlas" onAction={() => onOpenTool('ocean-atlas')} />
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail} style={styles.railWrap} decelerationRate="fast" snapToInterval={SEASON_WIDTH + 12} snapToAlignment="start">
-                {inSeason.map((pick) => <SeasonCard key={pick.id} pick={pick} onPress={() => onOpenTool('ocean-atlas')} />)}
+                {inSeason.map((pick) => <SeasonCard key={pick.id} pick={pick} onPress={() => onOpenTool('ocean-atlas', { focus: { regionId: pick.regionId, speciesId: pick.speciesId } })} />)}
               </ScrollView>
             </>
           ) : null}
@@ -296,6 +342,16 @@ const styles = StyleSheet.create({
   screen: { backgroundColor: colors.background, flex: 1 },
   content: { paddingBottom: spacing.xl },
   pressed: { opacity: 0.8, transform: [{ scale: 0.985 }] },
+
+  upNext: { backgroundColor: colors.surface, borderColor: colors.lineStrong, borderRadius: radii.lg, borderWidth: 1, marginBottom: spacing.lg, overflow: 'hidden', padding: spacing.md },
+  upNextEmpty: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', gap: 12, marginBottom: spacing.lg, padding: 12 },
+  upNextTop: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  upNextKind: { fontSize: 10, fontWeight: '900', letterSpacing: 1.4 },
+  upNextTitle: { color: colors.text, fontSize: 20, fontWeight: '900', letterSpacing: -0.3, marginTop: 6 },
+  upNextWhen: { color: colors.muted, fontSize: 13, marginTop: 3 },
+  upNextStatus: { alignItems: 'center', backgroundColor: 'rgba(2,8,16,0.35)', borderRadius: radii.sm, flexDirection: 'row', gap: 8, marginTop: 12, paddingHorizontal: 10, paddingVertical: 9 },
+  upNextDot: { borderRadius: 4, height: 8, width: 8 },
+  upNextStatusText: { color: colors.muted, flex: 1, fontSize: 13 },
 
   hero: { minHeight: 262, paddingBottom: 54, paddingHorizontal: spacing.lg, justifyContent: 'space-between' },
   heroImage: { opacity: 0.95 },

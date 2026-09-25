@@ -18,6 +18,7 @@ import ComingSoonScreen from '../screens/ComingSoonScreen';
 import CompassNavScreen from '../screens/CompassNavScreen';
 import DiveLogScreen from '../screens/DiveLogScreen';
 import OceanAtlasScreen from '../screens/OceanAtlasScreen';
+import PlannerScreen from '../screens/PlannerScreen';
 import GearSetupScreen from '../screens/GearSetupScreen';
 import GearChecklistScreen from '../screens/GearChecklistScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -38,7 +39,7 @@ const GEAR_SETUP_ENABLED = false;
 
 export default function AppNavigator() {
   const [navigation, dispatch] = useReducer(reduceNavigation, INITIAL_NAVIGATION);
-  const { activeTab, detailRoute, moreRoute, settingsSection, logbookIntent } = navigation;
+  const { activeTab, detailRoute, moreRoute, settingsSection, logbookIntent, atlasFocus, plannerFocus } = navigation;
   const appSettings = useAppSettings();
   const accountSession = useAccountSession({
     appSettings: appSettings.settings,
@@ -55,7 +56,7 @@ export default function AppNavigator() {
   }, [appSettings.loaded, appSettings.settings.locationLoggingEnabled]);
 
   const closeDetail = () => dispatch({ type: 'closeDetail' });
-  const openDetail = (route) => dispatch({ type: 'open', route, at: Date.now() });
+  const openDetail = (route, options = {}) => dispatch({ type: 'open', route, focus: options.focus, at: Date.now() });
   const selectTab = (tab) => dispatch({ type: 'tab', tab });
   const openAccount = () => selectTab('account');
   const goBack = () => dispatch({ type: 'back' });
@@ -73,7 +74,10 @@ export default function AppNavigator() {
 
   const feature = getFeature(detailRoute);
   if (feature?.routeType === 'ocean-atlas') {
-    return <OceanAtlasScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />;
+    return <OceanAtlasScreen appSettings={appSettings.settings} focus={atlasFocus} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />;
+  }
+  if (feature?.routeType === 'planner') {
+    return <PlannerScreen account={accountSession.account} focusPlanId={plannerFocus?.planId || null} key={plannerFocus?.at || 'planner'} onBack={closeDetail} onOpenTool={openDetail} signedIn={accountSession.authStatus === 'signedIn'} />;
   }
   if (feature?.routeType === 'color-loss') {
     return <ColorLossScreen appSettings={appSettings.settings} onBack={closeDetail} />;
@@ -159,7 +163,7 @@ export default function AppNavigator() {
   return (
     <View style={styles.shell}>
       <View style={styles.tabContent}>
-        {activeTab === 'home' ? <HomeScreen appSettings={appSettings.settings} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
+        {activeTab === 'home' ? <HomeScreen appSettings={appSettings.settings} certifications={accountSession.authStatus === 'signedIn' && Array.isArray(accountSession.account?.certifications) ? accountSession.account.certifications : null} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
         {activeTab === 'learn' ? <LearnScreen onOpenTool={openDetail} /> : null}
         {activeTab === 'tools' ? <ToolsScreen onOpenTool={openDetail} /> : null}
         {activeTab === 'logbook' ? <DiveLogScreen key={logbookIntent?.at || 'logbook'} appSettings={appSettings.settings} initialAction={logbookIntent?.action || null} initialFolder={logbookIntent?.folder || null} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}

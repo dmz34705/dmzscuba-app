@@ -1,12 +1,19 @@
 // "When to go" for any site: monthly surface temperature (NOAA climatology),
 // sourced editorial seasons (regions.js) and iNaturalist-derived marine life
-// (data/marineLife.json). Editorial seasons always win over observation data.
+// (data/marineLife.json), with OBIS survey records where iNaturalist has little
+// (data/marineLifeObis.json). Editorial seasons always win over observation data.
 import MARINE_LIFE from './data/marineLife.json';
+import MARINE_LIFE_OBIS from './data/marineLifeObis.json';
 import packedTemperature from './data/temperature.json';
 import { MONTHS, expandTemperature, inBounds, temperatureAt } from './model';
 
 const temperature = expandTemperature(packedTemperature);
 import { MARINE_REGIONS } from './regions';
+
+// Survey places (OBIS) are flagged: their records say where, never when.
+const PLACES = [...MARINE_LIFE.places.map(place => [...place, false]), ...MARINE_LIFE_OBIS.places.map(place => [...place, true])];
+const TAXA = { ...MARINE_LIFE_OBIS.taxa, ...MARINE_LIFE.taxa };
+const SURVEY_SOURCE = { name: 'OBIS survey records', url: MARINE_LIFE_OBIS.sourceUrl };
 
 const MATCH_SLACK_KM = 40; // a site may sit just outside a snapshot radius
 
@@ -46,21 +53,22 @@ export function temperatureProfile(site) {
 // Snapshot places covering any of the given points (nearest only for a single site).
 function snapshotsNear(points, nearestOnly) {
   const hits = [];
-  for (const [latitude, longitude, radius, name, species] of MARINE_LIFE.places) {
+  for (const [latitude, longitude, radius, name, species, survey] of PLACES) {
     const centre = { latitude, longitude };
     const distance = Math.min(...points.map(point => distanceKm(point, centre)));
-    if (distance <= radius + MATCH_SLACK_KM) hits.push({ name, species, distance });
+    if (distance <= radius + MATCH_SLACK_KM) hits.push({ name, species, distance, survey });
   }
   hits.sort((a, b) => a.distance - b.distance);
-  return nearestOnly ? hits.slice(0, 1) : hits;
+  // One site: the nearest sighting place, plus the nearest survey place that fills its gaps.
+  return nearestOnly ? [hits.find(hit => !hit.survey), hits.find(hit => hit.survey)].filter(Boolean) : hits;
 }
 
 function taxon(id) {
-  const [common, scientific, group, photoUrl, attribution, license] = MARINE_LIFE.taxa[id] || [];
+  const [common, scientific, group, photoUrl, attribution, license] = TAXA[id] || [];
   return common ? { taxonId: Number(id), common, scientific, group, photo: photoUrl ? { url: photoUrl, attribution, license } : null } : null;
 }
 const taxonByScientific = scientific => {
-  const id = Object.keys(MARINE_LIFE.taxa).find(key => MARINE_LIFE.taxa[key][1] === scientific);
+  const id = Object.keys(TAXA).find(key => TAXA[key][1] === scientific);
   return id ? taxon(id) : null;
 };
 const capitalize = text => text ? text[0].toUpperCase() + text.slice(1) : text;
@@ -83,7 +91,9 @@ function buildGuide(points, temps, nearestOnly, maxAnimals = MAX_ANIMALS) {
   for (const snapshot of snapshots) {
     for (const [id, records, peakMask, index] of snapshot.species) {
       const entry = merged.get(id);
-      if (!entry) merged.set(id, { id, records, peakMask, index, best: records, where: snapshot.name });
+      if (!entry) merged.set(id, { id, records, peakMask, index, best: records, where: snapshot.name, survey: snapshot.survey });
+      else if (snapshot.survey && !entry.survey) continue; // sightings already cover it, with seasons
+      else if (!snapshot.survey && entry.survey) merged.set(id, { id, records, peakMask, index, best: records, where: snapshot.name, survey: false });
       else { entry.records += records; if (records > entry.best) Object.assign(entry, { peakMask, index, best: records, where: snapshot.name }); }
     }
   }
@@ -94,8 +104,8 @@ function buildGuide(points, temps, nearestOnly, maxAnimals = MAX_ANIMALS) {
     if (animals.some(animal => animal.scientific === info.scientific)) continue;
     const months = monthsFromMask(entry.peakMask);
     animals.push({ key: `inat-${entry.id}`, common: capitalize(info.common), scientific: info.scientific, group: info.group, months, records: entry.records,
-      index: entry.index.split('').map(Number), season: months.length ? `Most sightings ${monthRange(months)}` : 'Seen year-round',
-      where: snapshots.length > 1 ? entry.where : '', sourced: false, photo: info.photo, taxonId: info.taxonId });
+      index: entry.index.split('').map(Number), season: entry.survey ? 'Recorded in surveys' : months.length ? `Most sightings ${monthRange(months)}` : 'Seen year-round',
+      where: snapshots.length > 1 && !nearestOnly ? entry.where : '', sourced: false, survey: entry.survey, source: entry.survey ? SURVEY_SOURCE : undefined, photo: info.photo, taxonId: info.taxonId });
   }
   const seasonal = animals.filter(animal => animal.months.length);
   // Each distinct season is its own highlight (sourced first) rather than one merged "best" span.
@@ -107,7 +117,7 @@ function buildGuide(points, temps, nearestOnly, maxAnimals = MAX_ANIMALS) {
     if (existing) existing.animals.push(animal); else highlights.push({ label, months: animal.months, sourced: animal.sourced, animals: [animal] });
   }
   return { temps, animals, seasonal, highlights: highlights.slice(0, maxAnimals > MAX_ANIMALS ? 6 : 4), area: snapshots[0]?.name || editorial[0]?.name || '',
-    hasObservations: snapshots.length > 0, source: { name: MARINE_LIFE.source, url: MARINE_LIFE.sourceUrl } };
+    hasObservations: snapshots.some(snapshot => !snapshot.survey), hasSurveys: animals.some(animal => animal.survey), source: { name: MARINE_LIFE.source, url: MARINE_LIFE.sourceUrl } };
 }
 
 export function seasonGuide(site) {
@@ -169,7 +179,7 @@ export function inSeasonNow(month, limit = 8) {
     for (const entry of region.species) {
       if (!entry.months.includes(month + 1) || entry.months.length >= 12) continue;
       const match = taxonByScientific(entry.scientific);
-      picks.push({ id: `${region.id}:${entry.id}`, name: entry.name, place: region.name, window: entry.season.split(' · ')[0],
+      picks.push({ id: `${region.id}:${entry.id}`, regionId: region.id, speciesId: entry.id, name: entry.name, place: region.name, window: entry.season.split(' · ')[0],
         span: entry.months.length, photo: match?.photo || null, latitude: region.latitude, longitude: region.longitude });
     }
   }

@@ -45,13 +45,14 @@ export function atlasRuntime(DATA, MODEL) {
   }));
   // Supplementary sites: NOAA Thunder Bay moorings, Wikipedia, curated US inland (scripts/import-extra-dive-sites.cjs).
   const extra = DATA.extraSites;
-  if (extra?.sites) DATA.sites.push(...extra.sites.map(([id, name, latitude, longitude, depth, entryCode, mask, fresh, source, url]) => {
+  if (extra?.sites) DATA.sites.push(...extra.sites.map(([id, name, latitude, longitude, depth, entryCode, mask, fresh, source, url, protection]) => {
     const topologies = extra.topologyCodes.filter((_, code) => mask & (1 << code));
     const origin = extra.sources[source] || { name: source, license: '' };
     return { id: `x-${id}`, name, latitude, longitude, country: '', region: '', environment: fresh ? 'fresh' : '', topologies, entry: ['', 'boat', 'shore'][entryCode],
       maxDepthMeters: depth || null, aliases: [], coordinateQuality: source === 'tbnms' ? 'published mooring' : 'community', catalog: 'osm',
       siteType: topologies[0] ? `${topologies[0][0].toUpperCase()}${topologies[0].slice(1)} dive` : fresh ? 'Freshwater dive site' : 'Dive site',
-      note: source === 'curated' ? 'Well-known inland dive site. Access, fees and rules change — confirm with the site or park before visiting.' : source === 'tbnms' ? 'NOAA sanctuary shipwreck with a seasonal dive mooring. Protected: look, don\'t take.' : undefined,
+      // A protection note (licence needed, may be a war grave, listed wreck) comes first.
+      note: protection ? protection : source === 'curated' ? 'Well-known inland dive site. Access, fees and rules change — confirm with the site or park before visiting.' : source === 'tbnms' ? 'NOAA sanctuary shipwreck with a seasonal dive mooring. Protected: look, don\'t take.' : undefined,
       sources: [{ sourceName: origin.name, sourceUrl: url, dataLicense: origin.license, coordinateQuality: 'community' }] };
   }));
   // Published depths (scripts/build-published-depths.cjs; same rule as catalog.js).
@@ -59,6 +60,31 @@ export function atlasRuntime(DATA, MODEL) {
     const row = DATA.publishedDepths?.depths?.[site.id];
     if (!row || (site.maxDepthMeters && row[1] !== 'Posted')) continue;
     site.maxDepthMeters = row[0]; site.depthSource = { name: row[1] === 'Posted' ? 'Posted by the site' : row[1], url: row[2] }; site.depthIsWholeLake = Boolean(row[3]);
+  }
+  // One site per place: records of the same site from several sources are merged (scripts/build-site-merges.cjs;
+  // same rule as catalog.js applySiteMerges).
+  {
+    const byId = new Map(DATA.sites.map(site => [site.id, site]));
+    const hidden = new Set();
+    for (const [keepId, mergedIds, latitude, longitude, aliases, depth, independentSources] of DATA.siteMerges?.clusters || []) {
+      const keep = byId.get(keepId);
+      if (!keep) continue;
+      const others = mergedIds.map(id => byId.get(id)).filter(Boolean);
+      Object.assign(keep, {
+        latitude, longitude, aliases: [...new Set([...(keep.aliases || []), ...aliases])], independentSources,
+        topologies: [...new Set([keep, ...others].flatMap(site => site.topologies || []))],
+        entry: keep.entry || others.find(site => site.entry)?.entry || '',
+        environment: keep.environment || others.find(site => site.environment)?.environment || '',
+        sources: [...(keep.sources || []), ...others.flatMap(site => site.sources || [])],
+        // A protection note from any of the merged records wins over a generic one.
+        note: [keep, ...others].map(site => site.note).find(note => /war grave|licence|protected|listed historic/i.test(note || '')) || keep.note,
+      });
+      if (depth && !keep.depthSource?.name?.startsWith('Posted')) keep.maxDepthMeters = depth;
+      mergedIds.forEach(id => hidden.add(id));
+    }
+    // Wrecks closed to divers by law are never shown, whichever source listed them (catalog.js CLOSED_WRECKS).
+    const closed = DATA.closedWrecks ? new RegExp(DATA.closedWrecks, 'i') : null;
+    if (hidden.size || closed) DATA.sites = DATA.sites.filter(site => !hidden.has(site.id) && !(closed && closed.test(site.name)));
   }
   const paths = {
     back: 'M15 5l-7 7 7 7', search: 'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',
@@ -79,9 +105,21 @@ export function atlasRuntime(DATA, MODEL) {
     else window.dispatchEvent(new CustomEvent('atlas-message', { detail: { type, ...payload } }));
   };
   let state = { month: new Date().getMonth(), species: 'all', unit: DATA.unit,
-    layers: { regions: true, sites: true, temperature: true, wildlife: true, dives: false } };
+    layers: { regions: true, sites: true, mysites: true, temperature: true, wildlife: true, dives: false } };
   let logPins = [], logStatus = 'loading', missingCount = 0, selected = null, toastTimer;
   let readyForPersistence = false;
+  // The animal a Home in-season card was opened for: listed first in its region's guide (not a saved filter).
+  let spotlight = null;
+  // Sites the diver pinned themselves (from the app): a small layer of their own, never clustered.
+  let mySites = [];
+  // The more dives at a site, the bigger and warmer its pin: 1, 2–4, 5–9, 10–24, 25+.
+  const TIER_LABELS = ['First visit', 'Returning', 'Regular', 'Home water', 'Local legend'];
+  const diveTier = count => (count >= 25 ? 5 : count >= 10 ? 4 : count >= 5 ? 3 : count >= 2 ? 2 : 1);
+  const tierSize = tier => [26, 30, 34, 39, 45][tier - 1];
+  // Species search and guides: the index arrives once from the app; guides and Discover picks on demand.
+  // `following` is the animal whose sighting areas stay outlined until the diver clears it.
+  let speciesList = null, speciesListRequested = false, following = null, speciesLayer = null, speciesFit = null;
+  const speciesGuides = new Map(), discoverPicks = new Map();
   let panel = null;
   const temp = value => value == null ? '—' : `${Math.round(state.unit === 'F' ? value * 9 / 5 + 32 : value)}°${state.unit}`;
   // The month is contextual, not a preference: every launch starts in the
@@ -107,8 +145,8 @@ export function atlasRuntime(DATA, MODEL) {
     <div class="map-tools"><button id="layers-toggle" class="round glass" aria-label="Map layers" aria-expanded="false">${icon('layers')}<span id="layer-count" class="count"></span></button><button id="locate" class="round glass" aria-label="Find my location">${icon('locate')}</button><button id="world" class="round glass" aria-label="Show world map">${icon('globe')}</button><div class="zoom glass"><button id="zoom-in" aria-label="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out">−</button></div></div>
     <div class="bottom">
       <section id="controls" class="floating-panel glass" aria-label="Layer options" hidden><div class="panel-heading"><div><div class="eyebrow">MAKE IT YOUR MAP</div><h2>Map layers</h2></div><button class="panel-close" data-dismiss aria-label="Close layers">×</button></div>
-      <div class="layers" aria-label="Map layers">${[['regions', 'Dive regions', 'globe', 'Popular gateways, habitats & conditions'], ['sites', 'Dive sites', 'site', `${DATA.sites.length.toLocaleString()} mapped reefs, wrecks & entries`], ['temperature', 'Water temperature', 'temperature', 'Smoothed monthly surface averages'], ['wildlife', 'Seasonal wildlife', 'wildlife', 'Evidence-backed encounter windows'], ['dives', 'My dives', 'dives', 'Your saved locations · all dates']].map(([key, label, image, detail]) => `<button class="layer" data-layer="${key}" aria-pressed="false">${icon(image)}<span><strong>${label}</strong><small>${detail}</small></span><i class="switch" aria-hidden="true"></i></button>`).join('')}</div>
-      <div id="species-bar" class="species-filter glass"><label for="species">LOOK FOR</label><select id="species" aria-label="Filter by marine species"><option value="all">All marine life</option>${[...new Map(DATA.regions.flatMap(r => r.species).map(s => [s.id, s.name]))].sort((a, b) => a[1].localeCompare(b[1])).map(([id, name]) => `<option value="${id}">${esc(name)}</option>`).join('')}</select></div>
+      <div class="layers" aria-label="Map layers">${[['regions', 'Dive regions', 'globe', 'Popular gateways, habitats & conditions'], ['sites', 'Dive sites', 'site', `${DATA.sites.length.toLocaleString()} mapped reefs, wrecks & entries`], ['mysites', 'My sites', 'site', 'Sites you pinned in the planner'], ['temperature', 'Water temperature', 'temperature', 'Smoothed monthly surface averages'], ['wildlife', 'Seasonal wildlife', 'wildlife', 'Evidence-backed encounter windows'], ['dives', 'My dives', 'dives', 'Your saved locations · all dates']].map(([key, label, image, detail]) => `<button class="layer" data-layer="${key}" aria-pressed="false">${icon(image)}<span><strong>${label}</strong><small>${detail}</small></span><i class="switch" aria-hidden="true"></i></button>`).join('')}</div>
+      <div id="species-bar" class="species-filter glass"><span class="species-label">LOOK FOR</span><button id="species-follow" class="species-follow"></button><button id="species-clear" class="species-clear" aria-label="Stop following this animal" hidden>×</button></div>
       <div id="legend" class="legend"><div class="legend-top"><span>AVERAGE SEA SURFACE</span><button id="units" aria-label="Change temperature unit"></button></div><div class="gradient"></div><div id="legend-values" class="legend-values"></div></div><button id="info" class="source">Sources & coverage ↗</button></section>
       <section id="overview" class="overview floating-panel glass" hidden></section>
       <section id="sheet" class="sheet glass" aria-label="Map details" hidden><div class="sheet-head"><div id="detail-eyebrow" class="eyebrow"></div><h2 id="detail-title"></h2><p id="detail-subtitle" class="subtitle"></p><div id="glance" class="glance" hidden></div><div class="sheet-actions"><button id="expand" class="action-guide" aria-label="Expand details" aria-expanded="false">View guide ↑</button><button id="get-me-here" class="action-trip" hidden>Get me here ↗</button></div><button id="close" class="close" aria-label="Close map details">×</button></div><div id="detail-body" class="sheet-body"></div></section>
@@ -146,7 +184,7 @@ export function atlasRuntime(DATA, MODEL) {
   base.on('tileerror', () => { if (++tileErrors === 3) toast('Detailed map unavailable. The offline atlas and saved pins are still available.'); });
   base.on('tileload', () => { tileErrors = 0; });
 
-  const regionLayer = L.layerGroup().addTo(map), siteLayer = L.layerGroup().addTo(map), wildlifeLayer = L.layerGroup().addTo(map), diveLayer = L.layerGroup().addTo(map);
+  const regionLayer = L.layerGroup().addTo(map), siteLayer = L.layerGroup().addTo(map), wildlifeLayer = L.layerGroup().addTo(map), diveLayer = L.layerGroup().addTo(map), mySiteLayer = L.layerGroup().addTo(map);
   // Native guides: season/marine-life for a site and destination guides for islands, US states and countries.
   const native = Boolean(window.ReactNativeWebView);
   const siteGuides = new Map(), regionGuides = new Map();
@@ -240,7 +278,8 @@ export function atlasRuntime(DATA, MODEL) {
       seen.add(key);
       const clustered = items.length > 1;
       const count = kind === 'dives' ? items.reduce((sum, p) => sum + p.dives.length, 0) : items.length;
-      const className = kind === 'dives' ? 'dive-pin' : clustered ? 'cluster' : 'site-pin';
+      const tier = kind === 'dives' ? diveTier(count) : 0;
+      const className = kind === 'dives' ? `dive-pin t${tier}${items.every(item => item.dives.every(dive => dive.verified)) ? ' verified' : ''}` : clustered ? 'cluster' : 'site-pin';
       const names = items.map(item => labelText(item.name));
       const listable = kind === 'sites' && map.getZoom() >= LABEL_ZOOM && items.length <= (clustered ? GROUP_LIST : 1);
       const showLabel = listable && labelFits(point, names, clustered ? 19 : 10, labelSides.get(key));
@@ -255,7 +294,7 @@ export function atlasRuntime(DATA, MODEL) {
         if (cached.html !== html) { const element = cached.marker.getElement(); if (element) element.innerHTML = html; cached.html = html; }
         return;
       }
-      const size = kind === 'dives' ? 30 : clustered ? 34 : 15;
+      const size = kind === 'dives' ? tierSize(tier) : clustered ? 34 : 15;
       const label = clustered ? `${count} ${kind === 'dives' ? 'logged dives' : 'dive sites'}` : items[0].name;
       const marker = L.marker([lat, lon], { pane: kind === 'dives' ? 'markerPane' : 'sites', title: label, alt: label, icon: L.divIcon({ className: 'atlas-pin', html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] }), zIndexOffset: kind === 'dives' ? 200 : 0 }).addTo(target);
       marker.on('click', event => {
@@ -271,6 +310,23 @@ export function atlasRuntime(DATA, MODEL) {
     });
     for (const [key, cached] of cache) if (!seen.has(key)) { retire(cached.marker, target); cache.delete(key); labelSides.delete(key); }
     return { total: pins.length, visible: pins.filter(pin => mapBounds.contains([pin.latitude, pin.longitude])).length, markers: bins.size };
+  }
+  const asMySite = site => ({ ...site, kind: 'site', custom: true, siteType: 'My site', catalog: 'mine', topologies: [], note: 'Pinned by you in the Dive Planner.' });
+  // Redrawn only when the sites, the layer switch or the label threshold change — not on every pan.
+  let mySitesDrawn = '';
+  function drawMySites() {
+    const labelled = map.getZoom() >= 6;
+    const signature = state.layers.mysites ? `${labelled}|${mySites.map(site => `${site.id}:${site.name}:${site.latitude},${site.longitude}`).join(';')}` : 'off';
+    if (signature === mySitesDrawn) return;
+    mySitesDrawn = signature;
+    mySiteLayer.clearLayers();
+    if (!state.layers.mysites) return;
+    for (const site of mySites) {
+      const html = `<div class="my-pin"><i></i></div>${labelled ? `<span class="site-label mine">${esc(labelText(site.name))}</span>` : ''}`;
+      L.marker([site.latitude, site.longitude], { pane: 'markerPane', title: site.name, alt: site.name, zIndexOffset: 300,
+        icon: L.divIcon({ className: 'atlas-pin', html, iconSize: [20, 20], iconAnchor: [10, 10] }) })
+        .on('click', event => { pinTap(event); choose(asMySite(site)); }).addTo(mySiteLayer);
+    }
   }
   function clearMarkers(kind, target) {
     for (const cached of markerCache[kind].values()) retire(cached.marker, target);
@@ -324,6 +380,7 @@ export function atlasRuntime(DATA, MODEL) {
     if (state.layers.sites) siteStats = markersFor(DATA.sites, siteLayer, 'sites');
     else { clearMarkers('sites', siteLayer); siteStats = { total: DATA.sites.length, visible: 0, markers: 0 }; }
     if (state.layers.dives) markersFor(logPins, diveLayer, 'dives'); else clearMarkers('dives', diveLayer);
+    drawMySites();
     // Seasonal wildlife no longer has its own map pins: its seasons live in site, place and region guides,
     // and any empty-map tap opens a quick look with local marine life.
     document.body.classList.remove('map-zooming');
@@ -355,7 +412,7 @@ export function atlasRuntime(DATA, MODEL) {
     $('expand').setAttribute('aria-label', 'Expand details');
     $('expand').textContent = 'View guide ↑';
     renderOverview(); updatePanels();
-    if (panel === 'search') $('search').focus(); else $('search').blur();
+    if (panel === 'search') { $('search').focus(); requestSpeciesList(); } else $('search').blur();
   }
   map.on('click', event => {
     if (echoOfPinTap(event)) return;
@@ -444,10 +501,10 @@ export function atlasRuntime(DATA, MODEL) {
       html += `<div class="month-now"><strong>${months[state.month]}</strong> ${now.length ? now.map(a => `<p>● ${esc(a.common)} — ${esc(a.sourced ? a.note || a.season : a.season.replace('Most sightings', 'most sightings') + ' in local sighting records')}${a.source ? ` <a class="source" href="${esc(a.source.url)}">${esc(a.source.name)} ↗</a>` : ''}</p>`).join('') : '<p>No documented seasonal highlight this month; the resident life below is seen year-round.</p>'}</div>`;
     }
     if (guide.animals.length) {
-      html += `<div class="section-label">${fresh ? 'Freshwater life recorded nearby' : 'Marine life seen here'} · ${guide.animals.length}</div><div class="gallery">${guide.animals.map(a => `<div class="gcard">${a.photo ? `<img src="${esc(a.photo.url)}" alt="${esc(a.common)}" loading="lazy">` : '<div class="gphoto"></div>'}<strong>${esc(a.common)}</strong><em>${esc(a.scientific)}</em><span class="${a.months.length ? 'on' : ''}">${esc(a.sourced ? a.season.split(' · ')[0] : a.season)}</span>${a.records ? `<small>${a.records.toLocaleString()} local sightings${a.where ? ` · ${esc(a.where)}` : ''}${a.awayKm != null ? ` · ${distText(a.awayKm)} away` : ''}</small>` : ''}${a.photo ? `<small class="credit">📷 ${esc(a.photo.attribution)}</small>` : ''}<a class="gsource" href="${esc(a.taxonId ? `https://www.inaturalist.org/taxa/${a.taxonId}` : a.source?.url || 'https://www.inaturalist.org/')}">${a.taxonId ? 'iNaturalist' : 'Source'} ↗</a></div>`).join('')}</div>`;
+      html += `<div class="section-label">${fresh ? 'Freshwater life recorded nearby' : 'Marine life seen here'} · ${guide.animals.length}</div><div class="gallery">${guide.animals.map(a => `<div class="gcard">${a.photo ? `<img src="${esc(a.photo.url)}" alt="${esc(a.common)}" loading="lazy">` : '<div class="gphoto"></div>'}<strong>${esc(a.common)}</strong><em>${esc(a.scientific)}</em><span class="${a.months.length ? 'on' : ''}">${esc(a.sourced ? a.season.split(' · ')[0] : a.season)}</span>${a.records ? `<small>${a.records.toLocaleString()} ${a.survey ? 'survey records' : 'local sightings'}${a.where ? ` · ${esc(a.where)}` : ''}${a.awayKm != null ? ` · ${distText(a.awayKm)} away` : ''}</small>` : ''}${a.photo ? `<small class="credit">📷 ${esc(a.photo.attribution)}</small>` : ''}<a class="gsource" href="${esc(a.taxonId ? `https://www.inaturalist.org/taxa/${a.taxonId}` : a.source?.url || 'https://www.inaturalist.org/')}">${a.taxonId ? 'iNaturalist' : 'Source'} ↗</a></div>`).join('')}</div>`;
       const borrowed = fresh && guide.animals.find(a => a.awayKm != null);
       html += fresh ? `<p class="note">Fish, turtles, crayfish, mussels and other aquatic animals from iNaturalist research-grade sightings ${borrowed ? `— few are recorded out here, so this adds the nearest well-recorded shore (${distText(borrowed.awayKm)} away); species there may not reach the site` : `within about ${roundDistText(15)} — nearby lakes and rivers included, so not every species lives at this exact site`}. Photos are openly licensed and credited.</p>`
-        : `<p class="note">${guide.hasObservations ? 'Marine life from iNaturalist research-grade sightings nearby, adjusted for how many people log each month. “Most sightings” is a pattern, not a guarantee.' : ''} Solid seasons come from the linked research or government sources. Photos are openly licensed and credited.</p>`;
+        : `<p class="note">${guide.hasObservations ? 'Marine life from iNaturalist research-grade sightings nearby, adjusted for how many people log each month. “Most sightings” is a pattern, not a guarantee.' : ''}${guide.animals.some(a => a.survey) ? ' Few divers post sightings here, so this adds species from scientific surveys within about ' + roundDistText(40) + ' (<a class="source" href="https://obis.org/">OBIS, IOC-UNESCO ↗</a>): they show what lives in the area, not when, and not every one reaches this site.' : ''} Solid seasons come from the linked research or government sources. Photos are openly licensed and credited.</p>`;
     } else if (!guide.highlights.length) html += `<p class="note">${fresh ? 'No freshwater-life records close by yet.' : 'No marine-life records near this spot yet.'}</p>`;
     return html;
   }
@@ -492,43 +549,82 @@ export function atlasRuntime(DATA, MODEL) {
   const stars = n => `<span class="fishes" role="img" aria-label="${n} of 5">${Array.from({ length: 5 }, (_, i) => `<b class="${i < n ? 'on' : ''}">${FISH}</b>`).join('')}</span>`;
   function glanceParts(r) {
     if (!r) return null;
-    const life = r.marineLife?.[state.month], exposure = r.inland ? null : r.exposure?.[state.month];
+    const life = r.marineLife?.[state.month];
     const vis = r.inland ? null : r.visibility?.[state.month];
-    const inlandExposure = r.inland ? r.exposure?.[state.month] || null : null;
-    return { life, exposure: r.inland ? inlandExposure : exposure, experience: r.experience, travel: r.travel, vis, deep: r.exposureDeep || null };
+    return { life, experience: r.experience, travel: r.travel, vis };
   }
-  // Published maximum depth: what it measures and where it comes from.
-  function depthTile(site) {
+  // What to wear this month, from the water temperature (and your comfort preferences, set in the app).
+  // The card opens Gear for this dive, which matches it to your own Gear Locker on the device.
+  function wearCard(wear) {
+    const w = wear?.[state.month];
+    const label = w?.label && w.label !== 'Confirm water temperature' ? (/mm$/.test(w.label) ? `${w.label} wetsuit` : w.label) : null;
+    const water = w?.temperatureC != null ? `For ${temp(w.temperatureC)} surface water · colder at depth${w.personal ? ' · adjusted for how you feel the cold' : ''}` : 'No water temperature here — confirm it locally';
+    return `<div class="section-label">What to wear · ${months[state.month]}</div><button id="gear-for-dive" class="wear-card">${label
+      ? `<strong>${esc(label)}</strong><span>${esc(water)}</span>${w.reason ? `<span class="wear-why">${esc(w.reason)}</span>` : ''}`
+      : `<strong>Plan your exposure protection</strong><span>${wear ? esc(water) : 'Pick a site for its water temperature, or plan from your Gear Locker'}</span>`}<b>Match it to my Gear Locker →</b></button>`;
+  }
+  // No published depth: the best estimate we have, most specific first, always named as an estimate.
+  //   lake    — the lake's modelled deepest point (GLOBathy), never the dive's depth
+  //   seafloor — water depth within ~300 m of the pin from fine NOAA / EMODnet models, else within ~900 m
+  //              from the global ETOPO grid (coarse on steep coasts); given only where bottom of 40 m or
+  //              less is near, anything deeper reads "40+ m": beyond recreational limits, not a figure
+  //   nearby  — the depths published for sites within 25 km
+  const DEPTH_LIMIT = 40;
+  const depthNumber = m => imperial ? Math.round(m * 3.28084 / 5) * 5 || Math.round(m * 3.28084) : Math.round(m);
+  function seafloorRange(floor) {
+    if (!floor || floor.shallowest > DEPTH_LIMIT || floor.deepest < 3) return null;
+    const top = floor.deepest > DEPTH_LIMIT ? `${imperial ? 130 : DEPTH_LIMIT}+` : depthNumber(floor.deepest);
+    return `${depthNumber(floor.shallowest) === depthNumber(floor.deepest) ? '' : depthNumber(floor.shallowest) + '–'}${top} ${DATA.depthUnit}`;
+  }
+  function depthEstimates(site, g) {
+    if (!site || site.maxDepthMeters || !g) return [];
+    const list = [];
+    const lake = g.lakeDepth, lakeName = lake?.lakeName ? esc(lake.lakeName) : 'this lake';
+    if (lake) list.push(lake.published
+      ? { label: 'Lake’s deepest point', value: depthText(lake.maxMeters), detail: `No depth published for this site — ${lakeName}’s deepest point (Wikidata). Not the dive’s depth: most dives stay shallower.`, short: 'Wikidata', url: lake.url }
+      : { label: 'Lake’s deepest point · estimated', value: depthText(lake.maxMeters), detail: `No published depth — modelled for ${lakeName} (GLOBathy). Not the dive’s depth: most dives stay shallower.`, short: 'GLOBathy', url: lake.url });
+    const fine = seafloorRange(g.bathymetry);
+    if (fine) list.push({ label: 'Depth · estimated', value: fine, detail: `No published depth — seafloor within about ${imperial ? '1,000 ft' : '300 m'} of this pin (${esc(g.bathymetry.source?.name || 'survey data')}).`, short: g.bathymetry.source?.name, url: g.bathymetry.source?.url });
+    const near = g.nearbyDepths;
+    if (near) list.push({ label: 'Depth · nearby sites', value: `${near.low === near.high ? '' : depthNumber(near.low) + '–'}${depthNumber(near.high)} ${DATA.depthUnit}`, detail: `No published depth — typical of ${near.count} sites within ${roundDistText(near.radiusKm)} that publish one.`, short: `${near.count} sites nearby`, url: null });
+    const coarse = !fine && seafloorRange(g.seafloor);
+    if (coarse) list.push({ label: 'Depth · estimated', value: coarse, detail: 'No published depth — estimated from NOAA seafloor data around it.', short: 'NOAA seafloor', url: 'https://www.ncei.noaa.gov/products/etopo-global-relief-model' });
+    return list;
+  }
+  // Published maximum depth: what it measures and where it comes from — or, without one, the best estimate
+  // (with the next best as a second line).
+  function depthTile(site, g) {
+    const [best, next] = depthEstimates(site, g);
+    if (best) return `<div class="gtile"><small>${best.label}</small><strong>${best.value}</strong><span>${best.detail}${next ? ` Also: ${next.value} (${esc(next.short || next.label)}).` : ''} Confirm with the operator.</span></div>`;
     if (!site?.maxDepthMeters) return `<div class="gtile"><small>Max depth</small><strong>—</strong><span>No published depth yet — ask the operator or site</span></div>`;
     const label = site.depthIsWholeLake ? 'Lake’s deepest point' : site.topologies?.includes('wreck') ? 'Wreck lies in' : 'Max depth';
     const from = site.depthSource ? site.depthSource.name : site.catalog === 'global' ? 'OpenDiveMap record' : site.catalog === 'osm' ? 'Community map record' : 'Catalog record';
     return `<div class="gtile"><small>${label}</small><strong>${depthText(site.maxDepthMeters)}</strong><span>${site.depthIsWholeLake ? 'Not the dive’s depth — ask where divers go · ' : ''}${esc(from)}</span></div>`;
   }
-  function glanceTiles(r, temps, inland, site) {
+  function glanceTiles(r, temps, inland, site, guide) {
     const g = glanceParts(r);
     if (!g) return '';
     if (r.inland) return `<div class="section-label">At a glance · ${months[state.month]} · freshwater</div><div class="glance-grid">
       <div class="gtile"><small>Freshwater life</small>${g.life ? `<strong class="stars">${stars(g.life.stars)}</strong><span>${esc(g.life.label)}${g.life.drivers.length ? ` · ${esc(g.life.drivers.join(', '))}` : ''}</span>` : '<strong>—</strong><span>No freshwater-life records nearby yet</span>'}</div>
       <div class="gtile"><small>Experience</small><strong>${esc(g.experience.level)}</strong><span>${esc(g.experience.reasons.slice(0, 2).join(' · ') || 'No depth data')}${g.experience.confidence === 'features' ? ' · estimated' : ''}</span></div>
       <div class="gtile"><small>Travel</small><strong>${esc(g.travel.level)}</strong><span>${esc(g.travel.detail)}${g.travel.personal ? ' from your start' : ' · set a start in Get me here for a personal rating'}</span></div>
-      <div class="gtile"><small>Exposure</small><strong>${esc(g.exposure || 'Check locally')}</strong><span>${g.deep ? `At depth: ${esc(g.deep)} · confirm bottom conditions` : inland?.constant != null ? 'Steady groundwater temperature' : 'Planning guide · confirm bottom temperature'}</span></div>
-      ${depthTile(site)}
+      <div class="gtile"><small>Water · ${months[state.month]}</small>${inland?.surface ? `<strong>${inland.ice.includes(state.month) ? 'Ice-covered' : temp(inland.surface[state.month])}</strong><span>${inland.constant != null ? 'Groundwater — steady all year' : 'Estimated surface'}${inland.deep ? ` · ${temp(inland.deep.low)}–${temp(inland.deep.high)} below the thermocline` : ''} · what to wear below</span>` : '<strong>—</strong><span>No temperature estimate · ask the site</span>'}</div>
+      ${depthTile(site, guide)}
       <div class="gtile"><small>Water · elevation</small><strong>${esc(inland?.kindLabel || 'Freshwater')}${inland?.elevation != null ? ` · ${elevText(inland.elevation)}` : ''}</strong><span>${inland?.altitude ? 'Altitude dive (above 1,000 ft) — altitude tables. ' : inland?.elevation != null ? 'Normal dive (under 1,000 ft). ' : ''}Freshwater: less buoyancy — you may need a little less weight.</span></div>
     </div><p class="note">Estimates from freshwater sightings, site features, local climate, elevation and your route. Confirm conditions and requirements with the site.</p>`;
-    const temperature = !r.inland && temps?.length === 12 ? ` · ${temp(temps[state.month])} surface` : '';
     return `<div class="section-label">At a glance · ${months[state.month]}</div><div class="glance-grid">
       <div class="gtile"><small>Major marine life</small>${g.life ? `<strong class="stars">${stars(g.life.stars)}</strong><span>${esc(g.life.label)}${g.life.drivers.length ? ` · ${esc(g.life.drivers.join(', '))}` : ''}</span>` : '<strong>—</strong><span>No sighting records nearby</span>'}</div>
       <div class="gtile"><small>Experience</small><strong>${esc(g.experience.level)}</strong><span>${esc(g.experience.reasons.slice(0, 2).join(' · ') || 'No depth or current data')}${g.experience.confidence === 'features' ? ' · estimated' : ''}</span></div>
       <div class="gtile"><small>Travel</small><strong>${esc(g.travel.level)}</strong><span>${esc(g.travel.detail)}${g.travel.personal ? ' from your start' : ' · set a start in Get me here for a personal rating'}</span></div>
-      ${depthTile(site)}
+      ${depthTile(site, guide)}
       <div class="gtile"><small>Visibility · estimated</small>${g.vis ? `<strong>${visText(g.vis)}</strong><span>From satellite water clarity offshore (NOAA VIIRS, ${months[state.month]} average). Local visibility varies with weather, tides and runoff.</span>` : `<strong>—</strong><span>${r.inland ? 'Freshwater — satellite clarity does not apply; ask locally' : 'No satellite clarity data near this site'}</span>`}</div>
-      <div class="gtile"><small>Exposure</small><strong>${esc(g.exposure || 'Check locally')}</strong><span>${r.inland ? 'Freshwater — ask about temperature at depth' : `${months[state.month]}${temperature} · colder at depth`}</span></div>
+      <div class="gtile"><small>Water · ${months[state.month]}</small>${temps?.length === 12 && temps[state.month] != null ? `<strong>${temp(temps[state.month])}</strong><span>Average surface temperature · colder at depth · what to wear below</span>` : '<strong>—</strong><span>No sea temperature for this spot</span>'}</div>
     </div><p class="note">Estimates from recorded sightings, published depth and site features, water temperature, satellite water clarity and your route. Confirm conditions and requirements with a local operator.</p>`;
   }
   function glanceLine(r, site) {
     const g = glanceParts(r);
     if (!g) return '';
-    return [r.inland ? '<span>Freshwater</span>' : '', g.life ? `<span class="stars">${stars(g.life.stars)}</span>` : '', `<span>${esc(g.experience.level)}</span>`, `<span>${esc(g.travel.level)} ${g.travel.personal ? 'trip' : 'access'}</span>`, site?.maxDepthMeters && !site.depthIsWholeLake ? `<span>${depthText(site.maxDepthMeters)} max</span>` : '', g.vis ? `<span>${visText(g.vis)} vis</span>` : '', g.exposure ? `<span>${esc(g.exposure)}</span>` : ''].filter(Boolean).join('');
+    return [r.inland ? '<span>Freshwater</span>' : '', g.life ? `<span class="stars">${stars(g.life.stars)}</span>` : '', `<span>${esc(g.experience.level)}</span>`, `<span>${esc(g.travel.level)} ${g.travel.personal ? 'trip' : 'access'}</span>`, site?.maxDepthMeters && !site.depthIsWholeLake ? `<span>${depthText(site.maxDepthMeters)} max</span>` : '', g.vis ? `<span>${visText(g.vis)} vis</span>` : ''].filter(Boolean).join('');
   }
   // Same-named levels (Hawaii island › Hawaii state) are told apart by kind.
   // A glance at the tapped spot: photos of common life, water this month, nearby diving and what's in season.
@@ -591,7 +687,20 @@ export function atlasRuntime(DATA, MODEL) {
     if (!state.layers.wildlife) return '';
     if (!region) return '<div class="section-label">Marine life</div><p class="note">We haven’t added a species guide for this area yet. Explore a marked region to see documented marine life and seasonal windows.</p>';
     const species = region.species.filter(s => state.species === 'all' || state.species === s.id);
-    return `<div class="section-label">${esc(region.name)} · marine life</div>${species.length ? [...species].sort((a, b) => Number(b.months.includes(state.month + 1)) - Number(a.months.includes(state.month + 1))).map(animalCard).join('') : '<p class="note">The selected species is not documented in this regional guide. Choose “All marine life” to explore the available species.</p>'}<p class="note">Regional guidance, not a complete species inventory. Encounters vary; seasonal windows do not guarantee sightings.</p>`;
+    const rank = s => (s.id === spotlight ? 2 : 0) + Number(s.months.includes(state.month + 1));
+    return `<div class="section-label">${esc(region.name)} · marine life</div>${species.length ? [...species].sort((a, b) => rank(b) - rank(a)).map(animalCard).join('') : '<p class="note">The selected species is not documented in this regional guide. Choose “All marine life” to explore the available species.</p>'}<p class="note">Regional guidance, not a complete species inventory. Encounters vary; seasonal windows do not guarantee sightings.</p>`;
+  }
+  // Where to dive inside a wildlife region: its featured dive areas, then mapped sites nearest its centre.
+  let regionPlaces = { areas: [], sites: [] };
+  function regionDiving(region) {
+    if (!region.bounds) return '';
+    const inside = item => MODEL.inBounds(region.bounds, item.latitude, item.longitude);
+    const near = (a, b) => ((a.latitude - region.latitude) ** 2 + (a.longitude - region.longitude) ** 2) - ((b.latitude - region.latitude) ** 2 + (b.longitude - region.longitude) ** 2);
+    const areas = [...DATA.diveRegions.flatMap(r => r.areas), ...DATA.remoteAreas].filter(inside);
+    const sites = DATA.sites.filter(inside).sort(near);
+    regionPlaces = { areas, sites };
+    const row = (attr, index, name, detail) => `<button class="area-row" ${attr}="${index}"><span><strong>${esc(name)}</strong><small>${esc(detail)}</small></span>${icon('arrow')}</button>`;
+    return `<div class="section-label">Dive here</div>${areas.length ? `<div class="area-list">${areas.map((area, i) => row('data-region-dive-area', i, area.name, area.subtitle)).join('')}</div>` : ''}${sites.length ? `<div class="area-list">${sites.slice(0, 12).map((site, i) => row('data-region-dive-site', i, site.name, site.siteType || site.region || 'Dive site')).join('')}</div>${sites.length > 12 ? `<p class="note">The ${sites.length} mapped sites here are on the map — zoom in to explore the rest.</p>` : ''}` : areas.length ? '' : '<p class="note">No dive sites are mapped in this area yet. Zoom in or search to explore nearby.</p>'}`;
   }
   function provinceDetails(region) {
     if (!state.layers.regions || !region) return '';
@@ -601,7 +710,7 @@ export function atlasRuntime(DATA, MODEL) {
     const mapped = DATA.sites.filter(site => MODEL.inBounds(region.bounds, site.latitude, site.longitude));
     return `<div class="region-summary"><strong>${region.areas.length}</strong><span>featured dive areas</span><strong>${mapped.length}</strong><span>mapped sites</span></div><p class="note">Choose an area to center the map and reveal its monthly conditions, marine-life guides and broader ocean context.</p><div class="section-label">Featured dive areas</div><div class="area-list">${region.areas.map((area, index) => `<button class="area-row" data-area="${index}"><span><strong>${esc(area.name)}</strong><small>${esc(area.subtitle)}</small></span>${icon('arrow')}</button>`).join('')}</div>${mapped.length ? `<div class="section-label">Mapped dive sites</div><div class="area-list">${mapped.slice(0, 14).map(site => `<button class="area-row" data-site-id="${esc(site.id)}"><span><strong>${esc(site.name)}</strong><small>${esc(site.siteType || site.region || 'Dive site')}</small></span>${icon('arrow')}</button>`).join('')}</div>${mapped.length > 14 ? `<p class="note">Showing 14 of ${mapped.length} mapped sites. Zoom into the region to explore the rest.</p>` : ''}` : '<div class="section-label">Mapped dive sites</div><p class="note">Precise site coverage is still growing here. The featured areas are regional starting points, not exact entries or moorings.</p>'}`;
   }
-  function siteFacts(site) {
+  function siteFacts(site, extra) {
     const facts = [];
     if (site.maxDepthMeters) {
       // A lake's deepest point is not the dive's depth; a wreck's figure is the water it lies in.
@@ -609,16 +718,54 @@ export function atlasRuntime(DATA, MODEL) {
       const source = site.depthSource ? `<a class="fact-source" href="${esc(site.depthSource.url)}">${esc(site.depthSource.name)} ↗</a>` : '<em class="fact-source">published</em>';
       facts.push(`<span><small>${label}</small><strong>${depthText(site.maxDepthMeters)}</strong>${source}</span>`);
     }
+    for (const estimate of depthEstimates(site, extra).slice(0, 2)) facts.push(`<span><small>${estimate.label}</small><strong>${estimate.value}</strong>${estimate.url ? `<a class="fact-source" href="${esc(estimate.url)}">${esc(estimate.short)} ↗</a>` : `<em class="fact-source">${esc(estimate.short)}</em>`}</span>`);
     if (site.entry) facts.push(`<span><small>Entry</small><strong>${esc(site.entry)}</strong></span>`);
     if (site.environment) facts.push(`<span><small>Environment</small><strong>${esc(site.environment)}</strong></span>`);
-    return `${facts.length ? `<div class="site-facts">${facts.join('')}</div>` : ''}${site.topologies?.length ? `<div class="chip-label">Site features</div><div class="chips">${site.topologies.map(value => `<span>${esc(value)}</span>`).join('')}</div>` : ''}`;
+    // How sure we are it's real and where it is: several independent sources beat one community pin.
+    const confidence = site.independentSources > 1
+      ? `<p class="confidence good">✓ Confirmed by ${site.independentSources} independent sources${site.aliases?.length ? ` · also listed as ${site.aliases.slice(0, 3).map(esc).join(', ')}` : ''}</p>`
+      : ['global', 'osm'].includes(site.catalog) ? '<p class="confidence">One community source — confirm the exact spot locally</p>' : '';
+    // Inside a marine park or reserve: name it and link it; the rules are the park's to state.
+    const protectedAreas = extra?.protection?.length ? `<div class="protected">${extra.protection.map(area => `<a href="${esc(area.url)}"><small>${esc(area.kind)}</small><strong>${esc(area.name)}</strong></a>`).join('')}<p>Protected areas often have rules for divers — a park fee or dive tag, mooring-only boats, no gloves, touching or collecting. Check before you go.</p></div>` : '';
+    // Shore dives: what's mapped at the water's edge.
+    const SHORE = { parking: 'Parking', toilets: 'Toilets', shower: 'Showers', water: 'Drinking water', slipway: 'Slipway', pier: 'Pier / jetty', beach: 'Beach' };
+    const shoreText = m => m < 20 ? 'at the site' : imperial ? `${Math.max(10, Math.round(m * 3.28084 / 10) * 10)} ft` : `${m} m`;
+    // A beach alone near a reef pin says little (Cozumel's reefs are boat dives); access facilities or a shore entry do.
+    const shoreAccess = extra?.shore && (site.entry === 'shore' || ['parking', 'pier', 'slipway', 'toilets', 'shower', 'water'].some(kind => kind in extra.shore));
+    const shore = shoreAccess ? `<div class="chip-label">At the shore · mapped on OpenStreetMap</div><div class="chips shore-chips">${Object.entries(extra.shore).map(([kind, m]) => `<span>${SHORE[kind] || esc(kind)} · ${shoreText(m)}</span>`).join('')}</div>` : '';
+    return `${confidence}${protectedAreas}${facts.length ? `<div class="site-facts">${facts.join('')}</div>` : ''}${shore}${site.topologies?.length ? `<div class="chip-label">Site features</div><div class="chips">${site.topologies.map(value => `<span>${esc(value)}</span>`).join('')}</div>` : ''}`;
   }
+  // What the encyclopedias say: a short Wikipedia summary (credited and linked, CC BY-SA) and, for a
+  // wreck, the ship itself from Wikidata (CC0): what it was, who built it, its size and its story.
+  function encyclopedia(facts) {
+    if (!facts) return '';
+    const size = q => {
+      if (!q || !Number.isFinite(q.amount) || !['m', 'ft'].includes(q.unit)) return null;
+      const meters = q.unit === 'ft' ? q.amount / 3.28084 : q.amount;
+      return imperial ? `${Math.round(meters * 3.28084).toLocaleString()} ft` : `${Math.round(meters).toLocaleString()} m`;
+    };
+    const ship = facts.ship;
+    const rows = ship ? [
+      ['Vessel', ship.type], ['Built by', ship.builder], ['Flag', ship.flag], ['Length', size(ship.length)], ['Beam', size(ship.beam)],
+      ['Tonnage', ship.tonnage && Number.isFinite(ship.tonnage.amount) ? `${Math.round(ship.tonnage.amount).toLocaleString()} GT` : null],
+    ].filter(([, value]) => value) : [];
+    const events = ship?.events?.length ? `<p class="ship-events">${ship.events.map(([label, year]) => `<span><small>${esc(label)}</small><strong>${esc(year)}</strong></span>`).join('')}</p>` : '';
+    const summary = facts.summary ? `<p class="encyclopedia">${esc(facts.summary)}</p><a class="source" href="${esc(facts.article)}">From Wikipedia · CC BY-SA 4.0 ↗</a>` : '';
+    const history = rows.length || events ? `<div class="section-label">Ship history</div>${events}${rows.length ? `<div class="site-facts ship">${rows.map(([label, value]) => `<span><small>${label}</small><strong>${esc(value)}</strong></span>`).join('')}</div>` : ''}${ship.wikidata ? `<a class="source" href="${esc(ship.wikidata)}">Wikidata · CC0 ↗</a>` : ''}` : '';
+    return summary || history ? `<div class="section-label">About this site</div>${summary}${history}` : '';
+  }
+  function siteTally(count, verified) {
+    const tier = diveTier(count);
+    return `<div class="site-tally t${tier}"><strong>${count}</strong><span>${count === 1 ? 'dive' : 'dives'}${verified ? ` · ${verified} verified` : ''}</span><em>${TIER_LABELS[tier - 1]}</em></div>`;
+  }
+  // The diver's own dives at a site (linked from the logbook), for its site page.
+  const divesAtSite = site => logPins.find(pin => pin.siteId && pin.siteId === site.id) || null;
   function diveRows(dives) {
     return dives.map(dive => {
       const date = dive.startTime ? new Date(dive.startTime) : null;
       const when = date && Number.isFinite(date.getTime()) ? date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : 'Date not recorded';
       const depth = dive.maxDepthMeters == null ? 'Depth —' : `${Math.round(DATA.depthUnit === 'ft' ? dive.maxDepthMeters * 3.28084 : dive.maxDepthMeters)} ${DATA.depthUnit}`;
-      return `<button class="dive-row" data-dive="${esc(dive.id)}"><span class="number">${dive.number ? '#' + esc(dive.number) : icon('dives')}</span><span class="copy"><strong>${esc(dive.name)}</strong><small>${when} · ${depth}${dive.durationSeconds == null ? '' : ' · ' + Math.round(dive.durationSeconds / 60) + ' min'}</small></span>${icon('arrow')}</button>`;
+      return `<button class="dive-row" data-dive="${esc(dive.id)}"><span class="number">${dive.number ? '#' + esc(dive.number) : icon('dives')}</span><span class="copy"><strong>${esc(dive.name)}${dive.verified ? ' <em class="verified-tick" title="Verified by dive computer and location">✓ Verified</em>' : ''}</strong><small>${when} · ${depth}${dive.durationSeconds == null ? '' : ' · ' + Math.round(dive.durationSeconds / 60) + ' min'}</small></span>${icon('arrow')}</button>`;
     }).join('');
   }
   function renderDetails() {
@@ -629,13 +776,18 @@ export function atlasRuntime(DATA, MODEL) {
     journeyButton.hidden = !['site', 'area', 'place'].includes(s.kind) || (s.kind === 'place' && !s.journey);
     journeyButton.onclick = () => post('journey', { destination: s.kind === 'place' ? s.journey : { id: s.id, name: s.name, latitude: s.latitude, longitude: s.longitude, region: s.region, country: s.country, entry: s.entry } });
     $('detail-title').textContent = s.name || (s.kind === 'sources' ? 'Behind the atlas' : 'Locations here');
-    $('detail-eyebrow').textContent = ({ diveRegion: 'DIVE REGION / QUICK EXPLORE', area: 'FEATURED DIVE AREA', region: 'MARINE LIFE / SEASON GUIDE', province: 'OCEAN REGION / EXPLORATION LENS', site: 'DIVE SITE', dive: 'YOUR LOGBOOK', ocean: 'OCEAN EXPLORER', sources: 'SOURCES & COVERAGE', cluster: 'EXPLORE LOCATIONS', place: s.label })[s.kind];
+    $('detail-eyebrow').textContent = ({ diveRegion: 'DIVE REGION / QUICK EXPLORE', area: 'FEATURED DIVE AREA', region: 'MARINE LIFE / SEASON GUIDE', species: 'MARINE LIFE / WHERE TO SEE IT', province: 'OCEAN REGION / EXPLORATION LENS', site: 'DIVE SITE', dive: 'YOUR LOGBOOK', ocean: 'OCEAN EXPLORER', sources: 'SOURCES & COVERAGE', cluster: 'EXPLORE LOCATIONS', place: s.label })[s.kind];
     if (s.kind === 'site' && native && siteGuides.get(guideKey(s))?.guide?.inland) $('detail-eyebrow').textContent = 'FRESHWATER DIVE SITE';
+    if (s.kind === 'site' && s.custom) $('detail-eyebrow').textContent = 'MY SITE';
     $('detail-subtitle').textContent = s.subtitle || (Number.isFinite(s.latitude) ? `${Math.abs(s.latitude).toFixed(3)}°${s.latitude < 0 ? 'S' : 'N'} · ${Math.abs(s.longitude).toFixed(3)}°${s.longitude < 0 ? 'W' : 'E'}` : 'An atlas for discovery. Always confirm local conditions.');
     const glance = native && ['site', 'area'].includes(s.kind) ? glanceLine(siteGuides.get(guideKey(s))?.ratings, s) : '';
     $('glance').innerHTML = glance; $('glance').hidden = !glance;
     let body = '', clusterPreview = [];
-    if (s.kind === 'sources') {
+    if (s.kind === 'species') {
+      const guide = speciesGuides.get(s.key);
+      $('detail-subtitle').textContent = guide ? [guide.scientific, guide.placeCount ? `${guide.placeCount} areas with records` : ''].filter(Boolean).join(' · ') : 'Marine life';
+      body = speciesDetails(speciesGuides.has(s.key) ? guide : undefined);
+    } else if (s.kind === 'sources') {
       body = `<div class="sources"><h3>Water temperature</h3><p>NOAA ERSSTv5 monthly sea-surface climatology, 1991–2020. The original 2° grid preserves missing cells. Display colors are smoothly interpolated, with limited coastal infilling and a detailed land mask; numeric readouts and monthly profiles use the original grid. Colors fade out at close zoom. These are regional averages, not live readings or dive-depth measurements; coastal values remain approximate.</p><a class="source" href="${esc(DATA.temperature.sourceUrl)}">NOAA PSL · source dataset ↗</a><h3>Ocean regions</h3><p>${DATA.oceanRegions.length} broad exploration lenses make every ocean tap useful. They summarize habitats and representative wildlife from NOAA, UNEP and national science agencies. The closest lens is selected geographically; it is not a legal, ecological or species-range boundary and never predicts an encounter at the tapped coordinate.</p><a class="source" href="https://portal.obis.org/data/access/">IOC-UNESCO OBIS · future biodiversity expansion ↗</a><h3>Dive locations</h3><p>${DATA.sites.length} bundled locations include ${globalSource.recordCount} community-maintained OpenDiveMap records, NOAA Florida Keys mooring locations, ${DATA.curatedSiteCount} government-referenced Cozumel reef areas, and the existing offline catalog. OpenDiveMap records are map-browsing data only and never automatically name a logged dive. Community coordinates and metadata can change; always confirm access, entry, depth and restrictions with a local operator. Cozumel reef-area pins are approximate browsing references, not navigation coordinates. The NOAA mooring download is dated February 2014 and does not establish current buoy availability.</p><a class="source" href="${esc(globalSource.sourceUrl)}">OpenDiveMap contributors · ${esc(globalSource.license)} ↗</a><br><a class="source" href="https://floridakeys.noaa.gov/mbuoy/allmbuoys.html">NOAA Florida Keys · published locations ↗</a><br><a class="source" href="https://www.gob.mx/conanp/es/articulos/estrategia-de-conservacion-para-arrecifes-saludables-de-cozumel?idiom=es">CONANP · Cozumel reef references ↗</a><p>Contains GeoNames data, CC BY 4.0. Pin details retain their original attribution.</p><h3>Seasonal marine life</h3><p>${DATA.regions.length} focused guides include sourced species and encounter windows. Empty months mean seasonality is not documented. Guide areas are browsing aids, not scientific range polygons.</p><h3>Your dives</h3><p>Only saved dives with valid coordinates appear. Deleted dives and unconfirmed location suggestions are excluded. The month selector changes ocean conditions and wildlife guidance; your dive history stays visible across all dates. Dive records stay on this device; no logbook data is uploaded by the atlas. Online basemap requests reveal the area being viewed to the tile provider.</p><h3>Maps & offline use</h3><p>Natural Earth 1:10 million public-domain coastlines, Leaflet (BSD-2-Clause) and geojson-vt (ISC) are bundled. OpenStreetMap tiles need a connection and stay on the same map layer at every zoom. Coastlines are generalized, not navigation charts. Ocean averages, regional lenses, species guides and saved pins remain available offline.</p><a class="source" href="https://www.openstreetmap.org/copyright">OpenStreetMap attribution & licence ↗</a></div>`;
     } else if (s.kind === 'place') {
       body = placeDetails(s);
@@ -645,19 +797,23 @@ export function atlasRuntime(DATA, MODEL) {
       clusterPreview = [...s.items].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 30);
       body = `<button class="cluster-zoom" id="cluster-zoom">Zoom into all ${s.items.length.toLocaleString()} locations ${icon('arrow')}</button><div class="section-label">Sites in this group</div>${clusterPreview.map((item, i) => `<button class="result" data-cluster="${i}">${icon(s.pinKind === 'dives' ? 'dives' : 'site')}<span><strong>${esc(item.name)}</strong><small>${s.pinKind === 'dives' ? item.dives.length + ' logged dives' : esc(item.siteType)}</small></span></button>`).join('')}${s.items.length > clusterPreview.length ? `<p class="note">Showing 30 of ${s.items.length.toLocaleString()} locations. Zoom into the group to reveal smaller clusters and individual pins.</p>` : ''}`;
     } else if (s.kind === 'dive') {
-      body = `<div class="section-label">${s.dives.length} ${s.dives.length === 1 ? 'dive' : 'dives'} at this location</div>${diveRows(s.dives)}`;
+      const verifiedCount = s.dives.filter(dive => dive.verified).length;
+      body = `${siteTally(s.dives.length, verifiedCount)}<div class="section-label">${s.dives.length} ${s.dives.length === 1 ? 'dive' : 'dives'} ${s.siteId ? 'at this site' : 'at this location'}</div>${diveRows(s.dives)}`;
     } else {
       const inlandGuide = native && ['site', 'area'].includes(s.kind) ? siteGuides.get(guideKey(s))?.guide?.inland : null;
       body = inlandGuide ? inlandConditions(inlandGuide) : temperatureCard(s, native && ['site', 'area'].includes(s.kind) ? siteGuides.get(guideKey(s))?.guide?.temps : null);
-      if (s.kind === 'site') body += `<div class="section-label">${[s.siteType || 'Dive location', s.region || s.country].filter(Boolean).map(esc).join(' · ')}</div>${siteFacts(s)}<p class="note">${esc(s.note || (['global', 'osm'].includes(s.catalog) ? 'Community-maintained map record. Confirm the exact entry, access, depth, hazards and current conditions with a local operator.' : 'Catalog location. Confirm entry, access and current conditions with a local operator.'))}</p>${(s.sources || []).map(source => `<a class="source" href="${esc(source.sourceUrl)}">${esc(source.sourceName)} · ${esc(source.dataLicense || '')} ↗</a>`).join('<br>')}`;
+      if (s.kind === 'site') body += `<div class="section-label">${[s.siteType || 'Dive location', s.region || s.country].filter(Boolean).map(esc).join(' · ')}</div>${siteFacts(s, native ? siteGuides.get(guideKey(s)) : null)}${native ? encyclopedia(siteGuides.get(guideKey(s))?.facts) : ''}<p class="note">${esc(s.note || (['global', 'osm'].includes(s.catalog) ? 'Community-maintained map record. Confirm the exact entry, access, depth, hazards and current conditions with a local operator.' : 'Catalog location. Confirm entry, access and current conditions with a local operator.'))}</p>${(s.sources || []).map(source => `<a class="source" href="${esc(source.sourceUrl)}">${esc(source.sourceName)} · ${esc(source.dataLicense || '')} ↗</a>`).join('<br>')}`;
       if (s.kind === 'area') body += `<div class="section-label">Regional starting point · ${esc(s.region)}</div><p class="note">${esc(s.subtitle)}. This pin centers a broad dive area, not a precise entry, mooring or operator location.</p>`;
       const nativeGuide = native && ['site', 'area'].includes(s.kind) ? siteGuides.get(guideKey(s)) : undefined;
-      // Photo of the wreck or inland site itself (openly licensed), when one exists.
+      // Photo of the site itself (openly licensed), when one exists.
       const photo = nativeGuide?.photo;
       const hero = photo ? `<figure class="site-photo"><img src="${esc(photo.url)}" alt="${esc(s.name)}" loading="lazy"><a href="${esc(photo.page)}">📷 ${esc(photo.attribution)} ↗</a></figure>` : '';
-      if (native && ['site', 'area'].includes(s.kind)) body = hero + crumbs(nativeGuide?.places || []) + glanceTiles(nativeGuide?.ratings, nativeGuide?.guide?.temps, nativeGuide?.guide?.inland, s) + body + guideSection(nativeGuide?.guide);
+      if (native && ['site', 'area'].includes(s.kind)) body = hero + crumbs(nativeGuide?.places || []) + glanceTiles(nativeGuide?.ratings, nativeGuide?.guide?.temps, nativeGuide?.guide?.inland, s, nativeGuide) + (nativeGuide ? wearCard(nativeGuide.wear) : '') + body + guideSection(nativeGuide?.guide);
+      const mine = s.kind === 'site' ? divesAtSite(s) : null;
+      if (mine) body = `<div class="section-label">Your dives here</div>${siteTally(mine.dives.length, mine.verified || 0)}${diveRows(mine.dives.slice(0, 5))}${mine.dives.length > 5 ? `<p class="note">And ${mine.dives.length - 5} more in your logbook.</p>` : ''}` + body;
       const focusedRegion = state.layers.wildlife && !(native && ['site', 'area'].includes(s.kind)) ? (s.kind === 'region' ? s : MODEL.regionAt(DATA.regions, s.latitude, s.longitude)) : null;
       if (focusedRegion) body += wildlifeDetails(focusedRegion);
+      if (s.kind === 'region') body += regionDiving(s);
       else if (state.layers.wildlife && !state.layers.regions) body += wildlifeDetails(null);
       // The broad ocean lens is for ocean taps and region cards only: on a site it can name a far-away
       // region (an Ohio quarry is "nearest" the Caribbean anchor) with habitats that don't apply.
@@ -669,8 +825,11 @@ export function atlasRuntime(DATA, MODEL) {
     // a different site or guide always starts at the top.
     const scroll = scrollOwner === selected ? $('detail-body').scrollTop : 0;
     scrollOwner = selected;
-    if (native && ['site', 'area', 'place'].includes(s.kind) && Number.isFinite(s.latitude) && Number.isFinite(s.longitude)) body = `<button id="gear-for-dive" class="destination">Gear for this dive →</button><p class="note">Your setups and exposure combinations · selected month</p>` + body;
+    // Destination guides have no single site's water: the same card, without a starting point.
+    if (native && s.kind === 'place' && Number.isFinite(s.latitude) && Number.isFinite(s.longitude)) body = wearCard(null) + body;
+    if (s.kind === 'site' && s.custom) body += `<p class="note">Conditions and marine life here come from the waters around this pin. Confirm access, entry and hazards locally.</p><button class="cluster-zoom" id="remove-my-site">Remove from My sites</button>`;
     $('detail-body').innerHTML = body;
+    if ($('remove-my-site')) $('remove-my-site').onclick = () => post('deleteMySite', { id: s.id, name: s.name });
     if ($('gear-for-dive')) $('gear-for-dive').onclick = () => post('gearAdvice', { id: s.kind === 'site' ? s.id : null, name: s.name, latitude: s.latitude, longitude: s.longitude, month: state.month });
     $('detail-body').scrollTop = scroll;
     $('detail-body').querySelectorAll('[data-dive]').forEach(button => button.onclick = () => post('openDive', { id: button.dataset.dive }));
@@ -680,11 +839,87 @@ export function atlasRuntime(DATA, MODEL) {
     if ($('all-sites')) $('all-sites').onclick = () => { showAllSites = true; renderDetails(); };
     $('detail-body').querySelectorAll('[data-cluster]').forEach(button => button.onclick = () => choose({ ...clusterPreview[Number(button.dataset.cluster)], kind: s.pinKind === 'dives' ? 'dive' : 'site' }));
     if ($('cluster-zoom')) $('cluster-zoom').onclick = () => { closeDetails(); fitTo(s.items.map(item => [item.latitude, item.longitude]), { padding: [60, 100], maxZoom: Math.min(map.getZoom() + 3, 15) }, .7); };
+    $('detail-body').querySelectorAll('[data-region-dive-area]').forEach(button => button.onclick = () => choose({ ...regionPlaces.areas[Number(button.dataset.regionDiveArea)], kind: 'area' }, true));
+    $('detail-body').querySelectorAll('[data-region-dive-site]').forEach(button => button.onclick = () => choose({ ...regionPlaces.sites[Number(button.dataset.regionDiveSite)], kind: 'site' }, true));
     $('detail-body').querySelectorAll('[data-area]').forEach(button => button.onclick = () => choose({ ...s.areas[Number(button.dataset.area)], kind: 'area' }, true));
+    if (s.kind === 'species' && speciesGuides.get(s.key)) {
+      const guide = speciesGuides.get(s.key);
+      $('detail-body').querySelectorAll('[data-species-place]').forEach(button => button.onclick = () => {
+        const place = guide.places[Number(button.dataset.speciesPlace)];
+        state.layers.sites = true; render();
+        expandDetails(false);
+        const sheetHeight = $('sheet').hidden ? 0 : $('sheet').getBoundingClientRect().height;
+        fitTo(L.latLng(place.latitude, place.longitude).toBounds(place.radiusKm * 2000), { paddingTopLeft: [30, 110], paddingBottomRight: [30, Math.max(150, sheetHeight + 40)], maxZoom: 11 }, .9);
+      });
+      $('detail-body').querySelectorAll('[data-species-region]').forEach(button => button.onclick = () => {
+        const entry = guide.curated[Number(button.dataset.speciesRegion)], region = DATA.regions.find(r => r.id === entry.regionId);
+        if (!region) return;
+        spotlight = entry.speciesId; render();
+        choose({ ...region, kind: 'region' }, true);
+      });
+    }
     $('detail-body').querySelectorAll('[data-site-id]').forEach(button => button.onclick = () => {
       const site = DATA.sites.find(item => item.id === button.dataset.siteId);
       if (site) choose({ ...site, kind: 'site' }, true);
     });
+  }
+  const monthSpan = list => {
+    if (!list?.length) return '';
+    if (list.length === 12) return 'year-round';
+    const set = new Set(list), start = list.find(m => !set.has((m + 11) % 12)) ?? list[0];
+    const runs = [];
+    for (let k = 0, m = start; k < 12; k++, m = (m + 1) % 12) {
+      if (set.has(m) && !set.has((m + 11) % 12)) runs.push([m, m]); else if (set.has(m)) runs[runs.length - 1][1] = m;
+    }
+    return runs.map(([a, b]) => a === b ? months[a] : `${months[a]}–${months[b]}`).join(', ');
+  };
+  function requestSpeciesList() {
+    if (!native || speciesList || speciesListRequested) return;
+    speciesListRequested = true; post('speciesIndex');
+  }
+  function speciesMatches(query) {
+    if (!speciesList) return [];
+    const forms = [...new Set([query, query.replace(/e?s$/, '')])].filter(Boolean);
+    const score = row => {
+      const common = row[1].toLowerCase(), scientific = row[2].toLowerCase(), words = common.split(/[\s-]+/);
+      return Math.max(...forms.map(q => common === q || scientific === q ? 4 : common.startsWith(q) || words.some(w => w.startsWith(q)) ? 3 : scientific.startsWith(q) ? 2 : common.includes(q) || scientific.includes(q) ? 1 : 0));
+    };
+    return speciesList.map(row => [score(row), row]).filter(([value]) => value).sort((a, b) => b[0] - a[0] || b[1][5] - a[1][5]).slice(0, 6).map(([, row]) => row);
+  }
+  // Follow an animal: its guide opens and its sighting areas stay outlined on the map until cleared.
+  function openSpecies(key, name) {
+    if (!native || !key) return;
+    const changed = following?.key !== key;
+    following = { key, name: name || following?.name || 'Marine life' };
+    if (changed) { speciesFit = key; if (speciesLayer) { map.removeLayer(speciesLayer); speciesLayer = null; } }
+    panel = null; state.layers.wildlife = true;
+    render();
+    choose({ kind: 'species', key, name: following.name, noFocus: true });
+    if (speciesGuides.has(key)) drawSpecies(speciesGuides.get(key)); else post('speciesGuide', { key });
+  }
+  function drawSpecies(guide) {
+    if (!guide || guide.key !== following?.key) return;
+    if (!speciesLayer) {
+      speciesLayer = L.layerGroup(guide.places.map(place => L.circle([place.latitude, place.longitude], { pane: 'vectors', interactive: false,
+        radius: place.radiusKm * 1000, color: '#97e8cc', weight: 1.2, opacity: .8, fillColor: '#97e8cc', fillOpacity: place.survey ? .05 : .14, dashArray: place.survey ? '3 5' : null }))).addTo(map);
+    }
+    if (speciesFit !== guide.key) return;
+    speciesFit = null;
+    const top = guide.places.slice(0, 8);
+    if (!top.length) return;
+    const sheetHeight = $('sheet').hidden ? 0 : Math.min($('sheet').getBoundingClientRect().height, map.getSize().y * .45);
+    fitTo(top.map(place => [place.latitude, place.longitude]), { paddingTopLeft: [40, 110], paddingBottomRight: [40, Math.max(150, sheetHeight + 60)], maxZoom: 7 }, .9);
+  }
+  function speciesDetails(guide) {
+    if (guide === undefined) return '<p class="note">Finding where divers see it…</p>';
+    if (!guide) return '<p class="note">This guide isn’t available right now. Try again in a moment.</p>';
+    const numeric = /^\d+$/.test(guide.key);
+    const photo = guide.photo ? `<figure class="site-photo"><img src="${esc(guide.photo.url)}" alt="${esc(guide.common)}" loading="lazy">${numeric ? `<a href="https://www.inaturalist.org/taxa/${esc(guide.key)}">📷 ${esc(guide.photo.attribution || 'iNaturalist')} ↗</a>` : ''}</figure>` : '';
+    const calendar = guide.months ? `<div class="section-label">When divers see it · by month</div><div class="calendar" aria-label="Sightings by month">${months.map((m, i) => `<span class="${guide.months[i] >= .66 ? 'active ' : guide.months[i] >= .33 ? 'soft ' : ''}${state.month === i ? 'current' : ''}">${m[0]}</span>`).join('')}</div><p class="note">Relative share of ${guide.sightings.toLocaleString()} iNaturalist sightings by month, across the areas below.</p>` : '';
+    const curated = guide.curated.length ? `<div class="section-label">Documented seasons</div><div class="area-list">${guide.curated.map((c, i) => `<button class="area-row" data-species-region="${i}"><span><strong>${esc(c.region)}</strong><small>${esc(c.season)}</small></span>${icon('arrow')}</button>`).join('')}</div>` : '';
+    const places = guide.places.length ? `<div class="section-label">Where divers see it · ${guide.placeCount} ${guide.placeCount === 1 ? 'area' : 'areas'}</div>${guide.places.map((place, i) => `<div class="species-place"><button class="area-row" data-species-place="${i}"><span><strong>${esc(place.name)}</strong><small>${place.survey ? 'Recorded in scientific surveys · no season data' : `${place.records.toLocaleString()} sightings${place.peakMonths.length ? ` · peak ${monthSpan(place.peakMonths)}` : ''}`}</small></span>${icon('arrow')}</button>${place.sites.length ? `<div class="species-sites">${place.sites.map(site => `<button data-site-id="${esc(site.id)}">${esc(site.name)}</button>`).join('')}${place.siteCount > place.sites.length ? `<button data-species-place="${i}">+${place.siteCount - place.sites.length} more</button>` : ''}</div>` : '<p class="note species-none">No dive sites mapped in this area yet.</p>'}</div>`).join('')}${guide.placeCount > guide.places.length ? `<p class="note">Showing the ${guide.places.length} areas with the most records.</p>` : ''}` : '';
+    const empty = !places && !curated ? '<p class="note">No sightings near dive sites are recorded for this animal yet.</p>' : '';
+    return `${photo}${calendar}${curated}${places}${empty}<p class="note">Sightings are citizen-science and survey records within each outlined area — a guide to where divers look, not a promise of an encounter. Confirm with a local operator.</p>${guide.sources.map(source => `<a class="source" href="${esc(source.url)}">${esc(source.name)} ↗</a>`).join('<br>')}`;
   }
   function renderOverview() {
     let headline = 'A whole ocean to explore.', copy = 'Find your next dive, follow the seasons, and revisit the places you’ve been.';
@@ -696,10 +931,16 @@ export function atlasRuntime(DATA, MODEL) {
       status = logStatus === 'ready' ? `${count} mapped dives · ${missingCount} without coordinates · all dates` : 'Your saved dive locations';
     }
     const candidates = eligibleRegions();
+    const picks = native ? discoverPicks.get(state.month) : null;
+    if (native && !discoverPicks.has(state.month) && panel === 'browse') { discoverPicks.set(state.month, undefined); post('discover', { month: state.month }); }
+    const chip = pick => `<button class="destination species-chip" data-discover-species="${esc(pick.key)}" data-name="${esc(pick.name)}">${esc(pick.name)}<small>${esc(pick.place || `${pick.places} areas`)}</small></button>`;
+    const wildlife = picks && (picks.inSeason.length || picks.iconic.length) ? `${picks.inSeason.length ? `<div class="section-label">In season · ${months[state.month]}</div><div class="destinations">${picks.inSeason.map(chip).join('')}</div>` : ''}${picks.iconic.length ? `<div class="section-label">Bucket-list encounters</div><div class="destinations">${picks.iconic.slice(0, 6).map(chip).join('')}</div>` : ''}`
+      : `<div class="section-label">Seasonal wildlife spotlights</div><div class="destinations compact">${candidates.slice(0, 4).map(r => `<button class="destination" data-region="${r.id}">${esc(r.name)}</button>`).join('')}</div>`;
     const remoteStart = state.month % DATA.remoteAreas.length;
     const remote = Array.from({ length: 4 }, (_, index) => DATA.remoteAreas[(remoteStart + index) % DATA.remoteAreas.length]);
-    $('overview').innerHTML = `<div class="panel-heading"><div class="eyebrow">${state.layers.dives ? 'YOUR DIVES, ON THE MAP' : 'THE WORLD BELOW THE SURFACE'}</div><button id="close-browse" class="panel-close" aria-label="Close discover">×</button></div><h2>${headline}</h2><p>${copy}</p>${state.layers.dives ? `<div class="destinations"><button class="destination" id="see-dives">${logStatus === 'error' ? 'Retry' : logPins.length ? 'Show my dives' : 'Open logbook'}</button></div>` : `<div class="section-label">Popular dive regions</div><div class="destinations">${DATA.diveRegions.map(r => `<button class="destination" data-dive-region="${r.id}">${esc(r.name)}</button>`).join('')}</div><div class="section-label">Seasonal wildlife spotlights</div><div class="destinations compact">${candidates.slice(0, 4).map(r => `<button class="destination" data-region="${r.id}">${esc(r.name)}</button>`).join('')}</div><div class="section-label">Remote & standalone</div><div class="destinations compact">${remote.map(area => `<button class="destination" data-remote="${area.id}">${esc(area.name)}</button>`).join('')}</div>`}<div class="summary-line"><span class="dot"></span>${status}</div>`;
+    $('overview').innerHTML = `<div class="panel-heading"><div class="eyebrow">${state.layers.dives ? 'YOUR DIVES, ON THE MAP' : 'THE WORLD BELOW THE SURFACE'}</div><button id="close-browse" class="panel-close" aria-label="Close discover">×</button></div><h2>${headline}</h2><p>${copy}</p>${state.layers.dives ? `<div class="destinations"><button class="destination" id="see-dives">${logStatus === 'error' ? 'Retry' : logPins.length ? 'Show my dives' : 'Open logbook'}</button></div>${wildlife}` : `${wildlife}<div class="section-label">Popular dive regions</div><div class="destinations">${DATA.diveRegions.map(r => `<button class="destination" data-dive-region="${r.id}">${esc(r.name)}</button>`).join('')}</div><div class="section-label">Remote & standalone</div><div class="destinations compact">${remote.map(area => `<button class="destination" data-remote="${area.id}">${esc(area.name)}</button>`).join('')}</div>`}<div class="summary-line"><span class="dot"></span>${status}</div>`;
     $('close-browse').onclick = () => openPanel('browse');
+    $('overview').querySelectorAll('[data-discover-species]').forEach(button => button.onclick = () => openSpecies(button.dataset.discoverSpecies, button.dataset.name));
     $('overview').querySelectorAll('[data-region]').forEach(button => button.onclick = () => {
       state.layers.wildlife = true; render();
       choose({ ...DATA.regions.find(r => r.id === button.dataset.region), kind: 'region' }, true);
@@ -721,7 +962,10 @@ export function atlasRuntime(DATA, MODEL) {
   function render() {
     document.querySelectorAll('[data-layer]').forEach(b => b.setAttribute('aria-pressed', String(state.layers[b.dataset.layer])));
     document.querySelectorAll('[data-month]').forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.month) === state.month)));
-    $('species-bar').hidden = !state.layers.wildlife; $('species').value = state.species;
+    $('species-bar').hidden = !native || !state.layers.wildlife;
+    $('species-follow').textContent = following ? following.name : 'Any animal · search whale shark, manta…';
+    $('species-follow').classList.toggle('active', Boolean(following));
+    $('species-clear').hidden = !following;
     $('legend').hidden = !state.layers.temperature;
     $('units').textContent = `°${state.unit} ⇄`;
     $('legend-values').innerHTML = [0, 8, 16, 24, 32].map(v => `<span>${temp(v)}</span>`).join('');
@@ -746,9 +990,17 @@ export function atlasRuntime(DATA, MODEL) {
       ...DATA.oceanRegions.map(r => ({ ...r, kind: 'province', searchText: [r.name, r.subtitle, r.story, ...r.habitats, ...r.wildlife].join(' ') })),
       ...DATA.sites.map(s => ({ ...s, kind: 'site', searchText: `${s.name} ${(s.aliases || []).join(' ')} ${s.region || ''} ${s.country || ''} ${(s.topologies || []).join(' ')} ${s.entry || ''}` })),
       ...logPins.map(p => ({ ...p, kind: 'dive', searchText: p.name })),
+      ...mySites.map(site => ({ ...asMySite(site), region: 'My site', searchText: `${site.name} my site` })),
     ].filter(item => item.searchText.toLowerCase().includes(query)).slice(0, 18);
-    $('results').innerHTML = matches.length ? matches.map((item, i) => `<button class="result" data-result="${i}">${icon(item.kind === 'region' ? 'wildlife' : item.kind === 'province' || item.kind === 'diveRegion' || item.kind === 'area' ? 'globe' : item.kind === 'dive' ? 'dives' : 'site')}<span><strong>${esc(item.name)}</strong><small>${esc(item.kind === 'diveRegion' ? item.subtitle : item.kind === 'area' ? `${item.region} · ${item.subtitle}` : item.kind === 'region' || item.kind === 'province' ? item.subtitle : item.kind === 'dive' ? 'Your logbook' : item.region || 'Dive site')}</small></span></button>`).join('') : '<div class="empty">No matches in the current atlas. Try Caribbean, Philippines, kelp, manta, Hawaiʻi, or a saved dive site.</div>';
+    const species = speciesMatches(query);
+    if (native && !speciesList) requestSpeciesList();
+    $('results').innerHTML = (species.length ? `<div class="results-label">Marine life</div>${species.map((row, i) => `<button class="result" data-species-result="${i}">${icon('wildlife')}<span><strong>${esc(row[1])}</strong><small>${esc(row[2])}${row[4] ? ` · seen in ${row[4]} ${row[4] === 1 ? 'area' : 'areas'}` : ' · regional season guide'}</small></span></button>`).join('')}${matches.length ? '<div class="results-label">Places & sites</div>' : ''}` : '') + (matches.length ? matches.map((item, i) => `<button class="result" data-result="${i}">${icon(item.kind === 'region' ? 'wildlife' : item.kind === 'province' || item.kind === 'diveRegion' || item.kind === 'area' ? 'globe' : item.kind === 'dive' ? 'dives' : 'site')}<span><strong>${esc(item.name)}</strong><small>${esc(item.kind === 'diveRegion' ? item.subtitle : item.kind === 'area' ? `${item.region} · ${item.subtitle}` : item.kind === 'region' || item.kind === 'province' ? item.subtitle : item.kind === 'dive' ? 'Your logbook' : item.region || 'Dive site')}</small></span></button>`).join('') : species.length ? '' : '<div class="empty">No matches in the current atlas. Try Caribbean, Philippines, kelp, manta, Hawaiʻi, or a saved dive site.</div>');
     $('results').hidden = false;
+    $('results').querySelectorAll('[data-species-result]').forEach(button => button.onclick = () => {
+      const row = species[Number(button.dataset.speciesResult)];
+      $('search').value = ''; $('search').blur(); search();
+      openSpecies(row[0], row[1]);
+    });
     $('results').querySelectorAll('[data-result]').forEach(button => button.onclick = () => {
       const item = matches[Number(button.dataset.result)];
       state.layers[item.kind === 'region' ? 'wildlife' : item.kind === 'province' || item.kind === 'diveRegion' || item.kind === 'area' ? 'regions' : item.kind === 'dive' ? 'dives' : 'sites'] = true;
@@ -781,7 +1033,13 @@ export function atlasRuntime(DATA, MODEL) {
   $('locate').onclick = () => post('locate');
   $('zoom-in').onclick = () => map.zoomIn(); $('zoom-out').onclick = () => map.zoomOut();
   $('units').onclick = () => { state.unit = state.unit === 'C' ? 'F' : 'C'; render(); };
-  $('species').onchange = () => { state.species = $('species').value; render(); };
+  $('species-follow').onclick = () => { if (following) openSpecies(following.key, following.name); else { openPanel('search'); requestSpeciesList(); } };
+  $('species-clear').onclick = () => {
+    following = null; speciesFit = null;
+    if (speciesLayer) { map.removeLayer(speciesLayer); speciesLayer = null; }
+    if (selected?.kind === 'species') closeDetails();
+    render();
+  };
   document.querySelectorAll('[data-layer]').forEach(button => button.onclick = () => {
     const layer = button.dataset.layer; state.layers[layer] = !state.layers[layer];
     if ((layer === 'regions' && ['province', 'diveRegion', 'area'].includes(selected?.kind)) || (layer === 'wildlife' && selected?.kind === 'region') || (layer === 'sites' && selected?.kind === 'site') || (layer === 'dives' && selected?.kind === 'dive')) closeDetails();
@@ -815,7 +1073,7 @@ export function atlasRuntime(DATA, MODEL) {
       const saved = message.value;
       if (saved && typeof saved === 'object') {
         if (['C', 'F'].includes(saved.unit)) state.unit = saved.unit;
-        if (saved.species === 'all' || DATA.regions.some(r => r.species.some(s => s.id === saved.species))) state.species = saved.species;
+        state.species = 'all';
         Object.keys(state.layers).forEach(key => { if (typeof saved.layers?.[key] === 'boolean') state.layers[key] = saved.layers[key]; });
       }
       readyForPersistence = true; render();
@@ -824,11 +1082,11 @@ export function atlasRuntime(DATA, MODEL) {
       if (window.atlasLocationMarker) map.removeLayer(window.atlasLocationMarker);
       window.atlasLocationMarker = L.circleMarker([message.latitude, message.longitude], { pane: 'vectors', interactive: false, radius: 7, color: '#fff', weight: 2, fillColor: '#5797ff', fillOpacity: 1 }).addTo(map);
     } else if (message.type === 'siteGuide') {
-      if (message.key) siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null });
+      if (message.key) siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null });
       if (selected && ['site', 'area'].includes(selected.kind) && guideKey(selected) === message.key) renderDetails();
     } else if (message.type === 'quickLook') {
       if (quickTap?.requestId === message.requestId && message.look) showQuickLook(quickTap.latlng, message.look);
-    } else if (message.type === 'originChanged') {
+    } else if (message.type === 'originChanged' || message.type === 'adviceChanged') {
       // Travel ratings are personal: refresh them for the new starting point.
       siteGuides.clear();
       if (selected && ['site', 'area'].includes(selected.kind)) post('siteGuide', { requestId: ++guideRequest, key: guideKey(selected), latitude: selected.latitude, longitude: selected.longitude, id: selected.kind === 'site' ? selected.id : undefined });
@@ -840,6 +1098,37 @@ export function atlasRuntime(DATA, MODEL) {
       if (message.requestId != null && tap?.requestId !== message.requestId) return;
       if (message.place) choose({ ...message.place, kind: 'place', latitude: message.place.journey?.latitude, longitude: message.place.journey?.longitude, fromTap: Boolean(tap) }, message.fly || !tap);
       else if (tap) choose(tap.fallback);
+    } else if (message.type === 'mySites') {
+      mySites = (Array.isArray(message.sites) ? message.sites : []).filter(site => Number.isFinite(site.latitude) && Number.isFinite(site.longitude));
+      if (selected?.custom && !mySites.some(site => site.id === selected.id)) closeDetails();
+      drawMySites();
+    } else if (message.type === 'speciesIndex') {
+      speciesList = Array.isArray(message.species) ? message.species : [];
+      if ($('search').value.trim()) search();
+    } else if (message.type === 'speciesGuide') {
+      speciesGuides.set(message.key, message.guide || null);
+      if (message.guide) drawSpecies(message.guide);
+      if (selected?.kind === 'species' && selected.key === message.key) renderDetails();
+    } else if (message.type === 'discover') {
+      discoverPicks.set(message.month, message.discover || { inSeason: [], iconic: [] });
+      if (panel === 'browse' && message.month === state.month) renderOverview();
+    } else if (message.type === 'focus' && !message.regionId && Number.isFinite(message.latitude) && Number.isFinite(message.longitude)) {
+      // Opened from a plan: its linked atlas site or pinned site, else the point it names.
+      const mine = mySites.find(site => site.id === message.siteId);
+      const listed = !mine && message.siteId ? DATA.sites.find(site => site.id === message.siteId) : null;
+      const site = mine ? asMySite(mine) : listed ? { ...listed, kind: 'site' } : { kind: 'site', id: `plan-${message.latitude.toFixed(4)},${message.longitude.toFixed(4)}`, name: String(message.name || 'Planned dive').slice(0, 120), latitude: message.latitude, longitude: message.longitude, topologies: [] };
+      state.layers[mine ? 'mysites' : 'sites'] = true; panel = null;
+      render();
+      choose(site, true);
+    } else if (message.type === 'focus') {
+      // Opened from a Home in-season card: fly to the region with its guide open and that animal first.
+      const region = DATA.regions.find(r => r.id === message.regionId);
+      if (!region) return;
+      spotlight = region.species.some(s => s.id === message.speciesId) ? message.speciesId : null;
+      if (state.species !== 'all' && !region.species.some(s => s.id === state.species)) state.species = 'all';
+      state.layers.wildlife = true; state.layers.sites = true; panel = null;
+      render();
+      choose({ ...region, kind: 'region' }, true);
     } else if (message.type === 'notice') toast(message.text);
   };
   render();

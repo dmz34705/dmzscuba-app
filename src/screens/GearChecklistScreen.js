@@ -197,7 +197,13 @@ function InventoryHome({ state, onAdd, onOpen, appSettings }) {
         <Stat label="Files & photos" value={summary.documents} style={styles.stat} />
       </View>
       <PrimaryButton label="Add a gear item" onPress={onAdd} />
-      <SecondaryButton label="Dive preferences · Atlas gear suggestions" onPress={() => setPreferencesOpen(true)} />
+      <Pressable accessibilityRole="button" accessibilityLabel="Dive preferences. Tune the Atlas's gear suggestions to how you dive." onPress={() => setPreferencesOpen(true)} style={({ pressed }) => [styles.prefsRow, pressed && styles.rowPressed]}>
+        <View style={styles.prefsCopy}>
+          <Text style={styles.prefsTitle}>Dive preferences</Text>
+          <Text style={styles.prefsBody}>Tune the Atlas's gear suggestions to how you dive</Text>
+        </View>
+        <Text style={styles.chevron}>›</Text>
+      </Pressable>
       <Modal visible={preferencesOpen} animationType="slide" onRequestClose={() => setPreferencesOpen(false)}>
         {preferencesOpen ? <GearAdviceSheet preferencesOnly appSettings={appSettings} onClose={() => setPreferencesOpen(false)} /> : null}
       </Modal>
@@ -1342,6 +1348,10 @@ const styles = StyleSheet.create({
   choiceLineText: { color: colors.gold, flex: 1, fontSize: 9, fontWeight: '800', letterSpacing: 0.5 },
   choiceLineAction: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 0.6 },
   openDives: { marginTop: 12 },
+  prefsRow: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', gap: 10, marginTop: 10, minHeight: 60, paddingHorizontal: 14, paddingVertical: 10 },
+  prefsCopy: { flex: 1 },
+  prefsTitle: { color: colors.text, fontSize: 15, fontWeight: '800' },
+  prefsBody: { color: colors.muted, fontSize: 12, lineHeight: 16, marginTop: 2 },
   pickerSearch: { marginBottom: 8, marginTop: 0 },
   pickerFilters: { flexDirection: 'row', gap: 7, marginBottom: 10 },
   lockedNote: { color: colors.muted, fontSize: 12, lineHeight: 18, marginBottom: 14, marginTop: 4 },

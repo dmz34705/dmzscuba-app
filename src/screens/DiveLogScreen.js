@@ -2505,17 +2505,16 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const [reviewRetry, setReviewRetry] = useState(0);
 
   const enqueueLocationSuggestions = useCallback(async () => {
-    if (!appSettings.locationLoggingEnabled) {
-      Alert.alert('Phone location logging is off', 'Enable location logging in Settings → Location to record locations for future dives.');
-      return;
-    }
     // Background delivery can be paused by iOS while the phone is stationary.
     // A fresh foreground point at download time gives the correlator a reliable
     // site/marina breadcrumb without widening its one-hour safety window.
-    await captureCurrentLocationBreadcrumb();
+    if (appSettings.locationLoggingEnabled) await captureCurrentLocationBreadcrumb();
+    // Includes dive-site links for dives that already have coordinates, which need no phone location.
     const suggestions = await getLocationSuggestions();
     if (suggestions.length) setLocationSuggestionQueue(suggestions);
-    else {
+    else if (!appSettings.locationLoggingEnabled) {
+      Alert.alert('Phone location logging is off', 'Enable location logging in Settings → Location to record locations for future dives.');
+    } else {
       const evidence = await getLocationRecordingSummary();
       Alert.alert('No location to link',
         (evidence.lastRecordedAt
@@ -2534,9 +2533,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     const timing = suggestion.distanceMs === 0
       ? 'during the dive window'
       : `${minutes} ${minutes === 1 ? 'minute' : 'minutes'} from the dive`;
-    const finish = async (accept) => {
+    const finish = async (accept, site = null) => {
       try {
-        await resolveLocationSuggestion(suggestion, accept);
+        await resolveLocationSuggestion(suggestion, accept, site);
       } catch (error) {
         Alert.alert('Could not link location', error?.message || 'The phone location was not saved.');
       } finally {
@@ -2544,6 +2543,28 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         setLocationSuggestionQueue((current) => current.filter((item) => item.id !== suggestion.id));
       }
     };
+    const match = suggestion.match;
+    if (match) {
+      // A dive site at this spot: link the dive to it (counted on the atlas), with the evidence spelled out.
+      const distance = (meters) => (meters == null ? '' : meters < 1000 ? `${meters} m` : `${(meters / 1000).toFixed(1)} km`);
+      const where = [match.site.name, match.site.area].filter(Boolean).join(' · ');
+      const why = match.reason === 'planned'
+        ? `Your planned dive for this day${match.distanceMeters != null ? ` (phone ${distance(match.distanceMeters)} away)` : ''}.`
+        : `Your ${suggestion.type === 'location' ? 'phone was' : 'dive is'} ${distance(match.distanceMeters)} from this site${suggestion.type === 'location' ? `, ${timing}` : ''}.`;
+      const proof = suggestion.logged && suggestion.type === 'location' ? '\nDive computer + phone location: this will count as a verified dive.' : '';
+      const short = (name) => (name.length > 32 ? `${name.slice(0, 31)}…` : name);
+      Alert.alert(
+        suggestion.type === 'site' ? 'Link this dive to a site?' : 'Is this where you dived?',
+        `${suggestion.siteName || formatDate(suggestion.diveStartTime) || 'Downloaded dive'}\n\n${where}\n${why}${proof}`,
+        [
+          { text: 'Skip', style: 'cancel', onPress: () => finish(false) },
+          ...(suggestion.type === 'location' ? [{ text: 'Link location only', onPress: () => finish(true, null) }] : []),
+          ...(match.alternatives || []).map((alternative) => ({ text: `${short(alternative.site.name)} instead`, onPress: () => finish(true, alternative) })),
+          { text: `Link to ${short(match.site.name)}`, onPress: () => finish(true, match) },
+        ],
+      );
+      return;
+    }
     Alert.alert(
       'Link phone location to this dive?',
       `${suggestion.siteName || suggestion.nearbySiteName || formatDate(suggestion.diveStartTime) || 'Downloaded dive'}\n`

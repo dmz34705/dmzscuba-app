@@ -7,6 +7,7 @@ import curatedSites from './data/curatedSites.json';
 import osmSource from './data/osmSites.json';
 import extraSource from './data/extraSites.json';
 import publishedDepths from './data/publishedDepths.json';
+import siteMerges from './data/siteMerges.json';
 
 const BASE64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 function bytesOf(value) {
@@ -29,9 +30,17 @@ function numbers(value, size, reader) {
 const FEATURES = ['reef', 'wall', 'wreck', 'pinnacle', 'cave', 'cavern', 'muck', 'drift', 'quarry'];
 const featuresOf = label => FEATURES.filter(feature => new RegExp(`\\b${feature}\\b`, 'i').test(label || ''));
 
-let cache = null;
-export function catalogSites() {
-  if (cache) return cache;
+let rawCache = null;
+// Every record from every source, before duplicates are merged (used by the merge build).
+// Wrecks closed to divers by law, from any source: the Edmund Fitzgerald (Ontario Heritage Act), the Pearl
+// Harbor memorials, HMS Royal Oak (war graves) and the explosive-laden SS Richard Montgomery.
+export const CLOSED_WRECKS = /edmund fitzgerald|uss arizona|uss utah|hms royal oak|richard montgomery/i;
+
+let closedCount = 0;
+export const closedWreckCount = () => { rawCatalogSites(); return closedCount; };
+
+export function rawCatalogSites() {
+  if (rawCache) return rawCache;
   const g = globalSource;
   const ids = g.packedIds.match(/.{6}/g) || [];
   const coordinates = numbers(g.coordinatesBase64, 4, 'getInt32');
@@ -51,11 +60,20 @@ export function catalogSites() {
   const osm = osmSource.sites.map(([osmId, name, latitude, longitude, depth, entryCode, mask, fresh, difficulty]) => ({ id: `osm-${osmId}`, name, latitude, longitude,
     country: '', region: '', environment: fresh ? 'fresh' : '', topologies: osmSource.topologyCodes.filter((_, code) => mask & (1 << code)),
     entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, difficulty: difficulty || '' }));
-  const extra = extraSource.sites.map(([id, name, latitude, longitude, depth, entryCode, mask, fresh]) => ({ id: `x-${id}`, name, latitude, longitude,
+  const extra = extraSource.sites.map(([id, name, latitude, longitude, depth, entryCode, mask, fresh, , , note]) => ({ id: `x-${id}`, name, latitude, longitude,
     country: '', region: '', environment: fresh ? 'fresh' : '', topologies: extraSource.topologyCodes.filter((_, code) => mask & (1 << code)),
-    entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null }));
-  cache = [...listed, ...global, ...osm, ...extra];
-  applyPublishedDepths(cache, publishedDepths);
+    entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, ...(note ? { note } : {}) }));
+  const everything = [...listed, ...global, ...osm, ...extra];
+  closedCount = everything.filter(site => CLOSED_WRECKS.test(site.name)).length;
+  rawCache = everything.filter(site => !CLOSED_WRECKS.test(site.name));
+  applyPublishedDepths(rawCache, publishedDepths);
+  return rawCache;
+}
+
+let cache = null;
+export function catalogSites() {
+  if (cache) return cache;
+  cache = applySiteMerges(rawCatalogSites().map((site) => ({ ...site })), siteMerges).sites;
   return cache;
 }
 
@@ -71,8 +89,37 @@ export function applyPublishedDepths(list, published) {
   }
 }
 
+// The same site listed by several sources is one site (scripts/build-site-merges.cjs): the kept
+// record takes the most precise position and best-sourced depth, gains the others' names, features
+// and source credits, and knows how many independent sources list it. Mirrored in atlasRuntime.js.
+export function applySiteMerges(list, merges) {
+  const byId = new Map(list.map(site => [site.id, site]));
+  const mergedInto = new Map();
+  for (const [keepId, mergedIds, latitude, longitude, aliases, depth, independentSources] of merges?.clusters || []) {
+    const keep = byId.get(keepId);
+    if (!keep) continue;
+    const others = mergedIds.map(id => byId.get(id)).filter(Boolean);
+    Object.assign(keep, {
+      latitude, longitude, aliases: [...new Set([...(keep.aliases || []), ...aliases])], independentSources,
+      topologies: [...new Set([keep, ...others].flatMap(site => site.topologies || []))],
+      entry: keep.entry || others.find(site => site.entry)?.entry || '',
+      environment: keep.environment || others.find(site => site.environment)?.environment || '',
+      ...(keep.note || others.some(site => site.note) ? { note: keep.note || others.find(site => site.note).note } : {}),
+      sources: [...(keep.sources || []), ...others.flatMap(site => site.sources || [])],
+    });
+    if (depth && !keep.depthSource?.name?.startsWith('Posted')) keep.maxDepthMeters = depth;
+    for (const id of mergedIds) mergedInto.set(id, keepId);
+  }
+  return { sites: list.filter(site => !mergedInto.has(site.id)), mergedInto };
+}
+
 let byId = null;
 export function catalogSite(id) {
-  if (!byId) byId = new Map(catalogSites().map(site => [site.id, site]));
+  if (!byId) {
+    const all = catalogSites();
+    byId = new Map(all.map(site => [site.id, site]));
+    // A dive or link that points at a merged-away duplicate resolves to the site it became.
+    for (const [keepId, mergedIds] of siteMerges.clusters || []) for (const mergedId of mergedIds) if (byId.has(keepId)) byId.set(mergedId, byId.get(keepId));
+  }
   return byId.get(id) || null;
 }

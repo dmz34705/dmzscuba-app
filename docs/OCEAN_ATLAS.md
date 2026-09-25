@@ -212,6 +212,25 @@ The Edmund Fitzgerald (legally closed to divers) is excluded. The Wisconsin
 Historical Society's shipwreck layers are **not** imported: their licence
 forbids redistribution without SHPO permission.
 
+Wreck pages without a primary coordinate use their inline position (the Prins Willem V off Milwaukee);
+positions only to the nearest 0.1° are dropped. Wikipedia's Great Lakes shipwreck lists (Lake Michigan,
+Superior, Huron / Erie / Ontario, and the Wisconsin Shipwreck Coast and Thunder Bay sanctuaries) add
+located wrecks with no article of their own (`wikilist`, linking the ship's article or the list row);
+hulls sunk as breakwaters or docks are skipped. Notable wrecks worldwide (`notable`): Wikidata shipwrecks
+with an English Wikipedia article whose position lies in 100 m of water or less, or on the shoreline (NOAA
+DEM_all / ETOPO sample). Wrecks legally closed to divers (Edmund Fitzgerald, USS Arizona, USS Utah, HMS Royal
+Oak, SS Richard Montgomery) are never listed — from any source: `catalog.js` `CLOSED_WRECKS` hides them in the
+app and on the map (the Edmund Fitzgerald is also an OpenStreetMap record), and neither are ships no longer on the bottom: Wikidata
+records a ship-breaking event (Costa Concordia) or a museum / preserved-vessel type (H. L. Hunley, Mary Rose,
+SS Valley Camp) — unless the article says it was later sunk as an artificial reef (USCGC Tamaroa). Links are
+compared as article titles, since Wikidata and Wikipedia percent-encode them differently. Every wreck whose article Wikidata gives a heritage designation — or whose name is a
+naval one — gets a card note (column 11): "Protected wreck (UK Protection of Wrecks Act) — diving needs a
+licence", "Protected military wreck … may be prohibited", "Naval wreck — it may be a war grave", or "Listed
+historic wreck … look, but don't disturb"; a merged site keeps the protection note. Ids are stable between runs — a row keeps its id
+(matched by source and link) and new rows get new ids — because merges, photos, facts and depths are
+keyed by them.
+
+
 ### Dive operators & stay-and-dive (`data/diveOperators.json`)
 
 `node scripts/build-dive-operators.cjs` collects named dive shops, dive centres,
@@ -251,7 +270,15 @@ No ocean temperature, satellite clarity or ocean-region content is shown.
 Each record's own depth (OpenDiveMap, OpenStreetMap `scuba_diving:maxdepth` / `maxdepth` /
 `wreck:depth` / `depth` tags, NOAA moorings) is used first. `node scripts/build-published-depths.cjs
 <osm-overpass.json>` (cached) fills gaps from the linked Wikipedia article's lead ("lies in 90 feet
-(27 m) of water", "maximum depth of 40 m") or Wikidata vertical depth (P4511), and applies
+(27 m) of water", "maximum depth of 40 m", fathoms included) — or, when the lead has none, the
+article's wreck / diving / sinking / discovery sections, skipping design and specification sections,
+lists of ships lost there, sentences about the hull, draft or size, and (for a reef or cave) the
+sections about ships; the deepest statement wins, so the seabed beats the top of the wreck (the
+Andrea Doria: "lying on the bottom at 73 m") — or Wikidata vertical depth (P4511). Articles come
+from the site's own link, the site-facts match, or, for wrecks, caves and springs, a Wikipedia search
+whose article has the identical core name, lies within 25 km and is about a vessel, wreck, cave or
+spring. Only a depth in the site's own record skips the lookup, so re-running never drops the
+previous run's finds. It also applies
 operator/agency-posted depths recorded in `scripts/data/us-inland-dive-sites.json` (`maxDepthFt`
 + `depthSource`, matched to the map site by name within 3 km — these win over other figures).
 Articles about areas (islands, bays, reef systems) are skipped; a lake's deepest point is
@@ -273,8 +300,9 @@ link instead of being links themselves; a site photo links only from its credit 
 
 ### Site photos (`data/siteImages.json`)
 
-Wrecks and inland sites only. `node scripts/build-site-images.cjs <osm-overpass.json>`
-(cached) takes, in order: the Wikipedia article's lead image, the Wikidata item's
+Every listed site (merged-away duplicates resolve to the site they became).
+`node scripts/build-site-images.cjs <osm-overpass.json>` (cached; `SITE_IMAGES_CACHE=dir`)
+takes, in order: the Wikipedia article's lead image, the Wikidata item's
 image (P18), OpenStreetMap `image` / `wikimedia_commons` tags, then Commons photos
 geotagged within 500 m. Every file must be public domain, CC0, CC BY or CC BY-SA
 (checked through Commons `imageinfo`) and is shown with its author and licence,
@@ -283,8 +311,123 @@ Wikipedia/Wikidata images must name the vessel or place (this drops sister-ship
 stand-ins such as SS Mesaba on the Mohegan article); geotagged photos must contain
 the whole site name, must say "cave", "wreck", "quarry", "spring" or "mine" when
 the site's name does, must not be about something else (maps, signs, churches,
-streets, plants, birds, food …), and the title closest to the plain site name wins.
+streets, plants, birds, food, hotels, homes …) unless that word is the site's own name
+("Camp Cove", "Casa Cenote"), and the title closest to the plain site name wins. A kind in the
+name — "Arashi (Wreck)", "Mornington Pier" — must show in the file name (a ship prefix such as
+SS / MV / RMS counts for a wreck); a wreck or cave photo is refused for a site that is neither;
+a one-word name that is only a town ("Aruba", "Ludwigshafen") needs a water word in the file
+name or a file named exactly after it. Photos only: SVG / PDF files and maps, locators, street
+and hotel scenes are refused from every source.
 `SITE_IMAGES_REVIEW=out.tsv` writes every match for a manual look.
+
+### Duplicate sites (`data/siteMerges.json`)
+
+The same site listed by several sources (OpenDiveMap, OpenStreetMap, NOAA, Wikipedia /
+Wikidata, curated lists) becomes one. `node scripts/build-site-merges.cjs [--review out.tsv]`
+matches names after folding accents, case, generic words ("reef", "dive site", "punta") and a
+trailing known place ("Great Blue Hole - Belize"); the core words must be equal, allowing a
+one-letter slip in words of six letters or more. A wreck never merges with a reef of the same
+name, and numbers must agree ("Wreck 1" ≠ "Wreck 2"). Records must lie within the distance
+their sources can be trusted to (a NOAA mooring 0.5 km, OpenDiveMap 1.5 km, a Cozumel reef
+area 4 km); distinctive names seen at most four times may be 6 km apart (10 km with an
+article pin or reef area) — but only across different sources, since one source's two far-apart
+"Barco Hundido" pins are two places. Each cluster keeps the most authoritative name, the most
+precise position and the best-sourced depth; `catalogSites()` hides the rest and
+`catalogSite(oldId)` still resolves them. Cards say "Confirmed by N independent sources · also
+listed as …", or "One community source — confirm the exact spot locally".
+
+Ship prefixes and wreck words don't count in a name ("SS Wexford" = "Wexford (Wreck)", "Ottawa (tug)" =
+"Ottawa"), word order doesn't matter ("Wazee Lake" = "Lake Wazee"), and a bracketed year only separates two
+dated ships ("New Orleans (1838)" ≠ "(1885)"). A name saying "wreck" never merges with one that doesn't unless
+both are wrecks ("Moonhole" reef ≠ "Moonhole Wreck"). Records linking the same Wikipedia article are one site
+up to 60 km apart (Wikipedia and Wikidata pin the Gallinipper 24 km apart).
+
+
+### About this site (`data/siteFacts.json`)
+
+`node scripts/build-site-facts.cjs` (cached) reads, for sites with a Wikipedia article or
+Wikidata item, the article's lead cut to whole sentences (≤ 420 characters, abbreviation-safe;
+town and district articles skipped) and, for vessels, Wikidata's ship facts: type, builder, flag,
+length, beam, gross tonnage and launched / commissioned / sank / wrecked years. Summaries are
+credited "From Wikipedia · CC BY-SA 4.0" and link to the article; ship facts (CC0) link to the
+Wikidata item. Lengths follow the depth unit.
+
+### Protected areas (`data/siteProtection.json`)
+
+`node scripts/build-site-protection.cjs` (cached per batch; `SITE_PROTECTION_CACHE=dir`) asks
+Overpass which OpenStreetMap protected areas contain each site (`is_in`, 100 sites per query):
+`boundary=protected_area` / `national_park` / `marine_protected_area` and `leisure=nature_reserve`,
+keeping IUCN classes 1–7 and international designations (97–99); fishing and zoning layers,
+code-only or designation-only names ("Marine Protected Area") and zones outside a park (buffer,
+"aire d'adhésion") are dropped. Up to three per site: marine areas first, then the most specific —
+an area holding few sites before a whole-sea whale sanctuary. Designations are shown in plain
+English ("Naturschutzgebiet" → "Nature reserve"). The card names the
+area and its designation and links to its website or OSM page, with a reminder that parks often
+have diver rules (fees or tags, mooring-only boats, no touching or collecting); it never states
+the rules itself. WDPA / Protected Planet is not used: its licence forbids commercial use.
+
+Protected areas, shore facilities and lake water areas are looked up through `scripts/lib/overpass-per-site.cjs`,
+which caches Overpass answers per site: adding or merging sites costs a query for just those sites, not a re-run
+of every batch after them.
+
+
+### Estimated depth from the seafloor (`data/siteSeafloor.json`)
+
+`node scripts/build-site-seafloor.cjs [--review out.tsv]` (cached; NOAA's DEM_all image service first, one
+request per site, CoastWatch ERDDAP as the fallback; an unreachable site is skipped, not fatal) reads NOAA ETOPO 2022
+(15″ global relief, public domain, CoastWatch ERDDAP `ETOPO_2022_v1_15s`) in a 5 × 5-cell window
+(about ±900 m) around each ocean pin: depth at the pin and the shallowest and deepest water
+nearby. Coastal cells blur reefs and walls (a Bali shore wreck reads 95 m), so the card shows it
+only for sites with **no published depth**, only where water of 40 m or less lies nearby, and caps
+the range at "40+ m" / "130+ ft". It fills the at-a-glance depth tile and the facts row as
+"Depth · estimated", saying there is no published depth for the site and the figure comes from NOAA
+seafloor data around it. It is not fed into the experience rating (a range around a pin is not the
+dive's depth). `--review` lists published depths
+far deeper than any seafloor nearby (a wrong pin or a wrong figure) for a manual look.
+
+### Depth without a published figure (`data/siteBathymetry.json`, `data/siteLakeDepths.json`, `nearbyDepths.js`)
+
+A published depth always wins. Otherwise the card's depth tile shows the most specific estimate,
+named as such, with the next best as a second line (and both in the facts row):
+
+1. **Lakes** — `node scripts/build-site-lake-depths.cjs <HydroLAKES_polys_v10.shp> <GLOBathy ALL_LAKES.csv>`
+   (needs the `shapefile` package on `NODE_PATH`; HydroLAKES CC BY 4.0, GLOBathy CC0). A site lying in a
+   HydroLAKES lake (≥ 10 ha), or an inland site within 300 m of its shore, gets that lake's deepest point:
+   published first — the Wikidata vertical depth (P4511) of the OSM water area it lies in or beside —
+   otherwise GLOBathy's modelled maximum, labelled estimated. GLOBathy is far off for some deep Alpine
+   lakes (Starnberger See 32 m modelled vs 127 m measured), which is why Wikidata comes first; rows whose
+   mean exceeds the maximum are dropped. Lakes over 1,000 km² (the Great Lakes, Champlain, Ladoga) are skipped:
+   their deepest point says nothing about a dive, and nearby sites' depths say more. A lake matched only beside the pin is refused when its published
+depth is over 8× the mean depth of the lake the pin lies in (a quarry pond beside a deep lake). Always
+"Lake's deepest point", never the dive's depth.
+2. **Fine seafloor** — `node scripts/build-site-bathymetry.cjs` samples NOAA NCEI coastal DEMs (US coasts,
+   Hawaii, territories; only layers of 3″ or finer — the service otherwise falls back to ETOPO) in a 5 × 5
+   grid, and EMODnet Bathymetry (European waters, ~115 m cells, each with its surveyed min / max) in a
+   3 × 3 grid, about ±300 m around the pin. Same 40 m display rule as below.
+3. **Nearby sites** — `nearbyDepths.js` (computed on the device): the depths published for sites of the
+   same water (salt / fresh) within 25 km, at least three; the middle half of them when there are five or
+   more, else their full range. Lakes' deepest points are never used.
+4. **Coarse seafloor** — ETOPO 2022 (below), only when there's no fine seafloor.
+
+None of these feed the experience rating.
+
+
+
+Where iNaturalist has fewer than four animals near an ocean site,
+`node scripts/build-marine-life-obis.cjs` (cached) groups those sites within 40 km and reads OBIS's
+species checklist (IOC-UNESCO survey and specimen records) for the surrounding box: the most
+recorded sharks & rays, turtles, marine mammals, cephalopods and nudibranchs, then fish. Names and
+openly licensed photos come from iNaturalist taxon pages. Same shape as `marineLife.json`;
+`seasons.js` adds the nearest survey place to a site's nearest sighting place, a species already
+seen by divers keeps its sighting data, and survey records never claim a season ("Recorded in
+surveys", "N survey records").
+
+### At the shore (`data/siteShore.json`)
+
+For every site not marked as a boat dive, `node scripts/build-site-shore.cjs` (cached) finds the
+nearest mapped parking (public), toilets, showers, drinking water, slipway, pier / jetty and beach
+within 250 m in OpenStreetMap. The card lists what's mapped with its distance; absent means not
+mapped, not absent.
 
 ### Visibility estimate (`visibility.js`, `data/visibility.json`)
 
@@ -300,7 +443,7 @@ document small.
 ### Ratings (`ratings.js`)
 
 Site and area cards show an **At a glance** block (and a one-line summary on the
-compact card). All four are estimates with their reasons shown:
+compact card). All are estimates with their reasons shown:
 
 - **Major marine life (1–5★, per month):** share of local iNaturalist sightings
   that are sharks/rays, sea turtles or marine mammals, weighted by each animal's
@@ -317,8 +460,9 @@ compact card). All four are estimates with their reasons shown:
   The start is the last "Get me here" starting point or the device's last known
   position (never prompts; stored on the device only). Without one it rates the
   site's own airport access.
-- **Exposure:** wetsuit/drysuit guide from the month's surface temperature (colder
-  at depth). Freshwater and quarry sites skip ocean temperatures entirely.
+- **Water · month:** the month's surface temperature (or an inland site's surface
+  and deep water). What to wear comes from **Gear for this dive**, which matches the
+  diver's own gear locker, not a generic exposure line.
 
 The WebView runtime is minified at bundle time (`bundle:ocean-atlas`, terser) to
 keep the inline document under the 2 MB WebView budget; the atlas test checks a
@@ -383,10 +527,18 @@ with attribution. Add a sourced season to `regions.js` to override the data.
 
 ## Gear for this dive
 
-Site, featured-area and place cards open a native planning sheet linked to the
-Gear Locker. The map sends only location identity and the selected month; native
-code resolves catalog facts. Inventory and personal preferences never enter the
-WebView. Preferences live separately at `@dmz-scuba/gear-advice/v1` on this device
+Site and featured-area cards show a **What to wear · month** card right after the
+at-a-glance tiles: the exposure starting point for that month's water (e.g. "3–5 mm
+wetsuit"), the water it is for, and one short reason — full-length coverage on wrecks,
+cold below a lake's thermocline, or a deep site (published depth ≥ 30 m) whose bottom can
+be far colder than the surface. Tapping it ("Match it to my Gear Locker →") opens the
+native planning sheet; destination (place) cards show the same card without a starting
+point. The siteGuide reply carries the twelve monthly starting points, already adjusted
+natively for the diver's comfort preferences (drysuit threshold, running cold or warm) and
+refreshed when the sheet closes. The map sends only location identity and the selected
+month; native code resolves catalog facts. The Gear Locker inventory and the raw
+preferences never enter the WebView — only the resulting starting point and whether it
+was adjusted. Preferences live separately at `@dmz-scuba/gear-advice/v1` on this device
 and can also be edited from the locker. Proposals never write gear state, move
 floating gear, change accessory choices or mark a setup complete.
 

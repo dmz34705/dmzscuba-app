@@ -10,7 +10,11 @@ const expectedSiteTotal = require('../src/features/oceanAtlas/data/globalSites.j
   + require('../src/features/oceanAtlas/data/extraSites.json').sites.length
   + require('../src/features/oceanAtlas/data/sites.json').length
   + require('../src/features/oceanAtlas/data/curatedSites.json').length
-  + require('../src/lib/diveSites/data/offlineDiveSites.json').length;
+  + require('../src/lib/diveSites/data/offlineDiveSites.json').length
+  // Duplicate records of one site are merged into a single pin (scripts/build-site-merges.cjs).
+  - require('../src/features/oceanAtlas/data/siteMerges.json').clusters.reduce((sum, cluster) => sum + cluster[1].length, 0)
+  // Wrecks closed to divers by law are never shown (catalog.js CLOSED_WRECKS).
+  - loadSourceModule(path.join(root, 'features/oceanAtlas/catalog.js'), root).closedWreckCount();
 const html = buildAtlasDocument({ temperatureUnit: 'F', depthUnit: 'ft' });
 
 (async () => {
@@ -239,7 +243,67 @@ const html = buildAtlasDocument({ temperatureUnit: 'F', depthUnit: 'ft' });
     assert.ok(await offlinePage.locator('.leaflet-temperature-pane canvas').count() > 0);
     assert.ok(await offlinePage.locator('.leaflet-land-pane canvas').count() > 0);
     await offlinePage.close();
+    // Native bridge: encyclopedia facts from the app — a credited Wikipedia summary and the ship's history.
+    const nativeContext = await browser.newContext({ viewport: { width: 393, height: 780 }, deviceScaleFactor: 2 });
+    await nativeContext.addInitScript(() => { window.sent = []; window.ReactNativeWebView = { postMessage: text => window.sent.push(JSON.parse(text)) }; });
+    const nativePage = await nativeContext.newPage();
+    nativePage.on('pageerror', e => errors.push(e.message));
+    await nativePage.route('https://tile.openstreetmap.org/**', route => route.fulfill({ contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256"></svg>' }));
+    await nativePage.setContent(html, { waitUntil: 'load' });
+    await nativePage.waitForFunction(() => typeof window.atlasReceive === 'function');
+    await nativePage.locator('#search-toggle').click();
+    await nativePage.locator('#search').fill('Thistlegorm');
+    await nativePage.locator('[data-result="0"]').click();
+    await nativePage.waitForFunction(() => sent.some(m => m.type === 'siteGuide'));
+    await nativePage.evaluate(() => {
+      const request = [...sent].reverse().find(m => m.type === 'siteGuide');
+      window.atlasReceive({ type: 'siteGuide', key: request.key, guide: null, places: [], ratings: null, photo: null,
+        facts: { summary: 'SS Thistlegorm was a British cargo steamship sunk in the Red Sea in 1941.', article: 'https://en.wikipedia.org/wiki/SS_Thistlegorm',
+          ship: { type: 'cargo ship', builder: 'J.L. Thompson and Sons', flag: 'United Kingdom', length: { amount: 126.6, unit: 'm' }, beam: null, tonnage: { amount: 4898, unit: 'GT' }, events: [['Launched', '1940'], ['Sank', '1941']], wikidata: 'https://www.wikidata.org/wiki/Q32276' } } });
+    });
+    await nativePage.locator('#expand').click();
+    const about = await nativePage.locator('#detail-body').innerText();
+    assert.match(about, /About this site/i); assert.match(about, /From Wikipedia · CC BY-SA 4\.0/); assert.match(about, /Ship history/i);
+    assert.match(about, /J\.L\. Thompson and Sons/); assert.match(about, /4,898 GT/); assert.match(about, /Sank\s*1941/i);
+    assert.match(about, /\b(415 ft|127 m)\b/, 'Ship length follows the depth unit.');
+    await nativePage.locator('.encyclopedia').scrollIntoViewIfNeeded();
+    await nativePage.screenshot({ path: '/tmp/dmz-atlas-v2-facts.png' });
+    // Protected area, shore facilities and a seafloor estimate (shown only without a published depth).
+    await nativePage.locator('#close').click();
+    await nativePage.locator('#search-toggle').click();
+    await nativePage.locator('#search').fill('Molasses');
+    await nativePage.locator('[data-result="0"]').click();
+    await nativePage.waitForFunction(() => sent.filter(m => m.type === 'siteGuide').length >= 2);
+    await nativePage.evaluate(() => {
+      const request = [...sent].reverse().find(m => m.type === 'siteGuide');
+      window.atlasReceive({ type: 'siteGuide', key: request.key, guide: null, places: [], photo: null, facts: null,
+        ratings: { experience: { level: 'Beginner', reasons: [] }, travel: { level: 'Easy', detail: 'Short hop' }, marineLife: null, visibility: null },
+        wear: Array.from({ length: 12 }, () => ({ label: '3–5 mm', temperatureC: 24, reason: 'Full-length suit — protection from wreckage and rock.', personal: false })),
+        protection: [{ name: 'Florida Keys National Marine Sanctuary', kind: 'National Marine Sanctuary', url: 'https://floridakeys.noaa.gov/' }],
+        seafloor: { atPin: 12, shallowest: 4, deepest: 55 }, shore: { parking: 120, slipway: 10 } });
+    });
+    await nativePage.locator('#expand').click();
+    const extras = await nativePage.locator('#detail-body').innerText();
+    assert.match(extras, /Florida Keys National Marine Sanctuary/); assert.match(extras, /park fee or dive tag/);
+    assert.match(extras, /Parking · (120 m|390 ft)/); assert.match(extras, /Slipway · at the site/);
+    if (!/Max depth|Wreck lies in/i.test(extras)) {
+      assert.match(extras, /Depth · estimated\s*(4–40\+ m|15–130\+ ft)/i, 'Seafloor estimates cap at recreational depth.');
+      assert.match(extras, /No published depth — estimated from NOAA seafloor data/, 'The at-a-glance depth says it is an estimate.');
+    }
+    // What to wear: the month's starting point sits with the conditions and opens the Gear Locker match.
+    assert.match(extras, /What to wear · \w{3}\s*3–5 mm wetsuit\s*For (75°F|24°C) surface water · colder at depth/i);
+    assert.match(extras, /Match it to my Gear Locker →/);
+    assert.ok(!/Gear for this dive →/.test(extras), 'No loose button at the top of the card.');
+    await nativePage.locator('#gear-for-dive').click();
+    assert.ok(await nativePage.evaluate(() => sent.some(m => m.type === 'gearAdvice' && m.name === 'Molasses Reef')), 'The wear card opens Gear for this dive.');
+    await nativePage.locator('.wear-card').scrollIntoViewIfNeeded();
+    await nativePage.screenshot({ path: '/tmp/dmz-atlas-v2-wear.png' });
+    await nativePage.locator('.glance-grid').scrollIntoViewIfNeeded();
+    await nativePage.screenshot({ path: '/tmp/dmz-atlas-v2-glance.png' });
+    await nativePage.locator('.protected').scrollIntoViewIfNeeded();
+    await nativePage.screenshot({ path: '/tmp/dmz-atlas-v2-extras.png' });
+    await nativeContext.close();
     assert.deepEqual(errors, []);
-    console.log('Atlas browser checks passed: ocean regions, climate profiles, uncluttered layout, coastline alpha mask, stable tiles, zoom transitions, panels, seasonal guides, logbook bridge and offline launch.');
+    console.log('Atlas browser checks passed: ocean regions, climate profiles, uncluttered layout, coastline alpha mask, stable tiles, zoom transitions, panels, seasonal guides, logbook bridge, encyclopedia facts, protected areas, shore and seafloor details and offline launch.');
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

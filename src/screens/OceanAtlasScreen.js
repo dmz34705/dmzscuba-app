@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, Linking, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, AppState, Linking, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,23 +8,34 @@ import { WebView } from 'react-native-webview';
 import { buildAtlasDocument } from '../features/oceanAtlas/document';
 import { groupDivePins, safeJson, validCoordinate } from '../features/oceanAtlas/model';
 import { loadAll } from '../lib/diveLog/storage';
+import { loadMySites, removeMySite } from '../features/mySites/storage';
 import DiveLogScreen from './DiveLogScreen';
 import JourneySheet from '../features/oceanAtlas/JourneySheet';
-import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
+import GearAdviceSheet, { ADVICE_PREFERENCES_KEY } from '../features/gearChecklist/GearAdviceSheet';
+import { normalizeAdvicePreferences } from '../features/gearChecklist/diveAdvice';
+import { exposureAdvice } from '../features/oceanAtlas/exposure';
 import { placeAt, placeById, placeGuide, placesForSite, quickLook, regionGuide } from '../features/oceanAtlas/places';
 import { seasonGuide } from '../features/oceanAtlas/seasons';
+import { discoverSpecies, speciesGuide, speciesIndex } from '../features/oceanAtlas/species';
 import { siteRatings } from '../features/oceanAtlas/ratings';
 import { catalogSite } from '../features/oceanAtlas/catalog';
 import { freshwaterLife, inlandProfile, isInland } from '../features/oceanAtlas/inland';
 import { unitSystem } from '../features/oceanAtlas/units';
 import SITE_IMAGES from '../features/oceanAtlas/data/siteImages.json';
+import SITE_FACTS from '../features/oceanAtlas/data/siteFacts.json';
+import SITE_PROTECTION from '../features/oceanAtlas/data/siteProtection.json';
+import SITE_SEAFLOOR from '../features/oceanAtlas/data/siteSeafloor.json';
+import SITE_SHORE from '../features/oceanAtlas/data/siteShore.json';
+import SITE_BATHYMETRY from '../features/oceanAtlas/data/siteBathymetry.json';
+import SITE_LAKE_DEPTHS from '../features/oceanAtlas/data/siteLakeDepths.json';
+import { nearbyDepths } from '../features/oceanAtlas/nearbyDepths';
 import { colors } from '../theme';
 
 const PREFERENCES_KEY = '@dmz-scuba/ocean-atlas/preferences-v1';
 // Last known starting point for personal travel ratings; kept on this device only.
 const ORIGIN_KEY = '@dmz-scuba/ocean-atlas/origin-v1';
 
-export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSettings }) {
+export default function OceanAtlasScreen({ appSettings = {}, focus = null, onBack, onOpenSettings }) {
   const insets = useSafeAreaInsets();
   const web = useRef(null);
   const mounted = useRef(true);
@@ -38,6 +49,15 @@ export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSetti
   const [logbook, setLogbook] = useState(null);
   const [journey, setJourney] = useState(null);
   const [gearAdvice, setGearAdvice] = useState(null);
+  // Opened from a Home in-season card: fly to that region with its animal first.
+  const focusRef = useRef(focus);
+  // Your comfort preferences (drysuit threshold, running cold or warm) shape "What to wear" on site cards.
+  // Only the resulting starting point goes to the map — never your gear inventory.
+  const advicePrefs = useRef(normalizeAdvicePreferences({}));
+  const loadAdvicePrefs = useCallback(() => AsyncStorage.getItem(ADVICE_PREFERENCES_KEY)
+    .then(raw => { advicePrefs.current = normalizeAdvicePreferences(raw ? JSON.parse(raw) : {}); })
+    .catch(() => {}), []);
+  useEffect(() => { loadAdvicePrefs(); }, [loadAdvicePrefs]);
   const origin = useRef(null);
   // Distances, depths and elevations follow the app's length setting (ft → imperial).
   const units = unitSystem(appSettings);
@@ -48,6 +68,17 @@ export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSetti
   const send = useCallback(message => {
     if (mounted.current && ready.current) web.current?.injectJavaScript(`window.atlasReceive && window.atlasReceive(${safeJson(message)}); true;`);
   }, []);
+  // Preferences may have changed in the sheet: reload them and let open cards ask again.
+  const closeGearAdvice = useCallback(() => {
+    setGearAdvice(null);
+    loadAdvicePrefs().then(() => send({ type: 'adviceChanged' }));
+  }, [loadAdvicePrefs, send]);
+
+  // Sites the diver pinned (from the planner): shown on the atlas's My sites layer.
+  const refreshMySites = useCallback(async () => {
+    const sites = await loadMySites().catch(() => []);
+    if (mounted.current) send({ type: 'mySites', sites });
+  }, [send]);
 
   const refreshDives = useCallback(async () => {
     const request = ++logRequest.current;
@@ -65,9 +96,9 @@ export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSetti
 
   useEffect(() => {
     mounted.current = true;
-    const listener = AppState.addEventListener('change', state => { if (state === 'active' && ready.current) refreshDives(); });
+    const listener = AppState.addEventListener('change', state => { if (state === 'active' && ready.current) { refreshDives(); refreshMySites(); } });
     return () => { mounted.current = false; listener.remove(); };
-  }, [refreshDives]);
+  }, [refreshDives, refreshMySites]);
 
   useEffect(() => {
     if (!loading) return undefined;
@@ -116,6 +147,9 @@ export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSetti
       ready.current = true; setLoading(false); setError(false);
       const value = await AsyncStorage.getItem(PREFERENCES_KEY).then(raw => raw ? JSON.parse(raw) : null).catch(() => null);
       send({ type: 'preferences', value }); refreshDives();
+      await refreshMySites();
+      // Opened on a region (Home's in-season cards) or a site (a plan's "Open in Ocean Atlas").
+      if (focusRef.current) send({ type: 'focus', ...focusRef.current });
       // Starting point for travel ratings: saved one, else a recent position if location is already allowed (never prompts).
       AsyncStorage.getItem(ORIGIN_KEY).then(raw => raw ? JSON.parse(raw) : null).catch(() => null).then(async saved => {
         if (saved) { rememberOrigin(saved); return; }
@@ -156,6 +190,20 @@ export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSetti
       let look = null;
       try { look = quickLook(message.latitude, message.longitude); } catch { look = null; }
       send({ type: 'quickLook', requestId: message.requestId, look });
+    } else if (message.type === 'speciesIndex') {
+      // Species search: the whole index once, then guides on demand (the sightings stay native).
+      let species = [];
+      try { species = speciesIndex(); } catch (error) { console.warn('[Ocean Atlas] Species index failed:', error?.message); }
+      send({ type: 'speciesIndex', species });
+    } else if (message.type === 'speciesGuide' && typeof message.key === 'string') {
+      const key = message.key.slice(0, 120);
+      let guide = null;
+      try { guide = speciesGuide(key); } catch (error) { console.warn('[Ocean Atlas] Species guide failed:', error?.message); }
+      send({ type: 'speciesGuide', key, guide });
+    } else if (message.type === 'discover' && Number.isInteger(message.month) && message.month >= 0 && message.month < 12) {
+      let discover = null;
+      try { discover = discoverSpecies(message.month); } catch (error) { console.warn('[Ocean Atlas] Discover picks failed:', error?.message); }
+      send({ type: 'discover', month: message.month, discover });
     } else if (message.type === 'regionGuide' && ['province', 'diveRegion'].includes(message.kind) && typeof message.id === 'string') {
       let guide = null;
       try { guide = regionGuide(message.kind, message.id.slice(0, 60)); } catch { guide = null; }
@@ -170,19 +218,51 @@ export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSetti
         const profile = inland ? inlandProfile(site) : null;
         const life = inland ? freshwaterLife(site) : null;
         if (inland) Object.assign(guide, { temps: null, highlights: [], animals: life, hasObservations: life.length > 0 });
+        const prefs = advicePrefs.current, offset = { cold: 2, typical: 0, warm: -2 }[prefs.thermalTendency] || 0;
+        const wear = Array.from({ length: 12 }, (_, month) => {
+          const temperatureC = profile ? profile.surface?.[month] ?? null : guide.temps?.[month] ?? null;
+          const advice = exposureAdvice({ site, inland: profile, temperatureC, comfortOffsetC: offset, drysuitBelowC: prefs.drysuitBelowC + offset });
+          // The card gives the short version; Gear for this dive keeps the full reasoning.
+          // A deep site's bottom can be far colder than the surface this is based on (the Andrea Doria at 73 m).
+          const deepSite = !profile && !advice.dry && site.maxDepthMeters >= 30 && !site.depthIsWholeLake;
+          const reason = advice.deepInland ? 'Cold below the thermocline — plan a drysuit until the bottom temperature is confirmed.'
+            : deepSite ? 'Deep site — the bottom can be much colder than the surface. Confirm it before you choose.'
+            : advice.dry ? 'Cold water — a drysuit with suitable insulation.'
+              : advice.fullCoverage ? 'Full-length suit — protection from wreckage and rock.' : null;
+          return { label: advice.label, temperatureC, reason, personal: Boolean(offset) };
+        });
         send({ type: 'siteGuide', key: String(message.key || '').slice(0, 120), guide: { temps: guide.temps, highlights: guide.highlights, animals: guide.animals, hasObservations: guide.hasObservations, inland: profile },
+          wear,
           ratings: { ...siteRatings(site, guide, { originPoint: origin.current, inland: profile, life, units: unitsRef.current }), inland },
-          // Openly licensed photo of the wreck or inland site itself, when one exists.
+          // Openly licensed photo of the site itself, when one exists.
           photo: record && SITE_IMAGES.images[record.id] ? (([url, attribution, license, page]) => ({ url, attribution, license, page }))(SITE_IMAGES.images[record.id]) : null,
+          // Encyclopedia summary (Wikipedia, CC BY-SA) and, for wrecks, the ship's history (Wikidata, CC0).
+          facts: record && SITE_FACTS.facts[record.id] ? (([summary, article, ship]) => ({ summary, article, ship: ship && { type: ship[0], builder: ship[1], flag: ship[2], length: ship[3], beam: ship[4], tonnage: ship[5], events: ship[6] || [], wikidata: ship[7] } }))(SITE_FACTS.facts[record.id]) : null,
+          // Protected areas the site lies in, seafloor depth around the pin and shore facilities (OSM / NOAA ETOPO).
+          protection: record ? (SITE_PROTECTION.sites[record.id] || []).map((i) => (([name, kind, url]) => ({ name, kind, url }))(SITE_PROTECTION.areas[i])) : [],
+          seafloor: record && SITE_SEAFLOOR.sites[record.id] ? (([atPin, shallowest, deepest]) => ({ atPin, shallowest, deepest }))(SITE_SEAFLOOR.sites[record.id]) : null,
+          // No published depth: finer seafloor (NOAA coastal DEMs / EMODnet), a lake's modelled deepest point
+          // (GLOBathy) and the depths published for sites nearby.
+          bathymetry: record && SITE_BATHYMETRY.sites[record.id] ? (([atPin, shallowest, deepest, source]) => ({ atPin, shallowest, deepest, source: SITE_BATHYMETRY.sources[source] }))(SITE_BATHYMETRY.sites[record.id]) : null,
+          lakeDepth: record && SITE_LAKE_DEPTHS.sites[record.id] ? (([maxMeters, meanMeters, lakeName, source, url]) => ({ maxMeters, meanMeters, lakeName, published: source === 'wikidata', url: url || SITE_LAKE_DEPTHS.source.url }))(SITE_LAKE_DEPTHS.sites[record.id]) : null,
+          nearbyDepths: record && !record.maxDepthMeters ? nearbyDepths(record) : null,
+          shore: record && SITE_SHORE.sites[record.id] ? Object.fromEntries(SITE_SHORE.fields.map((kind, i) => [kind, SITE_SHORE.sites[record.id][i]]).filter(([, meters]) => meters != null)) : null,
           places: typeof message.id === 'string' ? placesForSite(message.id.slice(0, 80)) : [] });
       } catch { send({ type: 'siteGuide', key: String(message.key || '').slice(0, 120), guide: null, places: [] }); }
+    }
+    else if (message.type === 'deleteMySite' && typeof message.id === 'string') {
+      const id = message.id.slice(0, 90);
+      Alert.alert('Remove from My sites?', String(message.name || 'This pin').slice(0, 120), [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Remove', style: 'destructive', onPress: () => removeMySite(id).then(refreshMySites).catch(() => send({ type: 'notice', text: 'The site could not be removed.' })) },
+      ]);
     }
     else if (message.type === 'preferences' && message.value && typeof message.value === 'object') {
       AsyncStorage.setItem(PREFERENCES_KEY, JSON.stringify(message.value)).catch(() => {});
     } else if (message.type === 'external' && typeof message.url === 'string' && /^https:\/\//i.test(message.url)) {
       Linking.openURL(message.url).catch(() => send({ type: 'notice', text: 'This source could not be opened.' }));
     }
-  }, [locate, onBack, refreshDives, send]);
+  }, [locate, onBack, refreshDives, refreshMySites, send]);
 
   const dismissLogbook = () => { setLogbook(null); refreshDives(); };
   const retry = () => { ready.current = false; setLoading(true); setError(false); setReload(n => n + 1); };
@@ -220,8 +300,8 @@ export default function OceanAtlasScreen({ appSettings = {}, onBack, onOpenSetti
       <Modal visible={Boolean(journey)} animationType="slide" onRequestClose={() => setJourney(null)}>
         {journey ? <JourneySheet site={journey} units={units} onOrigin={rememberOrigin} onClose={() => setJourney(null)} /> : null}
       </Modal>
-      <Modal visible={Boolean(gearAdvice)} animationType="slide" onRequestClose={() => setGearAdvice(null)}>
-        {gearAdvice ? <GearAdviceSheet context={gearAdvice} appSettings={appSettings} onClose={() => setGearAdvice(null)} /> : null}
+      <Modal visible={Boolean(gearAdvice)} animationType="slide" onRequestClose={closeGearAdvice}>
+        {gearAdvice ? <GearAdviceSheet context={gearAdvice} appSettings={appSettings} onClose={closeGearAdvice} /> : null}
       </Modal>
     </View>
   );

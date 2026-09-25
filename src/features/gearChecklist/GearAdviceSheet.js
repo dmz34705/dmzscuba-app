@@ -10,7 +10,8 @@ import { GEAR_STORAGE_KEY } from './storage';
 import { normalizeGearState } from './model';
 import { ADVICE_DEFAULTS, DIVE_USES, advicePreferenceError, coldDiverTemplate, normalizeAdvicePreferences, orderedTemperatureRange, recommendDiveGear } from './diveAdvice';
 
-const KEY = '@dmz-scuba/gear-advice/v1';
+export const ADVICE_PREFERENCES_KEY = '@dmz-scuba/gear-advice/v1';
+const KEY = ADVICE_PREFERENCES_KEY;
 const FormField = props => <AccountFormField {...props} inputAccessoryViewID={NUMBER_KEYBOARD_ACCESSORY_ID} />;
 const numeric = text => text.trim() !== '' && Number.isFinite(Number(text)) ? Number(text) : null;
 const Button = ({ label, onPress, selected = false }) => <Pressable accessibilityRole="button" accessibilityState={{ selected }} onPress={onPress} style={[styles.button, selected && styles.selected]}><Text style={styles.buttonText}>{label}</Text></Pressable>;

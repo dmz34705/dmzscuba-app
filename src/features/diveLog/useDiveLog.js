@@ -9,7 +9,9 @@ import { checkLogbookIntegrity, repairLogbook } from '../../lib/diveLog/integrit
 import { photoIdentityKeys } from '../../lib/diveLog/photoIdentity';
 import { depthAtPhotoTime } from '../../lib/diveLog/photoMatching';
 import { removeManagedDivePhoto } from '../../lib/diveLog/photoStorage';
-import { buildLocationSuggestions } from '../../lib/locationLog/suggestions';
+import { buildLocationSuggestions, buildSiteLinkSuggestions } from '../../lib/locationLog/suggestions';
+import { loadHandledSiteLinkIds, loadSiteMatcher, markSiteLinkHandled } from '../siteDives/storage';
+import { verificationFor } from '../siteDives/siteMatch';
 import {
   loadHandledLocationDiveIds,
   loadLocationPoints,
@@ -427,24 +429,43 @@ export default function useDiveLog() {
     }
   }, [refreshIndex]);
 
+  // Downloaded dives without a location get the phone's breadcrumb (and the site it's at);
+  // dives that already have coordinates but no linked site are offered the site they sit at.
   const getLocationSuggestions = useCallback(async () => {
-    const [points, dives, handled] = await Promise.all([
+    const [points, dives, handled, handledSites, matchSite] = await Promise.all([
       loadLocationPoints(),
       loadAll(),
       loadHandledLocationDiveIds(),
+      loadHandledSiteLinkIds(),
+      loadSiteMatcher().catch(() => null),
     ]);
-    return buildLocationSuggestions(points, dives, handled);
+    // Older dives are offered a few at a time, so a big logbook doesn't queue dozens of questions.
+    return [...buildLocationSuggestions(points, dives, handled, matchSite), ...buildSiteLinkSuggestions(dives, handledSites, matchSite).slice(-5)];
   }, []);
 
-  const resolveLocationSuggestion = useCallback(async (suggestion, accept) => {
+  // `accept`: true links the phone location (and `site`, a chosen match or alternative, if given).
+  const resolveLocationSuggestion = useCallback(async (suggestion, accept, site = null) => {
     if (!suggestion?.diveId) return null;
     let saved = null;
     if (accept) {
       const current = await loadDive(suggestion.diveId);
       if (!current || current.deletedAt) return null;
+      // The suggested site keeps its evidence (e.g. the plan); a chosen alternative is simply nearby.
+      const match = !site ? null : site === suggestion.match ? suggestion.match : { ...site, reason: 'nearby', planId: '', alternatives: [] };
+      const breadcrumb = suggestion.type === 'location' ? { distanceMs: suggestion.distanceMs } : null;
       saved = await saveDive(touchRecord(normalizeDive({
         ...current,
-        site: {
+        site: match ? {
+          ...current.site,
+          // Linked to a dive site: the site's name fills a blank one, and the pin sits on the site.
+          name: String(current.site?.name || '').trim() || match.site.name,
+          location: String(current.site?.location || '').trim() || (match.site.source === 'atlas' ? match.site.area || '' : ''),
+          latitude: match.site.latitude,
+          longitude: match.site.longitude,
+          siteId: match.site.id,
+          siteSource: match.site.source,
+          verification: verificationFor(current, match, breadcrumb),
+        } : {
           ...current.site,
           // Keep a name entered/imported by the diver. An offline match only
           // fills an otherwise blank site field after the link is confirmed.
@@ -459,7 +480,10 @@ export default function useDiveLog() {
       diveCache.current.set(saved.id, { dive: saved, logs });
       await refreshIndex();
     }
-    await markLocationSuggestionHandled(suggestion.diveId);
+    if (suggestion.type === 'site') await markSiteLinkHandled(suggestion.diveId);
+    else await markLocationSuggestionHandled(suggestion.diveId);
+    // A site link answered here is never offered again, either way.
+    if (suggestion.type !== 'site' && suggestion.match) await markSiteLinkHandled(suggestion.diveId);
     return saved;
   }, [refreshIndex]);
 

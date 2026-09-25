@@ -21,8 +21,11 @@ function validCoordinate(latitude, longitude) {
     && latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
 }
 
+// OpenDiveMap sends some names HTML-escaped ("Bonnie&#039;s Arch").
+const decodeEntities = (value) => value.replace(/&#0*39;|&apos;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+  .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code))).replace(/&amp;/g, '&');
 function text(value, maximum = 120) {
-  const normalized = String(value || '').replace(/\s+/g, ' ').trim();
+  const normalized = decodeEntities(String(value || '')).replace(/\s+/g, ' ').trim();
   return normalized ? normalized.slice(0, maximum) : '';
 }
 

@@ -7,15 +7,19 @@ export function validCoordinate(latitude, longitude) {
 
 // Only saved, confirmed dive coordinates belong on the personal layer.
 // In particular, a site name alone must never silently geocode a dive.
+// One map pin per dive site the diver linked (so repeat visits stack into one growing pin), else per spot.
 export function groupDivePins(dives) {
   const groups = new Map();
   for (const dive of dives) {
     if (dive.deletedAt || !validCoordinate(dive.site?.latitude, dive.site?.longitude)) continue;
     const { latitude, longitude } = dive.site;
-    const key = `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
-    const group = groups.get(key) || { id: `log-${key}`, latitude, longitude, name: dive.site.name || 'Logged dive location', dives: [] };
-    group.dives.push({ id: dive.id, name: dive.site.name || 'Untitled dive', startTime: dive.startTime,
+    const siteId = dive.site.siteId || '';
+    const key = siteId ? `site:${siteId}` : `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
+    const group = groups.get(key) || { id: siteId ? `log-site-${siteId}` : `log-${key}`, siteId, latitude, longitude, name: dive.site.name || 'Logged dive location', dives: [], verified: 0 };
+    const verified = dive.site.verification?.status === 'verified';
+    group.dives.push({ id: dive.id, name: dive.site.name || 'Untitled dive', startTime: dive.startTime, verified,
       number: dive.number, maxDepthMeters: dive.water?.maxDepthMeters ?? null, durationSeconds: dive.durationSeconds ?? null });
+    if (verified) group.verified += 1;
     groups.set(key, group);
   }
   return [...groups.values()].map(group => ({ ...group, dives: group.dives.sort((a, b) => String(b.startTime || '').localeCompare(String(a.startTime || ''))) }));

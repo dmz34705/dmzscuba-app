@@ -1,6 +1,6 @@
 {
   "name": "dmz-scuba-app",
-  "version": "0.0.104",
+  "version": "0.0.106",
   "main": "index.js",
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -60,6 +60,7 @@
     "test:dive-computer-workspace": "node scripts/verify-dive-computer-workspace.cjs",
     "test:dive-computer": "node scripts/verify-dive-computer.cjs",
     "test:dive-log": "node scripts/verify-dive-log.cjs",
+    "test:dev-backup": "node scripts/verify-dev-backup.cjs",
     "build:dive-sites": "node scripts/build-offline-dive-site-catalog.cjs",
     "sync:global-dive-sites": "node scripts/sync-open-dive-map.cjs",
     "build:ocean-atlas": "node scripts/build-ocean-atlas.mjs",
@@ -70,6 +71,9 @@
     "build:atlas-places": "node scripts/build-atlas-places.cjs",
     "test:atlas-places": "node scripts/verify-atlas-places.cjs",
     "test:atlas-journey": "node scripts/verify-atlas-journey.cjs",
+    "test:atlas-species": "node scripts/verify-atlas-species.cjs",
+    "test:planner": "node scripts/verify-planner.cjs",
+    "test:site-dives": "node scripts/verify-site-dives.cjs",
     "preview:ocean-atlas": "node scripts/preview-ocean-atlas.cjs"
   },
   "private": true,
