@@ -98,7 +98,7 @@ export default function ProfileScreen({ account, onAddCertification, onBack, onD
       <ScreenHeader eyebrow="DIVER ACCOUNT" title="Edit Profile" onBack={onBack} />
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <Text style={styles.title}>Your diver profile</Text>
-        <Text style={styles.subtitle}>Keep your contact, emergency, experience, and certification information connected to your DMZ Scuba account.</Text>
+        <Text style={styles.subtitle}>Keep your contact, emergency, and certification information connected to your DMZ Scuba account.</Text>
 
         <View style={styles.syncNotice}>
           <Text style={styles.syncLabel}>ACCOUNT SYNC ACTIVE</Text>
@@ -107,7 +107,7 @@ export default function ProfileScreen({ account, onAddCertification, onBack, onD
 
         <View style={styles.tabs}>
           <SecondaryButton label="Personal" onPress={() => setSection('personal')} selected={section === 'personal'} style={styles.tab} />
-          <SecondaryButton label="Diving" onPress={() => setSection('diving')} selected={section === 'diving'} style={styles.tab} />
+          <SecondaryButton label="Certifications" onPress={() => setSection('certifications')} selected={section === 'certifications'} style={styles.tab} />
         </View>
 
         {section === 'personal' ? (
@@ -133,16 +133,6 @@ export default function ProfileScreen({ account, onAddCertification, onBack, onD
           </>
         ) : (
           <>
-            <Card style={styles.card}>
-              <Text style={styles.cardTitle}>Experience and planning</Text>
-              <Text style={styles.cardSubtitle}>These defaults personalize planning tools and never replace training or conservative dive planning.</Text>
-              <FormField keyboardType="number-pad" label="Logged dives" maxLength={6} onChangeText={(value) => update('loggedDives', value)} placeholder="0" value={String(draft.loggedDives ?? '')} />
-              <View style={styles.twoColumn}>
-                <View style={styles.half}><FormField helper="Common default: 1.4 ATA" keyboardType="decimal-pad" label="Working ppO₂" maxLength={4} onChangeText={(value) => update('defaultPpO2', value)} value={String(draft.defaultPpO2 ?? '')} /></View>
-                <View style={styles.half}><FormField helper="Stored in L/min" keyboardType="decimal-pad" label="Planning RMV" maxLength={6} onChangeText={(value) => update('defaultRmv', value)} value={String(draft.defaultRmv ?? '')} /></View>
-              </View>
-            </Card>
-
             <Card style={styles.card}>
               <Text style={styles.cardTitle}>Certifications</Text>
               <Text style={styles.cardSubtitle}>Certification details are self-reported and remain pending until DMZ Scuba verifies them.</Text>

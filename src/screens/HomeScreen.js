@@ -219,7 +219,6 @@ export default function HomeScreen({ appSettings = {}, profile = {}, signedIn = 
   const lessons = getFeaturesByArea('learn').filter((feature) => feature.id !== 'gear-setup');
   const name = (profile.preferredName || profile.firstName || '').trim();
   const initials = signedIn ? [profile.firstName, profile.lastName].map((part) => (part || '').trim()[0] || '').join('').toUpperCase() : '';
-  const certification = [profile.certificationAgency, profile.certificationLevel].filter(Boolean).join(' ');
   const tile = (id) => getFeature(id);
   const canDownload = useMemo(() => { try { return Boolean(getLibdivecomputerVersion()); } catch { return false; } }, []);
 
@@ -238,7 +237,7 @@ export default function HomeScreen({ appSettings = {}, profile = {}, signedIn = 
           <View style={styles.greetingBlock}>
             <Text style={styles.greeting}>{greeting()}{name ? ',' : ''}</Text>
             <Text numberOfLines={1} style={styles.name}>{name || 'Ready to dive?'}</Text>
-            <Text numberOfLines={1} style={styles.subline}>{certification || (stats?.totalDives ? 'Your dives, gear and ocean in one place.' : 'Learn, plan and log — all in one place.')}</Text>
+            <Text numberOfLines={1} style={styles.subline}>{stats?.totalDives ? 'Your dives, gear and ocean in one place.' : 'Learn, plan and log — all in one place.'}</Text>
           </View>
         </ImageBackground>
 

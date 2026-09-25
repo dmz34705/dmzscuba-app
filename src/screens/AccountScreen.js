@@ -33,7 +33,7 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
       </View>
       <GroupedSection title={signedIn ? 'Diver profile' : 'Get connected'}>
         {signedIn ? <>
-          <NavigationRow title="Profile & certifications" body={`${certifications} ${certifications === 1 ? 'certification' : 'certifications'} saved · Contact, emergency, and diving details`} onPress={() => onOpenScreen('account-profile')} />
+          <NavigationRow title="Profile & certifications" body={`${certifications} ${certifications === 1 ? 'certification' : 'certifications'} saved · Contact and emergency details`} onPress={() => onOpenScreen('account-profile')} />
           <NavigationRow title="App settings" body="Units, appearance, and planning preferences" onPress={onOpenSettings} last />
         </> : <>
           <NavigationRow disabled={restoring} title={restoring ? 'Restoring session…' : 'Sign in'} body="Connect your profile and supported app settings" onPress={() => onOpenScreen('account-login')} />

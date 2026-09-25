@@ -26,9 +26,6 @@ export function profileFromAccount(profile = {}, current = DEFAULT_PROFILE) {
     location: String(profile.location ?? current.location ?? ''),
     emergencyContactName: String(profile.emergencyContactName ?? current.emergencyContactName ?? ''),
     emergencyContactPhone: String(profile.emergencyContactPhone ?? current.emergencyContactPhone ?? ''),
-    loggedDives: String(profile.loggedDives ?? current.loggedDives ?? '0'),
-    defaultPpO2: String(profile.defaultPpO2 ?? current.defaultPpO2 ?? '1.4'),
-    defaultRmv: String(profile.defaultRmv ?? current.defaultRmv ?? '18'),
   };
 }
 
