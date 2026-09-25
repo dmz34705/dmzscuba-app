@@ -44,7 +44,7 @@ export default function AppNavigator() {
   const accountSession = useAccountSession({
     appSettings: appSettings.settings,
     settingsLoaded: appSettings.loaded,
-    onRemoteSettings: appSettings.replaceSettings,
+    onRemoteSettings: appSettings.applyAccountSettings,
   });
 
   // Rebuilding/reinstalling a development client can clear the native task

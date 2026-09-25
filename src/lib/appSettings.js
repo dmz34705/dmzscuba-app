@@ -42,3 +42,19 @@ export function sanitizeAppSettings(value) {
     profileLineWidth: [1.5, 2.75, 4].includes(settings.profileLineWidth) ? settings.profileLineWidth : 2.75,
   };
 }
+
+// Settings the account stores and syncs between devices. Everything else is this phone's own:
+// location logging depends on this phone's permission, and graph styling is a display preference.
+export const ACCOUNT_SYNCED_SETTINGS = Object.freeze(['depthUnit', 'gasVolumeUnit', 'pressureUnit', 'temperatureUnit', 'trimixMode']);
+
+/**
+ * Apply settings downloaded from the account without resetting this phone's own settings.
+ * Replacing wholesale turned background location logging off (the account has no such field)
+ * on every sign-in and app reload.
+ */
+export function mergeAccountSettings(current, remote) {
+  const local = sanitizeAppSettings(current);
+  const incoming = remote && typeof remote === 'object' ? remote : {};
+  const synced = Object.fromEntries(ACCOUNT_SYNCED_SETTINGS.filter((key) => key in incoming).map((key) => [key, incoming[key]]));
+  return sanitizeAppSettings({ ...local, ...synced });
+}

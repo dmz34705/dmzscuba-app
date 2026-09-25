@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { APP_SETTINGS_STORAGE_KEY, DEFAULT_APP_SETTINGS, sanitizeAppSettings } from '../../lib/appSettings';
+import { APP_SETTINGS_STORAGE_KEY, DEFAULT_APP_SETTINGS, mergeAccountSettings, sanitizeAppSettings } from '../../lib/appSettings';
 
 export default function useAppSettings() {
   const [settings, setSettingsState] = useState(DEFAULT_APP_SETTINGS);
@@ -31,7 +31,9 @@ export default function useAppSettings() {
 
   return {
     loaded,
-    replaceSettings: (value) => setSettingsState(sanitizeAppSettings(value)),
+    // Settings from the signed-in account update only what the account stores (units, trimix);
+    // this phone's own settings, such as background location logging, are kept.
+    applyAccountSettings: (value) => setSettingsState((current) => mergeAccountSettings(current, value)),
     settings,
     setSettings,
   };
