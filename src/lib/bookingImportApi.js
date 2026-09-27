@@ -61,6 +61,9 @@ export async function smartImportBooking({ text = '', pdfBase64 = '', referenceD
     clearTimeout(timer);
   }
   if (response.status === 401) throw new BookingImportError('Your session expired. Sign in again to use smart import.', 'AUTH_REQUIRED');
+  // The server doesn't have smart import (not deployed yet, or an older server).
+  if (response.status === 404) throw new BookingImportError('Smart import isn’t available right now. Paste the email text instead, or add the booking by hand.', 'UNAVAILABLE');
+  if (response.status === 413) throw new BookingImportError(data?.error || 'That file is too large for smart import.', 'TOO_LARGE');
   if (!response.ok || data?.ok !== true) throw new BookingImportError(data?.error || 'Smart import could not read that email.');
   return itemsFromSmartImport(data);
 }
