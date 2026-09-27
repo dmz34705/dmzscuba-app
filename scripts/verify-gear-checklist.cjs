@@ -460,6 +460,27 @@ assert.match(screen, /if \(!setup\.itemIds\.length\) return null;/, 'an empty se
   assert.ok(body.indexOf("const [route, setRoute] = useState") < body.indexOf('packing.refresh()'), 'route and tab are declared before the effect that reads them');
 }
 
+// The grouped Gear Locker view: families in order, categories in family order, attention counted.
+{
+  const gear = [
+    { id: 'fins', name: 'Fins', category: 'Fins' },
+    { id: 'tank', name: 'AL80', category: 'Cylinder / tank', condition: 'Ready', visualInspectionDue: '2020-01-01' },
+    { id: 'reg', name: 'Regulator', category: 'Regulator', condition: 'Needs attention' },
+    { id: 'hood', name: 'Hood', category: 'Hood' },
+    { id: 'odd', name: 'Mystery', category: 'Something new' },
+  ].map((item) => model.normalizeGearItem(item));
+  gear.find((item) => item.id === 'odd').category = 'Something new';
+  const families = model.groupGearByFamily(gear, gear, new Date(2026, 8, 27));
+  assert.deepEqual(families.map((family) => family.label), ['Life support', 'Exposure protection', 'Core kit', 'Other'], 'families in order; empty ones hidden; unknown categories kept under Other');
+  const life = families[0];
+  assert.deepEqual(life.categories.map((group) => group.category), ['Regulator', 'Cylinder / tank'], 'categories in family order');
+  assert.equal(life.count, 2);
+  assert.equal(life.attention, 2, 'a regulator needing attention and an overdue tank both count');
+  assert.equal(life.tone, 'danger', 'anything overdue makes the family red');
+  assert.deepEqual([families[1].attention, families[1].tone], [0, 'good']);
+  assert.deepEqual(model.groupGearByFamily([]), []);
+}
+
 // The quick-dive checklist (no trip planned) clears itself once the dive is over.
 {
   const setup = normalizeGearSetup({ id: 'qs', name: 'Quick', itemIds: ['a', 'b'] });

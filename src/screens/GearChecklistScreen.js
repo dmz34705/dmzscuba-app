@@ -35,8 +35,10 @@ import {
   searchGear,
   serviceStatusForSet,
   EXPOSURE_SUIT_TYPES,
+  ATTENTION_STATUSES,
   GEAR_CATEGORIES,
   GEAR_CONDITIONS,
+  groupGearByFamily,
   GEAR_LOCATION_FILTERS,
   GEAR_SERVICE_FILTERS,
   GEAR_SORT_OPTIONS,
@@ -81,6 +83,7 @@ import {
 import AddGearWizard from '../features/gearChecklist/AddGearWizard';
 import { LinkExistingItems } from '../features/gearChecklist/wizardParts';
 import useGearChecklist from '../features/gearChecklist/useGearChecklist';
+import useLockerView from '../features/gearChecklist/useLockerView';
 import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
 import { QUICK_PACKING_DAYS } from '../features/gearChecklist/model';
 import { formatDay, planTitle, withPlanPacking } from '../features/planner/model';
@@ -175,7 +178,54 @@ function SelectRow({ checked, label, body, onPress }) {
   );
 }
 
+// A slimmer gear row for the grouped view: name, maker/model, and a badge only when it needs attention.
+function CompactGearRow({ item, items, onPress, last = false }) {
+  const status = serviceStatusForSet(item, items);
+  const meta = [[item.manufacturer, item.model].filter(Boolean).join(' '), item.configuration, item.components?.length ? `${item.components.length} parts` : ''].filter(Boolean).join(' · ');
+  return (
+    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={onPress} style={({ pressed }) => [styles.compactRow, !last && styles.rowBorder, pressed && styles.rowPressed]}>
+      <View style={styles.gearRowCopy}>
+        <View style={styles.gearTitleRow}>
+          <Text numberOfLines={1} style={styles.compactName}>{item.name}</Text>
+          {item.quantity && item.quantity !== '1' ? <Text style={styles.quantity}>×{item.quantity}</Text> : null}
+        </View>
+        {meta ? <Text numberOfLines={1} style={styles.gearMeta}>{meta}</Text> : null}
+        {ATTENTION_STATUSES.includes(status.key) ? <ServiceBadge item={item} items={items} includeParts /> : null}
+      </View>
+      <Text style={styles.chevron}>›</Text>
+    </Pressable>
+  );
+}
+
+// One family (Life support, Core kit…): a single row when closed that still says what needs
+// attention; opened, its gear under small category headings.
+function GearFamily({ family, items, open, onToggle, onOpen }) {
+  const tone = family.tone === 'danger' ? colors.danger : family.tone === 'warning' ? colors.warning : colors.good;
+  const needs = family.attention === 1 ? 'needs' : 'need';
+  return (
+    <View style={styles.familyCard}>
+      <Pressable accessibilityRole="button" accessibilityState={{ expanded: open }} accessibilityLabel={`${family.label}, ${family.count} items${family.attention ? `, ${family.attention} ${needs} attention` : ''}`} onPress={onToggle} style={({ pressed }) => [styles.familyHeader, pressed && styles.rowPressed]}>
+        <View style={[styles.familyDot, { backgroundColor: tone }]} />
+        <View style={styles.gearRowCopy}>
+          <Text style={styles.familyTitle}>{family.label}</Text>
+          <Text style={[styles.familyMeta, family.attention ? { color: tone } : null]}>
+            {family.count} {family.count === 1 ? 'item' : 'items'} · {family.attention ? `${family.attention} ${needs} attention` : 'all ready'}
+          </Text>
+        </View>
+        <Text style={[styles.familyChevron, open && styles.familyChevronOpen]}>›</Text>
+      </Pressable>
+      {open ? family.categories.map((group) => (
+        <View key={group.category}>
+          <Text style={styles.familyCategory}>{group.category.toUpperCase()} · {group.items.length}</Text>
+          {group.items.map((item, index) => <CompactGearRow item={item} items={items} key={item.id} last={index === group.items.length - 1} onPress={() => onOpen(item)} />)}
+        </View>
+      )) : null}
+    </View>
+  );
+}
+
 function InventoryHome({ state, onAdd, onOpen, appSettings }) {
+  const view = useLockerView();
   const [preferencesOpen, setPreferencesOpen] = useState(false);
   const [category, setCategory] = useState('All');
   const [query, setQuery] = useState('');
@@ -186,9 +236,16 @@ function InventoryHome({ state, onAdd, onOpen, appSettings }) {
   const [sortOpen, setSortOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const searched = topLevelGear(state.items, searchGear(state.items, query));
-  const items = sortGearBy(filterGear(searched, { category, condition, service, location }, state.setups), sort);
+  const grouped = view.mode === 'grouped';
+  // Families replace the category chips in the grouped view.
+  const items = sortGearBy(filterGear(searched, { category: grouped ? 'All' : category, condition, service, location }, state.setups), sort);
+  const families = grouped ? groupGearByFamily(items, state.items) : [];
+  // Searching or filtering opens just the families with matches.
+  const narrowing = Boolean(query.trim()) || condition !== 'Any condition' || service !== 'Any service status' || location !== 'Any setup status';
+  const isOpen = (label) => narrowing || view.open.includes(label);
+  const allOpen = families.length > 0 && families.every((family) => view.open.includes(family.label));
   const usedCategories = [...(state.items.some((item) => item.floating) ? ['Floating'] : []), ...GEAR_CATEGORIES.filter((entry) => topLevelGear(state.items).some((item) => item.category === entry))];
-  const activeFilters = [category !== 'All', condition !== 'Any condition', service !== 'Any service status', location !== 'Any setup status'].filter(Boolean).length;
+  const activeFilters = [!grouped && category !== 'All', condition !== 'Any condition', service !== 'Any service status', location !== 'Any setup status'].filter(Boolean).length;
   const clearFilters = () => { setCategory('All'); setCondition('Any condition'); setService('Any service status'); setLocation('Any setup status'); };
   const summary = gearSummary(state);
   return (
@@ -243,13 +300,31 @@ function InventoryHome({ state, onAdd, onOpen, appSettings }) {
           {activeFilters ? <SecondaryButton label="Clear all filters" onPress={clearFilters} /> : null}
         </View>
       ) : null}
-      {usedCategories.length ? (
+      {!grouped && usedCategories.length ? (
         <ScrollView horizontal contentContainerStyle={styles.filters} showsHorizontalScrollIndicator={false}>
           {['All', ...usedCategories].map((entry) => <SecondaryButton key={entry} label={entry} onPress={() => setCategory(entry)} selected={category === entry} style={styles.filter} />)}
         </ScrollView>
       ) : null}
       <View style={styles.sectionRow}><Text style={styles.sectionTitle}>{query.trim() ? 'Results' : 'Your gear'}</Text><Text style={styles.sectionMeta}>{items.length} ITEMS</Text></View>
-      {items.length ? (
+      {state.items.length ? (
+        <View style={styles.viewSwitchRow}>
+          <View style={styles.viewSwitch}>
+            {[['grouped', 'Grouped'], ['list', 'List']].map(([mode, label]) => (
+              <Pressable key={mode} accessibilityRole="tab" accessibilityState={{ selected: view.mode === mode }} onPress={() => view.setMode(mode)} style={[styles.viewSwitchOption, view.mode === mode && styles.viewSwitchOn]}>
+                <Text style={[styles.viewSwitchText, view.mode === mode && styles.viewSwitchTextOn]}>{label}</Text>
+              </Pressable>
+            ))}
+          </View>
+          {grouped && families.length > 1 && !narrowing ? (
+            <Pressable accessibilityRole="button" hitSlop={8} onPress={() => view.setOpen(allOpen ? [] : families.map((family) => family.label))}>
+              <Text style={styles.expandAll}>{allOpen ? 'Collapse all' : 'Expand all'}</Text>
+            </Pressable>
+          ) : null}
+        </View>
+      ) : null}
+      {grouped && items.length ? (
+        families.map((family) => <GearFamily family={family} items={state.items} key={family.label} onOpen={onOpen} onToggle={() => view.toggle(family.label)} open={isOpen(family.label)} />)
+      ) : items.length ? (
         <View style={styles.rowGroup}>
           {items.map((item, index) => <GearRow item={item} items={state.items} key={item.id} last={index === items.length - 1} setups={state.setups} onPress={() => onOpen(item)} />)}
         </View>
@@ -1326,6 +1401,23 @@ const styles = StyleSheet.create({
   filters: { gap: 7, paddingVertical: 13 },
   filter: { minHeight: 38, paddingHorizontal: 11, paddingVertical: 7 },
   inventoryControls: { flexDirection: 'row', gap: 8, marginTop: 10 },
+  viewSwitchRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
+  viewSwitch: { backgroundColor: colors.backgroundRaised, borderColor: colors.line, borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', padding: 3 },
+  viewSwitchOption: { alignItems: 'center', borderRadius: radii.pill, justifyContent: 'center', minHeight: 32, paddingHorizontal: 16 },
+  viewSwitchOn: { backgroundColor: colors.surfaceSoft },
+  viewSwitchText: { color: colors.faint, fontSize: 12, fontWeight: '800' },
+  viewSwitchTextOn: { color: colors.text },
+  expandAll: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
+  familyCard: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, marginBottom: 10, overflow: 'hidden' },
+  familyHeader: { alignItems: 'center', flexDirection: 'row', gap: 12, minHeight: 64, paddingHorizontal: 14, paddingVertical: 12 },
+  familyDot: { borderRadius: 5, height: 10, width: 10 },
+  familyTitle: { color: colors.text, fontSize: 16, fontWeight: '900' },
+  familyMeta: { color: colors.muted, fontSize: 12, fontWeight: '700', marginTop: 3 },
+  familyChevron: { color: colors.faint, fontSize: 24, fontWeight: '300' },
+  familyChevronOpen: { transform: [{ rotate: '90deg' }] },
+  familyCategory: { backgroundColor: colors.backgroundRaised, borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, color: colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1.1, paddingHorizontal: 14, paddingVertical: 7 },
+  compactRow: { alignItems: 'center', flexDirection: 'row', gap: 10, minHeight: 56, paddingHorizontal: 14, paddingVertical: 9 },
+  compactName: { color: colors.text, flexShrink: 1, fontSize: 14, fontWeight: '800' },
   inventoryControl: { flex: 1, minHeight: 40, paddingHorizontal: 9 },
   inventoryPanel: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, marginTop: 9, padding: 12, paddingBottom: 2 },
   sectionRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8, marginTop: 18 },

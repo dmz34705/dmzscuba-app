@@ -454,6 +454,26 @@ export function serviceEntriesForItem(item) {
   ];
 }
 
+// The Gear Locker's grouped view: gear folded into the CATEGORY_GROUPS families, each with its
+// categories (in family order) and how many items need attention, so a collapsed family still
+// shows where the problems are. `items` arrive already searched, filtered and sorted.
+export const ATTENTION_STATUSES = Object.freeze(['blocked', 'attention', 'overdue', 'due-soon']);
+export function groupGearByFamily(items, allItems = items, now = new Date()) {
+  const list = Array.isArray(items) ? items : [];
+  const known = new Set(CATEGORY_GROUPS.flatMap((group) => group.categories));
+  const families = [...CATEGORY_GROUPS, { label: 'Other', categories: [...new Set(list.map((item) => item.category).filter((category) => !known.has(category)))] }];
+  return families.map((family) => {
+    const categories = family.categories
+      .map((category) => ({ category, items: list.filter((item) => item.category === category) }))
+      .filter((group) => group.items.length);
+    const members = categories.flatMap((group) => group.items);
+    const statuses = members.map((item) => serviceStatusForSet(item, allItems, now));
+    const attention = statuses.filter((status) => ATTENTION_STATUSES.includes(status.key)).length;
+    const urgent = statuses.some((status) => status.tone === 'danger');
+    return { label: family.label, categories, count: members.length, attention, tone: attention ? (urgent ? 'danger' : 'warning') : 'good' };
+  }).filter((family) => family.count);
+}
+
 export function gearSummary(state, now = new Date()) {
   const items = Array.isArray(state?.items) ? state.items : [];
   const statuses = items.flatMap(serviceEntriesForItem).map((entry) => serviceStatusForItem(entry.record, now));
