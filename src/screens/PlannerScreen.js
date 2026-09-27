@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Alert, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, BackHandler, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path } from 'react-native-svg';
@@ -235,7 +235,90 @@ function SetupPicker({ visible, setups, items, value, onPick, onClose }) {
   );
 }
 
-function PlanDetail({ plan, planner, certifications, signedIn, onEdit, onBack, onOpenTool }) {
+// The trip's day-by-day timeline. `onAddToDay` adds a row under each day (the itinerary builder);
+// without it the days read as a plain overview.
+function ItineraryDays({ plan, onEditLeg, onAddToDay }) {
+  const timeline = planTimeline(plan);
+  return (
+    <>
+      {timeline.days.map((day) => (
+        <View key={day.date} style={styles.day}>
+          <Text style={styles.dayLabel}>DAY {day.index} · {formatDay(day.date, { weekday: true }).toUpperCase()}</Text>
+          {day.starts.map((leg) => <LegRow key={leg.id} leg={leg} onPress={() => onEditLeg(leg)} />)}
+          {day.ends.map((leg) => <LegRow key={`${leg.id}-end`} leg={leg} onPress={() => onEditLeg(leg)} variant="end" />)}
+          {day.continuing.map((leg) => <LegRow key={`${leg.id}-on`} leg={leg} onPress={() => onEditLeg(leg)} variant="continuing" />)}
+          {!day.starts.length && !day.ends.length && !day.continuing.length && !onAddToDay ? <Text style={styles.dayEmpty}>Nothing planned</Text> : null}
+          {onAddToDay ? (
+            <Pressable accessibilityLabel={`Add to day ${day.index}`} accessibilityRole="button" onPress={() => onAddToDay(day)} style={({ pressed }) => [styles.dayAdd, pressed && styles.rowPressed]}>
+              <Text style={styles.dayAddText}>+ Add to this day</Text>
+            </Pressable>
+          ) : null}
+        </View>
+      ))}
+      {timeline.undated.map((leg) => <LegRow key={leg.id} leg={leg} onPress={() => onEditLeg(leg)} />)}
+    </>
+  );
+}
+
+// A best guess at what's being added to a day: travel at either end of the trip, diving in between.
+function suggestedLegType(plan, day, lastDay) {
+  if (day.index === 1 && !day.starts.length) return 'flight';
+  if (day.date === lastDay && day.index > 1) return 'flight';
+  return 'diving';
+}
+
+function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onDone }) {
+  const timeline = planTimeline(plan);
+  const lastDay = timeline.days.at(-1)?.date || plan.startDate;
+  const legs = plan.segments.length;
+  return (
+    <View style={styles.screen}>
+      <ScreenHeader eyebrow={isNew ? 'NEW TRIP · ITINERARY' : 'ITINERARY'} onBack={onDone} title={isNew ? 'Build your itinerary' : 'Edit itinerary'} />
+      <ScrollView contentContainerStyle={styles.content}>
+        <Text style={styles.builderLead}>{[plan.destination.name, formatRange(plan.startDate, plan.endDate)].filter(Boolean).join(' · ')}</Text>
+        <Text style={styles.builderHelp}>Add flights, transfers, stays and dive days to the day they happen. Tap anything already here to change or remove it.</Text>
+        <View style={styles.card}>
+          <ItineraryDays onAddToDay={(day) => onAdd({ type: suggestedLegType(plan, day, lastDay), startDate: day.date })} onEditLeg={onEditLeg} plan={plan} />
+          <Pressable accessibilityRole="button" onPress={() => onAdd({ type: legs ? 'diving' : 'flight', startDate: lastDay })} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}>
+            <Text style={styles.sectionAction}>{plan.endDate ? '+ Add something else' : '+ Add to a later day'}</Text>
+          </Pressable>
+        </View>
+        {!plan.endDate ? <Text style={styles.hint}>No return date yet — days appear as you add legs. Set one with Edit on the trip page.</Text> : null}
+        <View style={styles.footerActions}>
+          {isNew && !legs ? <Pressable accessibilityRole="button" onPress={onDone} style={({ pressed }) => [styles.footerButton, pressed && styles.pressed]}><Text style={styles.footerText}>Skip for now</Text></Pressable> : null}
+          <Pressable accessibilityRole="button" onPress={onDone} style={({ pressed }) => [styles.footerButton, styles.footerPrimary, pressed && styles.pressed]}>
+            <Text style={[styles.footerText, styles.footerPrimaryText]}>{isNew && !legs ? 'Done' : `Done · ${legs} ${legs === 1 ? 'item' : 'items'}`}</Text>
+          </Pressable>
+        </View>
+        {isNew ? <Text style={styles.hint}>You can come back to this any time with Edit itinerary on the trip page.</Text> : null}
+      </ScrollView>
+    </View>
+  );
+}
+
+// The compact entry point on the plan page; the full checks live in the Readiness Center.
+function ReadinessCard({ plan, summary, setupProgressValue, onPress }) {
+  const tone = TONES[summary.tone];
+  const doneTasks = plan.tasks.filter((entry) => entry.done).length;
+  const meta = [
+    setupProgressValue ? `Packed ${setupProgressValue.total ? Math.round(setupProgressValue.ratio * 100) : 0}%` : 'No gear setup',
+    plan.tasks.length ? `${doneTasks}/${plan.tasks.length} to-dos` : '',
+  ].filter(Boolean).join(' · ');
+  return (
+    <Pressable accessibilityLabel={`Readiness Center, ${summary.label}`} accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.card, styles.readinessCard, { borderColor: `${tone}55` }, pressed && styles.pressed]}>
+      <View style={[styles.readinessBadge, { backgroundColor: `${tone}1F` }]}><View style={[styles.dot, styles.dotLarge, { backgroundColor: tone }]} /></View>
+      <View style={styles.flex}>
+        <Text style={styles.readinessEyebrow}>READINESS CENTER</Text>
+        <Text style={[styles.readinessLabel, { color: tone }]}>{summary.label}</Text>
+        <Text style={styles.planSub} numberOfLines={2}>{summary.tone === 'good' ? meta : summary.headline}</Text>
+        {summary.tone !== 'good' ? <Text style={styles.readinessMeta} numberOfLines={1}>{meta}</Text> : null}
+      </View>
+      <Text style={styles.chevron}>›</Text>
+    </Pressable>
+  );
+}
+
+function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, onPage, onEdit, onBack, onOpenTool }) {
   const [segment, setSegment] = useState(null);
   const [pickSetup, setPickSetup] = useState(false);
   const [task, setTask] = useState('');
@@ -245,7 +328,6 @@ function PlanDetail({ plan, planner, certifications, signedIn, onEdit, onBack, o
   const trip = plan.kind === 'trip';
   const setup = planner.gear.setups.find((entry) => entry.id === plan.setupId) || null;
   const progress = setup ? setupProgress(setup, planner.gear.items) : null;
-  const timeline = trip ? planTimeline(plan) : null;
   const liveDives = planner.dives.filter((row) => row && !row.deletedAt).length;
   // Dives the logbook has linked to this plan's site on its dates (computer + location → verified).
   const logged = planDives(plan, planner.dives);
@@ -262,12 +344,126 @@ function PlanDetail({ plan, planner, certifications, signedIn, onEdit, onBack, o
     const segments = plan.segments.some((leg) => leg.id === next.id) ? plan.segments.map((leg) => (leg.id === next.id ? next : leg)) : [...plan.segments, next];
     save({ segments }); setSegment(null);
   };
-  const addLeg = () => setSegment({ isNew: true, value: normalizeSegment({ type: plan.segments.length ? 'diving' : 'flight', startDate: plan.startDate }) });
+  const addLeg = (seed) => setSegment({ isNew: true, value: normalizeSegment(seed) });
+  const editLeg = (leg) => setSegment({ value: leg });
   const addTask = () => { const label = task.trim(); if (!label) return; save({ tasks: [...plan.tasks, { label }] }); setTask(''); };
   const remove = () => Alert.alert(`Delete “${planTitle(plan)}”?`, 'This removes the plan and its itinerary from this device.', [
     { text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: () => planner.deletePlan(plan.id).then(onBack) },
   ]);
   const call = (phone) => Linking.openURL(`tel:${phone.replace(/[^+\d]/g, '')}`).catch(() => {});
+
+  const sheets = (
+    <>
+      <SegmentEditor
+        onCancel={() => setSegment(null)}
+        onDelete={segment && !segment.isNew ? () => { save({ segments: plan.segments.filter((leg) => leg.id !== segment.value.id) }); setSegment(null); } : null}
+        onSave={saveSegment}
+        segment={segment?.value || null}
+        visible={Boolean(segment)}
+      />
+      <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save({ setupId }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
+    </>
+  );
+
+  if (page === 'itinerary' && trip) {
+    return (
+      <View style={styles.screen}>
+        <ItineraryBuilder isNew={isNewTrip} onAdd={addLeg} onDone={() => onPage('overview')} onEditLeg={editLeg} plan={plan} />
+        {sheets}
+      </View>
+    );
+  }
+
+  if (page === 'readiness') {
+    return (
+      <View style={styles.screen}>
+        <ScreenHeader eyebrow="READINESS CENTER" onBack={() => onPage('overview')} title={planTitle(plan)} />
+        <ScrollView contentContainerStyle={styles.content}>
+          <Section title="Checks">
+            <View style={styles.card}>
+              <View style={[styles.summary, alerts.length && styles.rowBorder]}>
+                <View style={[styles.dot, styles.dotLarge, { backgroundColor: TONES[summary.tone] }]} />
+                <Text style={[styles.summaryLabel, { color: TONES[summary.tone] }]}>{summary.label}</Text>
+                {!alerts.length ? <Text style={styles.summaryText}>{plan.status === 'cancelled' ? 'This plan is cancelled.' : phase.key === 'past' ? 'This plan is complete.' : 'Gear, cards and paperwork all check out.'}</Text> : null}
+              </View>
+              {alerts.map((alert, index) => <AlertRow key={alert.key} alert={alert} last={index === alerts.length - 1} onAction={act} />)}
+            </View>
+          </Section>
+
+          <Section action="Edit" onAction={onEdit} title="Requirements">
+            <View style={styles.card}>
+              {plan.requirements.certs.map((key) => {
+                const cards = certifications ? cardsFor(certifications, key) : null;
+                const ok = cards?.length > 0;
+                return (
+                  <View key={key} style={[styles.row, styles.rowBorder]}>
+                    <Text style={styles.rowLabel}>{certLabel(key)}</Text>
+                    <Text style={[styles.rowValue, { color: cards == null ? colors.faint : ok ? colors.good : colors.warning }]} numberOfLines={2}>
+                      {cards == null ? 'Sign in to check' : ok ? `✓ ${cards[0].agency ? `${cards[0].agency} ` : ''}${cards[0].certificationName}${cards[0].certificationNumber ? ` · ${cards[0].certificationNumber}` : ''}` : 'Not on your profile'}
+                    </Text>
+                  </View>
+                );
+              })}
+              {plan.requirements.minDives ? <Row label="Logged dives" value={`${plan.requirements.minDives} required · you have ${liveDives}`} /> : null}
+              {plan.requirements.recentMonths ? <Row label="Recent dive" value={`Within ${plan.requirements.recentMonths} months`} /> : null}
+              {[['insurance', 'Dive insurance'], ['medical', 'Medical statement'], ['waiver', 'Forms & waiver']].filter(([key]) => plan.requirements[key]).map(([key, label]) => {
+                const on = plan.confirmed[key];
+                return (
+                  <Pressable key={key} accessibilityRole="checkbox" accessibilityState={{ checked: on }} onPress={() => save({ confirmed: { ...plan.confirmed, [key]: !on } })} style={({ pressed }) => [styles.check, styles.rowBorder, pressed && styles.rowPressed]}>
+                    <View style={[styles.box, on && styles.boxOn]}>{on ? <Glyph color={colors.background} name="check" size={14} /> : null}</View>
+                    <View style={styles.flex}><Text style={[styles.checkLabel, on && styles.checkDone]}>{label}</Text><Text style={styles.checkMeta}>{on ? 'Done' : 'Tap when it’s sorted'}</Text></View>
+                  </Pressable>
+                );
+              })}
+              {!plan.requirements.certs.length && !plan.requirements.minDives && !plan.requirements.recentMonths && !['insurance', 'medical', 'waiver'].some((key) => plan.requirements[key])
+                ? <Pressable accessibilityRole="button" onPress={onEdit} style={styles.addRow}><Text style={styles.sectionAction}>+ Add the operator’s requirements</Text></Pressable> : null}
+            </View>
+          </Section>
+
+          <Section action={setup ? 'Change' : 'Choose'} onAction={() => setPickSetup(true)} title="Gear & packing">
+            <View style={styles.card}>
+              {setup ? (
+                <>
+                  <View style={[styles.packHead, styles.rowBorder]}>
+                    <View style={styles.flex}><Text style={styles.planTitle}>{setup.name}</Text><Text style={styles.planSub}>{progress.checked} of {progress.total} packed · shared with your Gear Locker</Text></View>
+                    <Text style={styles.packPercent}>{progress.total ? Math.round(progress.ratio * 100) : 0}%</Text>
+                  </View>
+                  <View style={styles.packBar}><ProgressBar color={progress.ratio === 1 ? colors.good : colors.cyan} value={progress.ratio} /></View>
+                  <PackingList items={planner.gear.items} onToggle={(keys, checked) => planner.setPacked(setup.id, keys, checked).catch(() => {})} setup={setup} />
+                  <Pressable accessibilityRole="button" onPress={() => onOpenTool('gear-checklist')} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}><Text style={styles.sectionAction}>Open in Gear Locker ›</Text></Pressable>
+                </>
+              ) : <Pressable accessibilityRole="button" onPress={() => setPickSetup(true)} style={styles.addRow}><Text style={styles.sectionAction}>+ Choose the gear setup you’re bringing</Text></Pressable>}
+            </View>
+          </Section>
+
+          {trip ? (
+            <Section title="Travel documents">
+              <View style={[styles.card, styles.cardPad]}>
+                <DateField helper="Many countries require six months’ validity beyond your return." label="Passport expires" onChange={(passportExpiry) => save({ travel: { ...plan.travel, passportExpiry } })} value={plan.travel.passportExpiry} />
+              </View>
+            </Section>
+          ) : null}
+
+          <Section title="To-dos">
+            <View style={styles.card}>
+              {plan.tasks.map((entry) => (
+                <Pressable key={entry.id} accessibilityRole="checkbox" accessibilityState={{ checked: entry.done }} onLongPress={() => save({ tasks: plan.tasks.filter((t) => t.id !== entry.id) })} onPress={() => save({ tasks: plan.tasks.map((t) => (t.id === entry.id ? { ...t, done: !t.done } : t)) })} style={({ pressed }) => [styles.check, styles.rowBorder, pressed && styles.rowPressed]}>
+                  <View style={[styles.box, entry.done && styles.boxOn]}>{entry.done ? <Glyph color={colors.background} name="check" size={14} /> : null}</View>
+                  <Text style={[styles.checkLabel, styles.flex, entry.done && styles.checkDone]}>{entry.label}</Text>
+                </Pressable>
+              ))}
+              <View style={styles.taskInputRow}>
+                <TextInput accessibilityLabel="Add a to-do" maxLength={200} onChangeText={setTask} onSubmitEditing={addTask} placeholder={trip ? 'Notify bank, buy reef-safe sunscreen…' : 'Fill tanks, check tide times…'} placeholderTextColor={colors.faint} returnKeyType="done" style={styles.taskInput} value={task} />
+                <Pressable accessibilityRole="button" disabled={!task.trim()} onPress={addTask} style={[styles.taskAdd, !task.trim() && styles.disabled]}><Text style={styles.taskAddText}>Add</Text></Pressable>
+              </View>
+            </View>
+            {plan.tasks.length ? <Text style={styles.hint}>Tap to tick off · long-press to remove</Text> : null}
+          </Section>
+        </ScrollView>
+        {sheets}
+      </View>
+    );
+  }
 
   return (
     <View style={styles.screen}>
@@ -296,31 +492,17 @@ function PlanDetail({ plan, planner, certifications, signedIn, onEdit, onBack, o
           </Section>
         ) : null}
 
-        <Section title="Readiness">
-          <View style={styles.card}>
-            <View style={[styles.summary, alerts.length && styles.rowBorder]}>
-              <View style={[styles.dot, styles.dotLarge, { backgroundColor: TONES[summary.tone] }]} />
-              <Text style={[styles.summaryLabel, { color: TONES[summary.tone] }]}>{summary.label}</Text>
-              {!alerts.length ? <Text style={styles.summaryText}>{plan.status === 'cancelled' ? 'This plan is cancelled.' : phase.key === 'past' ? 'This plan is complete.' : 'Gear, cards and paperwork all check out.'}</Text> : null}
-            </View>
-            {alerts.map((alert, index) => <AlertRow key={alert.key} alert={alert} last={index === alerts.length - 1} onAction={act} />)}
-          </View>
-        </Section>
+        <View style={styles.section}>
+          <ReadinessCard onPress={() => onPage('readiness')} plan={plan} setupProgressValue={progress} summary={summary} />
+        </View>
 
         {trip ? (
-          <Section action="+ Add" onAction={addLeg} title="Itinerary">
+          <Section title="Itinerary">
             <View style={styles.card}>
-              {timeline.days.length ? timeline.days.map((day) => (
-                <View key={day.date} style={styles.day}>
-                  <Text style={styles.dayLabel}>DAY {day.index} · {formatDay(day.date, { weekday: true }).toUpperCase()}</Text>
-                  {day.starts.map((leg) => <LegRow key={leg.id} leg={leg} onPress={() => setSegment({ value: leg })} />)}
-                  {day.ends.map((leg) => <LegRow key={`${leg.id}-end`} leg={leg} onPress={() => setSegment({ value: leg })} variant="end" />)}
-                  {day.continuing.map((leg) => <LegRow key={`${leg.id}-on`} leg={leg} onPress={() => setSegment({ value: leg })} variant="continuing" />)}
-                  {!day.starts.length && !day.ends.length && !day.continuing.length ? <Text style={styles.dayEmpty}>Nothing planned</Text> : null}
-                </View>
-              )) : <Text style={styles.empty}>Add your flights, transfers, stays and dive days to build the trip day by day.</Text>}
-              {timeline.undated.map((leg) => <LegRow key={leg.id} leg={leg} onPress={() => setSegment({ value: leg })} />)}
-              <Pressable accessibilityRole="button" onPress={addLeg} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}><Text style={styles.sectionAction}>+ Flight, transfer, stay or dive day</Text></Pressable>
+              {plan.segments.length ? <ItineraryDays onEditLeg={editLeg} plan={plan} /> : <Text style={styles.empty}>Add your flights, transfers, stays and dive days to build the trip day by day.</Text>}
+              <Pressable accessibilityRole="button" onPress={() => onPage('itinerary')} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}>
+                <Text style={styles.sectionAction}>{plan.segments.length ? 'Edit itinerary ›' : '+ Build your itinerary'}</Text>
+              </Pressable>
             </View>
           </Section>
         ) : null}
@@ -342,76 +524,6 @@ function PlanDetail({ plan, planner, certifications, signedIn, onEdit, onBack, o
           </View>
         </Section>
 
-        <Section action="Edit" onAction={onEdit} title="Requirements">
-          <View style={styles.card}>
-            {plan.requirements.certs.map((key) => {
-              const cards = certifications ? cardsFor(certifications, key) : null;
-              const ok = cards?.length > 0;
-              return (
-                <View key={key} style={[styles.row, styles.rowBorder]}>
-                  <Text style={styles.rowLabel}>{certLabel(key)}</Text>
-                  <Text style={[styles.rowValue, { color: cards == null ? colors.faint : ok ? colors.good : colors.warning }]} numberOfLines={2}>
-                    {cards == null ? 'Sign in to check' : ok ? `✓ ${cards[0].agency ? `${cards[0].agency} ` : ''}${cards[0].certificationName}${cards[0].certificationNumber ? ` · ${cards[0].certificationNumber}` : ''}` : 'Not on your profile'}
-                  </Text>
-                </View>
-              );
-            })}
-            {plan.requirements.minDives ? <Row label="Logged dives" value={`${plan.requirements.minDives} required · you have ${liveDives}`} /> : null}
-            {plan.requirements.recentMonths ? <Row label="Recent dive" value={`Within ${plan.requirements.recentMonths} months`} /> : null}
-            {[['insurance', 'Dive insurance'], ['medical', 'Medical statement'], ['waiver', 'Forms & waiver']].filter(([key]) => plan.requirements[key]).map(([key, label]) => {
-              const on = plan.confirmed[key];
-              return (
-                <Pressable key={key} accessibilityRole="checkbox" accessibilityState={{ checked: on }} onPress={() => save({ confirmed: { ...plan.confirmed, [key]: !on } })} style={({ pressed }) => [styles.check, styles.rowBorder, pressed && styles.rowPressed]}>
-                  <View style={[styles.box, on && styles.boxOn]}>{on ? <Glyph color={colors.background} name="check" size={14} /> : null}</View>
-                  <View style={styles.flex}><Text style={[styles.checkLabel, on && styles.checkDone]}>{label}</Text><Text style={styles.checkMeta}>{on ? 'Done' : 'Tap when it’s sorted'}</Text></View>
-                </Pressable>
-              );
-            })}
-            {!plan.requirements.certs.length && !plan.requirements.minDives && !plan.requirements.recentMonths && !['insurance', 'medical', 'waiver'].some((key) => plan.requirements[key])
-              ? <Pressable accessibilityRole="button" onPress={onEdit} style={styles.addRow}><Text style={styles.sectionAction}>+ Add the operator’s requirements</Text></Pressable> : null}
-          </View>
-        </Section>
-
-        <Section action={setup ? 'Change' : 'Choose'} onAction={() => setPickSetup(true)} title="Gear & packing">
-          <View style={styles.card}>
-            {setup ? (
-              <>
-                <View style={[styles.packHead, styles.rowBorder]}>
-                  <View style={styles.flex}><Text style={styles.planTitle}>{setup.name}</Text><Text style={styles.planSub}>{progress.checked} of {progress.total} packed · shared with your Gear Locker</Text></View>
-                  <Text style={styles.packPercent}>{progress.total ? Math.round(progress.ratio * 100) : 0}%</Text>
-                </View>
-                <View style={styles.packBar}><ProgressBar color={progress.ratio === 1 ? colors.good : colors.cyan} value={progress.ratio} /></View>
-                <PackingList items={planner.gear.items} onToggle={(keys, checked) => planner.setPacked(setup.id, keys, checked).catch(() => {})} setup={setup} />
-                <Pressable accessibilityRole="button" onPress={() => onOpenTool('gear-checklist')} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}><Text style={styles.sectionAction}>Open in Gear Locker ›</Text></Pressable>
-              </>
-            ) : <Pressable accessibilityRole="button" onPress={() => setPickSetup(true)} style={styles.addRow}><Text style={styles.sectionAction}>+ Choose the gear setup you’re bringing</Text></Pressable>}
-          </View>
-        </Section>
-
-        {trip ? (
-          <Section title="Travel documents">
-            <View style={[styles.card, styles.cardPad]}>
-              <DateField helper="Many countries require six months’ validity beyond your return." label="Passport expires" onChange={(passportExpiry) => save({ travel: { ...plan.travel, passportExpiry } })} value={plan.travel.passportExpiry} />
-            </View>
-          </Section>
-        ) : null}
-
-        <Section title="To-dos">
-          <View style={styles.card}>
-            {plan.tasks.map((entry) => (
-              <Pressable key={entry.id} accessibilityRole="checkbox" accessibilityState={{ checked: entry.done }} onLongPress={() => save({ tasks: plan.tasks.filter((t) => t.id !== entry.id) })} onPress={() => save({ tasks: plan.tasks.map((t) => (t.id === entry.id ? { ...t, done: !t.done } : t)) })} style={({ pressed }) => [styles.check, styles.rowBorder, pressed && styles.rowPressed]}>
-                <View style={[styles.box, entry.done && styles.boxOn]}>{entry.done ? <Glyph color={colors.background} name="check" size={14} /> : null}</View>
-                <Text style={[styles.checkLabel, styles.flex, entry.done && styles.checkDone]}>{entry.label}</Text>
-              </Pressable>
-            ))}
-            <View style={styles.taskInputRow}>
-              <TextInput accessibilityLabel="Add a to-do" maxLength={200} onChangeText={setTask} onSubmitEditing={addTask} placeholder={trip ? 'Notify bank, buy reef-safe sunscreen…' : 'Fill tanks, check tide times…'} placeholderTextColor={colors.faint} returnKeyType="done" style={styles.taskInput} value={task} />
-              <Pressable accessibilityRole="button" disabled={!task.trim()} onPress={addTask} style={[styles.taskAdd, !task.trim() && styles.disabled]}><Text style={styles.taskAddText}>Add</Text></Pressable>
-            </View>
-          </View>
-          {plan.tasks.length ? <Text style={styles.hint}>Tap to tick off · long-press to remove</Text> : null}
-        </Section>
-
         {plan.notes ? <Section title="Notes"><View style={[styles.card, styles.cardPad]}><Text style={styles.notes}>{plan.notes}</Text></View></Section> : null}
 
         <View style={styles.footerActions}>
@@ -421,14 +533,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, onEdit, onBack, o
         </View>
       </ScrollView>
 
-      <SegmentEditor
-        onCancel={() => setSegment(null)}
-        onDelete={segment && !segment.isNew ? () => { save({ segments: plan.segments.filter((leg) => leg.id !== segment.value.id) }); setSegment(null); } : null}
-        onSave={saveSegment}
-        segment={segment?.value || null}
-        visible={Boolean(segment)}
-      />
-      <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save({ setupId }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
+      {sheets}
     </View>
   );
 }
@@ -444,7 +549,22 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
   const [showPast, setShowPast] = useState(false);
   const [choosing, setChoosing] = useState(false);
   const [editor, setEditor] = useState(null);
-  useEffect(() => { if (focusPlanId) setOpenId(focusPlanId); }, [focusPlanId]);
+  // Which page of the open plan is showing: the plan itself, its Readiness Center, or the itinerary builder.
+  const [page, setPage] = useState('overview');
+  const [newTripId, setNewTripId] = useState(null);
+  const openPlan = (id) => { setOpenId(id); setPage('overview'); setNewTripId(null); };
+  useEffect(() => { if (focusPlanId) openPlan(focusPlanId); }, [focusPlanId]);
+  const showPage = (next) => { setPage(next); if (next === 'overview') setNewTripId(null); };
+
+  // Android back steps out of a plan's sub-page, then out of the plan, before leaving the planner.
+  useEffect(() => {
+    if (!openId) return undefined;
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (page !== 'overview') showPage('overview'); else openPlan(null);
+      return true;
+    });
+    return () => subscription.remove();
+  }, [openId, page]);
 
   const { upcoming, past } = useMemo(() => sortPlans(planner.plans), [planner.plans]);
   const visible = (list) => list.filter((plan) => filter === 'all' || plan.kind === filter);
@@ -455,7 +575,11 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
   const saveEditor = async (draft) => {
     const saved = await planner.savePlan(normalizePlan(draft)).catch((error) => { Alert.alert('Not saved', error?.message || 'Try again.'); return null; });
     if (!saved) return;
-    if (editor?.isNew) setOpenId(saved.id);
+    if (editor?.isNew) {
+      openPlan(saved.id);
+      // A new trip goes straight on to its itinerary; the builder offers Skip for now.
+      if (saved.kind === 'trip') { setNewTripId(saved.id); setPage('itinerary'); }
+    }
     setEditor(null);
   };
 
@@ -464,7 +588,7 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
   if (open) {
     return (
       <>
-        <PlanDetail certifications={certifications} onBack={() => setOpenId(null)} onEdit={() => setEditor({ plan: open })} onOpenTool={onOpenTool} plan={open} planner={planner} signedIn={signedIn} />
+        <PlanDetail certifications={certifications} isNewTrip={newTripId === open.id} onBack={() => openPlan(null)} onEdit={() => setEditor({ plan: open })} onOpenTool={onOpenTool} onPage={showPage} page={page} plan={open} planner={planner} signedIn={signedIn} />
         {editorSheet}
       </>
     );
@@ -487,7 +611,7 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
         {!planner.loaded ? <Text style={styles.empty}>Loading your plans…</Text> : null}
         {planner.error ? <Text style={[styles.empty, { color: colors.danger }]}>{planner.error}</Text> : null}
 
-        {next ? <NextUp alerts={planner.alertsFor(next)} onPress={() => setOpenId(next.id)} plan={next} /> : null}
+        {next ? <NextUp alerts={planner.alertsFor(next)} onPress={() => openPlan(next.id)} plan={next} /> : null}
 
         {planner.loaded && !next ? (
           <View style={styles.emptyCard}>
@@ -502,13 +626,13 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
 
         {list.length ? (
           <Section title="Coming up">
-            <View style={styles.card}>{list.map((plan, index) => <PlanRow key={plan.id} alerts={planner.alertsFor(plan)} last={index === list.length - 1} onPress={() => setOpenId(plan.id)} plan={plan} />)}</View>
+            <View style={styles.card}>{list.map((plan, index) => <PlanRow key={plan.id} alerts={planner.alertsFor(plan)} last={index === list.length - 1} onPress={() => openPlan(plan.id)} plan={plan} />)}</View>
           </Section>
         ) : null}
 
         {pastList.length ? (
           <Section action={showPast ? 'Hide' : `Show ${pastList.length}`} onAction={() => setShowPast((value) => !value)} title="Past & cancelled">
-            {showPast ? <View style={styles.card}>{pastList.map((plan, index) => <PlanRow key={plan.id} alerts={[]} last={index === pastList.length - 1} logged={planDives(plan, planner.dives).length} onPress={() => setOpenId(plan.id)} plan={plan} />)}</View> : null}
+            {showPast ? <View style={styles.card}>{pastList.map((plan, index) => <PlanRow key={plan.id} alerts={[]} last={index === pastList.length - 1} logged={planDives(plan, planner.dives).length} onPress={() => openPlan(plan.id)} plan={plan} />)}</View> : null}
           </Section>
         ) : null}
       </ScrollView>
@@ -580,6 +704,15 @@ const styles = StyleSheet.create({
   day: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, paddingBottom: 6, paddingTop: 12 },
   dayLabel: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.3, marginBottom: 4, paddingHorizontal: 14 },
   dayEmpty: { color: colors.faint, fontSize: 13, paddingHorizontal: 14, paddingVertical: 8 },
+  dayAdd: { justifyContent: 'center', marginHorizontal: 14, marginTop: 4, minHeight: 40, paddingLeft: 72 },
+  dayAddText: { color: colors.cyan, fontSize: 13, fontWeight: '700' },
+  builderLead: { color: colors.text, fontSize: 16, fontWeight: '800', marginBottom: 4, paddingHorizontal: 2 },
+  builderHelp: { color: colors.muted, fontSize: 13, lineHeight: 19, marginBottom: spacing.md, paddingHorizontal: 2 },
+  readinessCard: { alignItems: 'center', flexDirection: 'row', gap: 13, padding: 14 },
+  readinessBadge: { alignItems: 'center', borderRadius: 14, height: 44, justifyContent: 'center', width: 44 },
+  readinessEyebrow: { color: colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1.4 },
+  readinessLabel: { fontSize: 17, fontWeight: '900', marginTop: 3 },
+  readinessMeta: { color: colors.faint, fontSize: 12, fontWeight: '700', marginTop: 5 },
   leg: { alignItems: 'flex-start', flexDirection: 'row', gap: 10, paddingHorizontal: 14, paddingVertical: 9 },
   legQuiet: { paddingVertical: 6 },
   legTime: { paddingTop: 7, width: 62 },
@@ -622,6 +755,8 @@ const styles = StyleSheet.create({
   footerActions: { flexDirection: 'row', gap: 10, marginTop: spacing.sm },
   footerButton: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, flex: 1, justifyContent: 'center', minHeight: 48 },
   footerDanger: { borderColor: 'rgba(255,127,127,0.4)' },
+  footerPrimary: { backgroundColor: 'rgba(112,221,246,0.14)', borderColor: colors.cyan },
+  footerPrimaryText: { color: colors.cyan },
   footerText: { color: colors.muted, fontSize: 14, fontWeight: '800' },
   backdrop: { backgroundColor: 'rgba(2, 8, 16, 0.6)', flex: 1, justifyContent: 'flex-end' },
   pickerSheet: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderTopLeftRadius: radii.lg, borderTopRightRadius: radii.lg, borderWidth: 1, gap: 10, maxHeight: '80%', padding: spacing.md },
