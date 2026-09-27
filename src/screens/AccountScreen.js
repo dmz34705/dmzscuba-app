@@ -40,6 +40,9 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
           <NavigationRow disabled={restoring} title="Create an account" body="Save your diver profile and certifications" onPress={onCreateAccount} last />
         </>}
       </GroupedSection>
+      <GroupedSection title="Documents">
+        <NavigationRow title="Insurance" body="Dive accident, travel and liability policies · Kept on this phone" onPress={() => onOpenScreen('account-insurance')} last />
+      </GroupedSection>
       {signedIn ? <GroupedSection title="Logbook & gear sync">
         <NavigationRow title={sync.state === 'syncing' ? 'Syncing…' : 'Sync now'} body={sync.message} disabled={sync.state === 'syncing'} onPress={syncAccountData} />
         {sync.conflicts ? <NavigationRow title="Review changed records" body={`${sync.conflicts} records need your choice`} onPress={reviewConflict} /> : null}

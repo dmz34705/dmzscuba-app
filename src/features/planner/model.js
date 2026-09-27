@@ -3,6 +3,7 @@
 // diver's Gear Locker, certification cards and logbook so problems surface while there is still
 // time to fix them. Everything here is pure and date-only safe (no timezone day shifts).
 import { packedItems, serviceEntriesForItem, serviceDueForItem, setupProgress } from '../gearChecklist/model';
+import { insuranceTypeLabel, policiesForPlan } from '../insurance/model';
 
 export const PLAN_KINDS = Object.freeze(['day', 'trip']);
 export const PLAN_STATUSES = Object.freeze(['idea', 'planned', 'booked', 'cancelled']);
@@ -204,6 +205,8 @@ export function normalizePlan(value = {}, now = new Date()) {
     setupId: clean(value.setupId, 80),
     // This plan's own packing ticks (Gear Locker checklist keys) — two trips on one setup pack separately.
     packedIds: [...new Set((Array.isArray(value.packedIds) ? value.packedIds : []).map((key) => clean(key, 200)).filter(Boolean))].slice(0, 1000),
+    // Insurance policies attached to this plan beyond the dive cover found automatically (travel, liability…).
+    insuranceIds: [...new Set((Array.isArray(value.insuranceIds) ? value.insuranceIds : []).map((policyId) => clean(policyId, 80)).filter(Boolean))].slice(0, 20),
     // Gear Locker items brought on this plan only, on top of its setup (extra tanks, test kit…).
     extraItemIds: [...new Set((Array.isArray(value.extraItemIds) ? value.extraItemIds : []).map((itemId) => clean(itemId, 80)).filter(Boolean))].slice(0, 200),
     requirements: {
@@ -424,8 +427,21 @@ export function planAlerts(plan, context = {}) {
 
   // Paperwork the operator asked for, until the diver confirms it.
   const papers = [['insurance', 'Dive accident insurance', 'Have your policy number and emergency line with you.'], ['medical', 'Medical statement', 'Some answers need a physician’s sign-off — allow time for an appointment.'], ['waiver', 'Operator forms and waiver', 'Many operators take these online before you arrive.']];
+  // Insurance on file: an active dive policy covering every day of the plan sorts the insurance
+  // requirement by itself; one that lapses part-way is flagged, as is an attached policy (travel,
+  // liability) that ends before the plan does.
+  const insurance = policiesForPlan(plan, context.insurance || []);
+  for (const policy of insurance.gaps) {
+    const late = policy.startDate && policy.startDate > plan.startDate;
+    add('warning', `ins-gap-${policy.id}`, `${policy.provider || 'Your dive insurance'} ${late ? `starts ${formatDay(policy.startDate)}, after you leave` : `ends ${formatDay(policy.endDate)}, before you’re home`}`,
+      'Renew or extend it so you’re covered for every dive on this plan.', 'insurance');
+  }
+  for (const policy of insurance.attached) {
+    if (!policy.autoRenews && policy.endDate && end && policy.endDate < end) add('warning', `ins-end-${policy.id}`, `${insuranceTypeLabel(policy.type)} cover ends ${formatDay(policy.endDate)}`, `${policy.provider || 'This policy'} ends before this plan does.`, 'insurance');
+  }
   for (const [key, label, detail] of papers) {
-    if (plan.requirements[key] && !plan.confirmed[key]) add(daysOut != null && daysOut <= 14 ? 'warning' : 'info', `paper-${key}`, `${label} not confirmed`, detail, 'requirements');
+    if (key === 'insurance' && insurance.covering) continue;
+    if (plan.requirements[key] && !plan.confirmed[key]) add(daysOut != null && daysOut <= 14 ? 'warning' : 'info', `paper-${key}`, `${label} not confirmed`, key === 'insurance' ? `${detail} Add your policy under Insurance and it’s sorted automatically.` : detail, key === 'insurance' ? 'insurance' : 'requirements');
   }
 
   if (plan.kind === 'trip') {

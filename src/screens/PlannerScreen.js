@@ -7,7 +7,11 @@ import { ScreenHeader } from '../components/AppShell';
 import DateField from '../components/DateField';
 import { ProgressBar } from '../components/Ui';
 import { GEAR_CATEGORIES, checklistEntriesForItem, includedWithSelection, setupProgress, sortGear } from '../features/gearChecklist/model';
+import PolicyEditor from '../features/insurance/PolicyEditor';
+import { insuranceTypeLabel, policiesForPlan, policyTitle } from '../features/insurance/model';
+import useInsurance from '../features/insurance/useInsurance';
 import FlightBookingEditor from '../features/planner/FlightBookingEditor';
+import { PolicyCard } from './InsuranceScreen';
 import Glyph from '../features/planner/Glyph';
 import ImportReviewSheet from '../features/planner/bookingImport/ImportReviewSheet';
 import ImportSheet from '../features/planner/bookingImport/ImportSheet';
@@ -19,7 +23,7 @@ import { planDives } from '../features/siteDives/siteMatch';
 import {
   MIN_CONNECTION_MINUTES, SEGMENT_TYPES, STATUS_LABELS, airportKey, bookingFlights, cardsFor, certLabel, createBookingId, emptyPlan, flightConnections,
   formatDay, formatDuration, formatRange, formatTime, normalizePlan, normalizeSegment, parseDay, planPhase, planTimeline, planTitle, readinessSummary,
-  replaceFlights, sortPlans, withPlanPacking,
+  replaceFlights, sortPlans, todayString, withPlanPacking,
 } from '../features/planner/model';
 import { colors, radii, spacing } from '../theme';
 
@@ -133,7 +137,7 @@ function KindPicker({ visible, onPick, onClose }) {
 }
 
 // --- plan detail --------------------------------------------------------------
-const ACTION_LABELS = { gear: 'Open Gear Locker', setup: 'Choose setup', account: 'Open profile', logbook: 'Open logbook', requirements: 'Edit requirements' };
+const ACTION_LABELS = { gear: 'Open Gear Locker', setup: 'Choose setup', account: 'Open profile', logbook: 'Open logbook', requirements: 'Edit requirements', insurance: 'Sort out insurance' };
 
 function AlertRow({ alert, onAction, last }) {
   const tone = TONES[alert.tone];
@@ -392,6 +396,29 @@ function ExtraGearPicker({ visible, setup, items, value, onSave, onClose }) {
   );
 }
 
+// Policies on file to attach to this plan (travel, liability…); dive cover is found automatically.
+function PolicyPicker({ visible, policies, onPick, onAddNew, onClose }) {
+  const insets = useSafeAreaInsets();
+  return (
+    <Modal animationType="fade" onRequestClose={onClose} transparent visible={visible}>
+      <Pressable onPress={onClose} style={styles.backdrop}>
+        <Pressable onPress={(e) => e.stopPropagation()} style={[styles.pickerSheet, { paddingBottom: insets.bottom + spacing.md }]}>
+          <Text style={styles.pickerTitle}>Attach a policy</Text>
+          <ScrollView style={styles.pickerList}>
+            {policies.map((policy) => (
+              <Pressable key={policy.id} accessibilityRole="button" onPress={() => onPick(policy.id)} style={({ pressed }) => [styles.setupOption, pressed && styles.pressed]}>
+                <View style={styles.flex}><Text style={styles.kindTitle}>{policyTitle(policy)}</Text><Text style={styles.kindBody}>{[policy.policyNumber ? `Policy ${policy.policyNumber}` : '', policy.endDate ? `to ${formatDay(policy.endDate, { year: true })}` : ''].filter(Boolean).join(' · ') || insuranceTypeLabel(policy.type)}</Text></View>
+              </Pressable>
+            ))}
+            {!policies.length ? <Text style={styles.empty}>Every policy you have on file is already on this plan.</Text> : null}
+          </ScrollView>
+          <Pressable accessibilityRole="button" onPress={onAddNew} style={styles.setupNone}><Text style={styles.sectionAction}>+ Add a new policy</Text></Pressable>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
 function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, onPage, onEdit, onBack, onOpenTool }) {
   const [segment, setSegment] = useState(null);
   // The flight booking being edited: { flights, previousIds, source?, issues? }.
@@ -401,12 +428,18 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
   const [imported, setImported] = useState(null);
   const [pickSetup, setPickSetup] = useState(false);
   const [pickExtras, setPickExtras] = useState(false);
+  // Insurance: the policy being added or edited ({ policy, attach }) and the attach picker.
+  const insuranceStore = useInsurance();
+  const [policyEditor, setPolicyEditor] = useState(null);
+  const [pickPolicy, setPickPolicy] = useState(false);
   const [task, setTask] = useState('');
   const alerts = planner.alertsFor(plan);
   const summary = readinessSummary(alerts);
   const phase = planPhase(plan);
   const trip = plan.kind === 'trip';
   const setup = planner.gear.setups.find((entry) => entry.id === plan.setupId) || null;
+  const coverage = policiesForPlan(plan, planner.insurance);
+  const attachable = planner.insurance.filter((policy) => !coverage.auto.includes(policy) && !coverage.attached.includes(policy));
   // This plan's own ticks on the setup's gear list.
   const packing = setup ? withPlanPacking(setup, plan) : null;
   const progress = packing ? setupProgress(packing, planner.gear.items) : null;
@@ -421,6 +454,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
     else if (action === 'account') onOpenTool(signedIn ? 'account-profile' : 'account-login');
     else if (action === 'logbook') onOpenTool('dive-log');
     else if (action === 'requirements') onEdit();
+    else if (action === 'insurance') setPolicyEditor({ policy: coverage.gaps[0] || null, attach: false });
   };
   const saveSegment = (next) => {
     const segments = plan.segments.some((leg) => leg.id === next.id) ? plan.segments.map((leg) => (leg.id === next.id ? next : leg)) : [...plan.segments, next];
@@ -479,6 +513,20 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
       />
       <ImportSheet onCancel={() => setImporting(false)} onResult={reviewImport} signedIn={signedIn} visible={importing} />
       <ImportReviewSheet issues={imported?.issues || []} onCancel={() => setImported(null)} onSave={addImported} plan={plan} review={imported?.review || null} source={imported?.source || ''} visible={Boolean(imported)} />
+      <PolicyPicker onAddNew={() => { setPickPolicy(false); setTimeout(() => setPolicyEditor({ policy: null, attach: true }), 450); }} onClose={() => setPickPolicy(false)} onPick={(policyId) => { save({ insuranceIds: [...plan.insuranceIds, policyId] }); setPickPolicy(false); }} policies={attachable} visible={pickPolicy} />
+      <PolicyEditor
+        onCancel={() => setPolicyEditor(null)}
+        onDelete={policyEditor?.policy?.id ? async () => { await insuranceStore.deletePolicy(policyEditor.policy.id); setPolicyEditor(null); planner.refresh(); } : null}
+        onSave={async (draft) => {
+          const saved = await insuranceStore.savePolicy(draft);
+          // A policy added from a trip goes on it (dive cover is picked up automatically anyway).
+          if (policyEditor?.attach && saved.type !== 'dive' && !plan.insuranceIds.includes(saved.id)) await save({ insuranceIds: [...plan.insuranceIds, saved.id] });
+          setPolicyEditor(null);
+          planner.refresh();
+        }}
+        policy={policyEditor?.policy || null}
+        visible={Boolean(policyEditor)}
+      />
       <ExtraGearPicker items={planner.gear.items} onClose={() => setPickExtras(false)} onSave={(extraItemIds) => { save({ extraItemIds }); setPickExtras(false); }} setup={setup} value={plan.extraItemIds} visible={pickExtras} />
       <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save(setupId === plan.setupId ? { setupId } : { setupId, packedIds: [] }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
     </>
@@ -527,6 +575,14 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
               {plan.requirements.recentMonths ? <Row label="Recent dive" value={`Within ${plan.requirements.recentMonths} months`} /> : null}
               {[['insurance', 'Dive insurance'], ['medical', 'Medical statement'], ['waiver', 'Forms & waiver']].filter(([key]) => plan.requirements[key]).map(([key, label]) => {
                 const on = plan.confirmed[key];
+                if (key === 'insurance' && coverage.covering) {
+                  return (
+                    <View key={key} style={[styles.check, styles.rowBorder]}>
+                      <View style={[styles.box, styles.boxOn]}><Glyph color={colors.background} name="check" size={14} /></View>
+                      <View style={styles.flex}><Text style={styles.checkLabel}>{label}</Text><Text style={[styles.checkMeta, { color: colors.good }]}>Covered by {coverage.covering.provider || 'your policy'}{coverage.covering.policyNumber ? ` · ${coverage.covering.policyNumber}` : ''}</Text></View>
+                    </View>
+                  );
+                }
                 return (
                   <Pressable key={key} accessibilityRole="checkbox" accessibilityState={{ checked: on }} onPress={() => save({ confirmed: { ...plan.confirmed, [key]: !on } })} style={({ pressed }) => [styles.check, styles.rowBorder, pressed && styles.rowPressed]}>
                     <View style={[styles.box, on && styles.boxOn]}>{on ? <Glyph color={colors.background} name="check" size={14} /> : null}</View>
@@ -537,6 +593,25 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
               {!plan.requirements.certs.length && !plan.requirements.minDives && !plan.requirements.recentMonths && !['insurance', 'medical', 'waiver'].some((key) => plan.requirements[key])
                 ? <Pressable accessibilityRole="button" onPress={onEdit} style={styles.addRow}><Text style={styles.sectionAction}>+ Add the operator’s requirements</Text></Pressable> : null}
             </View>
+          </Section>
+
+          <Section action="+ Attach" onAction={() => setPickPolicy(true)} title="Insurance">
+            {[...coverage.auto, ...coverage.attached].map((policy) => (
+              <View key={policy.id}>
+                <PolicyCard compact onPress={() => setPolicyEditor({ policy, attach: false })} policy={policy} today={todayString()} />
+                {coverage.attached.includes(policy) ? (
+                  <Pressable accessibilityRole="button" hitSlop={8} onPress={() => save({ insuranceIds: plan.insuranceIds.filter((id) => id !== policy.id) })} style={styles.detach}><Text style={styles.detachText}>Remove from this {trip ? 'trip' : 'dive'}</Text></Pressable>
+                ) : null}
+              </View>
+            ))}
+            {!coverage.auto.length && !coverage.attached.length ? (
+              <View style={styles.card}>
+                <Pressable accessibilityRole="button" onPress={() => (planner.insurance.length ? setPickPolicy(true) : setPolicyEditor({ policy: { type: 'dive' }, attach: false }))} style={styles.addRow}>
+                  <Text style={styles.sectionAction}>{planner.insurance.length ? '+ Attach a policy' : '+ Add your dive insurance'}</Text>
+                </Pressable>
+              </View>
+            ) : null}
+            {coverage.auto.length ? <Text style={styles.hint}>Dive accident cover in force on these dates is added automatically.</Text> : null}
           </Section>
 
           <Section action={setup ? 'Change' : 'Choose'} onAction={() => setPickSetup(true)} title="Gear & packing">
@@ -900,6 +975,8 @@ const styles = StyleSheet.create({
   setupOption: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', gap: 12, marginBottom: 8, padding: 14 },
   setupOptionOn: { borderColor: colors.cyan },
   extraSheet: { maxHeight: '88%' },
+  detach: { alignSelf: 'flex-end', marginBottom: 10, marginTop: -4, paddingHorizontal: 4 },
+  detachText: { color: colors.danger, fontSize: 12, fontWeight: '700' },
   extraGroup: { color: colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1.2, paddingHorizontal: 14, paddingTop: 12 },
   extraList: { flexShrink: 1 }, // a long locker scrolls; the Bring button stays on screen
   extraSave: { flex: 0, marginTop: 4 },

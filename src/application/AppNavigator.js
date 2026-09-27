@@ -24,6 +24,7 @@ import GearChecklistScreen from '../screens/GearChecklistScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LearnScreen from '../screens/LearnScreen';
 import LoginScreen from '../screens/LoginScreen';
+import InsuranceScreen from '../screens/InsuranceScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MoreScreen from '../screens/MoreScreen';
@@ -146,6 +147,9 @@ export default function AppNavigator() {
         onVerify={verifySignup}
       />
     );
+  }
+  if (detailRoute === ACCOUNT_ROUTES.insurance) {
+    return <InsuranceScreen onBack={closeDetail} />;
   }
   if (detailRoute === ACCOUNT_ROUTES.profile) {
     return (

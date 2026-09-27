@@ -8,6 +8,7 @@ import FeatureIcon from '../features/catalog/FeatureIcon';
 import { getFeature, getFeaturesByArea } from '../features/catalog/featureCatalog';
 import { gearSummary, serviceEntriesForItem, serviceStatusForItem } from '../features/gearChecklist/model';
 import { loadGearState } from '../features/gearChecklist/storage';
+import { loadInsuranceState } from '../features/insurance/storage';
 import { inSeasonNow } from '../features/oceanAtlas/seasons';
 import { formatDay, formatRange, formatTime, planAlerts, planPhase, planTitle, readinessSummary, sortPlans } from '../features/planner/model';
 import { loadPlannerState } from '../features/planner/usePlanner';
@@ -73,11 +74,11 @@ function daysAgo(iso) {
 
 // Loaded every time Home is shown, so returning from the logbook or gear locker updates it.
 function useHomeData() {
-  const [data, setData] = useState({ loaded: false, stats: null, lastDive: null, gear: null, plans: [], gearState: null, rows: [] });
+  const [data, setData] = useState({ loaded: false, stats: null, lastDive: null, gear: null, plans: [], gearState: null, rows: [], insurance: [] });
   useEffect(() => {
     let alive = true;
     (async () => {
-      const [rows, gearState, planner] = await Promise.all([loadIndex().catch(() => []), loadGearState().catch(() => null), loadPlannerState().catch(() => ({ plans: [] }))]);
+      const [rows, gearState, planner, insuranceState] = await Promise.all([loadIndex().catch(() => []), loadGearState().catch(() => null), loadPlannerState().catch(() => ({ plans: [] })), loadInsuranceState().catch(() => ({ policies: [] }))]);
       const live = (Array.isArray(rows) ? rows : []).filter((row) => row && !row.deletedAt);
       const lastDive = live.reduce((latest, row) => (!latest || Date.parse(row.startTime) > Date.parse(latest.startTime) ? row : latest), null);
       let gear = null;
@@ -88,7 +89,7 @@ function useHomeData() {
           .sort((a, b) => ['blocked', 'overdue', 'attention', 'due-soon'].indexOf(a.status.key) - ['blocked', 'overdue', 'attention', 'due-soon'].indexOf(b.status.key));
         gear = { ...summary, first: urgent[0] || null };
       }
-      if (alive) setData({ loaded: true, stats: computeDiveLogStats(live), lastDive, gear, plans: planner.plans, gearState, rows: live });
+      if (alive) setData({ loaded: true, stats: computeDiveLogStats(live), lastDive, gear, plans: planner.plans, gearState, rows: live, insurance: insuranceState.policies });
     })();
     return () => { alive = false; };
   }, []);
@@ -249,9 +250,9 @@ function LessonCard({ feature, onPress }) {
 // --- screen -----------------------------------------------------------------
 export default function HomeScreen({ appSettings = {}, certifications = null, profile = {}, signedIn = false, onOpenTool, onSelectTab }) {
   const insets = useSafeAreaInsets();
-  const { loaded, stats, lastDive, gear, plans, gearState, rows } = useHomeData();
+  const { loaded, stats, lastDive, gear, plans, gearState, rows, insurance } = useHomeData();
   const nextPlan = useMemo(() => sortPlans(plans).upcoming.find((plan) => plan.startDate) || null, [plans]);
-  const nextAlerts = useMemo(() => (nextPlan ? planAlerts(nextPlan, { gear: gearState || { items: [], setups: [] }, certifications, dives: rows }) : []), [nextPlan, gearState, certifications, rows]);
+  const nextAlerts = useMemo(() => (nextPlan ? planAlerts(nextPlan, { gear: gearState || { items: [], setups: [] }, certifications, dives: rows, insurance }) : []), [nextPlan, gearState, certifications, rows, insurance]);
   const month = new Date().getMonth();
   const inSeason = useMemo(() => { try { return inSeasonNow(month, 8); } catch { return []; } }, [month]);
   // Lessons that are actually open (the gear lab is waiting on artwork).

@@ -5,6 +5,7 @@ import { subscribeAccountData } from '../../lib/accountDataSync';
 import { loadIndex } from '../../lib/diveLog/storage';
 import { moveFloatingForChecks } from '../gearChecklist/model';
 import { loadGearState, saveGearState } from '../gearChecklist/storage';
+import { loadInsuranceState } from '../insurance/storage';
 import { normalizePlan, normalizePlannerState, packPlan, planAlerts } from './model';
 
 // Plans live on this device (and in the development backups). Account sync can carry them once
@@ -32,12 +33,14 @@ export default function usePlanner({ certifications = null } = {}) {
   const [plans, setPlans] = useState([]);
   const [gear, setGear] = useState({ items: [], setups: [] });
   const [dives, setDives] = useState([]);
+  const [insurance, setInsurance] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
 
   const refresh = useCallback(async () => {
-    const [state, gearState, rows] = await Promise.all([loadPlannerState(), loadGearState().catch(() => null), loadIndex().catch(() => [])]);
+    const [state, gearState, rows, policies] = await Promise.all([loadPlannerState(), loadGearState().catch(() => null), loadIndex().catch(() => []), loadInsuranceState().catch(() => null)]);
     setPlans(state.plans);
+    if (policies) setInsurance(policies.policies);
     if (gearState) setGear(gearState);
     setDives(Array.isArray(rows) ? rows : []);
   }, []);
@@ -83,8 +86,8 @@ export default function usePlanner({ certifications = null } = {}) {
     }
   }, [persist]);
 
-  const context = useMemo(() => ({ gear, certifications, dives }), [gear, certifications, dives]);
+  const context = useMemo(() => ({ gear, certifications, dives, insurance }), [gear, certifications, dives, insurance]);
   const alertsFor = useCallback((plan) => planAlerts(plan, { ...context, now: new Date() }), [context]);
 
-  return { plans, gear, dives, loaded, error, savePlan, deletePlan, setPacked, alertsFor, refresh };
+  return { plans, gear, dives, insurance, loaded, error, savePlan, deletePlan, setPacked, alertsFor, refresh };
 }

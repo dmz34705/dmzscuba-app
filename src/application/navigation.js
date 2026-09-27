@@ -10,6 +10,7 @@ export const ACCOUNT_ROUTES = Object.freeze({
   create: 'account-create',
   login: 'account-login',
   profile: 'account-profile',
+  insurance: 'account-insurance',
 });
 
 export function isAppTab(value) {
