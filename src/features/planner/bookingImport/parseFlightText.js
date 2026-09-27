@@ -27,7 +27,7 @@ const NOT_AIRPORTS = new Set(`THE AND FOR YOU ARE NOT BUT ALL ANY CAN HAS HER HI
 
 const pad = (n) => String(n).padStart(2, '0');
 const isoDate = (y, m, d) => (m >= 1 && m <= 12 && d >= 1 && d <= 31 ? `${y}-${pad(m)}-${pad(d)}` : '');
-const addDay = (iso, days) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10); };
+export const addDay = (iso, days) => { const d = new Date(`${iso}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10); };
 
 export function normalizeEmailText(text) {
   return String(text || '')
@@ -64,7 +64,11 @@ export function findDates(text, today) {
   const numeric = /\b(\d{1,2})\/(\d{1,2})\/(\d{2}|\d{4})\b/g; // US order, as US airlines print it
   while ((m = numeric.exec(text))) push(m.index, withYear(Number(m[1]), Number(m[2]), Number(m[3]), today));
   // Overlapping matches ("Nov 7, 2026" also looks like "7, 2026") — keep the first at each spot.
-  return found.sort((a, b) => a.index - b.index).filter((entry, i, all) => i === 0 || entry.index - all[i - 1].index > 3);
+  // Booking, payment and offer dates are paperwork, never travel: "Booking date 10 October 2025".
+  const paperwork = /\b(?:book(?:ing|ed)(?: date| on)?|reserv(?:ation|ed)(?: date| on)|received(?: on)?|paid(?: on)?|payment(?: date)?|issued?(?: date| on)?|purchase(?:d| date)?(?: on)?|valid until|expires?|sent|order date)\W*$/i;
+  return found.sort((a, b) => a.index - b.index)
+    .filter((entry, i, all) => i === 0 || entry.index - all[i - 1].index > 3)
+    .filter((entry) => !paperwork.test(text.slice(Math.max(0, entry.index - 40), entry.index)));
 }
 
 export function findTimes(text) {
@@ -74,7 +78,9 @@ export function findTimes(text) {
   let m;
   while ((m = re.exec(text))) {
     let h = Number(m[1]);
-    const suffix = m[3]?.toLowerCase();
+    // "4:00 - 4:30 pm": the range's am/pm belongs to both times.
+    const shared = !m[3] && h <= 12 ? /^\s*(?:-|to)\s*\d{1,2}:\d{2}\s*([ap])\.?\s*m\b/i.exec(text.slice(re.lastIndex, re.lastIndex + 24))?.[1] : null;
+    const suffix = (m[3] || shared)?.toLowerCase();
     if (suffix) { if (h > 12 || h === 0) continue; if (suffix === 'p' && h < 12) h += 12; if (suffix === 'a' && h === 12) h = 0; }
     found.push({ index: m.index, value: `${pad(h)}:${m[2]}` });
   }

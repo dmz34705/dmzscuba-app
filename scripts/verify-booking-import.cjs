@@ -255,3 +255,48 @@ const P = loadSourceModule(path.join(root, 'features/planner/model.js'), root);
 }
 
 console.log('Booking import checks passed: hotel, rental car, liveaboard, Viator tour and dive booking read on the phone; bundles and airline emails handled; imports update matching bookings, fold dive days into liveaboards and stretch the trip.');
+
+// 10. A LiveAboard.com voucher as text copied from its PDF: every value on the line below its label,
+// "Departure date"/"Return date" wording, a booking date that isn't the trip, and cabin check-in
+// times that aren't a hotel. (Layout of a real voucher; names and prices left out.)
+{
+  const voucher = `Booking Voucher
+Travel details
+Booking nr
+AA351857
+Booking date
+10 October 2025
+Vessel
+Manta Queen 3
+Itinerary
+Diving - North Andaman: Similan - Koh Bon - Koh Tachai - Surin - Richelieu - Boon Sung
+Wreck (Khao Lak - Khao Lak)
+Duration
+6 Days / 5 Nights
+Departure from
+Khao Lak, Thailand
+Return to
+Khao Lak, Thailand
+Departure date
+13 Mar 2026 (Check-in starts at 4:00 - 4:30 pm)
+Return date
+18 Mar 2026 (Check-out time is at 5:00 pm)
+Cabin type: Double En-Suite Cabin
+Received on 13 October 2025 via Credit Card
+Included: VAT, Airport Transfer, Hotel Transfer, Drinking Water
+LiveAboard.com B.V. | Reservation number: AA351857
+Name of the Organizer: Manta Queen Fleet`;
+  const read = B.parseBookingText(voucher, { today: '2025-10-10' });
+  assert.equal(read.kind, 'liveaboard');
+  assert.ok(read.complete, read.issues.join(' '));
+  const boat = read.items[0];
+  assert.deepEqual([boat.title, boat.provider, boat.from, boat.to, boat.startDate, boat.startTime, boat.endDate, boat.endTime, boat.reference],
+    ['Manta Queen 3', 'Manta Queen Fleet', 'Khao Lak, Thailand', 'Khao Lak, Thailand', '2026-03-13', '16:00', '2026-03-18', '17:00', 'AA351857'],
+    'Values below their labels, departure/return wording, and "4:00 - 4:30 pm" as 4 PM.');
+  assert.match(boat.notes, /North Andaman/);
+  // With only "6 Days / 5 Nights", the return is worked out.
+  const noReturn = B.parseBookingText(voucher.replace(/Return date\n18 Mar 2026[^\n]*\n/, ''), { today: '2025-10-10' });
+  assert.equal(noReturn.items[0].endDate, '2026-03-18');
+}
+
+console.log('LiveAboard.com voucher checks passed: labels above values, booking dates ignored, shared am/pm, nights-based return.');
