@@ -204,6 +204,8 @@ export function normalizePlan(value = {}, now = new Date()) {
     setupId: clean(value.setupId, 80),
     // This plan's own packing ticks (Gear Locker checklist keys) — two trips on one setup pack separately.
     packedIds: [...new Set((Array.isArray(value.packedIds) ? value.packedIds : []).map((key) => clean(key, 200)).filter(Boolean))].slice(0, 1000),
+    // Gear Locker items brought on this plan only, on top of its setup (extra tanks, test kit…).
+    extraItemIds: [...new Set((Array.isArray(value.extraItemIds) ? value.extraItemIds : []).map((itemId) => clean(itemId, 80)).filter(Boolean))].slice(0, 200),
     requirements: {
       certs: [...new Set((Array.isArray(requirements.certs) ? requirements.certs : []).filter((key) => CERT_REQUIREMENTS.some((c) => c.key === key)))],
       minDives: Math.max(0, Number.parseInt(requirements.minDives, 10) || 0),
@@ -243,7 +245,13 @@ export function planPhase(plan, now = new Date()) {
 
 // --- packing -----------------------------------------------------------------
 // A setup's gear list with a plan's own ticks, for the checklist and its progress.
-export const withPlanPacking = (setup, plan) => ({ ...setup, checkedIds: plan?.packedIds || [] });
+// The setup as packed for one plan: its gear plus the plan's extras, with the plan's own ticks.
+// The setup itself is never changed — the extras belong to this plan only.
+export const withPlanPacking = (setup, plan) => ({
+  ...setup,
+  itemIds: [...new Set([...(setup?.itemIds || []), ...(plan?.extraItemIds || [])])],
+  checkedIds: plan?.packedIds || [],
+});
 
 export function packPlan(plan, keys, checked) {
   const drop = new Set(keys);
@@ -360,7 +368,7 @@ export function planAlerts(plan, context = {}) {
   if (!setup) {
     if (items.length) add('info', 'setup', 'Choose the gear you’re bringing', 'Pick a setup from your Gear Locker to check its service dates and build the packing list.', 'setup');
   } else {
-    const gear = packedItems(setup, items);
+    const gear = packedItems(withPlanPacking(setup, plan), items);
     for (const item of gear) {
       if (item.condition === 'Out of service') add('danger', `gear-out-${item.id}`, `${item.name} is out of service`, 'It’s in the setup for this plan. Repair or replace it, or switch setups.', 'gear');
       else if (item.condition === 'Needs attention') add('warning', `gear-attn-${item.id}`, `${item.name} needs attention`, 'Marked as needing attention in your Gear Locker. Sort it out before you dive.', 'gear');

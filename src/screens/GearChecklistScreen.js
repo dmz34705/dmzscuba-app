@@ -884,7 +884,7 @@ function SetupCheck({ setup, items, onChooseAccessories, onAdd, onLeaveOut, onAd
   );
 }
 
-function SetupDetail({ setup, items, setups = [], packingFor = null, onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle, onMoveFloating, onChooseAccessories, onAddForRequirement, onLeaveOut, onReviewAgain }) {
+function SetupDetail({ setup, baseSetup = setup, items, setups = [], packingFor = null, onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle, onMoveFloating, onChooseAccessories, onAddForRequirement, onLeaveOut, onReviewAgain }) {
   const [changing, setChanging] = useState(null); // `${itemId}|${category}` being re-chosen
   // Items already packed with another selected item (a hood linked to the drysuit) aren't listed twice.
   const packedWith = includedWithSelection(setup.itemIds, items, setup.accessoryChoices);
@@ -904,7 +904,7 @@ function SetupDetail({ setup, items, setups = [], packingFor = null, onAddExisti
           <View style={styles.checklistHeroTop}><View style={styles.checklistCount}><Text style={styles.checklistCountValue}>{progress.checked}/{progress.total}</Text><Text style={styles.checklistCountLabel}>PACKED</Text></View><Text style={styles.checklistPercent}>{Math.round(progress.ratio * 100)}%</Text></View>
           <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
           <Text style={styles.packingFor}>{packingFor
-            ? `Packing for ${planTitle(packingFor)} · ${formatDay(packingFor.startDate, { weekday: true })}. These ticks belong to that ${packingFor.kind === 'trip' ? 'trip' : 'dive day'}; other plans pack separately.`
+            ? `Packing for ${planTitle(packingFor)} · ${formatDay(packingFor.startDate, { weekday: true })}. These ticks belong to that ${packingFor.kind === 'trip' ? 'trip' : 'dive day'}; other plans pack separately.${packingFor.extraItemIds?.length ? ` Includes ${packingFor.extraItemIds.length} extra ${packingFor.extraItemIds.length === 1 ? 'item' : 'items'} added for it.` : ''}`
             : `Quick-dive checklist — nothing planned with this setup. Ticks clear ${QUICK_PACKING_DAYS} days after the last one.`}</Text>
           {setup.description ? <Text style={styles.checklistDescription}>{setup.description}</Text> : null}
           <View style={styles.setupActions}>
@@ -913,7 +913,7 @@ function SetupDetail({ setup, items, setups = [], packingFor = null, onAddExisti
             {progress.checked ? <TinyAction label="RESET CHECKS" onPress={onReset} /> : null}
           </View>
         </Card>
-        <SetupCheck items={items} onAdd={onAddForRequirement} onAddNew={onAddGear} onChooseAccessories={onChooseAccessories} onLeaveOut={onLeaveOut} onReviewAgain={onReviewAgain} setup={setup} />
+        <SetupCheck items={items} onAdd={onAddForRequirement} onAddNew={onAddGear} onChooseAccessories={onChooseAccessories} onLeaveOut={onLeaveOut} onReviewAgain={onReviewAgain} setup={baseSetup} />
         {available.some((item) => item.floating) ? (
           <View style={styles.checkCategory}>
             <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Floating gear</Text><Text style={styles.sectionMeta}>MOVES BETWEEN SETUPS</Text></View>
@@ -1266,6 +1266,7 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
     return (
       <SetupDetail
         items={gear.state.items}
+        baseSetup={activeSetup}
         packingFor={plan}
         setup={plan ? withPlanPacking(activeSetup, plan) : activeSetup}
         setups={gear.state.setups}

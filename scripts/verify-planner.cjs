@@ -186,6 +186,28 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   assert.ok(!find(P.planAlerts(P.packPlan(soon, ['bcd', 'reg'], true), { gear: { setups: [setup], items }, now }, now), 'packing'));
 }
 
+// Extra gear for one plan: packed and checked with it, the setup itself untouched.
+{
+  const G = loadSourceModule(path.join(root, 'features/gearChecklist/model.js'), root);
+  const setup = { id: 'single', name: 'Single tank', itemIds: ['bcd'], checkedIds: [], accessoryChoices: {} };
+  const items = [
+    { id: 'bcd', name: 'BCD', category: 'BCD' },
+    { id: 'tank2', name: 'AL80 #2', category: 'Cylinder / tank', nextServiceDate: '2026-10-01' },
+    { id: 'proto', name: 'Ocean Comm test unit', category: 'Accessories' },
+  ];
+  const testing = P.normalizePlan({ id: 'oc', kind: 'trip', startDate: '2026-10-10', endDate: '2026-10-12', setupId: 'single', extraItemIds: ['tank2', 'proto', 'proto', ''] }, now);
+  assert.deepEqual(testing.extraItemIds, ['tank2', 'proto'], 'Extras are tidied.');
+  const packing = P.withPlanPacking(setup, testing);
+  assert.deepEqual(packing.itemIds, ['bcd', 'tank2', 'proto'], 'The plan packs its setup plus its extras.');
+  assert.deepEqual(setup.itemIds, ['bcd'], 'The setup itself is unchanged.');
+  assert.equal(G.setupProgress(packing, items).total, 3);
+  assert.equal(G.setupProgress(P.withPlanPacking(setup, P.packPlan(testing, ['proto'], true)), items).checked, 1, 'Extras are ticked like any other gear.');
+  assert.equal(G.setupProgress(P.withPlanPacking(setup, P.normalizePlan({ setupId: 'single' }, now)), items).total, 1, 'Another plan on the setup doesn’t get them.');
+  assert.equal(G.setupProgress(P.withPlanPacking(setup, { ...testing, extraItemIds: ['gone'] }), items).total, 1, 'An extra deleted from the Gear Locker is skipped.');
+  const alerts = P.planAlerts(testing, { gear: { setups: [setup], items }, now }, now);
+  assert.ok(alerts.some((alert) => alert.key.startsWith('svc-') && /AL80 #2/.test(alert.title)), 'An extra tank due for service before the trip is flagged.');
+}
+
 // A day reads in the order it happens: disembarking at 1 PM comes before a 2 PM hotel check-in.
 {
   const trip = P.normalizePlan({ kind: 'trip', startDate: '2026-03-13', endDate: '2026-03-20', segments: [

@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenHeader } from '../components/AppShell';
 import DateField from '../components/DateField';
 import { ProgressBar } from '../components/Ui';
-import { checklistEntriesForItem, includedWithSelection, setupProgress } from '../features/gearChecklist/model';
+import { GEAR_CATEGORIES, checklistEntriesForItem, includedWithSelection, setupProgress, sortGear } from '../features/gearChecklist/model';
 import FlightBookingEditor from '../features/planner/FlightBookingEditor';
 import Glyph from '../features/planner/Glyph';
 import ImportReviewSheet from '../features/planner/bookingImport/ImportReviewSheet';
@@ -171,12 +171,13 @@ function LegRow({ leg, onPress, variant = 'start' }) {
   );
 }
 
-function PackingList({ setup, items, onToggle }) {
+function PackingList({ setup, items, extraIds = [], onToggle }) {
+  const extras = new Set(extraIds);
   const byId = new Map(items.map((item) => [item.id, item]));
   const packedWith = includedWithSelection(setup.itemIds, items, setup.accessoryChoices);
   const checked = new Set(setup.checkedIds);
   const entries = setup.itemIds.map((id) => byId.get(id)).filter((item) => item && !packedWith.has(item.id));
-  if (!entries.length) return <Text style={styles.empty}>This setup has no gear yet. Add equipment to it in your Gear Locker.</Text>;
+  if (!entries.length) return <Text style={styles.empty}>This setup has no gear yet. Add equipment to it in your Gear Locker, or add gear for just this trip below.</Text>;
   return entries.map((item, index) => {
     const { itemKey, parts } = checklistEntriesForItem(item, items, setup);
     // As in the Gear Locker: the item counts as packed when it and every part are, and ticking it
@@ -193,7 +194,7 @@ function PackingList({ setup, items, onToggle }) {
         </View>
       </Pressable>
     );
-    const parentMeta = [item.category, parts.length ? `${parts.length} part${parts.length === 1 ? '' : 's'}${someChecked && !allChecked ? ' · partly packed' : ''}` : ''].filter(Boolean).join(' · ');
+    const parentMeta = [extras.has(item.id) ? 'Added for this trip' : '', item.category, parts.length ? `${parts.length} part${parts.length === 1 ? '' : 's'}${someChecked && !allChecked ? ' · partly packed' : ''}` : ''].filter(Boolean).join(' · ');
     return (
       <View key={item.id} style={index < entries.length - 1 && styles.rowBorder}>
         <Check keys={parts.length ? allKeys : [itemKey]} label={item.name} meta={parentMeta} on={parts.length ? allChecked : checked.has(itemKey)} partial={parts.length > 0 && someChecked && !allChecked} />
@@ -338,6 +339,59 @@ function ReadinessCard({ plan, summary, setupProgressValue, onPress }) {
   );
 }
 
+// Gear Locker items to bring on this plan only, on top of its setup. Ticking here adds or removes
+// them from the plan; the setup itself is never changed.
+function ExtraGearPicker({ visible, setup, items, value, onSave, onClose }) {
+  const insets = useSafeAreaInsets();
+  const [chosen, setChosen] = useState(new Set(value));
+  const [query, setQuery] = useState('');
+  useEffect(() => { if (visible) { setChosen(new Set(value)); setQuery(''); } }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
+  const inSetup = new Set([...(setup?.itemIds || []), ...includedWithSelection(setup?.itemIds || [], items, setup?.accessoryChoices || {}).keys()]);
+  const search = query.trim().toLowerCase();
+  const options = sortGear(items.filter((item) => !inSetup.has(item.id) && item.condition !== 'Retired'
+    && (!search || `${item.name} ${item.category} ${item.manufacturer} ${item.model} ${item.serialNumber}`.toLowerCase().includes(search))));
+  // Enough to tell two identical tanks apart.
+  const describe = (item) => [[item.manufacturer, item.model].filter(Boolean).join(' '), item.capacity, item.serialNumber ? `S/N ${item.serialNumber}` : ''].filter(Boolean).join(' · ');
+  const groups = GEAR_CATEGORIES.map((category) => ({ category, items: options.filter((item) => item.category === category) })).filter((group) => group.items.length);
+  const other = options.filter((item) => !GEAR_CATEGORIES.includes(item.category));
+  if (other.length) groups.push({ category: 'Other', items: other });
+  const toggle = (id) => setChosen((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  return (
+    <Modal animationType="fade" onRequestClose={onClose} transparent visible={visible}>
+      <Pressable onPress={onClose} style={styles.backdrop}>
+        <Pressable onPress={(e) => e.stopPropagation()} style={[styles.pickerSheet, styles.extraSheet, { paddingBottom: insets.bottom + spacing.md }]}>
+          <Text style={styles.pickerTitle}>Extra gear for this trip</Text>
+          <Text style={styles.kindBody}>From your Gear Locker, on top of {setup?.name || 'your setup'}. The setup itself stays as it is.</Text>
+          <TextInput accessibilityLabel="Search your gear" autoCorrect={false} onChangeText={setQuery} placeholder="Search tanks, lights, test kit…" placeholderTextColor={colors.faint} style={styles.taskInput} value={query} />
+          <ScrollView keyboardShouldPersistTaps="handled" style={[styles.pickerList, styles.extraList]}>
+            {groups.map((group) => (
+              <View key={group.category}>
+                <Text style={styles.extraGroup}>{group.category.toUpperCase()}</Text>
+                {group.items.map((item) => {
+                  const on = chosen.has(item.id);
+                  return (
+                    <Pressable key={item.id} accessibilityRole="checkbox" accessibilityState={{ checked: on }} onPress={() => toggle(item.id)} style={({ pressed }) => [styles.check, pressed && styles.rowPressed]}>
+                      <View style={[styles.box, on && styles.boxOn]}>{on ? <Glyph color={colors.background} name="check" size={14} /> : null}</View>
+                      <View style={styles.flex}>
+                        <Text style={styles.checkLabel} numberOfLines={1}>{item.name}</Text>
+                        {describe(item) ? <Text style={styles.checkMeta} numberOfLines={1}>{describe(item)}</Text> : null}
+                      </View>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            ))}
+            {!groups.length ? <Text style={styles.empty}>{search ? 'Nothing in your Gear Locker matches that.' : 'Everything in your Gear Locker is already in this setup.'}</Text> : null}
+          </ScrollView>
+          <Pressable accessibilityRole="button" onPress={() => onSave([...chosen])} style={({ pressed }) => [styles.footerButton, styles.footerPrimary, styles.extraSave, pressed && styles.pressed]}>
+            <Text style={[styles.footerText, styles.footerPrimaryText]}>{chosen.size ? `Bring ${chosen.size} extra ${chosen.size === 1 ? 'item' : 'items'}` : 'No extra gear'}</Text>
+          </Pressable>
+        </Pressable>
+      </Pressable>
+    </Modal>
+  );
+}
+
 function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, onPage, onEdit, onBack, onOpenTool }) {
   const [segment, setSegment] = useState(null);
   // The flight booking being edited: { flights, previousIds, source?, issues? }.
@@ -346,6 +400,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
   // What an import found, fitted to this trip, waiting for review: { review, source, issues }.
   const [imported, setImported] = useState(null);
   const [pickSetup, setPickSetup] = useState(false);
+  const [pickExtras, setPickExtras] = useState(false);
   const [task, setTask] = useState('');
   const alerts = planner.alertsFor(plan);
   const summary = readinessSummary(alerts);
@@ -424,6 +479,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
       />
       <ImportSheet onCancel={() => setImporting(false)} onResult={reviewImport} signedIn={signedIn} visible={importing} />
       <ImportReviewSheet issues={imported?.issues || []} onCancel={() => setImported(null)} onSave={addImported} plan={plan} review={imported?.review || null} source={imported?.source || ''} visible={Boolean(imported)} />
+      <ExtraGearPicker items={planner.gear.items} onClose={() => setPickExtras(false)} onSave={(extraItemIds) => { save({ extraItemIds }); setPickExtras(false); }} setup={setup} value={plan.extraItemIds} visible={pickExtras} />
       <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save(setupId === plan.setupId ? { setupId } : { setupId, packedIds: [] }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
     </>
   );
@@ -492,7 +548,8 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
                     <Text style={styles.packPercent}>{progress.total ? Math.round(progress.ratio * 100) : 0}%</Text>
                   </View>
                   <View style={styles.packBar}><ProgressBar color={progress.ratio === 1 ? colors.good : colors.cyan} value={progress.ratio} /></View>
-                  <PackingList items={planner.gear.items} onToggle={(keys, checked) => planner.setPacked(plan.id, keys, checked).catch(() => {})} setup={packing} />
+                  <PackingList extraIds={plan.extraItemIds} items={planner.gear.items} onToggle={(keys, checked) => planner.setPacked(plan.id, keys, checked).catch(() => {})} setup={packing} />
+                  <Pressable accessibilityRole="button" onPress={() => setPickExtras(true)} style={({ pressed }) => [styles.addRow, styles.addRowSplit, pressed && styles.rowPressed]}><Text style={styles.sectionAction}>{plan.extraItemIds.length ? `Extra gear for this ${trip ? 'trip' : 'dive'} (${plan.extraItemIds.length}) · change` : `+ Add gear for this ${trip ? 'trip' : 'dive'}`}</Text></Pressable>
                   <Pressable accessibilityRole="button" onPress={() => onOpenTool('gear-checklist')} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}><Text style={styles.sectionAction}>Open in Gear Locker ›</Text></Pressable>
                 </>
               ) : <Pressable accessibilityRole="button" onPress={() => setPickSetup(true)} style={styles.addRow}><Text style={styles.sectionAction}>+ Choose the gear setup you’re bringing</Text></Pressable>}
@@ -842,5 +899,9 @@ const styles = StyleSheet.create({
   kindBody: { color: colors.muted, fontSize: 13, lineHeight: 18, marginTop: 3 },
   setupOption: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', gap: 12, marginBottom: 8, padding: 14 },
   setupOptionOn: { borderColor: colors.cyan },
+  extraSheet: { maxHeight: '88%' },
+  extraGroup: { color: colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1.2, paddingHorizontal: 14, paddingTop: 12 },
+  extraList: { flexShrink: 1 }, // a long locker scrolls; the Bring button stays on screen
+  extraSave: { flex: 0, marginTop: 4 },
   setupNone: { alignItems: 'center', minHeight: 44, justifyContent: 'center' },
 });
