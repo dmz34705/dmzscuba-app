@@ -154,4 +154,31 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   console.log('Site search and My sites checks passed.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });
 
+// Flight bookings: connections, layovers, return flights and replacing a booking's legs.
+{
+  const out1 = P.normalizeSegment({ id: 'f1', type: 'flight', title: 'UA 1234', from: 'ORD', to: 'IAH', startDate: '2026-11-07', startTime: '06:00', endDate: '2026-11-07', endTime: '08:45', booking: 'b1', provider: 'United', reference: 'ABC123' });
+  const out2 = P.normalizeSegment({ id: 'f2', type: 'flight', title: 'UA 1500', from: 'iah', to: 'CZM', startDate: '2026-11-07', startTime: '10:05', endDate: '2026-11-07', endTime: '12:40', booking: 'b1' });
+  const home = P.normalizeSegment({ id: 'f3', type: 'flight', title: 'UA 1501', from: 'CZM', to: 'IAH', startDate: '2026-11-14', startTime: '13:30', endDate: '2026-11-14', endTime: '16:20', booking: 'b1' });
+  const stay = P.normalizeSegment({ id: 's1', type: 'stay', startDate: '2026-11-07', endDate: '2026-11-14', booking: 'b1' });
+  assert.equal(stay.booking, '', 'Only flights carry a booking id.');
+  const trip = P.normalizePlan({ kind: 'trip', startDate: '2026-11-07', endDate: '2026-11-14', segments: [home, out2, stay, out1] }, now);
+  const connections = P.flightConnections(trip);
+  assert.deepEqual(connections.get('f1'), { minutes: 80, airport: 'iah', nextId: 'f2' }, 'ORD→IAH connects to IAH→CZM (airports match case-insensitively).');
+  assert.ok(!connections.has('f2'), 'A week in Cozumel is not a layover.');
+  assert.equal(P.formatDuration(80), '1h 20m');
+  assert.equal(P.formatDuration(45), '45m');
+  assert.equal(P.formatDuration(120), '2h');
+  const elsewhere = P.normalizePlan({ kind: 'trip', startDate: '2026-11-07', segments: [out1, { ...out2, from: 'DFW' }] }, now);
+  assert.equal(P.flightConnections(elsewhere).size, 0, 'Flights from a different airport are not a connection.');
+  assert.deepEqual(P.bookingFlights(trip, out2).map((leg) => leg.id), ['f1', 'f2', 'f3'], 'Tapping any flight opens its whole booking.');
+  const next = P.connectingFlight(out1);
+  assert.equal(next.from, 'IAH'); assert.equal(next.startDate, '2026-11-07'); assert.equal(next.booking, 'b1'); assert.equal(next.reference, 'ABC123');
+  const back = P.returnFlight([out1, out2], trip);
+  assert.equal(back.from, 'CZM'); assert.equal(back.to, 'ORD'); assert.equal(back.startDate, '2026-11-14');
+  const replaced = P.replaceFlights(trip.segments, ['f1', 'f2', 'f3'], [out1, home]);
+  assert.deepEqual(replaced.map((leg) => leg.id), ['f1', 's1', 'f3'], 'Editing a booking swaps its legs and keeps the itinerary in order.');
+  const tight = P.normalizePlan({ kind: 'trip', startDate: '2026-11-07', segments: [out1, { ...out2, startTime: '09:15' }] }, now);
+  assert.ok(find(P.planAlerts(tight, {}, now), 'connect-'), 'A 30-minute connection is still flagged.');
+}
+
 console.log(`Planner checks passed: records, dates, phases, sorting, timeline, gear service lead times, out-of-service gear, packing, certification levels and expiry, experience and recency, paperwork, no-fly intervals, connections, uncovered nights and passport validity (${alerts.length} alerts on the sample trip).`);

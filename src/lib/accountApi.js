@@ -172,6 +172,11 @@ export async function restoreSession() {
   }
 }
 
+// For signed-in requests to other DMZ services (e.g. the planner's flight import).
+export function getAccessToken() {
+  return getValidAccessToken();
+}
+
 async function getValidAccessToken() {
   if (activeSession?.accessToken && activeSession.expiresAt > Date.now() + 60000) {
     return activeSession.accessToken;

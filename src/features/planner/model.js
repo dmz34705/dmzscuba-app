@@ -51,6 +51,7 @@ const clean = (value, max = 500) => String(value ?? '').trim().slice(0, max);
 const id = (prefix) => `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 export const createPlanId = () => id('plan');
 export const createSegmentId = () => id('leg');
+export const createBookingId = () => id('booking');
 
 // --- dates ------------------------------------------------------------------
 export function parseDay(value) {
@@ -111,7 +112,69 @@ export function normalizeSegment(value = {}) {
     startDate, startTime: validTime(value.startTime), endDate, endTime: validTime(value.endTime),
     from: clean(value.from, 160), to: clean(value.to, 160), provider: clean(value.provider, 160), reference: clean(value.reference, 80),
     dives: Math.max(0, Math.min(12, Number.parseInt(value.dives, 10) || 0)), notes: clean(value.notes, 2000),
+    // Flights bought together (one confirmation: outbound connections and the return) share a booking id.
+    booking: type === 'flight' ? clean(value.booking, 80) : '',
   };
+}
+
+// --- flights ----------------------------------------------------------------
+export const airportKey = (value) => String(value || '').trim().toUpperCase();
+
+export function formatDuration(minutes) {
+  if (!Number.isFinite(minutes)) return '';
+  const h = Math.floor(minutes / 60), m = minutes % 60;
+  return h ? `${h}h${m ? ` ${String(m).padStart(2, '0')}m` : ''}` : `${m}m`;
+}
+
+// Minutes on the ground between two flights, or null when a time is missing.
+export function layoverMinutes(previous, next) {
+  const arrives = moment(previous.endDate || previous.startDate, previous.endTime, null);
+  const departs = moment(next.startDate, next.startTime, null);
+  return arrives == null || departs == null ? null : departs - arrives;
+}
+
+// Flights that connect onward — the next flight leaves the airport you landed at within a day —
+// keyed by the arriving flight's id: { minutes, airport, nextId }.
+export function flightConnections(plan) {
+  const flights = plan.segments.filter((leg) => leg.type === 'flight' && leg.startDate);
+  const connections = new Map();
+  for (let i = 1; i < flights.length; i++) {
+    const previous = flights[i - 1], next = flights[i];
+    const minutes = layoverMinutes(previous, next);
+    if (minutes == null || minutes > 24 * 60) continue;
+    if (previous.to && next.from && airportKey(previous.to) !== airportKey(next.from)) continue;
+    connections.set(previous.id, { minutes, airport: next.from || previous.to, nextId: next.id });
+  }
+  return connections;
+}
+
+// Every flight in the same booking as `leg` (just the leg itself when it has none), in order.
+export function bookingFlights(plan, leg) {
+  if (!leg?.booking) return [leg];
+  return plan.segments.filter((entry) => entry.type === 'flight' && entry.booking === leg.booking);
+}
+
+// The next flight of a journey: leaves from where the last one landed, on the day it landed.
+export function connectingFlight(previous) {
+  return normalizeSegment({
+    type: 'flight', from: previous.to, startDate: previous.endDate || previous.startDate,
+    provider: previous.provider, reference: previous.reference, booking: previous.booking,
+  });
+}
+
+// The flight home: from the final destination back to where the trip began.
+export function returnFlight(flights, plan) {
+  const first = flights[0], last = flights.at(-1);
+  return normalizeSegment({
+    type: 'flight', from: last?.to, to: first?.from, startDate: plan?.endDate || last?.endDate || last?.startDate,
+    provider: last?.provider, reference: last?.reference, booking: last?.booking,
+  });
+}
+
+// Swaps a booking's old legs for its edited flights (added, changed or removed).
+export function replaceFlights(segments, previousIds, flights) {
+  const drop = new Set(previousIds);
+  return [...segments.filter((leg) => !drop.has(leg.id)), ...flights.map(normalizeSegment)].sort(bySegmentTime);
 }
 
 export function normalizePlan(value = {}, now = new Date()) {
@@ -336,10 +399,8 @@ export function planAlerts(plan, context = {}) {
     // Connections that are too tight or overlap.
     for (let i = 1; i < flights.length; i++) {
       const previous = flights[i - 1], next = flights[i];
-      const arrives = moment(previous.endDate || previous.startDate, previous.endTime, null);
-      const departs = moment(next.startDate, next.startTime, null);
-      if (arrives == null || departs == null || departs - arrives > 24 * 60) continue;
-      const gap = departs - arrives;
+      const gap = layoverMinutes(previous, next);
+      if (gap == null || gap > 24 * 60) continue;
       if (gap < 0) add('danger', `overlap-${next.id}`, 'Flights overlap', `${previous.title || previous.provider || 'A flight'} lands after ${next.title || next.provider || 'the next flight'} departs. Check the times.`, 'timeline');
       else if (gap < MIN_CONNECTION_MINUTES) add('warning', `connect-${next.id}`, `Tight ${gap}-minute connection${next.from ? ` in ${next.from}` : ''}`, 'Less than an hour to change planes — dive bags are often the casualty. Consider a longer layover.', 'timeline');
     }

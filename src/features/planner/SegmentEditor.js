@@ -18,7 +18,8 @@ const PLACEHOLDERS = {
 };
 
 // One leg of a trip: a flight, a transfer, a night's stay, a day of diving…
-export default function SegmentEditor({ segment, visible, onCancel, onSave, onDelete }) {
+// Flights have their own editor (connections, return, import); picking Flight here hands over to it.
+export default function SegmentEditor({ segment, visible, onCancel, onSave, onDelete, onUseFlightEditor }) {
   const [draft, setDraft] = useState(segment);
   useEffect(() => { if (visible) setDraft(segment); }, [segment, visible]);
   if (!draft) return null;
@@ -38,7 +39,7 @@ export default function SegmentEditor({ segment, visible, onCancel, onSave, onDe
           <Text style={styles.deleteText}>Remove from itinerary</Text>
         </Pressable>
       ) : null}>
-      <Chips onChange={(next) => set({ type: next })} options={TYPE_OPTIONS} value={draft.type} />
+      <Chips onChange={(next) => (next === 'flight' && onUseFlightEditor ? onUseFlightEditor({ ...draft, type: 'flight' }) : set({ type: next }))} options={TYPE_OPTIONS} value={draft.type} />
       <Field label={draft.type === 'flight' ? 'Flight' : draft.type === 'diving' ? 'Dives or sites' : 'Name'} onChange={(title) => set({ title })} placeholder={hint.title} value={draft.title} />
       <TwoUp>
         <Half><DateField allowClear={false} label={startLabel} onChange={(startDate) => set({ startDate, endDate: draft.endDate && draft.endDate < startDate ? startDate : draft.endDate })} value={draft.startDate} /></Half>

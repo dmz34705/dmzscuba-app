@@ -8,13 +8,16 @@ import { ScreenHeader } from '../components/AppShell';
 import DateField from '../components/DateField';
 import { ProgressBar } from '../components/Ui';
 import { checklistEntriesForItem, includedWithSelection, setupProgress } from '../features/gearChecklist/model';
+import FlightBookingEditor from '../features/planner/FlightBookingEditor';
+import ImportFlightsSheet from '../features/planner/flightImport/ImportFlightsSheet';
 import PlanEditor from '../features/planner/PlanEditor';
 import SegmentEditor from '../features/planner/SegmentEditor';
 import usePlanner from '../features/planner/usePlanner';
 import { planDives } from '../features/siteDives/siteMatch';
 import {
-  SEGMENT_TYPES, STATUS_LABELS, cardsFor, certLabel, emptyPlan, formatDay, formatRange, formatTime, normalizePlan, normalizeSegment,
-  parseDay, planPhase, planTimeline, planTitle, readinessSummary, sortPlans,
+  MIN_CONNECTION_MINUTES, SEGMENT_TYPES, STATUS_LABELS, airportKey, bookingFlights, cardsFor, certLabel, createBookingId, emptyPlan, flightConnections,
+  formatDay, formatDuration, formatRange, formatTime, normalizePlan, normalizeSegment, parseDay, planPhase, planTimeline, planTitle, readinessSummary,
+  replaceFlights, sortPlans,
 } from '../features/planner/model';
 import { colors, radii, spacing } from '../theme';
 
@@ -29,6 +32,7 @@ const GLYPHS = {
   diving: 'M4 9h16v4.5a2.5 2.5 0 0 1-2.5 2.5H15l-3-2-3 2H6.5A2.5 2.5 0 0 1 4 13.5V9Z',
   other: 'M12 8v8M8 12h8',
   check: 'M5 12.5 10 17l9-10',
+  import: 'M12 4v11m0 0-4-4m4 4 4-4M5 19h14',
 };
 const Glyph = ({ name, color = colors.cyan, size = 18 }) => (
   <Svg width={size} height={size} viewBox="0 0 24 24" fill="none"><Path d={GLYPHS[name] || GLYPHS.other} stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>
@@ -239,12 +243,18 @@ function SetupPicker({ visible, setups, items, value, onPick, onClose }) {
 // without it the days read as a plain overview.
 function ItineraryDays({ plan, onEditLeg, onAddToDay }) {
   const timeline = planTimeline(plan);
+  const connections = flightConnections(plan);
   return (
     <>
       {timeline.days.map((day) => (
         <View key={day.date} style={styles.day}>
           <Text style={styles.dayLabel}>DAY {day.index} · {formatDay(day.date, { weekday: true }).toUpperCase()}</Text>
-          {day.starts.map((leg) => <LegRow key={leg.id} leg={leg} onPress={() => onEditLeg(leg)} />)}
+          {day.starts.map((leg) => (
+            <View key={leg.id}>
+              <LegRow leg={leg} onPress={() => onEditLeg(leg)} />
+              {connections.has(leg.id) ? <LayoverRow {...connections.get(leg.id)} /> : null}
+            </View>
+          ))}
           {day.ends.map((leg) => <LegRow key={`${leg.id}-end`} leg={leg} onPress={() => onEditLeg(leg)} variant="end" />)}
           {day.continuing.map((leg) => <LegRow key={`${leg.id}-on`} leg={leg} onPress={() => onEditLeg(leg)} variant="continuing" />)}
           {!day.starts.length && !day.ends.length && !day.continuing.length && !onAddToDay ? <Text style={styles.dayEmpty}>Nothing planned</Text> : null}
@@ -260,6 +270,16 @@ function ItineraryDays({ plan, onEditLeg, onAddToDay }) {
   );
 }
 
+function LayoverRow({ minutes, airport }) {
+  const tone = minutes < 0 ? colors.danger : minutes < MIN_CONNECTION_MINUTES ? colors.warning : colors.faint;
+  return (
+    <View style={styles.layover}>
+      <View style={[styles.layoverLine, { backgroundColor: tone }]} />
+      <Text style={[styles.layoverText, { color: tone }]}>{minutes < 0 ? 'Flight times overlap' : `${formatDuration(minutes)} layover${airport ? ` in ${airportKey(airport)}` : ''}`}</Text>
+    </View>
+  );
+}
+
 // A best guess at what's being added to a day: travel at either end of the trip, diving in between.
 function suggestedLegType(plan, day, lastDay) {
   if (day.index === 1 && !day.starts.length) return 'flight';
@@ -267,7 +287,7 @@ function suggestedLegType(plan, day, lastDay) {
   return 'diving';
 }
 
-function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onDone }) {
+function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onImport, onDone }) {
   const timeline = planTimeline(plan);
   const lastDay = timeline.days.at(-1)?.date || plan.startDate;
   const legs = plan.segments.length;
@@ -277,6 +297,18 @@ function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onDone }) {
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.builderLead}>{[plan.destination.name, formatRange(plan.startDate, plan.endDate)].filter(Boolean).join(' · ')}</Text>
         <Text style={styles.builderHelp}>Add flights, transfers, stays and dive days to the day they happen. Tap anything already here to change or remove it.</Text>
+        <View style={styles.quickRow}>
+          <Pressable accessibilityRole="button" onPress={() => onAdd({ type: 'flight', startDate: plan.startDate })} style={({ pressed }) => [styles.quickButton, pressed && styles.pressed]}>
+            <Glyph name="flight" />
+            <View style={styles.flex}><Text style={styles.quickTitle}>Add flights</Text><Text style={styles.quickBody}>Connections & return</Text></View>
+          </Pressable>
+          {onImport ? (
+            <Pressable accessibilityRole="button" onPress={onImport} style={({ pressed }) => [styles.quickButton, pressed && styles.pressed]}>
+              <Glyph name="import" />
+              <View style={styles.flex}><Text style={styles.quickTitle}>Import</Text><Text style={styles.quickBody}>From a confirmation email</Text></View>
+            </Pressable>
+          ) : null}
+        </View>
         <View style={styles.card}>
           <ItineraryDays onAddToDay={(day) => onAdd({ type: suggestedLegType(plan, day, lastDay), startDate: day.date })} onEditLeg={onEditLeg} plan={plan} />
           <Pressable accessibilityRole="button" onPress={() => onAdd({ type: legs ? 'diving' : 'flight', startDate: lastDay })} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}>
@@ -320,6 +352,9 @@ function ReadinessCard({ plan, summary, setupProgressValue, onPress }) {
 
 function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, onPage, onEdit, onBack, onOpenTool }) {
   const [segment, setSegment] = useState(null);
+  // The flight booking being edited: { flights, previousIds, source?, issues? }.
+  const [booking, setBooking] = useState(null);
+  const [importing, setImporting] = useState(false);
   const [pickSetup, setPickSetup] = useState(false);
   const [task, setTask] = useState('');
   const alerts = planner.alertsFor(plan);
@@ -344,8 +379,36 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
     const segments = plan.segments.some((leg) => leg.id === next.id) ? plan.segments.map((leg) => (leg.id === next.id ? next : leg)) : [...plan.segments, next];
     save({ segments }); setSegment(null);
   };
-  const addLeg = (seed) => setSegment({ isNew: true, value: normalizeSegment(seed) });
-  const editLeg = (leg) => setSegment({ value: leg });
+  const openFlights = (flights, previousIds = [], extra = {}) => setBooking({ flights, previousIds, ...extra });
+  const addLeg = (seed) => (seed.type === 'flight'
+    ? openFlights([normalizeSegment({ ...seed, booking: createBookingId() })])
+    : setSegment({ isNew: true, value: normalizeSegment(seed) }));
+  const editLeg = (leg) => {
+    if (leg.type !== 'flight') { setSegment({ value: leg }); return; }
+    const flights = bookingFlights(plan, leg);
+    openFlights(flights, flights.map((entry) => entry.id));
+  };
+  // Picking Flight in the leg editor: close it, then open the flight editor once it has slid away
+  // (iOS won't present a sheet while another is still dismissing).
+  const switchToFlights = (draft) => {
+    const previousIds = segment?.isNew ? [] : [draft.id];
+    setSegment(null);
+    setTimeout(() => openFlights([normalizeSegment({ ...draft, booking: createBookingId() })], previousIds), 450);
+  };
+  // Imported flights open in the flight editor for review, once the import sheet has closed.
+  const reviewImport = (result) => {
+    setImporting(false);
+    // Same confirmation already on the trip (a schedule change, or importing twice): replace it.
+    const planFlights = plan.segments.filter((leg) => leg.type === 'flight');
+    const sameBooking = result.reference ? planFlights.filter((leg) => leg.reference && leg.reference.toUpperCase() === result.reference.toUpperCase()) : [];
+    const replaced = sameBooking.length ? sameBooking : planFlights.filter((leg) => result.flights.some((flight) => flight.title === leg.title && flight.startDate === leg.startDate));
+    const bookingId = replaced.find((leg) => leg.booking)?.booking || createBookingId();
+    const flights = result.flights.map((flight) => normalizeSegment({ ...flight, type: 'flight', booking: bookingId }));
+    const note = replaced.length ? [`Saving replaces the ${replaced.length === 1 ? 'flight' : `${replaced.length} flights`} already on this trip${sameBooking.length ? ` with confirmation ${result.reference}` : ''}.`] : [];
+    setTimeout(() => openFlights(flights, replaced.map((leg) => leg.id), { source: result.source, issues: [...result.issues, ...note] }), 450);
+  };
+  const saveFlights = (flights) => { save({ segments: replaceFlights(plan.segments, booking.previousIds, flights) }); setBooking(null); };
+  const removeFlights = () => { save({ segments: replaceFlights(plan.segments, booking.previousIds, []) }); setBooking(null); };
   const addTask = () => { const label = task.trim(); if (!label) return; save({ tasks: [...plan.tasks, { label }] }); setTask(''); };
   const remove = () => Alert.alert(`Delete “${planTitle(plan)}”?`, 'This removes the plan and its itinerary from this device.', [
     { text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: () => planner.deletePlan(plan.id).then(onBack) },
@@ -358,9 +421,21 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
         onCancel={() => setSegment(null)}
         onDelete={segment && !segment.isNew ? () => { save({ segments: plan.segments.filter((leg) => leg.id !== segment.value.id) }); setSegment(null); } : null}
         onSave={saveSegment}
+        onUseFlightEditor={switchToFlights}
         segment={segment?.value || null}
         visible={Boolean(segment)}
       />
+      <FlightBookingEditor
+        flights={booking?.flights || null}
+        issues={booking?.issues || []}
+        onCancel={() => setBooking(null)}
+        onDelete={booking?.previousIds.length && !booking.source ? removeFlights : null}
+        onSave={saveFlights}
+        plan={plan}
+        source={booking?.source || ''}
+        visible={Boolean(booking)}
+      />
+      <ImportFlightsSheet onCancel={() => setImporting(false)} onResult={reviewImport} signedIn={signedIn} visible={importing} />
       <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save({ setupId }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
     </>
   );
@@ -368,7 +443,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
   if (page === 'itinerary' && trip) {
     return (
       <View style={styles.screen}>
-        <ItineraryBuilder isNew={isNewTrip} onAdd={addLeg} onDone={() => onPage('overview')} onEditLeg={editLeg} plan={plan} />
+        <ItineraryBuilder isNew={isNewTrip} onAdd={addLeg} onDone={() => onPage('overview')} onEditLeg={editLeg} onImport={() => setImporting(true)} plan={plan} />
         {sheets}
       </View>
     );
@@ -704,6 +779,13 @@ const styles = StyleSheet.create({
   day: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, paddingBottom: 6, paddingTop: 12 },
   dayLabel: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.3, marginBottom: 4, paddingHorizontal: 14 },
   dayEmpty: { color: colors.faint, fontSize: 13, paddingHorizontal: 14, paddingVertical: 8 },
+  layover: { alignItems: 'center', flexDirection: 'row', gap: 10, marginLeft: 99, paddingBottom: 4 },
+  layoverLine: { borderRadius: 1, height: 18, width: 2 },
+  layoverText: { fontSize: 12, fontWeight: '700' },
+  quickRow: { flexDirection: 'row', gap: 10, marginBottom: spacing.md },
+  quickButton: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, flex: 1, flexDirection: 'row', gap: 10, minHeight: 60, padding: 12 },
+  quickTitle: { color: colors.text, fontSize: 14, fontWeight: '800' },
+  quickBody: { color: colors.faint, fontSize: 11, marginTop: 2 },
   dayAdd: { justifyContent: 'center', marginHorizontal: 14, marginTop: 4, minHeight: 40, paddingLeft: 72 },
   dayAddText: { color: colors.cyan, fontSize: 13, fontWeight: '700' },
   builderLead: { color: colors.text, fontSize: 16, fontWeight: '800', marginBottom: 4, paddingHorizontal: 2 },
