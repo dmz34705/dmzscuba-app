@@ -239,15 +239,13 @@ function ItineraryDays({ plan, onEditLeg, onAddToDay }) {
       {timeline.days.map((day) => (
         <View key={day.date} style={styles.day}>
           <Text style={styles.dayLabel}>DAY {day.index} · {formatDay(day.date, { weekday: true }).toUpperCase()}</Text>
-          {day.starts.map((leg) => (
-            <View key={leg.id}>
-              <LegRow leg={leg} onPress={() => onEditLeg(leg)} />
-              {connections.has(leg.id) ? <LayoverRow {...connections.get(leg.id)} /> : null}
+          {day.entries.map(({ leg, variant }) => (
+            <View key={`${leg.id}-${variant}`}>
+              <LegRow leg={leg} onPress={() => onEditLeg(leg)} variant={variant} />
+              {variant === 'start' && connections.has(leg.id) ? <LayoverRow {...connections.get(leg.id)} /> : null}
             </View>
           ))}
-          {day.ends.map((leg) => <LegRow key={`${leg.id}-end`} leg={leg} onPress={() => onEditLeg(leg)} variant="end" />)}
-          {day.continuing.map((leg) => <LegRow key={`${leg.id}-on`} leg={leg} onPress={() => onEditLeg(leg)} variant="continuing" />)}
-          {!day.starts.length && !day.ends.length && !day.continuing.length && !onAddToDay ? <Text style={styles.dayEmpty}>Nothing planned</Text> : null}
+          {!day.entries.length && !onAddToDay ? <Text style={styles.dayEmpty}>Nothing planned</Text> : null}
           {onAddToDay ? (
             <Pressable accessibilityLabel={`Add to day ${day.index}`} accessibilityRole="button" onPress={() => onAddToDay(day)} style={({ pressed }) => [styles.dayAdd, pressed && styles.rowPressed]}>
               <Text style={styles.dayAddText}>+ Add to this day</Text>

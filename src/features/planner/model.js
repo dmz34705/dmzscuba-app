@@ -262,9 +262,25 @@ export function planTimeline(plan) {
     const starts = legs.filter((leg) => leg.startDate === date);
     const continuing = legs.filter((leg) => leg.startDate && leg.startDate < date && spansDays(leg.type) && (leg.endDate || leg.startDate) > date);
     const ends = legs.filter((leg) => leg.endDate === date && leg.startDate !== date && spansDays(leg.type));
-    days.push({ date, index, starts, continuing, ends });
+    days.push({ date, index, starts, continuing, ends, entries: dayEntries(starts, ends, continuing) });
   }
   return { days, undated };
+}
+
+// One day's itinerary in the order it happens: what's already underway (on board, staying, a rental
+// car) first, then everything with a time — a 1 PM disembark before a 2 PM hotel check-in — and
+// untimed items last, endings before beginnings (you check out of one place before checking in).
+export function dayEntries(starts, ends, continuing) {
+  const timed = (variant, leg) => {
+    const minutes = minutesOf(variant === 'end' ? leg.endTime : leg.startTime);
+    return { leg, variant, key: minutes ?? (variant === 'end' ? 2000 : 2001) };
+  };
+  return [
+    ...continuing.map((leg) => ({ leg, variant: 'continuing', key: -1 })),
+    ...[...ends.map((leg) => timed('end', leg)), ...starts.map((leg) => timed('start', leg))]
+      // Stable: at the same minute, endings still come first.
+      .sort((a, b) => a.key - b.key || (a.variant === 'end' ? -1 : 0) - (b.variant === 'end' ? -1 : 0)),
+  ].map(({ leg, variant }) => ({ leg, variant }));
 }
 
 // --- readiness --------------------------------------------------------------

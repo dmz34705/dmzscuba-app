@@ -164,6 +164,29 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   assert.ok(find(P.planAlerts(trip, {}, now), 'nights-'), 'A rental car does not cover the nights.');
 }
 
+// A day reads in the order it happens: disembarking at 1 PM comes before a 2 PM hotel check-in.
+{
+  const trip = P.normalizePlan({ kind: 'trip', startDate: '2026-03-13', endDate: '2026-03-20', segments: [
+    { id: 'boat', type: 'liveaboard', title: 'Sea Spirit', startDate: '2026-03-13', startTime: '16:00', endDate: '2026-03-18', endTime: '13:00' },
+    { id: 'resort', type: 'stay', title: 'Kalima Resort', startDate: '2026-03-18', startTime: '14:00', endDate: '2026-03-20' },
+    { id: 'car', type: 'car', title: 'SUV', startDate: '2026-03-17', endDate: '2026-03-19' },
+    { id: 'dinner', type: 'other', title: 'Dinner', startDate: '2026-03-18', startTime: '19:30' },
+    { id: 'tour', type: 'activity', title: 'Old town walk', startDate: '2026-03-18' },
+  ] }, now);
+  const day = P.planTimeline(trip).days.find((entry) => entry.date === '2026-03-18');
+  assert.deepEqual(day.entries.map(({ leg, variant }) => `${leg.id}:${variant}`),
+    ['car:continuing', 'boat:end', 'resort:start', 'dinner:start', 'tour:start'],
+    'Underway first, then by time (1 PM disembark, 2 PM check-in, 7:30 PM dinner), untimed last.');
+  const sameMinute = P.dayEntries(
+    [P.normalizeSegment({ id: 'in', type: 'stay', startDate: '2026-03-18', startTime: '12:00' })],
+    [P.normalizeSegment({ id: 'out', type: 'stay', startDate: '2026-03-15', endDate: '2026-03-18', endTime: '12:00' })], []);
+  assert.deepEqual(sameMinute.map(({ leg }) => leg.id), ['out', 'in'], 'At the same time, checking out comes before checking in.');
+  const untimed = P.dayEntries(
+    [P.normalizeSegment({ id: 'in', type: 'stay', startDate: '2026-03-18' })],
+    [P.normalizeSegment({ id: 'out', type: 'stay', startDate: '2026-03-15', endDate: '2026-03-18' })], []);
+  assert.deepEqual(untimed.map(({ leg }) => leg.id), ['out', 'in'], 'Without times, endings still come before beginnings.');
+}
+
 // Flight bookings: connections, layovers, return flights and replacing a booking's legs.
 {
   const out1 = P.normalizeSegment({ id: 'f1', type: 'flight', title: 'UA 1234', from: 'ORD', to: 'IAH', startDate: '2026-11-07', startTime: '06:00', endDate: '2026-11-07', endTime: '08:45', booking: 'b1', provider: 'United', reference: 'ABC123' });
