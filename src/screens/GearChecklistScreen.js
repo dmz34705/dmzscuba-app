@@ -1186,10 +1186,10 @@ function GearItemDetail({ item, items, setups, onBack, onEdit, onOpenAccessory, 
 export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSettings }) {
   const gear = useGearChecklist();
   const packing = usePlanPacking();
-  // Plans change in the planner; re-read them whenever setups are shown.
-  useEffect(() => { if (tab === 'setups' || route.name === 'setup') packing.refresh(); }, [tab, route.name, route.setupId]); // eslint-disable-line react-hooks/exhaustive-deps
   const [tab, setTab] = useState('inventory');
   const [route, setRoute] = useState({ name: 'home' });
+  // Plans change in the planner; re-read them whenever setups are shown.
+  useEffect(() => { if (tab === 'setups' || route.name === 'setup') packing.refresh(); }, [tab, route.name, route.setupId]); // eslint-disable-line react-hooks/exhaustive-deps
   const activeItem = route.itemId ? gear.state.items.find((item) => item.id === route.itemId) : null;
   const activeSetup = route.setupId ? gear.state.setups.find((setup) => setup.id === route.setupId) : null;
 

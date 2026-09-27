@@ -453,6 +453,13 @@ assert.equal(model.setupRequirements({ ...review, itemIds: [] }, kit).find((req)
 assert.equal(model.setupQuestions(model.resetSetupReview(review), kit).length, 1, 'review again asks again');
 assert.equal(normalizeGearSetup({ ...review, type: 'Doubles' }).completeness.done, false, 'changing the setup type starts a fresh review');
 assert.match(screen, /if \(!setup\.itemIds\.length\) return null;/, 'an empty setup hides the setup-check UI until gear is added');
+// The plan-refresh effect reads `tab` and `route`, so it must come after they're declared
+// (before, `route` is undefined on device and opening the Gear Locker crashes).
+{
+  const body = screen.slice(screen.indexOf('export default function GearChecklistScreen'));
+  assert.ok(body.indexOf("const [route, setRoute] = useState") < body.indexOf('packing.refresh()'), 'route and tab are declared before the effect that reads them');
+}
+
 // The quick-dive checklist (no trip planned) clears itself once the dive is over.
 {
   const setup = normalizeGearSetup({ id: 'qs', name: 'Quick', itemIds: ['a', 'b'] });
