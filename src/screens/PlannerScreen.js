@@ -2,14 +2,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { Alert, BackHandler, Linking, Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Path } from 'react-native-svg';
 
 import { ScreenHeader } from '../components/AppShell';
 import DateField from '../components/DateField';
 import { ProgressBar } from '../components/Ui';
 import { checklistEntriesForItem, includedWithSelection, setupProgress } from '../features/gearChecklist/model';
 import FlightBookingEditor from '../features/planner/FlightBookingEditor';
-import ImportFlightsSheet from '../features/planner/flightImport/ImportFlightsSheet';
+import Glyph from '../features/planner/Glyph';
+import ImportReviewSheet from '../features/planner/bookingImport/ImportReviewSheet';
+import ImportSheet from '../features/planner/bookingImport/ImportSheet';
+import { applyImport, planImport } from '../features/planner/bookingImport/planImport';
 import PlanEditor from '../features/planner/PlanEditor';
 import SegmentEditor from '../features/planner/SegmentEditor';
 import usePlanner from '../features/planner/usePlanner';
@@ -23,20 +25,6 @@ import { colors, radii, spacing } from '../theme';
 
 const TONES = { danger: colors.danger, warning: colors.warning, info: colors.cyan, good: colors.good };
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-const GLYPHS = {
-  flight: 'M3 13.5 21 6l-4.5 15-4.2-6.3L3 13.5Zm9.3 1.2L21 6',
-  transfer: 'M5 16.5h14M6.5 16.5 8 11h8l1.5 5.5M5 16.5v2h2.5v-2m9 0v2H19v-2',
-  ferry: 'M3 18c2 1.4 4 1.4 6 0s4-1.4 6 0 4 1.4 6 0M5 15l1-5h12l1 5M9.5 10V6.5h5V10',
-  stay: 'M3 18V7m0 7h18v4m0-4v-1.5A2.5 2.5 0 0 0 18.5 10H11v4M7 12.5h.01',
-  liveaboard: 'M3 18c2 1.4 4 1.4 6 0s4-1.4 6 0 4 1.4 6 0M4 15h16l-2 -4H6l-2 4ZM8 11V7h5l3 4',
-  diving: 'M4 9h16v4.5a2.5 2.5 0 0 1-2.5 2.5H15l-3-2-3 2H6.5A2.5 2.5 0 0 1 4 13.5V9Z',
-  other: 'M12 8v8M8 12h8',
-  check: 'M5 12.5 10 17l9-10',
-  import: 'M12 4v11m0 0-4-4m4 4 4-4M5 19h14',
-};
-const Glyph = ({ name, color = colors.cyan, size = 18 }) => (
-  <Svg width={size} height={size} viewBox="0 0 24 24" fill="none"><Path d={GLYPHS[name] || GLYPHS.other} stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>
-);
 
 function DateBlock({ date, tone = colors.cyan }) {
   const day = parseDay(date);
@@ -165,8 +153,10 @@ function AlertRow({ alert, onAction, last }) {
 function LegRow({ leg, onPress, variant = 'start' }) {
   const type = SEGMENT_TYPES[leg.type];
   const time = variant === 'end' ? formatTime(leg.endTime) : formatTime(leg.startTime);
-  const title = variant === 'continuing' ? `Staying · ${leg.title || leg.provider || type.label}` : variant === 'end' ? `${leg.type === 'stay' ? 'Check out' : 'Disembark'} · ${leg.title || leg.provider || type.label}` : leg.title || leg.provider || type.label;
-  const route = leg.type === 'flight' || leg.type === 'transfer' || leg.type === 'ferry' ? [leg.from, leg.to].filter(Boolean).join(' → ') : leg.from;
+  const name = leg.title || leg.provider || type.label;
+  const car = leg.type === 'car';
+  const title = variant === 'continuing' ? `${car ? 'Rental car' : leg.type === 'liveaboard' ? 'On board' : 'Staying'} · ${name}` : variant === 'end' ? `${car ? 'Return car' : leg.type === 'stay' ? 'Check out' : 'Disembark'} · ${name}` : car && !leg.title ? `Pick up car · ${name}` : name;
+  const route = leg.type === 'flight' || leg.type === 'transfer' || leg.type === 'ferry' || (car && leg.to && leg.to !== leg.from) ? [leg.from, leg.to].filter(Boolean).join(' → ') : leg.from;
   const arrival = variant === 'start' && leg.endTime && (leg.type === 'flight' || leg.type === 'transfer' || leg.type === 'ferry') ? `arrives ${formatTime(leg.endTime)}${leg.endDate && leg.endDate !== leg.startDate ? ` (${formatDay(leg.endDate)})` : ''}` : '';
   const sub = variant === 'start' ? [route, arrival, leg.type !== 'flight' && leg.provider && leg.provider !== title ? leg.provider : leg.type === 'flight' ? leg.provider : '', leg.dives ? `${leg.dives} dives` : '', leg.reference ? `Conf. ${leg.reference}` : ''].filter(Boolean).join(' · ') : '';
   return (
@@ -305,7 +295,7 @@ function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onImport, onDone }) {
           {onImport ? (
             <Pressable accessibilityRole="button" onPress={onImport} style={({ pressed }) => [styles.quickButton, pressed && styles.pressed]}>
               <Glyph name="import" />
-              <View style={styles.flex}><Text style={styles.quickTitle}>Import</Text><Text style={styles.quickBody}>From a confirmation email</Text></View>
+              <View style={styles.flex}><Text style={styles.quickTitle}>Import booking</Text><Text style={styles.quickBody}>Flights, hotel, car, tours</Text></View>
             </Pressable>
           ) : null}
         </View>
@@ -355,6 +345,8 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
   // The flight booking being edited: { flights, previousIds, source?, issues? }.
   const [booking, setBooking] = useState(null);
   const [importing, setImporting] = useState(false);
+  // What an import found, fitted to this trip, waiting for review: { review, source, issues }.
+  const [imported, setImported] = useState(null);
   const [pickSetup, setPickSetup] = useState(false);
   const [task, setTask] = useState('');
   const alerts = planner.alertsFor(plan);
@@ -395,18 +387,13 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
     setSegment(null);
     setTimeout(() => openFlights([normalizeSegment({ ...draft, booking: createBookingId() })], previousIds), 450);
   };
-  // Imported flights open in the flight editor for review, once the import sheet has closed.
+  // Whatever the import found opens for review once the import sheet has slid away.
   const reviewImport = (result) => {
     setImporting(false);
-    // Same confirmation already on the trip (a schedule change, or importing twice): replace it.
-    const planFlights = plan.segments.filter((leg) => leg.type === 'flight');
-    const sameBooking = result.reference ? planFlights.filter((leg) => leg.reference && leg.reference.toUpperCase() === result.reference.toUpperCase()) : [];
-    const replaced = sameBooking.length ? sameBooking : planFlights.filter((leg) => result.flights.some((flight) => flight.title === leg.title && flight.startDate === leg.startDate));
-    const bookingId = replaced.find((leg) => leg.booking)?.booking || createBookingId();
-    const flights = result.flights.map((flight) => normalizeSegment({ ...flight, type: 'flight', booking: bookingId }));
-    const note = replaced.length ? [`Saving replaces the ${replaced.length === 1 ? 'flight' : `${replaced.length} flights`} already on this trip${sameBooking.length ? ` with confirmation ${result.reference}` : ''}.`] : [];
-    setTimeout(() => openFlights(flights, replaced.map((leg) => leg.id), { source: result.source, issues: [...result.issues, ...note] }), 450);
+    const review = planImport(plan, result.items);
+    setTimeout(() => setImported({ review, source: result.source, issues: result.issues }), 450);
   };
+  const addImported = (rows, extend) => { planner.savePlan(applyImport(plan, rows, extend)).catch((error) => Alert.alert('Not saved', error?.message || 'Try again.')); setImported(null); };
   const saveFlights = (flights) => { save({ segments: replaceFlights(plan.segments, booking.previousIds, flights) }); setBooking(null); };
   const removeFlights = () => { save({ segments: replaceFlights(plan.segments, booking.previousIds, []) }); setBooking(null); };
   const addTask = () => { const label = task.trim(); if (!label) return; save({ tasks: [...plan.tasks, { label }] }); setTask(''); };
@@ -435,7 +422,8 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
         source={booking?.source || ''}
         visible={Boolean(booking)}
       />
-      <ImportFlightsSheet onCancel={() => setImporting(false)} onResult={reviewImport} signedIn={signedIn} visible={importing} />
+      <ImportSheet onCancel={() => setImporting(false)} onResult={reviewImport} signedIn={signedIn} visible={importing} />
+      <ImportReviewSheet issues={imported?.issues || []} onCancel={() => setImported(null)} onSave={addImported} plan={plan} review={imported?.review || null} source={imported?.source || ''} visible={Boolean(imported)} />
       <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save({ setupId }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
     </>
   );
@@ -577,6 +565,9 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
               {plan.segments.length ? <ItineraryDays onEditLeg={editLeg} plan={plan} /> : <Text style={styles.empty}>Add your flights, transfers, stays and dive days to build the trip day by day.</Text>}
               <Pressable accessibilityRole="button" onPress={() => onPage('itinerary')} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}>
                 <Text style={styles.sectionAction}>{plan.segments.length ? 'Edit itinerary ›' : '+ Build your itinerary'}</Text>
+              </Pressable>
+              <Pressable accessibilityRole="button" onPress={() => setImporting(true)} style={({ pressed }) => [styles.addRow, styles.addRowSplit, pressed && styles.rowPressed]}>
+                <Text style={styles.sectionAction}>Import a booking from email</Text>
               </Pressable>
             </View>
           </Section>
@@ -804,6 +795,7 @@ const styles = StyleSheet.create({
   legTitle: { color: colors.text, fontSize: 15, fontWeight: '700', lineHeight: 20, paddingTop: 5 },
   legTitleQuiet: { color: colors.muted, fontSize: 13, fontWeight: '600' },
   legSub: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 2 },
+  addRowSplit: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth },
   addRow: { alignItems: 'center', justifyContent: 'center', minHeight: 52, paddingHorizontal: 14 },
   packHead: { alignItems: 'center', flexDirection: 'row', gap: 12, paddingHorizontal: 14, paddingVertical: 12 },
   packPercent: { color: colors.cyan, fontSize: 20, fontWeight: '900' },

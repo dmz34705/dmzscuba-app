@@ -154,6 +154,16 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   console.log('Site search and My sites checks passed.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });
 
+// Rental cars show on every day they cover but are not somewhere to sleep; activities are one-offs.
+{
+  const car = P.normalizeSegment({ id: 'car', type: 'car', title: 'Compact SUV', startDate: '2026-11-07', endDate: '2026-11-10' });
+  assert.equal(car.endDate, '2026-11-10', 'A rental car keeps its drop-off date.');
+  const trip = P.normalizePlan({ kind: 'trip', startDate: '2026-11-07', endDate: '2026-11-10', segments: [car, { type: 'activity', title: 'Cenote tour', startDate: '2026-11-08' }] }, now);
+  const days = P.planTimeline(trip).days;
+  assert.deepEqual(days.map((day) => [day.starts.length, day.continuing.length, day.ends.length]), [[1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 1]], 'Car picked up, carried through, returned.');
+  assert.ok(find(P.planAlerts(trip, {}, now), 'nights-'), 'A rental car does not cover the nights.');
+}
+
 // Flight bookings: connections, layovers, return flights and replacing a booking's legs.
 {
   const out1 = P.normalizeSegment({ id: 'f1', type: 'flight', title: 'UA 1234', from: 'ORD', to: 'IAH', startDate: '2026-11-07', startTime: '06:00', endDate: '2026-11-07', endTime: '08:45', booking: 'b1', provider: 'United', reference: 'ABC123' });

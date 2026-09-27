@@ -14,7 +14,9 @@ const PLACEHOLDERS = {
   stay: { title: 'Hotel name', from: 'Address', provider: 'Booking site or hotel' },
   liveaboard: { title: 'Vessel name', from: 'Port', to: 'Port', provider: 'Operator' },
   diving: { title: 'Palancar & Columbia', from: 'Hotel dock, 8:00', to: 'Reef names', provider: 'Dive shop' },
-  other: { title: 'Rental car, tour, dinner…', from: 'Where', provider: 'Company' },
+  car: { title: 'Compact SUV', from: 'CZM airport', to: 'CZM airport', provider: 'Hertz' },
+  activity: { title: 'Snorkel & cenote tour', from: 'Hotel lobby pick-up', provider: 'Tour company' },
+  other: { title: 'Dinner, spa, anything else', from: 'Where', provider: 'Company' },
 };
 
 // One leg of a trip: a flight, a transfer, a night's stay, a day of diving…
@@ -30,8 +32,8 @@ export default function SegmentEditor({ segment, visible, onCancel, onSave, onDe
     if (!draft.startDate) { Alert.alert('Add a date', 'Choose when this happens so it lands on the right day of the trip.'); return; }
     onSave(normalizeSegment(draft));
   };
-  const startLabel = { flight: 'Departs', stay: 'Check in', liveaboard: 'Embark', transfer: 'Pick-up', ferry: 'Departs' }[draft.type] || 'Date';
-  const endLabel = { flight: 'Arrives', stay: 'Check out', liveaboard: 'Disembark', transfer: 'Arrives', ferry: 'Arrives' }[draft.type] || 'Ends';
+  const startLabel = { flight: 'Departs', stay: 'Check in', liveaboard: 'Embark', transfer: 'Pick-up', ferry: 'Departs', car: 'Pick-up', activity: 'Starts' }[draft.type] || 'Date';
+  const endLabel = { flight: 'Arrives', stay: 'Check out', liveaboard: 'Disembark', transfer: 'Arrives', ferry: 'Arrives', car: 'Drop-off' }[draft.type] || 'Ends';
   return (
     <EditorSheet eyebrow="ITINERARY" onCancel={onCancel} onSave={save} title={segment?.title ? 'Edit' : `Add ${type.label.toLowerCase()}`} visible={visible}
       footer={onDelete ? (

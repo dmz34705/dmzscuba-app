@@ -73,7 +73,7 @@
     "test:atlas-journey": "node scripts/verify-atlas-journey.cjs",
     "test:atlas-species": "node scripts/verify-atlas-species.cjs",
     "test:planner": "node scripts/verify-planner.cjs",
-    "test:flight-import": "node scripts/verify-flight-import.cjs",
+    "test:booking-import": "node scripts/verify-booking-import.cjs",
     "test:site-dives": "node scripts/verify-site-dives.cjs",
     "preview:ocean-atlas": "node scripts/preview-ocean-atlas.cjs"
   },

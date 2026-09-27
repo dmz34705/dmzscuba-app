@@ -15,8 +15,13 @@ export const SEGMENT_TYPES = Object.freeze({
   stay: { label: 'Stay', from: 'Address', to: '', provider: 'Hotel or resort', ends: true, overnight: true },
   liveaboard: { label: 'Liveaboard', from: 'Embarks', to: 'Disembarks', provider: 'Vessel', ends: true, overnight: true, diving: true },
   diving: { label: 'Dive day', from: 'Meeting point', to: 'Dive sites', provider: 'Dive operator', ends: false, diving: true },
+  // A rental car runs across days (shown on each) but is not somewhere to sleep.
+  car: { label: 'Rental car', from: 'Pick-up', to: 'Drop-off', provider: 'Rental company', ends: true, spans: true },
+  activity: { label: 'Activity', from: 'Meeting point', to: '', provider: 'Operator', ends: true },
   other: { label: 'Other', from: 'Where', to: '', provider: 'Provider', ends: true },
 });
+// Shown across every day it covers: overnight stays, liveaboards and rental cars.
+export const spansDays = (type) => Boolean(SEGMENT_TYPES[type]?.overnight || SEGMENT_TYPES[type]?.spans);
 
 // Certifications an operator may ask for, matched against the cards on the diver's profile.
 // Higher levels include the ones below them (a Rescue Diver satisfies "Advanced").
@@ -255,8 +260,8 @@ export function planTimeline(plan) {
   const days = [];
   for (let date = start, index = 1; date && date <= last && index <= 120; date = addDays(date, 1), index++) {
     const starts = legs.filter((leg) => leg.startDate === date);
-    const continuing = legs.filter((leg) => leg.startDate && leg.startDate < date && SEGMENT_TYPES[leg.type].overnight && (leg.endDate || leg.startDate) > date);
-    const ends = legs.filter((leg) => leg.endDate === date && leg.startDate !== date && SEGMENT_TYPES[leg.type].overnight);
+    const continuing = legs.filter((leg) => leg.startDate && leg.startDate < date && spansDays(leg.type) && (leg.endDate || leg.startDate) > date);
+    const ends = legs.filter((leg) => leg.endDate === date && leg.startDate !== date && spansDays(leg.type));
     days.push({ date, index, starts, continuing, ends });
   }
   return { days, undated };

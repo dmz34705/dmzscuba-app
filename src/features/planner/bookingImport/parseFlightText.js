@@ -48,7 +48,7 @@ function withYear(month, day, year, today) {
   return guess && guess < addDay(base, -60) ? isoDate(Number(base.slice(0, 4)) + 1, month, day) : guess;
 }
 
-function findDates(text, today) {
+export function findDates(text, today) {
   const found = [];
   const push = (index, value) => { if (value) found.push({ index, value }); };
   const monthIndex = (name) => MONTHS.indexOf(name.slice(0, 3).toLowerCase()) + 1;
@@ -67,7 +67,7 @@ function findDates(text, today) {
   return found.sort((a, b) => a.index - b.index).filter((entry, i, all) => i === 0 || entry.index - all[i - 1].index > 3);
 }
 
-function findTimes(text) {
+export function findTimes(text) {
   const found = [];
   // Colon times only: "12.50" is usually a price.
   const re = /\b([01]?\d|2[0-3]):([0-5]\d)(?!\d)\s*([ap])?\.?\s*(m\b\.?)?/gi;
@@ -107,7 +107,7 @@ function findFlightNumbers(text, fallbackCode) {
   return found.sort((a, b) => a.index - b.index).filter((entry, i, all) => i === 0 || entry.index - all[i - 1].index > 25 || `${entry.code}${entry.number}` !== `${all[i - 1].code}${all[i - 1].number}`);
 }
 
-function mostMentionedAirline(text) {
+export function mostMentionedAirline(text) {
   let best = '', count = 0;
   for (const [code, name] of Object.entries(AIRLINES)) {
     const hits = (text.match(new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi')) || []).length;
@@ -116,7 +116,7 @@ function mostMentionedAirline(text) {
   return best;
 }
 
-function findConfirmation(text) {
+export function findConfirmation(text) {
   const re = /\b(?:confirmation(?:\s+(?:number|code|#))?|record\s+locator|booking\s+(?:reference|code|number)|reservation\s+(?:code|number)|trip\s+confirmation|PNR)\b\s*(?:is|:|#|-)?\s*:?\s*([A-Z0-9]{6})\b/gi;
   let m;
   while ((m = re.exec(text))) {

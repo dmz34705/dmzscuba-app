@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import { smartImportFlights } from '../../../lib/flightImportApi';
+import { smartImportBooking } from '../../../lib/bookingImportApi';
 import { colors, radii } from '../../../theme';
 import { EditorSheet } from '../fields';
 import { todayString } from '../model';
-import { readConfirmation } from './readConfirmation';
+import { readBooking } from './readBooking';
 
 const MAX_PDF_BYTES = 6 * 1024 * 1024;
 
@@ -29,9 +29,9 @@ async function pickConfirmationFile() {
   return { name: asset.name || 'Email', raw: await file.text() };
 }
 
-// Paste an airline confirmation or choose the saved email / PDF; `onResult` gets the flights to
-// review in the flight editor.
-export default function ImportFlightsSheet({ visible, signedIn, onCancel, onResult }) {
+// Paste any booking confirmation — airline, hotel, rental car, liveaboard, tour — or choose the
+// saved email / PDF; `onResult` gets the itinerary items to review.
+export default function ImportSheet({ visible, signedIn, onCancel, onResult }) {
   const [text, setText] = useState('');
   const [file, setFile] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -45,8 +45,8 @@ export default function ImportFlightsSheet({ visible, signedIn, onCancel, onResu
   const read = async () => {
     setBusy(true); setError('');
     try {
-      const result = await readConfirmation({
-        raw: file?.raw || text, pdfBase64: file?.pdfBase64 || '', signedIn, today: todayString(), smartImport: smartImportFlights,
+      const result = await readBooking({
+        raw: file?.raw || text, pdfBase64: file?.pdfBase64 || '', signedIn, today: todayString(), smartImport: smartImportBooking,
       });
       onResult(result);
     } catch (nextError) {
@@ -58,8 +58,8 @@ export default function ImportFlightsSheet({ visible, signedIn, onCancel, onResu
   const ready = Boolean(file || text.trim()) && !busy;
 
   return (
-    <EditorSheet eyebrow="FLIGHTS" onCancel={onCancel} onSave={read} saveDisabled={!ready} saveLabel="Read" title="Import from email" visible={visible}>
-      <Text style={styles.lead}>Paste your airline’s confirmation email, or choose the saved email or PDF receipt. You’ll check every flight before it’s added.</Text>
+    <EditorSheet eyebrow="ITINERARY" onCancel={onCancel} onSave={read} saveDisabled={!ready} saveLabel="Read" title="Import from email" visible={visible}>
+      <Text style={styles.lead}>Paste a booking confirmation — flights, hotel, rental car, liveaboard, tour or dive booking — or choose the saved email or PDF. You’ll check everything before it’s added.</Text>
       {file ? (
         <View style={styles.file}>
           <Text numberOfLines={1} style={styles.fileName}>{file.pdfBase64 ? 'PDF · ' : 'Email · '}{file.name}</Text>
@@ -84,12 +84,12 @@ export default function ImportFlightsSheet({ visible, signedIn, onCancel, onResu
           <Text style={styles.link}>Choose a file (.eml or PDF)</Text>
         </Pressable>
       ) : null}
-      {busy ? <View style={styles.busy}><ActivityIndicator color={colors.cyan} /><Text style={styles.busyText}>Reading your confirmation…</Text></View> : null}
+      {busy ? <View style={styles.busy}><ActivityIndicator color={colors.cyan} /><Text style={styles.busyText}>Reading your booking…</Text></View> : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <Text style={styles.tip}>In Mail, press and hold the message text, tap Select All, then Copy. Forwarded emails work too.</Text>
       <Text style={styles.privacy}>
         Emails are read on this phone first. {signedIn
-          ? 'If it can’t fill in every flight — or you choose a PDF — smart import sends the email to DMZ Scuba’s server, which uses Google Gemini to read it. Nothing is kept.'
+          ? 'If it can’t fill in everything — or you choose a PDF — smart import sends the email to DMZ Scuba’s server, which uses Google Gemini to read it. Nothing is kept.'
           : 'Sign in to your DMZ account to turn on smart import for emails this phone can’t read, and for PDFs.'}
       </Text>
     </EditorSheet>
