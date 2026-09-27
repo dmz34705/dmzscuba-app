@@ -7,7 +7,8 @@ const root = path.join(__dirname, '..');
 const srcRoot = path.join(root, 'src');
 const model = loadSourceModule(path.join(srcRoot, 'features/compassNav/model.js'), srcRoot);
 const {
-  HOLD_ON_COURSE_DEG, RECAP, SECTION_NAMES, SIDE_WINDOW_LEVEL_TOLERANCE, STEPS, angularDiff, bezelAim,
+  HOLD_ON_COURSE_DEG, RECAP, SECTION_NAMES, SIDE_WINDOW_LEVEL_TOLERANCE,
+  SIDE_WINDOW_UPRIGHT_TOLERANCE, STEPS, angularDiff, bezelAim,
   bezelCourse, buildLessonSteps, gateMet, generatePracticeHeadings, holdBearing,
   legBearing, norm360, paceAllowed, reciprocal, sideWindowLevel, sideWindowTicks,
   stepHeading, turnTo, visibleSteps,
@@ -27,8 +28,23 @@ assert.equal(bezelCourse(240), 120, 'screen rotation 240 stores course 120');
 const windowTicks = sideWindowTicks(358, 2);
 assert.deepEqual(windowTicks.map(({ value }) => value), [350, 355, 0, 5, 10], 'side window wraps smoothly across north');
 assert.deepEqual(windowTicks.map(({ delta }) => delta), [-8, -3, 2, 7, 12]);
-assert.equal(sideWindowLevel({ x: 0 }).level, true);
-assert.equal(sideWindowLevel({ x: Math.sin((SIDE_WINDOW_LEVEL_TOLERANCE + 1) * Math.PI / 180) }).level, false);
+assert.equal(sideWindowLevel({ x: 0, y: -1, z: 0 }).level, true, 'upright portrait is camera-level');
+assert.equal(sideWindowLevel({ x: 0, y: 0, z: -1 }).level, false, 'flat phone must fail camera mode');
+assert.equal(sideWindowLevel({
+  x: Math.sin((SIDE_WINDOW_LEVEL_TOLERANCE + 1) * Math.PI / 180),
+  y: -Math.cos((SIDE_WINDOW_LEVEL_TOLERANCE + 1) * Math.PI / 180),
+  z: 0,
+}).level, false, 'upright phone rolled sideways must fail');
+assert.equal(sideWindowLevel({
+  x: 0,
+  y: -Math.cos((SIDE_WINDOW_UPRIGHT_TOLERANCE + 1) * Math.PI / 180),
+  z: Math.sin((SIDE_WINDOW_UPRIGHT_TOLERANCE + 1) * Math.PI / 180),
+}).level, false, 'phone too far off vertical must fail');
+assert.equal(sideWindowLevel({
+  x: 0,
+  y: -Math.cos((SIDE_WINDOW_UPRIGHT_TOLERANCE - 1) * Math.PI / 180),
+  z: Math.sin((SIDE_WINDOW_UPRIGHT_TOLERANCE - 1) * Math.PI / 180),
+}).level, true, 'small forward/back sighting angle remains usable');
 
 // Random drill headings are rounded to tens and always at least 90 degrees apart.
 for (let index = 0; index < 100; index += 1) {
@@ -131,6 +147,7 @@ assert.equal(paceAllowed(walkBack, { heading: 120 }), false);
 
 // --- screen wiring: guided + free explore --------------------------------
 const screen = fs.readFileSync(path.join(srcRoot, 'screens/CompassNavScreen.js'), 'utf8');
+const headingHook = fs.readFileSync(path.join(srcRoot, 'features/compassNav/useCompassHeading.js'), 'utf8');
 assert.match(screen, /generatePracticeHeadings/);
 assert.match(screen, /buildLessonSteps/);
 assert.match(screen, /lessonMode/);
@@ -138,6 +155,9 @@ assert.match(screen, /EXPLORE/);
 assert.match(screen, /FREE PRACTICE/);
 assert.match(screen, /GUIDED LESSON/);
 assert.match(screen, /SideWindowCamera/);
+assert.match(screen, /levelMode: cameraMode \? 'sideWindow' : 'flat'/);
+assert.match(headingHook, /levelMode === 'sideWindow'/);
+assert.match(headingHook, /!sideWindowLevel\(tiltVec\)\.level/);
 assert.match(screen, /CAMERA/);
 assert.match(screen, /reciprocalBezel/);
 assert.match(screen, /Bezel north is on card south/);

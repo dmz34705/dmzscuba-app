@@ -42,7 +42,10 @@ export default function CompassNavScreen({ onBack }) {
   const [consoleHeight, setConsoleHeight] = useState(200);
   const [manual, setManual] = useState(false);
   const [cameraMode, setCameraMode] = useState(false);
-  const compass = useCompassHeading({ manual: manual && !cameraMode });
+  const compass = useCompassHeading({
+    manual: manual && !cameraMode,
+    levelMode: cameraMode ? 'sideWindow' : 'flat',
+  });
 
   const [lessonMode, setLessonMode] = useState('guided');
   // Every visit opens on the landing page, then the guided lesson or free exploring.

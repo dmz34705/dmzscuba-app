@@ -23,6 +23,7 @@ export function turnTo(a, b) {
 
 export const HOLD_ON_COURSE_DEG = 18;
 export const SIDE_WINDOW_LEVEL_TOLERANCE = 6;
+export const SIDE_WINDOW_UPRIGHT_TOLERANCE = 20;
 
 // The side-window card is read as a horizontal strip. Return the nearby 5-degree
 // marks and their signed distance from the lubber line so the UI can smoothly
@@ -36,13 +37,22 @@ export function sideWindowTicks(heading, radius = 12) {
   });
 }
 
-// In camera mode the phone is held upright like a sighting window. Its sideways
-// gravity component is the useful level signal; forward/back pitch should not
-// make an otherwise level sight picture fail.
+// In camera mode the phone is held upright like a sighting window. Unlike the
+// normal compass view, level means both that the screen is mostly vertical and
+// that its top edge is not rolled left or right.
 export function sideWindowLevel(tiltVec = {}) {
   const x = Math.max(-1, Math.min(1, Number(tiltVec.x) || 0));
-  const roll = Math.asin(x) * (180 / Math.PI);
-  return { roll, level: Math.abs(roll) <= SIDE_WINDOW_LEVEL_TOLERANCE };
+  const y = Math.max(-1, Math.min(1, Number(tiltVec.y) || 0));
+  const z = Math.max(-1, Math.min(1, Number(tiltVec.z) || 0));
+  const roll = Math.atan2(x, Math.abs(y)) * (180 / Math.PI);
+  const uprightTilt = Math.asin(Math.abs(z)) * (180 / Math.PI);
+  return {
+    roll,
+    uprightTilt,
+    upright: uprightTilt <= SIDE_WINDOW_UPRIGHT_TOLERANCE,
+    level: uprightTilt <= SIDE_WINDOW_UPRIGHT_TOLERANCE
+      && Math.abs(roll) <= SIDE_WINDOW_LEVEL_TOLERANCE,
+  };
 }
 
 // Generate two ten-degree practice headings whose shortest separation is at

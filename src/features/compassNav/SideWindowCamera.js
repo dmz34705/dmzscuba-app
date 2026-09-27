@@ -141,7 +141,9 @@ export default function SideWindowCamera({ heading, tiltVec, sensorAvailable, on
             ? 'STARTING COMPASS SENSORS…'
             : level.level
               ? `● LEVEL  ·  READ ${headingLabel}°`
-              : `HOLD LEVEL  ·  ${Math.round(Math.abs(level.roll))}° ${level.roll > 0 ? 'RIGHT' : 'LEFT'}`}
+              : !level.upright
+                ? `HOLD PHONE UPRIGHT  ·  ${Math.round(level.uprightTilt)}° OFF VERTICAL`
+                : `STRAIGHTEN PHONE  ·  ${Math.round(Math.abs(level.roll))}° ${level.roll > 0 ? 'RIGHT' : 'LEFT'}`}
         </Text>
       </View>
 
@@ -157,7 +159,7 @@ export default function SideWindowCamera({ heading, tiltVec, sensorAvailable, on
       </View>
 
       <View style={styles.cameraControls}>
-        <Text style={styles.cameraHint}>Aim the center line at your target. Keep the card level before reading.</Text>
+        <Text style={styles.cameraHint}>Aim the center line at your target. Hold the phone upright without leaning it left or right.</Text>
         <Pressable accessibilityRole="button" accessibilityLabel="Close side-window camera" onPress={onClose} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>CLOSE CAMERA</Text>
         </Pressable>

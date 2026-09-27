@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { sideWindowLevel } from './model';
+
 // expo-location is linked into the app already (dive-site breadcrumb log), so
 // watchHeadingAsync works without a rebuild. expo-sensors was just added and
 // only exists after `npx expo run:ios` — require() both defensively, the same
@@ -25,18 +27,18 @@ const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
 /**
  * Live compass state for the navigation lesson.
- * @param {{ manual?: boolean }} opts  manual = drag/slider mode (simulator, or a
- *   phone with no magnetometer).
+ * @param {{ manual?: boolean, levelMode?: 'flat'|'sideWindow' }} opts
+ *   manual = drag/slider mode (simulator, or phone with no magnetometer).
  * @returns {{
- *   heading: number, tilt: number, tiltVec: {x:number,y:number}, locked: boolean,
+ *   heading: number, tilt: number, tiltVec: {x:number,y:number,z:number}, locked: boolean,
  *   available: { heading: boolean, tilt: boolean },
  *   setManualHeading: (d:number)=>void, setManualTilt: (deg:number)=>void,
  * }}
  */
-export default function useCompassHeading({ manual = false } = {}) {
+export default function useCompassHeading({ manual = false, levelMode = 'flat' } = {}) {
   const [sensorHeading, setSensorHeading] = useState(null);
   const [tilt, setTilt] = useState(0);
-  const [tiltVec, setTiltVec] = useState({ x: 0, y: 0 });
+  const [tiltVec, setTiltVec] = useState({ x: 0, y: 0, z: 1 });
   const [manualHeading, setManualHeadingState] = useState(0);
   const [manualTilt, setManualTilt] = useState(0);
   const [available, setAvailable] = useState({ heading: false, tilt: false });
@@ -80,14 +82,20 @@ export default function useCompassHeading({ manual = false } = {}) {
     const sub = Sensors.Accelerometer.addListener(({ x, y, z }) => {
       const mag = Math.hypot(x, y, z) || 1;
       setTilt(Math.acos(clamp(Math.abs(z) / mag, 0, 1)) * (180 / Math.PI));
-      setTiltVec({ x: clamp(x / mag, -1, 1), y: clamp(y / mag, -1, 1) });
+      setTiltVec({
+        x: clamp(x / mag, -1, 1),
+        y: clamp(y / mag, -1, 1),
+        z: clamp(z / mag, -1, 1),
+      });
       if (!got) { got = true; setAvailable((a) => ({ ...a, tilt: true })); }
     });
     return () => sub?.remove?.();
   }, [manual]);
 
   const effTilt = manual ? manualTilt : tilt;
-  const locked = effTilt > LOCK_TILT_DEG;
+  const locked = levelMode === 'sideWindow'
+    ? !sideWindowLevel(tiltVec).level
+    : effTilt > LOCK_TILT_DEG;
 
   let heading;
   if (manual) {
@@ -102,7 +110,7 @@ export default function useCompassHeading({ manual = false } = {}) {
   return {
     heading: norm(heading),
     tilt: effTilt,
-    tiltVec: manual ? { x: 0, y: -manualTilt / 45 } : tiltVec,
+    tiltVec: manual ? { x: 0, y: -manualTilt / 45, z: 1 } : tiltVec,
     locked,
     available: manual ? { heading: true, tilt: true } : available,
     setManualHeading: (d) => setManualHeadingState(norm(d)),
