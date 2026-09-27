@@ -263,11 +263,11 @@ console.log('Booking import checks passed: hotel, rental car, liveaboard, Viator
   const voucher = `Booking Voucher
 Travel details
 Booking nr
-AA351857
+LB123456
 Booking date
 10 October 2025
 Vessel
-Manta Queen 3
+Sea Spirit
 Itinerary
 Diving - North Andaman: Similan - Koh Bon - Koh Tachai - Surin - Richelieu - Boon Sung
 Wreck (Khao Lak - Khao Lak)
@@ -284,14 +284,14 @@ Return date
 Cabin type: Double En-Suite Cabin
 Received on 13 October 2025 via Credit Card
 Included: VAT, Airport Transfer, Hotel Transfer, Drinking Water
-LiveAboard.com B.V. | Reservation number: AA351857
-Name of the Organizer: Manta Queen Fleet`;
+LiveAboard.com B.V. | Reservation number: LB123456
+Name of the Organizer: Blue Reef Fleet`;
   const read = B.parseBookingText(voucher, { today: '2025-10-10' });
   assert.equal(read.kind, 'liveaboard');
   assert.ok(read.complete, read.issues.join(' '));
   const boat = read.items[0];
   assert.deepEqual([boat.title, boat.provider, boat.from, boat.to, boat.startDate, boat.startTime, boat.endDate, boat.endTime, boat.reference],
-    ['Manta Queen 3', 'Manta Queen Fleet', 'Khao Lak, Thailand', 'Khao Lak, Thailand', '2026-03-13', '16:00', '2026-03-18', '17:00', 'AA351857'],
+    ['Sea Spirit', 'Blue Reef Fleet', 'Khao Lak, Thailand', 'Khao Lak, Thailand', '2026-03-13', '16:00', '2026-03-18', '17:00', 'LB123456'],
     'Values below their labels, departure/return wording, and "4:00 - 4:30 pm" as 4 PM.');
   assert.match(boat.notes, /North Andaman/);
   // With only "6 Days / 5 Nights", the return is worked out.
