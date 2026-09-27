@@ -7,6 +7,8 @@ import { AIRLINES } from '../features/planner/bookingImport/parseFlightText';
 const IMPORT_API_URL = 'https://dmz-media-api.zacharylisowski55.workers.dev/api/planner/itinerary/parse';
 // The Worker allows about a minute (long PDFs, retries while Google is busy); wait a little longer.
 const REQUEST_TIMEOUT_MS = 65000;
+// Sending a 10-25MB PDF over a phone connection takes time before the server even starts reading.
+const PDF_TIMEOUT_MS = 150000;
 const TYPES = ['flight', 'stay', 'car', 'liveaboard', 'diving', 'activity', 'transfer', 'ferry', 'other'];
 const LABELS = { flight: 'Flight', stay: 'Hotel', car: 'Rental car', liveaboard: 'Liveaboard', diving: 'Dive booking', activity: 'Activity', transfer: 'Transfer', ferry: 'Ferry', other: 'Booking' };
 
@@ -46,7 +48,7 @@ export async function smartImportBooking({ text = '', pdfBase64 = '', referenceD
   let token;
   try { token = await getAccessToken(); } catch { throw new BookingImportError('Sign in to your DMZ account to use smart import.', 'AUTH_REQUIRED'); }
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), pdfBase64 ? PDF_TIMEOUT_MS : REQUEST_TIMEOUT_MS);
   let response, data;
   try {
     response = await fetch(IMPORT_API_URL, {

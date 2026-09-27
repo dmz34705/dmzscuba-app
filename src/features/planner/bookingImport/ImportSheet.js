@@ -7,7 +7,9 @@ import { EditorSheet } from '../fields';
 import { todayString } from '../model';
 import { readBooking } from './readBooking';
 
-const MAX_PDF_BYTES = 6 * 1024 * 1024;
+// Emails with photos export to 6-10MB+ PDFs; the server reads up to 25MB (large ones via Gemini's Files API).
+const MAX_PDF_BYTES = 25 * 1024 * 1024;
+const megabytes = (bytes) => (bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`);
 
 async function pickConfirmationFile() {
   let DocumentPicker, FileSystem;
@@ -23,8 +25,8 @@ async function pickConfirmationFile() {
   const file = new FileSystem.File(asset.uri);
   const pdf = /pdf/i.test(asset.mimeType || '') || /\.pdf$/i.test(asset.name || '');
   if (pdf) {
-    if (asset.size && asset.size > MAX_PDF_BYTES) throw new Error('That PDF is too large. Try the confirmation email instead.');
-    return { name: asset.name || 'Receipt.pdf', pdfBase64: await file.base64() };
+    if (asset.size && asset.size > MAX_PDF_BYTES) throw new Error(`That PDF is ${megabytes(asset.size)} — the limit is 25 MB. Try the confirmation email instead.`);
+    return { name: asset.name || 'Receipt.pdf', size: asset.size || 0, pdfBase64: await file.base64() };
   }
   return { name: asset.name || 'Email', raw: await file.text() };
 }
@@ -62,7 +64,7 @@ export default function ImportSheet({ visible, signedIn, onCancel, onResult }) {
       <Text style={styles.lead}>Paste a booking confirmation — flights, hotel, rental car, liveaboard, tour or dive booking — or choose the saved email or PDF. You’ll check everything before it’s added.</Text>
       {file ? (
         <View style={styles.file}>
-          <Text numberOfLines={1} style={styles.fileName}>{file.pdfBase64 ? 'PDF · ' : 'Email · '}{file.name}</Text>
+          <Text numberOfLines={1} style={styles.fileName}>{file.pdfBase64 ? `PDF${file.size ? ` · ${megabytes(file.size)}` : ''} · ` : 'Email · '}{file.name}</Text>
           <Pressable accessibilityRole="button" hitSlop={10} onPress={() => setFile(null)}><Text style={styles.link}>Remove</Text></Pressable>
         </View>
       ) : (
@@ -84,7 +86,7 @@ export default function ImportSheet({ visible, signedIn, onCancel, onResult }) {
           <Text style={styles.link}>Choose a file (.eml or PDF)</Text>
         </Pressable>
       ) : null}
-      {busy ? <View style={styles.busy}><ActivityIndicator color={colors.cyan} /><Text style={styles.busyText}>{file?.pdfBase64 ? 'Reading the PDF — a long one can take up to a minute…' : 'Reading your booking…'}</Text></View> : null}
+      {busy ? <View style={styles.busy}><ActivityIndicator color={colors.cyan} /><Text style={styles.busyText}>{file?.pdfBase64 ? (file.size > 8 * 1024 * 1024 ? 'Sending and reading a large PDF — this can take a couple of minutes…' : 'Reading the PDF — a long one can take up to a minute…') : 'Reading your booking…'}</Text></View> : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <Text style={styles.tip}>In Mail, press and hold the message text, tap Select All, then Copy. Forwarded emails work too.</Text>
       <Text style={styles.privacy}>
