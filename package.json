@@ -1,6 +1,6 @@
 {
   "name": "dmz-scuba-app",
-  "version": "0.0.106",
+  "version": "0.0.110",
   "main": "index.js",
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",

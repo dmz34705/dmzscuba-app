@@ -1,12 +1,12 @@
 # DMZ Scuba
 
-> **Pre-alpha 0.0.104** — active development. Data models, workflows and visual
+> **Pre-alpha 0.0.110** — active development. Data models, workflows and visual
 > design can still change before the first public alpha.
 
 DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion for divers who
 have outgrown a pile of disconnected single-purpose apps. It combines a serious
 local-first logbook, direct dive-computer downloads, a setup-aware Gear Locker,
-the data-rich Ocean Atlas, travel planning, calculators, practical training labs,
+the data-rich Ocean Atlas, a Dive Planner for dive days and trips, calculators, practical training labs,
 photo organization, Dive Lens identification and shareable dive cards.
 
 The important part is not the feature count. The same dive computers that create
@@ -37,9 +37,15 @@ This README serves two audiences:
 This is a functional **pre-alpha**, not a store-ready release. The major native
 workflows are implemented and covered by focused regression scripts, but the app
 still needs broader physical-device testing, accessibility work, content review,
-production service hardening and public-alpha migration guarantees. The current
-version deliberately uses the repository commit number as its patch version:
-this release is commit 104, therefore `0.0.104`.
+production service hardening and public-alpha migration guarantees. Pre-alpha
+builds are numbered `0.0.x` and the number only goes up; the current release is
+`0.0.110` (`version` in `package.json` and `app.json`).
+
+**New in 0.0.110:** the Dive Planner gains a day-by-day itinerary builder,
+multi-flight bookings, booking import from confirmation emails and PDFs, a
+Readiness Center, per-trip packing lists with extra gear, and insurance on file;
+the Gear Locker opens to a grouped view; the Compass lab's side-window camera
+checks that the phone is held upright.
 
 DMZ Scuba is local-first and useful while signed out. Network access is needed
 for detailed OpenStreetMap tiles, account sync, Dive Lens, some travel links and
@@ -52,9 +58,9 @@ build and compatible hardware; it does not run in Expo Go.
 | --- | --- | --- |
 | **Home** | Greeting, dive totals, last dive, download/manual actions, gear-service alerts, quick tools, seasonal wildlife and lessons | Live summaries from the logbook, Gear Locker, Ocean Atlas seasons and feature catalog |
 | **Learn** | Native Color Loss, Boyle's Law, Compass Navigation and Dive Computer labs; Build a Scuba Unit remains coming soon | Shared lab landings, guided tasks and free exploration over testable domain models |
-| **Tools** | Ocean Atlas, calculator, Gear Locker, Logbook and Dive Lens | Connected native workflows backed by pure calculation, planning and storage modules |
+| **Tools** | Ocean Atlas, Dive Planner, calculator, Gear Locker, Logbook and Dive Lens | Connected native workflows backed by pure calculation, planning and storage modules |
 | **Logbook** | Manual dives, real computer downloads, reconciliation, charts, gallery, filters, statistics, exports and backups | Canonical dives plus preserved per-computer evidence and an Apple libdivecomputer bridge |
-| **More** | Account and app settings | Supabase auth, DMZScuba.com account APIs, Turnstile, SecureStore, debounced settings sync |
+| **More** | Account (profile, certifications, insurance) and app settings | Supabase auth, DMZScuba.com account APIs, Turnstile, SecureStore, debounced settings sync |
 
 Everything discoverable in Learn and Tools is generated from **one feature
 catalog** (`src/features/catalog/featureCatalog.js`), so public labels and routes
@@ -87,10 +93,10 @@ an Atlas suggestion.
    equipment needing attention, quick tools, wildlife in season and lessons.
 2. **Learn** turns dive concepts and instrument skills into guided interaction,
    then leaves the controls open for exploration.
-3. **Tools** collects the Atlas, calculator, Gear Locker, Logbook and Dive Lens.
+3. **Tools** collects the Atlas, Dive Planner, calculator, Gear Locker, Logbook and Dive Lens.
 4. **Logbook** is the historical center: manual and downloaded dives are
    reconciled, reviewed, searched, analyzed, photographed, exported and shared.
-5. **More** holds account, profile and app settings.
+5. **More** holds account, profile, insurance and app settings.
 
 A lesson or tool opens as a temporary detail screen; **Back** returns to what
 opened it, including Android's hardware Back button.
@@ -104,6 +110,9 @@ are always opt-in or explicit.
 | --- | --- |
 | Dive records, downloaded profile samples, reconciliation decisions | Stored locally on the device |
 | Gear inventory, components, setups, packing state, service records, photos and PDFs | Stored locally on the device |
+| Dive plans, itineraries, per-trip packing and extra gear | Stored locally on the device |
+| Insurance policies and their documents | Stored locally on the device; typed in by the diver, never sent to a server or read by AI |
+| Booking import (confirmation emails and PDFs) | Read on the device first; only when that can't fill everything in — and only for a signed-in diver — the text or PDF goes to the DMZ media API, which uses Google Gemini to read it. Nothing is kept server-side |
 | Logbook photos | Matching stays on-device; confirmed photos are copied into app-managed storage and never uploaded |
 | Coarse location breadcrumbs | Stored locally, only after the diver opts in, kept 90 days |
 | Unit / calculator / graph / location preferences | Stored locally; supported settings also sync to a signed-in account |
@@ -254,7 +263,9 @@ The guided lesson (`model.js`, `buildLessonSteps`) has four sections:
 During any "hold" step, drifting more than 18° off course **stops the pace count**
 and shows a "turn left/right N°" cue with a curved on-screen arrow until the diver
 corrects. A side-window camera view can place the compass against the diver's
-surroundings while keeping the instrument controls available. A separate
+surroundings while keeping the instrument controls available; it only reads a
+heading while the phone is held upright (within 20° of vertical) and not rolled
+left or right, and says which correction is needed. A separate
 **Explore** mode drops all lesson gating so the compass can be handled freely.
 `npm run test:compass-nav` covers heading math, side-window behavior, step shape
 and every gate.
@@ -344,6 +355,45 @@ pretending a regional value is a site-level measurement. See
 [docs/OCEAN_ATLAS.md](docs/OCEAN_ATLAS.md) for datasets, licenses, derivation,
 privacy boundaries and verification.
 
+### Dive Planner
+
+Dive days and dive trips (`PlannerScreen.js`, `src/features/planner/`), stored on
+the device at `@dmz-scuba/planner/v1`.
+
+- **Itinerary** — trips are laid out day by day, each day in the order things
+  happen: what's already underway (on board, staying, a rental car) first, then
+  everything by time, untimed items last with endings before beginnings. A new
+  trip goes straight to the itinerary builder (with **Skip for now**); leg types
+  are flights, transfers, ferries, stays, liveaboards, dive days, rental cars,
+  activities and other.
+- **Flights** — one sheet per booking: connecting and return flights pre-fill
+  from the previous leg, share the airline and confirmation, and show layovers
+  (tight connections are flagged).
+- **Booking import** — paste a confirmation or choose a saved `.eml` or PDF (up
+  to 25 MB). On-device parsers read airline, hotel, rental-car, liveaboard, tour,
+  dive-booking, ferry and transfer confirmations (`bookingImport/`); anything
+  they can't fill in goes to smart import for signed-in divers. Everything lands
+  on a review sheet: untick or edit each booking; a matching confirmation updates
+  what's already on the trip; dive days inside a liveaboard fold into it; the trip
+  can stretch to cover bookings outside its dates.
+- **Readiness Center** — a compact card on the plan opens the full checks: gear
+  service due before or during the plan, certification cards, logbook minimums,
+  paperwork, DAN flying-after-diving intervals, connections, nights without a
+  stay, passport validity, insurance, gear and packing, and to-dos.
+- **Packing per plan** — each plan keeps its own packing ticks on its setup's
+  gear, plus **extra gear** from the locker for that plan only; the setup itself
+  is never changed. The Gear Locker packs a setup for its next upcoming plan; with
+  nothing planned it's a quick-dive checklist that clears two days after the last
+  tick.
+- **Insurance** — an active dive-accident policy covering the plan's dates is
+  found automatically and satisfies an operator's insurance requirement; cover
+  that lapses mid-plan is flagged; travel, liability and other policies can be
+  attached per plan.
+
+`npm run test:planner` covers records, timelines, day ordering, flights and
+layovers, readiness alerts, packing and extra gear; `npm run test:booking-import`
+covers the email parsers, routing to smart import and fitting imports into a trip.
+
 ### Gear Locker
 
 Private, on-device equipment management with three tabs
@@ -356,7 +406,11 @@ Private, on-device equipment management with three tabs
   sidemount cylinder pair is one usable inventory item with both member serials,
   visual inspections and hydro dates preserved underneath. Search includes
   hidden member serials; sort and filters cover category, condition, service
-  urgency, setup assignment, manufacturer, name and recent additions.
+  urgency, setup assignment, manufacturer, name and recent additions. The
+  inventory opens **grouped** into five collapsible families (Life support,
+  Exposure protection, Core kit, Instruments, Extras) whose closed rows still show
+  what needs attention; a **List** view keeps the full list. The view and open
+  families are remembered.
 - **Service** — the next due date can be explicit or calculated immediately from
   the last service plus a 6/12/18/etc.-month interval. Visual and hydro cycles
   are tracked separately for cylinders. A problem on a component or set member
@@ -366,7 +420,8 @@ Private, on-device equipment management with three tabs
   Pony/bailout, Stage/deco, Freedive, Travel and Custom describe intended rig
   structure. A one-time setup check asks only after gear has been added, offers
   matching locker items for real gaps, and remembers deliberate omissions.
-  Packing state belongs to the setup and can be reset without altering inventory.
+  Packing belongs to the plan being packed for (see the Dive Planner); with no
+  plan ahead, a setup's quick-dive checklist clears itself two days after use.
 - **Relationships without clutter** — linked suit boots/hoods or other
   accessories are packed with their parent but remain real searchable items.
   Drysuit undergarments are chosen per setup because the same suit can need a
@@ -604,6 +659,14 @@ The app stays useful while signed out. Settings are written **locally first**;
 when signed in, sanitized supported settings load from the account and later
 changes are **debounced** before syncing back. If a remote save fails the local
 copy is intact and the UI reports that sync can retry.
+
+**Insurance** (Account › Insurance, available signed in or out) keeps dive
+accident, travel, professional liability, equipment and other policies: provider,
+policy and member numbers, coverage dates, auto-renewal, a tap-to-call emergency
+line, who's covered, limits and notes, plus PDFs and card photos copied into
+`documentDirectory/insurance-documents/<policyId>/`. Every field is typed in by
+the diver; nothing is sent to a server or read by AI (`npm run test:insurance`
+checks this).
 
 Configurable settings: depth / pressure / gas-volume / temperature units;
 recreational Nitrox vs. Trimix calculator mode; dive-profile line colours and
@@ -854,11 +917,15 @@ rather than assuming the root license covers that dependency.
 | Device fingerprints / models / history | AsyncStorage | Incremental sync and reconnects |
 | Clock corrections, priority, negative matches | AsyncStorage | Reconciliation decisions |
 | Snapshots | AsyncStorage | Recoverable raw logbook state |
-| Gear Locker state | AsyncStorage (`@dmz-scuba/gear-checklist/v1`) | Items, parts, setups, choices and packing state in one versioned blob |
+| Gear Locker state | AsyncStorage (`@dmz-scuba/gear-checklist/v1`) | Items, parts, setups, choices and quick-dive packing in one versioned blob |
+| Gear Locker view | AsyncStorage (`@dmz-scuba/gear-locker/view/v1`) | Grouped or list view and which families are open |
+| Dive plans | AsyncStorage (`@dmz-scuba/planner/v1`) | Plans, itineraries, per-plan packing, extra gear and attached insurance |
+| Insurance policies | AsyncStorage (`@dmz-scuba/insurance/v1`) | Typed-in policy details; documents on disk |
 | Atlas gear preferences | AsyncStorage (`@dmz-scuba/gear-advice/v1`) | Thermal tendency, suit ranges, exposure combinations and declared setup uses |
 | Atlas preferences / travel origin | AsyncStorage | Map layers plus the on-device starting point for personal travel ratings |
 | Logbook photos | `documentDirectory/dive-photos/` | Copied from the picker; links survive cache eviction |
 | Gear attachments | `documentDirectory/gear-attachments/<itemId>/` | Photos and PDFs copied on save |
+| Insurance documents | `documentDirectory/insurance-documents/<policyId>/` | PDFs and card photos copied on save |
 | Location breadcrumbs | Separate AsyncStorage value | Opt-in, coarse, 90-day retention |
 | Account refresh token | SecureStore | Device-only, available when unlocked |
 | Account access token | Memory | Refreshed from the secure refresh token |
@@ -872,7 +939,8 @@ elsewhere:
 - Supabase — account authentication / session APIs
 - A Cloudflare-hosted challenge flow — Turnstile verification, returning through
   the app scheme
-- The DMZ media Worker — Dive Lens identification
+- The DMZ media Worker — Dive Lens identification and, for signed-in divers,
+  booking import (`/api/planner/itinerary/parse`, Gemini; nothing is stored)
 
 Do not place service-role keys, private API secrets, signing credentials,
 certificates, or provisioning files in the repository. The Supabase publishable
@@ -967,9 +1035,15 @@ npm run test:boyles-law
 npm run test:compass-nav
 npm run test:gear-checklist
 npm run test:gear-setup
+npm run test:planner
+npm run test:booking-import
+npm run test:insurance
+npm run test:site-dives
 npm run test:ocean-atlas
 npm run test:atlas-journey
 npm run test:atlas-places
+npm run test:atlas-species
+npm run test:dev-backup
 ```
 
 Then the Expo and bundle checks:

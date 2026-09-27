@@ -3,7 +3,7 @@
     "name": "DMZ Scuba",
     "slug": "dmz-scuba-app",
     "scheme": "dmzscuba",
-    "version": "0.0.106",
+    "version": "0.0.110",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
