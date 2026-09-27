@@ -143,7 +143,9 @@ const R = loadSourceModule(path.join(root, 'features/planner/bookingImport/readB
   assert.ok(signedOut.issues.some((issue) => /Sign in/.test(issue)));
 
   const failing = async () => { throw Object.assign(new Error('offline'), { code: 'NETWORK' }); };
-  assert.equal((await R.readBooking({ raw: partial, signedIn: true, today, smartImport: failing })).source, 'device', 'If smart import fails, the partial read is still offered.');
+  const fellBack = await R.readBooking({ raw: partial, signedIn: true, today, smartImport: failing });
+  assert.equal(fellBack.source, 'device', 'If smart import fails, the partial read is still offered.');
+  assert.ok(fellBack.issues.includes('Smart import didn’t run (offline), so this is only what the phone could read.'), 'and it says so, with the reason.');
   await assert.rejects(R.readBooking({ raw: 'hello', signedIn: false, today, smartImport }), /Sign in/);
   await assert.rejects(R.readBooking({ raw: 'hello', signedIn: true, today, smartImport: failing }), /offline/);
   await assert.rejects(R.readBooking({ pdfBase64: 'JVBERi0', signedIn: false, today, smartImport }), /PDF/);

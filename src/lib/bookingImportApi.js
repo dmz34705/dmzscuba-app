@@ -5,7 +5,8 @@ import { AIRLINES } from '../features/planner/bookingImport/parseFlightText';
 // flights, hotels, rental cars, liveaboards, tours. Signed-in only; like Dive Lens it goes straight
 // to the Worker from native builds.
 const IMPORT_API_URL = 'https://dmz-media-api.zacharylisowski55.workers.dev/api/planner/itinerary/parse';
-const REQUEST_TIMEOUT_MS = 35000;
+// The Worker allows about a minute (long PDFs, retries while Google is busy); wait a little longer.
+const REQUEST_TIMEOUT_MS = 65000;
 const TYPES = ['flight', 'stay', 'car', 'liveaboard', 'diving', 'activity', 'transfer', 'ferry', 'other'];
 const LABELS = { flight: 'Flight', stay: 'Hotel', car: 'Rental car', liveaboard: 'Liveaboard', diving: 'Dive booking', activity: 'Activity', transfer: 'Transfer', ferry: 'Ferry', other: 'Booking' };
 
@@ -63,6 +64,8 @@ export async function smartImportBooking({ text = '', pdfBase64 = '', referenceD
   if (response.status === 401) throw new BookingImportError('Your session expired. Sign in again to use smart import.', 'AUTH_REQUIRED');
   // The server doesn't have smart import (not deployed yet, or an older server).
   if (response.status === 404) throw new BookingImportError('Smart import isn’t available right now. Paste the email text instead, or add the booking by hand.', 'UNAVAILABLE');
+  if (response.status === 503) throw new BookingImportError(data?.error || 'Google’s AI service is overloaded right now. Try again in a few minutes.', 'AI_BUSY');
+  if (response.status === 504) throw new BookingImportError('That took too long to read. Try again, or paste just the booking part of the email.', 'TIMEOUT');
   if (response.status === 413) throw new BookingImportError(data?.error || 'That file is too large for smart import.', 'TOO_LARGE');
   if (!response.ok || data?.ok !== true) throw new BookingImportError(data?.error || 'Smart import could not read that email.');
   return itemsFromSmartImport(data);

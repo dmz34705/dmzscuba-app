@@ -84,7 +84,7 @@ export default function ImportSheet({ visible, signedIn, onCancel, onResult }) {
           <Text style={styles.link}>Choose a file (.eml or PDF)</Text>
         </Pressable>
       ) : null}
-      {busy ? <View style={styles.busy}><ActivityIndicator color={colors.cyan} /><Text style={styles.busyText}>Reading your booking…</Text></View> : null}
+      {busy ? <View style={styles.busy}><ActivityIndicator color={colors.cyan} /><Text style={styles.busyText}>{file?.pdfBase64 ? 'Reading the PDF — a long one can take up to a minute…' : 'Reading your booking…'}</Text></View> : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
       <Text style={styles.tip}>In Mail, press and hold the message text, tap Select All, then Copy. Forwarded emails work too.</Text>
       <Text style={styles.privacy}>

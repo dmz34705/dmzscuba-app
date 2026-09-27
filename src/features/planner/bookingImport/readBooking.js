@@ -28,14 +28,18 @@ export async function readBooking({ raw = '', pdfBase64 = '', signedIn = false, 
   const local = { items, issues, source: 'device' };
   if (items.length && !issues.length) return local;
 
+  let smartFailure = '';
   if (signedIn) {
     try {
       const result = await smartImport({ text: text.slice(0, 60000), referenceDate });
       if (result.items.length) return { ...result, source: 'ai' };
     } catch (error) {
       if (!items.length) throw error;
+      smartFailure = error?.message || 'it could not be reached';
     }
   }
-  if (items.length) return { ...local, issues: [...issues, signedIn ? '' : 'Sign in to let smart import fill the gaps.'].filter(Boolean) };
+  // Say plainly when this is only the phone's partial read, and why smart import didn't fill the gaps.
+  const why = !signedIn ? 'Sign in to let smart import fill the gaps.' : smartFailure ? `Smart import didn’t run (${smartFailure.replace(/\.$/, '')}), so this is only what the phone could read.` : '';
+  if (items.length) return { ...local, issues: [...issues, why].filter(Boolean) };
   throw importError(signedIn ? 'No bookings were found in that email.' : 'This phone couldn’t read that email. Sign in to your DMZ account to use smart import.', signedIn ? 'NOTHING_FOUND' : 'AUTH_REQUIRED');
 }
