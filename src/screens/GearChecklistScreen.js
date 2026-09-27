@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import {
   Alert,
   Image,
@@ -82,6 +82,9 @@ import AddGearWizard from '../features/gearChecklist/AddGearWizard';
 import { LinkExistingItems } from '../features/gearChecklist/wizardParts';
 import useGearChecklist from '../features/gearChecklist/useGearChecklist';
 import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
+import { QUICK_PACKING_DAYS } from '../features/gearChecklist/model';
+import { formatDay, planTitle, withPlanPacking } from '../features/planner/model';
+import usePlanPacking from '../features/planner/usePlanPacking';
 import { NUMBER_KEYBOARD_ACCESSORY_ID } from '../lib/numberKeyboard';
 import { colors, radii, spacing } from '../theme';
 
@@ -259,14 +262,15 @@ function InventoryHome({ state, onAdd, onOpen, appSettings }) {
   );
 }
 
-function SetupsHome({ state, onAdd, onOpen }) {
+function SetupsHome({ state, packingFor, onAdd, onOpen }) {
   return (
     <>
       <PrimaryButton label="Create a setup" onPress={onAdd} />
-      <Text style={styles.helperLead}>Build reusable single-tank, doubles, sidemount, travel, or custom configurations. Packing checks stay independent for each setup.</Text>
+      <Text style={styles.helperLead}>Build reusable single-tank, doubles, sidemount, travel, or custom configurations. Each setup packs for its next planned trip or dive day, and every trip keeps its own packing list.</Text>
       <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Dive setups</Text><Text style={styles.sectionMeta}>{state.setups.length} SETUPS</Text></View>
       {state.setups.length ? state.setups.map((setup) => {
-        const progress = setupProgress(setup, state.items);
+        const plan = packingFor(setup.id);
+        const progress = setupProgress(plan ? withPlanPacking(setup, plan) : setup, state.items);
         return (
           <Pressable accessibilityRole="button" accessibilityLabel={`Open ${setup.name} setup`} key={setup.id} onPress={() => onOpen(setup)} style={({ pressed }) => [styles.listCard, pressed && styles.pressed]}>
             <View style={styles.listTop}>
@@ -278,7 +282,7 @@ function SetupsHome({ state, onAdd, onOpen }) {
               </View>
               <Text style={styles.chevron}>›</Text>
             </View>
-            <View style={styles.progressRow}><Text style={styles.progressText}>{progress.checked} of {progress.total} packed</Text><Text style={styles.progressPercent}>{Math.round(progress.ratio * 100)}%</Text></View>
+            <View style={styles.progressRow}><Text numberOfLines={1} style={[styles.progressText, styles.flexText]}>{progress.checked} of {progress.total} packed{plan ? ` for ${planTitle(plan)}` : ''}</Text><Text style={styles.progressPercent}>{Math.round(progress.ratio * 100)}%</Text></View>
             <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
           </Pressable>
         );
@@ -880,7 +884,7 @@ function SetupCheck({ setup, items, onChooseAccessories, onAdd, onLeaveOut, onAd
   );
 }
 
-function SetupDetail({ setup, items, setups = [], onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle, onMoveFloating, onChooseAccessories, onAddForRequirement, onLeaveOut, onReviewAgain }) {
+function SetupDetail({ setup, items, setups = [], packingFor = null, onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle, onMoveFloating, onChooseAccessories, onAddForRequirement, onLeaveOut, onReviewAgain }) {
   const [changing, setChanging] = useState(null); // `${itemId}|${category}` being re-chosen
   // Items already packed with another selected item (a hood linked to the drysuit) aren't listed twice.
   const packedWith = includedWithSelection(setup.itemIds, items, setup.accessoryChoices);
@@ -899,6 +903,9 @@ function SetupDetail({ setup, items, setups = [], onAddExisting, onAddGear, onBa
         <Card style={styles.checklistHero}>
           <View style={styles.checklistHeroTop}><View style={styles.checklistCount}><Text style={styles.checklistCountValue}>{progress.checked}/{progress.total}</Text><Text style={styles.checklistCountLabel}>PACKED</Text></View><Text style={styles.checklistPercent}>{Math.round(progress.ratio * 100)}%</Text></View>
           <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
+          <Text style={styles.packingFor}>{packingFor
+            ? `Packing for ${planTitle(packingFor)} · ${formatDay(packingFor.startDate, { weekday: true })}. These ticks belong to that ${packingFor.kind === 'trip' ? 'trip' : 'dive day'}; other plans pack separately.`
+            : `Quick-dive checklist — nothing planned with this setup. Ticks clear ${QUICK_PACKING_DAYS} days after the last one.`}</Text>
           {setup.description ? <Text style={styles.checklistDescription}>{setup.description}</Text> : null}
           <View style={styles.setupActions}>
             <TinyAction label="ADD EXISTING GEAR" onPress={onAddExisting} />
@@ -1178,6 +1185,9 @@ function GearItemDetail({ item, items, setups, onBack, onEdit, onOpenAccessory, 
 
 export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSettings }) {
   const gear = useGearChecklist();
+  const packing = usePlanPacking();
+  // Plans change in the planner; re-read them whenever setups are shown.
+  useEffect(() => { if (tab === 'setups' || route.name === 'setup') packing.refresh(); }, [tab, route.name, route.setupId]); // eslint-disable-line react-hooks/exhaustive-deps
   const [tab, setTab] = useState('inventory');
   const [route, setRoute] = useState({ name: 'home' });
   const activeItem = route.itemId ? gear.state.items.find((item) => item.id === route.itemId) : null;
@@ -1247,10 +1257,17 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
     );
   }
   if (route.name === 'setup' && activeSetup) {
+    // With a trip ahead on this setup, the checklist is that trip's packing list.
+    const plan = packing.nextFor(activeSetup.id);
+    const packTrip = async (keys, checked) => {
+      await packing.setPacked(plan.id, keys, checked);
+      if (checked) await gear.packFloating(activeSetup.id, keys);
+    };
     return (
       <SetupDetail
         items={gear.state.items}
-        setup={activeSetup}
+        packingFor={plan}
+        setup={plan ? withPlanPacking(activeSetup, plan) : activeSetup}
         setups={gear.state.setups}
         onMoveFloating={gear.moveFloating}
         onChooseAccessories={gear.chooseAccessories}
@@ -1261,9 +1278,9 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
         onAddGear={() => setRoute({ name: 'add-gear-wizard', setupId: activeSetup.id })}
         onBack={() => setRoute({ name: 'home' })}
         onEdit={() => setRoute({ name: 'setup-form', setupId: activeSetup.id })}
-        onReset={() => gear.resetSetup(activeSetup.id)}
-        onSetChecked={(keys, checked) => gear.setCheckedKeys(activeSetup.id, keys, checked)}
-        onToggle={(checklistKey) => gear.toggleChecked(activeSetup.id, checklistKey)}
+        onReset={() => (plan ? packing.setPacked(plan.id, plan.packedIds, false) : gear.resetSetup(activeSetup.id))}
+        onSetChecked={(keys, checked) => (plan ? packTrip(keys, checked) : gear.setCheckedKeys(activeSetup.id, keys, checked))}
+        onToggle={(checklistKey) => (plan ? packTrip([checklistKey], !plan.packedIds.includes(checklistKey)) : gear.toggleChecked(activeSetup.id, checklistKey))}
       />
     );
   }
@@ -1282,7 +1299,7 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
         <FormError message={gear.error} />
         {!gear.loaded ? <Text style={styles.loading}>Opening your gear locker…</Text> : null}
         {gear.loaded && tab === 'inventory' ? <InventoryHome state={gear.state} appSettings={appSettings} onAdd={() => setRoute({ name: 'add-gear-wizard' })} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
-        {gear.loaded && tab === 'setups' ? <SetupsHome state={gear.state} onAdd={() => setRoute({ name: 'setup-form' })} onOpen={(setup) => setRoute({ name: 'setup', setupId: setup.id })} /> : null}
+        {gear.loaded && tab === 'setups' ? <SetupsHome packingFor={packing.nextFor} state={gear.state} onAdd={() => setRoute({ name: 'setup-form' })} onOpen={(setup) => setRoute({ name: 'setup', setupId: setup.id })} /> : null}
         {gear.loaded && tab === 'service' ? <ServiceHome state={gear.state} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
       </ScrollView>
     </View>
@@ -1385,6 +1402,7 @@ const styles = StyleSheet.create({
   listDescription: { color: colors.muted, fontSize: 10, lineHeight: 15, marginTop: 3 },
   progressRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 7, marginTop: 13 },
   progressText: { color: colors.muted, fontSize: 10, fontWeight: '700' },
+  flexText: { flex: 1, marginRight: 8 },
   progressPercent: { color: colors.cyan, fontSize: 10, fontWeight: '900' },
   alertBanner: { backgroundColor: 'rgba(255,179,106,0.09)', borderColor: 'rgba(255,179,106,0.35)', borderRadius: radii.md, borderWidth: 1, padding: 13 },
   goodBanner: { backgroundColor: 'rgba(112,226,163,0.08)', borderColor: 'rgba(112,226,163,0.3)', borderRadius: radii.md, borderWidth: 1, padding: 13 },
@@ -1438,6 +1456,7 @@ const styles = StyleSheet.create({
   checklistCountLabel: { color: colors.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1 },
   checklistPercent: { color: colors.cyan, fontSize: 17, fontWeight: '900' },
   checklistDescription: { color: colors.muted, fontSize: 11, lineHeight: 17, marginBottom: 11, marginTop: 11 },
+  packingFor: { color: colors.cyan, fontSize: 12, fontWeight: '700', lineHeight: 17, marginTop: 11 },
   setupActions: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   checkCategory: { marginBottom: 5 },
   checklistPartRow: { paddingLeft: 26 },

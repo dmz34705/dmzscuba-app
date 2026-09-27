@@ -164,6 +164,28 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   assert.ok(find(P.planAlerts(trip, {}, now), 'nights-'), 'A rental car does not cover the nights.');
 }
 
+// Packing belongs to each plan: two trips on one setup pack separately, and nothing carries over.
+{
+  const G = loadSourceModule(path.join(root, 'features/gearChecklist/model.js'), root);
+  const setup = { id: 'single', name: 'Single tank', itemIds: ['bcd', 'reg'], checkedIds: ['bcd', 'reg'], accessoryChoices: {} };
+  const items = [{ id: 'bcd', name: 'BCD', category: 'BCD' }, { id: 'reg', name: 'Regulator', category: 'Regulators' }];
+  const thailand = P.normalizePlan({ id: 'th', kind: 'trip', startDate: '2026-10-10', endDate: '2026-10-17', setupId: 'single', packedIds: ['bcd', 'bcd', ''] }, now);
+  const cozumel = P.normalizePlan({ id: 'cz', kind: 'trip', startDate: '2026-11-07', endDate: '2026-11-14', setupId: 'single' }, now);
+  assert.deepEqual(thailand.packedIds, ['bcd'], 'Packing ticks are tidied.');
+  assert.deepEqual(cozumel.packedIds, [], 'A new trip starts with nothing packed.');
+  const packed = P.packPlan(cozumel, ['reg'], true);
+  assert.deepEqual([packed.packedIds, thailand.packedIds], [['reg'], ['bcd']], 'Packing for one trip leaves the other alone.');
+  assert.deepEqual(P.packPlan(packed, ['reg'], false).packedIds, []);
+  assert.equal(G.setupProgress(P.withPlanPacking(setup, cozumel), items).checked, 0, 'A trip’s progress uses its own ticks, not the setup’s leftovers.');
+  assert.equal(P.nextPlanForSetup([cozumel, thailand], 'single', now).id, 'th', 'The Gear Locker packs for the soonest trip on the setup.');
+  assert.equal(P.nextPlanForSetup([{ ...thailand, status: 'cancelled' }, cozumel], 'single', now).id, 'cz', 'Cancelled trips are skipped.');
+  assert.equal(P.nextPlanForSetup([P.normalizePlan({ setupId: 'single', startDate: '2026-09-01' }, now)], 'single', now), null, 'Past plans are not packed for.');
+  const soon = P.normalizePlan({ kind: 'day', startDate: '2026-09-26', setupId: 'single' }, now);
+  const alerts = P.planAlerts(soon, { gear: { setups: [setup], items }, now }, now);
+  assert.ok(find(alerts, 'packing'), 'Readiness counts the plan’s own packing: 0 of 2, despite the setup’s old ticks.');
+  assert.ok(!find(P.planAlerts(P.packPlan(soon, ['bcd', 'reg'], true), { gear: { setups: [setup], items }, now }, now), 'packing'));
+}
+
 // A day reads in the order it happens: disembarking at 1 PM comes before a 2 PM hotel check-in.
 {
   const trip = P.normalizePlan({ kind: 'trip', startDate: '2026-03-13', endDate: '2026-03-20', segments: [

@@ -453,4 +453,22 @@ assert.equal(model.setupRequirements({ ...review, itemIds: [] }, kit).find((req)
 assert.equal(model.setupQuestions(model.resetSetupReview(review), kit).length, 1, 'review again asks again');
 assert.equal(normalizeGearSetup({ ...review, type: 'Doubles' }).completeness.done, false, 'changing the setup type starts a fresh review');
 assert.match(screen, /if \(!setup\.itemIds\.length\) return null;/, 'an empty setup hides the setup-check UI until gear is added');
+// The quick-dive checklist (no trip planned) clears itself once the dive is over.
+{
+  const setup = normalizeGearSetup({ id: 'qs', name: 'Quick', itemIds: ['a', 'b'] });
+  const base = { items: [{ id: 'a', name: 'A' }, { id: 'b', name: 'B' }], setups: [setup] };
+  const ticked = model.applyChecks(base, 'qs', ['a'], true, new Date(2026, 8, 10, 20));
+  assert.equal(ticked.setups[0].checkedOn, '2026-09-10', 'ticking stamps the day');
+  assert.deepEqual(model.clearStalePacking(ticked, new Date(2026, 8, 11, 9)).setups[0].checkedIds, ['a'], 'packed the evening before: still ticked on dive day');
+  assert.deepEqual(model.clearStalePacking(ticked, new Date(2026, 8, 12, 9)).setups[0].checkedIds, [], 'cleared two days after the last tick');
+  const legacy = { ...base, setups: [{ ...setup, checkedIds: ['a', 'b'], checkedOn: '' }] };
+  assert.deepEqual(model.clearStalePacking(legacy, new Date(2026, 8, 12)).setups[0].checkedIds, [], 'old undated ticks are cleared');
+  assert.equal(model.clearStalePacking(base, new Date()), base, 'nothing ticked: state unchanged');
+  assert.equal(normalizeGearSetup({ ...setup, checkedOn: 'yesterday' }).checkedOn, '', 'only real dates are kept');
+  const floating = { items: [{ id: 't', name: 'Transmitter', floating: true, currentSetupId: 'other' }], setups: [{ ...setup, itemIds: ['t'] }, normalizeGearSetup({ id: 'other', name: 'Other', itemIds: ['t'] })] };
+  const moved = model.moveFloatingForChecks(floating, 'qs', ['t']);
+  assert.equal(moved.items[0].currentSetupId, 'qs', 'packing floating gear for a trip moves it onto that setup');
+  assert.deepEqual(moved.setups.find((entry) => entry.id === 'qs').checkedIds, [], 'without ticking the setup’s own list');
+}
+
 console.log('Gear checklist checks passed.');

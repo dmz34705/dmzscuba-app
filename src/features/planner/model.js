@@ -202,6 +202,8 @@ export function normalizePlan(value = {}, now = new Date()) {
       meetingPoint: clean(operator.meetingPoint, 200), confirmation: clean(operator.confirmation, 80) },
     dives: Math.max(0, Math.min(12, Number.parseInt(value.dives, 10) || 0)),
     setupId: clean(value.setupId, 80),
+    // This plan's own packing ticks (Gear Locker checklist keys) — two trips on one setup pack separately.
+    packedIds: [...new Set((Array.isArray(value.packedIds) ? value.packedIds : []).map((key) => clean(key, 200)).filter(Boolean))].slice(0, 1000),
     requirements: {
       certs: [...new Set((Array.isArray(requirements.certs) ? requirements.certs : []).filter((key) => CERT_REQUIREMENTS.some((c) => c.key === key)))],
       minDives: Math.max(0, Number.parseInt(requirements.minDives, 10) || 0),
@@ -237,6 +239,22 @@ export function planPhase(plan, now = new Date()) {
   if (until > 0) return { key: 'upcoming', label: until === 1 ? 'Tomorrow' : until < 14 ? `In ${until} days` : until < 60 ? `In ${Math.round(until / 7)} weeks` : `In ${Math.round(until / 30.4)} months`, days: until };
   if (today <= end) return { key: 'now', label: plan.kind === 'trip' ? `Day ${1 - until} of ${daysBetween(plan.startDate, end) + 1}` : 'Today', days: 0 };
   return { key: 'past', label: 'Completed', days: until };
+}
+
+// --- packing -----------------------------------------------------------------
+// A setup's gear list with a plan's own ticks, for the checklist and its progress.
+export const withPlanPacking = (setup, plan) => ({ ...setup, checkedIds: plan?.packedIds || [] });
+
+export function packPlan(plan, keys, checked) {
+  const drop = new Set(keys);
+  const kept = (plan.packedIds || []).filter((key) => !drop.has(key));
+  return { ...plan, packedIds: checked ? [...kept, ...keys] : kept };
+}
+
+// The trip or dive day a setup is being packed for: the soonest one still ahead (or underway).
+export function nextPlanForSetup(plans, setupId, now = new Date()) {
+  if (!setupId) return null;
+  return sortPlans(plans, now).upcoming.find((plan) => plan.setupId === setupId && plan.status !== 'cancelled') || null;
 }
 
 export function sortPlans(plans, now = new Date()) {
@@ -361,7 +379,7 @@ export function planAlerts(plan, context = {}) {
         } else if (daysBetween(end, dueDay) <= 30) add('info', `svc-${entry.id}`, `${name}: ${what} due soon after`, `Due ${formatDay(dueDay, { year: true })}, shortly after you’re back. Servicing it beforehand saves a second trip to the shop.`, 'gear');
       }
     }
-    const progress = setupProgress(setup, items);
+    const progress = setupProgress(withPlanPacking(setup, plan), items);
     if (!gear.length) add('info', 'setup-empty', `${setup.name} has no gear yet`, 'Add equipment to this setup in your Gear Locker to track packing.', 'setup');
     else if (daysOut != null && daysOut <= (plan.kind === 'trip' ? 7 : 1) && progress.total && progress.checked < progress.total) {
       add(daysOut <= 1 ? 'warning' : 'info', 'packing', `${progress.checked} of ${progress.total} items packed`, `Work through the ${setup.name} checklist so nothing gets left behind.`, 'packing');

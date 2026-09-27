@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system/legacy';
 import { Platform } from 'react-native';
 
-import { normalizeGearState } from './model';
+import { clearStalePacking, normalizeGearState } from './model';
 
 export const GEAR_STORAGE_KEY = '@dmz-scuba/gear-checklist/v1';
 export const GEAR_ATTACHMENT_DIRECTORY = `${FileSystem.documentDirectory || ''}gear-attachments/`;
@@ -10,7 +10,8 @@ export const GEAR_ATTACHMENT_DIRECTORY = `${FileSystem.documentDirectory || ''}g
 export async function loadGearState(storage = AsyncStorage) {
   try {
     const raw = await storage.getItem(GEAR_STORAGE_KEY);
-    return normalizeGearState(raw ? JSON.parse(raw) : null);
+    // Yesterday's quick-dive ticks shouldn't greet the next dive.
+    return clearStalePacking(normalizeGearState(raw ? JSON.parse(raw) : null));
   } catch {
     return normalizeGearState(null);
   }

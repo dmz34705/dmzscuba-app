@@ -229,6 +229,8 @@ export function normalizeGearSetup(value = {}, now = new Date()) {
     id: cleanText(value.id) || createGearId('setup'), name: cleanText(value.name) || 'Untitled setup',
     type: SETUP_TYPES.includes(value.type) ? value.type : 'Custom', description: cleanText(value.description), itemIds,
     checkedIds: uniqueIds(value.checkedIds).filter((id) => itemIds.includes(checklistItemIdForKey(id))), createdAt: cleanText(value.createdAt) || now.toISOString(),
+    // The day the quick-dive checklist was last ticked (YYYY-MM-DD); see clearStalePacking.
+    checkedOn: /^d{4}-d{2}-d{2}$/.test(value.checkedOn || '') ? value.checkedOn : '',
     // The one-time "is this setup complete?" review: requirement keys the diver chose to leave out,
     // and whether the review has been finished (after which it only shows as a summary).
     completeness: { skipped: uniqueIds(review?.skipped), done: review?.done === true, type },
@@ -584,27 +586,53 @@ export function moveFloatingItem(state, itemId, setupId, now = new Date()) {
   return { ...state, items, setups };
 }
 
-// Checking a floating item off in a setup means it's packed there — so it moves there.
+const localDay = (now) => `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
+// Checking a floating item off in a setup means it's packed there — so it moves there. Ticking the
+// setup's quick-dive checklist also stamps the day, so the list can clear itself afterwards.
 export function applyChecks(state, setupId, keys, checked, now = new Date()) {
   const keySet = new Set(keys);
-  let next = {
+  const next = {
     ...state,
     setups: state.setups.map((setup) => {
       if (setup.id !== setupId) return setup;
       const without = setup.checkedIds.filter((id) => !keySet.has(id));
-      return { ...setup, checkedIds: checked ? [...without, ...keys] : without };
+      return { ...setup, checkedIds: checked ? [...without, ...keys] : without, ...(checked ? { checkedOn: localDay(now) } : {}) };
     }),
   };
-  if (checked) {
-    const floatingIds = [...new Set(keys.map(checklistItemIdForKey))].filter((id) => state.items.find((item) => item.id === id)?.floating);
-    for (const id of floatingIds) {
-      if (state.items.find((item) => item.id === id).currentSetupId === setupId) continue;
-      const kept = next.setups.find((setup) => setup.id === setupId).checkedIds;
-      next = moveFloatingItem(next, id, setupId, now);
-      next.setups = next.setups.map((setup) => (setup.id === setupId ? { ...setup, checkedIds: kept } : setup));
-    }
+  return checked ? moveFloatingForChecks(next, setupId, keys, now) : next;
+}
+
+// Packing a floating item (a transmitter, a full-face mask) for a setup moves it onto that setup —
+// whether it was ticked on the setup's own checklist or a trip's. The setup's ticks are kept as-is.
+export function moveFloatingForChecks(state, setupId, keys, now = new Date()) {
+  let next = state;
+  const floatingIds = [...new Set(keys.map(checklistItemIdForKey))].filter((id) => state.items.find((item) => item.id === id)?.floating);
+  for (const id of floatingIds) {
+    if (next.items.find((item) => item.id === id).currentSetupId === setupId) continue;
+    const kept = next.setups.find((setup) => setup.id === setupId)?.checkedIds;
+    next = moveFloatingItem(next, id, setupId, now);
+    if (kept) next.setups = next.setups.map((setup) => (setup.id === setupId ? { ...setup, checkedIds: kept } : setup));
   }
   return next;
+}
+
+// The quick-dive checklist (a setup packed with no trip planned) clears itself once the dive is
+// over: ticks survive the evening before and the dive day itself, and are gone two days after the
+// last one. Ticks from before this was tracked (no date) are cleared too.
+export const QUICK_PACKING_DAYS = 2;
+export function clearStalePacking(state, now = new Date()) {
+  const today = localDay(now);
+  const cutoff = new Date(`${today}T12:00:00Z`);
+  cutoff.setUTCDate(cutoff.getUTCDate() - QUICK_PACKING_DAYS + 1);
+  const oldest = cutoff.toISOString().slice(0, 10);
+  let changed = false;
+  const setups = state.setups.map((setup) => {
+    if (!setup.checkedIds.length || (setup.checkedOn && setup.checkedOn >= oldest)) return setup;
+    changed = true;
+    return { ...setup, checkedIds: [] };
+  });
+  return changed ? { ...state, setups } : state;
 }
 
 // --- Search --------------------------------------------------------------------------------------

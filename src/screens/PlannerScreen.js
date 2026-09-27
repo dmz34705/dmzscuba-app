@@ -19,7 +19,7 @@ import { planDives } from '../features/siteDives/siteMatch';
 import {
   MIN_CONNECTION_MINUTES, SEGMENT_TYPES, STATUS_LABELS, airportKey, bookingFlights, cardsFor, certLabel, createBookingId, emptyPlan, flightConnections,
   formatDay, formatDuration, formatRange, formatTime, normalizePlan, normalizeSegment, parseDay, planPhase, planTimeline, planTitle, readinessSummary,
-  replaceFlights, sortPlans,
+  replaceFlights, sortPlans, withPlanPacking,
 } from '../features/planner/model';
 import { colors, radii, spacing } from '../theme';
 
@@ -352,7 +352,9 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
   const phase = planPhase(plan);
   const trip = plan.kind === 'trip';
   const setup = planner.gear.setups.find((entry) => entry.id === plan.setupId) || null;
-  const progress = setup ? setupProgress(setup, planner.gear.items) : null;
+  // This plan's own ticks on the setup's gear list.
+  const packing = setup ? withPlanPacking(setup, plan) : null;
+  const progress = packing ? setupProgress(packing, planner.gear.items) : null;
   const liveDives = planner.dives.filter((row) => row && !row.deletedAt).length;
   // Dives the logbook has linked to this plan's site on its dates (computer + location → verified).
   const logged = planDives(plan, planner.dives);
@@ -422,7 +424,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
       />
       <ImportSheet onCancel={() => setImporting(false)} onResult={reviewImport} signedIn={signedIn} visible={importing} />
       <ImportReviewSheet issues={imported?.issues || []} onCancel={() => setImported(null)} onSave={addImported} plan={plan} review={imported?.review || null} source={imported?.source || ''} visible={Boolean(imported)} />
-      <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save({ setupId }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
+      <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save(setupId === plan.setupId ? { setupId } : { setupId, packedIds: [] }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
     </>
   );
 
@@ -486,11 +488,11 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
               {setup ? (
                 <>
                   <View style={[styles.packHead, styles.rowBorder]}>
-                    <View style={styles.flex}><Text style={styles.planTitle}>{setup.name}</Text><Text style={styles.planSub}>{progress.checked} of {progress.total} packed · shared with your Gear Locker</Text></View>
+                    <View style={styles.flex}><Text style={styles.planTitle}>{setup.name}</Text><Text style={styles.planSub}>{progress.checked} of {progress.total} packed for this {trip ? 'trip' : 'dive'} · also in your Gear Locker</Text></View>
                     <Text style={styles.packPercent}>{progress.total ? Math.round(progress.ratio * 100) : 0}%</Text>
                   </View>
                   <View style={styles.packBar}><ProgressBar color={progress.ratio === 1 ? colors.good : colors.cyan} value={progress.ratio} /></View>
-                  <PackingList items={planner.gear.items} onToggle={(keys, checked) => planner.setPacked(setup.id, keys, checked).catch(() => {})} setup={setup} />
+                  <PackingList items={planner.gear.items} onToggle={(keys, checked) => planner.setPacked(plan.id, keys, checked).catch(() => {})} setup={packing} />
                   <Pressable accessibilityRole="button" onPress={() => onOpenTool('gear-checklist')} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}><Text style={styles.sectionAction}>Open in Gear Locker ›</Text></Pressable>
                 </>
               ) : <Pressable accessibilityRole="button" onPress={() => setPickSetup(true)} style={styles.addRow}><Text style={styles.sectionAction}>+ Choose the gear setup you’re bringing</Text></Pressable>}

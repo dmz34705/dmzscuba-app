@@ -8,6 +8,7 @@ import {
   createGearId,
   diveComputerLogStats,
   isLockedLogbookComputer,
+  moveFloatingForChecks,
   moveFloatingItem,
   normalizeGearItem,
   normalizeGearSetup,
@@ -172,6 +173,9 @@ export default function useGearChecklist() {
     ...state, setups: state.setups.map((setup) => (setup.id === setupId ? setAccessoryChoice(setup, itemId, accessoryIds, state.items) : setup)),
   });
 
+  // Packing floating gear for a trip on this setup (ticked on the trip's list) moves it here too.
+  const packFloating = (setupId, keys) => commit(moveFloatingForChecks(state, setupId, keys));
+
   const resetSetup = (setupId) => commit({
     ...state,
     setups: state.setups.map((setup) => (setup.id === setupId ? { ...setup, checkedIds: [] } : setup)),
@@ -189,6 +193,7 @@ export default function useGearChecklist() {
     toggleChecked,
     setCheckedKeys,
     resetSetup,
+    packFloating,
     moveFloating,
     chooseAccessories,
     unlinkCylinder,

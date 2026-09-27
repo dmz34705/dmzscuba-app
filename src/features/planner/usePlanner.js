@@ -3,9 +3,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { subscribeAccountData } from '../../lib/accountDataSync';
 import { loadIndex } from '../../lib/diveLog/storage';
-import { applyChecks } from '../gearChecklist/model';
+import { moveFloatingForChecks } from '../gearChecklist/model';
 import { loadGearState, saveGearState } from '../gearChecklist/storage';
-import { normalizePlan, normalizePlannerState, planAlerts } from './model';
+import { normalizePlan, normalizePlannerState, packPlan, planAlerts } from './model';
 
 // Plans live on this device (and in the development backups). Account sync can carry them once
 // the sync service accepts a `plan` record kind.
@@ -69,12 +69,19 @@ export default function usePlanner({ certifications = null } = {}) {
     await persist(current.filter((entry) => entry.id !== planId));
   }, [persist]);
 
-  // Tick items on the setup's own Gear Locker checklist, so packing progress is one list everywhere.
-  const setPacked = useCallback(async (setupId, keys, checked) => {
-    const latest = await loadGearState();
-    const saved = await saveGearState(applyChecks(latest, setupId, keys, checked));
-    setGear(saved);
-  }, []);
+  // Tick items on this plan's own packing list (the Gear Locker shows the same list for the
+  // setup's next trip). Packing a floating item still moves it onto the setup in the Gear Locker.
+  const setPacked = useCallback(async (planId, keys, checked) => {
+    const current = (await loadPlannerState()).plans;
+    const plan = current.find((entry) => entry.id === planId);
+    if (!plan) return;
+    await persist(current.map((entry) => (entry.id === planId ? packPlan(entry, keys, checked) : entry)));
+    if (checked && plan.setupId) {
+      const latest = await loadGearState();
+      const moved = moveFloatingForChecks(latest, plan.setupId, keys);
+      if (moved !== latest) setGear(await saveGearState(moved));
+    }
+  }, [persist]);
 
   const context = useMemo(() => ({ gear, certifications, dives }), [gear, certifications, dives]);
   const alertsFor = useCallback((plan) => planAlerts(plan, { ...context, now: new Date() }), [context]);
