@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import {
-  assignItemToLists,
+  assignItemToSetups,
   createGearId,
   normalizeGearItem,
-  normalizeGearList,
+  normalizeGearSetup,
 } from './model';
 import {
   loadGearState,
@@ -15,7 +15,7 @@ import {
 } from './storage';
 
 export default function useGearChecklist() {
-  const [state, setState] = useState({ version: 1, items: [], lists: [] });
+  const [state, setState] = useState({ version: 2, items: [], setups: [] });
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
 
@@ -53,8 +53,8 @@ export default function useGearChecklist() {
       const items = existing
         ? state.items.map((entry) => (entry.id === itemId ? item : entry))
         : [...state.items, item];
-      const lists = assignItemToLists(state.lists, itemId, draft.listIds || []);
-      await commit({ ...state, items, lists });
+      const setups = assignItemToSetups(state.setups, itemId, draft.setupIds || []);
+      await commit({ ...state, items, setups });
       await Promise.all(removedUris.map((uri) => removeManagedGearAttachment(uri).catch(() => {})));
       return item;
     } catch (error) {
@@ -65,39 +65,39 @@ export default function useGearChecklist() {
 
   const deleteItem = async (itemId) => {
     const item = state.items.find((entry) => entry.id === itemId);
-    const lists = state.lists.map((list) => ({
-      ...list,
-      itemIds: list.itemIds.filter((id) => id !== itemId),
-      checkedIds: list.checkedIds.filter((id) => id !== itemId),
+    const setups = state.setups.map((setup) => ({
+      ...setup,
+      itemIds: setup.itemIds.filter((id) => id !== itemId),
+      checkedIds: setup.checkedIds.filter((id) => id !== itemId),
     }));
-    await commit({ ...state, items: state.items.filter((entry) => entry.id !== itemId), lists });
+    await commit({ ...state, items: state.items.filter((entry) => entry.id !== itemId), setups });
     await removeGearItemFiles(item);
   };
 
-  const saveList = async (draft) => {
-    const existing = state.lists.find((list) => list.id === draft.id);
-    const list = normalizeGearList({ ...draft, createdAt: existing?.createdAt });
-    const lists = existing
-      ? state.lists.map((entry) => (entry.id === list.id ? list : entry))
-      : [...state.lists, list];
-    await commit({ ...state, lists });
-    return list;
+  const saveSetup = async (draft) => {
+    const existing = state.setups.find((setup) => setup.id === draft.id);
+    const setup = normalizeGearSetup({ ...draft, createdAt: existing?.createdAt });
+    const setups = existing
+      ? state.setups.map((entry) => (entry.id === setup.id ? setup : entry))
+      : [...state.setups, setup];
+    await commit({ ...state, setups });
+    return setup;
   };
 
-  const deleteList = (listId) => commit({ ...state, lists: state.lists.filter((list) => list.id !== listId) });
+  const deleteSetup = (setupId) => commit({ ...state, setups: state.setups.filter((setup) => setup.id !== setupId) });
 
-  const toggleChecked = (listId, itemId) => {
-    const lists = state.lists.map((list) => {
-      if (list.id !== listId || !list.itemIds.includes(itemId)) return list;
-      const checked = list.checkedIds.includes(itemId);
-      return { ...list, checkedIds: checked ? list.checkedIds.filter((id) => id !== itemId) : [...list.checkedIds, itemId] };
+  const toggleChecked = (setupId, itemId) => {
+    const setups = state.setups.map((setup) => {
+      if (setup.id !== setupId || !setup.itemIds.includes(itemId)) return setup;
+      const checked = setup.checkedIds.includes(itemId);
+      return { ...setup, checkedIds: checked ? setup.checkedIds.filter((id) => id !== itemId) : [...setup.checkedIds, itemId] };
     });
-    return commit({ ...state, lists });
+    return commit({ ...state, setups });
   };
 
-  const resetList = (listId) => commit({
+  const resetSetup = (setupId) => commit({
     ...state,
-    lists: state.lists.map((list) => (list.id === listId ? { ...list, checkedIds: [] } : list)),
+    setups: state.setups.map((setup) => (setup.id === setupId ? { ...setup, checkedIds: [] } : setup)),
   });
 
   return useMemo(() => ({
@@ -106,10 +106,10 @@ export default function useGearChecklist() {
     error,
     saveItem,
     deleteItem,
-    saveList,
-    deleteList,
+    saveSetup,
+    deleteSetup,
     toggleChecked,
-    resetList,
+    resetSetup,
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }), [state, loaded, error]);
 }

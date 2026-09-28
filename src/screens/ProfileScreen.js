@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { FormError, FormField } from '../components/AccountForm';
 import { ScreenHeader } from '../components/AppShell';
+import DateField from '../components/DateField';
 import { Card, PrimaryButton, SecondaryButton } from '../components/Ui';
 import { validateProfile } from '../lib/accountProfile';
 import { colors, radii, spacing } from '../theme';
@@ -168,8 +169,8 @@ export default function ProfileScreen({ account, onAddCertification, onBack, onD
               </View>
               <FormField autoCapitalize="characters" label="Certification number" maxLength={120} onChangeText={(value) => updateCertification('certificationNumber', value)} placeholder="Optional" value={certificationDraft.certificationNumber} />
               <View style={styles.twoColumn}>
-                <View style={styles.half}><FormField autoCapitalize="none" label="Issue date" maxLength={10} onChangeText={(value) => updateCertification('issuedOn', value)} placeholder="YYYY-MM-DD" value={certificationDraft.issuedOn} /></View>
-                <View style={styles.half}><FormField autoCapitalize="none" label="Expiration date" maxLength={10} onChangeText={(value) => updateCertification('expiresOn', value)} placeholder="Optional" value={certificationDraft.expiresOn} /></View>
+                <View style={styles.half}><DateField label="Issue date" onChange={(value) => updateCertification('issuedOn', value)} value={certificationDraft.issuedOn} /></View>
+                <View style={styles.half}><DateField label="Expiration date" onChange={(value) => updateCertification('expiresOn', value)} value={certificationDraft.expiresOn} /></View>
               </View>
               <FormError message={certificationError} />
               <SecondaryButton label={busyAction === 'certification' ? 'Adding…' : 'Add certification'} onPress={addCertification} />

@@ -7,9 +7,10 @@ const root = path.join(__dirname, '..');
 const srcRoot = path.join(root, 'src');
 const model = loadSourceModule(path.join(srcRoot, 'features/compassNav/model.js'), srcRoot);
 const {
-  HOLD_ON_COURSE_DEG, RECAP, SECTION_NAMES, STEPS, angularDiff, bezelAim,
+  HOLD_ON_COURSE_DEG, RECAP, SECTION_NAMES, SIDE_WINDOW_LEVEL_TOLERANCE, STEPS, angularDiff, bezelAim,
   bezelCourse, buildLessonSteps, gateMet, generatePracticeHeadings, holdBearing,
-  legBearing, norm360, paceAllowed, reciprocal, stepHeading, turnTo, visibleSteps,
+  legBearing, norm360, paceAllowed, reciprocal, sideWindowLevel, sideWindowTicks,
+  stepHeading, turnTo, visibleSteps,
 } = model;
 
 // --- heading math ---------------------------------------------------------
@@ -22,6 +23,12 @@ assert.equal(angularDiff(10, 190), 180);
 assert.equal(turnTo(350, 20), 30, 'signed right turn wraps');
 assert.equal(turnTo(20, 350), -30, 'signed left turn wraps');
 assert.equal(bezelCourse(240), 120, 'screen rotation 240 stores course 120');
+
+const windowTicks = sideWindowTicks(358, 2);
+assert.deepEqual(windowTicks.map(({ value }) => value), [350, 355, 0, 5, 10], 'side window wraps smoothly across north');
+assert.deepEqual(windowTicks.map(({ delta }) => delta), [-8, -3, 2, 7, 12]);
+assert.equal(sideWindowLevel({ x: 0 }).level, true);
+assert.equal(sideWindowLevel({ x: Math.sin((SIDE_WINDOW_LEVEL_TOLERANCE + 1) * Math.PI / 180) }).level, false);
 
 // Random drill headings are rounded to tens and always at least 90 degrees apart.
 for (let index = 0; index < 100; index += 1) {
@@ -130,6 +137,8 @@ assert.match(screen, /lessonMode/);
 assert.match(screen, /EXPLORE/);
 assert.match(screen, /FREE PRACTICE/);
 assert.match(screen, /GUIDED LESSON/);
+assert.match(screen, /SideWindowCamera/);
+assert.match(screen, /CAMERA/);
 assert.match(screen, /reciprocalBezel/);
 assert.match(screen, /Bezel north is on card south/);
 assert.match(screen, /\+ STEP/);

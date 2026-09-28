@@ -1,4 +1,5 @@
 import { bestLocationForDive } from './correlate';
+import { matchOfflineDiveSite } from '../diveSites/offlineCatalog';
 
 /**
  * Build one location suggestion per eligible dive. This stays storage- and
@@ -18,11 +19,18 @@ export function buildLocationSuggestions(points, dives, handledDiveIds = []) {
         durationSeconds: dive.durationSeconds,
       });
       if (!point) return null;
+      const siteMatch = matchOfflineDiveSite(point.lat, point.lon);
       return {
         id: `${dive.id}:${point.t}`,
         diveId: dive.id,
         diveStartTime: dive.startTime,
         siteName: dive.site?.name || '',
+        // A known nearby site is a suggestion only. The user still confirms
+        // the location link, and an existing dive name is never replaced.
+        nearbySiteName: siteMatch.site?.name || '',
+        nearbySiteDistanceMeters: siteMatch.distanceMeters,
+        nearbySiteMatchConfidence: siteMatch.confidence,
+        nearbySiteMatchReason: siteMatch.reason,
         latitude: point.lat,
         longitude: point.lon,
         accuracyMeters: point.accuracyMeters ?? null,

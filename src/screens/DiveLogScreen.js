@@ -24,6 +24,7 @@ import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { FormError } from '../components/AccountForm';
+import { InlineIosPicker, formatDateDisplay, useDatePicker } from '../components/DateField';
 import { Card, GroupedSection, NavigationRow, PrimaryButton, SecondaryButton, Stat } from '../components/Ui';
 import FeatureIcon from '../features/catalog/FeatureIcon';
 import useDiveLog, { ALL_DIVES_KEY } from '../features/diveLog/useDiveLog';
@@ -328,6 +329,20 @@ function Field({ label, value, onChangeText, suffix, placeholder, helper, keyboa
         />
         {suffix ? <Text style={styles.inputSuffix}>{suffix}</Text> : null}
       </View>
+      {helper ? <Text style={styles.fieldHelper}>{helper}</Text> : null}
+    </View>
+  );
+}
+
+function DateOnlyField({ label, value, onChangeText, helper }) {
+  const picker = useDatePicker({ value, onChange: onChangeText });
+  return (
+    <View style={styles.field}>
+      <Text style={styles.fieldLabel}>{label}</Text>
+      <Pressable accessibilityLabel={label} accessibilityRole="button" onPress={picker.openPicker} style={styles.inputShell}>
+        <Text numberOfLines={1} style={value ? styles.input : [styles.input, styles.inputPlaceholder]}>{value ? formatDateDisplay(value) : 'Select date'}</Text>
+      </Pressable>
+      <InlineIosPicker onChange={onChangeText} picker={picker} />
       {helper ? <Text style={styles.fieldHelper}>{helper}</Text> : null}
     </View>
   );
@@ -1817,7 +1832,7 @@ function DiveEditForm({ form, units, onChange, error }) {
 
       <FormSection title="When & where">
         <View style={styles.twoColumn}>
-          <Field label="Date" value={form.date} onChangeText={set('date')} placeholder="YYYY-MM-DD" keyboardType="numbers-and-punctuation" />
+          <DateOnlyField label="Date" onChangeText={set('date')} value={form.date} />
           <Field label="Time" value={form.time} onChangeText={set('time')} placeholder="HH:MM" keyboardType="numbers-and-punctuation" />
         </View>
         <View style={styles.twoColumn}>
@@ -2516,7 +2531,10 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     };
     Alert.alert(
       'Link phone location to this dive?',
-      `${suggestion.siteName || formatDate(suggestion.diveStartTime) || 'Downloaded dive'}\n`
+      `${suggestion.siteName || suggestion.nearbySiteName || formatDate(suggestion.diveStartTime) || 'Downloaded dive'}\n`
+        + (suggestion.nearbySiteName && !suggestion.siteName
+          ? `Nearby site: ${suggestion.nearbySiteName}${suggestion.nearbySiteDistanceMeters != null ? ` (${suggestion.nearbySiteDistanceMeters} m away)` : ''}\n`
+          : '')
         + `${suggestion.latitude.toFixed(5)}, ${suggestion.longitude.toFixed(5)} · recorded ${timing}`,
       [
         { text: 'Skip', style: 'cancel', onPress: () => finish(false) },
@@ -3849,6 +3867,7 @@ const styles = StyleSheet.create({
   fieldLabel: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 0.4, marginBottom: 6, textTransform: 'uppercase' },
   inputShell: { alignItems: 'center', backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', minHeight: 47, paddingHorizontal: 11 },
   input: { color: colors.text, flex: 1, fontSize: 16, fontWeight: '700', paddingVertical: 10 },
+  inputPlaceholder: { color: colors.faint },
   inputSuffix: { color: colors.cyan, fontSize: 11, fontWeight: '800', marginLeft: 7 },
   fieldHelper: { color: colors.faint, fontSize: 10, lineHeight: 14, marginTop: 4 },
   twoColumn: { flexDirection: 'row', flexWrap: 'wrap', gap: 9 },

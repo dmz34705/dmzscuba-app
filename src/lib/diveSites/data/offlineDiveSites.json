@@ -1,0 +1,25 @@
+[
+  {
+    "id": "geonames-gilboa-fixture-2564638",
+    "name": "Gilboa Quarry",
+    "aliases": [
+      "Gilboa Quarry (historical)"
+    ],
+    "latitude": 41.0147222,
+    "longitude": -83.9355556,
+    "siteType": "quarry",
+    "matchRadiusMeters": 650,
+    "coordinateQuality": "gazetteer",
+    "region": "Ohio",
+    "country": "US",
+    "sources": [
+      {
+        "sourceName": "GeoNames",
+        "sourceUrl": "https://www.geonames.org/2564638/gilboa-quarry.html",
+        "sourceRecordId": "2564638",
+        "dataLicense": "CC BY 4.0",
+        "coordinateQuality": "gazetteer"
+      }
+    ]
+  }
+]

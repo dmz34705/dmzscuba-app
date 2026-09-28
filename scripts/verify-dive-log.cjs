@@ -21,6 +21,10 @@ const locationSuggestions = loadSourceModule(
   path.join(srcRoot, 'lib', 'locationLog', 'suggestions.js'),
   srcRoot,
 );
+const offlineDiveSites = loadSourceModule(
+  path.join(srcRoot, 'lib', 'diveSites', 'offlineCatalog.js'),
+  srcRoot,
+);
 const {
   SCHEMA_VERSION,
   LEGACY_SCHEMA_VERSION,
@@ -1785,6 +1789,32 @@ function memoryStorage(seed = {}) {
   assert.equal(suggested.length, 1);
   assert.equal(suggested[0].distanceMs, 5 * 60 * 1000);
   assert.equal(suggested[0].latitude, 41.5);
+const gilboa = offlineDiveSites.findNearbyOfflineDiveSite(41.01472, -83.93556);
+assert.equal(gilboa?.name, 'Gilboa Quarry');
+assert.equal(offlineDiveSites.findNearbyOfflineDiveSite(41.025, -83.93556), null);
+const gilboaMatch = offlineDiveSites.matchOfflineDiveSite(41.01472, -83.93556);
+assert.equal(gilboaMatch.status, 'matched');
+assert.equal(gilboaMatch.distanceMeters, 0);
+assert.ok(gilboaMatch.reason);
+// Swapping a valid latitude and longitude must never produce a false Gilboa match;
+// out-of-range / non-degree values are rejected as invalid WGS84 input.
+assert.equal(offlineDiveSites.matchOfflineDiveSite(-83.93556, 41.01472).status, 'no-match');
+assert.equal(offlineDiveSites.matchOfflineDiveSite(41014722, -83935556).status, 'invalid-coordinate');
+const compactSites = [
+  { id: 'near', name: 'Near Wreck', latitude: 0, longitude: 0, matchRadiusMeters: 150, coordinateQuality: 'surveyed' },
+  { id: 'far', name: 'Far Wreck', latitude: 0, longitude: 0.001, matchRadiusMeters: 150, coordinateQuality: 'surveyed' },
+];
+assert.equal(offlineDiveSites.matchOfflineDiveSite(0, 0.0001, compactSites).site?.id, 'near');
+const overlappingSites = [
+  { id: 'one', name: 'One', latitude: 0, longitude: 0, matchRadiusMeters: 150, coordinateQuality: 'surveyed' },
+  { id: 'two', name: 'Two', latitude: 0, longitude: 0.0002, matchRadiusMeters: 150, coordinateQuality: 'surveyed' },
+];
+assert.equal(offlineDiveSites.matchOfflineDiveSite(0, 0.0001, overlappingSites).status, 'ambiguous');
+  const gilboaSuggestion = locationSuggestions.buildLocationSuggestions(
+    [{ t: Date.parse('2026-09-10T16:00:00.000Z'), lat: 41.01472, lon: -83.93556 }],
+    [{ id: 'gilboa-dive', logIds: ['gilboa-log'], startTime: '2026-09-10T16:00:00.000Z', durationSeconds: 2400, site: {} }],
+  );
+  assert.equal(gilboaSuggestion[0].nearbySiteName, 'Gilboa Quarry');
   assert.equal(locationSuggestions.buildLocationSuggestions([], [], []).length, 0);
   assert.equal(locationSuggestions.buildLocationSuggestions(
     [{ t: Date.parse('2026-09-10T16:00:00.000Z'), lat: 41.5, lon: -83.2 }],

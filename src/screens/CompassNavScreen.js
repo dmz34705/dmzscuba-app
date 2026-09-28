@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ScreenHeader } from '../components/AppShell';
 import CompassRose from '../features/compassNav/CompassRose';
+import SideWindowCamera from '../features/compassNav/SideWindowCamera';
 import useCompassHeading from '../features/compassNav/useCompassHeading';
 import {
   HOLD_ON_COURSE_DEG, RECAP, SECTION_NAMES, angularDiff, bezelAim, bezelCourse,
@@ -39,7 +40,8 @@ export default function CompassNavScreen({ onBack }) {
   const [stage, setStage] = useState({ width: 0, height: 0 });
   const [consoleHeight, setConsoleHeight] = useState(200);
   const [manual, setManual] = useState(false);
-  const compass = useCompassHeading({ manual });
+  const [cameraMode, setCameraMode] = useState(false);
+  const compass = useCompassHeading({ manual: manual && !cameraMode });
 
   const [lessonMode, setLessonMode] = useState('guided');
   const [practiceHeadings, setPracticeHeadings] = useState(() => generatePracticeHeadings());
@@ -151,6 +153,24 @@ export default function CompassNavScreen({ onBack }) {
 
   const canNext = done || step.kind === 'info';
 
+  if (cameraMode) {
+    return (
+      <View style={styles.screen}>
+        <ScreenHeader
+          eyebrow="COMPASS DEMO"
+          title="Side-Window View"
+          onBack={() => setCameraMode(false)}
+        />
+        <SideWindowCamera
+          heading={compass.heading}
+          tiltVec={compass.tiltVec}
+          sensorAvailable={compass.available}
+          onClose={() => setCameraMode(false)}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.screen}>
       <ScreenHeader
@@ -158,14 +178,24 @@ export default function CompassNavScreen({ onBack }) {
         title="Compass Navigation"
         onBack={onBack}
         action={(
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={lessonMode === 'guided' ? 'Explore compass without a lesson' : 'Return to guided lesson'}
-            onPress={() => setLessonMode((current) => (current === 'guided' ? 'explore' : 'guided'))}
-            style={styles.headerAction}
-          >
-            <Text style={styles.headerActionText}>{lessonMode === 'guided' ? 'EXPLORE' : 'LESSON'}</Text>
-          </Pressable>
+          <View style={styles.headerActions}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="Open side-window camera compass"
+              onPress={() => setCameraMode(true)}
+              style={[styles.headerAction, styles.cameraAction]}
+            >
+              <Text style={styles.headerActionText}>CAMERA</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={lessonMode === 'guided' ? 'Explore compass without a lesson' : 'Return to guided lesson'}
+              onPress={() => setLessonMode((current) => (current === 'guided' ? 'explore' : 'guided'))}
+              style={styles.headerAction}
+            >
+              <Text style={styles.headerActionText}>{lessonMode === 'guided' ? 'EXPLORE' : 'LESSON'}</Text>
+            </Pressable>
+          </View>
         )}
       />
       <View style={styles.stage} onLayout={(e) => setStage(e.nativeEvent.layout)}>
@@ -344,8 +374,10 @@ const styles = StyleSheet.create({
   tiltRow: { flexDirection: 'row', alignItems: 'center', gap: 8, width: '80%' },
   tiltLabel: { color: colors.faint, fontSize: 10, fontWeight: '900', letterSpacing: 1, minWidth: 30, textAlign: 'center' },
   tiltSlider: { flex: 1, height: 30 },
-  headerAction: { alignItems: 'center', justifyContent: 'center', height: 40, paddingHorizontal: 12, borderRadius: 999, borderWidth: 1, borderColor: colors.lineStrong },
-  headerActionText: { color: colors.cyan, fontSize: 11, fontWeight: '900', letterSpacing: 0.8 },
+  headerAction: { alignItems: 'center', justifyContent: 'center', height: 40, paddingHorizontal: 9, borderRadius: 999, borderWidth: 1, borderColor: colors.lineStrong },
+  headerActions: { flexDirection: 'row', gap: 6 },
+  cameraAction: { borderColor: colors.cyan, backgroundColor: 'rgba(112,221,246,0.09)' },
+  headerActionText: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 0.5 },
   bottomStack: { position: 'absolute', gap: 8 },
   manualBanner: { alignSelf: 'center', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 999, borderWidth: 1, borderColor: colors.lineStrong, backgroundColor: colors.surfaceGlass },
   manualBannerText: { color: colors.cyan, fontSize: 11, fontWeight: '800' },
