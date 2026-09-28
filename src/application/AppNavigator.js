@@ -1,7 +1,8 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { BackHandler, StyleSheet, View } from 'react-native';
 
 import { BottomTabBar } from '../components/AppShell';
+import { PageTransition } from '../components/Motion';
 import useAccountSession from '../features/account/useAccountSession';
 import { getFeature } from '../features/catalog/featureCatalog';
 import useAppSettings from '../features/settings/useAppSettings';
@@ -40,6 +41,7 @@ const GEAR_SETUP_ENABLED = false;
 
 export default function AppNavigator() {
   const [navigation, dispatch] = useReducer(reduceNavigation, INITIAL_NAVIGATION);
+  const [transitionKind, setTransitionKind] = useState('none');
   const { activeTab, detailRoute, moreRoute, settingsSection, logbookIntent, atlasFocus, plannerFocus } = navigation;
   const appSettings = useAppSettings();
   const accountSession = useAccountSession({
@@ -56,11 +58,24 @@ export default function AppNavigator() {
     ensureLocationTracking().catch(() => {});
   }, [appSettings.loaded, appSettings.settings.locationLoggingEnabled]);
 
-  const closeDetail = () => dispatch({ type: 'closeDetail' });
-  const openDetail = (route, options = {}) => dispatch({ type: 'open', route, focus: options.focus, at: Date.now() });
-  const selectTab = (tab) => dispatch({ type: 'tab', tab });
+  const navigate = (action, kind) => {
+    setTransitionKind(kind);
+    dispatch(action);
+  };
+  const closeDetail = () => navigate({ type: 'closeDetail' }, 'back');
+  const openDetail = (route, options = {}) => navigate({ type: 'open', route, focus: options.focus, at: Date.now() }, 'forward');
+  const selectTab = (tab) => navigate({ type: 'tab', tab }, 'tab');
   const openAccount = () => selectTab('account');
-  const goBack = () => dispatch({ type: 'back' });
+  const goBack = () => navigate({ type: 'back' }, 'back');
+
+  const transitionKey = detailRoute
+    ? `detail:${detailRoute}:${atlasFocus?.at || plannerFocus?.at || ''}`
+    : `tab:${activeTab}:${moreRoute || ''}:${settingsSection || ''}:${logbookIntent?.at || ''}`;
+  const renderScreen = (screen) => (
+    <PageTransition kind={transitionKind} transitionKey={transitionKey}>
+      {screen}
+    </PageTransition>
+  );
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -75,19 +90,19 @@ export default function AppNavigator() {
 
   const feature = getFeature(detailRoute);
   if (feature?.routeType === 'ocean-atlas') {
-    return <OceanAtlasScreen appSettings={appSettings.settings} focus={atlasFocus} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />;
+    return renderScreen(<OceanAtlasScreen appSettings={appSettings.settings} focus={atlasFocus} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
   }
   if (feature?.routeType === 'planner') {
-    return <PlannerScreen account={accountSession.account} focusPlanId={plannerFocus?.planId || null} key={plannerFocus?.at || 'planner'} onBack={closeDetail} onOpenTool={openDetail} signedIn={accountSession.authStatus === 'signedIn'} />;
+    return renderScreen(<PlannerScreen account={accountSession.account} focusPlanId={plannerFocus?.planId || null} key={plannerFocus?.at || 'planner'} onBack={closeDetail} onOpenTool={openDetail} signedIn={accountSession.authStatus === 'signedIn'} />);
   }
   if (feature?.routeType === 'color-loss') {
-    return <ColorLossScreen appSettings={appSettings.settings} onBack={closeDetail} />;
+    return renderScreen(<ColorLossScreen appSettings={appSettings.settings} onBack={closeDetail} />);
   }
   if (feature?.routeType === 'boyles-law') {
-    return <BoylesLawScreen appSettings={appSettings.settings} onBack={closeDetail} />;
+    return renderScreen(<BoylesLawScreen appSettings={appSettings.settings} onBack={closeDetail} />);
   }
   if (feature?.routeType === 'gear-setup') {
-    return GEAR_SETUP_ENABLED
+    return renderScreen(GEAR_SETUP_ENABLED
       ? <GearSetupScreen onBack={closeDetail} />
       : (
         <ComingSoonScreen
@@ -96,32 +111,32 @@ export default function AppNavigator() {
           note="Build a Scuba Unit is getting a full illustration pass. It’ll unlock in an upcoming update."
           onBack={closeDetail}
         />
-      );
+      ));
   }
   if (feature?.routeType === 'compass-nav') {
-    return <CompassNavScreen onBack={closeDetail} />;
+    return renderScreen(<CompassNavScreen onBack={closeDetail} />);
   }
   if (feature?.routeType === 'web-demo') {
-    return <WebDemoScreen demo={DEMOS[feature.id]} onBack={closeDetail} />;
+    return renderScreen(<WebDemoScreen demo={DEMOS[feature.id]} onBack={closeDetail} />);
   }
   if (feature?.routeType === 'calculator') {
-    return <DiveCalculatorScreen appSettings={appSettings.settings} onBack={closeDetail} profileDefaults={accountSession.profile} />;
+    return renderScreen(<DiveCalculatorScreen appSettings={appSettings.settings} onBack={closeDetail} profileDefaults={accountSession.profile} />);
   }
   if (feature?.routeType === 'gear-checklist') {
-    return <GearChecklistScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenComputerDives={(deviceKey) => dispatch({ type: 'open', route: 'dive-log:folder', folder: deviceKey, at: Date.now() })} />;
+    return renderScreen(<GearChecklistScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenComputerDives={(deviceKey) => navigate({ type: 'open', route: 'dive-log:folder', folder: deviceKey, at: Date.now() }, 'tab')} />);
   }
   if (feature?.routeType === 'dive-computer-simulator') {
-    return <DiveComputerSimulatorScreen appSettings={appSettings.settings} onBack={closeDetail} />;
+    return renderScreen(<DiveComputerSimulatorScreen appSettings={appSettings.settings} onBack={closeDetail} />);
   }
   if (feature?.routeType === 'lens') {
-    return <DiveLensScreen onBack={closeDetail} />;
+    return renderScreen(<DiveLensScreen onBack={closeDetail} />);
   }
   if (feature?.routeType === 'dive-log') {
-    return <DiveLogScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />;
+    return renderScreen(<DiveLogScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
   }
 
   if (detailRoute === ACCOUNT_ROUTES.login) {
-    return (
+    return renderScreen(
       <LoginScreen
         initialEmail={accountSession.profile.email}
         onBack={closeDetail}
@@ -134,7 +149,7 @@ export default function AppNavigator() {
     );
   }
   if (detailRoute === ACCOUNT_ROUTES.create) {
-    return (
+    return renderScreen(
       <CreateAccountScreen
         initialProfile={accountSession.profile}
         onBack={closeDetail}
@@ -149,10 +164,10 @@ export default function AppNavigator() {
     );
   }
   if (detailRoute === ACCOUNT_ROUTES.insurance) {
-    return <InsuranceScreen onBack={closeDetail} />;
+    return renderScreen(<InsuranceScreen onBack={closeDetail} />);
   }
   if (detailRoute === ACCOUNT_ROUTES.profile) {
-    return (
+    return renderScreen(
       <ProfileScreen
         account={accountSession.account}
         onAddCertification={accountSession.addCertification}
@@ -164,7 +179,7 @@ export default function AppNavigator() {
     );
   }
 
-  return (
+  return renderScreen(
     <View style={styles.shell}>
       <View style={styles.tabContent}>
         {activeTab === 'home' ? <HomeScreen appSettings={appSettings.settings} certifications={accountSession.authStatus === 'signedIn' && Array.isArray(accountSession.account?.certifications) ? accountSession.account.certifications : null} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
@@ -188,7 +203,7 @@ export default function AppNavigator() {
           <SettingsScreen
             onBack={goBack}
             section={settingsSection}
-            onOpenSection={(section) => dispatch({ type: 'section', section })}
+            onOpenSection={(section) => navigate({ type: 'section', section }, 'forward')}
             accountEmail={accountSession.account?.profile?.email || ''}
             authStatus={accountSession.authStatus}
             onChange={appSettings.setSettings}

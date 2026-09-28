@@ -1,8 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 import { colors, radii, spacing } from '../theme';
+import { useReducedMotion } from './Motion';
 
 function BackIcon() {
   return (
@@ -27,29 +29,60 @@ function TabIcon({ name, color }) {
   return <Path d={path} fill={color} />;
 }
 
+function BottomTabItem({ icon, label, onPress, selected }) {
+  const reducedMotion = useReducedMotion();
+  const selection = useRef(new Animated.Value(selected ? 1 : 0)).current;
+  const color = selected ? colors.cyan : colors.faint;
+
+  useEffect(() => {
+    if (reducedMotion) {
+      selection.setValue(selected ? 1 : 0);
+      return;
+    }
+    Animated.spring(selection, {
+      damping: 22,
+      mass: 0.7,
+      stiffness: 280,
+      toValue: selected ? 1 : 0,
+      useNativeDriver: true,
+    }).start();
+  }, [reducedMotion, selected, selection]);
+
+  return (
+    <Pressable
+      accessibilityLabel={`${label} tab`}
+      accessibilityRole="tab"
+      accessibilityState={{ selected }}
+      onPress={onPress}
+      style={({ pressed }) => [styles.tabItem, pressed && styles.pressed]}
+    >
+      <Animated.View style={[styles.tabIcon, {
+        transform: [{ scale: selection.interpolate({ inputRange: [0, 1], outputRange: [1, 1.06] }) }],
+      }]}>
+        <Animated.View pointerEvents="none" style={[styles.tabIconSelection, {
+          opacity: selection,
+          transform: [{ scale: selection.interpolate({ inputRange: [0, 1], outputRange: [0.72, 1] }) }],
+        }]} />
+        <Svg width={22} height={22} viewBox="0 0 24 24"><TabIcon name={icon} color={color} /></Svg>
+      </Animated.View>
+      <Text style={[styles.tabLabel, selected && styles.tabLabelSelected]}>{label}</Text>
+    </Pressable>
+  );
+}
+
 export function BottomTabBar({ activeTab, items, onSelect }) {
   const insets = useSafeAreaInsets();
   return (
     <View style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, 8) }]}>
-      {items.map(({ icon, key, label }) => {
-        const selected = activeTab === key;
-        const color = selected ? colors.cyan : colors.faint;
-        return (
-          <Pressable
-            key={key}
-            accessibilityLabel={`${label} tab`}
-            accessibilityRole="tab"
-            accessibilityState={{ selected }}
-            onPress={() => onSelect(key)}
-            style={({ pressed }) => [styles.tabItem, pressed && styles.pressed]}
-          >
-            <View style={[styles.tabIcon, selected && styles.tabIconSelected]}>
-              <Svg width={22} height={22} viewBox="0 0 24 24"><TabIcon name={icon} color={color} /></Svg>
-            </View>
-            <Text style={[styles.tabLabel, selected && styles.tabLabelSelected]}>{label}</Text>
-          </Pressable>
-        );
-      })}
+      {items.map(({ icon, key, label }) => (
+        <BottomTabItem
+          key={key}
+          icon={icon}
+          label={label}
+          onPress={() => onSelect(key)}
+          selected={activeTab === key}
+        />
+      ))}
     </View>
   );
 }
@@ -107,7 +140,7 @@ const styles = StyleSheet.create({
   tabBar: { backgroundColor: 'rgba(5, 11, 20, 0.98)', borderTopColor: colors.lineStrong, borderTopWidth: StyleSheet.hairlineWidth, flexDirection: 'row', paddingHorizontal: 7, paddingTop: 7 },
   tabItem: { alignItems: 'center', flex: 1, gap: 3, justifyContent: 'center', minHeight: 50, paddingHorizontal: 3, paddingVertical: 4 },
   tabIcon: { minWidth: 44, height: 28, alignItems: 'center', justifyContent: 'center', borderRadius: 10 },
-  tabIconSelected: { backgroundColor: 'rgba(112,221,246,0.12)' },
+  tabIconSelection: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(112,221,246,0.12)', borderRadius: 10 },
   tabLabel: { color: colors.muted, fontSize: 11, fontWeight: '600' },
   tabLabelSelected: { color: colors.cyan },
 });

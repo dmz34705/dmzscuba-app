@@ -2,6 +2,7 @@ import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'rea
 import {
   ActivityIndicator,
   Alert,
+  Animated,
   Image,
   Keyboard,
   Modal,
@@ -23,6 +24,7 @@ import * as MediaLibrary from 'expo-media-library/legacy';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
+import { useReducedMotion } from '../components/Motion';
 import { FormError } from '../components/AccountForm';
 import { InlineIosPicker, formatDateDisplay, useDatePicker } from '../components/DateField';
 import { Card, GroupedSection, NavigationRow, PrimaryButton, SecondaryButton, Stat } from '../components/Ui';
@@ -846,13 +848,51 @@ function StatSummaryCard({ stats, units, onPress }) {
 }
 
 function LogbookViewTabs({ active, onChange }) {
+  const reducedMotion = useReducedMotion();
+  const [width, setWidth] = useState(0);
+  const activeIndex = active === 'gallery' ? 1 : active === 'stats' ? 2 : 0;
+  const position = useRef(new Animated.Value(activeIndex)).current;
   const tabs = [
     { key: 'dives', label: 'Dives' },
     { key: 'gallery', label: 'Gallery' },
     { key: 'stats', label: 'Stats' },
   ];
+
+  useEffect(() => {
+    if (reducedMotion) {
+      position.setValue(activeIndex);
+      return;
+    }
+    Animated.spring(position, {
+      damping: 27,
+      mass: 0.72,
+      stiffness: 330,
+      toValue: activeIndex,
+      useNativeDriver: true,
+    }).start();
+  }, [activeIndex, position, reducedMotion]);
+
+  const tabWidth = width > 8 ? (width - 8) / tabs.length : 0;
   return (
-    <View accessibilityRole="tablist" style={styles.logbookTabs}>
+    <View
+      accessibilityRole="tablist"
+      onLayout={(event) => setWidth(event.nativeEvent.layout.width)}
+      style={styles.logbookTabs}
+    >
+      {tabWidth ? (
+        <Animated.View
+          pointerEvents="none"
+          style={[
+            styles.logbookTabIndicator,
+            {
+              width: tabWidth,
+              transform: [{
+                translateX: Animated.multiply(position, tabWidth),
+              }],
+            },
+          ]}
+        />
+      ) : null}
       {tabs.map((tab) => {
         const selected = tab.key === active;
         return (
@@ -861,7 +901,7 @@ function LogbookViewTabs({ active, onChange }) {
             accessibilityRole="tab"
             accessibilityState={{ selected }}
             onPress={() => onChange(tab.key)}
-            style={({ pressed }) => [styles.logbookTab, selected && styles.logbookTabOn, pressed && styles.pressed]}
+            style={({ pressed }) => [styles.logbookTab, pressed && styles.pressed]}
           >
             <Text style={[styles.logbookTabText, selected && styles.logbookTabTextOn]}>{tab.label}</Text>
           </Pressable>
@@ -3638,10 +3678,10 @@ const styles = StyleSheet.create({
 
   logbookTabs: {
     backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1,
-    flexDirection: 'row', marginBottom: spacing.lg, padding: 4,
+    flexDirection: 'row', marginBottom: spacing.lg, overflow: 'hidden', padding: 4,
   },
-  logbookTab: { alignItems: 'center', borderRadius: 10, flex: 1, minHeight: 38, justifyContent: 'center', paddingHorizontal: 8 },
-  logbookTabOn: { backgroundColor: 'rgba(112,221,246,0.14)' },
+  logbookTabIndicator: { backgroundColor: 'rgba(112,221,246,0.14)', borderRadius: 10, bottom: 4, left: 4, position: 'absolute', top: 4 },
+  logbookTab: { alignItems: 'center', borderRadius: 10, flex: 1, minHeight: 38, justifyContent: 'center', paddingHorizontal: 8, zIndex: 1 },
   logbookTabText: { color: colors.faint, fontSize: 13, fontWeight: '800' },
   logbookTabTextOn: { color: colors.cyan },
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
