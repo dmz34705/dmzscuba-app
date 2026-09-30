@@ -17,6 +17,12 @@ import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
 import { restoreJsonBackup } from '../lib/diveLog/storage';
 import { shareLogbookExport } from '../features/diveLog/shareLogbookExport';
 import { backupNow, devBackupStatus, devBackupsAvailable, listDevBackups, reloadApp, restoreDevBackup } from '../lib/devBackup';
+import {
+  choosePortableBackup,
+  portableBackupDescription,
+  restorePortableBackup,
+  sharePortableBackup,
+} from '../lib/portableBackup';
 
 async function restoreLogbookFile() {
   let DocumentPicker;
@@ -57,7 +63,68 @@ function LogbookExportCard() {
   );
 }
 
-// Development builds: every app record and photo, copied to the Mac through Metro (src/lib/devBackup.js).
+function PortableBackupCard() {
+  const [busy, setBusy] = useState('');
+  const save = async () => {
+    setBusy('Preparing app records…');
+    try {
+      const result = await sharePortableBackup({
+        onProgress: ({ done, total }) => setBusy(`Adding files ${done} of ${total}…`),
+      });
+      Alert.alert('Backup prepared', `${portableBackupDescription(result.counts)} included. Keep the .dmzbackup file you saved from the share sheet.`);
+    } catch (error) {
+      Alert.alert('Complete backup', error?.message || 'The backup could not be created.');
+    } finally { setBusy(''); }
+  };
+  const choose = async () => {
+    setBusy('Opening Files…');
+    try {
+      const selected = await choosePortableBackup();
+      setBusy('');
+      if (!selected) return;
+      const { manifest } = selected;
+      Alert.alert(
+        'Restore complete app backup?',
+        `Replace this app’s local data with the backup from ${backupWhen(manifest.createdAt)}?\n\n${portableBackupDescription(manifest.counts)}\n\nYou’ll sign in again after restore.`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          {
+            text: 'Restore everything',
+            style: 'destructive',
+            onPress: async () => {
+              setBusy('Staging backup…');
+              try {
+                await restorePortableBackup(selected.uri, {
+                  onProgress: ({ done, total }) => setBusy(`Restoring files ${done} of ${total}…`),
+                });
+                Alert.alert('Restore complete', 'The app will reload with the restored data. Sign in again to reconnect cloud data.', [
+                  { text: 'Reload app', onPress: reloadApp },
+                ]);
+              } catch (error) {
+                Alert.alert('Complete restore', error?.message || 'The backup could not be restored.');
+              } finally { setBusy(''); }
+            },
+          },
+        ],
+      );
+    } catch (error) {
+      setBusy('');
+      Alert.alert('Complete restore', error?.message || 'The selected backup could not be opened.');
+    }
+  };
+  return (
+    <View>
+      <Text style={[styles.settingBody, styles.sectionContent]}>
+        Creates one .dmzbackup file containing all local app records, dive profiles, photos, PDFs, and attachments. Sign-in credentials are never included.
+      </Text>
+      <NavigationRow disabled={Boolean(busy)} title="Save complete backup" body="Choose where to keep one portable file" onPress={save} />
+      <NavigationRow disabled={Boolean(busy)} title="Restore complete backup" body="Choose a .dmzbackup file from Files" onPress={choose} last />
+      {busy ? <Text accessibilityLiveRegion="polite" style={[styles.settingBody, styles.sectionContent]}>{busy}</Text> : null}
+    </View>
+  );
+}
+
+// Development builds: every app record and photo, copied to the computer through Metro (src/lib/devBackup.js).
 const REASONS = { manual: 'Manual', automatic: 'Automatic', 'before-restore': 'Before a restore' };
 const backupWhen = (iso) => { const date = new Date(iso); return Number.isFinite(date.getTime()) ? date.toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }) : iso; };
 const backupContents = (counts = {}) => [`${counts.dives || 0} dives`, `${counts.gear || 0} gear items`, `${counts.photos || 0} photos`].join(' · ');
@@ -75,7 +142,7 @@ function DevBackupCard() {
     setBusy('Backing up…');
     try {
       const result = await backupNow('manual', { onProgress: ({ sent, total }) => setBusy(`Uploading files ${sent} of ${total}…`) });
-      Alert.alert('Backed up', `${backupContents(result.counts)} saved on your Mac.`);
+      Alert.alert('Backed up', `${backupContents(result.counts)} saved on your computer.`);
       await refresh();
     } catch (error) { Alert.alert('Backup', error?.message || 'The backup could not be completed.'); }
     finally { setBusy(''); }
@@ -95,11 +162,11 @@ function DevBackupCard() {
   return (
     <View>
       <Text style={[styles.settingBody, styles.sectionContent]}>
-        {status == null ? 'Checking for your Mac…'
-          : status.reachable ? `Everything — logbook, gear locker, photos and settings — is copied to ${status.dir} on your Mac, automatically when you leave the app and whenever you tap Back up now. Deleting the app never touches it.${latest ? ` Last backup: ${backupWhen(latest.createdAt)}.` : ' No backups yet.'}`
-            : status.error || 'Your Mac isn\'t reachable. Start the development server (npx expo start) and open the app from it to back up or restore.'}
+        {status == null ? 'Checking for your computer…'
+          : status.reachable ? `Everything — logbook, gear locker, photos, and settings — is copied to ${status.dir} on your computer, automatically when you leave the app and whenever you tap Back up now. Deleting the app never touches it.${latest ? ` Last backup: ${backupWhen(latest.createdAt)}.` : ' No backups yet.'}`
+            : status.error || 'Your computer isn\'t reachable. Start the development server (npx expo start) and open the app from it to back up or restore.'}
       </Text>
-      <NavigationRow disabled={Boolean(busy) || !status?.reachable} title="Back up now" body="Copy all app data and photos to your Mac" onPress={backup} last={!backups.length} />
+      <NavigationRow disabled={Boolean(busy) || !status?.reachable} title="Back up now" body="Copy all app data and photos to your computer" onPress={backup} last={!backups.length} />
       {backups.slice(0, 8).map((item, index) => (
         <NavigationRow key={item.id} disabled={Boolean(busy)} title={`${backupWhen(item.createdAt)} · ${REASONS[item.reason] || item.reason}`} body={`${backupContents(item.counts)} · tap to restore`}
           onPress={() => restore(item)} last={index === Math.min(backups.length, 8) - 1} />
@@ -266,7 +333,7 @@ export default function SettingsScreen({ accountEmail = '', authStatus = 'signed
           <NavigationRow title="Dive profile graph" body="Line colors and weight" onPress={() => onOpenSection('graph')} last />
         </GroupedSection>
         <GroupedSection title="Logbook & privacy">
-          <NavigationRow title="Export & backup" body="Save your logbook or restore a JSON backup" onPress={() => onOpenSection('backup')} />
+          <NavigationRow title="Export & backup" body="Save or restore the complete app and logbook" onPress={() => onOpenSection('backup')} />
           <NavigationRow title="Location" body={settings.locationLoggingEnabled ? 'Dive site suggestions enabled' : 'Dive site suggestions off'} onPress={() => onOpenSection('location')} last />
         </GroupedSection>
         <StatusBanner
@@ -325,7 +392,10 @@ export default function SettingsScreen({ accountEmail = '', authStatus = 'signed
         </View>
         </GroupedSection> : null}
 
-        {section === 'backup' && devBackupsAvailable() ? <GroupedSection title="Backups on your Mac · development">
+        {section === 'backup' ? <GroupedSection title="Complete app backup">
+          <PortableBackupCard />
+        </GroupedSection> : null}
+        {section === 'backup' && devBackupsAvailable() ? <GroupedSection title="Automatic computer backups · development">
           <DevBackupCard />
         </GroupedSection> : null}
         {section === 'backup' ? <GroupedSection title="Logbook backup">

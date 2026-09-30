@@ -1,7 +1,13 @@
 # Development backups
 
 Deleting the app from a phone deletes everything it stores. Development builds therefore keep a copy of
-all app data **on the Mac**, through the Metro dev server the app is already connected to.
+all app data **on the development computer**, through the Metro dev server the app is already connected to.
+
+For a simpler handoff that does not depend on Metro, **Settings → Export & backup → Complete app backup**
+can also save the same app records and Documents files as one `.dmzbackup` file through the system share
+sheet. **Restore complete backup** opens the system file picker, validates and stages the entire archive,
+then replaces local storage and Documents files. Sign-in tokens are never included; sign in again after a
+restore to reconnect cloud data.
 
 ## What is backed up
 

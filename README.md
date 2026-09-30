@@ -1,6 +1,6 @@
 # DMZ Scuba
 
-> **Pre-alpha 0.0.110** — active development. Data models, workflows and visual
+> **Pre-alpha 0.0.111** — active development. Data models, workflows and visual
 > design can still change before the first public alpha.
 
 DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion for divers who
@@ -39,13 +39,13 @@ workflows are implemented and covered by focused regression scripts, but the app
 still needs broader physical-device testing, accessibility work, content review,
 production service hardening and public-alpha migration guarantees. Pre-alpha
 builds are numbered `0.0.x` and the number only goes up; the current release is
-`0.0.110` (`version` in `package.json` and `app.json`).
+`0.0.111` (`version` in `package.json` and `app.json`).
 
-**New in 0.0.110:** the Dive Planner gains a day-by-day itinerary builder,
-multi-flight bookings, booking import from confirmation emails and PDFs, a
-Readiness Center, per-trip packing lists with extra gear, and insurance on file;
-the Gear Locker opens to a grouped view; the Compass lab's side-window camera
-checks that the phone is held upright.
+**New in 0.0.111:** Complete app backup creates one portable `.dmzbackup` file
+containing local records, dive profiles, photos, PDFs, and attachments. Restore
+opens the system file picker, validates and stages the archive, replaces the
+local state, and rewrites file paths for the new iOS app container. Sign-in
+credentials are intentionally excluded.
 
 DMZ Scuba is local-first and useful while signed out. Network access is needed
 for detailed OpenStreetMap tiles, account sync, Dive Lens, some travel links and
