@@ -2,6 +2,9 @@ name: Build unsigned IPA for AltStore
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - codex/altstore-ipa
 
 permissions:
   contents: read
