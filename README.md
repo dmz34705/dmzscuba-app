@@ -1,6 +1,6 @@
 # DMZ Scuba
 
-> **Pre-alpha 0.0.111** — active development. Data models, workflows and visual
+> **Pre-alpha 0.0.112** — active development. Data models, workflows and visual
 > design can still change before the first public alpha.
 
 DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion for divers who
@@ -39,7 +39,12 @@ workflows are implemented and covered by focused regression scripts, but the app
 still needs broader physical-device testing, accessibility work, content review,
 production service hardening and public-alpha migration guarantees. Pre-alpha
 builds are numbered `0.0.x` and the number only goes up; the current release is
-`0.0.111` (`version` in `package.json` and `app.json`).
+`0.0.112` (`version` in `package.json` and `app.json`).
+
+**New in 0.0.112:** Logbook statistics now include cumulative descent—the total
+of every increase in depth across recorded dive profiles, including re-descents.
+Ascents do not reduce the total, and dives without profile data are clearly
+excluded from the calculation.
 
 **New in 0.0.111:** Complete app backup creates one portable `.dmzbackup` file
 containing local records, dive profiles, photos, PDFs, and attachments. Restore
