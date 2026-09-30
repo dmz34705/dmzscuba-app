@@ -30,7 +30,7 @@ import {
 } from './schema';
 import { createJsonBackup, createJsonExport, exportDivesToCsv, exportDivesToUddf, parseJsonBackup } from './exports';
 import { fuseComputerLogs } from './fuseLogs';
-import { combinedConsumption, tankPressuresFromSamples } from './logAnalytics';
+import { combinedConsumption, cumulativeDescentMeters, tankPressuresFromSamples } from './logAnalytics';
 import { sameComputer } from './matchDives';
 import { dedupePhotoAssets } from './photoIdentity';
 
@@ -81,7 +81,7 @@ function parseJson(raw, fallback) {
 // Bump whenever indexRowFromDive's shape or derived values change: useDiveLog
 // rebuilds the whole index when a stored row carries an older stamp. Cheaper
 // to reason about than remembering which field arrived in which version.
-export const INDEX_ROW_VERSION = 6;
+export const INDEX_ROW_VERSION = 7;
 
 /** The richest mix on the dive, used to classify air / nitrox / trimix. */
 function maxMixValue(mixes, key) {
@@ -119,6 +119,9 @@ function buildSearchText(dive) {
 export function indexRowFromDive(dive, logs = []) {
   const attachedLogs = Array.isArray(logs) ? logs.filter(Boolean) : [];
   const primary = attachedLogs.find((l) => l.id === dive.primaryLogId) || attachedLogs[0] || null;
+  const descentLog = primary?.profile?.samples?.length
+    ? primary
+    : attachedLogs.find((log) => log?.profile?.samples?.length) || null;
   const a = primary?.analytics || null;
   // A dive without a transmitter has no computed SAC, but a start and end
   // pressure typed into the form is enough to derive one — and the detail
@@ -163,6 +166,7 @@ export function indexRowFromDive(dive, logs = []) {
     number: dive.number ?? null,
     gasLabel: dive.gas?.mixes?.[0]?.label || '',
     logCount: attachedLogs.length,
+    descentMeters: cumulativeDescentMeters(descentLog?.profile?.samples),
 
     // --- filterable summary (see lib/diveLog/filterDives.js) -------------
     // Denormalised onto the row on purpose: filtering the list must not have

@@ -973,6 +973,11 @@ function TrendArrow({ slope, goodDirection = 'down' }) {
   );
 }
 
+function formatTotalDescent(meters, unit) {
+  const value = unit === 'ft' ? meters * 3.28084 : meters;
+  return `${Math.round(value).toLocaleString()} ${unit}`;
+}
+
 function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic, onHealthCheck, onRestoreBackup }) {
   const sacUnit = units.pressureUnit;
   return (
@@ -986,8 +991,17 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
           <Stat label="Dives" value={String(trends.diveCount)} style={styles.statCell} />
           <Stat label="Bottom time" value={formatDuration(trends.totalBottomTimeSeconds)} style={styles.statCell} />
           <Stat label="Deepest" value={stats.deepestMeters ? formatDepth(stats.deepestMeters, units.depthUnit) : '—'} style={styles.statCell} />
+          <Stat
+            label="Total descent"
+            value={stats.descentProfileDives ? formatTotalDescent(stats.totalDescentMeters, units.depthUnit) : '—'}
+            style={styles.statCell}
+          />
           <Stat label="Fast-ascent dives" value={String(trends.fastAscentDives)} style={styles.statCell} />
         </View>
+        <Text style={styles.statNote}>
+          Total descent adds every deeper movement in your recorded profiles. Ascents do not reduce it.
+          {stats.descentProfileDives ? ` Based on ${stats.descentProfileDives.toLocaleString()} ${stats.descentProfileDives === 1 ? 'dive' : 'dives'} with profile data.` : ' Profile data is required.'}
+        </Text>
       </Card>
 
       <Card style={styles.detailCard}>
@@ -3686,6 +3700,7 @@ const styles = StyleSheet.create({
   logbookTabTextOn: { color: colors.cyan },
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
   statCell: { flexBasis: '30%', flexGrow: 1, minHeight: 70, paddingHorizontal: 9 },
+  statNote: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 10 },
   summaryCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.28)', padding: 14 },
 
   // folder-grid summary spotlight (Home SpotlightCard language)

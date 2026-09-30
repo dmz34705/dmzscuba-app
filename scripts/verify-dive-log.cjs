@@ -47,6 +47,7 @@ const {
   // analytics
   ascentRateStats,
   sawtoothIndex,
+  cumulativeDescentMeters,
   averageDepth,
   surfaceConsumption,
   safetyScore,
@@ -254,16 +255,47 @@ assert.match(
 // ---------------------------------------------------------------------------
 
 const statRows = [
-  { id: 'a', startTime: '2024-06-01T10:00:00Z', durationSeconds: 3000, maxDepthMeters: 28, siteName: 'Reef', deletedAt: null },
-  { id: 'b', startTime: '2024-07-15T10:00:00Z', durationSeconds: 3600, maxDepthMeters: 40, siteName: 'Wall', deletedAt: null },
-  { id: 'c', startTime: '2025-01-10T10:00:00Z', durationSeconds: 1800, maxDepthMeters: 18, siteName: 'Reef', deletedAt: null },
-  { id: 'd', startTime: '2025-02-10T10:00:00Z', durationSeconds: 9000, maxDepthMeters: 55, siteName: 'Deep', deletedAt: '2025-03-01T00:00:00Z' },
+  { id: 'a', startTime: '2024-06-01T10:00:00Z', durationSeconds: 3000, maxDepthMeters: 28, descentMeters: 34, siteName: 'Reef', deletedAt: null },
+  { id: 'b', startTime: '2024-07-15T10:00:00Z', durationSeconds: 3600, maxDepthMeters: 40, descentMeters: 46, siteName: 'Wall', deletedAt: null },
+  { id: 'c', startTime: '2025-01-10T10:00:00Z', durationSeconds: 1800, maxDepthMeters: 18, descentMeters: 22, siteName: 'Reef', deletedAt: null },
+  { id: 'd', startTime: '2025-02-10T10:00:00Z', durationSeconds: 9000, maxDepthMeters: 55, descentMeters: 80, siteName: 'Deep', deletedAt: '2025-03-01T00:00:00Z' },
 ];
 const stats = computeDiveLogStats(statRows);
 assert.equal(stats.totalDives, 3);
 assert.equal(stats.totalBottomTimeSeconds, 8400);
 assert.equal(stats.deepestMeters, 40);
+assert.equal(stats.totalDescentMeters, 102);
+assert.equal(stats.descentProfileDives, 3);
 assert.equal(computeDiveLogStats([]).totalDives, 0);
+
+assert.equal(cumulativeDescentMeters([]), null);
+assert.equal(cumulativeDescentMeters([
+  { t: 0, depth: 0 },
+  { t: 60, depth: 10 },
+  { t: 120, depth: 7 },
+  { t: 180, depth: 12 },
+  { t: 240, depth: 4 },
+  { t: 300, depth: 9 },
+  { t: 360, depth: 0 },
+]), 20);
+assert.equal(cumulativeDescentMeters([{ t: 10, depth: 2 }, { t: 5, depth: 5 }]), 5);
+
+const descentDive = createDive({ id: 'descent-dive', primaryLogId: 'descent-log', logIds: ['descent-log'] });
+const descentLog = createComputerLog({
+  id: 'descent-log',
+  diveId: 'descent-dive',
+  profile: {
+    samples: [
+      { t: 0, depth: 0 },
+      { t: 60, depth: 10 },
+      { t: 120, depth: 7 },
+      { t: 180, depth: 12 },
+      { t: 240, depth: 4 },
+      { t: 300, depth: 9 },
+    ],
+  },
+});
+assert.equal(diveLog.indexRowFromDive(descentDive, [descentLog]).descentMeters, 20);
 
 // ---------------------------------------------------------------------------
 // format

@@ -67,6 +67,28 @@ export function sawtoothIndex(samples, deadbandMeters = 1) {
   return Math.max(0, Math.round((totalDescent) * 10) / 10);
 }
 
+/**
+ * Total downward travel across a depth profile, in metres.
+ *
+ * This is the diving equivalent of elevation gain: every increase in depth is
+ * added, while ascents do not subtract from the total. Starting at the surface
+ * also means a profile whose first sample is already underwater still counts
+ * that initial descent. Returns null when there is no usable profile.
+ */
+export function cumulativeDescentMeters(samples) {
+  const rows = sortedSamples(samples);
+  if (!rows.length) return null;
+
+  let total = 0;
+  let previousDepth = 0;
+  for (const row of rows) {
+    const downwardTravel = row.depth - previousDepth;
+    if (downwardTravel > 0) total += downwardTravel;
+    previousDepth = row.depth;
+  }
+  return Math.round(total * 100) / 100;
+}
+
 /** Time-weighted average depth from the profile (m), or null if too few samples. */
 export function averageDepth(samples) {
   const rows = sortedSamples(samples);

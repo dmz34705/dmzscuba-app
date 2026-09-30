@@ -20,6 +20,8 @@ export function computeDiveLogStats(indexRows) {
     totalBottomTimeSeconds: 0,
     deepestMeters: 0,
     longestSeconds: 0,
+    totalDescentMeters: 0,
+    descentProfileDives: 0,
     firstDiveDate: null,
     lastDiveDate: null,
     byYear: [],
@@ -30,6 +32,8 @@ export function computeDiveLogStats(indexRows) {
   let totalBottomTimeSeconds = 0;
   let deepestMeters = 0;
   let longestSeconds = 0;
+  let totalDescentMeters = 0;
+  let descentProfileDives = 0;
   let firstTime = Infinity;
   let lastTime = -Infinity;
   const yearMap = new Map();
@@ -41,6 +45,11 @@ export function computeDiveLogStats(indexRows) {
     totalBottomTimeSeconds += duration;
     deepestMeters = Math.max(deepestMeters, depth);
     longestSeconds = Math.max(longestSeconds, duration);
+    const descent = Number(row.descentMeters);
+    if (row.descentMeters != null && Number.isFinite(descent) && descent >= 0) {
+      totalDescentMeters += descent;
+      descentProfileDives += 1;
+    }
 
     const time = Date.parse(row.startTime);
     if (!Number.isNaN(time)) {
@@ -74,6 +83,8 @@ export function computeDiveLogStats(indexRows) {
     totalBottomTimeSeconds,
     deepestMeters,
     longestSeconds,
+    totalDescentMeters,
+    descentProfileDives,
     firstDiveDate: Number.isFinite(firstTime) ? new Date(firstTime).toISOString() : null,
     lastDiveDate: Number.isFinite(lastTime) ? new Date(lastTime).toISOString() : null,
     byYear,
