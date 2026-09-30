@@ -1,6 +1,6 @@
 {
   "name": "dmz-scuba-app",
-  "version": "0.0.110",
+  "version": "0.0.111",
   "main": "index.js",
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -61,6 +61,7 @@
     "test:dive-computer": "node scripts/verify-dive-computer.cjs",
     "test:dive-log": "node scripts/verify-dive-log.cjs",
     "test:dev-backup": "node scripts/verify-dev-backup.cjs",
+    "test:portable-backup": "node scripts/verify-portable-backup.cjs",
     "build:dive-sites": "node scripts/build-offline-dive-site-catalog.cjs",
     "sync:global-dive-sites": "node scripts/sync-open-dive-map.cjs",
     "build:ocean-atlas": "node scripts/build-ocean-atlas.mjs",
