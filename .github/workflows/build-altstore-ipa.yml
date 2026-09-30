@@ -1,0 +1,97 @@
+name: Build unsigned IPA for AltStore
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-ios:
+    name: Build iOS device app
+    runs-on: macos-26
+    timeout-minutes: 60
+
+    steps:
+      - name: Check out source and native dependency
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Use Node.js 22.13
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22.13.1
+          cache: npm
+
+      - name: Select the Expo 57 Xcode toolchain
+        run: sudo xcode-select --switch /Applications/Xcode_26.4.app
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+
+      - name: Generate the iOS project
+        env:
+          CI: "1"
+        run: npx expo prebuild --platform ios --clean --no-install
+
+      - name: Install CocoaPods dependencies
+        working-directory: ios
+        run: pod install
+
+      - name: Build the unsigned device application
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          workspace="$(find ios -maxdepth 1 -name '*.xcworkspace' -print -quit)"
+          if [[ -z "$workspace" ]]; then
+            echo "No Xcode workspace was generated." >&2
+            exit 1
+          fi
+
+          scheme="$(basename "$workspace" .xcworkspace)"
+          echo "Building scheme '$scheme' from '$workspace'"
+
+          xcodebuild \
+            -workspace "$workspace" \
+            -scheme "$scheme" \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            'CODE_SIGN_IDENTITY=' \
+            'DEVELOPMENT_TEAM=' \
+            clean build
+
+      - name: Package the AltStore IPA
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          products="$RUNNER_TEMP/DerivedData/Build/Products/Release-iphoneos"
+          app="$(find "$products" -maxdepth 1 -type d -name '*.app' -print -quit)"
+          if [[ -z "$app" ]]; then
+            echo "No iOS application was produced." >&2
+            exit 1
+          fi
+
+          package="$RUNNER_TEMP/AltStorePackage"
+          mkdir -p "$package/Payload"
+          ditto "$app" "$package/Payload/$(basename "$app")"
+
+          (
+            cd "$package"
+            zip -qry "$GITHUB_WORKSPACE/DMZ-Scuba-unsigned.ipa" Payload
+          )
+
+          unzip -t "$GITHUB_WORKSPACE/DMZ-Scuba-unsigned.ipa"
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v7
+        with:
+          name: DMZ-Scuba-AltStore-IPA
+          path: DMZ-Scuba-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 7
