@@ -9,7 +9,7 @@
 // rewrites photo links for the reinstalled app's new Documents folder.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as FileSystem from 'expo-file-system/legacy';
-import { AppState, DevSettings, Platform } from 'react-native';
+import { AppState, DevSettings, Platform, TurboModuleRegistry } from 'react-native';
 
 const PREFIX = '/__dmz-backup';
 const STATE_KEY = '@dmz-scuba/dev-backup/state-v1'; // bookkeeping only; never backed up or restored
@@ -23,10 +23,11 @@ export const devBackupsAvailable = () => typeof __DEV__ !== 'undefined' && __DEV
 export function devServerOrigin() {
   if (!devBackupsAvailable()) return null;
   try {
-    // eslint-disable-next-line global-require
-    const getDevServer = require('react-native/Libraries/Core/Devtools/getDevServer').default;
-    const { url, bundleLoadedFromServer } = getDevServer();
-    if (bundleLoadedFromServer && /^https?:\/\//.test(url)) return url.replace(/\/+$/, '');
+    // The bundle's own address, from the public module registry (React Native's getDevServer() reads
+    // the same value but is internal and can't be imported directly).
+    const scriptURL = TurboModuleRegistry.get('SourceCode')?.getConstants().scriptURL;
+    const match = typeof scriptURL === 'string' && scriptURL.match(/^https?:\/\/[^/]+/);
+    if (match) return match[0];
   } catch { /* fall through */ }
   return null;
 }

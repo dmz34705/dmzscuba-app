@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 960" fill="none">
+  <title>Front-facing single-cylinder diver — photo-based vector study</title>
+  <desc>Drawn from the right-hand diver in the supplied photo. Visible suit panels, mask, regulator, jacket BCD, hoses and wrist instrument are simplified. Hidden cylinder and connections are not reconstructed. Fins are not shown in the reference.</desc>
+  <rect width="480" height="960" rx="24" fill="#050b14"/>
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- Suit silhouette follows the relaxed, slightly asymmetric photographed stance. -->
+    <path d="M186 194 Q163 199 145 220 L123 258 113 340 100 431 109 451 148 451 157 381 168 326 174 420 168 463 172 520 184 572 181 639 172 709 174 818 185 838 225 838 229 787 237 730 244 679 250 618 258 680 260 738 268 828 281 849 321 847 329 829 324 771 314 710 316 650 307 590 314 524 309 461 309 402 310 323 324 380 332 454 376 452 377 424 366 349 361 275 Q357 234 326 216 L292 199Z" fill="#102030" stroke="#6c99ac" stroke-width="1.7"/>
+    <!-- Blue fabric panels retained from the reference, without simulated mesh. -->
+    <g fill="#153e65" stroke="#476e88" stroke-width="1.2">
+      <path d="M183 202 151 222 131 256 120 341 108 428 145 437 155 368 170 303 175 260Z"/>
+      <path d="M298 207 326 222 Q354 239 357 275 L362 348 373 435 336 441 326 365 307 294Z"/>
+      <path d="M176 732 198 749 227 753 222 824 181 823Z"/>
+      <path d="M267 775 286 754 322 753 326 829 278 839Z"/>
+      <path d="M178 698 194 694 190 727 176 737Z M302 658 313 647 315 690 304 704Z"/>
+    </g>
+    <!-- Fabric construction and folds are selective, following the photographed suit. -->
+    <g stroke="#4b6477" stroke-width="1.1" opacity=".8">
+      <path d="M137 278 156 285 M124 328 147 337 156 330 M118 376 139 384 M117 407 139 414 M332 285 353 278 M333 332 359 340 M338 381 364 374 M345 409 367 416"/>
+      <path d="M181 499 208 516 225 510 M179 551 207 561 M187 591 208 604 228 594 M187 630 218 640 M185 663 211 669 226 660 M185 714 217 726 M186 772 216 780 M188 800 211 804"/>
+      <path d="M274 499 302 510 M275 546 300 535 M269 588 299 608 M275 640 299 631 M275 682 303 694 M283 715 308 726 M281 791 317 798 M286 817 316 814"/>
+      <path d="M243 492 242 548 250 618 M202 536 204 592 M294 547 289 590"/>
+    </g>
+    <!-- Single-tank jacket BCD; the cylinder itself is obscured in this view. -->
+    <path d="M185 212 165 231 163 288 155 331 158 407 172 442 192 456 303 453 323 426 326 360 315 292 319 245 296 217 277 229 214 233Z" fill="#0a151e" stroke="#7093a1" stroke-width="1.6"/>
+    <path d="M186 223 174 255 181 316 201 321 203 255 214 234 M283 229 291 263 286 318 307 322 313 262 301 231" fill="#172734" stroke="#466675" stroke-width="1.2"/>
+    <path d="M178 332 Q236 349 310 321 L305 409 Q254 441 182 413Z" fill="#101f29" stroke="#3c5867" stroke-width="1.3"/>
+    <path d="M171 375 190 381 191 414 176 407Z M306 373 317 366 314 408 303 417Z" fill="#152b36" stroke="#486776"/>
+    <path d="M177 440 Q239 451 305 438 L305 456 Q237 470 178 459Z" fill="#07111a" stroke="#587380"/>
+    <rect x="230" y="445" width="28" height="17" rx="3" fill="#172b37" stroke="#91a6ae"/>
+    <path d="M194 246 202 246 202 267 Q197 275 191 267Z M297 274 304 274 304 288 Q299 297 294 289Z" stroke="#acbec5" stroke-width="2"/>
+    <!-- Hood, face opening, mask and mouthpiece. -->
+    <path d="M200 145 Q190 129 194 96 Q196 59 217 44 Q240 29 261 46 Q285 58 289 95 L286 137 276 179 288 203 269 229 234 240 208 218 211 185Z" fill="#101a24" stroke="#7e9caa" stroke-width="1.6"/>
+    <path d="M197 91 Q239 74 284 95 M211 57 Q236 48 268 62 M210 191 Q239 212 276 184" stroke="#4e687a" stroke-width="1.2"/>
+    <path d="M205 107 Q236 88 278 108 L274 146 260 166 224 165 207 143Z" fill="#263640" stroke="#617b88"/>
+    <path d="M196 106 186 108 188 120 199 123 M283 108 295 108 295 121 282 124" fill="#1a2e37" stroke="#94ae9a"/>
+    <path d="M200 103 Q217 95 237 101 Q258 98 280 108 L278 136 Q274 149 260 149 L246 138 237 139 Q228 149 215 144 Q200 140 200 103Z" fill="#101b25" stroke="#b0c875" stroke-width="3"/>
+    <path d="M208 110 Q221 103 234 109 L231 133 Q216 142 210 131Z M245 109 Q261 106 273 114 L270 135 Q259 144 247 131Z" fill="#263e4c" stroke="#709295" stroke-width="1.1"/>
+    <path d="M211 113 227 109 M249 113 266 116" stroke="#b8d3d8" opacity=".45"/>
+    <path d="M236 134 231 150 245 155 253 149 247 135" fill="#101b24" stroke="#839887"/>
+    <path d="M230 159 Q240 153 253 160 L258 176 250 189 229 184 221 172Z" fill="#07121b"/>
+    <ellipse cx="242" cy="173" rx="22" ry="19" fill="#14252b" stroke="#7b999f" stroke-width="1.8"/>
+    <ellipse cx="242" cy="173" rx="15" ry="12" fill="#09141b" stroke="#35525c"/>
+    <path d="M232 169 Q241 165 251 171" stroke="#597b80" stroke-width="1.5"/>
+    <!-- Visible hose runs only; no speculative connections behind the diver. -->
+    <path d="M219 174 180 171 Q150 164 134 179 Q127 187 150 188 L178 184" stroke="#060d15" stroke-width="9"/>
+    <path d="M219 174 180 171 Q150 164 134 179 Q127 187 150 188 L178 184" stroke="#657e8c" stroke-width="2.4"/>
+    <path d="M150 244 Q127 286 137 343 Q144 385 167 405" stroke="#a7b46a" stroke-width="4.2"/>
+    <path d="M297 294 Q306 261 312 221 Q315 188 337 172 Q355 157 360 168 Q365 180 336 192" stroke="#07121a" stroke-width="11"/>
+    <path d="M297 294 Q306 261 312 221 Q315 188 337 172 Q355 157 360 168 Q365 180 336 192" stroke="#7b919c" stroke-width="2.4"/>
+    <path d="M306 230 316 233 M305 237 315 240 M304 244 314 247 M303 251 313 254 M301 258 311 261 M300 265 310 268 M298 272 308 275 M297 279 307 282" stroke="#607983" stroke-width="2"/>
+    <path d="M319 230 Q359 259 355 288 Q348 305 309 315 Q247 342 182 325" stroke="#8599a4" stroke-width="2.5"/>
+    <rect x="290" y="288" width="14" height="29" rx="4" transform="rotate(16 297 302)" fill="#203641" stroke="#7d979e"/>
+    <g fill="#182c37" stroke="#708f9d" stroke-width="1.3">
+      <ellipse cx="177" cy="326" rx="13" ry="9" transform="rotate(-12 177 326)"/>
+      <ellipse cx="198" cy="323" rx="12" ry="8" transform="rotate(-12 198 323)"/>
+    </g>
+    <path d="M172 328 178 321 M194 325 199 320" stroke="#b6c7cd"/>
+    <!-- Wrist instrument and gloves are visible in the photo. -->
+    <path d="M108 405 145 414 142 437 103 426Z" fill="#08131c" stroke="#526d7d"/>
+    <ellipse cx="124" cy="419" rx="14" ry="15" fill="#183343" stroke="#88adbe" stroke-width="2"/>
+    <ellipse cx="124" cy="419" rx="9" ry="10" fill="#799aaa" opacity=".6"/>
+    <path d="M106 444 145 450 140 465 107 459Z M334 447 376 442 376 460 337 466Z" fill="#2b3e4a" stroke="#8c9fab"/>
+    <path d="M109 460 141 465 145 480 157 493 Q158 505 149 504 L139 495 143 511 Q137 521 123 513 L108 495Z M339 467 371 461 369 490 360 512 Q350 523 336 517 L333 505 342 485 332 496 Q324 494 327 483Z" fill="#203640" stroke="#74939e" stroke-width="1.3"/>
+    <path d="M119 477 132 496 M115 487 126 501 M351 485 343 507 M359 486 352 510" stroke="#46606d"/>
+    <path d="M166 410 Q183 419 174 437 Q161 446 159 432Z" fill="#142329" stroke="#a7b46a" stroke-width="2"/>
+    <!-- Reference shoes are retained as simplified outlines; fins need a separate reference. -->
+    <path d="M188 837 218 838 218 855 225 885 Q224 899 195 899 L171 893 173 881 187 858Z M280 849 310 849 316 868 331 887 Q334 902 302 904 L274 897 274 882Z" fill="#172a38" stroke="#7393a6" stroke-width="1.4"/>
+    <path d="M189 862 207 867 M183 870 212 875 M282 873 307 877 M281 881 314 886" stroke="#77919f" stroke-width="1.2"/>
+  </g>
+</svg>

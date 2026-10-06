@@ -51,11 +51,11 @@ const { withDevBackups } = require('./dev-backup/server.cjs');
       return { status: response.status };
     },
   };
+  const sourceCode = { getConstants: () => ({ scriptURL: `${origin}/index.bundle?platform=ios&dev=true` }) };
   const stubs = {
     '@react-native-async-storage/async-storage': { __esModule: true, default: storage },
     'expo-file-system/legacy': fileSystem,
-    'react-native': { AppState: { addEventListener: () => ({ remove() {} }) }, DevSettings: { reload() {} }, Platform: { OS: 'ios', Version: '26.0' } },
-    'react-native/Libraries/Core/Devtools/getDevServer': { __esModule: true, default: () => ({ url: `${origin}/`, bundleLoadedFromServer: true }) },
+    'react-native': { AppState: { addEventListener: () => ({ remove() {} }) }, DevSettings: { reload() {} }, Platform: { OS: 'ios', Version: '26.0' }, TurboModuleRegistry: { get: (name) => (name === 'SourceCode' ? sourceCode : null) } },
   };
   const originalLoad = Module._load;
   Module._load = function load(request, ...rest) { return stubs[request] || originalLoad.call(this, request, ...rest); };
@@ -135,7 +135,7 @@ const { withDevBackups } = require('./dev-backup/server.cjs');
   // the app must say so, not fail on the reply.
   const oldServer = http.createServer((req, res) => { res.setHeader('Content-Type', 'text/plain'); res.end(JSON.stringify({ id: 'x', runtimeVersion: '1', launchAsset: {} })); });
   await new Promise((resolve) => oldServer.listen(0, resolve));
-  stubs['react-native/Libraries/Core/Devtools/getDevServer'].default = () => ({ url: `http://127.0.0.1:${oldServer.address().port}/`, bundleLoadedFromServer: true });
+  sourceCode.getConstants = () => ({ scriptURL: `http://127.0.0.1:${oldServer.address().port}/index.bundle?platform=ios&dev=true` });
   const status = await B.devBackupStatus();
   assert.ok(!status.reachable && /Restart it/.test(status.error), 'an old dev server is reported as needing a restart');
   await assert.rejects(B.backupNow('manual'), /Restart it/, 'a backup against an old dev server explains what to do');

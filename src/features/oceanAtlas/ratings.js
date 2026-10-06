@@ -58,10 +58,15 @@ export function freshwaterLifeRating(life) {
 }
 
 const LEVELS = ['Beginner', 'Beginner', 'Intermediate', 'Advanced', 'Technical'];
-export function experienceRating(site, temps, remote, conditions = {}, inland = null, units = 'imperial') {
+// Without any depth the level can't be judged: say so rather than guess low (a 130 ft wreck is not a beginner dive).
+export const UNRATED_LEVEL = 'Check depth';
+// `estimatedDepthMeters`: the modelled seafloor at the pin (NOAA / EMODnet / ETOPO) when no depth is published.
+export function experienceRating(site, temps, remote, conditions = {}, inland = null, units = 'imperial', estimatedDepthMeters = null) {
   const reasons = [];
   // A lake's deepest point says nothing about how deep the dive goes.
-  const depth = site?.depthIsWholeLake ? null : site?.maxDepthMeters;
+  const published = site?.depthIsWholeLake ? null : site?.maxDepthMeters;
+  const estimated = !published && !inland && estimatedDepthMeters > 0 ? estimatedDepthMeters : null;
+  const depth = published || estimated;
   const topologies = site?.topologies || [];
   let score;
   if (depth) {
@@ -70,8 +75,11 @@ export function experienceRating(site, temps, remote, conditions = {}, inland = 
     // deepest point, so divers choose their depth: the maximum only raises the level so far.
     const fixed = topologies.includes('wreck') || topologies.includes('pinnacle');
     if (!fixed) score = Math.min(score, 1.5);
-    reasons.push(fixed ? `${depthText(depth, units)} to the ${topologies.includes('wreck') ? 'wreck' : 'site'}` : `${depthText(depth, units)} max depth — pick your depth`);
+    const shown = `${estimated ? 'about ' : ''}${depthText(depth, units)}`;
+    reasons.push(fixed ? `${shown} to the ${topologies.includes('wreck') ? 'wreck' : 'site'}` : `${shown} ${estimated ? 'seafloor' : 'max depth'} — pick your depth`);
   } else score = 1;
+  // A wreck or pinnacle with no depth at all can't be judged — the dive is wherever it lies.
+  const unrated = !depth && (topologies.includes('wreck') || topologies.includes('pinnacle'));
   if (topologies.includes('drift') || conditions.current === 'drift') { score += 1; reasons.push('drift / current'); }
   if (topologies.includes('wall')) { score += 0.5; reasons.push('wall — watch your depth'); }
   if (topologies.includes('wreck')) reasons.push('wreck — penetration needs training');
@@ -89,8 +97,10 @@ export function experienceRating(site, temps, remote, conditions = {}, inland = 
   }
   if (inland?.kind === 'mine') { score += 1; reasons.push('overhead mine — guided'); }
   if (site?.entry === 'shore') reasons.push('shore entry');
+  // Cave and cavern training already set the level above; otherwise say the depth is unknown.
+  if (unrated && score < 3) return { level: UNRATED_LEVEL, score: null, reasons: ['depth not confirmed — ask the operator', ...reasons], confidence: 'none' };
   const level = LEVELS[clamp(Math.round(score), 0, 4)];
-  return { level, score: Math.round(score * 10) / 10, reasons, confidence: depth ? 'depth' : 'features' };
+  return { level, score: Math.round(score * 10) / 10, reasons, confidence: published ? 'depth' : estimated ? 'estimate' : 'features' };
 }
 
 export function travelRating(site, originPoint, units = 'imperial') {
@@ -116,7 +126,8 @@ export function travelRating(site, originPoint, units = 'imperial') {
   return { level, personal: true, steps: legs.length, km, detail: `${legs.length} ${legs.length === 1 ? 'step' : 'steps'} · ${approxDistance(km, units)}${airport ? ` · via ${airport.code}` : ''}` };
 }
 
-export function siteRatings(site, guide, { originPoint = null, inland = null, life = null, units = 'imperial' } = {}) {
+// `estimatedDepthMeters`: modelled seafloor at the pin, used for the experience level when no depth is published.
+export function siteRatings(site, guide, { originPoint = null, inland = null, life = null, units = 'imperial', estimatedDepthMeters = null } = {}) {
   const destination = resolveDestination(site);
   const remote = destination.remote, conditions = destination.profile?.conditions;
   if (inland) {
@@ -132,7 +143,7 @@ export function siteRatings(site, guide, { originPoint = null, inland = null, li
   }
   return {
     marineLife: marineLifeRating(guide),
-    experience: experienceRating(site, guide?.temps, remote, conditions, null, units),
+    experience: experienceRating(site, guide?.temps, remote, conditions, null, units, estimatedDepthMeters),
     travel: travelRating(site, originPoint, units),
     exposure: guide?.temps?.length === 12 ? guide.temps.map(temperatureC => exposureAdvice({ site, temperatureC }).label) : null,
     // Satellite clarity is only meaningful for sea water.

@@ -58,6 +58,8 @@ export default function AppNavigator() {
     ensureLocationTracking().catch(() => {});
   }, [appSettings.loaded, appSettings.settings.locationLoggingEnabled]);
 
+  const updateLayout = (key, ids) => appSettings.setSettings(current => ({ ...current, layout: { ...current.layout, [key]: ids } }));
+
   const navigate = (action, kind) => {
     setTransitionKind(kind);
     dispatch(action);
@@ -90,7 +92,7 @@ export default function AppNavigator() {
 
   const feature = getFeature(detailRoute);
   if (feature?.routeType === 'ocean-atlas') {
-    return renderScreen(<OceanAtlasScreen appSettings={appSettings.settings} focus={atlasFocus} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
+    return renderScreen(<OceanAtlasScreen account={accountSession.account} appSettings={appSettings.settings} focus={atlasFocus} signedIn={accountSession.authStatus === 'signedIn'} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
   }
   if (feature?.routeType === 'planner') {
     return renderScreen(<PlannerScreen account={accountSession.account} focusPlanId={plannerFocus?.planId || null} key={plannerFocus?.at || 'planner'} onBack={closeDetail} onOpenTool={openDetail} signedIn={accountSession.authStatus === 'signedIn'} />);
@@ -182,9 +184,9 @@ export default function AppNavigator() {
   return renderScreen(
     <View style={styles.shell}>
       <View style={styles.tabContent}>
-        {activeTab === 'home' ? <HomeScreen appSettings={appSettings.settings} certifications={accountSession.authStatus === 'signedIn' && Array.isArray(accountSession.account?.certifications) ? accountSession.account.certifications : null} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
-        {activeTab === 'learn' ? <LearnScreen onOpenTool={openDetail} /> : null}
-        {activeTab === 'tools' ? <ToolsScreen onOpenTool={openDetail} /> : null}
+        {activeTab === 'home' ? <HomeScreen onLayoutChange={updateLayout} appSettings={appSettings.settings} certifications={accountSession.authStatus === 'signedIn' && Array.isArray(accountSession.account?.certifications) ? accountSession.account.certifications : null} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
+        {activeTab === 'learn' ? <LearnScreen appSettings={appSettings.settings} onLayoutChange={updateLayout} onOpenTool={openDetail} /> : null}
+        {activeTab === 'tools' ? <ToolsScreen appSettings={appSettings.settings} onLayoutChange={updateLayout} onOpenTool={openDetail} /> : null}
         {activeTab === 'logbook' ? <DiveLogScreen key={logbookIntent?.at || 'logbook'} appSettings={appSettings.settings} initialAction={logbookIntent?.action || null} initialFolder={logbookIntent?.folder || null} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
         {activeTab === 'more' && !moreRoute ? <MoreScreen onOpen={selectTab} /> : null}
         {activeTab === 'more' && moreRoute === 'account' ? (

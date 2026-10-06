@@ -7,6 +7,7 @@
     "@react-native-community/datetimepicker": "9.1.0",
     "@react-native-community/slider": "5.2.0",
     "expo": "~57.0.24",
+    "expo-blur": "~57.0.3",
     "expo-dev-client": "~57.0.19",
     "expo-document-picker": "~57.0.2",
     "expo-file-system": "~57.0.7",
@@ -77,7 +78,9 @@
     "test:booking-import": "node scripts/verify-booking-import.cjs",
     "test:insurance": "node scripts/verify-insurance.cjs",
     "test:site-dives": "node scripts/verify-site-dives.cjs",
-    "preview:ocean-atlas": "node scripts/preview-ocean-atlas.cjs"
+    "preview:ocean-atlas": "node scripts/preview-ocean-atlas.cjs",
+    "test:layout": "node scripts/verify-layout.cjs",
+    "tunnel": "node tunnel.cjs"
   },
   "private": true,
   "devDependencies": {

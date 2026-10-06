@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { DEFAULT_PROFILE } from '../../lib/accountProfile';
 import { prepareAccountData, startAccountDataSync, stopAccountDataSync } from '../../lib/accountDataSync';
-import { sanitizeAppSettings } from '../../lib/appSettings';
+import { sanitizeLayout } from '../layout/layoutPreferences';
 import {
   addCustomerCertification,
   fetchAccount,
@@ -35,6 +35,7 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
   const [profile, setProfile] = useState(DEFAULT_PROFILE);
   const [settingsSyncReady, setSettingsSyncReady] = useState(false);
   const [settingsSyncStatus, setSettingsSyncStatus] = useState('local');
+  const [settingsRetry, setSettingsRetry] = useState(0);
   const appSettingsRef = useRef(appSettings);
   const onRemoteSettingsRef = useRef(onRemoteSettings);
   const preparedOwnerRef = useRef(null);
@@ -59,7 +60,7 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
     setAccount(accountData);
     setProfile((current) => profileFromAccount(accountData?.profile, current));
     if (accountData?.appSettings) {
-      onRemoteSettingsRef.current(sanitizeAppSettings(accountData.appSettings));
+      onRemoteSettingsRef.current(accountData.appSettings);
     } else {
       await saveAccountSettings(appSettingsRef.current);
     }
@@ -114,11 +115,18 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
 
   useEffect(() => {
     if (!settingsLoaded || authStatus !== 'signedIn' || !settingsSyncReady) return undefined;
+    let active = true;
     setSettingsSyncStatus('saving');
     const timeoutId = setTimeout(() => {
       saveAccountSettings(appSettings)
-        .then(() => setSettingsSyncStatus('synced'))
+        .then(response => {
+          if (!active) return;
+          const remoteLayout = response?.appSettings?.layout;
+          const confirmed = remoteLayout && JSON.stringify(sanitizeLayout(remoteLayout)) === JSON.stringify(sanitizeLayout(appSettings.layout));
+          setSettingsSyncStatus(confirmed ? 'synced' : 'error');
+        })
         .catch((error) => {
+          if (!active) return;
           if (error?.code === 'AUTH_REQUIRED') {
             resetSessionState();
             return;
@@ -126,8 +134,14 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
           setSettingsSyncStatus('error');
         });
     }, 650);
-    return () => clearTimeout(timeoutId);
-  }, [appSettings, authStatus, resetSessionState, settingsLoaded, settingsSyncReady]);
+    return () => { active = false; clearTimeout(timeoutId); };
+  }, [appSettings, authStatus, resetSessionState, settingsLoaded, settingsSyncReady, settingsRetry]);
+
+  useEffect(() => {
+    if (settingsSyncStatus !== 'error' || authStatus !== 'signedIn') return undefined;
+    const timer = setTimeout(() => setSettingsRetry(value => value + 1), 30000);
+    return () => clearTimeout(timer);
+  }, [settingsSyncStatus, authStatus]);
 
   const completeSignIn = useCallback(async (credentials) => {
     await signIn(credentials);

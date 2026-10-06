@@ -60,9 +60,13 @@ export function rawCatalogSites() {
   const osm = osmSource.sites.map(([osmId, name, latitude, longitude, depth, entryCode, mask, fresh, difficulty]) => ({ id: `osm-${osmId}`, name, latitude, longitude,
     country: '', region: '', environment: fresh ? 'fresh' : '', topologies: osmSource.topologyCodes.filter((_, code) => mask & (1 << code)),
     entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, difficulty: difficulty || '' }));
-  const extra = extraSource.sites.map(([id, name, latitude, longitude, depth, entryCode, mask, fresh, , , note]) => ({ id: `x-${id}`, name, latitude, longitude,
-    country: '', region: '', environment: fresh ? 'fresh' : '', topologies: extraSource.topologyCodes.filter((_, code) => mask & (1 << code)),
-    entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, ...(note ? { note } : {}) }));
+  const extra = extraSource.sites.map(([id, name, latitude, longitude, depth, entryCode, mask, fresh, source, , own]) => {
+    // A source-wide caveat (reef-program positions) follows the row's own note, as in atlasRuntime.js.
+    const note = [own, extraSource.sources[source]?.note].filter(Boolean).join(' ');
+    return { id: `x-${id}`, name, latitude, longitude,
+      country: '', region: '', environment: fresh ? 'fresh' : '', topologies: extraSource.topologyCodes.filter((_, code) => mask & (1 << code)),
+      entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, ...(note ? { note } : {}) };
+  });
   const everything = [...listed, ...global, ...osm, ...extra];
   closedCount = everything.filter(site => CLOSED_WRECKS.test(site.name)).length;
   rawCache = everything.filter(site => !CLOSED_WRECKS.test(site.name));

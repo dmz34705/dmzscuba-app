@@ -81,6 +81,22 @@ assert.deepEqual([30, 27, 24, 21, 18, 14, 8].map(R.exposureFor), ['Rash guard / 
 assert.equal(R.experienceRating({ maxDepthMeters: 10, topologies: [] }, null, false).level, 'Beginner');
 assert.equal(R.experienceRating({ maxDepthMeters: 25, topologies: ['drift'] }, null, false).level, 'Advanced');
 assert.equal(R.experienceRating({ topologies: ['cave'] }, null, false).level, 'Technical');
+// A wreck's depth is the dive: with no published depth, the modelled seafloor at the pin sets the level
+// (the Spiegel Grove sits in ~34 m — not a beginner dive), and with no depth at all it is not rated.
+assert.equal(R.experienceRating({ topologies: ['wreck'] }, null, false).level, R.UNRATED_LEVEL);
+assert.equal(R.experienceRating({ topologies: ['wreck'] }, null, false, {}, null, 'imperial', 34).level, 'Advanced');
+assert.equal(R.experienceRating({ topologies: ['wreck'] }, null, false, {}, null, 'imperial', 34).confidence, 'estimate');
+assert.equal(R.experienceRating({ maxDepthMeters: 10, topologies: ['wreck'] }, null, false, {}, null, 'imperial', 34).level, 'Beginner', 'A published depth wins over the model.');
+assert.equal(R.experienceRating({ topologies: ['reef'] }, null, false).level, 'Beginner', 'Reefs are dived at a depth of your choosing.');
+// "Can I dive this?": the trained depth comes from the diver's highest card, whatever the agency calls it.
+{
+  const { diverProfile } = loadSourceModule(path.join(root, 'features/oceanAtlas/diverProfile.js'), root);
+  assert.deepEqual(diverProfile(null), { signedIn: false });
+  assert.equal(diverProfile([{ certificationName: 'PADI Open Water Diver' }]).limitFeet, 60);
+  assert.equal(diverProfile([{ certificationName: 'SSI Rescue Diver' }]).limitFeet, 100, 'A higher card includes Advanced.');
+  assert.equal(diverProfile([{ certificationName: 'Deep Diver' }, { certificationName: 'Wreck Diver' }]).limitFeet, 130);
+  assert.ok(diverProfile([{ certificationName: 'Wreck Diver' }]).wreck && !diverProfile([]).limitMeters);
+}
 assert.equal(R.experienceRating({ maxDepthMeters: 12, topologies: [] }, null, false).confidence, 'depth');
 const palancar = C.catalogSites().find(site => site.name === 'Palancar Gardens');
 assert.ok(R.siteRatings(palancar, S.seasonGuide(palancar)).experience.reasons.includes('drift / current'), 'Cozumel profile marks drift diving.');

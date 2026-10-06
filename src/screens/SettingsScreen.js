@@ -320,7 +320,7 @@ export default function SettingsScreen({ accountEmail = '', authStatus = 'signed
   const syncCopy = syncStatus === 'saving'
     ? 'Saving changes to your DMZ Scuba account…'
     : syncStatus === 'error'
-      ? 'Saved on this device. Account sync will retry after the next change.'
+      ? 'Saved on this device. Account sync will retry automatically.'
       : signedIn
         ? `Synced with ${accountEmail || 'your DMZ Scuba account'}.`
         : 'Saved on this device. Sign in from Account to carry these settings to another device.';

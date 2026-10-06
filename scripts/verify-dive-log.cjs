@@ -21,6 +21,41 @@ const locationSuggestions = loadSourceModule(
   path.join(srcRoot, 'lib', 'locationLog', 'suggestions.js'),
   srcRoot,
 );
+// Offshore regression: an early cell fix must not hide accurate GPS in the same dive.
+const { bestLocationForDive } = loadSourceModule(path.join(srcRoot, 'lib', 'locationLog', 'correlate.js'), srcRoot);
+{
+  const startTime = '2026-09-28T15:57:35.000Z';
+  const start = Date.parse(startTime);
+  const bad = { t: start + 60_000, lat: 43.0731, lon: -87.8764, accuracyMeters: 3816 };
+  const good = { t: start + 5 * 60_000, lat: 43.0648, lon: -87.7495, accuracyMeters: 14 };
+  const better = { ...good, t: start + 10 * 60_000, accuracyMeters: 4 };
+  const dive = { startTime, durationSeconds: 1221 };
+  assert.equal(bestLocationForDive([bad, good], dive).t, good.t);
+  assert.equal(bestLocationForDive([good, better, bad], dive).t, better.t);
+  assert.equal(bestLocationForDive([better, good, bad], dive).t, better.t);
+  assert.equal(bestLocationForDive([bad, { ...bad, accuracyMeters: -1 }], dive), null);
+  assert.equal(bestLocationForDive([{ ...good, t: start - 61 * 60_000 }], dive), null);
+  assert.equal(bestLocationForDive([{ ...bad, accuracyMeters: null }, good], dive).t, good.t);
+  assert.equal(bestLocationForDive([{ ...good, accuracyMeters: null }], dive).t, good.t);
+}
+const { manualDiveSite, editedDiveSite } = loadSourceModule(path.join(srcRoot, 'features', 'diveLocation', 'manualLocation.js'), srcRoot);
+{
+  const site = manualDiveSite({ id: 'x-wikilist-660', name: 'E. M. B. A.', latitude: 43.06509, longitude: -87.74958 });
+  assert.equal(site.siteId, 'x-wikilist-660');
+  assert.equal(site.verification.status, 'linked');
+  assert.deepEqual(site.verification.methods, ['manual']);
+  assert.deepEqual(diveLog.normalizeDive({ site }).site.verification.methods, ['manual']);
+  assert.equal(editedDiveSite({ ...site, country: 'United States' }, site).siteId, site.siteId);
+  assert.equal(editedDiveSite({ ...site, latitude: 42 }, site).siteId, '');
+  assert.equal(editedDiveSite({ ...site, name: 'Another site' }, site).verification, null);
+  const pin = manualDiveSite({ latitude: 0, longitude: 0 });
+  assert.equal(pin.latitude, 0);
+  assert.equal(pin.siteId, '');
+  assert.equal(pin.verification, null);
+  assert.equal(manualDiveSite({ latitude: 91, longitude: 0 }), null);
+  assert.equal(manualDiveSite({ latitude: 0, longitude: -181 }), null);
+  assert.equal(manualDiveSite({ latitude: null, longitude: 0 }), null);
+}
 const offlineDiveSites = loadSourceModule(
   path.join(srcRoot, 'lib', 'diveSites', 'offlineCatalog.js'),
   srcRoot,

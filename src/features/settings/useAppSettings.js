@@ -31,7 +31,7 @@ export default function useAppSettings() {
 
   return {
     loaded,
-    // Settings from the signed-in account update only what the account stores (units, trimix);
+    // Settings from the signed-in account update only what the account stores (units, trimix, layout);
     // this phone's own settings, such as background location logging, are kept.
     applyAccountSettings: (value) => setSettingsState((current) => mergeAccountSettings(current, value)),
     settings,

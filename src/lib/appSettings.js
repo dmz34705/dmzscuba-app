@@ -1,3 +1,5 @@
+import { DEFAULT_LAYOUT, sanitizeLayout } from '../features/layout/layoutPreferences';
+
 export const APP_SETTINGS_STORAGE_KEY = '@dmz-scuba/app-settings-v1';
 
 export const DEFAULT_PROFILE_COLORS = Object.freeze({
@@ -24,11 +26,13 @@ export const DEFAULT_APP_SETTINGS = {
   locationLoggingEnabled: false,
   profileColors: DEFAULT_PROFILE_COLORS,
   profileLineWidth: 2.75,
+  layout: DEFAULT_LAYOUT,
 };
 
 export function sanitizeAppSettings(value) {
   const settings = value && typeof value === 'object' ? value : {};
   return {
+    layout: sanitizeLayout(settings.layout),
     depthUnit: settings.depthUnit === 'm' ? 'm' : 'ft',
     gasVolumeUnit: settings.gasVolumeUnit === 'L' ? 'L' : 'ft³',
     pressureUnit: settings.pressureUnit === 'bar' ? 'bar' : 'psi',
@@ -43,9 +47,9 @@ export function sanitizeAppSettings(value) {
   };
 }
 
-// Settings the account stores and syncs between devices. Everything else is this phone's own:
+// Units, calculator preferences and layouts sync between devices. Everything else is this phone's own:
 // location logging depends on this phone's permission, and graph styling is a display preference.
-export const ACCOUNT_SYNCED_SETTINGS = Object.freeze(['depthUnit', 'gasVolumeUnit', 'pressureUnit', 'temperatureUnit', 'trimixMode']);
+export const ACCOUNT_SYNCED_SETTINGS = Object.freeze(['depthUnit', 'gasVolumeUnit', 'pressureUnit', 'temperatureUnit', 'trimixMode', 'layout']);
 
 /**
  * Apply settings downloaded from the account without resetting this phone's own settings.

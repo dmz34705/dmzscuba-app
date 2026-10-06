@@ -24,11 +24,12 @@ const { rawCatalogSites } = loadSourceModule(path.join(src, 'features/oceanAtlas
 
 const sourceOf = (id) => (id.startsWith('x-') ? id.split('-').slice(0, 2).join('-') : id.split('-')[0]);
 // How far apart two records of the same site can be, by how their positions were made.
-const RADIUS_KM = { mx: 4, 'x-wikipedia': 2.5, 'x-wikidata': 2, odm: 1.5, geonames: 3, noaa: 0.5, 'x-tbnms': 0.5, osm: 0.8, 'x-curated': 1.5 };
+const RADIUS_KM = { 'x-pbc': 0.3, 'x-fwc': 0.3, mx: 4, 'x-wikipedia': 2.5, 'x-wikidata': 2, odm: 1.5, geonames: 3, noaa: 0.5, 'x-tbnms': 0.5, osm: 0.8, 'x-curated': 1.5 };
 // Whose position to keep: exact moorings and mapped points over broad areas and article pins.
-const POSITION_TRUST = { noaa: 7, 'x-tbnms': 7, osm: 5, odm: 4, 'x-curated': 4, 'x-wikidata': 3, 'x-wikipedia': 3, geonames: 2, mx: 1 };
-// Whose name and identity to keep: government / curated / encyclopedic over community pins.
-const NAME_TRUST = { mx: 7, noaa: 6, 'x-tbnms': 6, 'x-curated': 6, 'x-wikipedia': 5, 'x-wikidata': 5, odm: 3, osm: 3, geonames: 2 };
+const POSITION_TRUST = { 'x-pbc': 6, 'x-fwc': 6, noaa: 7, 'x-tbnms': 7, osm: 5, odm: 4, 'x-curated': 4, 'x-wikidata': 3, 'x-wikipedia': 3, geonames: 2, mx: 1 };
+// Whose name and identity to keep: government / curated / encyclopedic over community pins. A reef-program
+// record (x-pbc, x-fwc) joins an existing site rather than replacing it: logs and enrichments keep their id.
+const NAME_TRUST = { 'x-pbc': 1, 'x-fwc': 1, mx: 7, noaa: 6, 'x-tbnms': 6, 'x-curated': 6, 'x-wikipedia': 5, 'x-wikidata': 5, odm: 3, osm: 3, geonames: 2 };
 
 const GENERIC = new Set(['the', 'a', 'la', 'el', 'le', 'les', 'los', 'las', 'de', 'del', 'des', 'du', 'der', 'die', 'das', 'di', 'da', 'do', 'and', 'y', 'et',
   'reef', 'reefs', 'arrecife', 'recif', 'recife', 'riff', 'site', 'dive', 'diving', 'spot', 'point', 'punta', 'pointe', 'area', 'zone', 'tauchplatz', 'plongee',
@@ -99,6 +100,7 @@ const coreKey = (name) => core(withoutPlace(name).replace(/\(\d{4}\)/, '')).sort
 const nameCount = new Map();
 for (const site of sites) nameCount.set(coreKey(site.name), (nameCount.get(coreKey(site.name)) || 0) + 1);
 const RARE_NAME = 4, RARE_RADIUS_KM = 6, RARE_BROAD_RADIUS_KM = 10; // broad = a reef area or an article pin
+const REEF_PROGRAMS = new Set(['x-pbc', 'x-fwc']);
 const BROAD = new Set(['mx', 'x-wikipedia', 'x-wikidata', 'geonames']);
 function radiusFor(a, b) {
   const base = Math.max(RADIUS_KM[sourceOf(a.id)] ?? 1, RADIUS_KM[sourceOf(b.id)] ?? 1);
@@ -123,6 +125,9 @@ for (const site of sites) {
       if (other.id <= site.id) continue;
       const distance = km(site, other);
       if (distance > radiusFor(site, other) || !sameName(site.name, other.name)) continue;
+      // A reef program lists each structure once (scripts/import-florida-reef-sites.cjs folds its own repeats):
+      // "Eidsvag" and "Eidsvag Barge" are two wrecks side by side, not one site.
+      if (sourceOf(site.id) === sourceOf(other.id) && REEF_PROGRAMS.has(sourceOf(site.id))) continue;
       // With "wreck" out of the name, "Moonhole" (a reef) and "Moonhole Wreck" must still stay two sites.
       const saysWreck = (x) => WRECK.test(fold(x.name)), isWreck = (x) => saysWreck(x) || x.topologies?.includes('wreck') || /^(ss|mv|ms|sv|hms|hmas|hmcs|uss|usat|sas|rms|sms)\s/i.test(x.name);
       if (saysWreck(site) !== saysWreck(other) && !(isWreck(site) && isWreck(other))) continue;

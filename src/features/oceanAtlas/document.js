@@ -18,9 +18,15 @@ import { MARINE_REGIONS } from './regions';
 import { OCEAN_REGIONS } from './oceanRegions';
 import { DIVE_REGIONS, REMOTE_DIVE_AREAS } from './diveRegions';
 
-export function buildAtlasDocument({ temperatureUnit = 'F', depthUnit = 'ft' } = {}) {
-  const data = { months: MONTHS, regions: MARINE_REGIONS, oceanRegions: OCEAN_REGIONS, diveRegions: DIVE_REGIONS, remoteAreas: REMOTE_DIVE_AREAS, temperature, land,
-    sites: [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites], globalSites, osmSites, extraSites, publishedDepths, siteMerges, closedWrecks: CLOSED_WRECKS.source, curatedSiteCount: curatedSites.length,
+// The page's copy of the supplementary sites: only what atlasRuntime reads (no build stats or kind hints), with
+// the shared Wikipedia link prefix shortened to "~" (atlasRuntime expands it). Keeps the page inside its 2 MB budget.
+const WIKIPEDIA = 'https://en.wikipedia.org/wiki/';
+const embeddedExtraSites = { topologyCodes: extraSites.topologyCodes, sources: extraSites.sources,
+  sites: extraSites.sites.map(row => (typeof row[9] === 'string' && row[9].startsWith(WIKIPEDIA) ? [...row.slice(0, 9), `~${row[9].slice(WIKIPEDIA.length)}`, ...row.slice(10)] : row)) };
+
+export function buildAtlasDocument({ temperatureUnit = 'F', depthUnit = 'ft', locationPicker = false } = {}) {
+  const data = { locationPicker, months: MONTHS, regions: MARINE_REGIONS, oceanRegions: OCEAN_REGIONS, diveRegions: DIVE_REGIONS, remoteAreas: REMOTE_DIVE_AREAS, temperature, land,
+    sites: [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites], globalSites, osmSites, extraSites: embeddedExtraSites, publishedDepths, siteMerges, closedWrecks: CLOSED_WRECKS.source, curatedSiteCount: curatedSites.length,
     unit: temperatureUnit === 'C' ? 'C' : 'F', depthUnit: depthUnit === 'm' ? 'm' : 'ft' };
   return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=3"><meta name="color-scheme" content="dark"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: https://tile.openstreetmap.org https://inaturalist-open-data.s3.amazonaws.com https://static.inaturalist.org https://upload.wikimedia.org https://thumb.wikimedia.org; connect-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'"><style>${leafletCss}\n${atlasStyles}</style></head><body><main id="app"></main><script>${(leafletJs + '\n' + vectorTilerJs).replace(/<\/script/gi, '<\\/script')}</script><script>${runtimeSource.replace(/<\/script/gi, '<\\/script')}\natlasRuntime(${safeJson(data)}, {temperatureAt,regionAt,inBounds,oceanRegionAt,seasonStatus,expandTemperature});</script></body></html>`;
 }

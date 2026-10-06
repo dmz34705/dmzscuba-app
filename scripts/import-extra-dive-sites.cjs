@@ -346,7 +346,7 @@ async function curated() {
   const previous = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, 'utf8')).sites : [];
   const oldId = new Map(), taken = new Set();
   for (const row of previous) { oldId.set(`${row[8]}|${row[9]}|${row[1]}`, row[0]); oldId.set(`${row[8]}|${row[9]}`, oldId.get(`${row[8]}|${row[9]}`) || row[0]); }
-  let nextIndex = Math.max(-1, ...previous.map(row => Number(String(row[0]).split('-').pop())).filter(Number.isFinite)) + 1;
+  let nextIndex = Math.max(-1, ...previous.filter(row => row[8] in SOURCES).map(row => Number(String(row[0]).split('-').pop())).filter(Number.isFinite)) + 1;
   const idFor = site => {
     const id = [`${site.source}|${site.url}|${site.name.slice(0, 80)}`, `${site.source}|${site.url}`].map(key => oldId.get(key)).find(id => id && !taken.has(id));
     const chosen = id || `${site.source}-${nextIndex++}`;
@@ -355,7 +355,13 @@ async function curated() {
   };
   const rows = out.map(site => [idFor(site), site.name.slice(0, 80), Math.round(site.latitude * 1e5) / 1e5, Math.round(site.longitude * 1e5) / 1e5, site.depth || 0,
     site.entry === 'boat' ? 1 : site.entry === 'shore' ? 2 : 0, site.topologies.reduce((mask, code) => mask | (1 << TOPOLOGY_CODES.indexOf(code)), 0), site.fresh ? 1 : 0, site.source, site.url, (!/#/.test(site.url) && notable.notes.get(articleTitle(site.url))) || '']);
-  fs.writeFileSync(outputPath, JSON.stringify({ retrievedAt: new Date().toISOString(), topologyCodes: TOPOLOGY_CODES, sources: SOURCES, kindHints,
+  // Rows other importers keep here (scripts/import-florida-reef-sites.cjs: `pbc`, `fwc`) stay as they are.
+  const previousFile = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, 'utf8')) : { sources: {}, sites: [] };
+  const foreign = previousFile.sites.filter(row => !(row[8] in SOURCES));
+  const foreignSources = Object.fromEntries(Object.entries(previousFile.sources || {}).filter(([key]) => !(key in SOURCES) && foreign.some(row => row[8] === key)));
+  if (previousFile.stats?.floridaReefs) stats.floridaReefs = previousFile.stats.floridaReefs;
+  rows.push(...foreign);
+  fs.writeFileSync(outputPath, JSON.stringify({ retrievedAt: new Date().toISOString(), topologyCodes: TOPOLOGY_CODES, sources: { ...SOURCES, ...foreignSources }, kindHints,
     fields: ['id', 'name', 'latitude', 'longitude', 'maxDepthMeters', 'entry', 'topologyMask', 'fresh', 'source', 'url', 'note (protection, from Wikidata heritage designations)'], stats, sites: rows }));
   console.log(JSON.stringify(stats, null, 1), `→ ${(fs.statSync(outputPath).size / 1024).toFixed(0)} KB`);
 })().catch(error => { console.error(error.stack || error.message); process.exit(1); });

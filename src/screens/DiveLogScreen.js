@@ -23,6 +23,9 @@ import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library/legacy';
 import Svg, { Circle, Line, Path, Text as SvgText } from 'react-native-svg';
 
+import AtlasLocationPicker from '../features/diveLocation/AtlasLocationPicker';
+import { editedDiveSite } from '../features/diveLocation/manualLocation';
+
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { useReducedMotion } from '../components/Motion';
 import { FormError } from '../components/AccountForm';
@@ -157,6 +160,7 @@ function blankForm() {
     time: '',
     number: '',
     siteName: '',
+    siteLink: null,
     location: '',
     country: '',
     latitude: '',
@@ -210,6 +214,7 @@ function recordToForm(record, units) {
     time: formatTime(record.startTime),
     number: record.number != null ? String(record.number) : '',
     siteName: record.site.name,
+    siteLink: record.site,
     location: record.site.location,
     country: record.site.country,
     latitude: record.site.latitude != null ? String(record.site.latitude) : '',
@@ -277,13 +282,13 @@ function formToRecordPartial(form, units) {
     timezoneOffsetMinutes: Number.isNaN(parsedStart) ? null : -new Date(parsedStart).getTimezoneOffset(),
     durationSeconds: durationMin != null ? Math.round(durationMin * 60) : 0,
     surfaceIntervalSeconds: form.surfaceIntervalMin.trim() && surfaceMin != null ? Math.round(surfaceMin * 60) : null,
-    site: {
+    site: editedDiveSite({
       name: form.siteName.trim(),
       location: form.location.trim(),
       country: form.country.trim(),
       latitude: parseNumberInput(form.latitude),
       longitude: parseNumberInput(form.longitude),
-    },
+    }, form.siteLink),
     operator: form.operator.trim(),
     buddies: splitList(form.buddies),
     water: {
@@ -1884,6 +1889,12 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
 // ---------------------------------------------------------------------------
 
 function DiveEditForm({ form, units, onChange, error }) {
+  const [locationPickerOpen, setLocationPickerOpen] = useState(false);
+  const selectLocation = site => {
+    onChange({ ...form, siteName: site.name, location: site.location, country: site.country,
+      latitude: String(site.latitude), longitude: String(site.longitude), siteLink: site });
+    setLocationPickerOpen(false);
+  };
   const set = (key) => (value) => onChange({ ...form, [key]: value });
   const setCylinders = (cylinders) => onChange({ ...form, cylinders });
   const setCylinder = (index, key) => (value) => setCylinders(
@@ -1898,6 +1909,9 @@ function DiveEditForm({ form, units, onChange, error }) {
   return (
     <>
       <FormError message={error} />
+      {locationPickerOpen ? <AtlasLocationPicker
+        initialSite={{ latitude: parseNumberInput(form.latitude), longitude: parseNumberInput(form.longitude) }}
+        onCancel={() => setLocationPickerOpen(false)} onSelect={selectLocation} /> : null}
 
       <FormSection title="When & where">
         <View style={styles.twoColumn}>
@@ -1908,6 +1922,7 @@ function DiveEditForm({ form, units, onChange, error }) {
           <Field label="Dive number" value={form.number} onChangeText={set('number')} keyboardType="number-pad" />
           <Field label="Operator / boat" value={form.operator} onChangeText={set('operator')} />
         </View>
+        <SecondaryButton label="Choose site or drop pin on atlas" onPress={() => setLocationPickerOpen(true)} />
         <Field label="Site name" value={form.siteName} onChangeText={set('siteName')} />
         <View style={styles.twoColumn}>
           <Field label="Location" value={form.location} onChangeText={set('location')} />
@@ -2039,9 +2054,10 @@ function BulkEditRow({ label, on, onToggle, children }) {
 // exposes per-dive numbers (depth, duration, temps, gas) — those can't be
 // shared across a selection.
 function BulkEditSheet({ count, saving, onCancel, onApply }) {
+  const [locationPickerOpen, setLocationPickerOpen] = useState(false);
   const [on, setOn] = useState(() => new Set());
   const [v, setV] = useState({
-    siteName: '', location: '', country: '', operator: '',
+    siteName: '', location: '', country: '', operator: '', selectedSite: null,
     suit: '', buddies: '', tag: '', waterType: 'salt', shift: '',
   });
   const toggle = (key) => setOn((prev) => {
@@ -2065,6 +2081,10 @@ function BulkEditSheet({ count, saving, onCancel, onApply }) {
             contentContainerStyle={styles.photoReviewListContent}
             keyboardShouldPersistTaps="handled"
           >
+            <BulkEditRow label="Dive site / map pin" on={on.has('selectedSite')} onToggle={() => toggle('selectedSite')}>
+              <Text style={styles.photoReviewPrivacy}>{v.selectedSite ? `${v.selectedSite.name || 'Dropped pin'} · ${v.selectedSite.latitude.toFixed(5)}, ${v.selectedSite.longitude.toFixed(5)}` : 'Choose one location for all selected dives.'}</Text>
+              <SecondaryButton label="Choose site or drop pin on atlas" onPress={() => setLocationPickerOpen(true)} />
+            </BulkEditRow>
             <BulkEditRow label="Site name" on={on.has('siteName')} onToggle={() => toggle('siteName')}>
               <Field label="Site name" value={v.siteName} onChangeText={set('siteName')} placeholder="e.g. Palancar Gardens" />
             </BulkEditRow>
@@ -2115,10 +2135,15 @@ function BulkEditSheet({ count, saving, onCancel, onApply }) {
           <PrimaryButton
             label={saving ? 'Applying…' : on.size ? `Apply to ${label}` : 'Switch on what to change'}
             onPress={() => onApply({ fields: [...on], values: v })}
-            disabled={saving || on.size === 0}
+            disabled={saving || on.size === 0 || (on.has('selectedSite') && !v.selectedSite)}
             style={styles.photoReviewAction}
           />
           <SecondaryButton label="Cancel" onPress={onCancel} disabled={saving} style={styles.photoReviewAction} />
+          {locationPickerOpen ? <AtlasLocationPicker initialSite={v.selectedSite}
+            onCancel={() => setLocationPickerOpen(false)} onSelect={site => {
+              setV(prev => ({ ...prev, selectedSite: site }));
+              setLocationPickerOpen(false);
+            }} /> : null}
         </View>
       </View>
     </Modal>
@@ -2807,11 +2832,12 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     const set = new Set(fields);
     const buildPatch = (dive) => {
       const patch = {};
-      if (set.has('siteName') || set.has('location') || set.has('country')) {
-        patch.site = { ...dive.site };
+      if (set.has('selectedSite') || set.has('siteName') || set.has('location') || set.has('country')) {
+        patch.site = { ...(set.has('selectedSite') ? values.selectedSite : dive.site) };
         if (set.has('siteName')) patch.site.name = values.siteName.trim();
         if (set.has('location')) patch.site.location = values.location.trim();
         if (set.has('country')) patch.site.country = values.country.trim();
+        patch.site = editedDiveSite(patch.site, set.has('selectedSite') ? values.selectedSite : dive.site);
       }
       if (set.has('operator')) patch.operator = values.operator.trim();
       if (set.has('waterType')) patch.water = { ...dive.water, type: values.waterType };

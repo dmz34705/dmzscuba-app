@@ -29,13 +29,14 @@ import SITE_SHORE from '../features/oceanAtlas/data/siteShore.json';
 import SITE_BATHYMETRY from '../features/oceanAtlas/data/siteBathymetry.json';
 import SITE_LAKE_DEPTHS from '../features/oceanAtlas/data/siteLakeDepths.json';
 import { nearbyDepths } from '../features/oceanAtlas/nearbyDepths';
+import { diverProfile } from '../features/oceanAtlas/diverProfile';
 import { colors } from '../theme';
 
 const PREFERENCES_KEY = '@dmz-scuba/ocean-atlas/preferences-v1';
 // Last known starting point for personal travel ratings; kept on this device only.
 const ORIGIN_KEY = '@dmz-scuba/ocean-atlas/origin-v1';
 
-export default function OceanAtlasScreen({ appSettings = {}, focus = null, onBack, onOpenSettings }) {
+export default function OceanAtlasScreen({ appSettings = {}, account = null, signedIn = false, focus = null, onBack, onOpenSettings }) {
   const insets = useSafeAreaInsets();
   const web = useRef(null);
   const mounted = useRef(true);
@@ -63,6 +64,10 @@ export default function OceanAtlasScreen({ appSettings = {}, focus = null, onBac
   const units = unitSystem(appSettings);
   const unitsRef = useRef(units);
   unitsRef.current = units;
+  // The diver's trained depth and overhead training (from their certification cards) let a site card say
+  // whether the dive fits them. Signed out, the card says how to get that.
+  const diver = useRef(diverProfile(null));
+  diver.current = useMemo(() => diverProfile(signedIn && Array.isArray(account?.certifications) ? account.certifications : null), [signedIn, account?.certifications]);
   const html = useMemo(() => buildAtlasDocument(appSettings), [appSettings.temperatureUnit, appSettings.depthUnit]);
   const source = useMemo(() => ({ html, baseUrl: 'https://www.dmzscuba.com/' }), [html]);
   const send = useCallback(message => {
@@ -233,7 +238,9 @@ export default function OceanAtlasScreen({ appSettings = {}, focus = null, onBac
         });
         send({ type: 'siteGuide', key: String(message.key || '').slice(0, 120), guide: { temps: guide.temps, highlights: guide.highlights, animals: guide.animals, hasObservations: guide.hasObservations, inland: profile },
           wear,
-          ratings: { ...siteRatings(site, guide, { originPoint: origin.current, inland: profile, life, units: unitsRef.current }), inland },
+          // No published depth: the modelled seafloor at the pin (finer NOAA / EMODnet first) sets the experience level.
+          ratings: { ...siteRatings(site, guide, { originPoint: origin.current, inland: profile, life, units: unitsRef.current,
+            estimatedDepthMeters: record ? SITE_BATHYMETRY.sites[record.id]?.[0] ?? SITE_SEAFLOOR.sites[record.id]?.[0] ?? null : null }), inland },
           // Openly licensed photo of the site itself, when one exists.
           photo: record && SITE_IMAGES.images[record.id] ? (([url, attribution, license, page]) => ({ url, attribution, license, page }))(SITE_IMAGES.images[record.id]) : null,
           // Encyclopedia summary (Wikipedia, CC BY-SA) and, for wrecks, the ship's history (Wikidata, CC0).
@@ -247,7 +254,8 @@ export default function OceanAtlasScreen({ appSettings = {}, focus = null, onBac
           lakeDepth: record && SITE_LAKE_DEPTHS.sites[record.id] ? (([maxMeters, meanMeters, lakeName, source, url]) => ({ maxMeters, meanMeters, lakeName, published: source === 'wikidata', url: url || SITE_LAKE_DEPTHS.source.url }))(SITE_LAKE_DEPTHS.sites[record.id]) : null,
           nearbyDepths: record && !record.maxDepthMeters ? nearbyDepths(record) : null,
           shore: record && SITE_SHORE.sites[record.id] ? Object.fromEntries(SITE_SHORE.fields.map((kind, i) => [kind, SITE_SHORE.sites[record.id][i]]).filter(([, meters]) => meters != null)) : null,
-          places: typeof message.id === 'string' ? placesForSite(message.id.slice(0, 80)) : [] });
+          places: typeof message.id === 'string' ? placesForSite(message.id.slice(0, 80)) : [],
+          diver: diver.current });
       } catch { send({ type: 'siteGuide', key: String(message.key || '').slice(0, 120), guide: null, places: [] }); }
     }
     else if (message.type === 'deleteMySite' && typeof message.id === 'string') {

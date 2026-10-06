@@ -11,6 +11,7 @@ import {
   Text,
   TextInput,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -85,6 +86,8 @@ import { LinkExistingItems } from '../features/gearChecklist/wizardParts';
 import useGearChecklist from '../features/gearChecklist/useGearChecklist';
 import useLockerView from '../features/gearChecklist/useLockerView';
 import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
+import SetupLayout, { EquipmentMark } from '../features/gearChecklist/SetupLayout';
+import { setupLayoutItems } from '../features/gearChecklist/setupLayoutModel';
 import { QUICK_PACKING_DAYS } from '../features/gearChecklist/model';
 import { formatDay, planTitle, withPlanPacking } from '../features/planner/model';
 import usePlanPacking from '../features/planner/usePlanPacking';
@@ -341,15 +344,16 @@ function SetupsHome({ state, packingFor, onAdd, onOpen }) {
   return (
     <>
       <PrimaryButton label="Create a setup" onPress={onAdd} />
-      <Text style={styles.helperLead}>Build reusable single-tank, doubles, sidemount, travel, or custom configurations. Each setup packs for its next planned trip or dive day, and every trip keeps its own packing list.</Text>
+      <Text style={styles.helperLead}>Build a picture of the gear you dive with. Explore each configuration, then open its packing list when a trip or dive day is coming up.</Text>
       <View style={styles.sectionRow}><Text style={styles.sectionTitle}>Dive setups</Text><Text style={styles.sectionMeta}>{state.setups.length} SETUPS</Text></View>
       {state.setups.length ? state.setups.map((setup) => {
         const plan = packingFor(setup.id);
         const progress = setupProgress(plan ? withPlanPacking(setup, plan) : setup, state.items);
+        const configured = setupLayoutItems(setup, state.items);
         return (
           <Pressable accessibilityRole="button" accessibilityLabel={`Open ${setup.name} setup`} key={setup.id} onPress={() => onOpen(setup)} style={({ pressed }) => [styles.listCard, pressed && styles.pressed]}>
             <View style={styles.listTop}>
-              <View style={styles.listIcon}><Text style={styles.listIconText}>✓</Text></View>
+              <View style={styles.listIcon}><EquipmentMark kind="buoyancy" size={30} /></View>
               <View style={styles.listCopy}>
                 <Text style={styles.listName}>{setup.name}</Text>
                 <Text style={styles.setupType}>{setup.type.toUpperCase()}</Text>
@@ -357,8 +361,8 @@ function SetupsHome({ state, packingFor, onAdd, onOpen }) {
               </View>
               <Text style={styles.chevron}>›</Text>
             </View>
-            <View style={styles.progressRow}><Text numberOfLines={1} style={[styles.progressText, styles.flexText]}>{progress.checked} of {progress.total} packed{plan ? ` for ${planTitle(plan)}` : ''}</Text><Text style={styles.progressPercent}>{Math.round(progress.ratio * 100)}%</Text></View>
-            <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
+            <View style={styles.progressRow}><Text style={styles.progressText}>{configured.length} gear items</Text><Text style={styles.progressPercent}>EXPLORE ›</Text></View>
+            {plan ? <><Text style={styles.packingFor}>{planTitle(plan)} · {progress.checked}/{progress.total} packed</Text><ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} /></> : null}
           </Pressable>
         );
       }) : <EmptyState title="No setups yet" body="Create a reusable configuration, then add the exact gear you dive with." action="Create setup" onPress={onAdd} />}
@@ -471,7 +475,7 @@ function ComponentEditor({ category, component, onChange, onRemove }) {
   );
 }
 
-// Tabbed horizontally so editing a fully-assembled item (8 sections) doesn't mean scrolling
+// Section tabs keep editing a fully-assembled item (8 sections) from requiring scrolling
 // through all of them vertically to find one field — each tab's content is short on its own.
 const FORM_SECTIONS = [
   { key: 'identity', label: 'Identity' },
@@ -485,6 +489,8 @@ const FORM_SECTIONS = [
 ];
 
 function GearItemForm({ item, items = [], setups, defaultSetupId, presetCategory, onBack, onDelete, onSave, fromLogbook = false }) {
+  const { width } = useWindowDimensions();
+  const phoneTabs = width < 600;
   const isEditing = Boolean(item?.id);
   const [draft, setDraft] = useState(() => ({
     ...emptyGearItem(),
@@ -589,11 +595,23 @@ function GearItemForm({ item, items = [], setups, defaultSetupId, presetCategory
   return (
     <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.screen}>
       <ScreenHeader eyebrow="GEAR LOCKER" title={isEditing ? 'Edit Gear' : 'Add Gear'} onBack={onBack} />
-      <ScrollView horizontal contentContainerStyle={styles.formTabs} showsHorizontalScrollIndicator={false} style={styles.formTabsScroll}>
-        {FORM_SECTIONS.map((section) => (
-          <SecondaryButton key={section.key} label={section.label} onPress={() => setActiveSection(section.key)} selected={activeSection === section.key} style={styles.formTab} />
-        ))}
-      </ScrollView>
+      {phoneTabs ? (
+        <View style={[styles.formTabsScroll, styles.formTabs]}>
+          {[FORM_SECTIONS.slice(0, 4), FORM_SECTIONS.slice(4)].map((row, index) => (
+            <View key={index} style={styles.formTabsRow}>
+              {row.map((section) => (
+                <SecondaryButton key={section.key} label={section.label} onPress={() => setActiveSection(section.key)} selected={activeSection === section.key} style={styles.formTabPhone} />
+              ))}
+            </View>
+          ))}
+        </View>
+      ) : (
+        <ScrollView horizontal contentContainerStyle={styles.formTabs} showsHorizontalScrollIndicator={false} style={styles.formTabsScroll}>
+          {FORM_SECTIONS.map((section) => (
+            <SecondaryButton key={section.key} label={section.label} onPress={() => setActiveSection(section.key)} selected={activeSection === section.key} style={styles.formTab} />
+          ))}
+        </ScrollView>
+      )}
       <ScrollView contentContainerStyle={styles.formContent} keyboardDismissMode="interactive" keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         {activeSection === 'identity' ? (
           <FieldSection title="Identity & readiness" body="The essentials you need to recognize this item and know whether it should enter the water.">
@@ -959,7 +977,9 @@ function SetupCheck({ setup, items, onChooseAccessories, onAdd, onLeaveOut, onAd
   );
 }
 
-function SetupDetail({ setup, baseSetup = setup, items, setups = [], packingFor = null, onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle, onMoveFloating, onChooseAccessories, onAddForRequirement, onLeaveOut, onReviewAgain }) {
+function SetupDetail({ setup, baseSetup = setup, items, setups = [], packingFor = null, onOpenGear, onAddExisting, onAddGear, onBack, onEdit, onReset, onSetChecked, onToggle, onMoveFloating, onChooseAccessories, onAddForRequirement, onLeaveOut, onReviewAgain }) {
+  const [mode, setMode] = useState('layout');
+  const [reviewing, setReviewing] = useState(false);
   const [changing, setChanging] = useState(null); // `${itemId}|${category}` being re-chosen
   // Items already packed with another selected item (a hood linked to the drysuit) aren't listed twice.
   const packedWith = includedWithSelection(setup.itemIds, items, setup.accessoryChoices);
@@ -974,7 +994,21 @@ function SetupDetail({ setup, baseSetup = setup, items, setups = [], packingFor 
   return (
     <View style={styles.screen}>
       <ScreenHeader eyebrow={setup.type.toUpperCase()} title={setup.name} onBack={onBack} action={<TinyAction label="EDIT" onPress={onEdit} />} />
+      <View style={styles.setupModes}>
+        <SecondaryButton label="Setup" selected={mode === 'layout'} onPress={() => setMode('layout')} style={styles.tab} />
+        <SecondaryButton label="Pack" selected={mode === 'packing'} onPress={() => setMode('packing')} style={styles.tab} />
+      </View>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        {mode === 'layout' ? <>
+          <SetupLayout setup={baseSetup} items={items} setups={setups} onOpenGear={onOpenGear} onAddExisting={onAddExisting} onAddGear={onAddGear} onMoveFloating={onMoveFloating} />
+          <Pressable accessibilityRole="button" onPress={() => setMode('packing')} style={styles.setupPackingLink}>
+            <Text style={styles.sectionTitle}>{packingFor ? `Pack for ${planTitle(packingFor)}` : 'Heading out for a dive?'}</Text>
+            <Text style={styles.pageBody}>{packingFor ? `${formatDay(packingFor.startDate, { weekday: true })} · ${progress.checked} of ${progress.total} packed` : 'Open your packing list when it’s time to get ready.'}</Text>
+            <Text style={styles.reviewAgainText}>OPEN PACKING LIST ›</Text>
+          </Pressable>
+          {baseSetup.itemIds.length ? <SecondaryButton label={reviewing ? 'Close configuration review' : 'Review configuration'} onPress={() => setReviewing((value) => !value)} /> : null}
+          {reviewing ? <SetupCheck items={items} onAdd={onAddForRequirement} onAddNew={onAddGear} onChooseAccessories={onChooseAccessories} onLeaveOut={onLeaveOut} onReviewAgain={onReviewAgain} setup={baseSetup} /> : null}
+        </> : <>
         <Card style={styles.checklistHero}>
           <View style={styles.checklistHeroTop}><View style={styles.checklistCount}><Text style={styles.checklistCountValue}>{progress.checked}/{progress.total}</Text><Text style={styles.checklistCountLabel}>PACKED</Text></View><Text style={styles.checklistPercent}>{Math.round(progress.ratio * 100)}%</Text></View>
           <ProgressBar value={progress.ratio} color={progress.ratio === 1 && progress.total ? colors.good : colors.cyan} />
@@ -1048,6 +1082,7 @@ function SetupDetail({ setup, baseSetup = setup, items, setups = [], packingFor 
             </View>
           );
         }) : <EmptyState title="This setup is empty" body="Add gear you already own, or add a new locker item here." action="Add existing gear" onPress={onAddExisting} />}
+        </>}
       </ScrollView>
     </View>
   );
@@ -1296,7 +1331,7 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
         setups={gear.state.setups}
         onBack={() => setRoute(route.setupId ? { name: 'setup', setupId: route.setupId } : { name: 'home' })}
         onEdit={() => setRoute({ name: 'gear-form', itemId: activeItem.id, setupId: route.setupId })}
-        onOpenAccessory={(accessoryId) => setRoute({ name: 'gear-detail', itemId: accessoryId })}
+        onOpenAccessory={(accessoryId) => setRoute({ name: 'gear-detail', itemId: accessoryId, setupId: route.setupId })}
         onMoveFloating={gear.moveFloating}
         onUnlinkFromSet={gear.unlinkCylinder}
         diveComputerStats={activeItem.deviceKey ? gear.diveComputerStats(activeItem.deviceKey) : null}
@@ -1340,6 +1375,8 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
     };
     return (
       <SetupDetail
+        key={activeSetup.id}
+        onOpenGear={(item) => setRoute({ name: 'gear-detail', itemId: item.id, setupId: activeSetup.id })}
         items={gear.state.items}
         baseSetup={activeSetup}
         packingFor={plan}
@@ -1365,7 +1402,7 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
     <View style={styles.screen}>
       <ScreenHeader eyebrow="DIVE WORKBENCH" title="Gear Locker" onBack={onBack} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <Text style={styles.pageTitle}>Pack with confidence.</Text>
+        <Text style={styles.pageTitle}>Your gear. Your dive.</Text>
         <Text style={styles.pageBody}>Track complete gear, its individual parts, service needs, and reusable dive setups—all stored privately on this device.</Text>
         <View style={styles.tabs}>
           <SecondaryButton label="Inventory" onPress={() => setTab('inventory')} selected={tab === 'inventory'} style={styles.tab} />
@@ -1383,6 +1420,8 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
 }
 
 const styles = StyleSheet.create({
+  setupModes: { flexDirection: 'row', gap: 8, paddingHorizontal: spacing.md, paddingBottom: 12 },
+  setupPackingLink: { paddingVertical: 20, borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, marginTop: 24, gap: 8 },
   screen: { backgroundColor: colors.background, flex: 1 },
   content: { padding: spacing.md, paddingBottom: spacing.xxl },
   formContent: { padding: spacing.md, paddingBottom: 24 },
@@ -1390,6 +1429,8 @@ const styles = StyleSheet.create({
   formTabsScroll: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexGrow: 0 },
   formTabs: { gap: 7, paddingHorizontal: spacing.md, paddingVertical: 10 },
   formTab: { minHeight: 38, paddingHorizontal: 13, paddingVertical: 8 },
+  formTabsRow: { flexDirection: 'row', gap: 7 },
+  formTabPhone: { flex: 1, minWidth: 0, minHeight: 44, paddingHorizontal: 4, paddingVertical: 8 },
   footer: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, gap: 10, padding: spacing.md },
   pageTitle: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 34 },
   pageBody: { color: colors.muted, fontSize: 14, lineHeight: 21, marginBottom: 16, marginTop: 6 },

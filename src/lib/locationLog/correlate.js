@@ -6,7 +6,11 @@
 // *during* a dive in practice — the useful signal is whatever was recorded
 // just before descending (at the site, on the boat/shore) or just after
 // surfacing. This picks whichever point is closest in time to the dive's
-// [start, end] span, favoring one over the other only by that closeness.
+// [start, end] span, rejecting imprecise fixes and using accuracy to break temporal ties.
+
+// Coarse cell/network fixes can be kilometers from an offshore wreck.
+// Keep them in the raw log, but never use them to suggest a dive location.
+const MAX_ACCURACY_METERS = 250;
 
 const DEFAULT_WINDOW_MS = 60 * 60 * 1000; // an hour on either side of the dive
 
@@ -22,12 +26,21 @@ export function bestLocationForDive(points, { startTime, durationSeconds = 0, wi
 
   let best = null;
   let bestDistanceMs = Infinity;
+  let bestAccuracy = Infinity;
   for (const point of points) {
     if (!point || !Number.isFinite(point.t) || !Number.isFinite(point.lat) || !Number.isFinite(point.lon)) continue;
+    const accuracy = Number.isFinite(point.accuracyMeters) ? point.accuracyMeters : Infinity;
+    if (accuracy !== Infinity && (accuracy < 0 || accuracy > MAX_ACCURACY_METERS)) continue;
     const distanceMs = point.t < startMs ? startMs - point.t : point.t > endMs ? point.t - endMs : 0;
     if (distanceMs > windowMs) continue;
-    if (distanceMs < bestDistanceMs) {
+    // Prefer a measured, usable fix over legacy points with unknown accuracy.
+    const knownAccuracy = accuracy !== Infinity;
+    const bestKnownAccuracy = bestAccuracy !== Infinity;
+    if (!best || (knownAccuracy && !bestKnownAccuracy)
+      || (knownAccuracy === bestKnownAccuracy && (distanceMs < bestDistanceMs
+        || (distanceMs === bestDistanceMs && accuracy < bestAccuracy)))) {
       bestDistanceMs = distanceMs;
+      bestAccuracy = accuracy;
       best = point;
     }
   }

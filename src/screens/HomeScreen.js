@@ -5,7 +5,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle, Path } from 'react-native-svg';
 
 import FeatureIcon from '../features/catalog/FeatureIcon';
-import { getFeature, getFeaturesByArea } from '../features/catalog/featureCatalog';
+import LayoutEditor from '../features/layout/LayoutEditor';
+import { DEFAULT_LAYOUT, HOME_SECTIONS, orderedFeatures, sanitizeLayout } from '../features/layout/layoutPreferences';
+import { FEATURE_CATALOG, getFeature, getFeaturesByArea } from '../features/catalog/featureCatalog';
 import { gearSummary, serviceEntriesForItem, serviceStatusForItem } from '../features/gearChecklist/model';
 import { loadGearState } from '../features/gearChecklist/storage';
 import { loadInsuranceState } from '../features/insurance/storage';
@@ -41,10 +43,10 @@ function Avatar({ initials, onPress }) {
   );
 }
 
-function SectionHeader({ title, action, onAction }) {
+function SectionHeader({ title, action, onAction, onLongPress }) {
   return (
     <View style={styles.sectionHeader}>
-      <Text accessibilityRole="header" style={styles.sectionTitle}>{title}</Text>
+      <Text accessibilityRole="header" onLongPress={onLongPress} style={styles.sectionTitle}>{title}</Text>
       {action ? (
         <Pressable accessibilityRole="button" accessibilityLabel={action} hitSlop={10} onPress={onAction} style={({ pressed }) => [styles.sectionAction, pressed && styles.pressed]}>
           <Text style={styles.sectionActionText}>{action}</Text>
@@ -153,9 +155,9 @@ function DiveSummary({ stats, lastDive, loaded, depthUnit, canDownload, onLog, o
   );
 }
 
-function QuickTile({ feature, detail, badge, onPress }) {
+function QuickTile({ feature, detail, badge, onPress, onLongPress }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${feature.title}. ${detail}`} onPress={onPress} style={({ pressed }) => [styles.tile, pressed && styles.pressed]}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${feature.title}. ${detail}`} onPress={onPress} onLongPress={onLongPress} style={({ pressed }) => [styles.tile, pressed && styles.pressed]}>
       <View style={styles.tileTop}>
         <View style={styles.tileIcon}><FeatureIcon name={feature.icon} /></View>
         {badge ? <View style={styles.tileBadge}><Text style={styles.tileBadgeText}>{badge}</Text></View> : null}
@@ -235,9 +237,9 @@ function SeasonCard({ pick, onPress }) {
   );
 }
 
-function LessonCard({ feature, onPress }) {
+function LessonCard({ feature, onPress, onLongPress }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={`${feature.title}. ${feature.shortSummary}`} onPress={onPress} style={({ pressed }) => [styles.lesson, pressed && styles.pressed]}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${feature.title}. ${feature.shortSummary}`} onPress={onPress} onLongPress={onLongPress} style={({ pressed }) => [styles.lesson, pressed && styles.pressed]}>
       <LinearGradient colors={['rgba(22,133,193,0.22)', 'rgba(11,28,46,0.2)']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={StyleSheet.absoluteFill} />
       <View style={styles.lessonIcon}><FeatureIcon name={feature.icon} /></View>
       <Text style={styles.lessonKind}>{feature.badge === 'NATIVE SIMULATOR' ? 'Simulator' : 'Interactive lab'}</Text>
@@ -248,7 +250,7 @@ function LessonCard({ feature, onPress }) {
 }
 
 // --- screen -----------------------------------------------------------------
-export default function HomeScreen({ appSettings = {}, certifications = null, profile = {}, signedIn = false, onOpenTool, onSelectTab }) {
+export default function HomeScreen({ appSettings = {}, certifications = null, profile = {}, signedIn = false, onOpenTool, onSelectTab, onLayoutChange }) {
   const insets = useSafeAreaInsets();
   const { loaded, stats, lastDive, gear, plans, gearState, rows, insurance } = useHomeData();
   const nextPlan = useMemo(() => sortPlans(plans).upcoming.find((plan) => plan.startDate) || null, [plans]);
@@ -256,11 +258,67 @@ export default function HomeScreen({ appSettings = {}, certifications = null, pr
   const month = new Date().getMonth();
   const inSeason = useMemo(() => { try { return inSeasonNow(month, 8); } catch { return []; } }, [month]);
   // Lessons that are actually open (the gear lab is waiting on artwork).
-  const lessons = getFeaturesByArea('learn').filter((feature) => feature.id !== 'gear-setup');
+  const [layoutEditor, setLayoutEditor] = useState(null);
+  const layout = sanitizeLayout(appSettings.layout);
+  const lessons = orderedFeatures('learn', layout).filter((feature) => feature.id !== 'gear-setup');
   const name = (profile.preferredName || profile.firstName || '').trim();
   const initials = signedIn ? [profile.firstName, profile.lastName].map((part) => (part || '').trim()[0] || '').join('').toUpperCase() : '';
-  const tile = (id) => getFeature(id);
   const canDownload = useMemo(() => { try { return Boolean(getLibdivecomputerVersion()); } catch { return false; } }, []);
+
+  const sectionContent = {
+    summary: (<>
+<DiveSummary
+            canDownload={canDownload}
+            depthUnit={appSettings.depthUnit}
+            lastDive={lastDive}
+            loaded={loaded}
+            onDownload={() => onOpenTool('dive-log:download')}
+            onLog={() => onOpenTool('dive-log:new')}
+            onOpenLogbook={() => onOpenTool('dive-log')}
+            stats={stats}
+          />
+    </>),
+    gear: (<>
+<GearNotice gear={gear} onPress={() => onOpenTool('gear-checklist')} />
+    </>),
+    upNext: (<>
+{loaded ? (
+            <>
+              <SectionHeader onLongPress={() => setLayoutEditor('home')} title="Up next" action={nextPlan ? 'Planner' : null} onAction={() => onOpenTool('dive-planner')} />
+              <UpNext alerts={nextAlerts} onPlan={() => onOpenTool('dive-planner')} onPress={() => onOpenTool('dive-planner', { focus: { planId: nextPlan.id } })} plan={nextPlan} />
+            </>
+          ) : null}
+    </>),
+    quickAccess: (<>
+<SectionHeader title="Quick access" action="Edit" onAction={() => setLayoutEditor('quickAccess')} onLongPress={() => setLayoutEditor('quickAccess')} />
+          <View style={styles.grid}>
+            {layout.quickAccess.map(id => {
+              const feature = getFeature(id);
+              if (!feature) return null;
+              return <QuickTile key={id} feature={feature}
+                badge={id === 'gear-checklist' && gear?.alerts ? `${gear.alerts} due` : null}
+                detail={id === 'gear-checklist' && gear?.total ? `${gear.total} items · service & packing lists` : feature.shortSummary || feature.summary}
+                onPress={() => onOpenTool(id)} onLongPress={() => setLayoutEditor('quickAccess')} />;
+            })}
+          </View>
+    </>),
+    season: (<>
+{inSeason.length ? (
+            <>
+              <SectionHeader onLongPress={() => setLayoutEditor('home')} title={`In season · ${MONTHS[month]}`} action="Atlas" onAction={() => onOpenTool('ocean-atlas')} />
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail} style={styles.railWrap} decelerationRate="fast" snapToInterval={SEASON_WIDTH + 12} snapToAlignment="start">
+                {inSeason.map((pick) => <SeasonCard key={pick.id} pick={pick} onPress={() => onOpenTool('ocean-atlas', { focus: { regionId: pick.regionId, speciesId: pick.speciesId } })} />)}
+              </ScrollView>
+            </>
+          ) : null}
+    </>),
+    learning: (<>
+<SectionHeader onLongPress={() => setLayoutEditor('home')} title="Keep learning" action="See all" onAction={() => onSelectTab('learn')} />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail} style={styles.railWrap} decelerationRate="fast" snapToInterval={LESSON_WIDTH + 12} snapToAlignment="start">
+            {lessons.map((feature) => <LessonCard onLongPress={() => setLayoutEditor('learn')} key={feature.id} feature={feature} onPress={() => onOpenTool(feature.id)} />)}
+          </ScrollView>
+    </>)
+  };
 
   return (
     <View style={styles.screen}>
@@ -282,54 +340,15 @@ export default function HomeScreen({ appSettings = {}, certifications = null, pr
         </ImageBackground>
 
         <View style={styles.body}>
-          <DiveSummary
-            canDownload={canDownload}
-            depthUnit={appSettings.depthUnit}
-            lastDive={lastDive}
-            loaded={loaded}
-            onDownload={() => onOpenTool('dive-log:download')}
-            onLog={() => onOpenTool('dive-log:new')}
-            onOpenLogbook={() => onOpenTool('dive-log')}
-            stats={stats}
-          />
-
-          <GearNotice gear={gear} onPress={() => onOpenTool('gear-checklist')} />
-
-          {loaded ? (
-            <>
-              <SectionHeader title="Up next" action={nextPlan ? 'Planner' : null} onAction={() => onOpenTool('dive-planner')} />
-              <UpNext alerts={nextAlerts} onPlan={() => onOpenTool('dive-planner')} onPress={() => onOpenTool('dive-planner', { focus: { planId: nextPlan.id } })} plan={nextPlan} />
-            </>
-          ) : null}
-
-          <SectionHeader title="Quick access" />
-          <View style={styles.grid}>
-            <QuickTile feature={tile('ocean-atlas')} detail="Dive sites, seasons & your dives on a map" onPress={() => onOpenTool('ocean-atlas')} />
-            <QuickTile feature={tile('dive-calculator')} detail="Gas, nitrox, blending & deco" onPress={() => onOpenTool('dive-calculator')} />
-            <QuickTile
-              badge={gear?.alerts ? `${gear.alerts} due` : null}
-              detail={gear?.total ? `${gear.total} ${gear.total === 1 ? 'item' : 'items'} · service & packing lists` : 'Service reminders & packing lists'}
-              feature={tile('gear-checklist')}
-              onPress={() => onOpenTool('gear-checklist')}
-            />
-            <QuickTile feature={tile('dive-lens')} detail="Identify marine life or gear from a photo" onPress={() => onOpenTool('dive-lens')} />
-          </View>
-
-          {inSeason.length ? (
-            <>
-              <SectionHeader title={`In season · ${MONTHS[month]}`} action="Atlas" onAction={() => onOpenTool('ocean-atlas')} />
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail} style={styles.railWrap} decelerationRate="fast" snapToInterval={SEASON_WIDTH + 12} snapToAlignment="start">
-                {inSeason.map((pick) => <SeasonCard key={pick.id} pick={pick} onPress={() => onOpenTool('ocean-atlas', { focus: { regionId: pick.regionId, speciesId: pick.speciesId } })} />)}
-              </ScrollView>
-            </>
-          ) : null}
-
-          <SectionHeader title="Keep learning" action="See all" onAction={() => onSelectTab('learn')} />
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.rail} style={styles.railWrap} decelerationRate="fast" snapToInterval={LESSON_WIDTH + 12} snapToAlignment="start">
-            {lessons.map((feature) => <LessonCard key={feature.id} feature={feature} onPress={() => onOpenTool(feature.id)} />)}
-          </ScrollView>
+          <SectionHeader title="Your home" action="Edit layout" onAction={() => setLayoutEditor('home')} onLongPress={() => setLayoutEditor('home')} />
+          {layout.home.map(id => <View key={id}>{sectionContent[id]}</View>)}
         </View>
       </ScrollView>
+      {layoutEditor ? <LayoutEditor
+        title={layoutEditor === 'quickAccess' ? 'Edit Quick access' : layoutEditor === 'home' ? 'Arrange Home' : 'Arrange lessons'}
+        ids={layout[layoutEditor]} defaults={DEFAULT_LAYOUT[layoutEditor]} selectable={layoutEditor === 'quickAccess'}
+        options={layoutEditor === 'home' ? HOME_SECTIONS : layoutEditor === 'learn' ? getFeaturesByArea('learn') : FEATURE_CATALOG.filter(item => item.id !== 'gear-setup')}
+        onCancel={() => setLayoutEditor(null)} onSave={ids => { onLayoutChange?.(layoutEditor, ids); setLayoutEditor(null); }} /> : null}
       {/* Keeps the clock and battery readable over content scrolling beneath them. */}
       <LinearGradient pointerEvents="none" colors={['rgba(5,11,20,0.96)', 'rgba(5,11,20,0.82)', 'rgba(5,11,20,0)']} locations={[0, 0.6, 1]} style={[styles.statusScrim, { height: insets.top + 22 }]} />
     </View>

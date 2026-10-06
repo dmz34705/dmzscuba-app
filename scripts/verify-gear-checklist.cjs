@@ -7,6 +7,20 @@ const { loadSourceModule } = require('./lib/load-source-module.cjs');
 const root = path.join(__dirname, '..');
 const srcRoot = path.join(root, 'src');
 const model = loadSourceModule(path.join(srcRoot, 'features/gearChecklist/model.js'), srcRoot);
+const layoutModel = loadSourceModule(path.join(srcRoot, 'features/gearChecklist/setupLayoutModel.js'), srcRoot);
+assert.deepEqual([...layoutModel.SETUP_ZONES.flatMap((zone) => zone.categories)].sort(), [...model.GEAR_CATEGORIES].sort(), 'every gear category belongs to exactly one equipment group');
+{
+  const suit = model.normalizeGearItem({ id: 'layout-suit', name: 'Drysuit', category: 'Exposure suit', configuration: 'Drysuit', accessoryItemIds: ['layout-hood'] });
+  const hood = model.normalizeGearItem({ id: 'layout-hood', name: 'Hood', category: 'Hood' });
+  const warm = model.normalizeGearItem({ id: 'layout-warm', name: 'Warm layer', category: 'Undergarment' });
+  const cold = model.normalizeGearItem({ id: 'layout-cold', name: 'Cold layer', category: 'Undergarment' });
+  const setup = model.normalizeGearSetup({ itemIds: [suit.id], accessoryChoices: { [suit.id]: [cold.id] } });
+  const items = [suit, hood, warm, cold];
+  const before = JSON.stringify({ setup, items });
+  assert.deepEqual(layoutModel.setupLayoutItems(setup, items).map((item) => item.id).sort(), [suit.id, hood.id, cold.id].sort(), 'layout includes linked gear and only the chosen alternative');
+  assert.equal(JSON.stringify({ setup, items }), before, 'exploring layout never changes packing checks or assignments');
+  assert.deepEqual(layoutModel.setupLayoutItems(model.normalizeGearSetup({ itemIds: [] }), items), [], 'empty setups have no assigned diagram items');
+}
 const {
   COMPONENT_TYPES,
   EXPOSURE_SUIT_TYPES,

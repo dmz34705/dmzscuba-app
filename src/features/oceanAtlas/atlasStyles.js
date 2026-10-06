@@ -26,7 +26,7 @@ export const atlasStyles = `
 @keyframes pin-fade{from{opacity:0}to{opacity:1}}@keyframes pin-pop{from{transform:scale(.6)}to{transform:scale(1)}}
 .site-label{animation:label-in .26s ease-out both;transition:opacity .18s ease}.map-zooming .site-label{opacity:0}@keyframes label-in{from{opacity:0}to{opacity:1}}
 .quick-popup{animation:pin-fade .22s ease-out both}.quick-popup .leaflet-popup-content-wrapper{animation:pin-pop .26s cubic-bezier(.2,.9,.3,1.1) both;transform-origin:50% 100%}
-.glance{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.glance span{font-size:10px;font-weight:600;color:#cfe3e4;border:1px solid var(--line);border-radius:10px;padding:3px 8px;white-space:nowrap}.fishes{display:inline-flex;gap:2px;vertical-align:middle}.fishes b{display:inline-flex;color:#ffffff24}.fishes b.on{color:var(--gold)}.fishes svg{width:15px;height:10px;fill:currentColor}.fishes circle{fill:#0e2531}.gtile .fishes svg{width:19px;height:13px}
+.glance{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.glance:not(.peek) span{font-size:10px;font-weight:600;color:#cfe3e4;border:1px solid var(--line);border-radius:10px;padding:3px 8px;white-space:nowrap}.fishes{display:inline-flex;gap:2px;vertical-align:middle}.fishes b{display:inline-flex;color:#ffffff24}.fishes b.on{color:var(--gold)}.fishes svg{width:15px;height:10px;fill:currentColor}.fishes circle{fill:#0e2531}.gtile .fishes svg{width:19px;height:13px}
 .glance-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.climate-chart.inland i{background:linear-gradient(#8fd6c4,#3f7f9c)}.climate-chart .ice i{background:#cfe6f2;opacity:.5}.site-photo{display:block;margin:6px -16px 12px}.site-photo img{display:block;width:100%;max-height:220px;object-fit:cover;background:#183440}.site-photo a{display:block;padding:7px 16px 4px;min-height:24px;font-size:8px;color:#6f8b96;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.gtile.wide{grid-column:1/-1;order:5}.gtile{border:1px solid var(--line);border-radius:12px;padding:10px 11px;min-width:0}.gtile small{display:block;font-size:8px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}.gtile strong{display:block;margin-top:5px;font-size:15px;font-weight:600;color:#eef7f6}.gtile strong.stars{font-size:14px}.gtile span{display:block;margin-top:4px;font-size:10px;line-height:1.4;color:var(--muted)}
 .species-filter .species-label{color:var(--muted);font-size:9px;letter-spacing:1px;flex:none}
 .species-follow{flex:1;min-width:0;min-height:42px;text-align:left;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -57,5 +57,113 @@ export const atlasStyles = `
 .site-tally span{flex:1;font-size:12px;color:var(--muted)}
 .site-tally em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold)}
 .site-tally.t3 strong,.site-tally.t3 em{color:#f39a4e}.site-tally.t4 strong,.site-tally.t4 em{color:#ee6f55}.site-tally.t5 strong,.site-tally.t5 em{color:#d98cf5}
+/* Site card: peek (level, three numbers, why go now) and the guide (the dive, this month, seasons, sources). */
+.sheet-head .eyebrow{font-size:10px;letter-spacing:1.2px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sheet-head .subtitle{font-size:12px}
+.sheet-head .subtitle:empty{display:none}
+.glance.peek{display:block;margin-top:8px}
+.peek-level{display:flex;align-items:center;gap:8px;min-width:0}
+.peek-level small{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lvl{display:inline-flex;align-items:center;flex-shrink:0;height:22px;padding:0 9px;border-radius:11px;font-size:11px;font-weight:650;letter-spacing:.2px;border:1px solid currentColor}
+.lvl-beginner{color:var(--mint);background:#97e8cc14}
+.lvl-intermediate{color:var(--cyan);background:#79dafa14}
+.lvl-advanced{color:var(--gold);background:#edca8114}
+.lvl-technical{color:#f2917a;background:#f2917a14}
+.lvl-check-depth{color:var(--muted);border-style:dashed}
+.peek-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:12px 0 0;border:1px solid var(--line);border-radius:14px;background:#ffffff05}
+.peek-stats div{min-width:0;padding:9px 6px 8px;text-align:center}
+.peek-stats div+div{border-left:1px solid var(--line)}
+.peek-stats strong{display:block;font-size:19px;font-weight:550;letter-spacing:-.4px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.peek-stats small{display:block;margin-top:3px;font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.peek-now{display:flex;align-items:center;gap:7px;margin:10px 0 0;font-size:12px;color:#d6e6e8;line-height:1.4;min-width:0}
+.peek-now svg{width:16px;height:16px;flex-shrink:0;color:var(--mint)}
+.peek-now span{min-width:0;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.peek-now b{color:var(--mint);font-weight:650;margin-right:3px}
+.sheet.compact .sheet-head{padding:12px 16px 11px;cursor:pointer}
+.sheet.compact .sheet-head .eyebrow,.sheet.compact .sheet-head .subtitle,.sheet.compact #glance,.sheet.compact .sheet-actions{display:none}
+.sheet.compact .sheet-head h2{font-size:16px;margin:0 36px 0 0;-webkit-line-clamp:1}
+.sheet.compact .close{top:-1px}
+.specs{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.spec{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:11px 13px}
+.spec+.spec{border-top:1px solid var(--line)}
+.spec-k{font-size:12px;color:var(--muted);padding-top:1px}
+.spec-v strong{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:14px;font-weight:600;line-height:1.35}
+.spec-v strong a{color:var(--text);text-decoration:none;font-weight:600}
+.spec-v>span{display:block;margin-top:3px;font-size:11.5px;line-height:1.5;color:var(--muted)}
+.spec-v a{color:var(--cyan);text-decoration:none}
+.est{font-style:normal;font-size:10px;font-weight:600;color:var(--gold);border:1px solid #edca8160;border-radius:6px;padding:1px 5px}
+.spec-chips{margin-top:10px}
+.callout{border:1px solid #f2917a60;background:#f2917a12;color:#f6d3ca;border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.55;margin:0 0 10px}
+.month-card{display:block;width:100%;text-align:left;border:1px solid #97e8cc45;background:#97e8cc0c;border-radius:14px;padding:13px 14px;color:inherit}
+.mc-top{display:flex;align-items:center;gap:14px}
+.mc-temp{flex-shrink:0;font-size:28px;font-weight:400;letter-spacing:-1px;color:var(--gold);line-height:1}
+.mc-temp small{display:block;font-size:10px;letter-spacing:.2px;color:var(--muted);margin-top:4px}
+.mc-wear{min-width:0;padding-left:14px;border-left:1px solid var(--line)}
+.mc-wear small{display:block;font-size:11px;color:var(--muted)}
+.mc-wear strong{display:block;font-size:16px;font-weight:600;margin-top:2px}
+.mc-why{display:block;margin-top:9px;font-size:12px;line-height:1.5;color:#cfe3e6}
+.month-card b{display:block;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);color:var(--mint);font-size:12px;font-weight:650}
+.fold{margin:18px 0 4px;border:1px solid var(--line);border-radius:14px;padding:0 13px}
+.fold summary{list-style:none;cursor:pointer;min-height:46px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600}
+.fold summary::-webkit-details-marker{display:none}
+.fold summary::after{content:'⌄';color:var(--mint);font-size:16px;transition:transform .2s}
+.fold[open] summary::after{transform:rotate(180deg)}
+.fold[open]{padding-bottom:10px}
+.coords{font-size:12px;color:#d6e6e8;font-variant-numeric:tabular-nums;margin:8px 0 0}
+/* Sheet grab handle, guide tabs, "does it fit me" and the depth profile. */
+.sheet{position:relative}
+.sheet::before{content:'';position:absolute;top:6px;left:50%;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:#badbea38;z-index:2}
+.site-tabs{display:none}
+.detail-expanded .site-tabs:not([hidden]){display:flex;gap:4px;margin:14px -4px 0;padding:3px;border-radius:12px;background:#ffffff08;border:1px solid var(--line)}
+.sheet.compact .site-tabs{margin-top:10px}
+.detail-expanded .peek-now{display:none}
+.detail-expanded .sheet-actions{margin-top:12px}
+.detail-expanded .sheet-actions button{min-height:38px;border-radius:11px;font-size:12.5px}
+.site-tabs button{flex:1;min-height:34px;border-radius:9px;font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.site-tabs button[aria-selected=true]{background:#97e8cc1f;color:var(--mint);box-shadow:inset 0 0 0 1px #97e8cc40}
+.peek-level .fit-chip{display:inline-flex;align-items:center;gap:5px;min-width:0;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fit-chip b,.fit b{display:inline-grid;place-items:center;flex-shrink:0;width:16px;height:16px;border-radius:50%;font-size:10px;font-weight:800;color:#062029}
+.fit-good{color:var(--mint)}.fit-good b{background:var(--mint)}
+.fit-caution{color:var(--gold)}.fit-caution b{background:var(--gold)}
+.fit-warn{color:#f2917a}.fit-warn b{background:#f2917a}
+.fit-info{color:var(--muted)}.fit-info b{background:#9db6c0}
+.fit-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:6px 0 4px;background:#0a2533}
+.depth-profile{display:block;width:100%;height:auto}
+.dp-surface{fill:none;stroke:#cdeff5;stroke-width:1.5;opacity:.7}
+.dp-floor{fill:#3b3a32;stroke:#8d8467;stroke-width:1}
+.dp-wreck{fill:#7c8c92;stroke:#c9d6da;stroke-width:1}
+.dp-reef{fill:#d48a6c;stroke:#f2b79c;stroke-width:1}
+.dp-limit{stroke-width:1.5;stroke-dasharray:5 4}
+.dp-limit.ok{stroke:var(--mint)}.dp-limit.over{stroke:#f2917a}.dp-limit.rec{stroke:#9db6c0;opacity:.7}
+.dp-limit-t{font-size:10.5px;font-weight:650}
+.dp-limit-t.ok{fill:var(--mint)}.dp-limit-t.over{fill:#f2917a}.dp-limit-t.rec{fill:#c7d6db}
+.dp-lead{stroke:#eef5f5;stroke-width:1;opacity:.45;stroke-dasharray:2 3}
+.dp-depth{fill:#fff;font-size:17px;font-weight:650}
+.dp-axis{fill:#cfe3e6;font-size:10px;opacity:.85}
+.fit{display:flex;gap:9px;align-items:flex-start;margin:0;padding:11px 13px;font-size:12.5px;line-height:1.5;border-top:1px solid var(--line);background:var(--panel)}
+.fit b{margin-top:1px}
+.fit span{color:#dbe9eb}
+.life-summary{display:flex;align-items:center;gap:12px;margin:6px 0 4px;padding:12px 13px;border:1px solid var(--line);border-radius:14px}
+.life-summary .fishes svg{width:20px;height:13px}
+.life-summary strong{display:block;font-size:13px;font-weight:600}
+.life-summary small{display:block;margin-top:2px;font-size:11.5px;color:var(--muted);line-height:1.45}
+/* Readable minimums for the guide's small print. */
+.section-label{font-size:10.5px;letter-spacing:1.3px;margin:22px 0 10px}
+.chip-label{font-size:10px}
+.chips span{font-size:11px}
+.calendar span{font-size:10px}
+.climate-chart b{font-size:9px}
+.climate-range{font-size:10px}
+.climate-range strong{font-size:11px}
+.note{font-size:11.5px}
+.source{font-size:11px}
+.confidence{font-size:11px}
+.gcard em{font-size:10px}
+.gcard small{font-size:9.5px}
+.gcard .gsource{font-size:10px}
+.site-photo{margin-top:10px}
+.site-photo img{height:190px;max-height:none}
+.sheet-body{overflow-anchor:none}
+.site-photo a{font-size:9.5px}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 `;

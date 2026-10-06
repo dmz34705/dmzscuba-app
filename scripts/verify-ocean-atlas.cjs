@@ -137,6 +137,42 @@ assert.ok(!osm.sites.some(([, name]) => /\b(dive|scuba)\s*(cent(er|re)|shop|scho
 assert.ok(!osm.sites.some(([, name]) => /\b(wrack|wrak|épave|relitto|pecio)\b/i.test(name)), 'Foreign words for wreck are translated to English.');
 // Supplementary imports: NOAA moorings, Wikipedia, curated US inland — each with a source link.
 const extra = require('../src/features/oceanAtlas/data/extraSites.json');
-assert.ok(extra.sites.every(([, name, lat, lon, , , , , source, url]) => name && model.validCoordinate(lat, lon) && extra.sources[source] && /^https:\/\//.test(url)));
+// A row's link may be its source's (every reef-program row shares one dataset page).
+assert.ok(extra.sites.every(([, name, lat, lon, , , , , source, url]) => name && model.validCoordinate(lat, lon) && extra.sources[source] && /^https:\/\//.test(url || extra.sources[source].url)));
 for (const wanted of ['Haigh Quarry', 'Blue Hole', 'Bonne Terre Mine', 'Devil\'s Lake']) assert.ok([...osm.sites, ...extra.sites].some(row => row[1].startsWith(wanted)), `${wanted} is in the catalog`);
 console.log(`Ocean Atlas checks passed: coordinates, log privacy, seasons, dateline, NOAA grid, ${globalSites.recordCount} global + ${osm.sites.length} OpenStreetMap + ${extra.sites.length} NOAA/Wikipedia/curated + ${sites.length} NOAA + ${curatedSites.length} curated sites, document security.`);
+
+// Exercise the actual picker handlers without a browser or network.
+{
+  const vm = require('node:vm');
+  const parser = require('@babel/parser');
+  const generate = require('@babel/generator').default;
+  const tree = parser.parse(fs.readFileSync(path.join(root, 'features/oceanAtlas/atlasRuntime.js'), 'utf8'), { sourceType: 'module' });
+  const statements = tree.program.body[0].declaration.body.body;
+  const codeFor = name => generate(statements.find(n => n.type === 'FunctionDeclaration' && n.id.name === name)).code;
+  const clickCall = statements.find(n => n.type === 'ExpressionStatement'
+    && n.expression.type === 'CallExpression' && n.expression.callee.object?.name === 'map'
+    && n.expression.callee.property?.name === 'on' && n.expression.arguments[0]?.value === 'click');
+  const messages = [], markers = [];
+  const context = vm.createContext({
+    DATA: { locationPicker: true }, pickerMode: 'site', pickerMarker: null, panel: null,
+    updatePanels() {}, closeDetails() {}, echoOfPinTap: () => false,
+    map: { removeLayer() {}, getZoom: () => 10 }, flyTo() {},
+    L: { divIcon: x => x, marker: coordinates => ({ addTo: () => { markers.push(coordinates); return {}; } }) },
+    post: (type, payload) => messages.push({ type, ...payload }),
+  });
+  vm.runInContext(`${codeFor('pickLocation')}\n${codeFor('choose')}\nconst tap = ${generate(clickCall.expression.arguments[1]).code};`, context);
+  vm.runInContext("choose({ kind: 'site', id: 'emba', name: 'E. M. B. A.', latitude: 43.06509, longitude: -87.74958 }, true);", context);
+  assert.equal(messages[0].type, 'locationPicked');
+  assert.equal(messages[0].selection.id, 'emba');
+  vm.runInContext("pickerMode = 'pin'; choose({ kind: 'site', id: 'emba', name: 'E. M. B. A.', latitude: 43, longitude: -87 });", context);
+  assert.equal(messages[1].selection.id, '');
+  context.event = { latlng: { lat: 0, wrap: () => ({ lng: -179 }) } };
+  vm.runInContext('tap(event);', context);
+  assert.equal(messages[2].selection.latitude, 0);
+  assert.equal(messages[2].selection.longitude, -179);
+  vm.runInContext("pickerMode = 'site'; tap(event);", context);
+  assert.equal(messages.length, 3, 'An empty map tap cannot become a named site.');
+  assert.equal(markers.length, 3);
+  console.log('Atlas location picker handler checks passed.');
+}

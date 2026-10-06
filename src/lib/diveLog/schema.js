@@ -236,7 +236,7 @@ function normalizeDevice(raw) {
 }
 
 const SITE_SOURCES = ['atlas', 'mine'];
-const VERIFICATION_METHODS = ['computer', 'location', 'plan'];
+const VERIFICATION_METHODS = ['computer', 'location', 'plan', 'manual'];
 // A dive linked to a dive site (an Ocean Atlas site or one the diver pinned) and the evidence for it.
 function normalizeVerification(raw) {
   if (!isObject(raw)) return null;

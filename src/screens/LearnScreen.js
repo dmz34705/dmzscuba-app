@@ -1,8 +1,10 @@
 import FeatureCatalogScreen from '../features/catalog/FeatureCatalogScreen';
 
-export default function LearnScreen({ onOpenTool }) {
+export default function LearnScreen({ onOpenTool, appSettings, onLayoutChange }) {
   return (
     <FeatureCatalogScreen
+      appSettings={appSettings}
+      onLayoutChange={onLayoutChange}
       area="learn"
       body="Adjust depth, compare outcomes, and build practical intuition at your own pace."
       eyebrow="INTERACTIVE LESSONS"
