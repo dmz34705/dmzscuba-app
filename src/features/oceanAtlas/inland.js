@@ -7,14 +7,13 @@
 //     water stays roughly 4–10 °C;
 //   - springs and flooded mines: groundwater, near the local mean annual air
 //     temperature year-round; geothermal sites are warm year-round.
-import CONDITIONS from './data/inlandConditions.json';
-import FRESHWATER from './data/freshwaterLife.json';
-import EXTRA from './data/extraSites.json';
 
 // Altitude diving: any site ABOVE 1,000 ft (≈305 m) uses altitude procedures; at or below it's a normal dive.
+import { onAtlasDataChange, inlandConditions as CONDITIONS, freshwaterLife as FRESHWATER, extraSites as EXTRA } from './datasets';
+
 const ALTITUDE_FT = 1000, FT_PER_M = 3.28084;
 const GEOTHERMAL = /\b(crater|caldera|seabase|hot springs?)\b/i;
-const KIND_HINTS = EXTRA.kindHints || {};
+let KIND_HINTS = EXTRA.kindHints || {};
 const MATCH_SLACK_KM = 10;
 const NEAREST_SHORE_KM = 60; // offshore lake wrecks: fall back to the nearest sampled shore
 
@@ -95,3 +94,5 @@ export function freshwaterLife(site) {
     // Fish first (what divers mostly meet), then turtles, crayfish, mussels …; most-sighted first within each.
     .sort((a, b) => (b.group === 'Actinopterygii') - (a.group === 'Actinopterygii') || b.records - a.records);
 }
+
+onAtlasDataChange(() => { KIND_HINTS = EXTRA.kindHints || {}; });

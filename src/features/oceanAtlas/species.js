@@ -2,17 +2,15 @@
 // seasons.js: iNaturalist research-grade sightings (data/marineLife.json, with seasons),
 // OBIS survey records (data/marineLifeObis.json, place only) and the sourced regional
 // seasons in regions.js. Dive sites are the catalog sites inside each sighting area.
-import MARINE_LIFE from './data/marineLife.json';
-import MARINE_LIFE_OBIS from './data/marineLifeObis.json';
+import { onAtlasDataChange, marineLife as MARINE_LIFE, marineLifeObis as MARINE_LIFE_OBIS, airports as AIRPORT_DATA } from './datasets';
 import { MARINE_REGIONS } from './regions';
 import { catalogSites } from './catalog';
 import { DIVE_REGIONS, REMOTE_DIVE_AREAS } from './diveRegions';
 import { placeAt } from './places';
 import { nearestAirports } from './journey';
-import AIRPORT_DATA from './data/airports.json';
 
-const TAXA = { ...MARINE_LIFE_OBIS.taxa, ...MARINE_LIFE.taxa };
-const PLACES = [...MARINE_LIFE.places.map(place => [...place, false]), ...MARINE_LIFE_OBIS.places.map(place => [...place, true])];
+let TAXA = { ...MARINE_LIFE_OBIS.taxa, ...MARINE_LIFE.taxa };
+let PLACES = [...MARINE_LIFE.places.map(place => [...place, false]), ...MARINE_LIFE_OBIS.places.map(place => [...place, true])];
 const SITE_SLACK_KM = 10;     // a site just outside a sighting radius still counts
 const PLACE_LIMIT = 30;       // places listed in one guide
 const SITES_PER_PLACE = 4;
@@ -163,3 +161,9 @@ export function discoverSpecies(month) {
     .map(([key, name, , , places]) => ({ key, name, places }));
   return { month, inSeason: seasonal, iconic };
 }
+
+onAtlasDataChange(() => {
+  TAXA = { ...MARINE_LIFE_OBIS.taxa, ...MARINE_LIFE.taxa };
+  PLACES = [...MARINE_LIFE.places.map(place => [...place, false]), ...MARINE_LIFE_OBIS.places.map(place => [...place, true])];
+  index = null;
+});

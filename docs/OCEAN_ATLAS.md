@@ -1,5 +1,11 @@
 # Ocean Atlas
 
+The native app now checks dmzscuba.com for versioned data updates and keeps the
+last verified release in persistent device storage. See [Atlas updates](ATLAS_UPDATES.md)
+for publication, offline behavior and validation. Bundled data remains the
+first-launch fallback. Native WebViews start from a small shell and receive
+map data in acknowledged chunks rather than embedding it in their initial HTML.
+
 Open from Home → Ocean Atlas or Tools → Ocean Atlas. Independent layers show
 dive locations, monthly average sea-surface temperature, curated marine life,
 and saved logbook coordinates. Search matches sites, regional guides, species,
@@ -464,9 +470,10 @@ compact card). All are estimates with their reasons shown:
   and deep water). What to wear comes from **Gear for this dive**, which matches the
   diver's own gear locker, not a generic exposure line.
 
-The WebView runtime is minified at bundle time (`bundle:ocean-atlas`, terser) to
-keep the inline document under the 2 MB WebView budget; the atlas test checks a
-source hash instead of the raw text.
+The WebView runtime is minified at bundle time (`bundle:ocean-atlas`, terser).
+Native startup uses a roughly 317 KB shell and transfers data in messages below
+64 KiB; its initial document no longer grows with the dataset. The atlas test
+checks the generated runtime's source hash and the shell's size.
 
 ### Motion
 

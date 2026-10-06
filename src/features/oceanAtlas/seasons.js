@@ -2,18 +2,16 @@
 // sourced editorial seasons (regions.js) and iNaturalist-derived marine life
 // (data/marineLife.json), with OBIS survey records where iNaturalist has little
 // (data/marineLifeObis.json). Editorial seasons always win over observation data.
-import MARINE_LIFE from './data/marineLife.json';
-import MARINE_LIFE_OBIS from './data/marineLifeObis.json';
-import packedTemperature from './data/temperature.json';
+import { onAtlasDataChange, marineLife as MARINE_LIFE, marineLifeObis as MARINE_LIFE_OBIS, temperature as packedTemperature } from './datasets';
 import { MONTHS, expandTemperature, inBounds, temperatureAt } from './model';
 
-const temperature = expandTemperature(packedTemperature);
+let temperature = expandTemperature(packedTemperature);
 import { MARINE_REGIONS } from './regions';
 
 // Survey places (OBIS) are flagged: their records say where, never when.
-const PLACES = [...MARINE_LIFE.places.map(place => [...place, false]), ...MARINE_LIFE_OBIS.places.map(place => [...place, true])];
-const TAXA = { ...MARINE_LIFE_OBIS.taxa, ...MARINE_LIFE.taxa };
-const SURVEY_SOURCE = { name: 'OBIS survey records', url: MARINE_LIFE_OBIS.sourceUrl };
+let PLACES = [...MARINE_LIFE.places.map(place => [...place, false]), ...MARINE_LIFE_OBIS.places.map(place => [...place, true])];
+let TAXA = { ...MARINE_LIFE_OBIS.taxa, ...MARINE_LIFE.taxa };
+let SURVEY_SOURCE = { name: 'OBIS survey records', url: MARINE_LIFE_OBIS.sourceUrl };
 
 const MATCH_SLACK_KM = 40; // a site may sit just outside a snapshot radius
 
@@ -191,3 +189,10 @@ export function inSeasonNow(month, limit = 8) {
   }
   return [...bySpecies.values()].slice(0, limit);
 }
+
+onAtlasDataChange(() => {
+  temperature = expandTemperature(packedTemperature);
+  PLACES = [...MARINE_LIFE.places.map(place => [...place, false]), ...MARINE_LIFE_OBIS.places.map(place => [...place, true])];
+  TAXA = { ...MARINE_LIFE_OBIS.taxa, ...MARINE_LIFE.taxa };
+  SURVEY_SOURCE = { name: 'OBIS survey records', url: MARINE_LIFE_OBIS.sourceUrl };
+});

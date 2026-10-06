@@ -6,6 +6,7 @@ import { PageTransition } from '../components/Motion';
 import useAccountSession from '../features/account/useAccountSession';
 import { getFeature } from '../features/catalog/featureCatalog';
 import useAppSettings from '../features/settings/useAppSettings';
+import useAtlasUpdates, { useAtlasSnapshot } from '../features/oceanAtlas/useAtlasUpdates';
 import { createAccount, verifySignup } from '../lib/accountApi';
 import { ensureLocationTracking } from '../lib/locationLog/locationTrackingService';
 import AccountScreen from '../screens/AccountScreen';
@@ -40,6 +41,8 @@ import { ACCOUNT_ROUTES, APP_TABS, INITIAL_NAVIGATION, reduceNavigation } from '
 const GEAR_SETUP_ENABLED = false;
 
 export default function AppNavigator() {
+  useAtlasUpdates();
+  useAtlasSnapshot();
   const [navigation, dispatch] = useReducer(reduceNavigation, INITIAL_NAVIGATION);
   const [transitionKind, setTransitionKind] = useState('none');
   const { activeTab, detailRoute, moreRoute, settingsSection, logbookIntent, atlasFocus, plannerFocus } = navigation;

@@ -1,10 +1,12 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Modal, StyleSheet, Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { PrimaryButton, SecondaryButton } from '../../components/Ui';
 import { colors, spacing } from '../../theme';
-import { buildAtlasDocument } from '../oceanAtlas/document';
+import { atlasBootstrapScripts, buildAtlasDocument } from '../oceanAtlas/document';
+import { useAtlasSnapshot } from '../oceanAtlas/useAtlasUpdates';
+import { onAtlasDataChange } from '../oceanAtlas/datasets';
 import { safeJson } from '../oceanAtlas/model';
 import { manualDiveSite, validDiveCoordinate } from './manualLocation';
 
@@ -17,7 +19,15 @@ export default function AtlasLocationPicker({ initialSite, onCancel, onSelect })
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(0);
-  const source = useMemo(() => ({ html: buildAtlasDocument({ locationPicker: true }), baseUrl: 'https://www.dmzscuba.com/' }), []);
+  const generation = useAtlasSnapshot();
+  const bootstrap = useRef(null);
+  useEffect(() => onAtlasDataChange(() => { ready.current = false; bootstrap.current = null; setLoading(true); setError(false); setSelection(null); }), []);
+  const source = useMemo(() => ({ html: buildAtlasDocument({ locationPicker: true, deferredData: true }), baseUrl: 'https://www.dmzscuba.com/' }), []);
+  useEffect(() => {
+    if (!loading) return;
+    const timer = setTimeout(() => { if (!ready.current) { setLoading(false); setError(true); } }, 30000);
+    return () => clearTimeout(timer);
+  }, [loading, reload, generation]);
   const send = message => web.current?.injectJavaScript(`window.atlasReceive && window.atlasReceive(${safeJson(message)}); true;`);
   const changeMode = next => {
     setMode(next); setSelection(null);
@@ -26,7 +36,14 @@ export default function AtlasLocationPicker({ initialSite, onCancel, onSelect })
   const onMessage = event => {
     let message;
     try { message = JSON.parse(event.nativeEvent.data); } catch { return; }
-    if (message.type === 'ready') {
+    if (message.type === 'bootstrap' && Number.isInteger(message.index) && message.index >= 0) {
+      if (message.index === 0) bootstrap.current = atlasBootstrapScripts({ locationPicker: true });
+      const script = bootstrap.current?.[message.index];
+      if (script) web.current?.injectJavaScript(script);
+    } else if (message.type === 'bootstrapError') {
+      ready.current = false; setLoading(false); setError(true);
+    } else if (message.type === 'ready') {
+      bootstrap.current = null;
       ready.current = true; setLoading(false); setError(false);
       send({ type: 'pickerMode', mode });
       if (validDiveCoordinate(initialSite?.latitude, initialSite?.longitude)) {
@@ -37,7 +54,7 @@ export default function AtlasLocationPicker({ initialSite, onCancel, onSelect })
       if (site) setSelection(site);
     } else if (message.type === 'back') onCancel();
   };
-  const retry = () => { ready.current = false; setError(false); setLoading(true); setReload(n => n + 1); };
+  const retry = () => { ready.current = false; bootstrap.current = null; setError(false); setLoading(true); setReload(n => n + 1); };
   return (
     <Modal animationType="slide" visible onRequestClose={onCancel}>
       <View style={[styles.screen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
@@ -50,7 +67,7 @@ export default function AtlasLocationPicker({ initialSite, onCancel, onSelect })
           <Text style={styles.caption}>{mode === 'site' ? 'Search the atlas or tap a named dive site.' : 'Tap the map to place a pin. Tap again to move it.'}</Text>
         </View>
         <View style={styles.map}>
-          <WebView key={reload} ref={web} source={source} style={styles.map} originWhitelist={['*']}
+          <WebView key={`${reload}:${generation}`} ref={web} source={source} style={styles.map} originWhitelist={['*']}
             javaScriptEnabled domStorageEnabled={false} allowFileAccess={false} mixedContentMode="never"
             setSupportMultipleWindows={false} scrollEnabled={false} bounces={false} onMessage={onMessage}
             onShouldStartLoadWithRequest={request => request.url === 'about:blank' || request.url === 'https://www.dmzscuba.com/'}

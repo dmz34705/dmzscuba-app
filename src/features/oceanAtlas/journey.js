@@ -6,20 +6,19 @@
 //   5. Before you go – considerations derived from the route itself.
 // Curated profiles (destinationProfiles.js) only enrich these layers; no site
 // depends on one. Destination access never routes to the approximate site pin.
-import AIRPORT_DATA from './data/airports.json';
+import { onAtlasDataChange, airports as AIRPORT_DATA, diveOperators as OPERATORS } from './datasets';
 import { DIVE_REGIONS, REMOTE_DIVE_AREAS } from './diveRegions';
 import { destinationProfile } from './destinationProfiles';
-import OPERATORS from './data/diveOperators.json';
 import { approxDistance } from './units';
 
 const AREAS = [...DIVE_REGIONS.flatMap(region => region.areas), ...REMOTE_DIVE_AREAS];
-const AIRPORTS = AIRPORT_DATA.airports.map(([code, name, city, country, latitude, longitude, large, connections]) => ({ code, name, city, country, latitude, longitude, large: large === 1,
+let AIRPORTS = AIRPORT_DATA.airports.map(([code, name, city, country, latitude, longitude, large, connections]) => ({ code, name, city, country, latitude, longitude, large: large === 1,
   // Route data is dated; an airport OurAirports lists as large is never treated as merely regional.
   connections: large === 1 ? Math.max(connections, 10) : connections }));
-const COUNTRY_NAMES = AIRPORT_DATA.countries;
+let COUNTRY_NAMES = AIRPORT_DATA.countries;
 const normalizeName = value => String(value || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
   .replace(/\bst\.?\s/g, 'saint ').replace(/&/g, ' and ').replace(/\bthe\b/g, ' ').replace(/[^a-z]+/g, ' ').trim();
-const COUNTRY_CODES = new Map(Object.entries(COUNTRY_NAMES).map(([code, name]) => [normalizeName(name), code]));
+let COUNTRY_CODES = new Map(Object.entries(COUNTRY_NAMES).map(([code, name]) => [normalizeName(name), code]));
 const SEA_NAME = /\b(sea|ocean|gulf|bay|strait|channel)\b/i;
 
 const AREA_RADIUS_KM = 40;       // a dive area names a site only when it is genuinely local (Tulum is not Cozumel)
@@ -231,3 +230,11 @@ export function planJourney(site, { origin = '', originPoint = null, locality = 
   const option = arrivals[arrivalIndex] || arrivals[0] || null;
   return { destination, arrivals, option, legs: journeyLegs(destination, option, { origin, originPoint, local, units }), base: diveBase(destination), considerations: considerations(destination, option, units) };
 }
+
+onAtlasDataChange(() => {
+  AIRPORTS = AIRPORT_DATA.airports.map(([code, name, city, country, latitude, longitude, large, connections]) => ({ code, name, city, country, latitude, longitude, large: large === 1,
+  // Route data is dated; an airport OurAirports lists as large is never treated as merely regional.
+  connections: large === 1 ? Math.max(connections, 10) : connections }));
+  COUNTRY_NAMES = AIRPORT_DATA.countries;
+  COUNTRY_CODES = new Map(Object.entries(COUNTRY_NAMES).map(([code, name]) => [normalizeName(name), code]));
+});

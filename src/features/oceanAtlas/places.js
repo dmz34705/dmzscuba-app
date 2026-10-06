@@ -1,8 +1,7 @@
 // Destination guides for islands, US states and countries. Outlines come from
 // data/places.json (Natural Earth + OpenStreetMap island names); membership of the
 // offshore catalog sites is resolved here so any catalog refresh just works.
-import PLACES from './data/places.json';
-import AIRPORT_DATA from './data/airports.json';
+import { onAtlasDataChange, places as PLACES, airports as AIRPORT_DATA } from './datasets';
 import { catalogSites } from './catalog';
 import { DIVE_REGIONS, REMOTE_DIVE_AREAS } from './diveRegions';
 import { countryCode } from './journey';
@@ -276,3 +275,5 @@ export function quickLook(latitude, longitude) {
 export function siteSeason(guide) {
   return { temps: guide.temps, highlights: guide.highlights, animals: guide.animals, hasObservations: guide.hasObservations };
 }
+
+onAtlasDataChange(() => { index = null; membership = null; });

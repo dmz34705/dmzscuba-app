@@ -5,7 +5,9 @@ import * as Location from 'expo-location';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
-import { buildAtlasDocument } from '../features/oceanAtlas/document';
+import { atlasBootstrapScripts, buildAtlasDocument } from '../features/oceanAtlas/document';
+import { useAtlasSnapshot, useAtlasStatus } from '../features/oceanAtlas/useAtlasUpdates';
+import { atlasStatusLabel } from '../features/oceanAtlas/updates';
 import { groupDivePins, safeJson, validCoordinate } from '../features/oceanAtlas/model';
 import { loadAll } from '../lib/diveLog/storage';
 import { loadMySites, removeMySite } from '../features/mySites/storage';
@@ -21,13 +23,9 @@ import { siteRatings } from '../features/oceanAtlas/ratings';
 import { catalogSite } from '../features/oceanAtlas/catalog';
 import { freshwaterLife, inlandProfile, isInland } from '../features/oceanAtlas/inland';
 import { unitSystem } from '../features/oceanAtlas/units';
-import SITE_IMAGES from '../features/oceanAtlas/data/siteImages.json';
-import SITE_FACTS from '../features/oceanAtlas/data/siteFacts.json';
-import SITE_PROTECTION from '../features/oceanAtlas/data/siteProtection.json';
-import SITE_SEAFLOOR from '../features/oceanAtlas/data/siteSeafloor.json';
-import SITE_SHORE from '../features/oceanAtlas/data/siteShore.json';
-import SITE_BATHYMETRY from '../features/oceanAtlas/data/siteBathymetry.json';
-import SITE_LAKE_DEPTHS from '../features/oceanAtlas/data/siteLakeDepths.json';
+import { siteImages as SITE_IMAGES, siteFacts as SITE_FACTS, siteProtection as SITE_PROTECTION,
+  siteSeafloor as SITE_SEAFLOOR, siteShore as SITE_SHORE, siteBathymetry as SITE_BATHYMETRY,
+  siteLakeDepths as SITE_LAKE_DEPTHS, onAtlasDataChange } from '../features/oceanAtlas/datasets';
 import { nearbyDepths } from '../features/oceanAtlas/nearbyDepths';
 import { diverProfile } from '../features/oceanAtlas/diverProfile';
 import { colors } from '../theme';
@@ -47,6 +45,9 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(0);
+  const generation = useAtlasSnapshot();
+  const dataStatus = useAtlasStatus();
+  const bootstrap = useRef(null);
   const [logbook, setLogbook] = useState(null);
   const [journey, setJourney] = useState(null);
   const [gearAdvice, setGearAdvice] = useState(null);
@@ -68,11 +69,15 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
   // whether the dive fits them. Signed out, the card says how to get that.
   const diver = useRef(diverProfile(null));
   diver.current = useMemo(() => diverProfile(signedIn && Array.isArray(account?.certifications) ? account.certifications : null), [signedIn, account?.certifications]);
-  const html = useMemo(() => buildAtlasDocument(appSettings), [appSettings.temperatureUnit, appSettings.depthUnit]);
+  const html = useMemo(() => buildAtlasDocument({ ...appSettings, deferredData: true }), [appSettings.temperatureUnit, appSettings.depthUnit]);
   const source = useMemo(() => ({ html, baseUrl: 'https://www.dmzscuba.com/' }), [html]);
   const send = useCallback(message => {
     if (mounted.current && ready.current) web.current?.injectJavaScript(`window.atlasReceive && window.atlasReceive(${safeJson(message)}); true;`);
   }, []);
+  useEffect(() => onAtlasDataChange(() => {
+    ready.current = false; bootstrap.current = null; setLoading(true); setError(false);
+  }), []);
+  useEffect(() => { send({ type: 'dataStatus', text: atlasStatusLabel(dataStatus) }); }, [dataStatus, send]);
   // Preferences may have changed in the sheet: reload them and let open cards ask again.
   const closeGearAdvice = useCallback(() => {
     setGearAdvice(null);
@@ -109,9 +114,9 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     if (!loading) return undefined;
     const timer = setTimeout(() => {
       if (!ready.current) { setLoading(false); setError(true); }
-    }, 15000);
+    }, 30000);
     return () => clearTimeout(timer);
-  }, [loading, reload]);
+  }, [loading, reload, generation]);
 
   // Travel ratings need a starting point: the traveller's location or the last "Get me here" start.
   const rememberOrigin = useCallback(point => {
@@ -148,8 +153,16 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     let message;
     try { message = JSON.parse(event.nativeEvent.data); } catch { return; }
     if (!message || typeof message !== 'object') return;
-    if (message.type === 'ready') {
+    if (message.type === 'bootstrap' && Number.isInteger(message.index) && message.index >= 0) {
+      if (message.index === 0) bootstrap.current = atlasBootstrapScripts(appSettings);
+      const script = bootstrap.current?.[message.index];
+      if (script) web.current?.injectJavaScript(script);
+    } else if (message.type === 'bootstrapError') {
+      ready.current = false; setLoading(false); setError(true);
+    } else if (message.type === 'ready') {
+      bootstrap.current = null;
       ready.current = true; setLoading(false); setError(false);
+      send({ type: 'dataStatus', text: atlasStatusLabel(dataStatus) });
       const value = await AsyncStorage.getItem(PREFERENCES_KEY).then(raw => raw ? JSON.parse(raw) : null).catch(() => null);
       send({ type: 'preferences', value }); refreshDives();
       await refreshMySites();
@@ -270,15 +283,15 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     } else if (message.type === 'external' && typeof message.url === 'string' && /^https:\/\//i.test(message.url)) {
       Linking.openURL(message.url).catch(() => send({ type: 'notice', text: 'This source could not be opened.' }));
     }
-  }, [locate, onBack, refreshDives, refreshMySites, send]);
+  }, [locate, onBack, refreshDives, refreshMySites, send, appSettings, dataStatus]);
 
   const dismissLogbook = () => { setLogbook(null); refreshDives(); };
-  const retry = () => { ready.current = false; setLoading(true); setError(false); setReload(n => n + 1); };
+  const retry = () => { ready.current = false; bootstrap.current = null; setLoading(true); setError(false); setReload(n => n + 1); };
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
       <WebView
-        key={reload}
+        key={`${reload}:${generation}:${appSettings.temperatureUnit}:${appSettings.depthUnit}`}
         ref={web}
         source={source}
         style={styles.web}

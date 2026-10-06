@@ -6,7 +6,7 @@ const crypto = require('node:crypto');
 const root = path.resolve(__dirname, '../src/features/oceanAtlas');
 const raw = ['model.js', 'rendering.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(root, name), 'utf8').replace(/^export /gm, '')).join('\n');
 
-// Minify the inline WebView runtime (the whole document must stay under 2 MB). Top-level names are kept
+// Minify the WebView shell runtime; Atlas datasets are transferred separately on native. Top-level names are kept
 // because document.js calls atlasRuntime(DATA, { temperatureAt, regionAt, … }) by name.
 async function minify(code) {
   let terser;

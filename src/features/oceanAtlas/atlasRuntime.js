@@ -128,7 +128,8 @@ export function atlasRuntime(DATA, MODEL) {
   const persist = () => {
     if (!readyForPersistence) return;
     const { month, ...value } = state;
-    post('preferences', { value });
+    const center = map.getCenter();
+    post('preferences', { value: { ...value, view: { latitude: center.lat, longitude: center.wrap().lng, zoom: map.getZoom() } } });
   };
   const toast = message => {
     $('toast').textContent = message; $('toast').hidden = false;
@@ -148,7 +149,7 @@ export function atlasRuntime(DATA, MODEL) {
       <section id="controls" class="floating-panel glass" aria-label="Layer options" hidden><div class="panel-heading"><div><div class="eyebrow">MAKE IT YOUR MAP</div><h2>Map layers</h2></div><button class="panel-close" data-dismiss aria-label="Close layers">×</button></div>
       <div class="layers" aria-label="Map layers">${[['regions', 'Dive regions', 'globe', 'Popular gateways, habitats & conditions'], ['sites', 'Dive sites', 'site', `${DATA.sites.length.toLocaleString()} mapped reefs, wrecks & entries`], ['mysites', 'My sites', 'site', 'Sites you pinned in the planner'], ['temperature', 'Water temperature', 'temperature', 'Smoothed monthly surface averages'], ['wildlife', 'Seasonal wildlife', 'wildlife', 'Evidence-backed encounter windows'], ['dives', 'My dives', 'dives', 'Your saved locations · all dates']].map(([key, label, image, detail]) => `<button class="layer" data-layer="${key}" aria-pressed="false">${icon(image)}<span><strong>${label}</strong><small>${detail}</small></span><i class="switch" aria-hidden="true"></i></button>`).join('')}</div>
       <div id="species-bar" class="species-filter glass"><span class="species-label">LOOK FOR</span><button id="species-follow" class="species-follow"></button><button id="species-clear" class="species-clear" aria-label="Stop following this animal" hidden>×</button></div>
-      <div id="legend" class="legend"><div class="legend-top"><span>AVERAGE SEA SURFACE</span><button id="units" aria-label="Change temperature unit"></button></div><div class="gradient"></div><div id="legend-values" class="legend-values"></div></div><button id="info" class="source">Sources & coverage ↗</button></section>
+      <div id="legend" class="legend"><div class="legend-top"><span>AVERAGE SEA SURFACE</span><button id="units" aria-label="Change temperature unit"></button></div><div class="gradient"></div><div id="legend-values" class="legend-values"></div></div><p id="data-status" class="note" role="status">Included Atlas data</p><button id="info" class="source">Sources & coverage ↗</button></section>
       <section id="overview" class="overview floating-panel glass" hidden></section>
       <section id="sheet" class="sheet glass" aria-label="Map details" hidden><div class="sheet-head"><div id="detail-eyebrow" class="eyebrow"></div><h2 id="detail-title"></h2><p id="detail-subtitle" class="subtitle"></p><div id="glance" class="glance" hidden></div><div class="sheet-actions"><button id="expand" class="action-guide" aria-label="Expand details" aria-expanded="false">View guide ↑</button><button id="get-me-here" class="action-trip" hidden>Get me here ↗</button></div><div id="site-tabs" class="site-tabs" role="tablist" aria-label="Site guide sections" hidden></div><button id="close" class="close" aria-label="Close map details">×</button></div><div id="detail-body" class="sheet-body"></div></section>
       <section id="season-panel" class="season floating-panel glass" aria-label="Season controls" hidden><div class="panel-heading"><div><div class="eyebrow">FOLLOW THE SEASONS</div><h2>Explore by month</h2></div><button class="panel-close" data-dismiss aria-label="Close month selector">×</button></div><button id="current-month" class="current-month"></button><div class="months" role="group" aria-label="Month">${months.map((m, i) => `<button class="month" data-month="${i}" aria-pressed="false">${m}</button>`).join('')}</div><p class="note">Starts with the current month. Change it to preview ocean averages and marine-life seasons; logged dives stay visible across all dates.</p></section>
@@ -396,6 +397,7 @@ export function atlasRuntime(DATA, MODEL) {
   map.on('zoom', updateBase);
   map.on('zoomend', updateBase);
   map.on('moveend', drawPins);
+  map.on('moveend', persist);
   function updatePanels() {
     $('controls').hidden = panel !== 'layers';
     $('season-panel').hidden = panel !== 'season';
@@ -1316,7 +1318,9 @@ export function atlasRuntime(DATA, MODEL) {
   });
   document.addEventListener('keydown', event => { if (event.key === 'Escape') { panel = null; closeDetails(); $('results').hidden = true; } });
   window.atlasReceive = message => {
-    if (DATA.locationPicker && message.type === 'pickerMode') {
+    if (message.type === 'dataStatus') {
+      $('data-status').textContent = String(message.text || '').slice(0, 100);
+    } else if (DATA.locationPicker && message.type === 'pickerMode') {
       pickerMode = message.mode === 'pin' ? 'pin' : 'site';
       if (pickerMarker) { map.removeLayer(pickerMarker); pickerMarker = null; }
       closeDetails();
@@ -1335,6 +1339,10 @@ export function atlasRuntime(DATA, MODEL) {
         if (['C', 'F'].includes(saved.unit)) state.unit = saved.unit;
         state.species = 'all';
         Object.keys(state.layers).forEach(key => { if (typeof saved.layers?.[key] === 'boolean') state.layers[key] = saved.layers[key]; });
+        const view = saved.view;
+        if (Number.isFinite(view?.latitude) && Math.abs(view.latitude) <= 90 && Number.isFinite(view.longitude) && Math.abs(view.longitude) <= 180 && Number.isFinite(view.zoom)) {
+          map.setView([view.latitude, view.longitude], Math.max(2, Math.min(19, view.zoom)), { animate: false });
+        }
       }
       readyForPersistence = true; render();
     } else if (message.type === 'location') {

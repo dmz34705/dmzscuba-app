@@ -1,13 +1,7 @@
 // Native-side view of the atlas site catalog. Decoding mirrors atlasRuntime.js
 // so ids match the pins the WebView shows (e.g. `odm-<recordId>`).
+import { onAtlasDataChange, globalSites as globalSource, sites, curatedSites, osmSites as osmSource, extraSites as extraSource, publishedDepths, siteMerges } from './datasets';
 import { OFFLINE_DIVE_SITES } from '../../lib/diveSites/offlineCatalog';
-import globalSource from './data/globalSites.json';
-import sites from './data/sites.json';
-import curatedSites from './data/curatedSites.json';
-import osmSource from './data/osmSites.json';
-import extraSource from './data/extraSites.json';
-import publishedDepths from './data/publishedDepths.json';
-import siteMerges from './data/siteMerges.json';
 
 const BASE64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 function bytesOf(value) {
@@ -127,3 +121,5 @@ export function catalogSite(id) {
   }
   return byId.get(id) || null;
 }
+
+onAtlasDataChange(() => { rawCache = null; cache = null; byId = null; closedCount = 0; });

@@ -118,8 +118,8 @@ for (const region of MARINE_REGIONS) for (const s of region.species) { assert.ok
 const hostile = '</script><script>alert(1)</script>\u2028';
 assert.ok(!model.safeJson({ name: hostile }).includes('<'));
 assert.deepEqual(JSON.parse(model.safeJson({ name: hostile })), { name: hostile });
-const html = buildAtlasDocument();
-assert.ok(Buffer.byteLength(html) < 2 * 1024 * 1024, 'Keep inline atlas HTML below 2 MB for reliable native WebView startup.');
+const html = buildAtlasDocument({ deferredData: true });
+assert.ok(Buffer.byteLength(html) < 512 * 1024, 'Native startup contains a small shell; growing datasets arrive through bounded bridge messages.');
 assert.ok(Buffer.byteLength(JSON.stringify(land)) < 1024 * 1024, 'Keep the compact coastline below 1 MB.');
 const { runtimeSourceHash } = loadSourceModule(path.join(root, 'features/oceanAtlas/data/runtimeSource.js'), root);
 const runtimeRaw = ['model.js', 'rendering.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(root, 'features/oceanAtlas', name), 'utf8').replace(/^export /gm, '')).join('\n');

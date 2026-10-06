@@ -5,9 +5,11 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-native-community/datetimepicker": "9.1.0",
+    "@react-native-community/netinfo": "12.0.1",
     "@react-native-community/slider": "5.2.0",
     "expo": "~57.0.24",
     "expo-blur": "~57.0.3",
+    "expo-crypto": "~57.0.3",
     "expo-dev-client": "~57.0.19",
     "expo-document-picker": "~57.0.2",
     "expo-file-system": "~57.0.7",
@@ -80,7 +82,9 @@
     "test:site-dives": "node scripts/verify-site-dives.cjs",
     "preview:ocean-atlas": "node scripts/preview-ocean-atlas.cjs",
     "test:layout": "node scripts/verify-layout.cjs",
-    "tunnel": "node tunnel.cjs"
+    "tunnel": "node tunnel.cjs",
+    "build:atlas-release": "node scripts/build-atlas-release.cjs",
+    "test:atlas-updates": "node scripts/verify-atlas-update-lifecycle.cjs && node scripts/verify-atlas-updates.cjs"
   },
   "private": true,
   "devDependencies": {

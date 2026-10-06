@@ -2,6 +2,7 @@
 // best matches first, each with the broader area it's in ("Palancar Gardens · Cozumel, Mexico").
 import { catalogSites } from '../oceanAtlas/catalog';
 import { placesForSite } from '../oceanAtlas/places';
+import { onAtlasDataChange } from '../oceanAtlas/datasets';
 
 const fold = (text) => String(text || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[’'`]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 
@@ -51,3 +52,4 @@ export function searchDiveSites(text, mySites = [], limit = 7) {
   const catalog = listed.slice(0, limit).map(({ value, entry: { site } }) => ({ value, result: { id: site.id, name: site.name, area: siteArea(site), latitude: site.latitude, longitude: site.longitude, custom: false } }));
   return [...mine, ...catalog].sort((a, b) => b.value - a.value).slice(0, limit).map((hit) => hit.result);
 }
+onAtlasDataChange(() => { index = null; });

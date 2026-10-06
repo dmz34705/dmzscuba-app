@@ -2,11 +2,12 @@
 // scripts/build-visibility.cjs from NOAA CoastWatch VIIRS Kd490). Kd490 → Kd(PAR)
 // (Morel et al. 2007) → Secchi depth ≈ 1.7 / Kd(PAR) (Poole & Atkins), shown as a
 // ±25% range. Surface water offshore of the site, not a dive-day forecast.
-import VISIBILITY from './data/visibility.json';
 
-const { grid, packing, cells } = VISIBILITY;
-const LEVELS = packing.alphabet.length - 1;
-const codeIndex = Object.fromEntries([...packing.alphabet].map((c, i) => [c, i]));
+import { onAtlasDataChange, visibility as VISIBILITY } from './datasets';
+
+let { grid, packing, cells } = VISIBILITY;
+let LEVELS = packing.alphabet.length - 1;
+let codeIndex = Object.fromEntries([...packing.alphabet].map((c, i) => [c, i]));
 const SEARCH_CELLS = 2;
 
 const unpackKd = c => c === '!' || codeIndex[c] == null ? null
@@ -31,3 +32,5 @@ export function visibilityAt(point) {
   if (!best) return null;
   return [...best.packed].map(c => { const kd = unpackKd(c); return kd == null ? null : kdToVisibility(kd); });
 }
+
+onAtlasDataChange(() => { ({ grid, packing, cells } = VISIBILITY); LEVELS = packing.alphabet.length - 1; codeIndex = Object.fromEntries([...packing.alphabet].map((c, i) => [c, i])); });

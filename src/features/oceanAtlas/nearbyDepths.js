@@ -1,3 +1,4 @@
+import { onAtlasDataChange } from './datasets';
 // "Sites nearby: typically 18–30 m" — for a site with no published depth, the depths published for
 // other sites of the same water (salt or fresh) within NEARBY_KM. The middle half of their range when
 // there are enough to trim the extremes, otherwise all of it. A lake's deepest point is never used:
@@ -44,3 +45,5 @@ export function nearbyDepths(site) {
   const [low, high] = depths.length >= 5 ? [at(0.25), at(0.75)] : [depths[0], depths[depths.length - 1]];
   return { low: Math.round(low), high: Math.round(high), count: depths.length, radiusKm: NEARBY_KM };
 }
+
+onAtlasDataChange(() => { index = null; });
