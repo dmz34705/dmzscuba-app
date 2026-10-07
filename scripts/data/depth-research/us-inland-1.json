@@ -1,0 +1,689 @@
+{
+ "region": "us-inland-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-w643470454",
+   "name": "Blue Water Park",
+   "claims": [
+    {
+     "url": "https://bhamnow.com/2019/07/15/scuba-diving-blue-water-park/",
+     "publisher": "Bham Now",
+     "kind": "press",
+     "unit": "ft",
+     "top": 4,
+     "bottom": 130,
+     "quote": "ranges in depth from 4 to 130 feet, with an average depth of 100 feet"
+    },
+    {
+     "url": "https://www.islands.com/2173791/blue-water-park-alabama-once-active-quarry-now-premier-scuba-diving-destination-caribbean-turquoise-waters/",
+     "publisher": "Islands",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 150,
+     "quote": "the park boasts depths of up to 150 feet and a variety of underwater attractions"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-296",
+   "name": "Blue Lake (Utah)",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Blue_Lake_(Utah)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 60,
+     "quote": "The lake is 60 feet (18 m) deep"
+    }
+   ]
+  },
+  {
+   "id": "x-curated-616",
+   "name": "Lake Jocassee",
+   "claims": [
+    {
+     "url": "https://southcarolinaparks.com/see-and-do/scuba",
+     "publisher": "South Carolina State Parks",
+     "kind": "park",
+     "unit": "ft",
+     "top": null,
+     "bottom": 70,
+     "quote": "South Wall – depth 70 ft."
+    }
+   ],
+   "note": "Devils Fork dive sites 30-70 ft; lake itself deeper"
+  },
+  {
+   "id": "x-wikipedia-529",
+   "name": "SS Novadoc",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 15,
+     "quote": "Novadoc 12′ to 15′"
+    },
+    {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/novadoc",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 15,
+     "quote": "Off Juniper Beach near Pentwater, 12-15′ deep"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-149",
+   "name": "SS Henry Cort",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "Henry Cort 15′"
+    },
+    {
+     "url": "https://shotlinediving.com/wreck/henry-cort-us-150587/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 30,
+     "quote": "sits on the outside of the north breakwater in about 30 feet of water"
+    }
+   ],
+   "note": "Sources disagree 15 vs 30 ft"
+  },
+  {
+   "id": "x-wikipedia-500",
+   "name": "SS Anna C. Minch",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 36,
+     "bottom": 45,
+     "quote": "Anna C. Minch bow 36′ to 45′"
+    },
+    {
+     "url": "https://shotlinediving.com/docs/anna-c-minch-us-107846-c-153113/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 45,
+     "quote": "Depths range from 35 to 45 feet, enabling direct diver access."
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-654",
+   "name": "Daisy Day",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 10,
+     "quote": "Daisy Day 10′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-726",
+   "name": "State of Michigan",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 75,
+     "quote": "60 to 75 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-717",
+   "name": "Salvor",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 30,
+     "quote": "25′ to 30 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-739",
+   "name": "T. S. Christie",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "T.S. Christie 25′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-691",
+   "name": "Manistee",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "Manistee 25′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-673",
+   "name": "H. C. Akeley",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/southwest-michigan-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 240,
+     "quote": "A 230-foot wooden steamer in 240 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-541",
+   "name": "SS Daniel J. Morrell",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/thumb-area-bottomland-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 218,
+     "quote": "Daniel J. Morrell stern (1966) 218′"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_Daniel_J._Morrell",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 220,
+     "quote": "found the shipwreck in 220 ft (67 m) of water"
+    }
+   ],
+   "note": "Bow 205 ft, stern 218 ft"
+  },
+  {
+   "id": "x-wikipedia-147",
+   "name": "Sport",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/sanilac-shores-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 45,
+     "quote": "45 feet although the Sport rises up about 20 feet off the bottom"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-642",
+   "name": "Ann Arbor No. 5",
+   "claims": [
+    {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/ann-arbor-no-5",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 160,
+     "quote": "Depth: 160 feet"
+    },
+    {
+     "url": "https://shotlinediving.com/wreck/ann-arbor-no-5-us-208261/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 160,
+     "quote": "48.77 m / 160 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-738",
+   "name": "Trinidad",
+   "claims": [
+    {
+     "url": "https://www.wisconsinhistory.org/Records/Article/CS17126",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 270,
+     "quote": "partially embedded in the lakebed 270 feet below the surface of Lake Michigan"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-656",
+   "name": "Delaware",
+   "claims": [
+    {
+     "url": "https://shotlinediving.com/wreck/steamer-delaware-us-1846/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "Depth at Wreck Site: 4.57 m / 15 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-655",
+   "name": "David Dows",
+   "claims": [
+    {
+     "url": "https://shotlinediving.com/docs/david-dows-us-157029/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 42,
+     "quote": "Depth at Wreck Site: 12.8 m / 42 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-560",
+   "name": "SS Howard S. Gerken",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_Howard_S._Gerken",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 190,
+     "quote": "190 feet (57.9 m) of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-679",
+   "name": "J. D. Marshall",
+   "claims": [
+    {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 29,
+     "quote": "J.D. Marshall 29 feet"
+    },
+    {
+     "url": "https://shotlinediving.com/wreck/j-d-marshall-us-72580/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 29,
+     "quote": "8.8 m / 29 ft"
+    },
+    {
+     "url": "https://underwaterscience.indiana.edu/research/great-lakes/jd-marshall.html",
+     "publisher": "Indiana University Underwater Science",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "now rests upside-down in about 25 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-669",
+   "name": "George F. Williams",
+   "claims": [
+    {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "George F. Williams 15 feet"
+    },
+    {
+     "url": "https://shotlinediving.com/wreck/george-f-williams-us-86060",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "4.57 m / 15 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-668",
+   "name": "F. W. Wheeler",
+   "claims": [
+    {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "F.W. Wheeler 15 feet"
+    },
+    {
+     "url": "https://3dshipwrecks.org/shipwreck-f-w-wheeler/",
+     "publisher": "3D Shipwrecks",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "Depth 15 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-706",
+   "name": "No. 2",
+   "claims": [
+    {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 45,
+     "quote": "Car Ferry No. 2 45 feet"
+    }
+   ],
+   "note": "Indiana car ferry No. 2"
+  },
+  {
+   "id": "x-curated-589",
+   "name": "Devil's Lake",
+   "claims": [
+    {
+     "url": "https://devilslakewisconsin.com/activities/scuba-diving/",
+     "publisher": "Devil's Lake State Park Area Visitor Guide",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 45,
+     "quote": "a maximum depth of about 45 feet"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/Devil's_Lake_(Wisconsin)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 47,
+     "quote": "47 ft (14 m)"
+    }
+   ]
+  },
+  {
+   "id": "x-curated-596",
+   "name": "Roubidoux Spring",
+   "claims": [
+    {
+     "url": "https://www.ocda.org/exploration/projects/roubidoux-spring/",
+     "publisher": "Ozark Cave Diving Alliance",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 270,
+     "quote": "depths up to 270'"
+    },
+    {
+     "url": "https://terrain-mag.com/midwest-scuba-sites/",
+     "publisher": "Terrain Magazine",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 270,
+     "quote": "snakes under the spring to a staggering depth of 270 feet"
+    }
+   ],
+   "note": "Cave dive; depth reached inside cave"
+  },
+  {
+   "id": "osm-w1375999572",
+   "name": "Natural Springs",
+   "claims": [
+    {
+     "url": "https://www.ohiocoopliving.com/ohio-scuba",
+     "publisher": "Ohio Cooperative Living",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 40,
+     "quote": "Maximum depth: 40 feet"
+    }
+   ]
+  },
+  {
+   "id": "x-curated-613",
+   "name": "Aurora Reservoir",
+   "claims": [
+    {
+     "url": "https://sentinelcolorado.com/a-town-magazine/11972/",
+     "publisher": "Sentinel Colorado",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 50,
+     "quote": "The depth of the area reaches about 40 or 50 feet."
+    }
+   ]
+  },
+  {
+   "id": "x-wikidata-574",
+   "name": "Tennie and Laura",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/602",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 325,
+     "quote": "lies in 325 feet of water nine miles southeast of Port Washington, Wisconsin"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/List_of_shipwrecks_in_the_Wisconsin_Shipwreck_Coast_National_Marine_Sanctuary",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 325,
+     "quote": "325 feet (99 m)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-638",
+   "name": "Alice E. Wilds",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/21",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 300,
+     "quote": "went down in such deep water (over 300 feet)"
+    },
+    {
+     "url": "https://shotlinediving.com/wreck/alice-e-wilds-us-106070/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 300,
+     "quote": "Depth at Wreck Site: 91 m / 300 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-695",
+   "name": "Milwaukee Fireboat 17",
+   "claims": [
+    {
+     "url": "https://www.shipwreckexplorers.com/fireboat-no-17/",
+     "publisher": "Shipwreck Explorers",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 120,
+     "bottom": 135,
+     "quote": "rests upright on a soft mud bottom in approximately 135 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-733",
+   "name": "Thomas H. Smith",
+   "claims": [
+    {
+     "url": "https://legacy.wisconsinhistory.org/Records/NationalRegister/NR2848",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "slipped beneath the waves in 90 feet of water"
+    },
+    {
+     "url": "https://shepherdexpress.com/the-wreck-of-the-thomas-h-smith/",
+     "publisher": "Shepherd Express",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "Today the wreck sits in about 90 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-701",
+   "name": "Mojave",
+   "claims": [
+    {
+     "url": "https://www.wisconsinhistory.org/Records/Article/CS17127",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 295,
+     "quote": "partially embedded in a lakebed 295 feet below the surface of Lake Michigan"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-716",
+   "name": "Rotarian",
+   "claims": [
+    {
+     "url": "https://www.enjoyillinois.com/plan-your-trip/travel-inspiration/scuba-diving-in-illinois/",
+     "publisher": "Enjoy Illinois (Illinois Office of Tourism)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 84,
+     "quote": "sits about 84 feet down"
+    },
+    {
+     "url": "https://shotlinediving.com/wreck/rotarian-a-wehrle-jr-us-106652/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 84,
+     "quote": "25.6 m / 84 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-734",
+   "name": "Thomas Hume",
+   "claims": [
+    {
+     "url": "https://battlecreek.diventures.com/charters/thomas-hume-shipwreck",
+     "publisher": "Diventures",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 135,
+     "bottom": 150,
+     "quote": "The deck sits at 135ft of water"
+    },
+    {
+     "url": "https://historycollection.com/thomas-hume-shipwreck/",
+     "publisher": "History Collection",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 150,
+     "quote": "lying on the floor of southern Lake Michigan in approximately 150 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-719",
+   "name": "Sea Bird",
+   "claims": [
+    {
+     "url": "https://shotlinediving.com/wreck/sea-bird-us-22368/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 27,
+     "quote": "Depth at Wreck Site: 8.2 m / 27 ft"
+    }
+   ]
+  }
+ ]
+}

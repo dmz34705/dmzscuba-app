@@ -80,6 +80,7 @@
     "test:booking-import": "node scripts/verify-booking-import.cjs",
     "test:insurance": "node scripts/verify-insurance.cjs",
     "test:site-dives": "node scripts/verify-site-dives.cjs",
+    "test:site-profiles": "node scripts/verify-site-profiles.cjs",
     "preview:ocean-atlas": "node scripts/preview-ocean-atlas.cjs",
     "test:layout": "node scripts/verify-layout.cjs",
     "tunnel": "node tunnel.cjs",

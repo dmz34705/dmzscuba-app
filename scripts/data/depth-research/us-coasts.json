@@ -1,0 +1,512 @@
+{
+ "region": "us-coasts",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869497",
+   "name": "U-352 (Wreck)",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/u-352.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 110,
+     "quote": "Depth: 110 feet"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/German_submarine_U-352",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 115,
+     "quote": "She lies in about 115 feet (35 m) of water, and sits at a 45-degree list to starboard."
+    }
+   ]
+  },
+  {
+   "id": "x-notable-802",
+   "name": "HMT Bedfordshire",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/bedfordshire.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 105,
+     "quote": "Depth: 105 feet"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869492",
+   "name": "Bedfordshire (Wreck)",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/bedfordshire.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 105,
+     "quote": "Depth: 105 feet"
+    }
+   ]
+  },
+  {
+   "id": "x-notable-1190",
+   "name": "USS Tarpon",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/tarpon.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 135,
+     "quote": "At a depth of 135 feet, the hull sits upright with a slight tilt to port."
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869496",
+   "name": "U-85 (Wreck)",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/u-85.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "The site rests in approximately 90 feet of water about 14 miles east of Oregon Inlet."
+    }
+   ]
+  },
+  {
+   "id": "x-notable-787",
+   "name": "U-85",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/u-85.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "The site rests in approximately 90 feet of water about 14 miles east of Oregon Inlet."
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869494",
+   "name": "U-701 (Wreck)",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/u-701.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 120,
+     "quote": "U-701 sits partially buried on a sandy bottom in 120 feet of water, 20.1 nautical miles east of Cape Hatteras"
+    }
+   ],
+   "note": "Pin is ~3400 m deep; likely misplaced"
+  },
+  {
+   "id": "x-notable-801",
+   "name": "United States lightship Diamond Shoal",
+   "claims": [
+    {
+     "url": "https://monitor.noaa.gov/shipwrecks/lv-71.html",
+     "publisher": "NOAA Monitor NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 200,
+     "quote": "Depth: 200 feet"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-142",
+   "name": "SS Washingtonian (1913)",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_Washingtonian_(1913)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 100,
+     "quote": "Lying under about 100 feet (30 m) of water, Washingtonian's wreck is one of the most popular recreational dive sites"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-241",
+   "name": "USCGC Tamaroa (WMEC-166)",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/USCGC_Tamaroa_(WMEC-166)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 120,
+     "quote": "at a depth of 120 feet"
+    },
+    {
+     "url": "https://whyy.org/articles/wwii-era-vessel-sunk-off-delaware-new-jersey-coast",
+     "publisher": "WHYY",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 125,
+     "quote": "The reef sits about 125 feet below the surface"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-266",
+   "name": "USS Vermilion (AKA-107)",
+   "claims": [
+    {
+     "url": "https://dnr.sc.gov/news/2019/july/july3_tugboat.php",
+     "publisher": "SC Department of Natural Resources",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 120,
+     "quote": "120 feet underwater as part of artificial reef site PA-17, the Vermilion Reef"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869526",
+   "name": "U-869 (Wreck)",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/German_submarine_U-869",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "m",
+     "top": null,
+     "bottom": 73,
+     "quote": "an unidentified U-boat wreck was discovered 73 meters (240 feet) deep"
+    }
+   ]
+  },
+  {
+   "id": "osm-n356542710",
+   "name": "Edmonds Underwater Park",
+   "claims": [
+    {
+     "url": "https://edmondswa.hosted.civiclive.com/government/departments/parks_and_recreation/parks/edmonds_underwater_park",
+     "publisher": "City of Edmonds Parks",
+     "kind": "park",
+     "unit": "ft",
+     "top": null,
+     "bottom": 45,
+     "quote": "The deepest part of the park is 45 feet at high tide, and is on the south end, near the Ferry."
+    }
+   ]
+  },
+  {
+   "id": "osm-r14353880",
+   "name": "Brackett's Landing",
+   "claims": [
+    {
+     "url": "https://edmondswa.hosted.civiclive.com/government/departments/parks_and_recreation/parks/edmonds_underwater_park",
+     "publisher": "City of Edmonds Parks",
+     "kind": "park",
+     "unit": "ft",
+     "top": null,
+     "bottom": 45,
+     "quote": "The deepest part of the park is 45 feet at high tide, and is on the south end, near the Ferry."
+    }
+   ],
+   "note": "Brackett's Landing is the Edmonds Underwater Park site"
+  },
+  {
+   "id": "x-wikipedia-311",
+   "name": "Sund Rock",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Sund_Rock",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 80,
+     "quote": "These walls have depths 70 to 80 feet (21 to 24 m), depending upon the tide."
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-236",
+   "name": "Carthaginian II",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Carthaginian_II",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 97,
+     "quote": "sunk at a depth of approximately 97 feet (30 m)"
+    }
+   ]
+  },
+  {
+   "id": "x-notable-779",
+   "name": "Brother Jonathan",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Brother_Jonathan_(steamer)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 275,
+     "quote": "artifacts back from a depth of 275 feet (84 m)"
+    }
+   ]
+  },
+  {
+   "id": "osm-n3645125151",
+   "name": "Avalon Dive Park",
+   "claims": [
+    {
+     "url": "https://www.catalinadiverssupply.com/catalina-casino-dive-park",
+     "publisher": "Catalina Divers Supply",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 100,
+     "quote": "Depth: up to 100 feet"
+    }
+   ]
+  },
+  {
+   "id": "x-notable-1228",
+   "name": "SS City of Chester",
+   "claims": [
+    {
+     "url": "https://noaa.gov/node/2212",
+     "publisher": "NOAA",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 216,
+     "quote": "sitting upright, shrouded in mud, 216 feet deep at the edge of a small undersea shoal"
+    }
+   ]
+  },
+  {
+   "id": "osm-w35332224",
+   "name": "Dutch Springs",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Dutch_Springs",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 100,
+     "quote": "Max. depth: 100 ft (30 m)"
+    },
+    {
+     "url": "https://dan.org/alert-diver/article/dutch-springs/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 100,
+     "quote": "With a maximum depth of 100 feet, the quarry is an excellent facility for dive training"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869518",
+   "name": "Phoenix",
+   "claims": [
+    {
+     "url": "https://historicsites.vermont.gov/node/137",
+     "publisher": "Vermont Division for Historic Preservation",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 110,
+     "quote": "Depth of water: 60' (bow) - 110' (stern)"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869517",
+   "name": "Water Witch",
+   "claims": [
+    {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/lake-schooner-water-witch/",
+     "publisher": "Lake Champlain Maritime Museum (Vermont Underwater Historic Preserves)",
+     "kind": "park",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "Depth of water: 90'"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-505",
+   "name": "Forward shipwreck site",
+   "claims": [
+    {
+     "url": "https://dec.ny.gov/places-to-go/submerged-heritage-preserves-program/forward-underwater-classroom",
+     "publisher": "NY State DEC Submerged Heritage Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 45,
+     "quote": "located in 25-45 feet of water in very soft sediment, with her bow in deeper water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-508",
+   "name": "Wiawaka bateaux",
+   "claims": [
+    {
+     "url": "https://dec.ny.gov/places-to-go/submerged-heritage-preserves-program/sunken-1758-fleet",
+     "publisher": "NY State DEC Submerged Heritage Preserves",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 50,
+     "quote": "The fleet is located in 25-50 feet of water."
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-247",
+   "name": "USS Mona Island",
+   "claims": [
+    {
+     "url": "https://www.mrc.virginia.gov/vsrfdf/parramore_reef.shtm",
+     "publisher": "Virginia Marine Resources Commission",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 55,
+     "quote": "depth range of 40-55 feet",
+     "verbatimNote": "Parramore Reef with Liberty ships USNS Page and USNS Mona Isle"
+    }
+   ],
+   "note": "Depth of Parramore Reef site holding USNS Mona Isle"
+  },
+  {
+   "id": "x-notable-1184",
+   "name": "USS Conestoga",
+   "claims": [
+    {
+     "url": "https://sanctuaries.noaa.gov/news/press/conestoga/",
+     "publisher": "NOAA Office of National Marine Sanctuaries",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 185,
+     "quote": "documented a probable shipwreck with an estimated length of 52m (170ft) at a depth of 56.5m (185ft)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-224",
+   "name": "USS Scrimmage",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/USS_Scrimmage",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "approximately one mile off Waianae, Hawai'i, in 90 feet (27 meters) of water"
+    },
+    {
+     "url": "https://pacificwrecks.com/ship/usn/mahi.html",
+     "publisher": "Pacific Wrecks",
+     "kind": "press",
+     "unit": "ft",
+     "top": 58,
+     "bottom": 92,
+     "quote": "The shipwreck is a depth of between 58' to 92'."
+    }
+   ]
+  },
+  {
+   "id": "osm-w49830903",
+   "name": "Seacrest Park",
+   "claims": [
+    {
+     "url": "https://seattledivetours.com/best-dive-sites/alki-seacrest-park-cove-2/",
+     "publisher": "Seattle Dive Tours",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "Dive site has a gradual depth to 90' with many artificial features that host marine life."
+    }
+   ],
+   "note": "Seacrest Cove 2, Alki, West Seattle"
+  },
+  {
+   "id": "osm-n663869499",
+   "name": "Aeolus (Wreck)",
+   "claims": [
+    {
+     "url": "https://www.deq.nc.gov/marine-fisheries/coastal-fishing-information/artificial-reefs/dmf-reef-guide-web/download",
+     "publisher": "NC Division of Marine Fisheries",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 104,
+     "quote": "AR-305 Carteret County Sportfishing Association Reef ... 104 feet average depth"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869498",
+   "name": "Indra (Wreck)",
+   "claims": [
+    {
+     "url": "https://www.deq.nc.gov/marine-fisheries/coastal-fishing-information/artificial-reefs/dmf-reef-guide-web/download",
+     "publisher": "NC Division of Marine Fisheries",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 60,
+     "quote": "AR-330 Howard Chapin Reef ... 60 feet average depth"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-246",
+   "name": "USS Indra",
+   "claims": [
+    {
+     "url": "https://www.deq.nc.gov/marine-fisheries/coastal-fishing-information/artificial-reefs/dmf-reef-guide-web/download",
+     "publisher": "NC Division of Marine Fisheries",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 60,
+     "quote": "AR-330 Howard Chapin Reef ... 60 feet average depth"
+    }
+   ]
+  }
+ ]
+}

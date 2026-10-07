@@ -87,6 +87,23 @@ export function atlasRuntime(DATA, MODEL) {
     const closed = DATA.closedWrecks ? new RegExp(DATA.closedWrecks, 'i') : null;
     if (hidden.size || closed) DATA.sites = DATA.sites.filter(site => !hidden.has(site.id) && !(closed && closed.test(site.name)));
   }
+  // Researched corrections: confirmed positions, depths and entry, and wrecks that are gone or were never found
+  // (siteProfiles.js applySiteCorrections; same rule as catalog.js).
+  {
+    const gone = new Set();
+    for (const site of DATA.sites) {
+      const row = DATA.siteCorrections?.[site.id];
+      if (!row) continue;
+      const [latitude, longitude, max, entry, fresh, hide] = row;
+      if (hide) { gone.add(site.id); continue; }
+      if (Number.isFinite(latitude) && Number.isFinite(longitude)) Object.assign(site, { latitude, longitude });
+      if (Number.isFinite(max)) Object.assign(site, { maxDepthMeters: max, depthSource: { name: 'DMZ Scuba research', url: null }, depthIsWholeLake: false });
+      if (entry) site.entry = entry;
+      if (fresh) site.environment = 'fresh';
+      site.researched = true;
+    }
+    if (gone.size) DATA.sites = DATA.sites.filter(site => !gone.has(site.id));
+  }
   const paths = {
     back: 'M15 5l-7 7 7 7', search: 'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',
     site: 'M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0ZM15 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0',
@@ -476,7 +493,7 @@ export function atlasRuntime(DATA, MODEL) {
     if (Number.isFinite(item.latitude) && item.kind !== 'place') selectionMarker = L.marker([item.latitude, item.longitude], { interactive: false, icon: L.divIcon({ className: '', html: '<div class="selected-dot"></div>', iconSize: [20, 20], iconAnchor: [10, 10] }) }).addTo(map);
     renderDetails();
     if (item.kind === 'sources') expandDetails(true);
-    $('detail-body').scrollTop = 0;
+    $('sheet').scrollTop = 0;
     // One smooth camera move after the card is laid out, so the target lands centred above it.
     if (item.noFocus) return;
     if (fly && item.kind === 'place' && item.bbox) {
@@ -666,12 +683,23 @@ export function atlasRuntime(DATA, MODEL) {
   // A manatee seen from the beach is not what you'll meet on a 100 ft wreck: shore-only animals drop out
   // of a deeper site's headline (they stay in the full list below).
   const SHORE_ONLY = /manatee|dugong/i;
+  // Depth for the card: researched range (top of the site → bottom) first, then a published maximum, then the
+  // best estimate. `meters` is the deepest point, which the level and fit are judged on.
   function siteDepth(site, ng) {
-    if (site.maxDepthMeters && !site.depthIsWholeLake) return { meters: site.maxDepthMeters, value: depthText(site.maxDepthMeters), estimated: false };
+    const researched = ng?.profile?.depth;
+    if (researched && Number.isFinite(researched[1])) return { meters: researched[1], top: researched[0], value: depthRange(researched[0], researched[1]), estimated: false, researched: true };
+    if (site.maxDepthMeters && !site.depthIsWholeLake) return { meters: site.maxDepthMeters, top: null, value: depthText(site.maxDepthMeters), estimated: false };
     const best = depthEstimates(site, ng)[0];
     const atPin = ng?.bathymetry?.atPin ?? ng?.seafloor?.atPin;
     // The peek shows the modelled depth at the pin (what the level is judged on); the guide shows the range around it.
-    return best ? { meters: atPin ?? null, value: best.value, peek: atPin > 0 && atPin <= DEPTH_LIMIT ? `~${depthNumber(atPin)} ${DATA.depthUnit}` : best.value, estimated: true, best } : null;
+    return best ? { meters: atPin ?? null, top: null, value: best.value, peek: atPin > 0 && atPin <= DEPTH_LIMIT ? `~${depthNumber(atPin)} ${DATA.depthUnit}` : best.value, estimated: true, best } : null;
+  }
+  // "62–87 ft", or just "87 ft" when only the bottom is known.
+  function depthRange(top, bottom) {
+    // Researched depths are surveyed figures: shown to the foot or metre, not rounded to the nearest 5 ft.
+    const exact = m => Math.round(imperial ? m * 3.28084 : m);
+    const b = exact(bottom), t = Number.isFinite(top) ? exact(top) : null;
+    return `${t != null && t < b ? `${t}–` : ''}${b.toLocaleString()} ${DATA.depthUnit}`;
   }
   const splitUnit = text => { const m = String(text).match(/^(.*?)\s*(ft|m)$/); return m ? [m[1], m[2]] : [String(text), '']; };
   function monthWater(site, ng) {
@@ -691,20 +719,43 @@ export function atlasRuntime(DATA, MODEL) {
     const next = animals.filter(a => a.sourced && a.months.length).map(a => ({ a, wait: Math.min(...a.months.map(m => (m - state.month + 12) % 12)) })).sort((x, y) => x.wait - y.wait)[0];
     return next ? `<b>Next season</b> ${esc(next.a.common)} · ${span(next.a)}` : '';
   }
+  // Peek: level and fit, how you get in, then the four numbers divers check first — depth, water, visibility, current.
+  const ENTRY_NAMES = { boat: 'Boat dive', shore: 'Shore dive', 'boat-shore': 'Boat or shore' };
+  const CURRENT_NAMES = { none: 'None', light: 'Light', moderate: 'Moderate', strong: 'Strong', variable: 'Variable' };
+  // Water at the depth you'll dive: below a summer thermocline (deeper than ~18 m in a stratifying lake) the
+  // bottom temperature matters more than the surface average.
+  function diveWater(site, ng) {
+    const depth = siteDepth(site, ng), deep = ng?.profile?.region?.tempDeepC, surface = monthWater(site, ng);
+    const summer = state.month >= 5 && state.month <= 9;
+    if (deep && depth?.meters >= 18 && summer) return { value: Math.round((deep[0] + deep[1]) / 2), label: 'at depth', estimated: true };
+    return surface == null ? null : { value: surface, label: 'surface', estimated: !ng?.guide?.temps };
+  }
+  function siteVis(ng) {
+    const v = ng?.profile?.vis;
+    if (v && Number.isFinite(v[1])) return { value: Number.isFinite(v[0]) ? visText({ low: v[0], high: v[1] }) : `<${visText({ low: v[1], high: v[1] }).split('–')[1]}`, estimated: false };
+    const g = glanceParts(ng?.ratings);
+    return g?.vis ? { value: visText(g.vis), estimated: true } : null;
+  }
+  function siteCurrent(ng) {
+    const own = ng?.profile?.current, regional = ng?.profile?.region?.current;
+    return own ? { value: CURRENT_NAMES[own], estimated: false } : regional ? { value: CURRENT_NAMES[regional], estimated: true } : null;
+  }
   function sitePeek(site, ng) {
-    const r = ng?.ratings, g = glanceParts(r), depth = siteDepth(site, ng), water = monthWater(site, ng);
-    const deep = (depth?.meters || 0) > 12;
-    const [depthValue, depthUnit] = depth ? splitUnit(depth.peek || depth.value) : ['—', ''];
-    const [visValue, visUnit] = g?.vis ? splitUnit(visText(g.vis)) : ['—', ''];
-    const stat = (value, label) => `<div><strong>${value}</strong><small>${label}</small></div>`;
-    const level = g?.experience;
-    const why = level?.reasons?.[0] ? esc(level.reasons[0].replace(/ — .*$/, '')) : '';
-    // For a diver with cards: does it fit their training? Otherwise, why the level.
+    const r = ng?.ratings, g = glanceParts(r), depth = siteDepth(site, ng), profile = ng?.profile;
+    const level = profile?.level ? { level: profile.level[0].toUpperCase() + profile.level.slice(1), reasons: [] } : g?.experience;
     const fit = fitVerdict(site, ng);
+    const why = level?.reasons?.[0] ? esc(level.reasons[0].replace(/ — .*$/, '')) : '';
     const aside = fit && fit.tone !== 'info' ? `<span class="fit-chip fit-${fit.tone}"><b>${FIT_MARK[fit.tone]}</b>${esc(fit.short)}</span>` : why ? `<small>${why}${level.confidence === 'estimate' ? ' · estimated' : ''}</small>` : '';
-    return `${level ? `<div class="peek-level"><span class="${levelClass(level.level)}">${esc(level.level)}</span>${aside}</div>` : ''}
-      <div class="peek-stats">${stat(depthValue, `${depthUnit ? depthUnit + ' ' : ''}${depth?.estimated ? 'depth · est.' : 'depth'}`)}${stat(visValue, `${visUnit ? visUnit + ' ' : ''}vis${g?.vis ? ' · est.' : ''}`)}${stat(water == null ? '—' : temp(water), `${months[state.month]} water`)}</div>
-      ${ng?.guide ? (line => line ? `<p class="peek-now">${icon('wildlife')}<span>${line}</span></p>` : '')(seasonLine(ng.guide, deep)) : ''}`;
+    const entry = profile?.entry || site.entry;
+    const fresh = profile?.water === 'fresh' || ng?.guide?.inland || site.environment === 'fresh';
+    const tags = [entry ? ENTRY_NAMES[entry] || `${entry[0].toUpperCase()}${entry.slice(1)} dive` : '', fresh ? 'Fresh water' : '', profile?.mooring ? 'Mooring buoy' : ''].filter(Boolean);
+    const water = diveWater(site, ng), vis = siteVis(ng), current = siteCurrent(ng);
+    const [depthValue, depthUnit] = depth ? splitUnit(depth.peek || depth.value) : ['—', ''];
+    const [visValue, visUnit] = vis ? splitUnit(vis.value) : ['—', ''];
+    const stat = (value, label, est) => `<div${value === '—' ? ' class="none"' : ''}><strong>${value}</strong><small>${label}${est ? ' <i>est.</i>' : ''}</small></div>`;
+    return `${level || tags.length ? `<div class="peek-level">${level ? `<span class="${levelClass(level.level)}">${esc(level.level)}</span>` : ''}${aside}</div>` : ''}
+      ${tags.length ? `<p class="peek-tags">${tags.map(t => `<span>${esc(t)}</span>`).join('')}</p>` : ''}
+      <div class="peek-stats four">${stat(depthValue, `${depthUnit ? depthUnit + ' ' : ''}depth`, depth?.estimated)}${stat(water ? temp(water.value) : '—', water ? water.label : 'water', water?.estimated)}${stat(visValue, `${visUnit ? visUnit + ' ' : ''}vis`, vis?.estimated)}${stat(current ? esc(current.value) : '—', 'current', current?.estimated)}</div>`;
   }
   const spec = (label, value, detail = '') => `<div class="spec"><span class="spec-k">${label}</span><div class="spec-v"><strong>${value}</strong>${detail ? `<span>${detail}</span>` : ''}</div></div>`;
   const EST = '<em class="est">est.</em>';
@@ -723,12 +774,16 @@ export function atlasRuntime(DATA, MODEL) {
   }
   // Where the pin comes from, how sure we are, and every source — folded away, never lost.
   function aboutPin(site, ng) {
+    const profile = ng?.profile;
+    const moved = profile?.position?.movedKm ? `<p class="confidence good">✓ Pin moved ${distText(profile.position.movedKm)} to the position confirmed by archaeologists</p>` : '';
+    const unpublished = profile?.position?.quality === 'unpublished' ? '<p class="confidence">The exact position isn’t published — this pin is approximate.</p>' : '';
     const confidence = site.independentSources > 1
       ? `<p class="confidence good">✓ Confirmed by ${site.independentSources} independent sources${site.aliases?.length ? ` · also listed as ${site.aliases.slice(0, 3).map(esc).join(', ')}` : ''}</p>`
-      : ['global', 'osm'].includes(site.catalog) ? '<p class="confidence">One community source — confirm the exact spot locally</p>' : '';
+      : !profile && ['global', 'osm'].includes(site.catalog) ? '<p class="confidence">One community source — confirm the exact spot locally</p>' : '';
     const note = esc(site.note || (['global', 'osm'].includes(site.catalog) ? 'Community-maintained map record. Confirm the exact entry, access, depth, hazards and current conditions with a local operator.' : 'Catalog location. Confirm entry, access and current conditions with a local operator.'));
     const coords = `${Math.abs(site.latitude).toFixed(4)}°${site.latitude < 0 ? 'S' : 'N'} · ${Math.abs(site.longitude).toFixed(4)}°${site.longitude < 0 ? 'W' : 'E'}`;
-    return `<details class="fold"><summary>Location & sources</summary>${crumbs(ng?.places || [])}<p class="coords">${coords}</p>${confidence}<p class="note">${note}</p>${(site.sources || []).map(source => `<a class="source" href="${esc(source.sourceUrl)}">${esc(source.sourceName)}${source.dataLicense ? ` · ${esc(source.dataLicense)}` : ''} ↗</a>`).join('<br>')}</details>`;
+    const research = profile?.sources?.length ? `<div class="chip-label">Researched from</div>${profile.sources.map(source => source.url ? `<a class="source" href="${esc(source.url)}">${esc(source.name)} ↗</a>` : `<span class="source">${esc(source.name)}</span>`).join('<br>')}` : '';
+    return `<details class="fold"><summary>Location & sources</summary>${crumbs(ng?.places || [])}<p class="coords">${coords}</p>${moved}${unpublished}${confidence}<p class="note">${note}</p>${research}${research ? '<div class="chip-label">Map records</div>' : ''}${(site.sources || []).map(source => `<a class="source" href="${esc(source.sourceUrl)}">${esc(source.sourceName)}${source.dataLicense ? ` · ${esc(source.dataLicense)}` : ''} ↗</a>`).join('<br>')}</details>`;
   }
   // Is this dive within the diver's training? From the depth (published, else modelled at the pin), the
   // site's kind and the diver's cards (summarised by the app: trained depth, wreck / cavern / cave).
@@ -748,96 +803,139 @@ export function atlasRuntime(DATA, MODEL) {
     if (meters > d.limitMeters + 0.5) return isFixedDepth(site)
       ? { tone: 'warn', short: `Deeper than your ${limit} limit`, text: `The ${isWreck(site) ? 'wreck' : 'site'} lies deeper than your ${d.label} training (${limit}). Get Deep Diver training before you dive it.${est}` }
       : { tone: 'caution', short: `Goes past your ${limit} limit`, text: `Parts of this site go deeper than your ${d.label} limit (${limit}). Plan your dive to stay shallower.${est}` };
-    const penetration = isWreck(site) && !d.wreck ? ' Stay outside the wreck — going inside needs Wreck Diver training.' : '';
+    // A researched wreck says whether there's an inside at all (a scattered hull has none).
+    const penetration = isWreck(site) && !d.wreck && (!ng?.profile || ng.profile.penetration) ? ' Stay outside the wreck — going inside needs Wreck Diver training.' : '';
     return { tone: 'good', short: `Within your ${limit} limit`, text: `Within your ${d.label} training (${limit}).${penetration}${est}` };
   }
   const FIT_MARK = { good: '✓', caution: '!', warn: '!', info: 'i' };
-  // The dive drawn to scale: surface, the seafloor at the site's depth (a wreck or reef on it) and the
-  // diver's trained depth as a line — "how deep, and can I go there" in one look.
-  function depthProfile(site, ng) {
-    const depth = siteDepth(site, ng), meters = depth?.meters ?? (site.depthIsWholeLake ? null : site.maxDepthMeters);
-    if (!meters) return '';
-    const floor = depth?.estimated ? (ng.bathymetry || ng.seafloor) : null;
-    const limit = ng.diver?.limitMeters || null;
-    // A limit below the deepest bottom drawn would sit underground: say it in words instead of drawing it.
-    const bottom0 = floor ? Math.max(floor.deepest, meters) : meters * 1.06;
-    const limitShown = limit && limit <= Math.min(bottom0, meters * 1.15) * 1.02 ? limit : null;
-    const max = Math.max(meters * 1.3, limitShown ? limitShown * 1.18 : 0, 14);
-    const W = 340, top = 30, bottom = 158, y = d => top + (bottom - top) * Math.min(d, max) / max;
-    const label = d => imperial ? `${Math.round(d * 3.28084 / 5) * 5} ft` : `${Math.round(d)} m`;
-    // A gentle, repeatable seafloor around the pin (seeded by the site id), sloping to the modelled range.
-    let seed = 0; for (const c of String(site.id)) seed = (seed * 31 + c.charCodeAt(0)) % 997;
-    const left = floor ? Math.max(meters * 0.82, Math.min(floor.shallowest, meters)) : meters * 0.9, right = floor ? Math.min(Math.max(floor.deepest, meters), meters * 1.15, max * 0.97) : meters * 1.06;
-    const cx = W * 0.56, pts = [];
-    for (let i = 0; i <= 16; i++) {
-      const x = i * W / 16, t = x / W;
-      const base = t < 0.56 ? left + (meters - left) * Math.pow(t / 0.56, 0.7) : meters + (right - meters) * Math.pow((t - 0.56) / 0.44, 1.4);
-      pts.push(`${x.toFixed(1)},${(y(base) + Math.sin(i * 1.7 + seed) * 2.2).toFixed(1)}`);
+  // The site's main feature, from its tags or catalog type ("Wreck", "reef area").
+  function siteKind(site) {
+    const typed = Object.keys(SITE_KINDS).find(t => new RegExp(`\\b${t}`, 'i').test(site.siteType || ''));
+    return site.topologies?.find(t => SITE_KINDS[t]) || typed || '';
+  }
+  // ── Cross-section hero ─────────────────────────────────────────────────────────────────────────────
+  // The dive drawn to scale from real numbers only: the water column from the surface to the site's bottom, the
+  // site's outline rising to its known top, surface and at-depth temperatures with the summer thermocline between
+  // them (stratifying lakes), and the diver's trained depth. Shapes are generic per kind (a hull, a reef, a wall),
+  // never a picture of this particular site. Estimated depths draw dashed and say so.
+  function crossSection(site, ng) {
+    const depth = siteDepth(site, ng), bottom = depth?.meters, region = ng?.profile?.region;
+    const W = 360, H = 230, surface = 18, floorRoom = H - 28;
+    const limit = ng?.diver?.limitMeters || null;
+    const showLimit = limit && bottom && limit <= bottom * 1.6;
+    const max = bottom ? Math.max(bottom * 1.14, showLimit ? limit * 1.06 : 0, 8) : 30;
+    const y = d => surface + (floorRoom - surface) * Math.min(d, max) / max;
+    const label = d => depth?.researched ? depthRange(null, d) : depth?.estimated && d === bottom && depth.peek ? depth.peek : `${depth?.estimated ? '~' : ''}${depthText(d)}`;
+    const summer = state.month >= 5 && state.month <= 9;
+    const deepTemp = region?.tempDeepC && summer && bottom > 12 ? Math.round((region.tempDeepC[0] + region.tempDeepC[1]) / 2) : null;
+    const surfaceTemp = monthWater(site, ng);
+    const parts = [];
+    // Water: warm and bright above, darker below; a stratified lake turns cold through the thermocline band.
+    const band = deepTemp != null ? [Math.min(6, bottom * 0.3), Math.min(15, bottom * 0.6)] : null;
+    parts.push(`<defs><linearGradient id="xs-water" x1="0" y1="0" x2="0" y2="1">${band
+      ? `<stop offset="0" stop-color="#2f8aa0"/><stop offset="${((y(band[0]) - surface) / (H - surface)).toFixed(3)}" stop-color="#22708a"/><stop offset="${((y(band[1]) - surface) / (H - surface)).toFixed(3)}" stop-color="#103a4c"/><stop offset="1" stop-color="#071a24"/>`
+      : '<stop offset="0" stop-color="#2f8aa0"/><stop offset=".55" stop-color="#14495e"/><stop offset="1" stop-color="#071a24"/>'}</linearGradient></defs>`);
+    parts.push(`<rect class="xs-sky" width="${W}" height="${surface}"/>`, `<rect y="${surface}" width="${W}" height="${H - surface}" fill="url(#xs-water)"/>`);
+    parts.push(`<path class="xs-surface" d="M0 ${surface}${Array.from({ length: 18 }, () => ' q10 -3 20 0').join('')}"/>`);
+    if (band) parts.push(`<text class="xs-note" x="${W - 10}" y="${(y((band[0] + band[1]) / 2) + 3).toFixed(1)}" text-anchor="end">thermocline · depth varies</text>`);
+    if (surfaceTemp != null) parts.push(`<text class="xs-temp" x="12" y="${surface + 22}">${temp(surfaceTemp)}<tspan class="xs-note" dx="5">surface</tspan></text>`);
+    if (deepTemp != null) parts.push(`<text class="xs-temp cold" x="12" y="${(y(band[1]) + 20).toFixed(1)}">${temp(deepTemp)}<tspan class="xs-note" dx="5">below · est.</tspan></text>`);
+    if (!bottom) {
+      parts.push(`<text class="xs-big" x="${W / 2}" y="${H / 2 + 20}" text-anchor="middle">Depth not published</text>`);
+      return `<svg class="xsection" viewBox="0 0 ${W} ${H}" role="img" aria-label="Depth not published">${parts.join('')}</svg>`;
     }
-    const fy = y(meters);
-    const wreck = isWreck(site);
-    const feature = wreck
-      ? `<path class="dp-wreck" d="M${cx - 50} ${fy - 1} L${cx - 42} ${fy - 13} L${cx + 44} ${fy - 15} L${cx + 52} ${fy - 2} Z M${cx - 22} ${fy - 13} h22 v-9 h-22 Z M${cx + 6} ${fy - 14} h14 v-6 h-14 Z"/>`
-      : `<path class="dp-reef" d="M${cx - 46} ${fy} q8 -16 16 -6 q6 -14 14 -4 q9 -18 17 -2 q7 -12 14 -1 q8 -10 13 13 Z"/>`;
-    const lines = [];
-    if (limit && !limitShown) lines.push(`<text class="dp-limit-t ok" x="10" y="166">✓ The bottom is above your ${imperial ? ng.diver.limitFeet + ' ft' : limit + ' m'} limit</text>`);
-    else if (limit) {
-      const deeper = meters > limit + 0.5;
-      lines.push(`<line class="dp-limit ${deeper ? 'over' : 'ok'}" x1="0" x2="${W}" y1="${y(limit)}" y2="${y(limit)}"/><text class="dp-limit-t ${deeper ? 'over' : 'ok'}" x="${W - 10}" y="${y(limit) - 5}" text-anchor="end">Your limit · ${imperial ? ng.diver.limitFeet + ' ft' : limit + ' m'}</text>`);
-    } else if (max >= 38) lines.push(`<line class="dp-limit rec" x1="0" x2="${W}" y1="${y(40)}" y2="${y(40)}"/><text class="dp-limit-t rec" x="${W - 10}" y="${y(40) - 5}" text-anchor="end">Recreational limit · ${imperial ? '130 ft' : '40 m'}</text>`);
-    // A published depth is shown as published; only a modelled one is rounded.
-    const tag = depth?.estimated ? `~${label(meters)}` : depthText(meters);
-    return `<svg class="depth-profile" viewBox="0 0 ${W} 172" role="img" aria-label="Depth profile: ${esc(site.name)} at ${tag}${limit ? `, your limit ${label(limit)}` : ''}">
-      <defs><linearGradient id="dp-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a7f93"/><stop offset="1" stop-color="#0a2533"/></linearGradient></defs>
-      <rect x="0" y="${top}" width="${W}" height="${172 - top}" fill="url(#dp-water)"/>
-      <path class="dp-surface" d="M0 ${top} q10 -4 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
-      <text class="dp-axis" x="${W - 6}" y="${top - 8}" text-anchor="end">Surface</text>
-      <polygon class="dp-floor" points="0,172 ${pts.join(' ')} ${W},172"/>
-      ${feature}
-      ${lines.join('')}
-      <line class="dp-lead" x1="${cx + 56}" x2="${cx + 56}" y1="${top + 6}" y2="${fy - 6}"/>
-      <text class="dp-depth" x="${W - 10}" y="${top + 26}" text-anchor="end">${tag}</text>
-      <text class="dp-axis" x="${W - 10}" y="${top + 41}" text-anchor="end">${depth?.estimated ? 'modelled seafloor' : wreck ? 'to the wreck' : 'max depth'}</text>
-    </svg>`;
+    // Seabed and the site on it.
+    const fy = y(bottom), kind = siteKind(site), cx = W * 0.56;
+    let seed = 0; for (const c of String(site.id)) seed = (seed * 31 + c.charCodeAt(0)) % 997;
+    const bed = Array.from({ length: 13 }, (_, i) => `${(i * W / 12).toFixed(0)},${(fy + 2 + Math.sin(i * 1.3 + seed) * 2).toFixed(1)}`).join(' ');
+    const rise = Number.isFinite(depth.top) && depth.top < bottom ? fy - y(depth.top) : Math.min(fy - surface - 14, Math.max(10, (fy - surface) * 0.16));
+    const h = Math.max(8, rise);
+    const shapes = {
+      wreck: `<path class="xs-site" d="M${cx - 74} ${fy} L${cx - 62} ${fy - h * 0.55} L${cx + 66} ${fy - h * 0.6} L${cx + 78} ${fy}Z M${cx + 18} ${fy - h * 0.6} h12 v${-h * 0.4} h-12Z M${cx - 34} ${fy - h * 0.58} h26 v${-h * 0.22} h-26Z"/>`,
+      reef: `<path class="xs-site reef" d="M${cx - 86} ${fy + 1} C${cx - 70} ${fy - h * 0.5} ${cx - 52} ${fy - h * 0.7} ${cx - 34} ${fy - h * 0.62} C${cx - 22} ${fy - h * 1.02} ${cx + 2} ${fy - h * 1.02} ${cx + 12} ${fy - h * 0.74} C${cx + 30} ${fy - h * 0.9} ${cx + 50} ${fy - h * 0.62} ${cx + 58} ${fy - h * 0.36} C${cx + 70} ${fy - h * 0.3} ${cx + 82} ${fy - h * 0.12} ${cx + 90} ${fy + 1} Z"/>`,
+      wall: `<path class="xs-site rock" d="M0 ${Math.max(surface + 8, fy - h)} L${W * 0.28} ${Math.max(surface + 8, fy - h)} L${W * 0.3} ${fy + 2} L0 ${fy + 2}Z"/>`,
+      pinnacle: `<path class="xs-site rock" d="M${cx - 50} ${fy} L${cx - 10} ${fy - h} L${cx + 8} ${fy - h} L${cx + 52} ${fy}Z"/>`,
+    };
+    const shape = shapes[kind] || (['cave', 'cavern', 'quarry', 'mine'].includes(kind) ? shapes.wall : shapes.reef);
+    parts.push(`<polygon class="xs-bed${depth.estimated ? ' est' : ''}" points="0,${H} ${bed} ${W},${H}"/>`, shape);
+    // Depth marks on the right: the top of the site (when known) and the bottom.
+    const mark = (d, text) => `<line class="xs-tick" x1="${W - 64}" x2="${W - 8}" y1="${y(d).toFixed(1)}" y2="${y(d).toFixed(1)}"/><text class="xs-mark" x="${W - 8}" y="${(y(d) - 5).toFixed(1)}" text-anchor="end">${text}</text>`;
+    if (Number.isFinite(depth.top) && depth.top < bottom - 1) parts.push(mark(depth.top, `top ${label(depth.top)}`));
+    parts.push(mark(bottom, `${kind === 'wreck' ? 'bottom' : 'max'} ${label(bottom)}`));
+    // Your training limit, or the recreational limit when we don't know it.
+    if (showLimit) parts.push(`<line class="xs-limit${bottom > limit + 0.5 ? ' over' : ''}" x1="0" x2="${W}" y1="${y(limit).toFixed(1)}" y2="${y(limit).toFixed(1)}"/><text class="xs-limit-t${bottom > limit + 0.5 ? ' over' : ''}" x="12" y="${(y(limit) - 6).toFixed(1)}">your limit ${imperial ? ng.diver.limitFeet + ' ft' : limit + ' m'}</text>`);
+    else if (!limit && max > 40) parts.push(`<line class="xs-limit rec" x1="0" x2="${W}" y1="${y(40).toFixed(1)}" y2="${y(40).toFixed(1)}"/><text class="xs-limit-t rec" x="12" y="${(y(40) - 6).toFixed(1)}">recreational limit ${imperial ? '130 ft' : '40 m'}</text>`);
+    return `<svg class="xsection" viewBox="0 0 ${W} ${H}" role="img" aria-label="Cross-section: ${esc(site.name)}, ${esc(depth.value)}${limit ? `, your limit ${imperial ? ng.diver.limitFeet + ' ft' : limit + ' m'}` : ''}">${parts.join('')}</svg>`;
+  }
+  // ── Dive slate: the numbers as tiles ───────────────────────────────────────────────────────────────
+  function slate(site, ng) {
+    const depth = siteDepth(site, ng), profile = ng.profile, fit = fitVerdict(site, ng);
+    const water = diveWater(site, ng), vis = siteVis(ng), current = siteCurrent(ng), wear = ng.wear?.[state.month];
+    const tiles = [];
+    if (depth) {
+      const [value, unit] = splitUnit(depth.researched ? depth.value : depth.peek || depth.value);
+      const limit = ng.diver?.limitMeters;
+      const margin = limit && depth.meters ? (imperial ? ng.diver.limitFeet - Math.round(depth.meters * 3.28084) : Math.round(limit - depth.meters)) : null;
+      const fitLine = fit && fit.tone !== 'info' ? `<em class="slate-fit fit-${fit.tone}">${margin != null && margin > 0 ? `✓ ${margin} ${DATA.depthUnit} above your limit` : esc(fit.short)}</em>` : '';
+      const source = depth.researched ? esc((ng.profile.sources?.[0]?.name || 'researched').split(' — ')[0]) : depth.estimated ? 'estimated' : 'published';
+      tiles.push(`<div class="tile tall"><small>Depth</small><strong class="num">${esc(value)}</strong><span>${unit === 'ft' ? 'feet' : 'metres'} · ${source}</span>${fitLine}</div>`);
+    } else tiles.push('<div class="tile tall"><small>Depth</small><strong class="num">—</strong><span>Not published — ask the operator</span></div>');
+    tiles.push(`<div class="tile"><small>${water?.label === 'at depth' ? 'At depth' : 'Water'}</small><strong class="num cold">${water ? temp(water.value) : '—'}</strong><span>${wear?.label && wear.label !== 'Confirm water temperature' ? esc(/mm$/.test(wear.label) ? `${wear.label} wetsuit` : wear.label) : water?.estimated ? 'estimated' : months[state.month]}</span></div>`);
+    tiles.push(`<div class="tile"><small>Current</small><strong>${current ? esc(current.value) : '—'}</strong><span>${vis ? `vis ${vis.value}${vis.estimated ? ' · est.' : ''}` : 'vis not reported'}</span></div>`);
+    const entry = profile?.entry || site.entry, region = profile?.region;
+    const strip = [entry ? ENTRY_NAMES[entry] || entry : '', profile?.mooring ? 'Mooring buoy' : '', profile?.water === 'fresh' || ng.guide?.inland ? 'Fresh water' : '', region?.season ? `${months[region.season[0]]}–${months[region.season[1]]}` : ''].filter(Boolean);
+    if (strip.length) tiles.push(`<div class="tile wide">${strip.map(t => `<span>${esc(t)}</span>`).join('')}</div>`);
+    return `<div class="slate">${tiles.join('')}</div>`;
+  }
+  // When to go, month by month: the usual dive season, with the months something is in season marked.
+  function seasonStrip(ng) {
+    const season = ng.profile?.region?.season, animals = (ng.guide?.animals || []).filter(a => a.sourced);
+    if (!season && !animals.length) return '';
+    const inSeason = i => season ? (season[0] <= season[1] ? i >= season[0] && i <= season[1] : i >= season[0] || i <= season[1]) : true;
+    const life = i => animals.some(a => a.months.includes(i));
+    return `<div class="section-label">When to go</div><div class="season-strip">${months.map((m, i) => `<span class="${inSeason(i) ? 'on' : ''}${life(i) ? ' life' : ''}${i === state.month ? ' now' : ''}" title="${m}"><i></i><b>${m[0]}</b></span>`).join('')}</div><p class="note">${season ? `Usual dive season ${months[season[0]]}–${months[season[1]]}${ng.profile?.region?.name ? ` in ${esc(ng.profile.region.name)}` : ''}.` : ''}${animals.length ? ' Dots mark documented marine-life seasons.' : ''}</p>`;
   }
   // The guide in four tabs, so nothing repeats and nothing is a long scroll away.
   const SITE_TABS = [['overview', 'Overview'], ['conditions', 'Conditions'], ['life', 'Marine life'], ['about', 'About']];
   let siteTab = 'overview', keepHeader = false;
   function overviewTab(site, ng) {
-    const g = glanceParts(ng.ratings), inland = ng.guide?.inland, rows = [];
-    const depth = siteDepth(site, ng);
-    if (site.maxDepthMeters) {
-      const label = site.depthIsWholeLake ? 'Lake depth' : isWreck(site) ? 'Wreck depth' : 'Max depth';
-      const from = site.depthSource ? (site.depthSource.url ? `<a href="${esc(site.depthSource.url)}">${esc(site.depthSource.name)} ↗</a>` : esc(site.depthSource.name)) : 'Published';
-      rows.push(spec(label, depthText(site.maxDepthMeters), `${site.depthIsWholeLake ? 'The lake’s deepest point, not the dive’s · ' : ''}${from}`));
-    } else {
-      const [best, next] = depthEstimates(site, ng);
-      const from = best && (best.url ? `<a href="${esc(best.url)}">${esc(best.short || best.label)} ↗</a>` : esc(best.short || best.label));
-      const around = depth?.peek && depth.peek !== best?.value ? `${best.value} around the pin · ` : '';
-      rows.push(best ? spec('Depth', `${depth?.peek || best.value} ${EST}`, `${around}${from}${next ? ` · also ${next.value} (${esc(next.short || next.label)})` : ''}`)
-        : spec('Depth', '—', 'Not published yet — ask the operator'));
-    }
-    if (g?.experience) rows.push(spec('Level', `<span class="${levelClass(g.experience.level)}">${esc(g.experience.level)}</span>`, esc(g.experience.reasons.slice(0, 3).join(' · '))));
-    const SHORE = { parking: 'Parking', toilets: 'Toilets', shower: 'Showers', water: 'Drinking water', slipway: 'Slipway', pier: 'Pier', beach: 'Beach' };
-    const shoreAccess = ng.shore && (site.entry === 'shore' || ['parking', 'pier', 'slipway', 'toilets', 'shower', 'water'].some(kind => kind in ng.shore));
-    const facilities = shoreAccess ? Object.entries(ng.shore).filter(([, m]) => m <= 300).map(([kind]) => SHORE[kind] || esc(kind)) : [];
-    if (site.entry || facilities.length) rows.push(spec('Entry', site.entry ? `${site.entry[0].toUpperCase()}${site.entry.slice(1)}` : 'Shore access', facilities.length ? `Nearby: ${facilities.join(', ')} · OpenStreetMap` : ''));
-    if (g?.travel) rows.push(spec('Getting there', esc(g.travel.level), `${esc(g.travel.detail)}${g.travel.personal ? ' from your start' : ''}`));
-    if (inland?.elevation != null) rows.push(spec('Elevation', elevText(inland.elevation), inland.altitude ? 'Altitude dive — plan with altitude tables' : 'No altitude adjustment needed'));
-    if (ng.protection?.length) rows.push(spec('Protected', ng.protection.map(area => `<a href="${esc(area.url)}">${esc(area.name)} ↗</a>`).join('<br>'), 'Park rules apply — fees or tags, mooring-only, no touching or collecting'));
+    const g = glanceParts(ng.ratings), inland = ng.guide?.inland, profile = ng.profile;
     const warning = /war grave|licen[cs]e|prohibited|protected (military )?wreck|listed historic/i.test(site.note || '') ? `<p class="callout">${esc(site.note)}</p>` : '';
-    const fit = fitVerdict(site, ng), profile = depthProfile(site, ng);
-    const fitCard = profile || fit ? `<div class="fit-card">${profile}${fit ? `<p class="fit fit-${fit.tone}"><b>${FIT_MARK[fit.tone]}</b><span>${esc(fit.text)}</span></p>` : ''}</div>` : '';
     const photo = ng.photo ? `<figure class="site-photo"><img src="${esc(ng.photo.url)}" alt="${esc(site.name)}" loading="lazy"><a href="${esc(ng.photo.page)}">📷 ${esc(ng.photo.attribution)} ↗</a></figure>` : '';
+    const summary = profile?.summary ? `<p class="site-summary">${esc(profile.summary)}</p>${profile.confidence === 'needs-local' ? '<p class="confidence">From diver reports — not yet confirmed against an official record.</p>' : ''}` : '';
+    const chips = profile?.highlights?.length ? `<div class="see-chips">${profile.highlights.map(h => `<span>${esc(h)}</span>`).join('')}</div>` : site.topologies?.length ? `<div class="see-chips">${site.topologies.map(v => `<span>${esc(v)}</span>`).join('')}</div>` : '';
+    // Everything else that matters, as small tiles: only what's known.
+    const facts = [];
+    const fact = (label, value, detail = '') => facts.push(`<div class="fact"><small>${label}</small><strong>${value}</strong>${detail ? `<span>${detail}</span>` : ''}</div>`);
+    const entry = profile?.entry || site.entry;
+    const SHORE = { parking: 'Parking', toilets: 'Toilets', shower: 'Showers', water: 'Drinking water', slipway: 'Slipway', pier: 'Pier', beach: 'Beach' };
+    const shoreAccess = ng.shore && (entry === 'shore' || ['parking', 'pier', 'slipway', 'toilets', 'shower', 'water'].some(kind => kind in ng.shore));
+    const facilities = shoreAccess ? Object.entries(ng.shore).filter(([, m]) => m <= 300).map(([kind]) => SHORE[kind] || esc(kind)) : [];
+    if (facilities.length) fact('At the shore', esc(facilities.slice(0, 3).join(', ')), 'Mapped on OpenStreetMap');
+    if (profile?.penetration) fact('Inside', 'Possible', esc(profile.penetration));
+    if (g?.travel) fact('Getting there', esc(g.travel.level), `${esc(g.travel.detail)}${g.travel.personal ? ' from your start' : ''}`);
+    if (inland?.altitude) fact('Altitude', elevText(inland.elevation), 'Altitude dive — adjust your tables');
+    if (ng.protection?.length) fact('Protected', ng.protection.map(area => `<a href="${esc(area.url)}">${esc(area.name)} ↗</a>`).join('<br>'), 'Look, don’t take — park rules apply');
+    else if (!warning && profile?.sources?.some(s => s.key === 'whs')) fact('Protected', 'State law', 'Historic wreck — look, don’t take');
+    if (!profile?.level && g?.experience) fact('Level', `<span class="${levelClass(g.experience.level)}">${esc(g.experience.level)}</span>`, esc(g.experience.reasons.slice(0, 2).join(' · ')));
+    const access = profile?.access ? `<p class="callout soft">${esc(profile.access)}</p>` : '';
+    const fit = fitVerdict(site, ng);
+    const fitNote = fit && fit.tone !== 'good' && fit.tone !== 'info' ? `<p class="fit fit-${fit.tone} slate-note"><b>${FIT_MARK[fit.tone]}</b><span>${esc(fit.text)}</span></p>` : '';
+    const hazards = profile?.hazards?.length ? `<div class="section-label">Watch for</div><div class="watch-chips">${profile.hazards.map(h => `<span>${esc(h)}</span>`).join('')}</div>` : '';
     const mine = divesAtSite(site);
     const mineHtml = mine ? `<div class="section-label">Your dives here</div>${siteTally(mine.dives.length, mine.verified || 0)}${diveRows(mine.dives.slice(0, 3))}${mine.dives.length > 3 ? `<p class="note">And ${mine.dives.length - 3} more in your logbook.</p>` : ''}` : '';
-    const features = site.topologies?.length ? `<div class="chips spec-chips">${site.topologies.map(value => `<span>${esc(value)}</span>`).join('')}</div>` : '';
-    return `${warning}${photo}${fitCard}${mineHtml}<div class="section-label">The dive</div><div class="specs">${rows.join('')}</div>${features}<p class="note">Values marked est. are modelled, not measured. Confirm conditions and requirements with a local operator.</p>`;
+    const depth = siteDepth(site, ng);
+    const sourceLine = depth?.researched && profile.sources?.[0] ? `Depth and facts: ${profile.sources[0].url ? `<a class="source" href="${esc(profile.sources[0].url)}">${esc(profile.sources[0].name.split(' — ')[0])} ↗</a>` : esc(profile.sources[0].name)}. ` : depth?.estimated ? 'Depth estimated from seafloor data. ' : '';
+    return `<div class="hero">${crossSection(site, ng)}</div>${summary}${chips}${slate(site, ng)}${warning}${fitNote}${access}${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}${hazards}${photo}${mineHtml}<p class="note">${sourceLine}Confirm conditions and requirements with a local operator.</p>`;
   }
   function conditionsTab(site, ng) {
-    const g = glanceParts(ng.ratings);
-    const vis = g?.vis ? `<div class="specs">${spec('Visibility', `${visText(g.vis)} ${EST}`, `Satellite water clarity offshore, ${months[state.month]} average — local visibility changes with weather, tides and runoff`)}</div>` : '';
-    return thisMonth(site, ng) + (vis ? `<div class="section-label">Visibility</div>${vis}` : '') + waterYear(site, ng);
+    const region = ng.profile?.region, vis = siteVis(ng), current = siteCurrent(ng), depth = siteDepth(site, ng);
+    const rows = [];
+    if (region?.tempDeepC && (depth?.meters ?? 0) >= 12) rows.push(spec('At depth', `${temp(region.tempDeepC[0]).replace(/°.*/, '')}–${temp(region.tempDeepC[1])} ${EST}`, `Below the summer thermocline in ${esc(region.name)} — much colder than the surface`));
+    if (vis) rows.push(spec('Visibility', `${vis.value}${vis.estimated ? ` ${EST}` : ''}`, vis.estimated ? `Satellite water clarity offshore, ${months[state.month]} average — local visibility changes with weather and runoff` : 'Typical range reported for this site'));
+    if (current) rows.push(spec('Current', `${esc(current.value)}${current.estimated ? ` ${EST}` : ''}`, current.estimated ? `Typical for ${esc(region?.name || 'the area')} — wind and waves can change it` : ''));
+    const notes = region?.notes?.length ? `<div class="section-label">Good to know</div><ul class="see-list">${region.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : '';
+    return thisMonth(site, ng) + seasonStrip(ng) + (rows.length ? `<div class="section-label">In the water</div><div class="specs">${rows.join('')}</div>` : '') + waterYear(site, ng) + notes;
   }
   function lifeTab(site, ng) {
     const g = glanceParts(ng.ratings), deep = (siteDepth(site, ng)?.meters || 0) > 12;
@@ -1016,8 +1114,10 @@ export function atlasRuntime(DATA, MODEL) {
     $('site-tabs').hidden = !tabs;
     $('site-tabs').innerHTML = tabs ? SITE_TABS.map(([key, label]) => `<button role="tab" data-site-tab="${key}" aria-selected="${siteTab === key}">${label}</button>`).join('') : '';
     $('site-tabs').querySelectorAll('[data-site-tab]').forEach(button => button.onclick = () => {
-      // A new tab starts at its top; the header stays as it is, so the tabs don't jump under the finger.
+      // A new tab starts at its top. If the tab bar is pinned it stays pinned, so the tabs don't jump under the finger.
+      const pinned = Math.min($('sheet').scrollTop, headerStick());
       siteTab = button.dataset.siteTab; keepHeader = true; scrollOwner = null; renderDetails(); keepHeader = false;
+      $('sheet').scrollTop = pinned;
     });
     let body = '', clusterPreview = [];
     if (s.kind === 'species') {
@@ -1062,8 +1162,7 @@ export function atlasRuntime(DATA, MODEL) {
     }
     // Keep the scroll position only while re-rendering the same item (e.g. when its guide data arrives);
     // a different site or guide always starts at the top.
-    const scroll = scrollOwner === selected ? $('detail-body').scrollTop : 0;
-    if (!scroll && !keepHeader) $('sheet').classList.remove('compact');
+    const scroll = scrollOwner === selected ? $('sheet').scrollTop : 0;
     scrollOwner = selected;
     // Destination guides have no single site's water: the same card, without a starting point.
     if (native && s.kind === 'place' && Number.isFinite(s.latitude) && Number.isFinite(s.longitude)) body = wearCard(null) + body;
@@ -1071,7 +1170,8 @@ export function atlasRuntime(DATA, MODEL) {
     $('detail-body').innerHTML = body;
     if ($('remove-my-site')) $('remove-my-site').onclick = () => post('deleteMySite', { id: s.id, name: s.name });
     if ($('gear-for-dive')) $('gear-for-dive').onclick = () => post('gearAdvice', { id: s.kind === 'site' ? s.id : null, name: s.name, latitude: s.latitude, longitude: s.longitude, month: state.month });
-    $('detail-body').scrollTop = scroll;
+    pinHeader();
+    $('sheet').scrollTop = scroll;
     $('detail-body').querySelectorAll('[data-dive]').forEach(button => button.onclick = () => post('openDive', { id: button.dataset.dive }));
     $('detail-body').querySelectorAll('[data-place-kind]').forEach(button => button.onclick = () => post('openPlace', { kind: button.dataset.placeKind, id: button.dataset.placeId }));
     $('detail-body').querySelectorAll('[data-region-area]').forEach(button => button.onclick = () => choose({ ...regionGuides.get(regionKey(s)).areas[Number(button.dataset.regionArea)], kind: 'area' }, true));
@@ -1259,26 +1359,26 @@ export function atlasRuntime(DATA, MODEL) {
   $('close').onclick = closeDetails;
   function expandDetails(expanded) {
     document.body.classList.toggle('detail-expanded', expanded);
-    if (!expanded || expandedOwner !== selected) $('sheet').classList.remove('compact');
-    // A collapsed (hidden) body ignores scrollTop, so reset once it is visible again for a new item.
-    if (expanded && expandedOwner !== selected) { $('detail-body').scrollTop = 0; requestAnimationFrame(() => { $('detail-body').scrollTop = 0; }); }
+    // The collapsed card doesn't scroll: start at the top, and again for a new item once expanded.
+    if (!expanded || expandedOwner !== selected) { $('sheet').scrollTop = 0; requestAnimationFrame(() => { $('sheet').scrollTop = 0; }); }
+    pinHeader();
     if (expanded) expandedOwner = selected;
     $('expand').setAttribute('aria-expanded', String(expanded));
     $('expand').setAttribute('aria-label', expanded ? 'Collapse details' : 'Expand details');
     $('expand').textContent = expanded ? 'Collapse ↓' : 'View guide ↑';
   }
   $('expand').onclick = () => expandDetails(!document.body.classList.contains('detail-expanded'));
-  // Reading the guide: the header folds to a one-line title so the page gets the room (tap it to go back up).
-  // Hysteresis keeps it from flickering at the threshold.
-  const compactHeader = on => $('sheet').classList.toggle('compact', on);
-  $('detail-body').addEventListener('scroll', () => {
-    const y = $('detail-body').scrollTop;
-    if (y > 64) compactHeader(true); else if (y < 8) compactHeader(false);
-  }, { passive: true });
-  document.querySelector('.sheet-head').addEventListener('click', event => {
-    if (!$('sheet').classList.contains('compact') || event.target.closest('button,a')) return;
-    $('detail-body').scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  // Reading the guide: the whole card scrolls as one page and the header scrolls away under the finger, until
+  // only the site tabs remain, pinned to the top (CSS position: sticky with a negative top). Nothing changes size
+  // while scrolling, so there is nothing to jump. The pin offset is measured whenever the card is drawn.
+  function headerStick() {
+    const head = document.querySelector('.sheet-head'), tabs = $('site-tabs');
+    return Math.max(0, tabs.hidden ? head.offsetHeight : tabs.offsetTop - 8);
+  }
+  function pinHeader() {
+    document.querySelector('.sheet-head').style.top = document.body.classList.contains('detail-expanded') ? `-${headerStick()}px` : '';
+  }
+  window.addEventListener('resize', pinHeader);
   $('layers-toggle').onclick = () => openPanel('layers');
   $('season-toggle').onclick = () => openPanel('season');
   $('browse-toggle').onclick = () => openPanel('browse');
@@ -1350,7 +1450,7 @@ export function atlasRuntime(DATA, MODEL) {
       if (window.atlasLocationMarker) map.removeLayer(window.atlasLocationMarker);
       window.atlasLocationMarker = L.circleMarker([message.latitude, message.longitude], { pane: 'vectors', interactive: false, radius: 7, color: '#fff', weight: 2, fillColor: '#5797ff', fillOpacity: 1 }).addTo(map);
     } else if (message.type === 'siteGuide') {
-      if (message.key) siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, diver: message.diver || null });
+      if (message.key) siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, diver: message.diver || null, profile: message.profile || null });
       if (selected && ['site', 'area'].includes(selected.kind) && guideKey(selected) === message.key) renderDetails();
     } else if (message.type === 'quickLook') {
       if (quickTap?.requestId === message.requestId && message.look) showQuickLook(quickTap.latlng, message.look);

@@ -1,0 +1,495 @@
+{
+ "region": "Florida (Keys, Panhandle, Palm Beach)",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "noaa-fknms-adolphus-busch-wreck",
+   "name": "Adolphus Busch Wreck",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0057%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 38,
+     "bottom": 100,
+     "quote": "Adolphus Busch Sr (MO0057): depth 100 ft, relief 62 ft, deployed 12/05/1998"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-bibb-wreck",
+   "name": "Bibb Wreck",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0044%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 95,
+     "bottom": 130,
+     "quote": "Bibb (MO0044): depth 130 ft, relief 35 ft, deployed 11/27/1987"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-duane-wreck",
+   "name": "Duane Wreck",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0043%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 68,
+     "bottom": 118,
+     "quote": "Duane (MO0043): depth 118 ft, relief 50 ft, deployed 11/27/1987"
+    },
+    {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/duane.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 120,
+     "quote": "lies upright on a sandy bottom in 120 feet of water … mast and crow's nest … only 60 feet deep"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-eagle-wreck",
+   "name": "Eagle Wreck",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0026%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 110,
+     "quote": "Eagle (MO0026): depth 110 ft, relief 40 ft, deployed 12/19/1985"
+    },
+    {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/eagle.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 110,
+     "quote": "lying on its starboard side in 110 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-joe-s-tug-wreck",
+   "name": "Joe's Tug Wreck",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0053%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 65,
+     "quote": "Joe's Tug (MO0053): depth 65 ft, relief 25 ft, deployed 01/21/1989"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-spiegel-grove-wreck",
+   "name": "Spiegel Grove Wreck",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0061%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 51,
+     "bottom": 135,
+     "quote": "Spiegel Grove (MO0061): depth 135 ft, relief 84 ft, deployed 05/17/2002"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-vandenberg-wreck",
+   "name": "Vandenberg Wreck",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0062%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 145,
+     "quote": "Hoyt Vandenberg (MO0062): depth 145 ft, relief 100 ft, deployed 05/27/2009"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869451",
+   "name": "San Pablo",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0001%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 57,
+     "bottom": 84,
+     "quote": "San Pablo (W) Ship (ES0001): depth 84 ft, relief 27 ft, deployed 00/00/1943"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869452",
+   "name": "Sylvia",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0030%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 57,
+     "bottom": 82,
+     "quote": "Sylvia Tugboat 48' (ES0030): depth 82 ft, relief 25 ft, deployed 06/26/1990"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869453",
+   "name": "P. C. Barge",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0028%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 74,
+     "bottom": 82,
+     "quote": "P.C. Barge (ES0028): depth 82 ft, relief 8 ft, deployed 06/20/1990"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869455",
+   "name": "Soule Barge-Gulf Power Towers",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0041%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 73,
+     "bottom": 83,
+     "quote": "Soule Barge (ES0041): depth 83 ft, relief 10 ft, deployed 04/10/1992"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869456",
+   "name": "Tessie",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0009%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 75,
+     "quote": "Tessie Steel Boat (ES0009): depth 75 ft, relief 10 ft, deployed 04/05/1988"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869457",
+   "name": "Deliverance",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0025%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 82,
+     "quote": "Deliverance Tugboat (ES0025): depth 82 ft, relief 22 ft, deployed 10/24/1989"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-216",
+   "name": "USS Accokeek",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27BA0162%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 63,
+     "bottom": 100,
+     "quote": "Accokeek (BA0162): depth 100 ft, relief 37 ft, deployed 07/09/2000"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-228",
+   "name": "USCGC Mohawk (WPG-78)",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27LE0120%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 90,
+     "quote": "USS Mohawk CGC V.M.R. (LE0120): depth 90 ft, relief 55 ft, deployed 07/02/2012"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-249",
+   "name": "USS Curb",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0016%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 125,
+     "bottom": 185,
+     "quote": "USS Curb (MO0016): depth 185 ft, relief 60 ft, deployed 11/24/1983"
+    }
+   ]
+  },
+  {
+   "id": "x-pbc-eidsvag",
+   "name": "Eidsvag",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27PB0010%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 80,
+     "quote": "Eidsvag (PB0010): depth 80 ft, relief 0 ft, deployed 00/00/1985"
+    }
+   ]
+  },
+  {
+   "id": "x-pbc-eidsvag-barge",
+   "name": "Eidsvag Barge",
+   "claims": [
+    {
+     "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27PB0010%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "publisher": "Florida FWC artificial reef program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 80,
+     "quote": "Eidsvag (PB0010): depth 80 ft, relief 0 ft, deployed 00/00/1985"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-adelaide-baker",
+   "name": "Adelaide Baker",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/adelaide.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 20,
+     "quote": "In 20 feet of water, 4 miles south-southeast of Duck Key"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-amesbury-wreck",
+   "name": "Amesbury Wreck",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/amesbury.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 30,
+     "quote": "less than 30 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-benwood-wreck",
+   "name": "Benwood Wreck",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/benwood.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 45,
+     "quote": "in depths ranging from 25 to 45 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-san-pedro-wreck",
+   "name": "San Pedro Wreck",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/sanpedro.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 18,
+     "quote": "sank in 18 feet of water 1 mile south of Indian Key"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-molasses-reef",
+   "name": "Molasses Reef",
+   "claims": [
+    {
+     "url": "https://pennekamppark.com/scuba-tours/",
+     "publisher": "Coral Reef Park Company (Pennekamp concessionaire)",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 50,
+     "quote": "Molasses Reef 15-50 feet"
+    },
+    {
+     "url": "https://www.opalcollection.com/blog/best-dive-sites-key-largo",
+     "publisher": "Opal Collection",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 40,
+     "quote": "Molasses Reef: 10 to 40 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-snapper-ledge",
+   "name": "Snapper Ledge",
+   "claims": [
+    {
+     "url": "https://pennekamppark.com/scuba-tours/",
+     "publisher": "Coral Reef Park Company (Pennekamp concessionaire)",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 50,
+     "quote": "Snapper Ledge 15-50 feet"
+    },
+    {
+     "url": "https://www.opalcollection.com/blog/best-dive-sites-key-largo",
+     "publisher": "Opal Collection",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 40,
+     "quote": "Snapper Ledge: 30 and 40 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-north-dry-rocks",
+   "name": "North Dry Rocks",
+   "claims": [
+    {
+     "url": "https://pennekamppark.com/scuba-tours/",
+     "publisher": "Coral Reef Park Company (Pennekamp concessionaire)",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 25,
+     "quote": "North Dry Rocks 15-25 feet"
+    },
+    {
+     "url": "https://rainbowreef.com/dive-locations-in-key-largo/key-largo-northern-dry-rocks/north-dry-rocks",
+     "publisher": "Rainbow Reef Dive Center",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 25,
+     "quote": "Site Depth: 12-25 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-french-reef",
+   "name": "French Reef",
+   "claims": [
+    {
+     "url": "https://pennekamppark.com/scuba-tours/",
+     "publisher": "Coral Reef Park Company (Pennekamp concessionaire)",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 45,
+     "quote": "French 25-45 feet"
+    },
+    {
+     "url": "https://www.opalcollection.com/blog/best-dive-sites-key-largo",
+     "publisher": "Opal Collection",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 60,
+     "quote": "French Reef: 30 to 60 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-elbow",
+   "name": "Elbow",
+   "claims": [
+    {
+     "url": "https://pennekamppark.com/scuba-tours/",
+     "publisher": "Coral Reef Park Company (Pennekamp concessionaire)",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 30,
+     "quote": "Elbow 10-30 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-carysfort-reef",
+   "name": "Carysfort Reef",
+   "claims": [
+    {
+     "url": "https://pennekamppark.com/scuba-tours/",
+     "publisher": "Coral Reef Park Company (Pennekamp concessionaire)",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 30,
+     "quote": "Carysfort 10-30 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-pickles-reef",
+   "name": "Pickles Reef",
+   "claims": [
+    {
+     "url": "https://rainbowreef.com/dive-locations-in-key-largo/pickles-reef/pickles-main",
+     "publisher": "Rainbow Reef Dive Center",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 25,
+     "quote": "Site Depth: 15-25 feet"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,731 @@
+{
+ "region": "us-inland-2",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikilist-658",
+   "name": "Eber Ward",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 110,
+     "bottom": 145,
+     "quote": "Eber Ward bow (1909) 110′ to 145′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-652",
+   "name": "Col. Ellsworth",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 85,
+     "quote": "Colonel Ellsworth (1896) 70′ to 85′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-657",
+   "name": "Dolphin",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 110,
+     "quote": "Dolphin (1869) 110′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-667",
+   "name": "Fred McBrier",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 100,
+     "quote": "Fred McBrier (1890) 100′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-689",
+   "name": "Maitland",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 85,
+     "quote": "Maitland (1871) 70′ to 85′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-698",
+   "name": "Minneapolis",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 92,
+     "bottom": 125,
+     "quote": "Minneapolis (1894) 92′ to 125′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-708",
+   "name": "Northwest",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 52,
+     "bottom": 73,
+     "quote": "Northwest (1898) 52′ to 73′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-718",
+   "name": "Sandusky",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 80,
+     "quote": "Sandusky (1856) 70′ to 80′"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869532",
+   "name": "Cedarville (Wreck)",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 110,
+     "quote": "Cedarville bow (1965) 40′ to 105′ ... Cedarville stern (1965) 70′ to 110′"
+    }
+   ],
+   "note": "Bow 40-105 ft, stern 70-110 ft"
+  },
+  {
+   "id": "x-wikipedia-624",
+   "name": "SS M.M. Drake",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 50,
+     "quote": "M. M. Drake (1901) 50′"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_M.M._Drake",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 40,
+     "quote": "lying on her side in 40 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-630",
+   "name": "SS Samuel Mather (1887)",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 140,
+     "bottom": 170,
+     "quote": "Samuel Mather (1891) 140′ to 170′"
+    }
+   ],
+   "note": "Whitefish Point; Wikipedia gives bottom 180 ft"
+  },
+  {
+   "id": "x-wikipedia-171",
+   "name": "SS John Mitchell (1906)",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 125,
+     "bottom": 150,
+     "quote": "John Mitchell (1911) 125′ to 150′"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_John_Mitchell_(1906)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": 140,
+     "bottom": 150,
+     "quote": "resting upside down in between 140 feet and 150 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869534",
+   "name": "Panther (Wreck)",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 90,
+     "bottom": 110,
+     "quote": "Panther (1916) 90′ to 110′"
+    },
+    {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 90,
+     "bottom": 110,
+     "quote": "The Panther was found in 1975 in 90 to 110 feet of water."
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-101",
+   "name": "Whitefish Point Underwater Preserve",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Whitefish_Point_Underwater_Preserve",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 270,
+     "quote": "twenty-three known shipwrecks lying in depths from 30 feet to 270 feet"
+    }
+   ],
+   "note": "Preserve-wide range of wreck depths"
+  },
+  {
+   "id": "x-wikipedia-137",
+   "name": "SS Kamloops",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 240,
+     "bottom": 260,
+     "quote": "Kamloops - bow 240′ to 260′"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_Kamloops",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 260,
+     "quote": "sitting on the lake bottom under more than 260 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "osm-n2171849465",
+   "name": "Glenlyon",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 60,
+     "quote": "Glenlyon (1924) 15′ to 60′"
+    }
+   ],
+   "note": "Isle Royale; catalog pin is garbled deg-min"
+  },
+  {
+   "id": "x-wikilist-760",
+   "name": "Henry Chisholm",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 60,
+     "quote": "Chisholm - hull (1898) 20′ to 60′"
+    }
+   ],
+   "note": "Hull 20-60 ft; engine separately 115-155 ft"
+  },
+  {
+   "id": "x-wikipedia-63",
+   "name": "PS Cumberland",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 80,
+     "quote": "Cumberland (1877) 20′ to 80′"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/PS_Cumberland",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 80,
+     "quote": "Large portions of the ship remain in 20 to 80 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-757",
+   "name": "Gazelle",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 20,
+     "quote": "Gazelle (1860) 20′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-755",
+   "name": "City of Bangor",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 35,
+     "quote": "City of Bangor (1926) 15′ to 35′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-768",
+   "name": "Wasaga",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 35,
+     "quote": "Wasaga* (1910) 35″"
+    }
+   ],
+   "note": "Reported position per source"
+  },
+  {
+   "id": "x-wikipedia-151",
+   "name": "SS J. H. Sheadle",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/marquette-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "“Iron Man” & J.H. Sheadle (1920) 15′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-146",
+   "name": "SS Isaac M. Scott",
+   "claims": [
+    {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/isaac_m_scott.html",
+     "publisher": "NOAA Thunder Bay NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 175,
+     "quote": "Depth: 175 feet"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-773",
+   "name": "Alvin Buckingham",
+   "claims": [
+    {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/buckingham.html",
+     "publisher": "NOAA Thunder Bay NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 8,
+     "quote": "Depth: 8 Feet"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-549",
+   "name": "SS Monrovia",
+   "claims": [
+    {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/monrovia.html",
+     "publisher": "NOAA Thunder Bay NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 140,
+     "quote": "Depth: 140 feet"
+    }
+   ],
+   "note": "Catalog pin garbled: preserve lists 44 59.020N 82 55.380W"
+  },
+  {
+   "id": "x-wikilist-712",
+   "name": "P. J. Ralph",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/manitou-passage-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 35,
+     "quote": "P.J. Ralph (1924) 35′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-750",
+   "name": "William T. Graves",
+   "claims": [
+    {
+     "url": "https://www.michiganpreserves.org/manitou-passage-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 20,
+     "quote": "William T. Graves (1885) 20′"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-681",
+   "name": "John Evenson",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/321",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 48,
+     "quote": "Depth (ft): 48 (site depth statistic)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-730",
+   "name": "Sydney C. McLouth",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/596",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 18,
+     "quote": "Depth (ft): 18 (site depth statistic)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-651",
+   "name": "City of Kalamazoo",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/673",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 15,
+     "quote": "Depth (ft): 15 (site depth statistic)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-109",
+   "name": "SS Frank O'Connor",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/218",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 70,
+     "quote": "Depth (ft): 70 (site depth statistic)"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_Frank_O'Connor",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 67,
+     "quote": "She lies in 50 to 67 feet (15 to 20 m) of water about 2 miles (3 km) off Cana Island."
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-680",
+   "name": "Jennibel",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/314",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 108,
+     "quote": "Depth (ft): 108 (site depth statistic)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-684",
+   "name": "Kate Williams",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/340",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 6,
+     "quote": "Depth (ft): 6 (site depth statistic)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-479",
+   "name": "Lucerne",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/386",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 24,
+     "quote": "The hull lies in 24 feet of water"
+    }
+   ],
+   "note": "Stern post 15 ft below surface"
+  },
+  {
+   "id": "x-wikipedia-481",
+   "name": "Noquebay",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/458",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 15,
+     "quote": "The wreckage field lies in 10-15 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-482",
+   "name": "Ottawa (tug)",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/486",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 16,
+     "quote": "resting on sandy bottom 12-16 feet below the surface"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-502",
+   "name": "Pretoria (schooner barge)",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/509",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 54,
+     "quote": "lies in about 54 feet of water off of Outer Island, Lake Superior"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-515",
+   "name": "SS R. G. Stewart",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/518",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 7,
+     "quote": "Depth (ft): 7 (site depth statistic)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-511",
+   "name": "Sevona",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/565",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "Depth (ft): 25 (site depth statistic)"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-478",
+   "name": "Big Bay sloop",
+   "claims": [
+    {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/657",
+     "publisher": "Wisconsin Historical Society (WI Shipwrecks)",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "rests in 25 feet of water within Madeline Island's Big Bay"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-647",
+   "name": "C. E. Redfern",
+   "claims": [
+    {
+     "url": "https://www.michiganshipwrecks.org/?p=2241",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 275,
+     "quote": "an anomaly in 275′ of water about 4 miles off Point Betsie"
+    },
+    {
+     "url": "https://shotlinediving.com/wreck/c-e-redfern-1890/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 275,
+     "quote": "Depth at Wreck Site : 83.8 m / 275 ft"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-746",
+   "name": "W. C. Kimball",
+   "claims": [
+    {
+     "url": "https://shotlinediving.com/wreck/w-c-kimball-1888/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 300,
+     "quote": "Depth at Wreck Site : 90 m / 300 ft"
+    },
+    {
+     "url": "https://wgrd.com/lake-michigan-1891-shipwreck-could-be-most-intact-wooden-schooner-ever-found/",
+     "publisher": "WGRD",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 300,
+     "quote": "resting in about 300 feet of water, and rising 90 feet off the lake's bottom"
+    }
+   ]
+  },
+  {
+   "id": "x-wikilist-741",
+   "name": "Uganda",
+   "claims": [
+    {
+     "url": "https://www.shipwreckexplorers.com/uganda/",
+     "publisher": "Shipwreck Explorers (Milwaukee dive charters)",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 185,
+     "bottom": 207,
+     "quote": "Depth Deck(ft): 185 ft Depth Bottom(ft): 207 ft"
+    }
+   ]
+  }
+ ]
+}

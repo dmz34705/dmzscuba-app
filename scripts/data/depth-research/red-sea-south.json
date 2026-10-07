@@ -1,0 +1,178 @@
+{
+ "region": "red-sea-south",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869779",
+   "name": "Numidia",
+   "claims": [
+    {
+     "url": "https://www.blueocean-eg.com/blog/wreck-diving-egypt",
+     "publisher": "Blue Ocean Diving Centers",
+     "kind": "operator",
+     "unit": "m",
+     "top": 8,
+     "bottom": 80,
+     "quote": "Its bow is located at 8 meters. The rest of the vessel dropped down to some 80 meters."
+    },
+    {
+     "url": "https://scubadiverlife.com/dive-site-brothers-islands-egypt",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "unit": "m",
+     "top": 10,
+     "bottom": 70,
+     "quote": "It starts at 30 feet/10 meters, but descends all the way down to 230 feet/70 meters."
+    },
+    {
+     "url": "https://divemagazine.com/destination-guides/egypt/egypt-wreck-dives",
+     "publisher": "DIVE Magazine",
+     "kind": "press",
+     "unit": "m",
+     "top": 8,
+     "bottom": 80,
+     "quote": "lies between 8 and 80m"
+    }
+   ],
+   "note": "Big Brother, bow near reef top, stern ~70-80 m"
+  },
+  {
+   "id": "osm-n663869780",
+   "name": "Aida",
+   "claims": [
+    {
+     "url": "https://www.blueocean-eg.com/blog/wreck-diving-egypt",
+     "publisher": "Blue Ocean Diving Centers",
+     "kind": "operator",
+     "unit": "m",
+     "top": 25,
+     "bottom": 60,
+     "quote": "stretching from 25 meters to 60 metres from bow to stern"
+    },
+    {
+     "url": "https://divemagazine.com/destination-guides/egypt/egypt-wreck-dives",
+     "publisher": "DIVE Magazine",
+     "kind": "press",
+     "unit": "m",
+     "top": 28,
+     "bottom": 52,
+     "quote": "The bow now lies at 28m with the stern and prop at 52m"
+    }
+   ],
+   "note": "Wreck at Big Brother; pin is Little Brother side area"
+  },
+  {
+   "id": "osm-n663869769",
+   "name": "Hamada",
+   "claims": [
+    {
+     "url": "https://de.wikivoyage.org/wiki/Hamada",
+     "publisher": "Wikivoyage (German)",
+     "kind": "encyclopedia",
+     "unit": "m",
+     "top": 2,
+     "bottom": 14,
+     "quote": "befindet sich in zwei bis 14 Metern Tiefe"
+    },
+    {
+     "url": "https://airguide.info/?p=181511",
+     "publisher": "Airguide",
+     "kind": "press",
+     "unit": "m",
+     "top": 0,
+     "bottom": 18,
+     "quote": "from 0m up to 18m"
+    }
+   ],
+   "note": "Shallow coastal cargo wreck near Abu Ghusun"
+  },
+  {
+   "id": "osm-n663869765",
+   "name": "Abu Galawa Kebir",
+   "claims": [
+    {
+     "url": "https://www.blueocean-eg.com/itineraries/fury-shoals",
+     "publisher": "Blue Ocean Diving Centers",
+     "kind": "operator",
+     "unit": "m",
+     "top": 5,
+     "bottom": 18,
+     "quote": "lays between 5 m and 18 m depth directly at the reef"
+    }
+   ],
+   "note": "Tien Hsing barge wreck"
+  },
+  {
+   "id": "osm-n408451459",
+   "name": "Shaab Claudio",
+   "claims": [
+    {
+     "url": "https://www.blueocean-eg.com/itineraries/fury-shoals-(mini-safari)",
+     "publisher": "Blue Ocean Diving Centers",
+     "kind": "operator",
+     "unit": "m",
+     "top": 5,
+     "bottom": 25,
+     "quote": "Depth: between 5 and 25 meters."
+    },
+    {
+     "url": "https://www.pro-taucher.com/?p=1728",
+     "publisher": "Pro-Taucher",
+     "kind": "press",
+     "unit": "m",
+     "top": null,
+     "bottom": 30,
+     "quote": "Maximum depth: 30 meters"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869764",
+   "name": "Shaab Sataya",
+   "claims": [
+    {
+     "url": "https://www.blueocean-eg.com/itineraries/fury-shoals-(mini-safari)",
+     "publisher": "Blue Ocean Diving Centers",
+     "kind": "operator",
+     "unit": "m",
+     "top": 5,
+     "bottom": 40,
+     "quote": "Depth: between 5 and +40 meters."
+    }
+   ],
+   "note": "Single source; open-water outer reef deeper"
+  },
+  {
+   "id": "osm-w91978564",
+   "name": "Shaab Sharm",
+   "claims": [
+    {
+     "url": "https://www.dive-the-world.com/diving-sites-egypt-red-sea-south.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "unit": "m",
+     "top": 17,
+     "bottom": 35,
+     "quote": "holds a plateau stretching from 17-35m deep"
+    }
+   ],
+   "note": "Plateau depth only; single source"
+  },
+  {
+   "id": "osm-n663869680",
+   "name": "Blue Belt",
+   "claims": [
+    {
+     "url": "https://www.dive-the-world.com/diving-sites-sudan.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "unit": "m",
+     "top": 20,
+     "bottom": 36,
+     "quote": "from 20m to a maximum of about 36m"
+    }
+   ],
+   "note": "Sources conflict (some say deeper); single source"
+  }
+ ]
+}

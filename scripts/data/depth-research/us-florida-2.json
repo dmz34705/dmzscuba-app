@@ -1,0 +1,229 @@
+{
+ "region": "us-florida-2",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-pbc-zion-train-bow",
+   "name": "Zion Train Bow",
+   "claims": [
+    {
+     "url": "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "publisher": "Florida FWC Artificial Reef Program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90,
+     "quote": "M/V Zion Train Freighter 164' UNK 35 90 26\u00b0 57.782' N 80\u00b0 00.440' W"
+    }
+   ],
+   "note": "FWC lists the wreck at 90 ft.",
+   "position": [26.963033, -80.007333]
+  },
+  {
+   "id": "x-pbc-spearmans-barge",
+   "name": "Spearman's Barge",
+   "claims": [
+    {
+     "url": "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "publisher": "Florida FWC Artificial Reef Program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 70,
+     "quote": "Spearman's Barge Barge Deck 100' UNK UNK 70 26\u00b0 47.590' N 80\u00b0 00.350' W"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-316",
+   "name": "Circle of Heroes",
+   "claims": [
+    {
+     "url": "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "publisher": "Florida FWC Artificial Reef Program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 44,
+     "quote": "Circle of Heroes Prefabricated Statues (17) 40 6 44 28\u00b0 03.117' N 83\u00b0 00.650' W"
+    }
+   ],
+   "note": "Depth and position are from the Florida FWC deployment record.",
+   "position": [28.05195, -83.010833]
+  },
+  {
+   "id": "x-notable-826",
+   "name": "SS Regina",
+   "claims": [
+    {
+     "url": "https://museumsinthesea.fpan.us/regina",
+     "publisher": "Florida Dept. of State / FPAN Museums in the Sea",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 20,
+     "quote": "12-20FT"
+    }
+   ]
+  },
+  {
+   "id": "x-notable-798",
+   "name": "Urca de Lima",
+   "claims": [
+    {
+     "url": "https://museumsinthesea.fpan.us/urca",
+     "publisher": "Florida Dept. of State / FPAN Museums in the Sea",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 15,
+     "quote": "10-15FT"
+    }
+   ]
+  },
+  {
+   "id": "x-notable-831",
+   "name": "Vamar Shipwreck Site",
+   "claims": [
+    {
+     "url": "https://museumsinthesea.fpan.us/vamar",
+     "publisher": "Florida Dept. of State / FPAN Museums in the Sea",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "The site is in 25 feet of water and wreckage rises several feet off the sea floor."
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/Vamar_Shipwreck_Site",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "in 25 feet of water off Mexico Beach, Florida"
+    }
+   ]
+  },
+  {
+   "id": "osm-n3149301713",
+   "name": "Weeki Wachee Spring",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Weeki_Wachee_Springs",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 407,
+     "quote": "The 407 ffw depth makes the cave system under Weeki Wachee springs the deepest known freshwater cave system in the United States."
+    },
+    {
+     "url": "https://dan.org/alert-diver/article/where-mermaids-fear-to-tread/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 407,
+     "quote": "pushed its depth to 407 ffw, nearly 6,000 feet from daylight"
+    }
+   ],
+   "note": "Cave-system maximum, not a normal open-water dive depth. Technical cave training is required."
+  },
+  {
+   "id": "osm-w238016491",
+   "name": "Eagle's Nest",
+   "claims": [
+    {
+     "url": "https://www.nbcmiami.com/news/local/divers-father-wants-tampa-area-eagle-nest-sink-cave-closed-after-deaths/1912087/",
+     "publisher": "NBC Miami",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 300,
+     "quote": "300-foot deep"
+    }
+   ],
+   "note": "Cave-system maximum, not a normal open-water dive depth. Technical cave training is required."
+  },
+  {
+   "id": "x-curated-618",
+   "name": "Peacock Springs",
+   "claims": [
+    {
+     "url": "https://karstunderwater.org/wes-skiles-peacock-springs-state-park/",
+     "publisher": "Karst Underwater Research",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 204,
+     "quote": "Max Depth: 204 feet"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/Wes_Skiles_Peacock_Springs_State_Park",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 200,
+     "quote": "drops to over 200 feet (61 m)"
+    }
+   ],
+   "note": "Cave-system maximum, not a normal open-water dive depth. Technical cave training is required."
+  },
+  {
+   "id": "osm-w1464163058",
+   "name": "Blue Grotto Spring",
+   "claims": [
+    {
+     "url": "https://www.floridacaves.com/bgrotto.htm",
+     "publisher": "FloridaCaves.com",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 100,
+     "quote": "Permanent heavy duty guidelines tour through the entire system with a maximum depth of 100 feet."
+    }
+   ]
+  },
+  {
+   "id": "osm-n3167637595",
+   "name": "Troy Spring",
+   "claims": [
+    {
+     "url": "https://map.mysuwanneeriver.com/district-springs/troy-spring-23",
+     "publisher": "Suwannee River Water Management District",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 70,
+     "quote": "this 70-foot-deep spring"
+    },
+    {
+     "url": "https://seekinglost.com/hikes-other-adventures/florida-springs/troy-springs/",
+     "publisher": "Seeking Lost",
+     "kind": "press",
+     "unit": "ft",
+     "top": 3,
+     "bottom": 75,
+     "quote": "drops off sharply to 75 feet"
+    }
+   ]
+  },
+  {
+   "id": "osm-n3170772458",
+   "name": "Madison Blue Spring",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/Madison_Blue_Spring_State_Park",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "about 25 feet (7.6 m) deep, 82 feet (25 m) wide"
+    }
+   ]
+  }
+ ]
+}

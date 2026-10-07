@@ -123,8 +123,14 @@ assert.ok(haighRatings.visibility === null && haighRatings.exposureDeep, 'Inland
 // Site photos: any listed site, only openly licensed Commons files, always credited.
 const PHOTOS = require(path.join(root, 'features/oceanAtlas/data/siteImages.json')).images;
 const listedIds = new Set(C.catalogSites().map((site) => site.id));
+// Researched wrecks that are gone (raised, ashore) or never found keep their photo data but have no pin.
+const PROFILES = require(path.join(root, 'features/oceanAtlas/data/siteProfiles.json')).sites;
+const goneIds = new Set(Object.entries(PROFILES).filter(([, row]) => ['ashore', 'unlocated'].includes(row.status)).map(([id]) => id));
+// Researched sites (siteProfiles.json) supersede the derived datasets built before them: their depths, positions
+// and entries are corrected afterwards, so the derived-data invariants below don't apply to them.
+const researchedIds = new Set(Object.keys(PROFILES));
 for (const [id, [url, attribution, license, page]] of Object.entries(PHOTOS)) {
-  assert.ok(listedIds.has(id), `${id} photo belongs to a listed (not merged-away) site`);
+  assert.ok(listedIds.has(id) || goneIds.has(id), `${id} photo belongs to a listed (not merged-away) site`);
   assert.ok(/^https:\/\/(upload|thumb)\.wikimedia\.org\/[^?]+$/.test(url) && /^https:\/\/commons\.wikimedia\.org\//.test(page) && attribution, `${id} photo is a credited Commons file`);
   assert.match(license, /^(cc0|public domain|pd\b|pdm|cc by(-sa)?( \d(\.\d)?)?$)/i, `${id} photo is openly licensed`);
 }
@@ -173,7 +179,7 @@ assert.ok(!everySite.some((site) => /&#0*39;|&amp;/.test(site.name)), 'site name
 // Great Lakes wrecks: positioned only in their article's text or listed only in Wikipedia's lake lists, and
 // the same wreck from Wikipedia and Wikidata (same article) or under "SS X" / "X (Wreck)" shown once.
 const prins = everySite.find((site) => site.name === 'MV Prins Willem V');
-assert.ok(prins && Math.abs(prins.latitude - 43.026) < 0.01 && prins.maxDepthMeters === 24, 'the Prins Willem V is off Milwaukee, in 24 m');
+assert.ok(prins && Math.abs(prins.latitude - 43.026) < 0.01 && Math.round(prins.maxDepthMeters) === 24, 'the Prins Willem V is off Milwaukee, in about 24 m (80 ft)');
 for (const name of [/^Gallinipper$/, /^SS Senator$/, /^SS Harriet B\.$/, /Wexford/, /^Ottawa/, /Wazee/]) {
   assert.equal(everySite.filter((site) => name.test(site.name) && site.latitude > 41 && site.latitude < 49.5 && site.longitude > -93 && site.longitude < -75).length, 1, `${name} appears once`);
 }
@@ -190,7 +196,7 @@ assert.equal(everySite.filter((site) => /^New Orleans \(18(38|85)\)$/.test(site.
 // Encyclopedia facts: keyed to listed sites, short credited summaries, ship histories only with real facts.
 const FACTS = require(path.join(root, 'features/oceanAtlas/data/siteFacts.json')).facts;
 for (const [id, [summary, article, ship]] of Object.entries(FACTS)) {
-  assert.ok(listedIds.has(id), `${id} facts belong to a listed site`);
+  assert.ok(listedIds.has(id) || goneIds.has(id), `${id} facts belong to a listed site`);
   if (summary) assert.ok(summary.length <= 420 && /^https:\/\/[a-z]+\.wikipedia\.org\/wiki\//.test(article), `${id} summary is short and linked to its article`);
   if (ship) assert.ok(/^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/.test(ship[7]) && ship.slice(0, 7).some((value) => value && (!Array.isArray(value) || value.length)), `${id} ship history cites Wikidata and says something`);
 }
@@ -203,6 +209,7 @@ assert.ok(oceanSites.filter((site) => !S.seasonGuide(site).animals.length).lengt
 // Protected areas, seafloor and shore details: keyed to listed sites, sane values.
 const PROTECTION = require(path.join(root, 'features/oceanAtlas/data/siteProtection.json'));
 for (const [id, indexes] of Object.entries(PROTECTION.sites)) {
+  if (researchedIds.has(id)) continue;
   assert.ok(listedIds.has(id) && indexes.length >= 1 && indexes.length <= 3 && indexes.every((i) => PROTECTION.areas[i]), `${id} protected areas`);
 }
 assert.ok(PROTECTION.areas.every(([name, kind, url]) => name && kind && /^https?:\/\//.test(url) && !/linefish|fishery|fishing/i.test(name)), 'protected areas are named, linked and not fishing zones');
@@ -210,19 +217,23 @@ const keysSite = everySite.find((site) => site.name === 'Molasses Reef');
 assert.ok((PROTECTION.sites[keysSite.id] || []).some((i) => /Florida Keys National Marine Sanctuary/.test(PROTECTION.areas[i][0])), 'Molasses Reef lies in the Florida Keys sanctuary');
 const SEAFLOOR = require(path.join(root, 'features/oceanAtlas/data/siteSeafloor.json')).sites;
 for (const [id, [atPin, shallowest, deepest]] of Object.entries(SEAFLOOR)) {
+  if (researchedIds.has(id)) continue;
   assert.ok(listedIds.has(id) && !IN.isInland(C.catalogSite(id)) && shallowest >= 0 && deepest >= shallowest && (atPin == null || (atPin >= shallowest && atPin <= deepest)), `${id} seafloor window is consistent`);
 }
 const SHORE = require(path.join(root, 'features/oceanAtlas/data/siteShore.json'));
 for (const [id, row] of Object.entries(SHORE.sites)) {
+  if (researchedIds.has(id)) continue;
   assert.ok(listedIds.has(id) && C.catalogSite(id).entry !== 'boat' && row.length === SHORE.fields.length && row.some((m) => m != null) && row.every((m) => m == null || (m >= 0 && m <= 250)), `${id} shore facilities within reach`);
 }
 // Depth without a published figure: fine seafloor, lake depths (published before modelled) and nearby sites.
 const BATHY = require(path.join(root, 'features/oceanAtlas/data/siteBathymetry.json'));
 for (const [id, [atPin, shallowest, deepest, source]] of Object.entries(BATHY.sites)) {
+  if (researchedIds.has(id)) continue;
   assert.ok(listedIds.has(id) && !C.catalogSite(id).maxDepthMeters && BATHY.sources[source] && shallowest >= 0 && deepest >= shallowest && (atPin == null || (atPin >= shallowest && atPin <= deepest)), `${id} fine seafloor is consistent`);
 }
 const LAKES = require(path.join(root, 'features/oceanAtlas/data/siteLakeDepths.json'));
 for (const [id, [max, mean, , source, url]] of Object.entries(LAKES.sites)) {
+  if (researchedIds.has(id)) continue;
   assert.ok(listedIds.has(id) && !C.catalogSite(id).maxDepthMeters && max > 0 && ['wikidata', 'globathy'].includes(source), `${id} lake depth`);
   if (source === 'wikidata') assert.match(url, /^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/);
   else assert.ok(!mean || mean < max, `${id}: a modelled lake depth is self-consistent`);

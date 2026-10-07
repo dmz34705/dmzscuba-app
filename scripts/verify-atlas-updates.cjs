@@ -71,7 +71,7 @@ function harness() {
   const one = updater.checkForUpdates(), two = updater.checkForUpdates();
   assert.equal(one, two, 'Concurrent reconnect/open checks share one transaction.');
   assert.equal((await one).phase, 'current');
-  assert.equal(h.requests.length, 25); assert.equal(h.activations.length, 1);
+  assert.equal(h.requests.length, contract.ATLAS_DATASET_KEYS.length + 1); assert.equal(h.activations.length, 1);
   const firstState = h.state();
   h.requests.length = 0;
   await updater.checkForUpdates();

@@ -1,8 +1,9 @@
 // Shared by the release builder and the device updater. Only versioned JSON is downloaded.
 import { expandTemperature } from './model';
+import { validateSiteProfiles } from './siteProfiles';
 export const ATLAS_SCHEMA = 1;
 export const ATLAS_BASE_PATH = '/assets/atlas/v1';
-export const ATLAS_DATASET_KEYS = ['airports', 'curatedSites', 'diveOperators', 'extraSites', 'freshwaterLife', 'globalSites', 'inlandConditions', 'land', 'marineLife', 'marineLifeObis', 'osmSites', 'places', 'publishedDepths', 'siteBathymetry', 'siteFacts', 'siteImages', 'siteLakeDepths', 'siteMerges', 'siteProtection', 'siteSeafloor', 'siteShore', 'sites', 'temperature', 'visibility'];
+export const ATLAS_DATASET_KEYS = ['airports', 'curatedSites', 'diveOperators', 'extraSites', 'freshwaterLife', 'globalSites', 'inlandConditions', 'land', 'marineLife', 'marineLifeObis', 'osmSites', 'places', 'publishedDepths', 'siteBathymetry', 'siteFacts', 'siteImages', 'siteLakeDepths', 'siteMerges', 'siteProfiles', 'siteProtection', 'siteSeafloor', 'siteShore', 'sites', 'temperature', 'visibility'];
 export const MAX_ATLAS_FILE_BYTES = 32 * 1024 * 1024;
 export const MAX_ATLAS_BYTES = 128 * 1024 * 1024;
 export const MAX_MANIFEST_BYTES = 64 * 1024;
@@ -81,6 +82,7 @@ export function validateAtlasDatasets(data) {
   if (!rows(data.siteMerges.clusters, 7, r => typeof r[0] === 'string' && Array.isArray(r[1]) && coordinate(r[2], r[3]) && Array.isArray(r[4]))) fail('siteMerges');
   if (!rows(data.siteProtection.areas, 3) || !object(data.siteProtection.sites)
     || !Object.values(data.siteProtection.sites).every(r => Array.isArray(r) && r.every(i => Number.isInteger(i) && data.siteProtection.areas[i]))) fail('siteProtection');
+  if (!validateSiteProfiles(data.siteProfiles)) fail('siteProfiles');
   const v = data.visibility;
   if (!object(v.grid) || !Number.isSafeInteger(v.grid.rows) || !Number.isSafeInteger(v.grid.cols) || !Number.isFinite(v.grid.dLat) || !v.grid.dLat || !Number.isFinite(v.grid.dLon) || !v.grid.dLon
     || typeof v.packing?.alphabet !== 'string' || v.packing.alphabet.length < 2 || !object(v.cells) || !Object.values(v.cells).every(c => typeof c === 'string' && c.length === 12)) fail('visibility');

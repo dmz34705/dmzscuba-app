@@ -19,7 +19,7 @@ npm run build:atlas-release -- --output-dir /Users/dmz/DMZScuba.com
 npm run test:atlas-updates
 ```
 
-The release contains 24 JSON datasets, retaining source dates and licenses.
+The release contains 25 JSON datasets, retaining source dates and licenses.
 `/assets/atlas/v1/manifest.json` lists each file's exact UTF-8 bytes, SHA-256 and
 content-addressed URL. The release ID hashes the ordered dataset identities.
 The website's `_headers` makes the manifest revalidate and the files immutable.

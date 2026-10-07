@@ -50,6 +50,11 @@ card, with an explicit expand/collapse control for its full guide.
   Cozumel names come from CONANP’s park references; those pins are explicitly
   approximate reef-area browsing anchors, never entry, mooring or navigation
   coordinates: https://www.gob.mx/conanp/es/articulos/estrategia-de-conservacion-para-arrecifes-saludables-de-cozumel?idiom=es
+- **Researched site profiles:** per-site facts (depth range, entry, level,
+  mooring, hazards, highlights) cross-checked against agency and archaeological
+  records, with summaries written by DMZ Scuba and every source linked. They
+  can move a pin to a confirmed position and remove sites that are no longer
+  dives. Lake Michigan is the pilot (93 wrecks). See [Site research](SITE_RESEARCH.md).
 - **Ocean regions:** sixteen broad exploration lenses cover the whole ocean by
   selecting the nearest regional anchor. Cards summarize habitat, representative
   wildlife groups and sourced ecosystem context from NOAA, UNEP, the Great

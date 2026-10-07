@@ -1,0 +1,347 @@
+{
+ "region": "red-sea-north",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869812",
+   "name": "Giannis D",
+   "claims": [
+    {
+     "url": "https://divingaround.com/the-wrecks-of-abu-nuhas",
+     "publisher": "Diving Around",
+     "kind": "operator",
+     "unit": "m",
+     "top": 4,
+     "bottom": 24,
+     "quote": "This ship angled in the water in a way that ranges between 4 meters and 24 meters"
+    },
+    {
+     "url": "https://blueparadise.be/dive-sites/giannis-d-wreck",
+     "publisher": "Blue Paradise Diving Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": 6,
+     "bottom": 28,
+     "quote": "The depth ranges from 6 meters to 28 meters"
+    },
+    {
+     "url": "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "publisher": "Egypt Tours Plus",
+     "kind": "operator",
+     "unit": "m",
+     "top": 18,
+     "bottom": 25,
+     "quote": "Giannis D (Abu Nuhas) | 18-25 m"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869809",
+   "name": "Carnatic",
+   "claims": [
+    {
+     "url": "https://divingaround.com/the-wrecks-of-abu-nuhas",
+     "publisher": "Diving Around",
+     "kind": "operator",
+     "unit": "m",
+     "top": 16,
+     "bottom": 27,
+     "quote": "This wreck is also the deepest as it lays between 16 and 27 meters of depth."
+    },
+    {
+     "url": "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "publisher": "Egypt Tours Plus",
+     "kind": "operator",
+     "unit": "m",
+     "top": 16,
+     "bottom": 26,
+     "quote": "Carnatic (Abu Nuhas) | 16-26 m"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869810",
+   "name": "Chrisoula K",
+   "claims": [
+    {
+     "url": "https://www.blueocean-eg.com/blog/wreck-diving-egypt-abu---nuhas",
+     "publisher": "Blue Ocean Egypt",
+     "kind": "operator",
+     "unit": "m",
+     "top": 18,
+     "bottom": 25,
+     "quote": "went down to between 18 and 25 metres depth"
+    },
+    {
+     "url": "https://dive3d.eu/?p=1606",
+     "publisher": "dive3d.eu",
+     "kind": "press",
+     "unit": "m",
+     "top": 5,
+     "bottom": 25,
+     "quote": "She lies in a depth of between 5 and a maximum of 25 meters."
+    },
+    {
+     "url": "https://scubaverse.com/three-wrecks-one-perfect-dive-day-with-ghazala-adventure/",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "unit": "m",
+     "top": 3,
+     "bottom": 26,
+     "quote": "The Chrisoula K rests between 3 and 26 meters on the infamous Abu Nuhas reef."
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869811",
+   "name": "Kimon M",
+   "claims": [
+    {
+     "url": "https://www.blueocean-eg.com/blog/wreck-diving-egypt-abu---nuhas",
+     "publisher": "Blue Ocean Egypt",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 30,
+     "quote": "The Kimon M is at a depth of slightly more than 30 meters"
+    },
+    {
+     "url": "https://dive3d.eu/?p=1627",
+     "publisher": "dive3d.eu",
+     "kind": "press",
+     "unit": "m",
+     "top": null,
+     "bottom": 30,
+     "quote": "She now lies 30 meters below the surface at Abu Nuhas."
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869816",
+   "name": "Ulysses",
+   "claims": [
+    {
+     "url": "https://scubaverse.com/three-wrecks-one-perfect-dive-day-with-ghazala-adventure/",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "unit": "m",
+     "top": 5,
+     "bottom": 28,
+     "quote": "rests on its port side at depths ranging from 5 to 28 meters"
+    }
+   ],
+   "note": "Single source (Ghazala Adventure via Scubaverse)"
+  },
+  {
+   "id": "osm-n663869877",
+   "name": "Cedar Pride",
+   "claims": [
+    {
+     "url": "https://divemagazine.com/scuba-diving-travel/wreck-diving-aqaba",
+     "publisher": "DIVE Magazine",
+     "kind": "press",
+     "unit": "m",
+     "top": 10,
+     "bottom": 28,
+     "quote": "Maximum depth of around 28m"
+    },
+    {
+     "url": "https://theunderwaterclub.com/blog/the-wrecks-of-jordan/",
+     "publisher": "The Underwater Club",
+     "kind": "operator",
+     "unit": "m",
+     "top": 9,
+     "bottom": 27,
+     "quote": "between 27 and 9 meters depth"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869852",
+   "name": "Kormoran",
+   "claims": [
+    {
+     "url": "https://circledivers.com/diving-in-dahab/dive-sites/kormoran-zingara-wreck-tiran",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "unit": "m",
+     "top": 3,
+     "bottom": 12,
+     "quote": "approximately 10-12 meters of water"
+    },
+    {
+     "url": "https://www.cameldive.com/dive-sites/kormoran/",
+     "publisher": "Camel Dive Club",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 12,
+     "quote": "This wreck offers a stunning winch, 6 cylinder engine and propeller all within a 12m depth range."
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869851",
+   "name": "Kormoran",
+   "claims": [
+    {
+     "url": "https://circledivers.com/diving-in-dahab/dive-sites/kormoran-zingara-wreck-tiran",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "unit": "m",
+     "top": 3,
+     "bottom": 12,
+     "quote": "approximately 10-12 meters of water"
+    },
+    {
+     "url": "https://www.cameldive.com/dive-sites/kormoran/",
+     "publisher": "Camel Dive Club",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 12,
+     "quote": "This wreck offers a stunning winch, 6 cylinder engine and propeller all within a 12m depth range."
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869830",
+   "name": "Ras Umm Sid",
+   "claims": [
+    {
+     "url": "https://www.cameldive.com/?p=2780",
+     "publisher": "Camel Dive Club",
+     "kind": "operator",
+     "unit": "m",
+     "top": 14,
+     "bottom": 28,
+     "quote": "a column of Gorgonian Fans that reaches from 14 to 28m"
+    },
+    {
+     "url": "https://www.circledivers.com/diving-in-dahab/dive-sites/ras-um-sid-dive-site",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 30,
+     "quote": "a dramatic vertical wall that plunges to 30 meters"
+    }
+   ],
+   "note": "Pin id is Ras Umm Sid (Sharm); sources describe the Sharm site"
+  },
+  {
+   "id": "osm-n663869792",
+   "name": "Shaab Sabrina",
+   "claims": [
+    {
+     "url": "https://www.blueparadise.be/dive-sites/",
+     "publisher": "Blue Paradise Diving Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": 8,
+     "bottom": 14,
+     "quote": "Shaab Sabina | 8-14M"
+    },
+    {
+     "url": "https://divingaround.com/hurghada-dive-sites/",
+     "publisher": "Diving Around",
+     "kind": "operator",
+     "unit": "m",
+     "top": 5,
+     "bottom": 14,
+     "quote": "Shaab Sabina Depth: 5-14 meters"
+    },
+    {
+     "url": "https://egyptdivers.com/hurghada/dive-sites/shaab-sabina/",
+     "publisher": "Egypt Divers",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 14,
+     "quote": "approximately 14 meters below"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869795",
+   "name": "Giftun Soraya",
+   "claims": [
+    {
+     "url": "https://www.blueparadise.be/dive-sites/",
+     "publisher": "Blue Paradise Diving Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": 18,
+     "bottom": 30,
+     "quote": "Small Giftun | 18-30M"
+    },
+    {
+     "url": "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "publisher": "Egypt Tours Plus",
+     "kind": "operator",
+     "unit": "m",
+     "top": 25,
+     "bottom": 30,
+     "quote": "Giftun Island National Park | 25-30 m"
+    }
+   ],
+   "note": "Small Giftun = Giftun Soraya"
+  },
+  {
+   "id": "osm-n663869797",
+   "name": "Abu Ramada South",
+   "claims": [
+    {
+     "url": "https://www.blueparadise.be/dive-sites/",
+     "publisher": "Blue Paradise Diving Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": 5,
+     "bottom": 35,
+     "quote": "Abu Ramada South | 5-35M"
+    },
+    {
+     "url": "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "publisher": "Egypt Tours Plus",
+     "kind": "operator",
+     "unit": "m",
+     "top": 12,
+     "bottom": 30,
+     "quote": "Abu Ramada South | 12-30 m"
+    }
+   ]
+  },
+  {
+   "id": "osm-n700934171",
+   "name": "Ben El Gebel",
+   "claims": [
+    {
+     "url": "https://www.blueparadise.be/dive-sites/",
+     "publisher": "Blue Paradise Diving Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": 8,
+     "bottom": 20,
+     "quote": "Ben El Gebel | 8-20M"
+    }
+   ],
+   "note": "Single operator source"
+  },
+  {
+   "id": "osm-n4549503827",
+   "name": "Marsalis Abu Galawa",
+   "claims": [
+    {
+     "url": "https://www.blueparadise.be/dive-sites/",
+     "publisher": "Blue Paradise Diving Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": 18,
+     "bottom": 35,
+     "quote": "Marsa Abu Galawa | 18-35 m"
+    }
+   ],
+   "note": "Single operator source; name matched to Marsa Abu Galawa"
+  }
+ ]
+}

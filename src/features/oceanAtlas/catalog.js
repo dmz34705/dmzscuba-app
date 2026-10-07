@@ -1,6 +1,7 @@
 // Native-side view of the atlas site catalog. Decoding mirrors atlasRuntime.js
 // so ids match the pins the WebView shows (e.g. `odm-<recordId>`).
-import { onAtlasDataChange, globalSites as globalSource, sites, curatedSites, osmSites as osmSource, extraSites as extraSource, publishedDepths, siteMerges } from './datasets';
+import { onAtlasDataChange, globalSites as globalSource, sites, curatedSites, osmSites as osmSource, extraSites as extraSource, publishedDepths, siteMerges, siteProfiles } from './datasets';
+import { applySiteCorrections, siteCorrections } from './siteProfiles';
 import { OFFLINE_DIVE_SITES } from '../../lib/diveSites/offlineCatalog';
 
 const BASE64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -71,7 +72,8 @@ export function rawCatalogSites() {
 let cache = null;
 export function catalogSites() {
   if (cache) return cache;
-  cache = applySiteMerges(rawCatalogSites().map((site) => ({ ...site })), siteMerges).sites;
+  // Researched corrections (positions, depths, gone or never-found wrecks) come last: they are the best-checked facts.
+  cache = applySiteCorrections(applySiteMerges(rawCatalogSites().map((site) => ({ ...site })), siteMerges).sites, siteCorrections(siteProfiles));
   return cache;
 }
 

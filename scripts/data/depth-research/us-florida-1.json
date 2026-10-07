@@ -1,0 +1,483 @@
+{
+ "region": "us-florida-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "noaa-fknms-eastern-dry-rocks",
+   "name": "Eastern Dry Rocks",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/eastern.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 5,
+     "bottom": 35,
+     "quote": "ranges in depth from 5 to 35 feet"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/Eastern_Dry_Rocks",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": 1,
+     "bottom": 35,
+     "quote": "Summit depth: 1 - 35 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-rock-key",
+   "name": "Rock Key",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/rockkey.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 5,
+     "bottom": 35,
+     "quote": "ranges in depth from 5 to 35 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-sand-key-reef",
+   "name": "Sand Key Reef",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/sandkey.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 5,
+     "bottom": 90,
+     "quote": "gentle ledge at about 65 feet, dropping to 90 feet in some places"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/Sand_Key_(reef)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": 1,
+     "bottom": 35,
+     "quote": "Summit depth: 1 - 35 feet"
+    }
+   ],
+   "note": "Spurs 5-20 ft; south slope ledge 65-90 ft"
+  },
+  {
+   "id": "noaa-fknms-sombrero-reef",
+   "name": "Sombrero Reef",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/sombrero.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 30,
+     "quote": "with depths inside the SPA boundaries under 30 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-cheeca-rocks",
+   "name": "Cheeca Rocks",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/cheecarocks.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 8,
+     "bottom": 20,
+     "quote": "shallow waters range from about 8 to 20 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-conch-reef",
+   "name": "Conch Reef",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/conchreef.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 45,
+     "quote": "extending to a depth of 45 feet"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-newfound-harbor",
+   "name": "Newfound Harbor",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/newfound.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 18,
+     "quote": "all in depths of 18 feet or less"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-grecian-rocks",
+   "name": "Grecian Rocks",
+   "claims": [
+    {
+     "url": "https://floridakeys.noaa.gov/zones/spas/kldryrocks.html",
+     "publisher": "NOAA Florida Keys NMS",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 30,
+     "quote": "Grecian Rocks varies in depth: parts of the reef crest are exposed at low tide and depths in this area range to around 30 feet"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-244",
+   "name": "USS Fred T. Berry",
+   "claims": [
+    {
+     "url": "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "publisher": "Florida FWC Artificial Reef Program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 350,
+     "quote": "USS Fred T Berry (DD-858) Destroyer 391' UNK UNK 350"
+    },
+    {
+     "url": "https://en.wikipedia.org/wiki/USS_Fred_T._Berry",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": null,
+     "bottom": 330,
+     "quote": "in 55 fathoms (330 feet; 100 m) of water"
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-222",
+   "name": "USCGC Duane",
+   "claims": [
+    {
+     "url": "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "publisher": "Florida FWC Artificial Reef Program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 118,
+     "quote": "Duane Cutter USCG 327' UNK 50 118"
+    }
+   ],
+   "note": "FWC table: relief 50 ft, depth 118 ft"
+  },
+  {
+   "id": "x-wikipedia-260",
+   "name": "USCGC Hollyhock (WAGL-220)",
+   "claims": [
+    {
+     "url": "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "publisher": "Florida FWC Artificial Reef Program",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 110,
+     "quote": "Captain Dan Garnsey Buoy Tender USCG 175' UNK UNK 110"
+    },
+    {
+     "url": "https://www.floridagofishing.com/locations/se/se-reefs-and-shipwrecks.html",
+     "publisher": "Florida Go Fishing",
+     "kind": "press",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 110,
+     "quote": "the ship lies upright in 110 feet"
+    }
+   ],
+   "note": "Wheelhouse 70 ft, deck 90 ft (Captain Dan wreck)"
+  },
+  {
+   "id": "x-notable-788",
+   "name": "Half Moon",
+   "claims": [
+    {
+     "url": "https://home.nps.gov/articles/halfmoon.htm",
+     "publisher": "National Park Service",
+     "kind": "agency",
+     "unit": "ft",
+     "top": 3,
+     "bottom": 10,
+     "quote": "eight-ten ft. of water, three-four ft. below the surface"
+    },
+    {
+     "url": "https://miamidade.gov/environment/buoy/half-moon.asp",
+     "publisher": "Miami-Dade County DERM",
+     "kind": "agency",
+     "unit": "ft",
+     "top": null,
+     "bottom": 10,
+     "quote": "Half Moon Archaeological Preserve Depth: 10 feet"
+    }
+   ]
+  },
+  {
+   "id": "osm-n13430788646",
+   "name": "SS Copenhagen Shipwreck",
+   "claims": [
+    {
+     "url": "https://en.wikipedia.org/wiki/SS_Copenhagen_(1898)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "unit": "ft",
+     "top": 23,
+     "bottom": 39,
+     "quote": "at a depth varying from 23 to 39 feet (7 to 12 m)"
+    },
+    {
+     "url": "https://www.naui.org/?p=21518",
+     "publisher": "NAUI",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 28,
+     "quote": "3.5 to 4.5 meters (12-15 feet) of water to the top of the wreckage, 6 to 8.5 meters (20-28 feet) to the sand"
+    }
+   ]
+  },
+  {
+   "id": "osm-n663869458",
+   "name": "S.S. Inchulva / Delray Wreck",
+   "claims": [
+    {
+     "url": "https://downtowndelraybeach.com/go/the-delray-wreck",
+     "publisher": "Downtown Delray Beach",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "in about 25 feet of water, directly off the beach from the Seagate Beach Club"
+    },
+    {
+     "url": "https://www.waterfront-properties.com/blog/its-a-wreck-out-there-delray-beach.html",
+     "publisher": "Waterfront Properties",
+     "kind": "press",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "rests in only 25 feet of water"
+    }
+   ]
+  },
+  {
+   "id": "x-pbc-pauls-reef",
+   "name": "Paul's Reef",
+   "claims": [
+    {
+     "url": "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "publisher": "Pura Vida Divers",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 56,
+     "quote": "Paul's Reef: depth of 45 to 56-feet"
+    },
+    {
+     "url": "https://neptunediveandski.com/west-palm-beach-info",
+     "publisher": "Neptune Dive and Ski",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 60,
+     "quote": "Paul's Reef 60 fsw"
+    }
+   ]
+  },
+  {
+   "id": "x-pbc-bath-tennis-reef-pbc2",
+   "name": "Bath & Tennis Reef PBC2",
+   "claims": [
+    {
+     "url": "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "publisher": "Pura Vida Divers",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 42,
+     "bottom": 53,
+     "quote": "Bath and Tennis: depths ranging from 42 to 53-feet"
+    },
+    {
+     "url": "https://neptunediveandski.com/west-palm-beach-info",
+     "publisher": "Neptune Dive and Ski",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 60,
+     "quote": "Bath and Tennis 60 fsw"
+    }
+   ]
+  },
+  {
+   "id": "x-pbc-the-trench",
+   "name": "The Trench",
+   "claims": [
+    {
+     "url": "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "publisher": "Pura Vida Divers",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 47,
+     "bottom": 58,
+     "quote": "Moray Alley (The Trench): depth of 47 to 58-feet"
+    },
+    {
+     "url": "https://neptunediveandski.com/west-palm-beach-info",
+     "publisher": "Neptune Dive and Ski",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 60,
+     "quote": "The Trench 60 fsw"
+    },
+    {
+     "url": "https://www.waterfront-properties.com/blog/places-to-go-scuba-diving-in-the-palm-beaches-waterfront-properties.html",
+     "publisher": "Waterfront Properties",
+     "kind": "press",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 60,
+     "quote": "The Trench: 50-60 feet"
+    }
+   ]
+  },
+  {
+   "id": "x-pbc-flower-garden",
+   "name": "Flower Garden",
+   "claims": [
+    {
+     "url": "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "publisher": "Pura Vida Divers",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 42,
+     "bottom": 54,
+     "quote": "South Flower Gardens: depth of 42 to 54-feet"
+    },
+    {
+     "url": "https://www.stuartscuba.com/charters/flower-gardens-breakers-west-palm",
+     "publisher": "Stuart Scuba",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 42,
+     "bottom": 54,
+     "quote": "42 to 54 feet, making it suitable for Open Water Certified divers"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-alligator-reef",
+   "name": "Alligator Reef",
+   "claims": [
+    {
+     "url": "https://www.islamoradadivecenter.com/florida-keys-dive-sites",
+     "publisher": "Islamorada Dive Center",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 25,
+     "quote": "Alligator Reef 10-25 ft"
+    },
+    {
+     "url": "https://keydives.com/dive-sites-information/",
+     "publisher": "Key Dives",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "Alligator Reef 25'"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-rocky-top",
+   "name": "Rocky Top",
+   "claims": [
+    {
+     "url": "https://www.islamoradadivecenter.com/florida-keys-dive-sites",
+     "publisher": "Islamorada Dive Center",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 30,
+     "quote": "Rocky Top 20-30 ft"
+    },
+    {
+     "url": "https://keydives.com/dive-sites-information/",
+     "publisher": "Key Dives",
+     "kind": "operator",
+     "unit": "ft",
+     "top": null,
+     "bottom": 25,
+     "quote": "Rocky Top 25'"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-davis-ledge",
+   "name": "Davis Ledge",
+   "claims": [
+    {
+     "url": "https://www.islamoradadivecenter.com/florida-keys-dive-sites",
+     "publisher": "Islamorada Dive Center",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 30,
+     "quote": "Davis Reef 15-30 ft"
+    },
+    {
+     "url": "https://keydives.com/dive-sites-information/",
+     "publisher": "Key Dives",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 20,
+     "quote": "Davis Reef 15-20'"
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-sand-island",
+   "name": "Sand Island",
+   "claims": [
+    {
+     "url": "https://www.rainbowreef.com/dive-locations-in-key-largo/sand-island",
+     "publisher": "Rainbow Reef Dive Center",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 30,
+     "quote": "15-30 Feet"
+    },
+    {
+     "url": "https://keylargoscubadiving.com/key-largo-dive-sites/",
+     "publisher": "Key Largo Scuba Diving",
+     "kind": "operator",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 50,
+     "quote": "Sand Island 20-50 feet"
+    }
+   ]
+  }
+ ]
+}

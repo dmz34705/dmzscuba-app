@@ -1,5 +1,6 @@
 import { OFFLINE_DIVE_SITES } from '../../lib/diveSites/offlineCatalog';
-import { temperature, land, sites, curatedSites, globalSites, osmSites, extraSites, publishedDepths, siteMerges } from './datasets';
+import { temperature, land, sites, curatedSites, globalSites, osmSites, extraSites, publishedDepths, siteMerges, siteProfiles } from './datasets';
+import { siteCorrections } from './siteProfiles';
 import { CLOSED_WRECKS } from './catalog';
 import { leafletCss, leafletJs } from './data/leaflet';
 import { atlasStyles } from './atlasStyles';
@@ -18,7 +19,7 @@ export function buildAtlasData({ temperatureUnit = 'F', depthUnit = 'ft', locati
   const embeddedExtraSites = { topologyCodes: extraSites.topologyCodes, sources: extraSites.sources,
     sites: extraSites.sites.map(row => (typeof row[9] === 'string' && row[9].startsWith(WIKIPEDIA) ? [...row.slice(0, 9), `~${row[9].slice(WIKIPEDIA.length)}`, ...row.slice(10)] : row)) };
   return { locationPicker, months: MONTHS, regions: MARINE_REGIONS, oceanRegions: OCEAN_REGIONS, diveRegions: DIVE_REGIONS, remoteAreas: REMOTE_DIVE_AREAS, temperature, land,
-    sites: [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites], globalSites, osmSites, extraSites: embeddedExtraSites, publishedDepths, siteMerges, closedWrecks: CLOSED_WRECKS.source, curatedSiteCount: curatedSites.length,
+    sites: [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites], globalSites, osmSites, extraSites: embeddedExtraSites, publishedDepths, siteMerges, siteCorrections: siteCorrections(siteProfiles), closedWrecks: CLOSED_WRECKS.source, curatedSiteCount: curatedSites.length,
     unit: temperatureUnit === 'C' ? 'C' : 'F', depthUnit: depthUnit === 'm' ? 'm' : 'ft' };
 }
 

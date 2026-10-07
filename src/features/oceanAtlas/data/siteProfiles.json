@@ -1,0 +1,5684 @@
+{
+ "schemaVersion": 1,
+ "source": "DMZ Scuba site research: facts cross-checked against the cited agency and archaeological records; summaries written by DMZ Scuba.",
+ "updatedAt": "2026-10-07",
+ "units": {
+  "depth": "m",
+  "temperature": "C"
+ },
+ "regions": {
+  "lake-michigan": {
+   "name": "Lake Michigan",
+   "bounds": [
+    41.6,
+    -88.1,
+    46.1,
+    -84.7
+   ],
+   "water": "fresh",
+   "current": "light",
+   "tempDeepC": [
+    4.4,
+    5.6
+   ],
+   "tempShallowC": [
+    10,
+    21.1
+   ],
+   "season": [
+    4,
+    9
+   ],
+   "notes": [
+    "Summer brings a thermocline: below it, expect 40–45°F water even when the surface is warm.",
+    "Invasive quagga and zebra mussels coat most wrecks and keep the water unusually clear.",
+    "Fresh water: you need less weight than in the sea."
+   ],
+   "sources": [
+    [
+     "whs",
+     "129"
+    ],
+    [
+     "whs",
+     "201"
+    ]
+   ]
+  }
+ },
+ "sources": {
+  "whs": {
+   "name": "Wisconsin Shipwrecks — Wisconsin Historical Society & Wisconsin Sea Grant",
+   "url": "https://education.wisconsinshipwrecks.org/Vessel/Details/{id}"
+  },
+  "mup": {
+   "name": "Michigan Underwater Preserves — Manitou Passage",
+   "url": "https://www.michiganpreserves.org/manitou-passage-underwater-preserve/"
+  },
+  "nps": {
+   "name": "National Park Service — Sleeping Bear Dunes shipwrecks",
+   "url": "https://www.nps.gov/slbe/learn/historyculture/shipwrecks.htm"
+  },
+  "wikipedia": {
+   "name": "Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/{id}"
+  },
+  "report": {
+   "name": "Diver reports — awaiting confirmation",
+   "url": null
+  },
+  "web": {
+   "name": "Published source",
+   "url": "{url}"
+  }
+ },
+ "sites": {
+  "noaa-fknms-adelaide-baker": {
+   "name": "Adelaide Baker",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    6.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/shipwrecktrail/adelaide.html",
+     "NOAA Florida Keys National Marine Sanctuary"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-adolphus-busch-wreck": {
+   "name": "Adolphus Busch Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    11.6,
+    30.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0057%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-alligator-reef": {
+   "name": "Alligator Reef",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.islamoradadivecenter.com/florida-keys-dive-sites",
+     "Islamorada Dive Center"
+    ],
+    [
+     "web",
+     "https://keydives.com/dive-sites-information/",
+     "Key Dives"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-amesbury-wreck": {
+   "name": "Amesbury Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    9.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/shipwrecktrail/amesbury.html",
+     "NOAA Florida Keys National Marine Sanctuary"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-benwood-wreck": {
+   "name": "Benwood Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    7.6,
+    13.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/shipwrecktrail/benwood.html",
+     "NOAA Florida Keys National Marine Sanctuary"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-bibb-wreck": {
+   "name": "Bibb Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    29,
+    39.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0044%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-cheeca-rocks": {
+   "name": "Cheeca Rocks",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    2.4,
+    6.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/cheecarocks.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-conch-reef": {
+   "name": "Conch Reef",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    13.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/conchreef.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-davis-ledge": {
+   "name": "Davis Ledge",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    4.6,
+    9.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.islamoradadivecenter.com/florida-keys-dive-sites",
+     "Islamorada Dive Center"
+    ],
+    [
+     "web",
+     "https://keydives.com/dive-sites-information/",
+     "Key Dives"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-duane-wreck": {
+   "name": "Duane Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    18.3,
+    36.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0043%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ],
+    [
+     "web",
+     "https://floridakeys.noaa.gov/shipwrecktrail/duane.html",
+     "NOAA Florida Keys National Marine Sanctuary"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-eagle-wreck": {
+   "name": "Eagle Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    21.3,
+    33.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0026%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ],
+    [
+     "web",
+     "https://floridakeys.noaa.gov/shipwrecktrail/eagle.html",
+     "NOAA Florida Keys National Marine Sanctuary"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-eastern-dry-rocks": {
+   "name": "Eastern Dry Rocks",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    1.5,
+    10.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/eastern.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-grecian-rocks": {
+   "name": "Grecian Rocks",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    9.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/kldryrocks.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-joe-s-tug-wreck": {
+   "name": "Joe's Tug Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    12.2,
+    19.8
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0053%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-molasses-reef": {
+   "name": "Molasses Reef",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3,
+    15.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://pennekamppark.com/scuba-tours/",
+     "Coral Reef Park Company (Pennekamp concessionaire)"
+    ],
+    [
+     "web",
+     "https://www.opalcollection.com/blog/best-dive-sites-key-largo",
+     "Opal Collection"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-newfound-harbor": {
+   "name": "Newfound Harbor",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    5.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/newfound.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-north-dry-rocks": {
+   "name": "North Dry Rocks",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3.7,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://pennekamppark.com/scuba-tours/",
+     "Coral Reef Park Company (Pennekamp concessionaire)"
+    ],
+    [
+     "web",
+     "https://rainbowreef.com/dive-locations-in-key-largo/key-largo-northern-dry-rocks/north-dry-rocks",
+     "Rainbow Reef Dive Center"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-rock-key": {
+   "name": "Rock Key",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    1.5,
+    10.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/rockkey.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-rocky-top": {
+   "name": "Rocky Top",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    6.1,
+    9.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.islamoradadivecenter.com/florida-keys-dive-sites",
+     "Islamorada Dive Center"
+    ],
+    [
+     "web",
+     "https://keydives.com/dive-sites-information/",
+     "Key Dives"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-san-pedro-wreck": {
+   "name": "San Pedro Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    5.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/shipwrecktrail/sanpedro.html",
+     "NOAA Florida Keys National Marine Sanctuary"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-sand-key-reef": {
+   "name": "Sand Key Reef",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    1.5,
+    27.4
+   ],
+   "depthNote": "Spurs 5-20 ft; south slope ledge 65-90 ft",
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/sandkey.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-snapper-ledge": {
+   "name": "Snapper Ledge",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    4.6,
+    15.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://pennekamppark.com/scuba-tours/",
+     "Coral Reef Park Company (Pennekamp concessionaire)"
+    ],
+    [
+     "web",
+     "https://www.opalcollection.com/blog/best-dive-sites-key-largo",
+     "Opal Collection"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-sombrero-reef": {
+   "name": "Sombrero Reef",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    9.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://floridakeys.noaa.gov/zones/spas/sombrero.html",
+     "NOAA Florida Keys NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-spiegel-grove-wreck": {
+   "name": "Spiegel Grove Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    15.5,
+    41.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0061%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "noaa-fknms-vandenberg-wreck": {
+   "name": "Vandenberg Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    13.7,
+    44.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0062%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n2171849465": {
+   "name": "Glenlyon",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    4.6,
+    18.3
+   ],
+   "depthNote": "Isle Royale; catalog pin is garbled deg-min",
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n3149301713": {
+   "name": "Weeki Wachee Spring",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    124.1
+   ],
+   "depthNote": "Cave-system maximum, not a normal open-water dive depth. Technical cave training is required.",
+   "sources": [
+    [
+     "web",
+     "https://en.wikipedia.org/wiki/Weeki_Wachee_Springs",
+     "Wikipedia"
+    ],
+    [
+     "web",
+     "https://dan.org/alert-diver/article/where-mermaids-fear-to-tread/",
+     "Divers Alert Network"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n3167637595": {
+   "name": "Troy Spring",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    21.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://map.mysuwanneeriver.com/district-springs/troy-spring-23",
+     "Suwannee River Water Management District"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n356542710": {
+   "name": "Edmonds Underwater Park",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    13.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://edmondswa.hosted.civiclive.com/government/departments/parks_and_recreation/parks/edmonds_underwater_park",
+     "City of Edmonds Parks"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n408451459": {
+   "name": "Shaab Claudio",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    5,
+    30
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.blueocean-eg.com/itineraries/fury-shoals-(mini-safari)",
+     "Blue Ocean Diving Centers"
+    ],
+    [
+     "web",
+     "https://www.pro-taucher.com/?p=1728",
+     "Pro-Taucher"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869451": {
+   "name": "San Pablo",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    17.4,
+    25.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0001%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869452": {
+   "name": "Sylvia",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    17.4,
+    25
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0030%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869453": {
+   "name": "P. C. Barge",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    22.6,
+    25
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0028%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869455": {
+   "name": "Soule Barge-Gulf Power Towers",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    22.3,
+    25.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0041%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869456": {
+   "name": "Tessie",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    19.8,
+    22.9
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0009%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869457": {
+   "name": "Deliverance",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    18.3,
+    25
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27ES0025%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869458": {
+   "name": "S.S. Inchulva / Delray Wreck",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://downtowndelraybeach.com/go/the-delray-wreck",
+     "Downtown Delray Beach"
+    ],
+    [
+     "web",
+     "https://www.waterfront-properties.com/blog/its-a-wreck-out-there-delray-beach.html",
+     "Waterfront Properties"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869492": {
+   "name": "Bedfordshire (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    32
+   ],
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/bedfordshire.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869494": {
+   "name": "U-701 (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    36.6
+   ],
+   "depthNote": "Pin is ~3400 m deep; likely misplaced",
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/u-701.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869496": {
+   "name": "U-85 (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    27.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/u-85.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869497": {
+   "name": "U-352 (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    33.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/u-352.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869498": {
+   "name": "Indra (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    18.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.deq.nc.gov/marine-fisheries/coastal-fishing-information/artificial-reefs/dmf-reef-guide-web/download",
+     "NC Division of Marine Fisheries"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869499": {
+   "name": "Aeolus (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    31.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.deq.nc.gov/marine-fisheries/coastal-fishing-information/artificial-reefs/dmf-reef-guide-web/download",
+     "NC Division of Marine Fisheries"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869517": {
+   "name": "Water Witch",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    27.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/lake-schooner-water-witch/",
+     "Lake Champlain Maritime Museum (Vermont Underwater Historic Preserves)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869518": {
+   "name": "Phoenix",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    18.3,
+    33.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://historicsites.vermont.gov/node/137",
+     "Vermont Division for Historic Preservation"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869532": {
+   "name": "Cedarville (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    12.2,
+    33.5
+   ],
+   "depthNote": "Bow 40-105 ft, stern 70-110 ft",
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869534": {
+   "name": "Panther (Wreck)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    27.4,
+    33.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869779": {
+   "name": "Numidia",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    8,
+    80
+   ],
+   "depthNote": "Big Brother, bow near reef top, stern ~70-80 m",
+   "sources": [
+    [
+     "web",
+     "https://www.blueocean-eg.com/blog/wreck-diving-egypt",
+     "Blue Ocean Diving Centers"
+    ],
+    [
+     "web",
+     "https://scubadiverlife.com/dive-site-brothers-islands-egypt",
+     "Scuba Diver Life"
+    ],
+    [
+     "web",
+     "https://divemagazine.com/destination-guides/egypt/egypt-wreck-dives",
+     "DIVE Magazine"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869780": {
+   "name": "Aida",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    25,
+    60
+   ],
+   "depthNote": "Wreck at Big Brother; pin is Little Brother side area",
+   "sources": [
+    [
+     "web",
+     "https://www.blueocean-eg.com/blog/wreck-diving-egypt",
+     "Blue Ocean Diving Centers"
+    ],
+    [
+     "web",
+     "https://divemagazine.com/destination-guides/egypt/egypt-wreck-dives",
+     "DIVE Magazine"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869792": {
+   "name": "Shaab Sabrina",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    5,
+    14
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.blueparadise.be/dive-sites/",
+     "Blue Paradise Diving Center"
+    ],
+    [
+     "web",
+     "https://divingaround.com/hurghada-dive-sites/",
+     "Diving Around"
+    ],
+    [
+     "web",
+     "https://egyptdivers.com/hurghada/dive-sites/shaab-sabina/",
+     "Egypt Divers"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869795": {
+   "name": "Giftun Soraya",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    18,
+    30
+   ],
+   "depthNote": "Small Giftun = Giftun Soraya",
+   "sources": [
+    [
+     "web",
+     "https://www.blueparadise.be/dive-sites/",
+     "Blue Paradise Diving Center"
+    ],
+    [
+     "web",
+     "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "Egypt Tours Plus"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869797": {
+   "name": "Abu Ramada South",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    5,
+    35
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.blueparadise.be/dive-sites/",
+     "Blue Paradise Diving Center"
+    ],
+    [
+     "web",
+     "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "Egypt Tours Plus"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869809": {
+   "name": "Carnatic",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    16,
+    27
+   ],
+   "sources": [
+    [
+     "web",
+     "https://divingaround.com/the-wrecks-of-abu-nuhas",
+     "Diving Around"
+    ],
+    [
+     "web",
+     "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "Egypt Tours Plus"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869810": {
+   "name": "Chrisoula K",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3,
+    26
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.blueocean-eg.com/blog/wreck-diving-egypt-abu---nuhas",
+     "Blue Ocean Egypt"
+    ],
+    [
+     "web",
+     "https://dive3d.eu/?p=1606",
+     "dive3d.eu"
+    ],
+    [
+     "web",
+     "https://scubaverse.com/three-wrecks-one-perfect-dive-day-with-ghazala-adventure/",
+     "Scubaverse"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869811": {
+   "name": "Kimon M",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    30
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.blueocean-eg.com/blog/wreck-diving-egypt-abu---nuhas",
+     "Blue Ocean Egypt"
+    ],
+    [
+     "web",
+     "https://dive3d.eu/?p=1627",
+     "dive3d.eu"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869812": {
+   "name": "Giannis D",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    4,
+    28
+   ],
+   "sources": [
+    [
+     "web",
+     "https://divingaround.com/the-wrecks-of-abu-nuhas",
+     "Diving Around"
+    ],
+    [
+     "web",
+     "https://blueparadise.be/dive-sites/giannis-d-wreck",
+     "Blue Paradise Diving Center"
+    ],
+    [
+     "web",
+     "https://www.egypttoursplus.com/hurghada-dive-sites/",
+     "Egypt Tours Plus"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869830": {
+   "name": "Ras Umm Sid",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    14,
+    30
+   ],
+   "depthNote": "Pin id is Ras Umm Sid (Sharm); sources describe the Sharm site",
+   "sources": [
+    [
+     "web",
+     "https://www.cameldive.com/?p=2780",
+     "Camel Dive Club"
+    ],
+    [
+     "web",
+     "https://www.circledivers.com/diving-in-dahab/dive-sites/ras-um-sid-dive-site",
+     "Circle Divers"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869851": {
+   "name": "Kormoran",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3,
+    12
+   ],
+   "sources": [
+    [
+     "web",
+     "https://circledivers.com/diving-in-dahab/dive-sites/kormoran-zingara-wreck-tiran",
+     "Circle Divers"
+    ],
+    [
+     "web",
+     "https://www.cameldive.com/dive-sites/kormoran/",
+     "Camel Dive Club"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869852": {
+   "name": "Kormoran",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3,
+    12
+   ],
+   "sources": [
+    [
+     "web",
+     "https://circledivers.com/diving-in-dahab/dive-sites/kormoran-zingara-wreck-tiran",
+     "Circle Divers"
+    ],
+    [
+     "web",
+     "https://www.cameldive.com/dive-sites/kormoran/",
+     "Camel Dive Club"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-n663869877": {
+   "name": "Cedar Pride",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    9,
+    28
+   ],
+   "sources": [
+    [
+     "web",
+     "https://divemagazine.com/scuba-diving-travel/wreck-diving-aqaba",
+     "DIVE Magazine"
+    ],
+    [
+     "web",
+     "https://theunderwaterclub.com/blog/the-wrecks-of-jordan/",
+     "The Underwater Club"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-r14353880": {
+   "name": "Brackett's Landing",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    13.7
+   ],
+   "depthNote": "Brackett's Landing is the Edmonds Underwater Park site",
+   "sources": [
+    [
+     "web",
+     "https://edmondswa.hosted.civiclive.com/government/departments/parks_and_recreation/parks/edmonds_underwater_park",
+     "City of Edmonds Parks"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-w35332224": {
+   "name": "Dutch Springs",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    30.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://en.wikipedia.org/wiki/Dutch_Springs",
+     "Wikipedia"
+    ],
+    [
+     "web",
+     "https://dan.org/alert-diver/article/dutch-springs/",
+     "Divers Alert Network"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "osm-w643470454": {
+   "name": "Blue Water Park",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    1.2,
+    45.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://bhamnow.com/2019/07/15/scuba-diving-blue-water-park/",
+     "Bham Now"
+    ],
+    [
+     "web",
+     "https://www.islands.com/2173791/blue-water-park-alabama-once-active-quarry-now-premier-scuba-diving-destination-caribbean-turquoise-waters/",
+     "Islands"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-curated-589": {
+   "name": "Devil's Lake",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    14.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://devilslakewisconsin.com/activities/scuba-diving/",
+     "Devil's Lake State Park Area Visitor Guide"
+    ],
+    [
+     "web",
+     "https://en.wikipedia.org/wiki/Devil's_Lake_(Wisconsin)",
+     "Wikipedia"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-curated-596": {
+   "name": "Roubidoux Spring",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    82.3
+   ],
+   "depthNote": "Cave dive; depth reached inside cave",
+   "sources": [
+    [
+     "web",
+     "https://www.ocda.org/exploration/projects/roubidoux-spring/",
+     "Ozark Cave Diving Alliance"
+    ],
+    [
+     "web",
+     "https://terrain-mag.com/midwest-scuba-sites/",
+     "Terrain Magazine"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-curated-616": {
+   "name": "Lake Jocassee",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    21.3
+   ],
+   "depthNote": "Devils Fork dive sites 30-70 ft; lake itself deeper",
+   "sources": [
+    [
+     "web",
+     "https://southcarolinaparks.com/see-and-do/scuba",
+     "South Carolina State Parks"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-curated-618": {
+   "name": "Peacock Springs",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    62.2
+   ],
+   "depthNote": "Cave-system maximum, not a normal open-water dive depth. Technical cave training is required.",
+   "sources": [
+    [
+     "web",
+     "https://karstunderwater.org/wes-skiles-peacock-springs-state-park/",
+     "Karst Underwater Research"
+    ],
+    [
+     "web",
+     "https://en.wikipedia.org/wiki/Wes_Skiles_Peacock_Springs_State_Park",
+     "Wikipedia"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-1184": {
+   "name": "USS Conestoga",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    56.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://sanctuaries.noaa.gov/news/press/conestoga/",
+     "NOAA Office of National Marine Sanctuaries"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-1190": {
+   "name": "USS Tarpon",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    41.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/tarpon.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-1228": {
+   "name": "SS City of Chester",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    65.8
+   ],
+   "sources": [
+    [
+     "web",
+     "https://noaa.gov/node/2212",
+     "NOAA"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-787": {
+   "name": "U-85",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    27.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/u-85.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-788": {
+   "name": "Half Moon",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    0.9,
+    3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://home.nps.gov/articles/halfmoon.htm",
+     "National Park Service"
+    ],
+    [
+     "web",
+     "https://miamidade.gov/environment/buoy/half-moon.asp",
+     "Miami-Dade County DERM"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-798": {
+   "name": "Urca de Lima",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3,
+    4.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://museumsinthesea.fpan.us/urca",
+     "Florida Dept. of State / FPAN Museums in the Sea"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-801": {
+   "name": "United States lightship Diamond Shoal",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    61
+   ],
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/lv-71.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-802": {
+   "name": "HMT Bedfordshire",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    32
+   ],
+   "sources": [
+    [
+     "web",
+     "https://monitor.noaa.gov/shipwrecks/bedfordshire.html",
+     "NOAA Monitor NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-826": {
+   "name": "SS Regina",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3.7,
+    6.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://museumsinthesea.fpan.us/regina",
+     "Florida Dept. of State / FPAN Museums in the Sea"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-notable-831": {
+   "name": "Vamar Shipwreck Site",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://museumsinthesea.fpan.us/vamar",
+     "Florida Dept. of State / FPAN Museums in the Sea"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-bath-tennis-reef-pbc2": {
+   "name": "Bath & Tennis Reef PBC2",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    12.8,
+    18.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "Pura Vida Divers"
+    ],
+    [
+     "web",
+     "https://neptunediveandski.com/west-palm-beach-info",
+     "Neptune Dive and Ski"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-eidsvag": {
+   "name": "Eidsvag",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    24.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27PB0010%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-eidsvag-barge": {
+   "name": "Eidsvag Barge",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    24.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27PB0010%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-flower-garden": {
+   "name": "Flower Garden",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    12.8,
+    16.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "Pura Vida Divers"
+    ],
+    [
+     "web",
+     "https://www.stuartscuba.com/charters/flower-gardens-breakers-west-palm",
+     "Stuart Scuba"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-pauls-reef": {
+   "name": "Paul's Reef",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    13.7,
+    18.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "Pura Vida Divers"
+    ],
+    [
+     "web",
+     "https://neptunediveandski.com/west-palm-beach-info",
+     "Neptune Dive and Ski"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-spearmans-barge": {
+   "name": "Spearman's Barge",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    21.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "Florida FWC Artificial Reef Program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-the-trench": {
+   "name": "The Trench",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    14.3,
+    18.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.puravidadivers.com/south-florida-reefs-60ft/",
+     "Pura Vida Divers"
+    ],
+    [
+     "web",
+     "https://neptunediveandski.com/west-palm-beach-info",
+     "Neptune Dive and Ski"
+    ],
+    [
+     "web",
+     "https://www.waterfront-properties.com/blog/places-to-go-scuba-diving-in-the-palm-beaches-waterfront-properties.html",
+     "Waterfront Properties"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-pbc-zion-train-bow": {
+   "name": "Zion Train Bow",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    27.4
+   ],
+   "depthNote": "FWC lists the wreck at 90 ft.",
+   "position": {
+    "at": [
+     26.963033,
+     -80.007333
+    ],
+    "quality": "agency",
+    "movedKm": 0
+   },
+   "sources": [
+    [
+     "web",
+     "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "Florida FWC Artificial Reef Program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikidata-570": {
+   "name": "SS Continental",
+   "status": "dive",
+   "depth": [
+    0,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "highlights": [
+    "Intact steam engine"
+   ],
+   "hazards": [
+    "Waves and surge in the shallows",
+    "Shifting sand covers and uncovers the wreck"
+   ],
+   "summary": "Waves have broken this steamer apart off Rawley Point, but its double-expansion steam engine is still intact.",
+   "sources": [
+    [
+     "whs",
+     "119"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikidata-572": {
+   "name": "Joys",
+   "status": "dive",
+   "depth": [
+    null,
+    3
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Boat traffic",
+    "Often low visibility"
+   ],
+   "summary": "The charred hull of a steam barge 500 ft off Sunset Park in Sturgeon Bay.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     44.84908,
+     -87.38905
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "332"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikidata-574": {
+   "name": "Tennie and Laura",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    99.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/602",
+     "Wisconsin Historical Society"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikidata-577": {
+   "name": "Success",
+   "status": "dive",
+   "depth": [
+    null,
+    2.4
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A scow-schooner in eight feet of water off Whitefish Dunes, recently uncovered by the sand.",
+   "sources": [
+    [
+     "whs",
+     "590"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikidata-579": {
+   "name": "Lottie Cooper",
+   "status": "ashore",
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "summary": "Raised from Sheboygan harbor in the early 1990s; its remains are now on public display ashore.",
+   "sources": [
+    [
+     "whs",
+     "382"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikidata-583": {
+   "name": "Grape Shot",
+   "status": "dive",
+   "depth": [
+    null,
+    2.4
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "Scattered remains of an 1850s schooner near the Plum Island Coast Guard station.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     45.31397,
+     -86.95137
+    ],
+    "movedKm": 1.7
+   },
+   "sources": [
+    [
+     "whs",
+     "248"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikidata-584": {
+   "name": "Hanover",
+   "status": "dive",
+   "depth": [
+    null,
+    6.1
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck"
+   ],
+   "summary": "A schooner a mile off Peninsula State Park, uncovered in 2014 after decades under the sand.",
+   "sources": [
+    [
+     "whs",
+     "263"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-635": {
+   "name": "Abiah",
+   "status": "dive",
+   "depth": [
+    null,
+    67.1
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Silt — easy to stir up"
+   ],
+   "summary": "An intact 1840s schooner discovered in 2019, with a stove and kitchenware visible inside.",
+   "position": {
+    "quality": "unpublished"
+   },
+   "sources": [
+    [
+     "whs",
+     "6"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-637": {
+   "name": "Adriatic",
+   "status": "dive",
+   "depth": [
+    0.6,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "access": "Lies beside a working shipyard — confirm access before diving",
+   "hazards": [
+    "Silt — easy to stir up",
+    "Boat traffic"
+   ],
+   "summary": "A self-unloading schooner-barge beside the Bay Shipbuilding yard, its unloading gear still under the silt.",
+   "sources": [
+    [
+     "whs",
+     "10"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-638": {
+   "name": "Alice E. Wilds",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    91.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/21",
+     "Wisconsin Historical Society"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-640": {
+   "name": "Alva Bradley",
+   "status": "dive",
+   "depth": [
+    6.1,
+    8.2
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "highlights": [
+    "Steel billet cargo"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "A largely intact schooner between the Manitou islands, with steel cargo billets still visible.",
+   "sources": [
+    [
+     "mup",
+     null
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-642": {
+   "name": "Ann Arbor No. 5",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    48.8
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/ann-arbor-no-5",
+     "Michigan Shipwreck Research Association"
+    ],
+    [
+     "web",
+     "https://shotlinediving.com/wreck/ann-arbor-no-5-us-208261/",
+     "Shotline Diving"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-647": {
+   "name": "C. E. Redfern",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    83.8
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganshipwrecks.org/?p=2241",
+     "Michigan Shipwreck Research Association"
+    ],
+    [
+     "web",
+     "https://shotlinediving.com/wreck/c-e-redfern-1890/",
+     "Shotline Diving"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-650": {
+   "name": "City of Glasgow",
+   "status": "dive",
+   "depth": [
+    null,
+    3
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A barge broken in two pieces about 100 yards from shore in Lily Bay, north of the Sturgeon Bay canal.",
+   "sources": [
+    [
+     "whs",
+     "102"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-651": {
+   "name": "City of Kalamazoo",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    4.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/673",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-652": {
+   "name": "Col. Ellsworth",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    21.3,
+    25.9
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-653": {
+   "name": "Congress",
+   "status": "dive",
+   "depth": [
+    41.1,
+    50.3
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Overhead inside the hull — wreck training to go in"
+   ],
+   "summary": "A burned steamer off South Manitou with its bow and superstructure intact.",
+   "sources": [
+    [
+     "mup",
+     null
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-654": {
+   "name": "Daisy Day",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-657": {
+   "name": "Dolphin",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    33.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-658": {
+   "name": "Eber Ward",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    33.5,
+    44.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-659": {
+   "name": "Empire State",
+   "status": "dive",
+   "depth": [
+    null,
+    3.7
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Boat traffic"
+   ],
+   "summary": "A stone barge sunk to extend a quarry dock at Bullhead Point city park — easy for snorkelers and divers.",
+   "sources": [
+    [
+     "whs",
+     "181"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-660": {
+   "name": "E. M. B. A.",
+   "status": "dive",
+   "depth": [
+    41.5,
+    51.8
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "highlights": [
+    "Self-unloading gear",
+    "Vertical steam pump"
+   ],
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A scuttled self-unloading schooner-barge east of Milwaukee, upright and mostly intact; its unloading tower tops out at 136 ft.",
+   "sources": [
+    [
+     "whs",
+     "172"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-665": {
+   "name": "Floretta",
+   "status": "dive",
+   "depth": [
+    null,
+    54.9
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Commercial fishing nets on the wreck"
+   ],
+   "summary": "A canal schooner southeast of Manitowoc, its holds still full of iron ore and three anchors at the bow.",
+   "sources": [
+    [
+     "whs",
+     "206"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-666": {
+   "name": "Fountain City",
+   "status": "dive",
+   "depth": [
+    3,
+    9.1
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Often low visibility",
+    "Boat traffic"
+   ],
+   "summary": "Ribs and planks spread over a large area off Sunset Park in Sturgeon Bay.",
+   "sources": [
+    [
+     "whs",
+     "212"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-667": {
+   "name": "Fred McBrier",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    30.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-668": {
+   "name": "F. W. Wheeler",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    4.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "Indiana DNR"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-669": {
+   "name": "George F. Williams",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    4.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "Indiana DNR"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-673": {
+   "name": "H. C. Akeley",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    73.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/southwest-michigan-underwater-preserve/",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-674": {
+   "name": "Helvetia",
+   "status": "dive",
+   "depth": [
+    null,
+    50.3
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Commercial fishing nets on the wreck"
+   ],
+   "summary": "An intact schooner-barge hull off Sheboygan, tangled with commercial nets.",
+   "sources": [
+    [
+     "whs",
+     "268"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-679": {
+   "name": "J. D. Marshall",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    8.8
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "Indiana DNR"
+    ],
+    [
+     "web",
+     "https://underwaterscience.indiana.edu/research/great-lakes/jd-marshall.html",
+     "Indiana University Underwater Science"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-680": {
+   "name": "Jennibel",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    32.9
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/314",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-681": {
+   "name": "John Evenson",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    14.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/321",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-682": {
+   "name": "Joseph L. Hurd",
+   "status": "dive",
+   "depth": [
+    1.8,
+    5.2
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Often low visibility",
+    "Boat traffic"
+   ],
+   "summary": "A 155-ft barge lying beside the Mueller in Sturgeon Bay, its port side and stern deck fairly intact.",
+   "sources": [
+    [
+     "whs",
+     "328"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-684": {
+   "name": "Kate Williams",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    1.8
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/340",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-686": {
+   "name": "LaSalle",
+   "status": "dive",
+   "depth": [
+    null,
+    3.7
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "highlights": [
+    "Deadeyes and wire rigging",
+    "Iron deck knees"
+   ],
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A canal schooner uncovered by shifting sand at Rawley Point, its rigging balled up inside the hull — fine for snorkelers too.",
+   "sources": [
+    [
+     "whs",
+     "354"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-689": {
+   "name": "Maitland",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    21.3,
+    25.9
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-690": {
+   "name": "Major Anderson",
+   "status": "dive",
+   "depth": [
+    0.9,
+    3
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A barkentine lying in very shallow water north of Two Rivers, its lower hull preserved under the sand.",
+   "sources": [
+    [
+     "whs",
+     "408"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-691": {
+   "name": "Manistee",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/westmichigan.htm",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-696": {
+   "name": "Milwaukee Fireboat 23",
+   "status": "dive",
+   "depth": [
+    null,
+    21.9
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "highlights": [
+    "Boiler in place",
+    "Propeller and shaft"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "A Milwaukee fireboat sunk in 1923, upright with its boiler mid-wreck and the propeller still on its shaft.",
+   "sources": [
+    [
+     "whs",
+     "745"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-698": {
+   "name": "Minneapolis",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    28,
+    38.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-700": {
+   "name": "M. J. Bartelme",
+   "status": "dive",
+   "depth": [
+    null,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A heavily salvaged steel steamer off the south end of Cana Island — valves, pumps and machinery scattered on rock.",
+   "sources": [
+    [
+     "whs",
+     "398"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-701": {
+   "name": "Mojave",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    89.9
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.wisconsinhistory.org/Records/Article/CS17127",
+     "Wisconsin Historical Society"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-706": {
+   "name": "No. 2",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    13.7
+   ],
+   "depthNote": "Indiana car ferry No. 2",
+   "sources": [
+    [
+     "web",
+     "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "Indiana DNR"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-707": {
+   "name": "Norlond",
+   "status": "dive",
+   "depth": [
+    null,
+    17.7
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "highlights": [
+    "Boiler, shaft and propeller",
+    "Scattered general cargo"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Silt — easy to stir up"
+   ],
+   "summary": "Broken-up remains of a steamer three miles southeast of St. Francis — boiler, shaft and propeller exposed, with general cargo scattered across the bottom.",
+   "sources": [
+    [
+     "whs",
+     "460"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-708": {
+   "name": "Northwest",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    15.8,
+    22.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-710": {
+   "name": "Pathfinder",
+   "status": "dive",
+   "depth": [
+    null,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "highlights": [
+    "Centerboard trunk",
+    "Iron ore cargo"
+   ],
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A 188-ft schooner in a bed of quicksand off Two Creeks, still holding its cargo of iron ore.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     44.24048,
+     -87.50662
+    ],
+    "movedKm": 0.7
+   },
+   "sources": [
+    [
+     "whs",
+     "490"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-712": {
+   "name": "P. J. Ralph",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    10.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/manitou-passage-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-715": {
+   "name": "Rising Sun",
+   "status": "dive",
+   "depth": [
+    1.8,
+    3.7
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A steamer that went to pieces north of Pyramid Point, now scattered in shallow water.",
+   "sources": [
+    [
+     "mup",
+     null
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-716": {
+   "name": "Rotarian",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    25.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.enjoyillinois.com/plan-your-trip/travel-inspiration/scuba-diving-in-illinois/",
+     "Enjoy Illinois (Illinois Office of Tourism)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-717": {
+   "name": "Salvor",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    7.6,
+    9.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-718": {
+   "name": "Sandusky",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    21.3,
+    24.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-720": {
+   "name": "Sebastopol",
+   "status": "dive",
+   "depth": [
+    null,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "highlights": [
+    "Pioneer-era cargo scattered on sand"
+   ],
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "Scattered remains of an 1855 sidewheel steamer off Milwaukee’s South Shore, littered with cargo — nails, china and tools.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     42.9874,
+     -87.86783
+    ],
+    "movedKm": 0.4
+   },
+   "sources": [
+    [
+     "whs",
+     "561"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-722": {
+   "name": "Sidney O. Neff",
+   "status": "dive",
+   "depth": [
+    null,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows",
+    "Boat traffic"
+   ],
+   "summary": "A flattened steamer south of the Menominee North Pier Light, popular with new divers.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     45.0933,
+     -87.58038
+    ],
+    "movedKm": 0.3
+   },
+   "sources": [
+    [
+     "whs",
+     "568"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-723": {
+   "name": "Silver Lake",
+   "status": "dive",
+   "depth": [
+    null,
+    61
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A well-preserved scow-schooner sitting upright seven miles northeast of Sheboygan.",
+   "sources": [
+    [
+     "whs",
+     "570"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-725": {
+   "name": "St. Albans",
+   "status": "dive",
+   "depth": [
+    null,
+    50.3
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A mostly intact wooden steamer in deep water north-northeast of Milwaukee, near the E.M.B.A.",
+   "sources": [
+    [
+     "whs",
+     "580"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-726": {
+   "name": "State of Michigan",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    18.3,
+    22.9
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-728": {
+   "name": "Sumatra",
+   "status": "dive",
+   "depth": [
+    null,
+    10.7
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "hazards": [
+    "Boat traffic"
+   ],
+   "summary": "The bottom of a schooner’s hull beside Milwaukee’s breakwater — much of the ship lies under the breakwater itself.",
+   "sources": [
+    [
+     "whs",
+     "592"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-730": {
+   "name": "Sydney C. McLouth",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    5.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/596",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-731": {
+   "name": "The Straits of Mackinac",
+   "status": "dive",
+   "depth": [
+    13.7,
+    25
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "highlights": [
+    "Car deck",
+    "Penetration for trained divers"
+   ],
+   "hazards": [
+    "Overhead inside the hull — wreck training to go in"
+   ],
+   "summary": "A 1928 car ferry scuttled as an artificial reef north of Navy Pier, upright with its main deck just over 45 ft — Chicago’s go-to wreck.",
+   "sources": [
+    [
+     "report",
+     null
+    ]
+   ],
+   "confidence": "needs-local"
+  },
+  "x-wikilist-732": {
+   "name": "Thomas A. Scott",
+   "status": "dive",
+   "depth": [
+    null,
+    9.1
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck"
+   ],
+   "summary": "A schooner-barge near Milwaukee with about 140 ft of hull exposed from the sand.",
+   "sources": [
+    [
+     "whs",
+     "603"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-733": {
+   "name": "Thomas H. Smith",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    27.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://legacy.wisconsinhistory.org/Records/NationalRegister/NR2848",
+     "Wisconsin Historical Society"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-734": {
+   "name": "Thomas Hume",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    41.1,
+    45.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://battlecreek.diventures.com/charters/thomas-hume-shipwreck",
+     "Diventures"
+    ],
+    [
+     "web",
+     "https://historycollection.com/thomas-hume-shipwreck/",
+     "History Collection"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-735": {
+   "name": "Three Brothers",
+   "status": "dive",
+   "depth": [
+    1.5,
+    13.7
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck"
+   ],
+   "summary": "A wooden steamer on the lee side of South Manitou Island, stern intact and hull filled with sand.",
+   "sources": [
+    [
+     "mup",
+     null
+    ],
+    [
+     "nps",
+     null
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-736": {
+   "name": "Toledo",
+   "status": "dive",
+   "depth": [
+    null,
+    6.1
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "Scattered steamer wreckage starting just off the Port Washington shore — decking, machinery and the smokestack.",
+   "sources": [
+    [
+     "whs",
+     "610"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-737": {
+   "name": "Transfer",
+   "status": "dive",
+   "depth": [
+    null,
+    36.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "highlights": [
+    "Self-unloading gear",
+    "Standing sternpost"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Deep — plan gas and decompression limits"
+   ],
+   "summary": "A self-unloading schooner-barge lying broken on an even keel six miles southeast of Milwaukee harbor; its sternpost still stands 11 ft high.",
+   "sources": [
+    [
+     "whs",
+     "748"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-738": {
+   "name": "Trinidad",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    82.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.wisconsinhistory.org/Records/Article/CS17126",
+     "Wisconsin Historical Society"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-739": {
+   "name": "T. S. Christie",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/west-michigan-underwater-preserve/",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-740": {
+   "name": "Tubal Cain",
+   "status": "dive",
+   "depth": [
+    2.1,
+    3
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A canaller lying on an even keel 300 ft off Rawley Point, sides intact to the deck shelf when the sand allows.",
+   "sources": [
+    [
+     "whs",
+     "618"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-743": {
+   "name": "Volunteer",
+   "status": "dive",
+   "depth": [
+    null,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "hazards": [
+    "Boat traffic"
+   ],
+   "summary": "The complete lower hull of a wooden steamer lying about 100 yards off the Milwaukee breakwall.",
+   "sources": [
+    [
+     "whs",
+     "626"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-744": {
+   "name": "Walter B. Allen",
+   "status": "dive",
+   "depth": [
+    27.4,
+    50.3
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "highlights": [
+    "Two standing masts",
+    "Steam pump chained to deck"
+   ],
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "One of the most intact schooners in the Great Lakes — both masts still stand, rising to within 90 ft of the surface.",
+   "sources": [
+    [
+     "whs",
+     "630"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-745": {
+   "name": "Walter L. Frost",
+   "status": "dive",
+   "depth": [
+    3,
+    3.7
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "The broken hull and boilers of a package freighter lost in 1903, lying beside the Francisco Morazan.",
+   "sources": [
+    [
+     "mup",
+     null
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-746": {
+   "name": "W. C. Kimball",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    91.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://shotlinediving.com/wreck/w-c-kimball-1888/",
+     "Shotline Diving"
+    ],
+    [
+     "web",
+     "https://wgrd.com/lake-michigan-1891-shipwreck-could-be-most-intact-wooden-schooner-ever-found/",
+     "WGRD"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-747": {
+   "name": "Wells Burt",
+   "status": "dive",
+   "depth": [
+    null,
+    12.2
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "summary": "A three-masted schooner lost with all hands in 1883, three miles off Evanston.",
+   "sources": [
+    [
+     "report",
+     null
+    ]
+   ],
+   "confidence": "needs-local"
+  },
+  "x-wikilist-749": {
+   "name": "William A. Reiss",
+   "status": "ashore",
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "summary": "The steel freighter was salvaged; its pilothouse survives ashore as part of a cottage. No dive site is documented.",
+   "sources": [
+    [
+     "whs",
+     "640"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-750": {
+   "name": "William T. Graves",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    6.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/manitou-passage-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-751": {
+   "name": "Wisconsin",
+   "status": "dive",
+   "depth": [
+    null,
+    25.9
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "The burned-out rib cage of a scuttled steam barge, with its anchor chain piled at the bow.",
+   "sources": [
+    [
+     "whs",
+     "651"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-752": {
+   "name": "W. L. Brown",
+   "status": "dive",
+   "depth": [
+    null,
+    24.4
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "highlights": [
+    "Two standing masts",
+    "Open forward hold"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "An upright, intact steamer embedded in the bottom of Green Bay, both masts still standing.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     44.96813,
+     -87.54973
+    ],
+    "movedKm": 0.4
+   },
+   "sources": [
+    [
+     "whs",
+     "629"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-755": {
+   "name": "City of Bangor",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    4.6,
+    10.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-757": {
+   "name": "Gazelle",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    6.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-760": {
+   "name": "Henry Chisholm",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    6.1,
+    18.3
+   ],
+   "depthNote": "Hull 20-60 ft; engine separately 115-155 ft",
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-768": {
+   "name": "Wasaga",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    10.7
+   ],
+   "depthNote": "Reported position per source",
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikilist-772": {
+   "name": "Advance",
+   "status": "dive",
+   "depth": [
+    null,
+    25.9
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "highlights": [
+    "Windlass and bowsprit",
+    "Centerboard"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "A schooner sitting upright but broken ten miles southwest of Sheboygan, with its windlass, bowsprit and centerboard still on site.",
+   "sources": [
+    [
+     "whs",
+     "11"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikilist-773": {
+   "name": "Alvin Buckingham",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    2.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://thunderbay.noaa.gov/shipwrecks/buckingham.html",
+     "NOAA Thunder Bay NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-102": {
+   "name": "SS Francisco Morazan (1922)",
+   "status": "dive",
+   "depth": [
+    0,
+    6.1
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "highlights": [
+    "Broken steel hull",
+    "Walter L. Frost beneath it"
+   ],
+   "hazards": [
+    "Overhead inside the hull — wreck training to go in",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A 1960 freighter aground off South Manitou Island, partly above water — a novice shore dive with easy access to the hull.",
+   "sources": [
+    [
+     "mup",
+     null
+    ],
+    [
+     "nps",
+     null
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-107": {
+   "name": "Christina Nilsson",
+   "status": "dive",
+   "depth": [
+    3.7,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "The bilge of a fine 1871 schooner on cobble behind the old Baileys Harbor range lights.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     45.055,
+     -87.0957
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "99"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-108": {
+   "name": "Fleetwing",
+   "status": "dive",
+   "depth": [
+    1.5,
+    7.6
+   ],
+   "depthNote": "Summer surface water averages 50–70°F.",
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "highlights": [
+    "Pyramid of keelsons",
+    "Centerboard",
+    "Hull patch from the grounding"
+   ],
+   "hazards": [
+    "Waves and surge in the shallows",
+    "Boat traffic"
+   ],
+   "summary": "A schooner broken into four sections off the Garrett Bay public boat landing — a classic Door County shore dive.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     45.28593,
+     -87.04972
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "201"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-109": {
+   "name": "SS Frank O'Connor",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    21.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/218",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-110": {
+   "name": "SS Wisconsin",
+   "status": "dive",
+   "depth": [
+    null,
+    39.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Cars in the rear hold",
+    "Stack lying on deck",
+    "Windlass and capstan"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "At the recreational depth limit",
+    "Overhead inside the hull — wreck training to go in"
+   ],
+   "summary": "A steel passenger and package steamer sitting upright off Kenosha, with three early automobiles in its rear hold.",
+   "sources": [
+    [
+     "whs",
+     "650"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-111": {
+   "name": "Daniel Lyons",
+   "status": "dive",
+   "depth": [
+    null,
+    33.5
+   ],
+   "depthNote": "Bottom temperature 40–42°F.",
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "vis": [
+    12.2,
+    30.5
+   ],
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Standing centerboard trunk",
+    "Bluff bow",
+    "Masts and rigging on the bottom"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "A nearly complete schooner collapsed open off Algoma, so its construction is easy to see; the centerboard trunk still stands.",
+   "sources": [
+    [
+     "whs",
+     "129"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-112": {
+   "name": "Gallinipper",
+   "status": "dive",
+   "depth": [
+    null,
+    64
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Commercial fishing nets on the wreck",
+    "Silt — easy to stir up"
+   ],
+   "summary": "The oldest known Lake Michigan shipwreck — an 1830s schooner sitting upright under a coat of silt and mussels.",
+   "sources": [
+    [
+     "whs",
+     "230"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-114": {
+   "name": "SS Erie L. Hackley",
+   "status": "dive",
+   "depth": [
+    null,
+    33.5
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "hazards": [
+    "Cold below the thermocline",
+    "Silt — easy to stir up"
+   ],
+   "summary": "A small passenger steamer sitting upright in Green Bay, still holding its engine, boiler and a cargo of red bricks.",
+   "sources": [
+    [
+     "whs",
+     "185"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-117": {
+   "name": "SS Australasia",
+   "status": "dive",
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "The ends of a large wooden steamer poke out of the sand 350 yards off Whitefish Dunes State Park.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     44.92168,
+     -87.18708
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "47"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-120": {
+   "name": "SS Atlanta",
+   "status": "dive",
+   "depth": [
+    null,
+    5.2
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "highlights": [
+    "Hogging trusses",
+    "Propeller shaft and machinery"
+   ],
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "The outline of a passenger steamer rising up to 10 ft off the sand, 800 ft offshore north of Amsterdam Park.",
+   "sources": [
+    [
+     "whs",
+     "43"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-122": {
+   "name": "Arctic (1881 tug)",
+   "status": "dive",
+   "depth": [
+    3,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "highlights": [
+    "Iron hogging trusses at the bow"
+   ],
+   "hazards": [
+    "Shifting sand covers and uncovers the wreck",
+    "Often low visibility"
+   ],
+   "summary": "An ice-breaking tug lying in two pieces off Manitowoc; the bow’s stempost rises seven feet out of the sand.",
+   "sources": [
+    [
+     "whs",
+     "34"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-123": {
+   "name": "SS Francis Hinton",
+   "status": "dive",
+   "depth": [
+    null,
+    4.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "vis": [
+    null,
+    3
+   ],
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Boiler and engine works",
+    "Four-bladed propeller"
+   ],
+   "hazards": [
+    "Often low visibility",
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A steambarge embedded in clay in Maritime Bay, with its engine works, boiler and an 8½-ft propeller still visible.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Francis_Hinton"
+    ],
+    [
+     "whs",
+     "214"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-125": {
+   "name": "SS Cayuga",
+   "status": "dive",
+   "depth": [
+    31.1,
+    36.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "hazards": [
+    "Cold below the thermocline",
+    "Deep — plan gas and decompression limits"
+   ],
+   "summary": "A steel package freighter sunk in an 1895 collision near the Straits, the target of failed salvage attempts.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Cayuga"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-134": {
+   "name": "Rouse Simmons",
+   "status": "dive",
+   "depth": [
+    null,
+    52.4
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "highlights": [
+    "Christmas trees in the hold",
+    "Rigging flung ahead of the bow"
+   ],
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "The Christmas Tree Ship, lost in 1912 — trees still lie stacked in its hold six miles northeast of Rawley Point.",
+   "sources": [
+    [
+     "wikipedia",
+     "Rouse_Simmons"
+    ],
+    [
+     "whs",
+     "541"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-137": {
+   "name": "SS Kamloops",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    73.2,
+    79.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-145": {
+   "name": "SS William B. Davock",
+   "status": "dive",
+   "depth": [
+    null,
+    61
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A steel freighter lost with all hands in the 1940 Armistice Day storm, capsized off Little Sable Point.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_William_B._Davock"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-146": {
+   "name": "SS Isaac M. Scott",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    53.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://thunderbay.noaa.gov/shipwrecks/isaac_m_scott.html",
+     "NOAA Thunder Bay NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-147": {
+   "name": "Sport",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    13.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/sanilac-shores-underwater-preserve/",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-149": {
+   "name": "SS Henry Cort",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    4.6
+   ],
+   "depthNote": "Sources disagree 15 vs 30 ft",
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/westmichigan.htm",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-151": {
+   "name": "SS J. H. Sheadle",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    4.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/marquette-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-154": {
+   "name": "SS Lakeland",
+   "status": "dive",
+   "depth": [
+    47.2,
+    62.5
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "highlights": [
+    "1920s automobiles",
+    "Smokestack on the roof"
+   ],
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Overhead inside the hull — wreck training to go in"
+   ],
+   "summary": "A steel steamer broken in two with both halves upright and at least twenty-one 1920s cars aboard; the bow rail sits at 155 ft.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     44.79268,
+     -87.19222
+    ],
+    "movedKm": 0.5
+   },
+   "sources": [
+    [
+     "whs",
+     "358"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-158": {
+   "name": "SS Muskegon",
+   "status": "dive",
+   "depth": [
+    null,
+    9.8
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "highlights": [
+    "Boilers and propeller",
+    "Engine gears"
+   ],
+   "summary": "The scuttled sandsucker off Michigan City, its boilers, propeller and gears still on site — an Indiana Shipwreck Nature Preserve.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Muskegon"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-159": {
+   "name": "SS Selah Chamberlain",
+   "status": "dive",
+   "depth": [
+    18.9,
+    26.5
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Tandem steam engine",
+    "Two boilers",
+    "Rudder still standing"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Shifting sand covers and uncovers the wreck"
+   ],
+   "summary": "A steamer broken in three pieces off Sheboygan Point; its decorated tandem engine rises 25 ft off the bottom.",
+   "sources": [
+    [
+     "whs",
+     "562"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-160": {
+   "name": "SS S. C. Baldwin",
+   "status": "dive",
+   "depth": [
+    13.7,
+    22.9
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Upright hull",
+    "Stem rising 30 ft",
+    "Cargo hatches"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "A wooden barge sitting upright with its 1871 lines intact; the stem post rises 30 ft off the bottom.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     44.18122,
+     -87.48632
+    ],
+    "movedKm": 2.9
+   },
+   "sources": [
+    [
+     "whs",
+     "545"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-161": {
+   "name": "SS J. M. Allmendinger",
+   "status": "dive",
+   "depth": [
+    null,
+    3.7
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "Broken remains of a steam barge about 1,000 ft off the Mequon shore — keelson, rudder and boiler.",
+   "sources": [
+    [
+     "whs",
+     "302"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-163": {
+   "name": "MV Material Service",
+   "status": "dive",
+   "depth": [
+    null,
+    10.7
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "summary": "A sand barge that foundered off Calumet Harbor in 1936, often paired with a dive on a nearby tug.",
+   "sources": [
+    [
+     "report",
+     null
+    ]
+   ],
+   "confidence": "needs-local"
+  },
+  "x-wikipedia-166": {
+   "name": "SS Jarvis Lord",
+   "status": "dive",
+   "depth": [
+    null,
+    67.1
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A wooden bulk freighter found in 2020 west of Pyramid Point, partially broken up.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Jarvis_Lord"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-167": {
+   "name": "SS Vernon",
+   "status": "dive",
+   "depth": [
+    48.8,
+    64
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A very intact steamer keeled over to starboard, its cargo of fish boxes spilling out; the blown-off superstructure lies in 160 ft.",
+   "sources": [
+    [
+     "whs",
+     "624"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-168": {
+   "name": "SS John V. Moran",
+   "status": "dive",
+   "depth": [
+    null,
+    111.3
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A wooden steamer crushed by ice in 1899, upright and remarkably intact in extreme depth.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_John_V._Moran"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-169": {
+   "name": "Robert C. Pringle",
+   "status": "dive",
+   "depth": [
+    null,
+    87.5
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A remarkably intact tug sitting upright in very deep water off Sheboygan.",
+   "sources": [
+    [
+     "whs",
+     "534"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-170": {
+   "name": "SS Merchant",
+   "status": "dive",
+   "depth": [
+    null,
+    7.6
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "An early iron-hulled steamer broken up across Racine Reef — plenty of wreckage to explore in shallow water.",
+   "sources": [
+    [
+     "whs",
+     "432"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-171": {
+   "name": "SS John Mitchell (1906)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    38.1,
+    45.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-172": {
+   "name": "SS Ironsides",
+   "status": "dive",
+   "depth": [
+    33.2,
+    37.2
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "hazards": [
+    "Cold below the thermocline",
+    "Deep — plan gas and decompression limits"
+   ],
+   "summary": "A partially collapsed passenger steamer four miles off Grand Haven; the stern lies shallower than the bow.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Ironsides"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-216": {
+   "name": "USS Accokeek",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    19.2,
+    30.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27BA0162%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-222": {
+   "name": "USCGC Duane",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    36
+   ],
+   "depthNote": "FWC table: relief 50 ft, depth 118 ft",
+   "sources": [
+    [
+     "web",
+     "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "Florida FWC Artificial Reef Program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-224": {
+   "name": "USS Scrimmage",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    17.7,
+    28
+   ],
+   "sources": [
+    [
+     "web",
+     "https://en.wikipedia.org/wiki/USS_Scrimmage",
+     "Wikipedia"
+    ],
+    [
+     "web",
+     "https://pacificwrecks.com/ship/usn/mahi.html",
+     "Pacific Wrecks"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-228": {
+   "name": "USCGC Mohawk (WPG-78)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    10.7,
+    27.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27LE0120%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-241": {
+   "name": "USCGC Tamaroa (WMEC-166)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    38.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://en.wikipedia.org/wiki/USCGC_Tamaroa_(WMEC-166)",
+     "Wikipedia"
+    ],
+    [
+     "web",
+     "https://whyy.org/articles/wwii-era-vessel-sunk-off-delaware-new-jersey-coast",
+     "WHYY"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-244": {
+   "name": "USS Fred T. Berry",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    106.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "Florida FWC Artificial Reef Program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-246": {
+   "name": "USS Indra",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    18.3
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.deq.nc.gov/marine-fisheries/coastal-fishing-information/artificial-reefs/dmf-reef-guide-web/download",
+     "NC Division of Marine Fisheries"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-247": {
+   "name": "USS Mona Island",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    12.2,
+    16.8
+   ],
+   "depthNote": "Depth of Parramore Reef site holding USNS Mona Isle",
+   "sources": [
+    [
+     "web",
+     "https://www.mrc.virginia.gov/vsrfdf/parramore_reef.shtm",
+     "Virginia Marine Resources Commission"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-249": {
+   "name": "USS Curb",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    38.1,
+    56.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12/query?where=DeployID%3D%27MO0016%27&outFields=Name%2CDepth%2CRelief%2CDeployDate&f=html",
+     "Florida FWC artificial reef program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-260": {
+   "name": "USCGC Hollyhock (WAGL-220)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    33.5
+   ],
+   "depthNote": "Wheelhouse 70 ft, deck 90 ft (Captain Dan wreck)",
+   "sources": [
+    [
+     "web",
+     "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "Florida FWC Artificial Reef Program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-266": {
+   "name": "USS Vermilion (AKA-107)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    36.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://dnr.sc.gov/news/2019/july/july3_tugboat.php",
+     "SC Department of Natural Resources"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-316": {
+   "name": "Circle of Heroes",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    13.4
+   ],
+   "depthNote": "Depth and position are from the Florida FWC deployment record.",
+   "position": {
+    "at": [
+     28.05195,
+     -83.010833
+    ],
+    "quality": "agency",
+    "movedKm": 0
+   },
+   "sources": [
+    [
+     "web",
+     "https://archive.myfwc.com/Archive/Saltwater%20Fishing/Artificial%20Reefs/ardeployments.pdf",
+     "Florida FWC Artificial Reef Program"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-478": {
+   "name": "Big Bay sloop",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/657",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-479": {
+   "name": "Lucerne",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    4.6,
+    7.3
+   ],
+   "depthNote": "Stern post 15 ft below surface",
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/386",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-481": {
+   "name": "Noquebay",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3,
+    4.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/458",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-482": {
+   "name": "Ottawa (tug)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3.7,
+    4.9
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/486",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-483": {
+   "name": "Iris (1866 ship)",
+   "status": "dive",
+   "depth": [
+    0,
+    1.2
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "hazards": [
+    "Boat traffic"
+   ],
+   "summary": "A scow-schooner in Jackson Harbor with its stern breaking the surface — a snorkel more than a dive.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     45.4006,
+     -86.85545
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "295"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-484": {
+   "name": "SS Louisiana",
+   "status": "dive",
+   "depth": [
+    0,
+    5.5
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "highlights": [
+    "Wooden-hull construction",
+    "Engine mount",
+    "Smallmouth bass"
+   ],
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A burned bulk carrier in sheltered Washington Harbor — clear water, lots of structure and smallmouth bass.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     45.4009,
+     -86.92025
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "384"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-485": {
+   "name": "Meridian",
+   "status": "dive",
+   "depth": [
+    null,
+    12.2
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "highlights": [
+    "Intact bow"
+   ],
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "A schooner broken in three sections; the bow is intact from the keel to the forward rail.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     45.2181,
+     -87.1415
+    ],
+    "movedKm": 2.9
+   },
+   "sources": [
+    [
+     "whs",
+     "433"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-486": {
+   "name": "Ocean Wave",
+   "status": "dive",
+   "depth": [
+    null,
+    33.5
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "hazards": [
+    "Cold below the thermocline",
+    "Commercial fishing nets on the wreck",
+    "Shifting sand covers and uncovers the wreck"
+   ],
+   "summary": "A scow resting upright two miles off Whitefish Point, with bow and stern ramps and its cabin intact.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     44.88323,
+     -87.15213
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "474"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-489": {
+   "name": "Kate Kelly",
+   "status": "dive",
+   "depth": [
+    null,
+    16.8
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Windlass and anchor chain",
+    "Centerboard trunk",
+    "Bilge pump"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "A schooner broken in sections two miles east of Wind Point, its anchor chain still wrapped around the windlass.",
+   "sources": [
+    [
+     "wikipedia",
+     "Kate_Kelly_(shipwreck)"
+    ],
+    [
+     "whs",
+     "339"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-490": {
+   "name": "Hetty Taylor shipwreck",
+   "status": "dive",
+   "depth": [
+    null,
+    32
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "vis": [
+    3,
+    15.2
+   ],
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Bowsprit and windlass",
+    "Hatches into the hold",
+    "Rudder hard to starboard"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Deep for its class — advanced divers"
+   ],
+   "summary": "A small coastal schooner sitting upright five miles off Sheboygan, its bow and port side nearly as built.",
+   "sources": [
+    [
+     "whs",
+     "274"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-500": {
+   "name": "SS Anna C. Minch",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    11,
+    13.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/westmichigan.htm",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-502": {
+   "name": "Pretoria (schooner barge)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    16.5
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/509",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-504": {
+   "name": "SS Hennepin",
+   "status": "dive",
+   "depth": [
+    null,
+    61
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "The world’s first self-unloading bulk carrier, found in 2006 off South Haven.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Hennepin"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-505": {
+   "name": "Forward shipwreck site",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    7.6,
+    13.7
+   ],
+   "sources": [
+    [
+     "web",
+     "https://dec.ny.gov/places-to-go/submerged-heritage-preserves-program/forward-underwater-classroom",
+     "NY State DEC Submerged Heritage Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-508": {
+   "name": "Wiawaka bateaux",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    7.6,
+    15.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://dec.ny.gov/places-to-go/submerged-heritage-preserves-program/sunken-1758-fleet",
+     "NY State DEC Submerged Heritage Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-511": {
+   "name": "Sevona",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    7.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/565",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-512": {
+   "name": "Alvin Clark (schooner)",
+   "status": "ashore",
+   "water": "fresh",
+   "entry": "boat",
+   "level": "beginner",
+   "summary": "Raised in 1969 and later destroyed ashore; nothing remains to dive.",
+   "sources": [
+    [
+     "whs",
+     "787"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-515": {
+   "name": "SS R. G. Stewart",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    2.1
+   ],
+   "sources": [
+    [
+     "web",
+     "https://wisconsinshipwrecks.org/Vessel/Details/518",
+     "Wisconsin Historical Society (WI Shipwrecks)"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-522": {
+   "name": "SS Milwaukee (1902)",
+   "status": "dive",
+   "depth": [
+    null,
+    38.1
+   ],
+   "depthNote": "Upright on sand and muck; the superstructure lies apart, about 100 ft east of the hull.",
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "penetration": "Car deck — wreck training to enter",
+   "highlights": [
+    "Rail cars on the car deck",
+    "Engines and propellers in place",
+    "Superstructure lies ~100 ft east"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Overhead inside the hull — wreck training to go in",
+    "Deep — plan gas and decompression limits"
+   ],
+   "summary": "The railroad car ferry lost with all hands in 1929, sitting upright six miles north of Milwaukee with rail cars still on its deck.",
+   "sources": [
+    [
+     "whs",
+     "435"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-529": {
+   "name": "SS Novadoc",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    3.7,
+    4.6
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/westmichigan.htm",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-530": {
+   "name": "SS Michigan",
+   "status": "dive",
+   "depth": [
+    null,
+    82.3
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "An iron steamer crushed by ice in 1885 and found in 2005 off Holland.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Michigan"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-535": {
+   "name": "SS Lac La Belle",
+   "status": "unlocated",
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "summary": "Thought to have foundered about twenty miles off Racine in deep water; the wreck has not been confirmed.",
+   "sources": [
+    [
+     "whs",
+     "355"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-536": {
+   "name": "SS Milwaukee (1868)",
+   "status": "dive",
+   "depth": [
+    null,
+    109.7
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A wooden steamer lost for 137 years, found significantly intact forty miles off Holland.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Milwaukee_(1868)"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-541": {
+   "name": "SS Daniel J. Morrell",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    66.4
+   ],
+   "depthNote": "Bow 205 ft, stern 218 ft",
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/thumb-area-bottomland-preserve/",
+     "Michigan Underwater Preserves"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-549": {
+   "name": "SS Monrovia",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    42.7
+   ],
+   "depthNote": "Catalog pin garbled: preserve lists 44 59.020N 82 55.380W",
+   "sources": [
+    [
+     "web",
+     "https://thunderbay.noaa.gov/shipwrecks/monrovia.html",
+     "NOAA Thunder Bay NMS"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-57": {
+   "name": "SS Appomattox",
+   "status": "dive",
+   "depth": [
+    4.6,
+    6.1
+   ],
+   "water": "fresh",
+   "entry": "shore",
+   "level": "beginner",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "250-ft section of lower hull",
+    "Massive keelsons and timbers",
+    "Propeller ~500 yd southeast"
+   ],
+   "hazards": [
+    "Waves and surge in the shallows"
+   ],
+   "summary": "The lower hull of the world’s largest wooden steamship, 150 yards off Atwater Beach in Shorewood — an easy shore dive with huge timbers.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     43.092,
+     -87.86962
+    ],
+    "movedKm": 0.3
+   },
+   "sources": [
+    [
+     "whs",
+     "31"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-624": {
+   "name": "SS M.M. Drake",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    null,
+    15.2
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-627": {
+   "name": "Grace A. Channon",
+   "status": "dive",
+   "depth": [
+    null,
+    62.5
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "highlights": [
+    "Intact cabin",
+    "Rigging across the deck"
+   ],
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A canal schooner sitting totally intact on an even keel, with its cabin still standing — rare for a wooden wreck.",
+   "sources": [
+    [
+     "whs",
+     "243"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-63": {
+   "name": "PS Cumberland",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    6.1,
+    24.4
+   ],
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-630": {
+   "name": "SS Samuel Mather (1887)",
+   "status": "dive",
+   "basis": "depth",
+   "depth": [
+    42.7,
+    51.8
+   ],
+   "depthNote": "Whitefish Point; Wikipedia gives bottom 180 ft",
+   "sources": [
+    [
+     "web",
+     "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "Michigan Underwater Preserve Council"
+    ]
+   ],
+   "confidence": "sourced",
+   "checked": "2026-10-07"
+  },
+  "x-wikipedia-633": {
+   "name": "MV Prins Willem V",
+   "status": "dive",
+   "depth": [
+    null,
+    24.4
+   ],
+   "depthNote": "Rests on its side on clay in about 80 ft (it sank in nearly 90 ft).",
+   "water": "fresh",
+   "entry": "boat",
+   "level": "advanced",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "penetration": "Open hatches — wreck training to enter",
+   "highlights": [
+    "Intact hull on its side",
+    "Open cargo hatches",
+    "Cargo still in the holds"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Salvage tanks and cables beside the wreck",
+    "Overhead inside the hull — wreck training to go in"
+   ],
+   "summary": "A 1950s Dutch freighter lying on its side three miles off Milwaukee — the most-dived wreck in Wisconsin, with cargo and machinery still aboard.",
+   "sources": [
+    [
+     "whs",
+     "512"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-66": {
+   "name": "Byron shipwreck",
+   "status": "dive",
+   "depth": [
+    null,
+    41.1
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Fragile hull — look, don’t touch",
+    "Silt — easy to stir up"
+   ],
+   "summary": "A tiny 1849 schooner twelve miles southeast of Sheboygan, cabin bulkheads still standing — very fragile.",
+   "sources": [
+    [
+     "whs",
+     "81"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-69": {
+   "name": "PS Lady Elgin",
+   "status": "dive",
+   "depth": [
+    15.2,
+    18.3
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "access": "Ownership history is complicated — confirm current access rules before diving",
+   "highlights": [
+    "Bow, boilers and paddlewheels"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Fragile hull — look, don’t touch"
+   ],
+   "summary": "The 1860 sidewheeler whose loss killed some 300 people, lying in four debris fields off Highwood. Its ownership and artifact history is complicated.",
+   "sources": [
+    [
+     "wikipedia",
+     "PS_Lady_Elgin"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-78": {
+   "name": "Niagara (steamboat)",
+   "status": "dive",
+   "depth": [
+    null,
+    16.8
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Walking-beam engine",
+    "Paddlewheel hubs",
+    "Boilers"
+   ],
+   "hazards": [
+    "Cold below the thermocline"
+   ],
+   "summary": "The machinery end of an 1840s sidewheel steamer — engine, walking beam, boilers and paddlewheel hubs — off Harrington Beach.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     43.4885,
+     -87.77483
+    ],
+    "movedKm": 28.4
+   },
+   "sources": [
+    [
+     "whs",
+     "455"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-84": {
+   "name": "SS L.R. Doty",
+   "status": "dive",
+   "depth": [
+    null,
+    97.5
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A wooden steamer found in 2010 after 112 years, about twenty miles off Milwaukee in very deep water.",
+   "position": {
+    "quality": "unpublished"
+   },
+   "sources": [
+    [
+     "whs",
+     "346"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-86": {
+   "name": "Northerner",
+   "status": "dive",
+   "depth": [
+    19.8,
+    42.7
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Standing main mast",
+    "Cordwood cargo",
+    "Bowsprit and windlass"
+   ],
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "A schooner sitting upright and intact off Port Washington, its main mast still standing 75 ft above the deck and cordwood stacked in the hold.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     43.31667,
+     -87.81067
+    ],
+    "movedKm": 1.1
+   },
+   "sources": [
+    [
+     "whs",
+     "466"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-87": {
+   "name": "Rosinco",
+   "status": "dive",
+   "depth": [
+    null,
+    59.4
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "highlights": [
+    "Intact steel yacht",
+    "Windlass and rails"
+   ],
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Commercial fishing nets on the wreck"
+   ],
+   "summary": "A 1916 steel yacht sitting upright and well preserved ten miles east of Kenosha, its deck fittings and rails intact.",
+   "sources": [
+    [
+     "whs",
+     "539"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-88": {
+   "name": "Home",
+   "status": "dive",
+   "depth": [
+    null,
+    51.8
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline"
+   ],
+   "summary": "An 1840s schooner sitting upright with its hull largely intact; collision damage marks the starboard bow.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     43.94887,
+     -87.55352
+    ],
+    "movedKm": 0.2
+   },
+   "sources": [
+    [
+     "whs",
+     "277"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-89": {
+   "name": "Lumberman",
+   "status": "dive",
+   "depth": [
+    null,
+    19.8
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "intermediate",
+   "mooring": "Seasonal state mooring buoy — tie in, don’t anchor",
+   "highlights": [
+    "Upright schooner hull",
+    "Bow capstan"
+   ],
+   "hazards": [
+    "Cold below the thermocline",
+    "Fragile hull — look, don’t touch"
+   ],
+   "summary": "A mostly intact 1860s schooner sitting upright off Oak Creek — the most popular dive in southern Lake Michigan.",
+   "position": {
+    "quality": "confirmed",
+    "at": [
+     42.8665,
+     -87.75833
+    ],
+    "movedKm": 0.4
+   },
+   "sources": [
+    [
+     "whs",
+     "390"
+    ]
+   ],
+   "confidence": "sourced"
+  },
+  "x-wikipedia-99": {
+   "name": "SS Carl D. Bradley",
+   "status": "dive",
+   "depth": [
+    94.5,
+    115.8
+   ],
+   "water": "fresh",
+   "entry": "boat",
+   "level": "technical",
+   "hazards": [
+    "Beyond recreational depth — technical training and gas planning",
+    "Cold below the thermocline",
+    "Long decompression"
+   ],
+   "summary": "The 638-ft freighter that broke in two in 1958; both halves sit upright in a 39°F thermocline. Long decompression and expert skills only.",
+   "sources": [
+    [
+     "wikipedia",
+     "SS_Carl_D._Bradley"
+    ]
+   ],
+   "confidence": "sourced"
+  }
+ }
+}
