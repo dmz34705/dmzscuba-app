@@ -15,6 +15,9 @@ import DiveLogScreen from './DiveLogScreen';
 import JourneySheet from '../features/oceanAtlas/JourneySheet';
 import GearAdviceSheet, { ADVICE_PREFERENCES_KEY } from '../features/gearChecklist/GearAdviceSheet';
 import { normalizeAdvicePreferences } from '../features/gearChecklist/diveAdvice';
+import { GEAR_STORAGE_KEY } from '../features/gearChecklist/storage';
+import { normalizeGearState } from '../features/gearChecklist/model';
+import { ATLAS_DIVE_MODE_KEY, atlasDiveUse, buildAtlasGearSuggestion, normalizeAtlasDiveMode } from '../features/oceanAtlas/atlasGear';
 import { placeAt, placeById, placeGuide, quickLook, regionGuide } from '../features/oceanAtlas/places';
 import { seasonGuide } from '../features/oceanAtlas/seasons';
 import { discoverSpecies, speciesGuide, speciesIndex } from '../features/oceanAtlas/species';
@@ -51,13 +54,20 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
   const [gearAdvice, setGearAdvice] = useState(null);
   // Opened from a Home in-season card: fly to that region with its animal first.
   const focusRef = useRef(focus);
-  // Your comfort preferences (drysuit threshold, running cold or warm) shape "What to wear" on site cards.
-  // Only the resulting starting point goes to the map — never your gear inventory.
+  // Personal preferences and the selected dive mode shape the inline packing match. The map receives
+  // only the recommended setup result, never the full Gear Locker inventory.
   const advicePrefs = useRef(normalizeAdvicePreferences({}));
-  const loadAdvicePrefs = useCallback(() => AsyncStorage.getItem(ADVICE_PREFERENCES_KEY)
-    .then(raw => { advicePrefs.current = normalizeAdvicePreferences(raw ? JSON.parse(raw) : {}); })
+  const gearState = useRef(normalizeGearState(null));
+  const gearMode = useRef('recreational');
+  const loadGearPlanner = useCallback(() => Promise.all([
+    AsyncStorage.getItem(ADVICE_PREFERENCES_KEY), AsyncStorage.getItem(GEAR_STORAGE_KEY), AsyncStorage.getItem(ATLAS_DIVE_MODE_KEY),
+  ]).then(([saved, gear, mode]) => {
+    advicePrefs.current = normalizeAdvicePreferences(saved ? JSON.parse(saved) : {});
+    gearState.current = normalizeGearState(gear ? JSON.parse(gear) : null);
+    gearMode.current = normalizeAtlasDiveMode(mode);
+  })
     .catch(() => {}), []);
-  useEffect(() => { loadAdvicePrefs(); }, [loadAdvicePrefs]);
+  useEffect(() => { loadGearPlanner(); }, [loadGearPlanner]);
   const origin = useRef(null);
   // Distances, depths and elevations follow the app's length setting (ft → imperial).
   const units = unitSystem(appSettings);
@@ -79,8 +89,8 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
   // Preferences may have changed in the sheet: reload them and let open cards ask again.
   const closeGearAdvice = useCallback(() => {
     setGearAdvice(null);
-    loadAdvicePrefs().then(() => send({ type: 'adviceChanged' }));
-  }, [loadAdvicePrefs, send]);
+    loadGearPlanner().then(() => send({ type: 'adviceChanged' }));
+  }, [loadGearPlanner, send]);
 
   // Sites the diver pinned (from the planner): shown on the atlas's My sites layer.
   const refreshMySites = useCallback(async () => {
@@ -104,9 +114,14 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
 
   useEffect(() => {
     mounted.current = true;
-    const listener = AppState.addEventListener('change', state => { if (state === 'active' && ready.current) { refreshDives(); refreshMySites(); } });
+    const listener = AppState.addEventListener('change', state => {
+      if (state === 'active' && ready.current) {
+        refreshDives(); refreshMySites();
+        loadGearPlanner().then(() => { send({ type: 'gearMode', value: gearMode.current }); send({ type: 'adviceChanged' }); });
+      }
+    });
     return () => { mounted.current = false; listener.remove(); };
-  }, [refreshDives, refreshMySites]);
+  }, [loadGearPlanner, refreshDives, refreshMySites, send]);
 
   useEffect(() => {
     if (!loading) return undefined;
@@ -147,6 +162,15 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     } finally { locating.current = false; }
   }, [send]);
 
+  const gearSuggestionFor = useCallback((request, guidePayload, mode = gearMode.current) => {
+    const month = Number.isInteger(request.month) && request.month >= 0 && request.month < 12 ? request.month : new Date().getMonth();
+    const site = typeof request.id === 'string' ? catalogSite(request.id.slice(0, 80)) : null;
+    const point = site || { latitude: request.latitude, longitude: request.longitude, topologies: [] };
+    return buildAtlasGearSuggestion(gearState.current, advicePrefs.current, {
+      mode, site: point, inland: guidePayload?.guide?.inland || null, temperatureC: guidePayload?.wear?.[month]?.temperatureC ?? null,
+    });
+  }, []);
+
   const onMessage = useCallback(async event => {
     let message;
     try { message = JSON.parse(event.nativeEvent.data); } catch { return; }
@@ -160,6 +184,8 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     } else if (message.type === 'ready') {
       bootstrap.current = null;
       ready.current = true; setLoading(false); setError(false);
+      await loadGearPlanner();
+      send({ type: 'gearMode', value: gearMode.current });
       send({ type: 'dataStatus', text: atlasStatusLabel(dataStatus) });
       const value = await AsyncStorage.getItem(PREFERENCES_KEY).then(raw => raw ? JSON.parse(raw) : null).catch(() => null);
       send({ type: 'preferences', value }); refreshDives();
@@ -188,6 +214,16 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
       setJourney({ latitude: d.latitude, longitude: d.longitude, ...Object.fromEntries(['id', 'name', 'region', 'country', 'entry'].map(key => [key, typeof d[key] === 'string' ? d[key].slice(0, 200) : ''])) });
     }
     // Destination guides: what was tapped (island › US state › country), or a place opened by id.
+    else if (message.type === 'gearMode' && validCoordinate(message.latitude, message.longitude)) {
+      const mode = normalizeAtlasDiveMode(message.value);
+      gearMode.current = mode;
+      AsyncStorage.setItem(ATLAS_DIVE_MODE_KEY, mode).catch(() => {});
+      const key = String(message.key || '').slice(0, 120);
+      try {
+        const guidePayload = buildSiteGuide(message, { origin: origin.current, units: unitsRef.current, advicePrefs: advicePrefs.current, diver: diver.current });
+        send({ type: 'siteGear', key, gear: gearSuggestionFor(message, guidePayload, mode) });
+      } catch { send({ type: 'siteGear', key, gear: { mode, setup: null } }); }
+    }
     else if (message.type === 'gearAdvice' && validCoordinate(message.latitude, message.longitude)) {
       const month = Number.isInteger(message.month) && message.month >= 0 && message.month < 12 ? message.month : new Date().getMonth();
       const site = typeof message.id === 'string' ? catalogSite(message.id.slice(0, 80)) : null;
@@ -195,7 +231,8 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
       const inland = isInland(point) ? inlandProfile(point) : null;
       const temperatureC = inland ? inland.surface?.[month] ?? null : seasonGuide(point).temps?.[month] ?? null;
       const weather = weatherByKey.current.get(String(message.key || '').slice(0, 120)) || null;
-      setGearAdvice({ site: point, inland, temperatureC, month, broad: !site, name: site?.name || String(message.name || 'This location').slice(0, 200), weather, marine: !inland && site?.environment !== 'fresh' });
+      const mode = normalizeAtlasDiveMode(message.mode || gearMode.current);
+      setGearAdvice({ site: point, inland, temperatureC, month, broad: !site, name: site?.name || String(message.name || 'This location').slice(0, 200), weather, marine: !inland && site?.environment !== 'fresh', use: atlasDiveUse(mode) });
     }
     else if (message.type === 'placeAt' && validCoordinate(message.latitude, message.longitude)) {
       let place = null;
@@ -230,7 +267,7 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
       let guidePayload = null;
       try {
         guidePayload = buildSiteGuide(message, { origin: origin.current, units: unitsRef.current, advicePrefs: advicePrefs.current, diver: diver.current });
-        send({ type: 'siteGuide', ...guidePayload });
+        send({ type: 'siteGuide', ...guidePayload, gear: gearSuggestionFor(message, guidePayload) });
       } catch { send({ type: 'siteGuide', key, guide: null, places: [] }); }
       send({ type: 'siteWeather', key, status: 'loading' });
       const marine = !guidePayload?.guide?.inland && guidePayload?.profile?.water !== 'fresh';
@@ -250,7 +287,7 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     } else if (message.type === 'external' && typeof message.url === 'string' && /^https:\/\//i.test(message.url)) {
       Linking.openURL(message.url).catch(() => send({ type: 'notice', text: 'This source could not be opened.' }));
     }
-  }, [locate, onBack, refreshDives, refreshMySites, send, appSettings, dataStatus]);
+  }, [gearSuggestionFor, loadGearPlanner, locate, onBack, refreshDives, refreshMySites, send, appSettings, dataStatus]);
 
   const dismissLogbook = () => { setLogbook(null); refreshDives(); };
   const retry = () => { ready.current = false; bootstrap.current = null; setLoading(true); setError(false); setReload(n => n + 1); };

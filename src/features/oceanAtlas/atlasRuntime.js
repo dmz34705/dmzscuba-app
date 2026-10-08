@@ -124,6 +124,7 @@ export function atlasRuntime(DATA, MODEL) {
   };
   let state = { month: new Date().getMonth(), species: 'all', unit: DATA.unit,
     layers: { regions: true, sites: true, mysites: true, temperature: true, wildlife: true, dives: false } };
+  let gearMode = 'recreational';
   let logPins = [], logStatus = 'loading', missingCount = 0, selected = null, toastTimer;
   let readyForPersistence = false;
   // The animal a Home in-season card was opened for: listed first in its region's guide (not a saved filter).
@@ -484,7 +485,7 @@ export function atlasRuntime(DATA, MODEL) {
     if (placeOutline) { map.removeLayer(placeOutline); placeOutline = null; }
     if (item.kind === 'place' && item.outline?.length) placeOutline = L.polygon(item.outline, { pane: 'vectors', interactive: false, color: '#97e8cc', weight: 1.5, dashArray: '4 4', fillColor: '#97e8cc', fillOpacity: 0.06 }).addTo(map);
     if (native && ['province', 'diveRegion'].includes(item.kind) && item.id && !regionGuides.has(regionKey(item))) post('regionGuide', { kind: item.kind, id: item.id });
-    if (native && ['site', 'area'].includes(item.kind) && (!siteGuides.has(guideKey(item)) || siteGuides.get(guideKey(item))?.weather?.status === 'error')) post('siteGuide', { requestId: ++guideRequest, key: guideKey(item), latitude: item.latitude, longitude: item.longitude, id: item.kind === 'site' ? item.id : undefined });
+    if (native && ['site', 'area'].includes(item.kind) && (!siteGuides.has(guideKey(item)) || siteGuides.get(guideKey(item))?.weather?.status === 'error')) post('siteGuide', { requestId: ++guideRequest, key: guideKey(item), latitude: item.latitude, longitude: item.longitude, id: item.kind === 'site' ? item.id : undefined, month: state.month });
     document.body.classList.remove('detail-expanded');
     $('expand').setAttribute('aria-expanded', 'false');
     $('expand').setAttribute('aria-label', 'Expand details');
@@ -502,6 +503,13 @@ export function atlasRuntime(DATA, MODEL) {
     } else if (Number.isFinite(item.latitude)) {
       focusOn(L.latLng(item.latitude, item.longitude), fly ? item.zoom || (item.kind === 'site' || item.kind === 'dive' ? 11 : 6) : map.getZoom());
     }
+  }
+  function requestSelectedGear() {
+    const s = selected;
+    if (!native || !s || !['site', 'area'].includes(s.kind) || !Number.isFinite(s.latitude) || !Number.isFinite(s.longitude)) return;
+    const key = guideKey(s), previous = siteGuides.get(key) || {};
+    siteGuides.set(key, { ...previous, gear: { mode: gearMode, status: 'loading' } });
+    post('gearMode', { value: gearMode, key, id: s.kind === 'site' ? s.id : null, name: s.name, latitude: s.latitude, longitude: s.longitude, month: state.month });
   }
   // Centre a point in the visible map area (between the top bar and the card) at the given zoom.
   function focusOn(latlng, zoom) {
@@ -1026,13 +1034,21 @@ export function atlasRuntime(DATA, MODEL) {
   }
   function diveDayGearCard(site, ng) {
     const water = monthWater(site, ng), wear = ng.wear?.[state.month];
-    const label = wear?.label && wear.label !== 'Confirm water temperature' ? (/mm$/.test(wear.label) ? `${wear.label} wetsuit` : wear.label) : 'Confirm exposure protection';
+    const suggestedExposure = ng.gear?.exposureLabel || wear?.label;
+    const label = suggestedExposure && suggestedExposure !== 'Confirm water temperature' ? (/mm$/.test(suggestedExposure) ? `${suggestedExposure} wetsuit` : suggestedExposure) : 'Confirm exposure protection';
     const marine = !ng.guide?.inland && ng.profile?.water !== 'fresh';
     const loading = !ng.weather || ng.weather.status === 'loading';
     const plan = buildDiveDayAdvice({ weather: ng.weather?.data, waterTemperatureC: water, exposureLabel: label, motionSensitive: ng.comfort?.motionSensitive === true, marine: marine && !loading });
     if (loading) plan.items.splice(1, 0, { kind: 'weather', tone: 'neutral', title: 'Surface recommendations loading…', detail: 'Wind, temperature, UV, rain and sea-state guidance will appear here when the site forecast arrives.' });
     const marks = { water: '≈', warmth: '▰', recovery: '◇', rain: '╱', sun: '☼', heat: '☼', boat: '≋', motion: '↝' };
-    return `<section class="day-plan"><div class="day-plan-head"><span><small>Dive-day gear plan</small><strong>${esc(plan.headline)}</strong></span><b>Conditions → what to pack</b></div><div class="day-plan-list">${plan.items.map(item => `<div class="day-item tone-${item.tone}"><i>${marks[item.kind] || '•'}</i><span><strong>${esc(item.title)}</strong><small>${esc(item.detail)}</small></span></div>`).join('')}</div><button id="gear-for-dive">Match my saved Gear Locker setup →</button></section>`;
+    const selectedMode = ng.gear?.mode || gearMode;
+    const modes = [['recreational', 'Recreational'], ['technical', 'Technical'], ['freedive', 'Freedive']]
+      .map(([value, title]) => `<button role="tab" data-gear-mode="${value}" aria-controls="locker-plan" aria-selected="${selectedMode === value}">${title}</button>`).join('');
+    const gear = ng.gear;
+    const locker = gear?.status === 'loading' || !gear ? '<div class="locker-empty"><strong>Matching your Gear Locker…</strong><small>Your saved setup and actual packing list will appear here.</small></div>'
+      : gear.setup ? `<div class="locker-match"><div class="locker-title"><span><small>Closest saved setup</small><strong>${esc(gear.setup.name)}</strong></span><b>${gear.setup.items.length} items</b></div><ul class="locker-items">${gear.setup.items.map(item => `<li><strong>${esc(item.name)}</strong><small>${esc(item.category)}</small></li>`).join('')}</ul>${gear.setup.changes?.length ? `<p class="locker-note add"><b>Add or swap</b>${esc(gear.setup.changes.join(' · '))}</p>` : ''}${gear.setup.removed?.length ? `<p class="locker-note"><b>Leave out</b>${esc(gear.setup.removed.join(' · '))}</p>` : ''}${gear.setup.warnings?.length ? `<details class="locker-checks"><summary>${gear.setup.warnings.length} ${gear.setup.warnings.length === 1 ? 'check' : 'checks'} before packing</summary>${gear.setup.warnings.map(warning => `<p>${esc(warning)}</p>`).join('')}</details>` : ''}</div>`
+        : `<div class="locker-empty"><strong>No matching saved ${selectedMode === 'freedive' ? 'freedive' : selectedMode} setup yet</strong><small>Add gear to a setup and mark what you use it for in Gear Locker preferences.</small></div>`;
+    return `<section class="day-plan"><div class="day-plan-head"><span><small>Dive-day gear plan</small><strong>${esc(plan.headline)}</strong></span><b>Conditions → what to pack</b></div><div class="gear-mode" role="tablist" aria-label="Planned dive type">${modes}</div><div class="day-plan-list">${plan.items.map(item => `<div class="day-item tone-${item.tone}"><i>${marks[item.kind] || '•'}</i><span><strong>${esc(item.title)}</strong><small>${esc(item.detail)}</small></span></div>`).join('')}</div><div class="locker-plan" id="locker-plan" role="tabpanel" aria-live="polite"><div class="locker-kicker">From your Gear Locker · ${esc(months[state.month])}</div>${locker}</div><button id="gear-for-dive">Fine-tune depth, temperature or overhead plan →</button></section>`;
   }
   function conditionsTab(site, ng) {
     const region = ng.profile?.region, vis = siteVis(ng), current = siteCurrent(ng), depth = siteDepth(site, ng);
@@ -1281,13 +1297,18 @@ export function atlasRuntime(DATA, MODEL) {
     if (s.kind === 'site' && s.custom) body += `<p class="note">Conditions and marine life here come from the waters around this pin. Confirm access, entry and hazards locally.</p><button class="cluster-zoom" id="remove-my-site">Remove from My sites</button>`;
     $('detail-body').innerHTML = body;
     if ($('remove-my-site')) $('remove-my-site').onclick = () => post('deleteMySite', { id: s.id, name: s.name });
-    if ($('gear-for-dive')) $('gear-for-dive').onclick = () => post('gearAdvice', { key: guideKey(s), id: s.kind === 'site' ? s.id : null, name: s.name, latitude: s.latitude, longitude: s.longitude, month: state.month });
+    if ($('gear-for-dive')) $('gear-for-dive').onclick = () => post('gearAdvice', { key: guideKey(s), id: s.kind === 'site' ? s.id : null, name: s.name, latitude: s.latitude, longitude: s.longitude, month: state.month, mode: gearMode });
+    $('detail-body').querySelectorAll('[data-gear-mode]').forEach(button => button.onclick = () => {
+      const value = button.dataset.gearMode;
+      if (!['recreational', 'technical', 'freedive'].includes(value) || value === gearMode) return;
+      gearMode = value; requestSelectedGear(); renderDetails();
+    });
     pinHeader();
     $('sheet').scrollTop = scroll;
     $('detail-body').querySelectorAll('[data-dive]').forEach(button => button.onclick = () => post('openDive', { id: button.dataset.dive }));
     $('detail-body').querySelectorAll('[data-place-kind]').forEach(button => button.onclick = () => post('openPlace', { kind: button.dataset.placeKind, id: button.dataset.placeId }));
     $('detail-body').querySelectorAll('[data-region-area]').forEach(button => button.onclick = () => choose({ ...regionGuides.get(regionKey(s)).areas[Number(button.dataset.regionArea)], kind: 'area' }, true));
-    $('detail-body').querySelectorAll('[data-season-month]').forEach(button => button.onclick = () => { state.month = Number(button.dataset.seasonMonth); render(); });
+    $('detail-body').querySelectorAll('[data-season-month]').forEach(button => button.onclick = () => { state.month = Number(button.dataset.seasonMonth); requestSelectedGear(); render(); });
     if ($('all-sites')) $('all-sites').onclick = () => { showAllSites = true; renderDetails(); };
     $('detail-body').querySelectorAll('[data-cluster]').forEach(button => button.onclick = () => choose({ ...clusterPreview[Number(button.dataset.cluster)], kind: s.pinKind === 'dives' ? 'dive' : 'site' }));
     if ($('cluster-zoom')) $('cluster-zoom').onclick = () => { closeDetails(); fitTo(s.items.map(item => [item.latitude, item.longitude]), { padding: [60, 100], maxZoom: Math.min(map.getZoom() + 3, 15) }, .7); };
@@ -1513,8 +1534,8 @@ export function atlasRuntime(DATA, MODEL) {
     if ((layer === 'regions' && ['province', 'diveRegion', 'area'].includes(selected?.kind)) || (layer === 'wildlife' && selected?.kind === 'region') || (layer === 'sites' && selected?.kind === 'site') || (layer === 'dives' && selected?.kind === 'dive')) closeDetails();
     render();
   });
-  document.querySelectorAll('[data-month]').forEach(button => button.onclick = () => { state.month = Number(button.dataset.month); render(); });
-  $('current-month').onclick = () => { state.month = new Date().getMonth(); render(); };
+  document.querySelectorAll('[data-month]').forEach(button => button.onclick = () => { state.month = Number(button.dataset.month); requestSelectedGear(); render(); });
+  $('current-month').onclick = () => { state.month = new Date().getMonth(); requestSelectedGear(); render(); };
   // Links leave the app, so only a deliberate tap opens one: not the end of a scroll or swipe
   // (finger moved), and not a tap that stops a scroll still gliding (momentum).
   let press = null, lastScroll = 0;
@@ -1561,10 +1582,19 @@ export function atlasRuntime(DATA, MODEL) {
       flyTo([message.latitude, message.longitude], 9, 1);
       if (window.atlasLocationMarker) map.removeLayer(window.atlasLocationMarker);
       window.atlasLocationMarker = L.circleMarker([message.latitude, message.longitude], { pane: 'vectors', interactive: false, radius: 7, color: '#fff', weight: 2, fillColor: '#5797ff', fillOpacity: 1 }).addTo(map);
+    } else if (message.type === 'gearMode') {
+      gearMode = ['recreational', 'technical', 'freedive'].includes(message.value) ? message.value : 'recreational';
+      if (selected && ['site', 'area'].includes(selected.kind)) renderDetails();
     } else if (message.type === 'siteGuide') {
       if (message.key) {
         const previous = siteGuides.get(message.key);
-        siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, comfort: message.comfort || null, diver: message.diver || null, profile: message.profile || null, community: message.community || null, structured: message.structured || null, weather: previous?.weather || { status: 'loading' } });
+        siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, comfort: message.comfort || null, diver: message.diver || null, profile: message.profile || null, community: message.community || null, structured: message.structured || null, gear: message.gear || previous?.gear || { mode: gearMode, status: 'loading' }, weather: previous?.weather || { status: 'loading' } });
+      }
+      if (selected && ['site', 'area'].includes(selected.kind) && guideKey(selected) === message.key) renderDetails();
+    } else if (message.type === 'siteGear') {
+      if (message.key) {
+        const previous = siteGuides.get(message.key) || {};
+        siteGuides.set(message.key, { ...previous, gear: message.gear || { mode: gearMode, setup: null } });
       }
       if (selected && ['site', 'area'].includes(selected.kind) && guideKey(selected) === message.key) renderDetails();
     } else if (message.type === 'siteWeather') {
@@ -1578,7 +1608,7 @@ export function atlasRuntime(DATA, MODEL) {
     } else if (message.type === 'originChanged' || message.type === 'adviceChanged') {
       // Travel ratings are personal: refresh them for the new starting point.
       siteGuides.clear();
-      if (selected && ['site', 'area'].includes(selected.kind)) post('siteGuide', { requestId: ++guideRequest, key: guideKey(selected), latitude: selected.latitude, longitude: selected.longitude, id: selected.kind === 'site' ? selected.id : undefined });
+      if (selected && ['site', 'area'].includes(selected.kind)) post('siteGuide', { requestId: ++guideRequest, key: guideKey(selected), latitude: selected.latitude, longitude: selected.longitude, id: selected.kind === 'site' ? selected.id : undefined, month: state.month });
     } else if (message.type === 'regionGuide') {
       if (message.key && message.guide) regionGuides.set(message.key, message.guide);
       if (selected && ['province', 'diveRegion'].includes(selected.kind) && regionKey(selected) === message.key) renderDetails();

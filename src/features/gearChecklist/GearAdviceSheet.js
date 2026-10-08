@@ -33,7 +33,7 @@ export default function GearAdviceSheet({ context = {}, preferencesOnly = false,
   const [state, setState] = useState(null), [prefs, setPrefs] = useState(ADVICE_DEFAULTS);
   const [editing, setEditing] = useState(preferencesOnly), [draft, setDraft] = useState(null);
   const [error, setError] = useState(''), [retry, setRetry] = useState(0), [saving, setSaving] = useState(false);
-  const [use, setUse] = useState('Open water'), [depth, setDepth] = useState(''), [bottom, setBottom] = useState('');
+  const [use, setUse] = useState(DIVE_USES.includes(context.use) ? context.use : 'Open water'), [depth, setDepth] = useState(''), [bottom, setBottom] = useState('');
   const [longDive, setLongDive] = useState(false), [expanded, setExpanded] = useState(null);
   const [outfitOpen, setOutfitOpen] = useState(null);
   const [conditionsOpen, setConditionsOpen] = useState(false);
