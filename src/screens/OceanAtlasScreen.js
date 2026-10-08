@@ -24,6 +24,7 @@ import { unitSystem } from '../features/oceanAtlas/units';
 import { onAtlasDataChange } from '../features/oceanAtlas/datasets';
 import { buildSiteGuide } from '../features/oceanAtlas/siteGuide';
 import { diverProfile } from '../features/oceanAtlas/diverProfile';
+import { fetchSiteWeather } from '../features/oceanAtlas/weather';
 import { colors } from '../theme';
 
 const PREFERENCES_KEY = '@dmz-scuba/ocean-atlas/preferences-v1';
@@ -223,9 +224,14 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
       try { guide = regionGuide(message.kind, message.id.slice(0, 60)); } catch { guide = null; }
       send({ type: 'regionGuide', key: `${message.kind}:${message.id.slice(0, 60)}`, guide });
     } else if (message.type === 'siteGuide' && validCoordinate(message.latitude, message.longitude)) {
+      const key = String(message.key || '').slice(0, 120);
       try {
         send({ type: 'siteGuide', ...buildSiteGuide(message, { origin: origin.current, units: unitsRef.current, advicePrefs: advicePrefs.current, diver: diver.current }) });
-      } catch { send({ type: 'siteGuide', key: String(message.key || '').slice(0, 120), guide: null, places: [] }); }
+      } catch { send({ type: 'siteGuide', key, guide: null, places: [] }); }
+      send({ type: 'siteWeather', key, status: 'loading' });
+      fetchSiteWeather(message.latitude, message.longitude)
+        .then(weather => send({ type: 'siteWeather', key, status: 'ready', weather }))
+        .catch(() => send({ type: 'siteWeather', key, status: 'error' }));
     }
     else if (message.type === 'deleteMySite' && typeof message.id === 'string') {
       const id = message.id.slice(0, 90);

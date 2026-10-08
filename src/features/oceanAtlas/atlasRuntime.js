@@ -484,7 +484,7 @@ export function atlasRuntime(DATA, MODEL) {
     if (placeOutline) { map.removeLayer(placeOutline); placeOutline = null; }
     if (item.kind === 'place' && item.outline?.length) placeOutline = L.polygon(item.outline, { pane: 'vectors', interactive: false, color: '#97e8cc', weight: 1.5, dashArray: '4 4', fillColor: '#97e8cc', fillOpacity: 0.06 }).addTo(map);
     if (native && ['province', 'diveRegion'].includes(item.kind) && item.id && !regionGuides.has(regionKey(item))) post('regionGuide', { kind: item.kind, id: item.id });
-    if (native && ['site', 'area'].includes(item.kind) && !siteGuides.has(guideKey(item))) post('siteGuide', { requestId: ++guideRequest, key: guideKey(item), latitude: item.latitude, longitude: item.longitude, id: item.kind === 'site' ? item.id : undefined });
+    if (native && ['site', 'area'].includes(item.kind) && (!siteGuides.has(guideKey(item)) || siteGuides.get(guideKey(item))?.weather?.status === 'error')) post('siteGuide', { requestId: ++guideRequest, key: guideKey(item), latitude: item.latitude, longitude: item.longitude, id: item.kind === 'site' ? item.id : undefined });
     document.body.classList.remove('detail-expanded');
     $('expand').setAttribute('aria-expanded', 'false');
     $('expand').setAttribute('aria-label', 'Expand details');
@@ -1003,6 +1003,26 @@ export function atlasRuntime(DATA, MODEL) {
     const sourceLine = depth?.researched && profile.sources?.[0] ? `Depth and facts: ${profile.sources[0].url ? `<a class="source" href="${esc(profile.sources[0].url)}">${esc(profile.sources[0].name.split(' — ')[0])} ↗</a>` : esc(profile.sources[0].name)}. ` : depth?.estimated ? 'Depth estimated from seafloor data. ' : '';
     return `<div class="hero">${crossSection(site, ng)}</div>${summary}${chips}${slate(site, ng)}${warning}${fitNote}${access}${facts.length ? `<div class="facts">${facts.join('')}</div>` : ''}${hazards}${photo}${mineHtml}<p class="note">${sourceLine}Confirm conditions and requirements with a local operator.</p>`;
   }
+  function weatherCard(weather) {
+    if (!weather || weather.status === 'loading') return `<section class="forecast loading" aria-live="polite"><div class="forecast-loading"><i></i><span><strong>Surface forecast</strong><small>Loading conditions at this site…</small></span></div></section>`;
+    if (weather.status !== 'ready' || !weather.data?.hours?.length) return `<section class="forecast unavailable"><span class="forecast-mark">↻</span><span><strong>Surface forecast unavailable</strong><small>The rest of the site guide is still available. Try again when you have a connection.</small></span></section>`;
+    const data = weather.data, hours = data.hours, now = hours[0];
+    const symbol = code => /thunder/.test(code) ? ['ϟ', 'Thunderstorms'] : /snow|sleet/.test(code) ? ['✣', 'Snow or sleet'] : /rain|shower/.test(code) ? ['╱', 'Rain showers'] : /fog/.test(code) ? ['≋', 'Fog'] : /partlycloud/.test(code) ? ['◒', 'Partly cloudy'] : /cloudy/.test(code) ? ['●', 'Cloudy'] : /fair/.test(code) ? ['◐', 'Fair'] : ['○', 'Clear'];
+    const [mark, condition] = symbol(now.symbolCode || '');
+    const compass = degrees => Number.isFinite(degrees) ? ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(((degrees % 360) + 360) % 360 / 45) % 8] : '—';
+    const wind = Number.isFinite(now.windSpeedMps) ? `${Math.round(now.windSpeedMps * (imperial ? 2.23694 : 3.6))} ${imperial ? 'mph' : 'km/h'}` : '—';
+    const rain = hours.slice(0, 6).reduce((sum, hour) => sum + (Number.isFinite(hour.precipitationMm) ? hour.precipitationMm : 0), 0);
+    const rainText = rain > 0 && rain < .1 ? '&lt;0.1 mm' : `${rain.toFixed(rain >= 10 ? 0 : 1)} mm`;
+    const points = [0, 3, 6, 9].map((offset, index) => hours[Math.min(offset, hours.length - 1)] ? { ...hours[Math.min(offset, hours.length - 1)], offset: index ? `+${offset}h` : 'Now' } : null).filter(Boolean);
+    const timeline = points.map(point => { const [glyph, label] = symbol(point.symbolCode || ''); return `<span title="${esc(label)}"><small>${point.offset}</small><b>${glyph}</b><strong>${temp(point.airTemperatureC)}</strong></span>`; }).join('');
+    const source = data.source || { name: 'MET Norway', url: 'https://api.met.no/', license: 'CC BY 4.0' };
+    return `<section class="forecast">
+      <div class="forecast-head"><span class="forecast-mark">${mark}</span><div><small>Surface forecast · now</small><strong>${esc(condition)}</strong></div><em>${temp(now.airTemperatureC)}</em></div>
+      <div class="forecast-stats"><span><small>Wind</small><strong>${esc(wind)}</strong><b>${compass(now.windDirectionDeg)}</b></span><span><small>Next 6h rain</small><strong>${rainText}</strong><b>${Number.isFinite(now.humidityPercent) ? `${Math.round(now.humidityPercent)}% humidity` : ''}</b></span><span><small>Sky</small><strong>${Number.isFinite(now.cloudPercent) ? `${Math.round(now.cloudPercent)}% cloud` : '—'}</strong><b>${Number.isFinite(now.pressureHpa) ? `${Math.round(now.pressureHpa)} hPa` : ''}</b></span></div>
+      <div class="forecast-line">${timeline}</div>
+      <div class="forecast-foot"><span>Atmospheric surface forecast — not waves, current, visibility or dive clearance.</span><a href="${esc(source.url)}">${esc(source.name)} · ${esc(source.license)} ↗</a></div>
+    </section>`;
+  }
   function conditionsTab(site, ng) {
     const region = ng.profile?.region, vis = siteVis(ng), current = siteCurrent(ng), depth = siteDepth(site, ng);
     const rows = [];
@@ -1016,7 +1036,7 @@ export function atlasRuntime(DATA, MODEL) {
       `Community average${ng.community.loggedDives ? ` across ${ng.community.loggedDives.toLocaleString()} logged dives` : ''} — not a recommended limit`));
     if (current) rows.push(spec('Current', `${esc(current.value)}${current.estimated ? ` ${EST}` : ''}`, current.estimated ? `Typical for ${esc(region?.name || 'the area')} — wind and waves can change it` : ''));
     const notes = region?.notes?.length ? `<div class="section-label">Good to know</div><ul class="see-list">${region.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : '';
-    return thisMonth(site, ng) + seasonStrip(ng) + (rows.length ? `<div class="section-label">In the water</div><div class="specs">${rows.join('')}</div>` : '') + waterYear(site, ng) + notes;
+    return weatherCard(ng.weather) + thisMonth(site, ng) + seasonStrip(ng) + (rows.length ? `<div class="section-label">In the water</div><div class="specs">${rows.join('')}</div>` : '') + waterYear(site, ng) + notes;
   }
   function lifeTab(site, ng) {
     const g = glanceParts(ng.ratings), deep = (siteDepth(site, ng)?.meters || 0) > 12;
@@ -1531,7 +1551,16 @@ export function atlasRuntime(DATA, MODEL) {
       if (window.atlasLocationMarker) map.removeLayer(window.atlasLocationMarker);
       window.atlasLocationMarker = L.circleMarker([message.latitude, message.longitude], { pane: 'vectors', interactive: false, radius: 7, color: '#fff', weight: 2, fillColor: '#5797ff', fillOpacity: 1 }).addTo(map);
     } else if (message.type === 'siteGuide') {
-      if (message.key) siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, diver: message.diver || null, profile: message.profile || null, community: message.community || null, structured: message.structured || null });
+      if (message.key) {
+        const previous = siteGuides.get(message.key);
+        siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, diver: message.diver || null, profile: message.profile || null, community: message.community || null, structured: message.structured || null, weather: previous?.weather || { status: 'loading' } });
+      }
+      if (selected && ['site', 'area'].includes(selected.kind) && guideKey(selected) === message.key) renderDetails();
+    } else if (message.type === 'siteWeather') {
+      if (message.key) {
+        const previous = siteGuides.get(message.key) || {};
+        siteGuides.set(message.key, { ...previous, weather: message.status === 'ready' && message.weather ? { status: 'ready', data: message.weather } : { status: message.status === 'error' ? 'error' : 'loading' } });
+      }
       if (selected && ['site', 'area'].includes(selected.kind) && guideKey(selected) === message.key) renderDetails();
     } else if (message.type === 'quickLook') {
       if (quickTap?.requestId === message.requestId && message.look) showQuickLook(quickTap.latlng, message.look);
