@@ -1,0 +1,151 @@
+{
+ "batch": "notable-united-kingdom-13",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-notable-1033",
+   "name": "HMS E49",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/hms-e-49/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "in 32 metres of water on a sandy seabed"
+    },
+    "s2": {
+     "url": "https://shetnews.co.uk/2017/01/17/centenary-of-submarine-sinking",
+     "publisher": "Shetland News",
+     "kind": "press",
+     "quote": "lies in 29 metre of water"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/HMS_E49",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lies 96 ft (29 m) down"
+    },
+    "s4": {
+     "url": "https://www.scottishshipwrecks.com/hms-e-49/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "declared a war grave"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 32
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 29
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Registered war grave; do not remove items (divers have been convicted)",
+    "refs": [
+     "s4"
+    ]
+   },
+   "summary": {
+    "text": "British E-class submarine mined in 1917 and lost with all hands in Balta Sound, Unst. She lies on sand around 29-32 m with the conning tower broken off; a war grave, so look but do not touch.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-341",
+   "name": "Uyea, Northmavine",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Uyea%2C_Northmavine",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is an uninhabited tidal island"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-331",
+   "name": "Uyea, Unst",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Uyea%2C_Unst",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is an uninhabited island"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-306",
+   "name": "Ramna Stacks",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Ramna_Stacks",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "are a group of skerries"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A group of skerries, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-308",
+   "name": "Burrafirth",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Burrafirth",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a settlement on the island of Unst"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A settlement, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

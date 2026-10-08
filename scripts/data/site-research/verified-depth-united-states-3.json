@@ -1,0 +1,957 @@
+{
+ "batch": "verified-depth-united-states-3",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869451",
+   "name": "San Pablo",
+   "sources": {
+    "s1": {
+     "url": "https://floridapanhandledivetrail.com/Ships/SanPablo",
+     "publisher": "Florida Panhandle Shipwreck Trail",
+     "kind": "agency",
+     "quote": "Her wreckage is scattered across the seafloor where divers can explore boilers, refrigeration coils, and huge sections of twisted metal, all home to an impressive array of marine life."
+    },
+    "s2": {
+     "url": "https://reefsmartguides.com/russian-freighter/",
+     "publisher": "Reef Smart Guides",
+     "kind": "press",
+     "quote": "the highest concentration of toadfish found in the surrounding waters"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Boilers, refrigeration coils and twisted steel",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Dense toadfish population",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A WWII freighter destroyed in a secret 1944 weapons test, now a Florida Panhandle Shipwreck Trail dive off Pensacola. The scattered wreckage covers a wide stretch of sand, with boilers and plating that hold plenty of fish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-802",
+   "name": "HMT Bedfordshire",
+   "sources": {
+    "s1": {
+     "url": "https://monitor.noaa.gov/shipwrecks/bedfordshire.html",
+     "publisher": "NOAA Monitor National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "105 feet"
+    },
+    "s2": {
+     "url": "https://olympusdiving.com/bedfordshire",
+     "publisher": "Olympus Dive Center",
+     "kind": "operator",
+     "quote": "Intermediate"
+    },
+    "s3": {
+     "url": "https://scubadiverlife.com/preserving-americas-underwater-battlefield-hmt-bedfordshire/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Divers visiting the wreck must take heed of unexploded ordinance when visiting the site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 105
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Unexploded depth charges near the stern",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "WWII British armed trawler lying in two sections",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A British anti-submarine trawler torpedoed off Cape Lookout in 1942, lying in about 105 ft in Gulf Stream water. The broken hull is a war grave, so divers look and do not penetrate.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869492",
+   "name": "Bedfordshire (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://monitor.noaa.gov/shipwrecks/bedfordshire.html",
+     "publisher": "NOAA Monitor National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "105 feet"
+    },
+    "s2": {
+     "url": "https://olympusdiving.com/bedfordshire",
+     "publisher": "Olympus Dive Center",
+     "kind": "operator",
+     "quote": "Intermediate"
+    },
+    "s3": {
+     "url": "https://scubadiverlife.com/preserving-americas-underwater-battlefield-hmt-bedfordshire/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Divers visiting the wreck must take heed of unexploded ordinance when visiting the site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 105
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Unexploded depth charges near the stern",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "WWII British armed trawler lying in two sections",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A British anti-submarine trawler torpedoed off Cape Lookout in 1942, lying in about 105 ft in Gulf Stream water. The broken hull is a war grave, so divers look and do not penetrate.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869497",
+   "name": "U-352 (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://olympusdiving.com/u-352",
+     "publisher": "Olympus Dive Center",
+     "kind": "operator",
+     "quote": "Depth: 110 feet"
+    },
+    "s2": {
+     "url": "https://www.emeraldislerealty.com/blog/shipwrecks-along-the-crystal-coast",
+     "publisher": "Emerald Isle Realty",
+     "kind": "press",
+     "quote": "At 110 feet below the surface"
+    },
+    "s3": {
+     "url": "https://sanctuaries.noaa.gov/missions/battleoftheatlantic/mlog071108.html",
+     "publisher": "NOAA National Marine Sanctuaries",
+     "kind": "agency",
+     "quote": "we were greeted by 60+-foot visibility and warm water temps. \u2026 The sub is like a fish magnet, drawing in baitfish and larger predators such as amberjacks and great barracuda."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 110
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 60,
+    "high": 60,
+    "unit": "ft",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact WWII U-boat",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Amberjacks and great barracuda around the hull",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A German U-boat sunk in 1942, sitting largely intact in about 110 ft of Gulf Stream water off Morehead City. It draws baitfish and big predators; penetration is not permitted.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869499",
+   "name": "Aeolus (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://olympusdiving.com/aeolus",
+     "publisher": "Olympus Dive Center",
+     "kind": "operator",
+     "quote": "split into three portions and has also been partially turned to an upright position"
+    },
+    "s2": {
+     "url": "https://www.emeraldislerealty.com/blog/shipwrecks-along-the-crystal-coast",
+     "publisher": "Emerald Isle Realty",
+     "kind": "press",
+     "quote": "a prime site for diving with sand tiger sharks"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sand tiger sharks",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Multi-level dive on a broken-up hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 409 ft former cable ship sunk as a reef in 1988 and later broken into three sections by hurricanes, giving a multi-level wreck dive. Sand tigers often shelter on it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869498",
+   "name": "Indra (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://olympusdiving.com/indra",
+     "publisher": "Olympus Dive Center",
+     "kind": "operator",
+     "quote": "one of our most popular inshore wrecks"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Abundant marine life; occasional sand tigers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 328 ft landing craft repair ship sunk in 1992 about 10 miles off Emerald Isle. Shallow enough for long bottom times, it is a popular inshore wreck for novice divers and training.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-246",
+   "name": "USS Indra",
+   "sources": {
+    "s1": {
+     "url": "https://olympusdiving.com/indra",
+     "publisher": "Olympus Dive Center",
+     "kind": "operator",
+     "quote": "one of our most popular inshore wrecks"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Abundant marine life; occasional sand tigers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 328 ft landing craft repair ship sunk in 1992 about 10 miles off Emerald Isle. Shallow enough for long bottom times, it is a popular inshore wreck for novice divers and training.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869494",
+   "name": "U-701 (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://monitor.noaa.gov/shipwrecks/u-701.html",
+     "publisher": "NOAA Monitor National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "120 feet"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/preserving-americas-underwater-battlefield-u-701/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "visibility also ranges from 10 to 40 feet (3 to 12 m)"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 40,
+    "unit": "ft",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Current swings from slight to very swift",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Shifting sand changes what is exposed",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A WWII U-boat partly buried in sand about 20 miles off Cape Hatteras, where Gulf Stream and Labrador Current meet. Visibility and current vary widely, and the sand covers or exposes the hull year to year.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869496",
+   "name": "U-85 (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://monitor.noaa.gov/shipwrecks/u-85.html",
+     "publisher": "NOAA Monitor National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "approximately 90 feet of water about 14 miles east of Oregon Inlet"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/preserving-americas-underwater-battlefield-u-85/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "its attack periscope housing still intact"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Torpedo tubes with torpedoes still inside",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Deck gun and conning tower",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Sand tiger sharks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Visibility and temperature swing with shifting currents",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The first U-boat sunk off the US coast in WWII, lying on its side about 14 miles off Oregon Inlet. Battle damage, torpedo tubes and the conning tower are visible, but conditions change with the currents.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-787",
+   "name": "U-85",
+   "sources": {
+    "s1": {
+     "url": "https://monitor.noaa.gov/shipwrecks/u-85.html",
+     "publisher": "NOAA Monitor National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "approximately 90 feet of water about 14 miles east of Oregon Inlet"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/preserving-americas-underwater-battlefield-u-85/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "its attack periscope housing still intact"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Torpedo tubes with torpedoes still inside",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Deck gun and conning tower",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Sand tiger sharks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Visibility and temperature swing with shifting currents",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The first U-boat sunk off the US coast in WWII, lying on its side about 14 miles off Oregon Inlet. Battle damage, torpedo tubes and the conning tower are visible, but conditions change with the currents.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1190",
+   "name": "USS Tarpon",
+   "sources": {
+    "s1": {
+     "url": "https://monitor.noaa.gov/shipwrecks/tarpon.html",
+     "publisher": "NOAA Monitor National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "At a depth of 135 feet, the hull sits upright with a slight tilt to port."
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact WWII submarine, upright",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sand tiger sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A WWII submarine that sank under tow in 1957 and now lies upright in 135 ft off Cape Hatteras, covered in algae, anemones and corals. Sand tigers are frequent visitors.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-801",
+   "name": "United States lightship Diamond Shoal",
+   "sources": {
+    "s1": {
+     "url": "https://monitor.noaa.gov/shipwrecks/lv-71.html",
+     "publisher": "NOAA Monitor National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "Depth: 200 feet"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-266",
+   "name": "USS Vermilion (AKA-107)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Vermilion_(AKA-107)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Bottom depth is 130 to 140 feet"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1184",
+   "name": "USS Conestoga",
+   "sources": {
+    "s1": {
+     "url": "https://sanctuaries.noaa.gov/news/press/2016/noaa-discovers-wreck-of-uss-conestoga.html",
+     "publisher": "NOAA National Marine Sanctuaries",
+     "kind": "agency",
+     "quote": "wolf eels, ling cod and rockfish"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wolf eels, lingcod and rockfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A WWI-era Navy tug lost in 1921 and found in 2015 off the Farallon Islands, in deep water inside Greater Farallones sanctuary. It was documented by ROV and is largely intact, coated in plume anemones.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1228",
+   "name": "SS City of Chester",
+   "sources": {
+    "s1": {
+     "url": "https://sanctuaries.noaa.gov/news/apr14/city-of-chester.html",
+     "publisher": "NOAA National Marine Sanctuaries",
+     "kind": "agency",
+     "quote": "216 feet deep at the edge of a small undersea shoal"
+    },
+    "s2": {
+     "url": "https://www.shipwreckworld.com/maps/ss-city-of-chester",
+     "publisher": "Shipwreck World",
+     "kind": "press",
+     "quote": "divers need to have a lot of experience when trying to dive to the wreck"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 216
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong Golden Gate currents, cold water",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An 1888 passenger steamer lying upright in mud off the Golden Gate in over 200 ft. Cold water and strong currents make it a very experienced-diver-only site; the hull is largely rotted away.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-241",
+   "name": "USCGC Tamaroa (WMEC-166)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USCGC_Tamaroa_(WMEC-166)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "a depth of 120 feet"
+    },
+    "s2": {
+     "url": "https://www.phillymag.com/news/2017/05/12/perfect-storm-boat-sunk-cape-may/",
+     "publisher": "Philadelphia Magazine",
+     "kind": "press",
+     "quote": "Sport divers will also have a unique opportunity to explore the Tamaroa's decks, bulwarks and passageways"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 120
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A retired Coast Guard cutter, famed for a Perfect Storm rescue, sunk in 2017 as part of the Del-Jersey-Land Inshore Reef about 26-33 nautical miles offshore. Divers can explore its decks and passageways.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-w35332224",
+   "name": "Dutch Springs",
+   "sources": {
+    "s1": {
+     "url": "https://dan.org/?p=13120",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "from 15-60 feet depending on the time of year, amount of rain and number of divers"
+    },
+    "s2": {
+     "url": "https://njscuba.net/dive-sites/new-jersey-dive-sites/new-jersey-coast-chart/dutch-springs",
+     "publisher": "NJ Scuba",
+     "kind": "press",
+     "quote": "Shoreline to over 100 ft, but most activity is conducted at 25-40 ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 60,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken bus, fire engine, planes and boats",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A flooded Pennsylvania limestone quarry used for training and fun diving, with a school bus, fire engine, aircraft and boats placed between 20 and 100 ft. Visibility and temperature vary with the season.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-w643470454",
+   "name": "Blue Water Park",
+   "sources": {
+    "s1": {
+     "url": "https://bhamnow.com/2019/07/15/scuba-diving-blue-water-park/",
+     "publisher": "BirminghamNow",
+     "kind": "press",
+     "quote": "As a former quarry that's cut to different levels, it makes great scuba training."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 25,
+    "high": 100,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken sailboat, cars, school bus, fire trucks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A spring-fed former quarry near Birmingham cut into several levels, popular for training with sunken vehicles and a sailboat. Visibility runs about 25 ft in summer and much better in winter.",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

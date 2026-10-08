@@ -18,6 +18,11 @@ const globalSites = require('../src/features/oceanAtlas/data/globalSites.json');
 const { buildAtlasDocument } = loadSourceModule(path.join(root, 'features/oceanAtlas/document.js'), root);
 
 assert.equal(model.validCoordinate(0, 0), true);
+assert.equal(rendering.diagramProfileKind({ environment: 'fresh', topologies: [] }), 'lake', 'Freshwater defaults to the inland profile.');
+assert.equal(rendering.diagramProfileKind({ environment: 'fresh', topologies: ['spring', 'cave'] }), 'cave', 'Cave topology outranks freshwater and topology order.');
+assert.equal(rendering.diagramProfileKind({ environment: 'fresh', topologies: ['wreck'] }), 'wreck', 'A known wreck keeps the wreck profile in fresh water.');
+assert.equal(rendering.diagramProfileKind({ environment: 'ocean', topologies: ['reef'] }, { types: ['cavern'] }), 'cave', 'Researched overhead type outranks the catalog label.');
+assert.equal(rendering.diagramProfileKind({ environment: 'ocean', topologies: ['wall'] }), 'wall');
 for (const pair of [[null, null], ['', ''], [NaN, 0], [91, 0], [0, 181], ['20', 20]]) assert.equal(model.validCoordinate(...pair), false);
 const dives = [
   { id: 'zero', site: { latitude: 0, longitude: 0 }, startTime: '2026-01-01' },
@@ -72,7 +77,7 @@ assert.equal(model.oceanRegionAt(OCEAN_REGIONS, 17, -74).id, 'caribbean');
 assert.equal(model.oceanRegionAt(OCEAN_REGIONS, 2, 126).id, 'coral-triangle');
 assert.equal(model.oceanRegionAt(OCEAN_REGIONS, NaN, 0), null);
 assert.ok(OCEAN_REGIONS.length >= 16);
-assert.equal(globalSites.schemaVersion, 3);
+assert.equal(globalSites.schemaVersion, 4);
 const globalIds = globalSites.packedIds.match(/.{6}/g) || [];
 const coordinateBuffer = Buffer.from(globalSites.coordinatesBase64, 'base64');
 const globalCoordinates = Array.from({ length: coordinateBuffer.length / 4 }, (_, index) => coordinateBuffer.readInt32LE(index * 4));
@@ -86,6 +91,8 @@ assert.equal(globalCoordinates.length, globalSites.recordCount * 2);
 assert.equal(globalCountryIndexes.length, globalSites.recordCount);
 assert.equal(globalDepths.length, globalSites.recordCount);
 assert.equal(globalSites.license, 'ODbL 1.0');
+assert.ok(globalSites.communityStatsByIndex.length >= 2500, 'Community aggregates cover most OpenDiveMap sites.');
+assert.ok(globalSites.communityStatsByIndex.every(row => (row.length === 4 || row.length === 5) && row[0] < globalSites.recordCount && row[1] >= 0 && row[1] <= 100 && row[2] >= 0 && row[2] <= 5 && Number.isSafeInteger(row[3]) && (row.length === 4 || Number.isInteger(row[4]) && row[4] >= 0 && row[4] <= 300)));
 assert.ok(globalSites.sourceUrl.startsWith('https://'));
 for (let index = 0; index < globalSites.recordCount; index += 1) {
   assert.ok(typeof globalIds[index] === 'string' && globalIds[index] && typeof globalSites.names[index] === 'string' && globalSites.names[index]);
@@ -122,7 +129,17 @@ const html = buildAtlasDocument({ deferredData: true });
 assert.ok(Buffer.byteLength(html) < 512 * 1024, 'Native startup contains a small shell; growing datasets arrive through bounded bridge messages.');
 assert.ok(Buffer.byteLength(JSON.stringify(land)) < 1024 * 1024, 'Keep the compact coastline below 1 MB.');
 const { runtimeSourceHash } = loadSourceModule(path.join(root, 'features/oceanAtlas/data/runtimeSource.js'), root);
-const runtimeRaw = ['model.js', 'rendering.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(root, 'features/oceanAtlas', name), 'utf8').replace(/^export /gm, '')).join('\n');
+const runtimeRoot = path.join(root, 'features/oceanAtlas');
+const diagramProfiles = Object.fromEntries(['wreck', 'cenote', 'reef', 'inland'].map(name => [
+  name,
+  fs.readFileSync(path.join(runtimeRoot, 'diagrams', `${name}.svg`), 'utf8'),
+]));
+for (const [name, svg] of Object.entries(diagramProfiles)) {
+  assert.match(svg, /^<svg[^>]+viewBox="0 0 960 560"/);
+  assert.ok(!/<script|\son\w+=|\shref=/i.test(svg), `${name} profile must stay self-contained and script-free.`);
+}
+const runtimeRaw = `const DIAGRAM_PROFILES=${JSON.stringify(diagramProfiles)};\n`
+  + ['model.js', 'rendering.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(runtimeRoot, name), 'utf8').replace(/^export /gm, '')).join('\n');
 assert.equal(runtimeSourceHash, require('node:crypto').createHash('sha1').update(runtimeRaw).digest('hex'), 'Regenerate the browser runtime after changes (npm run bundle:ocean-atlas).');
 assert.equal((html.match(/<script>/g) || []).length, 2);
 assert.ok(!html.includes('<script src='), 'No third-party JavaScript can read personal pins.');

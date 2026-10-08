@@ -1,0 +1,53 @@
+{"batch":"notable-ireland-1","researchedAt":"2026-10-07","sites":[
+{"id":"x-notable-883","name":"HMS Audacious",
+ "sources":{
+  "s1":{"url":"https://en.wikipedia.org/wiki/HMS_Audacious_(1912)","publisher":"Wikipedia","kind":"encyclopedia","quote":"The diveable wreck lies upside down at a depth of 58–68 metres (190–223 ft) in clear water."},
+  "s2":{"url":"https://divernet.com/world-dives/malin-head-irelands-wreck-diving-magnet/","publisher":"Divernet","kind":"press","quote":"now lies upside-down at a depth of 64m … Visibility can be so good – 20-30m-plus is not unheard of … Care must be taken around the wreck-site, because there is still a lot of unexploded ordnance … Diving Malin Head is strictly for the techies"}
+ },
+ "depth":[{"ref":"s1","unit":"m","top":58,"bottom":68},{"ref":"s2","unit":"m","bottom":64}],
+ "entry":{"value":"boat","refs":["s2"]},
+ "types":{"value":["wreck"],"refs":["s1"]},
+ "level":{"value":"technical","refs":["s2"]},
+ "vis":{"low":20,"high":30,"unit":"m","refs":["s2"]},
+ "hazards":[{"text":"Unexploded ordnance around the wreck","refs":["s2"]},{"text":"Deep: trimix or rebreather diving","refs":["s2"]}],
+ "summary":{"text":"A WWI dreadnought mined in 1914 off Donegal, now resting inverted on the seabed in the open Atlantic. A deep technical dive with often excellent visibility, reached by boat from the Donegal coast.","refs":["s1","s2"]}},
+{"id":"x-notable-976","name":"SS Laurentic",
+ "sources":{
+  "s1":{"url":"https://en.wikipedia.org/wiki/SS_Laurentic_(1908)","publisher":"Wikipedia","kind":"encyclopedia","quote":"at a depth of 98 to 131 ft (30 to 40 m) … Divers must obtain a licence from the Department … But large parts, such as her Scotch boilers, are still recognisable."},
+  "s2":{"url":"https://divernet.com/world-dives/malin-head-irelands-wreck-diving-magnet/","publisher":"Divernet","kind":"press","quote":"Lying in only 42m, the Laurentic might be overshadowed by the deeper wrecks in the area"},
+  "s3":{"url":"https://irishwrecksonline.net/details/Laurentic550.htm","publisher":"Irish Wrecks Online","kind":"press","quote":"Charted Depth: 41.8m … Badly broken up and scattered over a wide area. … Boilers are 5m high. … An ideal scooter dive. … Permission is required to dive this wreck."}
+ },
+ "depth":[{"ref":"s1","unit":"m","top":30,"bottom":40},{"ref":"s2","unit":"m","bottom":42},{"ref":"s3","unit":"m","bottom":41.8}],
+ "entry":{"value":"boat","refs":["s2"]},
+ "types":{"value":["wreck"],"refs":["s1"]},
+ "access":{"value":"Diving requires a licence/permission from the authorities","refs":["s1","s3"]},
+ "highlights":[{"text":"Scotch boilers still recognisable","refs":["s1"]},{"text":"Scattered wreckage suited to scooter dive","refs":["s3"]}],
+ "hazards":[{"text":"Wreckage broken up and spread over a wide area","refs":["s3"]}],
+ "summary":{"text":"A large WWI liner mined off Lough Swilly in 1917 and heavily salvaged for her gold. Now a broken, scattered wreck at about 40 m, with the boilers still easy to spot; a licence or permission is needed to dive it.","refs":["s1","s3"]}},
+{"id":"osm-n663869553","name":"S.S. Alondra",
+ "sources":{
+  "s1":{"url":"https://en.wikipedia.org/wiki/Alondra_(shipwreck)","publisher":"Wikipedia","kind":"encyclopedia","quote":"The ship settled at a depth of 5 to 20 meters (16 to 66 ft)"},
+  "s2":{"url":"http://www.irishwrecksonline.net/details/Alondra101.htm","publisher":"Irish Wrecks Online","kind":"press","quote":"Charted Depth: 20m … Extensively broken up, she lies with her bow to the North East wedged in a gully. … Her twin boilers and her engine are the largest features. … Inhabited by some large congers. … Best dived 1 hour after High Water."}
+ },
+ "depth":[{"ref":"s1","unit":"m","top":5,"bottom":20},{"ref":"s2","unit":"m","bottom":20}],
+ "entry":{"value":"boat","refs":["s2"]},
+ "types":{"value":["wreck"],"refs":["s2"]},
+ "highlights":[{"text":"Twin boilers and engine","refs":["s2"]},{"text":"Large conger eels","refs":["s2"]}],
+ "summary":{"text":"A steamer lost on the Kedge Rock off Baltimore in 1916, now a broken wreck in a gully in about 20 m. A popular local dive best done around an hour after high water, with boilers, engine and congers to see.","refs":["s1","s2"]}},
+{"id":"x-notable-910","name":"U-2511",
+ "sources":{
+  "s1":{"url":"https://en.wikipedia.org/wiki/German_submarine_U-2511","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck lies at a depth 69 metres (226 ft). … largely intact except for a large blast hole"},
+  "s2":{"url":"https://www.bsac.com/advice-and-support/expedition-diving/get-involved-in-a-bsac-expedition/get-involved-in-the-malin-head-wreck-diving-expedition/","publisher":"BSAC","kind":"agency","quote":"U-2511 (67 m) … She was scuttled on the 7th January 1946 and rests relatively intact."}
+ },
+ "depth":[{"ref":"s1","unit":"m","bottom":69},{"ref":"s2","unit":"m","bottom":67}],
+ "entry":{"value":"boat","refs":["s2"]},
+ "types":{"value":["wreck"],"refs":["s1"]},
+ "level":{"value":"technical","refs":["s2"]},
+ "summary":{"text":"A Type XXI U-boat scuttled in Operation Deadlight in 1946 and still largely intact in the Atlantic off Donegal. A deep technical wreck at roughly 67-69 m, dived by expedition teams.","refs":["s1","s2"]}},
+{"id":"x-notable-1284","name":"HMS Hurst Castle",
+ "sources":{
+  "s1":{"url":"https://indepthmag.com/barry-mcgill-wrecks/","publisher":"InDepth magazine","kind":"press","quote":"Patrick Valkenborgh giving scale to the bell of HMS Hurst Castle. … Malin Head, Ireland – 85 m/279 ft."}
+ },
+ "depth":[{"ref":"s1","unit":"m","bottom":85}],
+ "types":{"value":["wreck"],"refs":["s1"]}}
+]}

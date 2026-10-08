@@ -1,0 +1,1197 @@
+{
+ "batch": "notable-united-kingdom-3",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-220",
+   "name": "Kyarra",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/wreck-tour-47-the-kyarra/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "The wreck lies on its starboard side, with the port railing uppermost at about 23m. … The depth here is about 32m. … Not for novices, but you can have a good dive without getting into decompression."
+    },
+    "s2": {
+     "url": "https://www.bsac.com/news-and-blog/swanage-beyond-the-pier/",
+     "publisher": "British Sub-Aqua Club",
+     "kind": "operator",
+     "quote": "DEPTH: 29m … SIZE OF WRECK: 126m long … The Kyarra usually has permanent buoys tied to it, which surface on slack water."
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/Kyarra",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lies one mile (1.6 km) off Anvil Point … remains popular with divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 23,
+     "bottom": 32
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 29
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Permanent buoys usually tied to the wreck, surfacing at slack water",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "126 m liner on its starboard side",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Boilers and engines visible",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Debris-filled interior; swim-throughs no longer safe",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Short slack water; busy site",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large steamship lying on her starboard side about a mile off Anvil Point near Swanage, with the upper rail near 23 m and the seabed around 30 m. Long enough to need a full dive to tour, best done at slack water.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-136",
+   "name": "MV Aeolian Sky",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX2740",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "but it sank by the bow in 29m of water, 12 miles from the Bill of Portland … has now been cleared by explosives to 18m … It lies on the port side with the decks facing east and the bows to the south."
+    },
+    "s2": {
+     "url": "https://divernet.com/world-dives/wreck-tour-27-the-aeolian-sky/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "a large bow bulge rests against the seabed at 30m … rising as shallow as 20m. … Shallow enough for less-experienced divers to make worthwhile no-stop dives"
+    },
+    "s3": {
+     "url": "https://deeperdorset.co.uk/?p=386",
+     "publisher": "Deeper Dorset",
+     "kind": "operator",
+     "quote": "Approx. depth 30 metres … The ship was lying on her port side"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 29
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 20,
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Open hatches, companionways and large windows",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Holds with cargo still aboard",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current picks up rapidly after slack water",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Divers on delayed SMBs can drift widely",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A modern cargo ship lying on her port side in about 30 m south of St Aldhelm's Head, with the deck as shallow as roughly 18 to 20 m. Easy penetration and a recognisable layout make it popular, but it must be dived at slack water.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Upper deck about 18-20 m, seabed about 30 m"
+  },
+  {
+   "id": "x-wikipedia-208",
+   "name": "SS Binnendijk",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX2023",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "Least echo sounder depth 17.3 in general depth 25.6M. … Main wreckage dimensions about 120 x 30m, orientated 070/250 deg."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Binnendijk",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Binnendijk's wreck is on Lulworth Banks at a depth of 75 to 89 feet (23 to 27 m). … The site is relatively sheltered by Portland Bill, but is near Portland Race, so can be subject to strong currents."
+    },
+    "s3": {
+     "url": "https://deeperdorset.co.uk/wreck/binnendijk",
+     "publisher": "Deeper Dorset",
+     "kind": "operator",
+     "quote": "Approx. depth 27"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 17.3,
+     "bottom": 25.6
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 23,
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents near Portland Race",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large cargo steamer mined in 1939 and now a broken-up wreck on Lulworth Banks, nicknamed 'The Benny'. It lies roughly 17 to 27 m down, spread over an area about 120 by 30 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Least depth 17.3 m, general depth 25.6 m"
+  },
+  {
+   "id": "x-wikipedia-130",
+   "name": "HMS A3",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX2146",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "Wreck lies in 38m depth, intact, standing 5m above the seabed. … Upright in general depth of 38m, the top of the conning tower being at 32m;"
+    },
+    "s2": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Designation/DDO17042",
+     "publisher": "Dorset Council Historic Environment Record (Historic England designation)",
+     "kind": "agency",
+     "quote": "the site lies in approximately 30-40m of water, east of Portland, Dorset. … While the sea bed drops to 38-39m, the depth to the conning tower is 32m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 32,
+     "bottom": 38
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 32,
+     "bottom": 39
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Designated protected wreck (Protection of Wrecks Act 1973); 50 m protected area",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact WWI submarine, upright",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An intact early Royal Navy submarine sitting upright on the seabed in about 38 m, with the conning tower top at 32 m. It is a designated protected wreck managed by Historic England, east of Portland.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-207",
+   "name": "HMS M2 (1918)",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX1597",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "She lay in 90 - 105 ft, with her stern in the sand and bow raised above the seabed. … HMSM M2 has been cited as a designated vessel under the Protection of Military Remains Act 1986. … it is an offence to enter or damage the hull structure."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/dorset-disaster-explores-the-wreck-of-the-m2-submarine/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "sits upright on a relatively flat seabed at a maximum depth of 31m around the bow and 35m at the stern. … Salvage divers discovered that the hangar doors were wide open."
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/HMS_M2_(1918)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "about 100 ft (30 m) below the surface at low tide … She is a popular dive for scuba divers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 90,
+     "bottom": 105
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected place under Protection of Military Remains Act 1986 (war grave): do not enter or damage the hull",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Submarine with seaplane hangar and distinctive conning tower",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "War grave: entering the hull is an offence",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Silts up quickly; visibility can be poor",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large WWI monitor-class submarine carrying a seaplane hangar, lying largely intact and upright in 30 to 35 m off Chesil Beach. She is a war grave protected under military remains law, so look but do not touch or enter.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-176",
+   "name": "HMS Hood (1891)",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX2121",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "Portland Port Ltd. has banned all diving on the HOOD from 1st January 2004 for an indefinite period. … has degraded and is now collapsing in on itself."
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Blockship upside down and collapsing; Portland Port banned all diving on it from 2004",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-231",
+   "name": "SS Radaas",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Radaas",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck lies on a sandy bed at a depth of 30 metres (98 ft). … Ship sunk in 1917 near Portland Bill, now a dive site."
+    },
+    "s2": {
+     "url": "https://deeperdorset.co.uk/wreck/radaas/",
+     "publisher": "Deeper Dorset",
+     "kind": "operator",
+     "quote": "Approx. depth 30 metres … Sunk by a German Submarine, 10.5 miles SW of Lyme Regis."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A Danish steamer torpedoed by a U-boat in 1917 and now resting on sand at about 30 m in Lyme Bay, roughly 10 miles south-west of Lyme Regis. A boat-only wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-202",
+   "name": "Marguerite",
+   "sources": {
+    "s1": {
+     "url": "https://deeperdorset.co.uk/wreck/marguarite/",
+     "publisher": "Deeper Dorset",
+     "kind": "operator",
+     "quote": "Approx. depth 33 metres … Position 50 36.13N 02 58.73W"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Marguerite_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "French ship sunk in Lyme Bay in 1917. Now a dive site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 33
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A French collier torpedoed by UB-40 in 1917 and now a wreck dive in Lyme Bay, lying in roughly 33 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1049",
+   "name": "HMS Empress of India",
+   "sources": {
+    "s1": {
+     "url": "https://deeperdorset.co.uk/?p=1430",
+     "publisher": "Deeper Dorset",
+     "kind": "operator",
+     "quote": "She lies in the middle of Lyme Bay in 138 feet of water on a sandy bottom. … The wreck was salvaged by Mayer & Newman who removed much of her armour plating and the bronze propellers."
+    },
+    "s2": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX5054",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "After several hits she turned turtle and sank."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 138
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Deep: beyond recreational limits",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A pre-dreadnought battleship sunk as a gunnery target in 1913; she lies capsized on sand in the middle of Lyme Bay at around 42 m, partly stripped by salvors.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1187",
+   "name": "USS S-24",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX2509",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "Standing upright in 44 metres, with her deck at 38 metres she is still an awesome sight. … She is totally intact, showing little deterioration. … being scuttled in 40 M of water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 38,
+     "bottom": 44
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "An American S-class submarine lent to the Royal Navy and scuttled off Portland in 1947 as an asdic target. She sits upright and largely intact, with the deck at about 38 m and the seabed near 44 m.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-197",
+   "name": "USS LST-507",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_LST-507",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck of the LST now lies at a depth of 50 metres (160 ft). … classed as protected wrecks, and so diving without a licence is not possible."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-news/devons-exercise-tiger-wrecks-protected/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "that lie 50m deep off the Devon coast … Scheduling means that divers can still dive the sites without a licence"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Exercise Tiger war grave; scheduled monument (Historic England says dive without licence but respect the site)",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A US Navy tank landing ship torpedoed by E-boats during the 1944 Exercise Tiger rehearsal and now a war grave about 50 m down in Lyme Bay. A technical-depth dive on a protected site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-131",
+   "name": "SS Albert C. Field",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Albert_C._Field",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "34 m (112 ft) below sea level on a gravel seabed … The machinery is right aft and the bridge is right forward while everything in the middle was cargo space."
+    },
+    "s2": {
+     "url": "https://wightspirit.co.uk/?p=31",
+     "publisher": "Wight Spirit (dive charter)",
+     "kind": "operator",
+     "quote": "Canadian steamer ALBERT C FIELD, 1764 tons, bombed by aircraft in June 1944. Depth 40 metres."
+    },
+    "s3": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX2321",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The highest parts of the Wreck are the boilers. … No-one seems to have dived this wreck … This is one to keep well clear of."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 34
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Ammunition cargo; advised to keep well clear",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Canadian steamer bombed in June 1944 while carrying ammunition; the wreck is badly broken, with boilers the highest point, in roughly 34 to 40 m south of Anvil Point. The Dorset record warns divers to stay clear of the explosive cargo.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-211",
+   "name": "SS Ajax (1923)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Ajax_(1923)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lies on its port side on white sand at a depth of about 40 m (130 ft) … Her stern is broken up but her bow, boilers, engine and helm can all be identified."
+    },
+    "s2": {
+     "url": "https://wightspirit.co.uk/?p=31",
+     "publisher": "Wight Spirit (dive charter)",
+     "kind": "operator",
+     "quote": "Dutch steamer AJAX, 942 tons, bombed by aircraft in August 1940. Depth 40 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A Dutch steamer bombed in 1940, lying on her port side on white sand at about 40 m off the Isle of Wight. The stern is broken up but the bow, boilers and engine are recognisable.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-175",
+   "name": "SS Mendi",
+   "sources": {
+    "s1": {
+     "url": "https://wightspirit.co.uk/?p=31",
+     "publisher": "Wight Spirit (dive charter)",
+     "kind": "operator",
+     "quote": "British steamer MENDI, 4230 tons, sank following collision in February 1917. Depth 40 metres."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Mendi",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "designated Mendi's wreck site as a protected war grave"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected war grave (Protection of Military Remains Act); no removing artefacts",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "The troopship Mendi sank in a 1917 collision south of the Isle of Wight with heavy loss of South African lives. She lies in about 40 m, is now a protected war grave and is badly collapsed apart from the bow and stern.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1315",
+   "name": "HMT Warwick Deeping",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/uk/wreck-tour-56-the-warwick-deeping/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "lying along the tide in 34m … the wreck is upright and pretty much intact … Slack water is essential and occurs 10 minutes after high water or 45 minutes before low water Dover."
+    },
+    "s2": {
+     "url": "https://maritimearchaeologytrust.org/?p=1500",
+     "publisher": "Maritime Archaeology Trust",
+     "kind": "agency",
+     "quote": "lies in 37 meters of water to the south of the Isle of Wight … completely upright and largely intact on a gravel seabed"
+    },
+    "s3": {
+     "url": "https://wightspirit.co.uk/?p=31",
+     "publisher": "Wight Spirit (dive charter)",
+     "kind": "operator",
+     "quote": "A popular dive in 36 metres."
+    },
+    "s4": {
+     "url": "https://en.wikipedia.org/wiki/HMT_Warwick_Deeping",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lies in 35 metres (115 ft) of water … a popular wreck diving site"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 30,
+     "bottom": 34
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 37
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 36
+    },
+    {
+     "ref": "s4",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact trawler with 4.7in gun at the bow",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Iron four-blade propeller exposed by scour",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong tide; slack water short and essential",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Net draped over the forward wreck; scour under stern",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small armed trawler lost in 1940, sitting upright and largely intact on gravel in 34 to 37 m south of the Isle of Wight. It lies along the tide, so a short slack-water window and careful shotting matter.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Deckhouse roof about 30 m, seabed 34-37 m"
+  },
+  {
+   "id": "x-wikipedia-199",
+   "name": "German submarine U-1195",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/German_submarine_U-1195",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in 30 metres (98 feet) of water"
+    },
+    "s2": {
+     "url": "https://uboat.net/boats/u1195.htm",
+     "publisher": "uboat.net",
+     "kind": "press",
+     "quote": "This boat is a dive site … Depth: 110 feet (34 meters) … The wreck of U-1195 was located in position 50.33.17N, 00.56.09W."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 110
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A German Type VIIC U-boat sunk by depth charges in April 1945 and now a dive site in roughly 30 to 34 m south-east of the Isle of Wight.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869549",
+   "name": "UB-81",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SM_UB-81",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck is designated as a controlled site under the Protection of Military Remains Act 1986 … all diving on her is strictly prohibited."
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Designated controlled site under Protection of Military Remains Act 1986; diving prohibited",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-204",
+   "name": "Royal Adelaide (1865 ship)",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX1909",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "Fore-deck winch, chain locker and other wreckage remain about 120 off-shore in about 12m of water. … The part that remains of the hull today is being rapidly eroded."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Remains rapidly eroding",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The 1872 wreck of a sailing ship on Chesil Beach; only scattered winch, chain locker and hull remains survive in about 12 m of water just offshore, and the hull is eroding fast.",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Remains of wreckage about 12 m (1984 record)"
+  },
+  {
+   "id": "x-wikipedia-336",
+   "name": "Chesil Cove",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/above-18m-diving-chesil-bank/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "About 400m out, the seabed levels off at a depth of 18m and becomes mainly sand and fine gravel. … On average 1-5m, depending on tides and wave action. … Be prepared for waves and undertow during entries and exits"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Chesil_Cove",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "one of the best known shore dives in the UK. … The cove is a reasonably shallow shore dive."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 1,
+    "high": 5,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Waves and undertow on entry and exit",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Fishing line and discarded weights",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "One of Britain's best-known shore dives, entered from Chesil's pebble beach at Portland and descending past ledges to a sand-and-gravel seabed near 18 m. Visibility is typically 1 to 5 m but can reach 10 m in calm spells; surf and undertow make entries tricky.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-855",
+   "name": "HMT Arfon",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-88-the-arfon/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "lies flat against the seabed at 35m. … Suitable for sports divers making no-stop dives … The wreck lies partly across the tide, with the bow just to the west of north."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMT_Arfon",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The site was designated under the Protection of Wrecks Act on 17 August 2016."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Designated protected wreck (Protection of Wrecks Act 1973); managed by Historic England",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A WWI naval trawler mined in 1917 and now a protected wreck south of St Alban's Head, lying partly across the tide with the rudder on the seabed near 35 m. Small enough for a no-stop dive yet complex enough to reward more time.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

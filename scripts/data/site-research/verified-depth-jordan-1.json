@@ -1,0 +1,104 @@
+{
+ "batch": "verified-depth-jordan-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869877",
+   "name": "Cedar Pride",
+   "sources": {
+    "s1": {
+     "url": "https://divemagazine.com/scuba-diving-travel/wreck-diving-aqaba",
+     "publisher": "Dive Magazine",
+     "kind": "press",
+     "quote": "maximum depth of around 28m … starboard side of the ship is at around 10m … little in the way of current"
+    },
+    "s2": {
+     "url": "https://www.hiddenmediterranean.net/en/poi/cedar-pride-ship-wreck-artificial-reef/",
+     "publisher": "Hidden Mediterranean",
+     "kind": "press",
+     "quote": "Visibility: 10-30 meters … resting on its port side, at a depth of about 27 metres … The Cedar Pride Shipwreck is also a great place for night diving."
+    },
+    "s3": {
+     "url": "https://divernet.com/world-dives/in-deep-in-aqaba/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "we tied up to a buoy just 200m from the shoreline … The visibility was 15-20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 27
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "Boats tie up to a buoy about 200 m offshore",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Overgrown crow's nest, much photographed",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Good night dive site",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Lebanese freighter deliberately sunk off Aqaba in 1985, now a coral-encrusted artificial reef lying on its port side. Its starboard side begins around 10 m, with gentle conditions that suit newer wreck divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

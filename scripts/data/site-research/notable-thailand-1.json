@@ -1,0 +1,96 @@
+{ "batch": "notable-thailand-1", "researchedAt": "2026-10-07", "sites": [
+{ "id": "x-notable-1120", "name": "HMS Stoic",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Stoic", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Sold July 1950 to be broken up at Dalmuir." } },
+  "notDiveSite": { "kind": "gone", "reason": "Submarine was sold and broken up at Dalmuir in 1950; no wreck exists", "refs": ["s1"] }
+},
+{ "id": "x-notable-1137", "name": "HMS Strongbow",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Strongbow_(P235)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "scrapped at Preston in April 1946" } },
+  "notDiveSite": { "kind": "gone", "reason": "Submarine was scrapped at Preston in 1946; no wreck exists", "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-337", "name": "Similan Islands",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Similan_Islands", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "is a continental archipelago in the Andaman Sea off the coast of, and part of, Phang Nga Province in southern Thailand" } },
+  "notDiveSite": { "kind": "area", "reason": "An archipelago with many separate dive sites, not one site", "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-333", "name": "Ko Tao",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Ko_Tao", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "is an island in Thailand and is part of the Chumphon Archipelago on the western shore of the Gulf of Thailand" } },
+  "notDiveSite": { "kind": "area", "reason": "A whole island with over 25 dive sites, not one site", "refs": ["s1"] }
+},
+{ "id": "osm-n270804074", "name": "Richelieu Rock",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Richelieu_Rock", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "rises from the sea floor of about 30 to 35 m (98 to 115 ft) … in the Andaman Sea about 45 kilometres (28 mi) from the mainland … February to April is the best time to spot large pelagic species" },
+    "s2": { "url": "https://www.wetzonedivers.com/en/scuba-diving/divesites/richelieu-rock", "publisher": "Wet Zone Divers", "kind": "operator",
+      "quote": "The diving depth ranges from 5 to 40 meters … Sometimes, there can be strong currents … Visibility is usually excellent and can reach up to 30 meters. … especially from February to May." },
+    "s3": { "url": "https://www.southeastasiadiving.com/blog/-deep-dive-series-richelieu-rock-thailands-iconic-purple-wonderland", "publisher": "Southeast Asia Diving", "kind": "operator",
+      "quote": "The top of the rock sits just below the surface at high tide, around 5–7 metres … Richelieu Rock is open to divers only during the Andaman Sea dry season, which runs from November to April." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 35 }, { "ref": "s2", "unit": "m", "top": 5, "bottom": 40 } ],
+  "types": { "value": ["pinnacle"], "refs": ["s1"] },
+  "current": { "value": "strong", "refs": ["s2"] },
+  "vis": { "low": 10, "high": 30, "unit": "m", "refs": ["s2", "s3"] },
+  "season": { "from": 11, "to": 4, "refs": ["s3"] },
+  "access": { "value": "Inside Surin Islands National Park; open only in the dry season", "refs": ["s1", "s3"] },
+  "highlights": [ { "text": "Whale sharks and mantas, Feb-Apr", "refs": ["s1"] }, { "text": "Harlequin shrimp under overhangs", "refs": ["s3"] }, { "text": "Schools of barracuda and mackerel", "refs": ["s2"] } ],
+  "hazards": [ { "text": "Currents can strengthen mid-dive around the horseshoe", "refs": ["s3"] } ],
+  "summary": { "text": "Isolated horseshoe-shaped pinnacle in Mu Ko Surin National Park, rising from about 35 m to just below the surface. Famed for purple soft corals, macro life and occasional whale sharks; currents can be strong and the park is open only in the dry season.", "refs": ["s1", "s2", "s3"] }
+},
+{ "id": "osm-n3582426705", "name": "Mango Bay",
+  "sources": {
+    "s1": { "url": "https://www.bigbluediving.com/koh-tao-dive-sites/mango-bay/", "publisher": "Big Blue Diving", "kind": "operator",
+      "quote": "0-18m … gradually descends to approximately 12–14 meters at its deepest points … Visibility usually ranges from 8–20 meters … Currents are typically light to non-existent" },
+    "s2": { "url": "https://www.blackturtledive.com/koh-tao-dive-sites/mango-bay/", "publisher": "Black Turtle Dive", "kind": "operator",
+      "quote": "Depth: 1m – 20 metres … Average Visibility: 10 -20m … the boat drops you off in around 16 metres of water in a more open part of the bay." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 0, "bottom": 18 }, { "ref": "s2", "unit": "m", "top": 1, "bottom": 20 } ],
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["reef"], "refs": ["s1"] },
+  "level": { "value": "beginner", "refs": ["s1"] },
+  "current": { "value": "light", "refs": ["s1"] },
+  "vis": { "low": 8, "high": 20, "unit": "m", "refs": ["s1", "s2"] },
+  "highlights": [ { "text": "Schools of fusiliers and snapper in the shallows", "refs": ["s1"] }, { "text": "Whiprays under big boulders", "refs": ["s2"] } ],
+  "summary": { "text": "Sheltered, sandy-bottomed bay on Ko Tao with boulders and shallow reef, reached by boat. Mostly 2-15 m with light current, so it suits training dives and beginners.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-1209", "name": "HTMS Sukhothai",
+  "sources": { "s1": { "url": "https://www.thaipbsworld.com/world/navy-divers-search-sunken-htms-sukhothai-for-missing-crew", "publisher": "Thai PBS World", "kind": "press",
+      "quote": "The sunken ship rests at a depth of about 40 metres, off Bang Saphan district of Prachuap Khiri Khan. … because it is unstable and could move if struck by a strong current." } },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 40 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "hazards": [ { "text": "Wreck unstable; could move in strong current", "refs": ["s1"] } ]
+},
+{ "id": "x-wikipedia-259", "name": "USS LSM-469",
+  "sources": {
+    "s1": { "url": "https://thaiwreckdiver.com/htms_khraam/", "publisher": "Thai Wreck Diver", "kind": "press",
+      "quote": "Depth to the top of the wreck 15m; depth to the sea bed=30m … visibility 5-15m … now lies about 300 meters from Koh Phai in 30m of water." },
+    "s2": { "url": "https://divepattaya.com/htms-khram-wreck-dive-site/", "publisher": "DivePattaya (Dive Right Scuba Technician)", "kind": "operator",
+      "quote": "Max Depth – 28m … Visibility of 8m (20ft) increases to 30m (100ft). … Just 300 meters off the coast of Koh Phai (Bamboo Island)." },
+    "s3": { "url": "https://en.wikipedia.org/wiki/USS_LSM-469", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "to be sunk as an artificial reef off Pattaya on 1 February 2003" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 15, "bottom": 30 }, { "ref": "s2", "unit": "m", "bottom": 28 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "vis": { "low": 5, "high": 15, "unit": "m", "refs": ["s1"] },
+  "mooring": { "value": "Two buoys mark the site, one at each end", "refs": ["s1"] },
+  "highlights": [ { "text": "Swim-throughs including a bow passage", "refs": ["s2"] } ],
+  "hazards": [ { "text": "Watertight ammo-room doors can trap a diver", "refs": ["s1"] } ],
+  "depthNote": "Deck top about 15 m, seabed 28-30 m",
+  "summary": { "text": "Former US landing ship sunk as an artificial reef off Pattaya in 2003, lying about 300 m from Ko Phai. The deck sits near 15 m and the seabed near 28-30 m, with swim-throughs but variable visibility.", "refs": ["s1", "s2", "s3"] }
+},
+{ "id": "x-notable-1260", "name": "USS LSM-333",
+  "sources": {
+    "s1": { "url": "https://thaiwreckdiver.com/kut/", "publisher": "Thai Wreck Diver", "kind": "press",
+      "quote": "Depth to the top of the wreck 10m … depth to the sea bed=30m … visibility 5-15m … suitable for air, nitrox, technical Wreck Penetration Diving" },
+    "s2": { "url": "https://divepattaya.com/htms-kut-wreck-dive-site/", "publisher": "DivePattaya (Dive Right Scuba Technician)", "kind": "operator",
+      "quote": "Max Depth – 30m – 31m … you need to be Advanced scuba diver level upwards … Next to Koh Sak in The Pattaya Near Island chain" },
+    "s3": { "url": "https://en.wikipedia.org/wiki/USS_LSM-333", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "It sits 30 metres (33 yd) under water." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 10, "bottom": 30 }, { "ref": "s2", "unit": "m", "bottom": 31 }, { "ref": "s3", "unit": "m", "bottom": 30 } ],
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s2"] },
+  "vis": { "low": 5, "high": 15, "unit": "m", "refs": ["s1"] },
+  "penetration": { "value": "Swim-throughs of the upper deck down into the engine room", "refs": ["s2"] },
+  "depthNote": "Top of wreck about 10 m, seabed 30 m",
+  "summary": { "text": "Ex-US landing ship (HTMS Kut) sunk as an artificial reef near Ko Sak in Pattaya Bay, upright in about 30 m with the top near 10 m. Advanced-level dive with deck swim-throughs into the engine room.", "refs": ["s1", "s2", "s3"] }
+}
+]}

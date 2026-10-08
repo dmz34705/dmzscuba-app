@@ -1,0 +1,683 @@
+{
+ "batch": "notable-united-states-9",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-118",
+   "name": "Amboy (schooner-barge)",
+   "sources": {
+    "s1": {
+     "url": "https://www.mnhs.org/splitrock/learn/shipwrecks",
+     "publisher": "Minnesota Historical Society (Split Rock)",
+     "kind": "agency",
+     "quote": "The remains of the Amboy are on the shore of Lake Superior."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Wreck remains lie on the Lake Superior shore (beach), not a dive",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-533",
+   "name": "SS S. R. Kirby",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_S._R._Kirby",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "her wreck was discovered by the Great Lakes Shipwreck Historical Society (GLSHS) in 825 feet (251 m) of water, completely broken up"
+    },
+    "s2": {
+     "url": "https://www.miningjournal.net/news/local/2019/07/shipwreck-society-discovers-103-year-old-steamer-wreckage-off-keweenaw-peninsula/",
+     "publisher": "The Mining Journal",
+     "kind": "press",
+     "quote": "rests in over 800 feet of water"
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Broken-up wreck lies at about 825 ft (251 m), found by sonar/ROV",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-526",
+   "name": "SS Henry Steinbrenner",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Henry_Steinbrenner",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her wreck was located in 2023, in 750 feet (230 m) of water."
+    },
+    "s2": {
+     "url": "https://www.northernnewsnow.com/2023/10/10/holding-history-underwater-exploration-teams-race-find-long-lost-sunken-ore-boat/",
+     "publisher": "Northern News Now",
+     "kind": "press",
+     "quote": "a sunken ore boat 750 feet down"
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Wreck found by sonar/ROV about 750 ft (230 m) down",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-77",
+   "name": "USS Puritan (ID-2222)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Puritan_(ID-2222)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck sits in 10–100 feet"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "agency",
+     "quote": "Today she rests in water 40 to 100 feet deep with her wreckage scattered. Her machinery, equipment, propeller, and steel plates are visible on the bottom."
+    },
+    "s3": {
+     "url": "https://home.nps.gov/isro/planyourvisit/scuba-diving.htm",
+     "publisher": "National Park Service, Isle Royale National Park",
+     "kind": "park",
+     "quote": "SS George M. Cox Passenger Steamer (1901-1933) Site features scattered wreckage, twisted steel plating, and exposed machinery and prop. … Each diver must register at the Rock Harbor, Windigo, or Houghton Visitor Center before diving"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Machinery, propeller and steel plating on the bottom",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The passenger steamer George M. Cox (later USS Puritan) ran onto the reef at Rock of Ages in 1933 and lies broken up in Isle Royale National Park. Wreckage, engine gear and propeller sit in roughly 40 to 100 ft of cold Lake Superior water.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Isle Royale National Park dive registration required; boat access",
+    "refs": [
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-510",
+   "name": "SS America (1898)",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "agency",
+     "quote": "America (1928) 2′ to 80′ … The engine room is remarkably intact with its piping, engine and other equipment. The boilers did not explode in the sinking and are intact."
+    },
+    "s2": {
+     "url": "https://home.nps.gov/isro/planyourvisit/scuba-diving.htm",
+     "publisher": "National Park Service, Isle Royale National Park",
+     "kind": "park",
+     "quote": "America has a single-point mooring with a buoy on a sinker in 25' feet of water … America is closed to diving between 10:00 a.m. and 12:00 p.m. eastern time … Each diver must register at the Rock Harbor, Windigo, or Houghton Visitor Center before diving"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/SS_America_(1898)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "wreckage sitting as deep as 85 feet to as shallow as only two feet to the surface"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 2,
+     "bottom": 80
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 2,
+     "bottom": 85
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "mooring": {
+    "value": "Single-point mooring buoy on a sinker in 25 ft; bow marker buoy at 9 ft",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Park dive permit required; closed to diving 10:00-12:00 ET so ferry passengers can view it",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact engine room, boilers, galley and cabins",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Ice damage to the wreck down to about 30 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel passenger-freight steamer sunk in 1928 beside Isle Royale's Washington Harbor, lying on a steep slope from just under the surface to about 80 ft. Its engine room, boilers and cabins are still reachable, making it one of the park's most visited wreck dives.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "depthNote": "Bow near surface, stern about 80-85 ft"
+  },
+  {
+   "id": "x-wikipedia-61",
+   "name": "SS Glenlyon",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "agency",
+     "quote": "Glenlyon (1924) 15′ to 60′ … Some larger pieces including the propeller, engine and boilers are open for inspection."
+    },
+    "s2": {
+     "url": "https://home.nps.gov/isro/planyourvisit/scuba-diving.htm",
+     "publisher": "National Park Service, Isle Royale National Park",
+     "kind": "park",
+     "quote": "SS Glenlyon Bulk Freighter (1893-1924) The wreck is scattered over the reef with a few large sections still intact. … Each diver must register at the Rock Harbor, Windigo, or Houghton Visitor Center before diving"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/SS_Glenlyon",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in 15 to 60 feet (4.6 to 18.3 m) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 60
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Park dive registration required",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Propeller, engine and boilers amid scattered wreckage",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 1924 bulk freighter that grounded on an Isle Royale reef and broke up in shallow water. Debris is spread across the shoal in about 15 to 60 ft, with the propeller, engine and boilers the main features to inspect.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-62",
+   "name": "SS Algoma",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "agency",
+     "quote": "Algoma (1885) 10′ to 80′?"
+    },
+    "s2": {
+     "url": "https://home.nps.gov/isro/planyourvisit/scuba-diving.htm",
+     "publisher": "National Park Service, Isle Royale National Park",
+     "kind": "park",
+     "quote": "SS Algoma Passenger Steamer (1883-1885) Ship broke in half, and parts of the stern are all that remain. … Each diver must register at the Rock Harbor, Windigo, or Houghton Visitor Center before diving"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/SS_Algoma",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The remaining wreckage is widely scattered in 15 to 100 feet (5 to 30 m) of water, and some portions of the stern are all that remain on the site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 80
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Park dive registration required",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "The 1885 passenger steamer Algoma broke in two on the rocks off Mott Island at Isle Royale; only scattered stern wreckage remains, spread over roughly 15 to 100 ft. It is the least visited of the park's wrecks.",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-85",
+   "name": "SS Monarch",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "agency",
+     "quote": "Monarch (1906) 10′ to 80′"
+    },
+    "s2": {
+     "url": "https://home.nps.gov/isro/planyourvisit/scuba-diving.htm",
+     "publisher": "National Park Service, Isle Royale National Park",
+     "kind": "park",
+     "quote": "SS Monarch Package Freighter (1890-1906) Large sections of wooden wreckage scattered on the bottom, the wreck is known for heavy construction. … Each diver must register at the Rock Harbor, Windigo, or Houghton Visitor Center before diving"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/SS_Monarch",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "at depths of 10 to 80 feet (3.0 to 24.4 meters)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 80
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Park dive registration required",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large wooden wreckage and cargo scattered on the bottom",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A heavily built package freighter lost off Isle Royale in 1906. Big sections of wooden wreckage and spilled cargo lie scattered on the bottom between about 10 and 80 ft, a fairly popular park wreck dive.",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-127",
+   "name": "SS Chester A. Congdon",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "agency",
+     "quote": "Chester A. Congdon – bow (1918) 70′ to 110′ … Chester A. Congdon – stern (1918) 20′ to 220′ … This is an excellent dive for intermediate divers who can explore the decks, open pilothouse and mast."
+    },
+    "s2": {
+     "url": "https://home.nps.gov/isro/planyourvisit/scuba-diving.htm",
+     "publisher": "National Park Service, Isle Royale National Park",
+     "kind": "park",
+     "quote": "SS Chester A. Congdon Bulk Freighter (1907-1918) Wreckage consists of intact pilot house and bow section on south side of reef and an intact stern on north side. … Each diver must register at the Rock Harbor, Windigo, or Houghton Visitor Center before diving"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/SS_Chester_A._Congdon",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "bow on the south side of the reef now known as Congdon Shoal in 60–120 feet (18.3–36.6 m) of water, and the stern on the north side in 20–210 feet (6.1–64.0 m) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 220
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 210
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Park dive registration required",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright bow with open pilothouse and mast",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Intact stern across the reef",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 532-ft steel freighter that hit Canoe Rocks in 1918 and split in two. The bow with its pilothouse sits upright at 70 to 110 ft, a good intermediate dive, while the intact stern lies far deeper on the other side of the reef.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Bow 70-110 ft; stern 20-220 ft on far side of reef"
+  },
+  {
+   "id": "x-wikipedia-126",
+   "name": "SS Emperor",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/isle-royale-national-park/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "agency",
+     "quote": "Emperor – stern (1947) 100′ to 170′ … Emperor – bow (1947) 25′ to 60′ … Most divers approach her as two dives with less experienced divers focusing on the shallower bow area."
+    },
+    "s2": {
+     "url": "https://home.nps.gov/isro/planyourvisit/scuba-diving.htm",
+     "publisher": "National Park Service, Isle Royale National Park",
+     "kind": "park",
+     "quote": "SS Emperor Bulk Freigher (1910-1947) The wreck is basically intact, with the bow area showing most damage. … Each diver must register at the Rock Harbor, Windigo, or Houghton Visitor Center before diving"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/SS_Emperor",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck rests in 25 to 175 feet (7.6 to 53.3 m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 170
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 175
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Park dive registration required",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Anchors and deck gear in the shallow bow section",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Stern with rudder, propeller, engine room and cabins",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 525-ft Canadian freighter that ran onto Canoe Rocks in 1947. Usually done as two dives: the ice-damaged bow in 25 to 60 ft suits less experienced divers, while the largely intact stern at 100 to 170 ft is for the experienced.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Bow 25-60 ft, stern 100-170 ft"
+  },
+  {
+   "id": "x-notable-825",
+   "name": "SS Aleutian",
+   "sources": {
+    "s1": {
+     "url": "https://www.kodiakdailymirror.com/community/article_1d0f542c-1558-11ee-b166-0396456dfb73.html",
+     "publisher": "Kodiak Daily Mirror",
+     "kind": "press",
+     "quote": "dove into 220 feet of water in Uyak Bay, on the west side of Kodiak Island, and found the wreck of the SS Aleutian"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Aleutian",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The depth, current, and low visibility of her resting place makes her accessible only to experienced deep-wreck divers with advanced training and certification."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 220
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Depth, current and low visibility",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 360-ft Alaska Steamship liner that struck a pinnacle in Uyak Bay, Kodiak Island, in 1929 and now sits upright and remarkably intact on the seabed at about 220 ft. Only experienced deep-wreck divers can reach it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

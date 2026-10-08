@@ -6,7 +6,8 @@ const LEVELS = ['beginner', 'intermediate', 'advanced', 'technical'];
 const ENTRIES = ['boat', 'shore', 'boat-shore'];
 const CURRENTS = ['none', 'light', 'moderate', 'strong', 'variable'];
 // Pins whose site is gone (raised, on display ashore) or was never found: not shown as dives.
-export const HIDDEN_STATUSES = ['ashore', 'unlocated'];
+// Also: closed or restricted zones, whole lakes/parks/towns pinned as one site, and wrecks only reachable by ROV.
+export const HIDDEN_STATUSES = ['ashore', 'unlocated', 'restricted', 'area', 'too-deep'];
 
 const num = v => (Number.isFinite(v) ? v : null);
 const range = v => (Array.isArray(v) && v.length === 2 && v.some(Number.isFinite) ? [num(v[0]), num(v[1])] : null);
@@ -48,6 +49,12 @@ export function siteProfile(data, id, latitude, longitude) {
     level: pick(row.level, LEVELS),
     current: pick(row.current, CURRENTS),
     vis: range(row.vis),
+    // Site-specific water temperature reported by a source (springs, quarries, a named reef's season), °C.
+    waterTempC: range(row.waterTempC),
+    tempNote: text(row.tempNote, 120),
+    // The site's own best season (months 0–11), when a source states one; otherwise the region's.
+    season: range(row.season),
+    types: Array.isArray(row.types) ? row.types.filter(t => typeof t === 'string').slice(0, 4) : [],
     mooring: text(row.mooring, 120),
     penetration: text(row.penetration, 120),
     access: text(row.access, 200),

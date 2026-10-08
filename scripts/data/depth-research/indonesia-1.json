@@ -1,0 +1,226 @@
+{
+ "region": "indonesia-komodo-1",
+ "researchedAt": "2026-10-06",
+ "sites": [
+  {
+   "id": "osm-n3948869068",
+   "name": "Manta Point dive site",
+   "claims": [
+    {
+     "url": "https://www.komododivecenter.com/diving/dive-sites/",
+     "publisher": "Komodo Dive Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": 12,
+     "bottom": 15,
+     "quote": "Manta Point: Max.depth 15m; guides typically take divers to 12 to 14 meters"
+    },
+    {
+     "url": "https://bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive Komodo",
+     "kind": "operator",
+     "unit": "m",
+     "top": 12,
+     "bottom": 18,
+     "quote": "Karang Makassar/Manta Point: Avg. Depth 12m; Max Depth 18m"
+    }
+   ]
+  },
+  {
+   "id": "osm-n5767096953",
+   "name": "Cystal Rock Dive Site",
+   "claims": [
+    {
+     "url": "https://www.komododivecenter.com/diving/dive-sites/",
+     "publisher": "Komodo Dive Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 35,
+     "quote": "Crystal Rock: Max.depth 35m"
+    },
+    {
+     "url": "https://bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive Komodo",
+     "kind": "operator",
+     "unit": "m",
+     "top": 15,
+     "bottom": 35,
+     "quote": "Crystal Rock: Avg. Depth 15m; Max Depth 35m"
+    }
+   ],
+   "note": "Catalog spelling is Cystal Rock; sources call the site Crystal Rock."
+  },
+  {
+   "id": "osm-n5760423321",
+   "name": "Sebayor Kecil Dive Site",
+   "claims": [
+    {
+     "url": "https://www.komododivecenter.com/diving/dive-sites/",
+     "publisher": "Komodo Dive Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 20,
+     "quote": "Sebayur Kecil: Max.depth 20"
+    },
+    {
+     "url": "https://bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive Komodo",
+     "kind": "operator",
+     "unit": "m",
+     "top": 12,
+     "bottom": 18,
+     "quote": "Sebayur Kecil: Avg. Depth 12m; Max Depth 18m"
+    }
+   ],
+   "note": "Catalog spelling is Sebayor; sources call the island and site Sebayur Kecil."
+  },
+  {
+   "id": "osm-n1485422409",
+   "name": "Pantai Merah",
+   "claims": [
+    {
+     "url": "https://divetribekomodo.com/faq/about-komodo-dive-sites/pink-beach-komodo-is-it-a-good-dive-site",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "unit": "m",
+     "top": 3,
+     "bottom": 18,
+     "quote": "Depth range 3-12m, with some deeper drops to 18m"
+    },
+    {
+     "url": "https://labuanbajodiving.com/pink-beach-padar-diving/",
+     "publisher": "Labuan Bajo Diving",
+     "kind": "operator",
+     "unit": "m",
+     "top": 2,
+     "bottom": 20,
+     "quote": "The fringing reef slopes from 2-5 metres down to about 15-20 metres"
+    }
+   ],
+   "note": "Sources also call Pantai Merah Pink Beach."
+  },
+  {
+   "id": "osm-n7182771889",
+   "name": "Wainilu",
+   "claims": [
+    {
+     "url": "https://komodoislandliveaboard.com/wainilu-dive/",
+     "publisher": "Komodo Island Liveaboard",
+     "kind": "operator",
+     "unit": "m",
+     "top": 5,
+     "bottom": 20,
+     "quote": "Depth range 5-18 m; max 20 m"
+    },
+    {
+     "url": "https://bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive Komodo",
+     "kind": "operator",
+     "unit": "m",
+     "top": 15,
+     "bottom": 25,
+     "quote": "Wainilu: Avg. Depth 15m; Max Depth 25m"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7293799532",
+   "name": "Likuan 1",
+   "claims": [
+    {
+     "url": "https://rajalaut-bunaken.com/diving-bunaken/",
+     "publisher": "Raja Laut Dive Resort",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 40,
+     "quote": "Lekuan 1 has a dramatic drop off of 40-50m followed by a step"
+    },
+    {
+     "url": "https://www.scubatravel.com/holidays/resorts/indonesia/murex/murexresort.html",
+     "publisher": "Scuba Travel",
+     "kind": "operator",
+     "unit": "m",
+     "top": 20,
+     "bottom": 40,
+     "quote": "Lekuan 1, 2 and 3: Ave Depth 20; Max Depth 40+"
+    }
+   ],
+   "note": "Catalog spelling is Likuan 1; sources call the site Lekuan 1 or Turtle City."
+  },
+  {
+   "id": "osm-n7293835957",
+   "name": "Mandolin",
+   "claims": [
+    {
+     "url": "https://sulawesi.travel/en/destinations/bunaken",
+     "publisher": "Sulawesi Travel",
+     "kind": "operator",
+     "unit": "m",
+     "top": 8,
+     "bottom": 35,
+     "quote": "Mandolin: Depth 8-35 m"
+    },
+    {
+     "url": "https://www.scubatravel.com/holidays/resorts/indonesia/murex/murexresort.html",
+     "publisher": "Scuba Travel",
+     "kind": "operator",
+     "unit": "m",
+     "top": 15,
+     "bottom": 30,
+     "quote": "Mandolin: Ave Depth 15; Max Depth 30+"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7182733952",
+   "name": "Bonsai dive site",
+   "claims": [
+    {
+     "url": "https://www.komododivecenter.com/diving/dive-sites/",
+     "publisher": "Komodo Dive Center",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 40,
+     "quote": "Bonsai: Max.depth 40m"
+    },
+    {
+     "url": "https://komodoadventuredivetravel.com/colibri-wp/dive-sites-komodo-national-park/central-komodo-national-park/",
+     "publisher": "Komodo Adventure Dive Travel",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 40,
+     "quote": "Bonsai: Max. depth 40m"
+    }
+   ]
+  },
+  {
+   "id": "osm-n7182769497",
+   "name": "Loh Namu",
+   "claims": [
+    {
+     "url": "https://divekomodo.com/dive-sites-komodo/",
+     "publisher": "Dive Komodo",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 28,
+     "quote": "Loh Namu: 28m Depth"
+    },
+    {
+     "url": "https://www.bottles-up-diving.com/EN-pages/BU_divingother_komodo_EN.html",
+     "publisher": "Bottles-Up Diving",
+     "kind": "operator",
+     "unit": "m",
+     "top": null,
+     "bottom": 28,
+     "quote": "Dive around Loh Namu peninsula at a depth of about 28m"
+    }
+   ]
+  }
+ ]
+}

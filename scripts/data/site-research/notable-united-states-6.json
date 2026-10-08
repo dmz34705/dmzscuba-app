@@ -1,0 +1,1409 @@
+{
+ "batch": "notable-united-states-6",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-569",
+   "name": "SS Nisbet Grammer",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Nisbet_Grammer",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She sank in fifteen minutes, in 500 feet (150 m) of water."
+    },
+    "s2": {
+     "url": "https://vos.noaa.gov:443/MWL/201504/shipwreck.shtml",
+     "publisher": "NOAA Voluntary Observing Ships",
+     "kind": "agency",
+     "quote": "It rests on the bottom in about 500 ft of water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 500
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 500
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Largest steel-hulled wreck in Lake Ontario",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Rests in about 500 ft of water, far beyond sport limits",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 1926 steel freighter lost after a collision and found decades later off Somerset, NY, west of Rochester. It lies about 500 ft down, so it is out of reach of recreational and most technical divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-543",
+   "name": "SS James Carruthers",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_James_Carruthers",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck of James Carruthers was located upside down on 26 May 2025, in 190 feet (57.9 m) of water, on the American side of Lake Huron, 20 miles east of Harbor Beach."
+    },
+    "s2": {
+     "url": "https://xray-mag.com/content/lake-huron-wreck-ss-james-carruthers",
+     "publisher": "X-Ray Magazine",
+     "kind": "press",
+     "quote": "57.9 m (190 feet) of water, on the American side of Lake Huron, 20 miles east of Harbor Beach"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 190
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 190
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Huge 550 ft freighter lying inverted",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "190 ft depth, technical diving only",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 550-ft steel freighter lost in the 1913 Great Lakes storm and found in 2025 lying upside down roughly 20 miles off Harbor Beach, Michigan, in about 190 ft. A deep technical-diver wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-507",
+   "name": "Cadet",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Cadet_(shipwreck)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "found submerged in approximately 50 feet of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-532",
+   "name": "SS Pere Marquette 18",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Pere_Marquette_18",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck of Pere Marquette 18 rests in about 500 feet (150 m) of water about 25 miles (40 km) off Sheboygan, Wisconsin."
+    },
+    "s2": {
+     "url": "https://www.brainerddispatch.com/news/minnesota-shipwreck-hunters-locate-long-sought-lake-michigan-wreck",
+     "publisher": "Brainerd Dispatch",
+     "kind": "press",
+     "quote": "It sits in nearly 500 feet of water far offshore from Sheboygan, Wis., and Port Washington, Wis."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 500
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 500
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "About 500 ft deep, beyond diver range",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Bow rises 70-100 ft off the lake bottom",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel railcar ferry that foundered in 1910 and was found in 2020 far off Sheboygan. It sits stern-down in the mud at about 500 ft, so it has been seen only by sonar and camera, not divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-552",
+   "name": "SS John A. McGean",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_John_A._McGean",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The ship is resting upside-down at a depth of 195 ft (59 m), a depth only accessible by technical divers."
+    },
+    "s2": {
+     "url": "https://us-data.org/mi/glm/shipwrecks/mcgean-john-1913.txt",
+     "publisher": "Great Lakes shipwreck database (us-data.org)",
+     "kind": "press",
+     "quote": "lying upside down under 175 feet of Lake Huron off Port Hope"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 195
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 175
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Technical-diver depth, wreck lies inverted",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Upside-down 1913 storm victim",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 432-ft ore carrier lost with all hands in the 1913 Lake Huron storm, now upside down off Harbor Beach, Michigan. At 175-195 ft it is for experienced technical divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869520",
+   "name": "Champlain II",
+   "sources": {
+    "s1": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/steamboat-champlain-ii/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "Depth of water: 15\u2032 \u2013 35\u2032 \u2026 Beginner"
+    },
+    "s3": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "The Lake Champlain Underwater Historic Preserve provides public access for divers to some of the lake's historic shipwrecks from May to October each year. \u2026 Access to the sites in the Lake Champlain Underwater Historic Preserve is free of charge, but divers must register annually prior to using the Preserve System."
+    },
+    "s2": {
+     "url": "https://historicsites.vermont.gov/node/132",
+     "publisher": "Vermont Division for Historic Preservation",
+     "kind": "agency",
+     "quote": "Depth of water: 15' - 35' \u2026 Experience level: Beginner. \u2026 163' of the original 244' long hull remains, 34' wide."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 35
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Free, but divers must register annually; shoreline is private",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "163 ft of the 244 ft steamboat hull remains",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Massive engine mounts on either side",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Silty bottom, limited visibility",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Zebra mussels cut hands; wear gloves",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Unstable sternpost, overhanging sections",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "season": {
+    "from": 5,
+    "to": 10,
+    "refs": [
+     "s3"
+    ]
+   },
+   "summary": {
+    "text": "A shallow Lake Champlain preserve wreck: the remaining 163 ft of an 1868 steamboat hull lies in 15-35 ft near the New York shore north of Westport. Easy beginner dive; keep off the silty bottom.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869522",
+   "name": "General Butler",
+   "sources": {
+    "s1": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/sailing-canal-boat-general-butler/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "Depth of water: 40\u2032 \u2026 rests on her keel, bow towards the breakwater \u2026 Experience level: Beginner"
+    },
+    "s2": {
+     "url": "https://historicsites.vermont.gov/node/134",
+     "publisher": "Vermont Division for Historic Preservation",
+     "kind": "agency",
+     "quote": "Depth of water: 40' \u2026 Experience level: Beginner \u2026 rests on her keel, bow towards the breakwater. There are five hatches in the deck."
+    },
+    "s3": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "The Lake Champlain Underwater Historic Preserve provides public access for divers to some of the lake's historic shipwrecks from May to October each year. \u2026 Access to the sites in the Lake Champlain Underwater Historic Preserve is free of charge, but divers must register annually prior to using the Preserve System."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "season": {
+    "from": 5,
+    "to": 10,
+    "refs": [
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Free, but divers must register annually",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Remarkably intact 1862 canal schooner, upright",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Windlass, cleats and dead-eyes in place",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Extremely fragile rudder at the stern",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Poor buoyancy control damages the wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An upright 88-ft sailing canal boat from 1862 that struck the Burlington breakwater in a gale. At about 40 ft it is a beginner dive in a state preserve, with deck hatches and sailing hardware still in place.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869521",
+   "name": "O.J. Walker",
+   "sources": {
+    "s1": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/sailing-canal-boat-o-j-walker/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "Depth of water: 65\u2032 \u2026 Experience Level: Intermediate-Experienced. \u2026 DO NOT PENETRATE THE WRECK!"
+    },
+    "s2": {
+     "url": "https://historicsites.vermont.gov/node/136",
+     "publisher": "Vermont Division for Historic Preservation",
+     "kind": "agency",
+     "quote": "Depth of water: 65' \u2026 Experience Level: Intermediate-Experienced. \u2026 The ship's wheel and aft cabin hatch cover \u2026 The masts, boom, anchors, and most rigging parts"
+    },
+    "s3": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "The Lake Champlain Underwater Historic Preserve provides public access for divers to some of the lake's historic shipwrecks from May to October each year. \u2026 Access to the sites in the Lake Champlain Underwater Historic Preserve is free of charge, but divers must register annually prior to using the Preserve System."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 65
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 65
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "season": {
+    "from": 5,
+    "to": 10,
+    "refs": [
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Free, but divers must register annually",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ship's wheel and aft cabin hatch cover",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Masts, boom, anchors and rigging on site",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Do not penetrate the wreck",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Low visibility if bottom is stirred",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An 86-ft schooner-rigged canal boat lost in a storm in 1895, lying at about 65 ft off the Burlington breakwater. A state preserve dive for intermediate or experienced divers, with the wheel and rigging still on the wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869519",
+   "name": "Burlington Bay Horse Ferry",
+   "sources": {
+    "s1": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/horse-ferry/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "Experience Level: Intermediate \u2026 63\u2032 long, 23\u2032 wide \u2026 Do not use any part of the vessel to support your weight."
+    },
+    "s2": {
+     "url": "https://historicsites.vermont.gov/node/135",
+     "publisher": "Vermont Division for Historic Preservation",
+     "kind": "agency",
+     "quote": "Depth of water: 50' \u2026 Experience level: Intermediate \u2026 the only known surviving example of a turntable 'team-boat', a once common North American vessel type."
+    },
+    "s3": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "The Lake Champlain Underwater Historic Preserve provides public access for divers to some of the lake's historic shipwrecks from May to October each year. \u2026 Access to the sites in the Lake Champlain Underwater Historic Preserve is free of charge, but divers must register annually prior to using the Preserve System."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "season": {
+    "from": 5,
+    "to": 10,
+    "refs": [
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Free, but divers must register annually",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Only known surviving turntable horse ferry",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Paddle wheels with iron hubs and oak spokes",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Fragile paddle wheels; do not touch",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Low visibility if bottom is stirred",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 63-ft horse-powered ferry, the only known surviving turntable team-boat, lying at about 50 ft in Burlington Bay. A fragile intermediate-level preserve dive; hover and avoid touching the paddle wheels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-curated-590",
+   "name": "Lake Wazee",
+   "sources": {
+    "s1": {
+     "url": "https://diveaai.com/wazee-lake",
+     "publisher": "Dive AAI",
+     "kind": "operator",
+     "quote": "Maximum depth: 350 feet \u2026 Caribbean-like visibility \u2026 Dive fees and parking fees are required for all divers at the park. \u2026 challenging dives for advanced divers as well as simpler dives for beginners"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Wazee_Lake",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "with a maximum depth of approximately 355 feet (108 m). \u2026 Visibility averages between 30 and 40 feet (9.1 and 12.2 m) during the summer months. \u2026 visible remains of mining operations underwater"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 350
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 355
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "quarry",
+     "mine"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 30,
+    "high": 40,
+    "unit": "ft",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Dive and parking fees payable before entering the lake",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Remains of mining roadways visible underwater",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Underwater training platforms and fish cribs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Depth to about 355 ft",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A flooded taconite pit near Black River Falls, Wisconsin, with clear water and a maximum depth around 350 ft. A county park offers beach entry, training platforms and old mining remnants, with dives for beginners to advanced.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-550",
+   "name": "SS Clifton",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Clifton",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The first 40 feet of the bow section is completely destroyed, likely caused by the impact with the lake's bottom when she sank."
+    },
+    "s2": {
+     "url": "https://www.mentalfloss.com/science/archaeology/divers-michigan-discover-93-year-old-shipwreck-bottom-lake-huron",
+     "publisher": "Mental Floss",
+     "kind": "press",
+     "quote": "Its bow is shattered, likely from the collision with the lake's bottom, while the stern, inside paneling, and architecture remain well-preserved"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Well-preserved stern and interior paneling",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 1892 whaleback freighter lost in 1924 and found by technical divers in 2016 in Lake Huron. The bow is shattered, but the stern and interior remain well preserved.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-564",
+   "name": "SS W. C. Franz",
+   "sources": {
+    "s1": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/franz.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "Depth: 230 feet \u2026 The wreck is largely intact except for the collision damage."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 230
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Largely intact apart from collision damage",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "230 ft depth, technical diving only",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-121",
+   "name": "Bullhead Point Historical and Archeological District",
+   "sources": {
+    "s1": {
+     "url": "https://www.wisconsinshipwrecks.org/Attraction/Details/15",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "quote": "Located in Bullhead Point City Park in Sturgeon Bay, the shipwrecks are very close to shore, in 0-10 feet of water. \u2026 easily accessible to divers, snorkelers or kayakers. \u2026 The hulls of the vessels Ida Corning, Oak Leaf, and Empire State lie just offshore from the point and remain visible at low water."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Bullhead_Point_Historical_and_Archeological_District",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The district includes the remains of three ships in shallow water. They are visible from the shore during periods of lower lake levels."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 10
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Bullhead Point City Park, Sturgeon Bay; wrecks are state protected",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Three burned stone-barge hulls: Empire State, Oak Leaf, Ida Corning",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Three burned 19th-century stone-barge hulls lying just off a city park in Sturgeon Bay, Wisconsin, in 0-10 ft of water. Easy for divers, snorkelers and kayakers, and visible from shore at low lake levels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-173",
+   "name": "PS Keystone State",
+   "sources": {
+    "s1": {
+     "url": "https://shotlinediving.com/wreck/keystone-state-1848/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "Approximately 175 ft (53 m) of water \u2026 The paddle wheels, boilers, and engine remain upright, while the hull is largely collapsed."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 175
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright paddle wheels, boilers and engine",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "About 175 ft deep, technical diving only",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-563",
+   "name": "Corsican (schooner)",
+   "sources": {
+    "s1": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/corsican.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "Depth: 160 Feet \u2026 The cabin and stern of the wreck have large sections missing and piles of jumbled wreckage cover the collapsed deck."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 160
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Steering wheel wrenched up off the rudder",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "160 ft depth; collapsed deck and wreckage",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-321",
+   "name": "Typo (schooner)",
+   "sources": {
+    "s1": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/typo.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "Depth: 195 feet \u2026 sits upright with the foremast intact to the crosstrees"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 195
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright schooner, foremast intact to crosstrees",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Hull intact except stern collision damage",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "195 ft depth, technical diving only",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-tbnms-14",
+   "name": "James Davidson",
+   "sources": {
+    "s1": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/james_davidson.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "Depth: 35 feet \u2026 today the two largest remaining pieces are the hull and bilge sections"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hull and bilge sections of a 1883 freighter",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-tbnms-22",
+   "name": "Monohansett",
+   "sources": {
+    "s1": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/monohansett.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "Depth: 18 feet \u2026 regularly visited by divers, snorkelers, swimmers, paddlers, and a glass bottom boat \u2026 one of Thunder Bay National Marine Sanctuary's most popular shipwreck sites to visit"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wooden hull, boilers, machinery, intact stern and propeller",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-537",
+   "name": "F. J. King (schooner)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/F._J._King_(schooner)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "137 feet (41.8 m) of water \u2026 F. J. King's hull remains mostly intact."
+    },
+    "s2": {
+     "url": "https://xray-mag.com/content/fj-king-shipwreck-lake-michigan",
+     "publisher": "X-Ray Magazine",
+     "kind": "press",
+     "quote": "at a depth of around 42 metres (137 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 137
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 137
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mostly intact ore-laden schooner hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 144-ft wooden schooner lost in 1886 and found in June 2025 off Baileys Harbor, Door County, in about 137 ft. Its hull is largely intact despite its iron ore cargo; a deep wreck for experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-116",
+   "name": "SS D. R. Hanna",
+   "sources": {
+    "s1": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/hanna.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "Depth: 135 feet \u2026 Hanna rolled over and is now resting upside down on the lake bottom. It is the largest wreck in Thunder Bay National Marine Sanctuary."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 135
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Largest wreck in Thunder Bay sanctuary, upside down",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "135 ft depth, technical diving",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-109",
+   "name": "SS Frank O'Connor",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Frank_O'Connor",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She lies in 50 to 67 feet (15 to 20 m) of water about 2 miles (3 km) off Cana Island. \u2026 most of Frank O'Connor's machinery remained intact and upright"
+    },
+    "s2": {
+     "url": "https://wisconsinshipwrecks.org/Attraction/Details/26",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "quote": "The wreckage of the 300-foot-long vessel sits in 65 feet of water. \u2026 The O'Connor's strong lower hull remains intact"
+    },
+    "s3": {
+     "url": "https://wisconsinhistory.org/Records/NationalRegister/NR2087",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "quote": "Of particular interest to divers today are her innovative triple expansion steam engine, boilers rising over twenty feet from the bottom, propeller and shaft, rudder, anchors and chains, and a steam windlass at her bow. \u2026 Divers may not remove artifacts or structure when visiting this shipwreck site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 65
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 67
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "State and federal protection; do not remove artifacts or structure",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Triple expansion engine and boilers over 20 ft tall",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Propeller, rudder, anchors, steam windlass at bow",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 300-ft steamer that burned and sank off Cana Island, Door County, in 1919. It lies in roughly 65 ft with intact lower hull, engine, boilers and bow gear, making it a popular, protected archaeological dive.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-521",
+   "name": "Wayzata Bay Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Wayzata_Bay_Wreck",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "It lies about 40 feet (12 m) below the surface, encased in silt."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Best-preserved model barge wreck in the US",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

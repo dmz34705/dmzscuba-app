@@ -1,0 +1,775 @@
+{
+ "batch": "notable-united-kingdom-12",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869632",
+   "name": "SMS Kronprinz Wilhelm",
+   "sources": {
+    "s1": {
+     "url": "https://portal.historicenvironment.scot/designation/SM9298",
+     "publisher": "Historic Environment Scotland",
+     "kind": "agency",
+     "quote": "Kronprinz Wilhelm"
+    },
+    "s2": {
+     "url": "https://scapaflowwrecks.com/wrecks/kronprinz/",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "Lying between 12 and 38 metres, this wreck is well within the grasp of competent sport divers"
+    },
+    "s3": {
+     "url": "https://www.scottishshipwrecks.com/sms-kronprinz-wilhelm",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "Lies inverted with list to starboard, bow points northwest"
+    },
+    "s4": {
+     "url": "https://www.northlinkferries.co.uk/?p=15118",
+     "publisher": "NorthLink Ferries",
+     "kind": "operator",
+     "quote": "you need to get a diving permit from the Orkney Islands Council Harbours department"
+    },
+    "s5": {
+     "url": "https://divernet.com/world-dives/scapa-flow-100/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "few sites have any trace of current to interfere with your plan"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 14,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 38
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s5"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Orkney Islands Council Harbours diving permit; scheduled monument, no removing artefacts",
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Half of the 12-inch guns still visible",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Engine and boiler rooms explorable",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Upturned German battleship scuttled in 1919 in Scapa Flow, the shallowest of the big three. Its hull top is near 12-14 m and several main guns can be seen, making it the most approachable battleship dive.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869624",
+   "name": "SMS Markgraf",
+   "sources": {
+    "s1": {
+     "url": "https://portal.historicenvironment.scot/designation/SM9298",
+     "publisher": "Historic Environment Scotland",
+     "kind": "agency",
+     "quote": "Markgraf"
+    },
+    "s2": {
+     "url": "https://scapaflowwrecks.com/wrecks/markgraf/",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "Lying almost completely upturned in 45 metres of water"
+    },
+    "s3": {
+     "url": "https://www.northlinkferries.co.uk/?p=15118",
+     "publisher": "NorthLink Ferries",
+     "kind": "operator",
+     "quote": "you need to get a diving permit from the Orkney Islands Council Harbours department"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 23,
+     "bottom": 46
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 45
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Orkney Islands Council Harbours diving permit; scheduled monument",
+    "refs": [
+     "s3"
+    ]
+   },
+   "summary": {
+    "text": "Deepest of the three scuttled German battleships at Scapa Flow, lying upside down on its port side, with the hull rising to roughly 23 m above a seabed near 45 m. A demanding, deeper dive than its sisters.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869630",
+   "name": "SMS Cöln",
+   "sources": {
+    "s1": {
+     "url": "https://scapaflowwrecks.com/wrecks/coln/",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "Today SMS Cöln lies in 36 metres of water but extends up to 22 metres at the shallowest point"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SMS_C%C3%B6ln_(1916)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her wreck lies at 36 m"
+    },
+    "s3": {
+     "url": "https://www.northlinkferries.co.uk/?p=15118",
+     "publisher": "NorthLink Ferries",
+     "kind": "operator",
+     "quote": "you need to get a diving permit from the Orkney Islands Council Harbours department"
+    },
+    "s4": {
+     "url": "https://scapaflowwrecks.com/wrecks/coln/",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "She now rests on her starboard side"
+    },
+    "s5": {
+     "url": "https://divernet.com/world-dives/scapa-flow-100/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "few sites have any trace of current to interfere with your plan"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 22,
+     "bottom": 36
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 36
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s5"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Orkney Islands Council Harbours diving permit; scheduled monument",
+    "refs": [
+     "s3"
+    ]
+   },
+   "summary": {
+    "text": "German light cruiser scuttled in 1919 and never raised, resting on her starboard side in Scapa Flow. Her top is about 22 m and the seabed 36 m, and she is a straightforward wreck for competent sport divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-977",
+   "name": "SMS Bayern",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/sms-bayern-the-turrets/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "The four turrets sit at 34-38 metres"
+    },
+    "s2": {
+     "url": "https://www.scapaflowwrecks.com/wrecks/blockships/sms-bayern.php",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "The turrets sit on a mud bottom in 38m – 45m of water"
+    },
+    "s3": {
+     "url": "https://divernet.com/world-dives/scapa-flow-100/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "you can now see all four turrets on one dive"
+    },
+    "s4": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Bayern",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "remain on the sea floor between 38 and 45 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 24,
+     "bottom": 38
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 45
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Four upside-down gun turrets on one dive",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Rope links the turret pairs",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Bayern was raised in the 1930s but her four main-gun turrets fell off and still lie upside down on the mud of Scapa Flow. They sit in two pairs and a rope now links them, so all four can be seen in one dive.",
+    "refs": [
+     "s3",
+     "s4"
+    ]
+   },
+   "depthNote": "Turret C tops out near 24 m; others deeper"
+  },
+  {
+   "id": "x-notable-960",
+   "name": "SMS Kaiserin",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Kaiserin",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "was raised on 14 May 1936"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Raised in 1936 and scrapped at Rosyth",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-909",
+   "name": "SMS Grosser Kurfürst",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Grosser_Kurf%C3%BCrst_(1913)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "ultimately raised on 29 April 1938"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Raised in 1938 and scrapped at Rosyth",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-876",
+   "name": "SMS Friedrich der Grosse",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Friedrich_der_Grosse_(1911)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "They raised the wreck on 29 April 1937"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Raised in 1937 and scrapped at Rosyth",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-970",
+   "name": "SMS Emden",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Emden_(1916)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "broken up for scrap in Caen in 1926"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Beached, never sank; broken up in France in 1926",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-875",
+   "name": "SMS Bremse",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Bremse",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Ship-breaking lasted until May 1931"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Raised in 1929 and scrapped by 1931",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1103",
+   "name": "HMS Hampshire",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Hampshire_(1903)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "designated as a controlled site under the Protection of Military Remains Act 1986"
+    },
+    "s2": {
+     "url": "https://scubaverse.com/divers-complete-photographic-3d-photogrammetry-survey-hms-hampshire/",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "quote": "HMS Hampshire is a controlled wreck under the Protection of Military Remains Act 1986 and no diving is permitted"
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Controlled site under the Protection of Military Remains Act 1986; no diving without MoD licence",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-343",
+   "name": "Barrel of Butter",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Barrel_of_Butter",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a skerry in Scapa Flow"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A surface skerry; the wrecks nearby are separate sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-322",
+   "name": "Scapa Flow",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "one of the great natural harbours and anchorages of the world"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole anchorage containing many separate wreck sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-287",
+   "name": "Fair Isle",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Fair_Isle",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is the southernmost of the Shetland Islands"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-291",
+   "name": "Foula",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Foula",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "one of the United Kingdom's most remote permanently inhabited islands"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole inhabited island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-294",
+   "name": "Isle of Noss",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Isle_of_Noss",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a small, previously inhabited island in Shetland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-330",
+   "name": "Vaila",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Vaila",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is an island in Shetland, Scotland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-293",
+   "name": "Papa Stour",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Papa_Stour",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is one of the Shetland Islands in Scotland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-307",
+   "name": "Green Holm",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Green_Holm",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a small uninhabited island 500 metres north of Burra Ness"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A small island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-342",
+   "name": "Ve Skerries",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Ve_Skerries",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "are a group of low skerries"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A group of skerries with several separate wrecks",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1012",
+   "name": "RMS Oceanic",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/oceanic",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "in depths up to 20 metres but mostly in shallow water"
+    },
+    "s2": {
+     "url": "https://www.scottishshipwrecks.com/oceanic",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "Any dive on the wreck must be carried out at slack water and in calm seas"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/RMS_Oceanic",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "scattered as she fell apart under the pressure of the seas on the Shaalds"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Dive only at slack water in calm seas",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Swells and currents sweep the reef",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Wartime liner broken up on the Shaalds reef east of Foula, now scattered wreckage across a wide area, mostly shallow with some parts to about 20 m. Exposed site that can only be dived around slack water in calm seas.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-179",
+   "name": "MV Braer",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/braer/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "smashed flat in less than 10 metres of water"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/MV_Braer",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "less than 10 metres"
+    },
+    "s3": {
+     "url": "https://www.scottishshipwrecks.com/braer/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "very exposed to prevailing winds"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 10
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 10
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Very exposed to prevailing winds",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Remains of the 1993 tanker Braer off Garths Ness, smashed flat in shallow water under 10 m. Little is recognisable and the site is very exposed to the wind.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-186",
+   "name": "El Gran Grifón",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/El_Gran_Grif%C3%B3n",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lies on the rocks of Stroms Hellier"
+    },
+    "s2": {
+     "url": "https://www.expeditions.com/expedition-stories/daily-expedition-reports/from-the-endeavour-in-england-2001-06-03",
+     "publisher": "Expeditions",
+     "kind": "press",
+     "quote": "there right before us was the great anchor of the Gran Grifon"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Great anchor lying among boulders",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Remains of a 1588 Spanish Armada supply ship scattered in rocky gullies at Stroms Hellier on Fair Isle. Divers have found the large anchor among boulders; little hull structure survives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

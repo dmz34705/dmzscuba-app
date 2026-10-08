@@ -1,0 +1,1265 @@
+{
+ "batch": "notable-united-kingdom-2",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-345",
+   "name": "Hand Deeps",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Hand_Deeps",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "rise from the surrounding sea bed depth of 55 metres to depth between 7 and 19 metres from the surface"
+    },
+    "s2": {
+     "url": "https://www.plymouthdivers.org.uk/divesites/179-2",
+     "publisher": "Plymouth Divers",
+     "kind": "operator",
+     "quote": "The drop off goes down to 45m plus but the best parts are around 35m. … fantastic rock formations covered in jewel anemones … sea fans, wrasse, congers etc. … slack water is advised during springs"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 55
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 45
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock formations covered in jewel anemones",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Sea fans, wrasse and congers on boulder plains",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Tidal flow; slack water advised during springs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Offshore cluster of rock pinnacles south-west of Rame Head that climb from deep seabed to within about 7 m of the surface. Anemone-covered walls and boulder slopes make it popular; neaps or slack water suit it best.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-865",
+   "name": "Moor Sand site",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Moor_Sand_site",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "designated under the Protection of Wrecks Act on 14 February 1978 … a Protected Wreck managed by Historic England"
+    },
+    "s2": {
+     "url": "https://www.gov.uk/protected-wrecks-licence-england",
+     "publisher": "UK Government",
+     "kind": "agency",
+     "quote": "If you want to dive on or near a wreck that’s legally protected, you must get a licence"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; a licence is required to dive on or near it",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Bronze Age weapons site off Gammon Head in South Devon, found by trainee divers in 1977 and possibly a prehistoric boat's cargo. It is a protected wreck, so diving needs a licence rather than a casual visit.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-198",
+   "name": "SS Maine",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Maine",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "sits on shingle 36 metres (118 ft) deep … Now a recreational dive site"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-1-the-maine/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "in 30-35m of water, with its bows towards the shore across a strong current. … With the bows in just 18m … Strong tides. … covered in plumose anemones."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 36
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Plumose anemones on current-exposed parts",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Shallower bows with nudibranchs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong tides",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Steamer torpedoed in 1917 that now rests upright off Bolt Head in Devon. The deck is around 30 m and the bows are much shallower, with strong tides and plenty of plumose anemones on the exposed steelwork.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1141",
+   "name": "HMS Formidable",
+   "sources": {
+    "s1": {
+     "url": "https://www.countryfile.com/go-outdoors/get-active/famous-shipwrecks",
+     "publisher": "Countryfile",
+     "kind": "press",
+     "quote": "Lying at a depth of 60 metres, the wreck is a draw for experienced technical divers. … Recommended Diver Level: Technical Diver"
+    },
+    "s2": {
+     "url": "https://deeperdorset.co.uk/wreck/hms-formidable/",
+     "publisher": "Deeper Dorset",
+     "kind": "press",
+     "quote": "Approx. depth 60 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Pre-dreadnought battleship sunk by U-boat torpedoes on New Year's Day 1915 and now lying around 60 m down in the Channel. A deep wreck aimed at experienced technical divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-144",
+   "name": "SS Eastfield",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Eastfield",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "at a depth of 50 metres (160 ft) … Ship sunk off Cornwall in 1917, now a dive site"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1226",
+   "name": "SS Donegal",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Donegal",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "wreck lies intact on her port side in about 45 to 50 metres (148 to 164 ft) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 45,
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-201",
+   "name": "SS Persier (1918)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Persier_(1918)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She sits on her port side in 92 feet (28 m) of water, with the bow at a depth of 59 feet (18 m)."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-52-the-persier/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "The stern has fallen to port, but still rises a good 6m from the 29m seabed. … the gentle current that washes across the wreck … the Persier is swarming with bib and pollack"
+    },
+    "s3": {
+     "url": "https://www.plymouthdivers.org.uk/persier",
+     "publisher": "Plymouth Divers",
+     "kind": "operator",
+     "quote": "eventually grounded on the reef in about 27m depth. … with only a negligible current present. … Schools of bib and pollack populate the wreck, along with plumose anemone, dead men’s fingers and sea fans."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 23,
+     "bottom": 29
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of bib and pollack",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    },
+    {
+     "text": "Plumose anemones, dead men's fingers, sea fans",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Collapsed steamer on a reef in Bigbury Bay, around 28 m on the seabed with the bow and stern standing highest. Gentle current, plenty of fish and anemone cover make it a rewarding mid-depth wreck.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-346",
+   "name": "Hilsea Point Rock",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Hilsea_Point_Rock",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "It consists of seven or eight pinnacles ranging in depth between 25 metres on the sea bed and 2 metres at the surface."
+    },
+    "s2": {
+     "url": "https://www.plymouthdivers.org.uk/divesites/hilsea/",
+     "publisher": "Plymouth Divers",
+     "kind": "operator",
+     "quote": "the rock rises just a few metres from the surface and descends over a broken rocky sea bed to 25m. … suitable for all grades of diver … While slack water gives optimum conditions, a drift dive is possible after half tide for the more experienced. … cup corals, jewel anemones and sponges"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle",
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Narrow canyon swim-through",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Cup corals, jewel anemones and sponges",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Group of seven or eight pinnacles off the Devon coast, from a few metres below the surface down to about 25 m. A narrow canyon, coral and sponge life and slack-water conditions suit divers of all grades.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-194",
+   "name": "HMT Elk",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMT_Elk",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in 30 metres (98 ft) of water with a drop-off in excess of 40 metres (130 ft) … upright on a sandy bed"
+    },
+    "s2": {
+     "url": "https://plymouthdivers.org.uk/?p=173",
+     "publisher": "Plymouth Divers",
+     "kind": "operator",
+     "quote": "sank at in 30 meters of water … there are still sharp bits of metal to catch the unwary diver … large warships, auxiliaries and ferries pass almost directly over the dive site … Plumose anemones can be found beneath the stern"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Plumose anemones beneath the stern",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Warships and ferries pass directly over the site",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Sharp metal on the deck",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Small armed trawler mined in 1940 and lying upright on sand near Penlee Point at about 30 m. Compact enough to circle twice per dive, but shipping passes overhead and sharp metal remains.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-854",
+   "name": "Erme Ingot Site",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Erme_Ingot_site",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The site was designated under the Protection of Wrecks Act on 24 November 1993. … Protected Wreck managed by Historic England"
+    },
+    "s2": {
+     "url": "https://www.gov.uk/protected-wrecks-licence-england",
+     "publisher": "UK Government",
+     "kind": "agency",
+     "quote": "If you want to dive on or near a wreck that’s legally protected, you must get a licence"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; a licence is required to dive on or near it",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Archaeological scatter of tin ingots near West Mary's Rocks off the Erme estuary in Devon, found by divers in 1991-92. A protected wreck site, so only licensed visits are allowed.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-193",
+   "name": "Glen Strathallan",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Glen_Strathallan",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The remains currently sit in 15 metres (50 ft) of water south of the Plymouth breakwater … The wreck is considerably broken up, but the boilers remain … home to a number of conger eels"
+    },
+    "s2": {
+     "url": "https://www.shipsproject.org/Wrecks/Wk_GlenStrathallan.html",
+     "publisher": "SHIPS Project (Plymouth)",
+     "kind": "encyclopedia",
+     "quote": "Depth: 12 to 18m … The Glen Strathallan was the first ship in Britain to be sunk especially for divers as an artificial reef … The boiler is the easiest to find as it stands proud of the seabed"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Boiler standing proud of the seabed",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Conger eels in the boilers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Former passenger ship sunk in 1970 as Britain's first deliberate artificial reef for divers, south of Plymouth breakwater. Now much collapsed, with the boilers as the main feature, in 12 to 18 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-189",
+   "name": "HMS Coronation",
+   "sources": {
+    "s1": {
+     "url": "https://coronationwreck.org/history.html",
+     "publisher": "Coronation Wreck project",
+     "kind": "operator",
+     "quote": "The general depth is around 18–20 metres. … Divers can visit Coronation, but permission is required. … anchoring on either protected site is prohibited. … Some stand proud on rocky outcrops, while others lie partly buried within sandy gullies."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Coronation",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The area is subject to strong tidal flows, especially during spring tides. … The site is a protected wreck and a licence is required to dive on the site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; permission/licence required; no anchoring or removal",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cannon on rocky outcrops and in sandy gullies",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong tidal flows at springs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Second-rate warship lost in 1691 off Penlee Point, now a protected wreck scattered over rocky ground with cannon visible. Visits need permission and tides run hard at springs.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-229",
+   "name": "SS James Eagan Layne",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_James_Eagan_Layne",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in 22m of water with her bows at … a popular dive site for many years … three divers got into difficulty on the wreck"
+    },
+    "s2": {
+     "url": "https://shipsproject.org/Liberty70/Liberty70_site_today.html",
+     "publisher": "SHIPS Project (Plymouth)",
+     "kind": "encyclopedia",
+     "quote": "The bows are in 20m depth (LAT) and the stern is in 24m. … intact from the bows to the bulkhead between hold #4 and hold #5 … The stern section has broken away and lies some 30m away to the south-west."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 22
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 20,
+     "bottom": 24
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Diver fatality here in 2011",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Liberty ship torpedoed in 1945 and beached in Whitsand Bay, long a favourite Plymouth wreck at 20 to 24 m. The bow section is intact to the hold bulkhead while the stern lies broken away to the south-west.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-215",
+   "name": "HMS Scylla (F71)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Scylla_(F71)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "24-metre (79 ft) sandy seabed … advised divers not to enter the wreck and solely to undertake scenic dives"
+    },
+    "s2": {
+     "url": "https://plymouthdivers.org.uk/?p=230",
+     "publisher": "Plymouth Divers",
+     "kind": "operator",
+     "quote": "The wreck lies upright on a sandy sea bed of about 23m. … Top depth is about 9m. … no real problem with currents but the site is not slack-free … the inside of the wreck is very silty … In season this site can suffer from diver saturation."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 24
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 9,
+     "bottom": 23
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "penetration": {
+    "value": "Not advised by the site manager; interior is silty",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Fatal accidents inside the wreck",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Silty interior",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Crowded in season",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Ex-Navy frigate sunk in 2004 as Europe's first artificial reef in Whitsand Bay, upright on sand with the top about 9 m and seabed near 23 m. Visibility and crowds vary and the interior is best left alone.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-192",
+   "name": "SS Rosehill",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Rosehill",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her wreck lies in 28 metres (92 feet) of water … is often overlooked by divers … The wreck is considerably broken up"
+    },
+    "s2": {
+     "url": "https://www.plymouthdivers.org.uk/divesites/225-2/",
+     "publisher": "Plymouth Divers",
+     "kind": "operator",
+     "quote": "The wreck lies in about 30m depth at the western end of Whitsand Bay. … can be dived at any state of the tide … it is quite silty … large shoals of bib and lots of wrasse"
+    },
+    "s3": {
+     "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-96-the-rosehill/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "The depth touches 30m, so requires PADI Advanced, BSAC Sports Diver or above. … the gentle current that flows roughly parallel to the shore … almost levelled … sparse forest of gorgonian fans"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shoals of bib and wrasse around the boilers",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Gorgonian fans on hull plates",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Silty; reduced visibility",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Torpedoed collier lying flattened on rock reef at the western end of Whitsand Bay, about 28 to 30 m. Often overlooked, it offers boilers, fish shoals and gorgonians in gentle current; Advanced Open Water level.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n8730688077",
+   "name": "D1",
+   "sources": {
+    "s1": {
+     "url": "https://the-past.com/news/early-royal-navy-submarine-prototype-given-protected-status/",
+     "publisher": "Past Horizons",
+     "kind": "press",
+     "quote": "The wreck, which remains upright and largely intact … divers can explore the wreck, but that its contents are protected by law and must remain in situ."
+    },
+    "s2": {
+     "url": "https://scubaverse.com/historical-submarine-prototype-protected",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "quote": "The wreck sits upright and largely intact on the seabed. … This means divers can dive the wreck but its contents are protected by law and must remain in situ."
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; divers may visit but nothing may be removed",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Early Royal Navy submarine scuttled off Dartmouth in 1918 and rediscovered by technical divers, sitting upright and largely intact. It is now protected, so you can look but must leave everything in place.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-813",
+   "name": "Cattewater Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://shipsproject.org/Wrecks/Wk_Cattewater.html",
+     "publisher": "SHIPS Project (Plymouth)",
+     "kind": "encyclopedia",
+     "quote": "a license is required from English Heritage before diving on the site. … The only feature marking the location of the site is the stub of a steel scaffold pole showing above the seabed."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Cattewater_Wreck",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Protected Wreck managed by Historic England"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; licence required; hull is buried under sediment",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Early Tudor merchant ship in Plymouth's Cattewater, the first wreck protected under the 1973 Act. The timbers lie under silt and only a scaffold pole shows, so there is little to see and a licence is needed.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-232",
+   "name": "HMS Warrior (1917)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Warrior_(1917)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her wreck lies at a depth of 177 to 197 feet (54 to 60 m), and is a wreck diving site."
+    },
+    "s2": {
+     "url": "https://www.deeperdorset.co.uk/?p=2205",
+     "publisher": "Deeper Dorset",
+     "kind": "press",
+     "quote": "Approx. depth 54 metres … she lies in 60 metres … There is a single gun mounted on the bow."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 54,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Single gun mounted on the bow",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Steam yacht turned patrol vessel, bombed in 1940 and lying 54 to 60 m deep south-east of Portland Bill. A deep technical dive with a bow gun; the ship's bell was recovered.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-975",
+   "name": "HMS Bulwark",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.kent.gov.uk/Monument/MKE13538",
+     "publisher": "Kent Historic Environment Record",
+     "kind": "agency",
+     "quote": "Her remains are designated as a Controlled Site under the Protection of Military Remains Act, 1986. … It should not be assumed that this site is publicly accessible"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Bulwark_(1899)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Diving on the wreck is generally forbidden."
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Medway war grave and controlled site (diving needs MoD permission); catalog pin is mid-Channel, not at the wreck",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-182",
+   "name": "HMS Safari",
+   "sources": {
+    "s1": {
+     "url": "https://www.deeperdorset.co.uk/wreck/hms-safari/",
+     "publisher": "Deeper Dorset",
+     "kind": "press",
+     "quote": "Approx. depth 40 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-133",
+   "name": "HMS Boadicea (H65)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Boadicea_(H65)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in 53 metres (174 ft) of water. … Her bow is blown off forward of the engine rooms and her stern section is upright and reasonably intact."
+    },
+    "s2": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MDO19953",
+     "publisher": "Dorset Historic Environment Record",
+     "kind": "agency",
+     "quote": "She lies on a sandy seabed 6m proud in 52m."
+    },
+    "s3": {
+     "url": "https://deeperdorset.co.uk/wreck/hms-boadicea/",
+     "publisher": "Deeper Dorset",
+     "kind": "press",
+     "quote": "lies upright on a sandy seabed at depths of between 47 to 62 metres … There is a large gun on the stern and other anti-aircraft guns can still be identified. … The wrecksite is designated as a protected place under the Protection of Military Remains Act 1986."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 53
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 46,
+     "bottom": 52
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 47,
+     "bottom": 62
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected place under the Protection of Military Remains Act 1986",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large gun on the stern; AA guns identifiable",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Destroyer sunk in 1944 off Portland, bow blown off but stern upright and fairly intact on sand at roughly 50 m. A war grave and protected place, dived by technical divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n889067426",
+   "name": "Fairy Cove",
+   "sources": {
+    "s1": {
+     "url": "https://finstrokes.com/shore-dive/fairy-cove",
+     "publisher": "Finstrokes",
+     "kind": "press",
+     "quote": "8-10m … Simple entry by walking down the steps to the beach into the water. … Novice upwards, Ideal for training. … You need a few days of calm weather to get good visibility here … Occasional jet ski."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 10
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Occasional jet skis",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-210",
+   "name": "SS Espagne (Anversois, 1909)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Espagne_(Anversois%2C_1909)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck sits 40 to 50 metres (130 to 160 ft) deep … is mostly broken"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 40,
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" fill="none">
+<title>DMZ Scuba — inland profile</title>
+<desc>Refined vector illustration of a generic freshwater inland dive site: submerged rock shelf, boulders, aquatic plants and freshwater fish. Illustrative geometry, not a surveyed site or calibrated depth scale. Surface y=38; deepest bed y=479. Keep site-specific labels in the application.</desc>
+<defs>
+ <linearGradient id="dmz-water" x1="480" y1="38" x2="480" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#356C73"/><stop offset=".5" stop-color="#1C4854"/><stop offset="1" stop-color="#102F3D"/></linearGradient>
+ <linearGradient id="dmz-light" x1="480" y1="38" x2="480" y2="445" gradientUnits="userSpaceOnUse"><stop stop-color="#C0F2E7" stop-opacity=".09"/><stop offset="1" stop-color="#C0F2E7" stop-opacity="0"/></linearGradient>
+ <linearGradient id="dmz-sand" x1="0" y1="475" x2="0" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#3D525B"/><stop offset="1" stop-color="#263C49"/></linearGradient>
+</defs>
+<!-- Self-contained SVG: paths, circles, gradients. No filters, raster images, fonts or dependencies. -->
+<g id="water">
+ <path fill="#0C2736" d="M0 0H960V560H0Z"/>
+ <path fill="url(#dmz-water)" d="M0 38C80 29 110 47 190 38S310 29 390 38 510 47 590 38 710 29 790 38 910 47 960 38V560H0Z"/>
+ <path fill="url(#dmz-light)" d="M105 38H182L346 466H211Z M363 38H423L593 466H481Z M675 38H734L847 466H732Z"/>
+ <path d="M0 38C80 29 110 47 190 38S310 29 390 38 510 47 590 38 710 29 790 38 910 47 960 38" stroke="#94CBCB" stroke-width="2"/>
+</g>
+<g id="particles" fill="#A1D8D1" opacity=".22"><circle cx="152" cy="168" r="1.3"/><circle cx="616" cy="128" r="1.2"/><circle cx="765" cy="247" r="1.4"/><circle cx="201" cy="368" r="1.2"/><circle cx="849" cy="366" r="1"/><circle cx="503" cy="206" r="1"/></g>
+<g id="inland-terrain" stroke-linecap="round" stroke-linejoin="round">
+ <!-- Distant submerged ridge, subdued to suggest freshwater visibility. -->
+ <path d="M0 355Q90 342 156 366L231 395Q299 403 356 439Q431 449 510 463L642 470 760 458 960 465V560H0Z" fill="#2A5059" opacity=".55"/>
+ <!-- Broad shallow rock shelf drops down into a silt basin. -->
+ <path d="M0 347C66 342 117 350 173 345L209 355 227 389 262 399 281 430 328 448 363 473Q462 484 563 479T740 476 960 482V560H0Z" fill="url(#dmz-sand)"/>
+ <path d="M0 347C66 342 117 350 173 345L209 355 227 389 262 399 281 430 328 448 363 473Q462 484 563 479T740 476 960 482" stroke="#9BB4AC" stroke-width="1.8"/>
+ <!-- Layered exposed limestone face; natural irregular breaks, not a cliff polygon. -->
+ <path d="M0 347C66 342 117 350 173 345L209 355 227 389 262 399 281 430 328 448 363 473L327 479 300 464 261 452 238 426 204 414 190 388 151 379 118 364H0Z" fill="#4B6C70"/>
+ <path d="M0 347C66 342 117 350 173 345L209 355 227 389 262 399 281 430 328 448 363 473" stroke="#A5BBB0" stroke-width="1.8"/>
+ <path d="M13 365H109L137 374 180 376M179 360L194 388 220 400M206 413L234 415 254 437 289 445M277 452L301 460 330 472" stroke="#87A09B" stroke-width="1.2" opacity=".6"/>
+ <path d="M88 348L96 361M161 350L157 373M225 399L223 414M283 433L277 445" stroke="#294D59" stroke-width="1.5"/>
+ <!-- Basin, bottom shadows and restrained sediment lines. -->
+ <ellipse cx="579" cy="481" rx="169" ry="9" fill="#102C3C" opacity=".5"/>
+ <path d="M384 507H421M713 521H748M537 509H560M821 502H849M135 517H165" stroke="#94ACA4" stroke-width="1.3" stroke-opacity=".2"/>
+ <!-- Boulder group, faceted enough to read as stone with quiet illuminated edges. -->
+ <path d="M425 478Q429 457 449 451L477 452 493 466 496 479Z" fill="#4C6C71"/>
+ <path d="M425 478Q429 457 449 451L477 452 493 466" stroke="#91AAA2" stroke-width="1.4"/>
+ <path d="M449 452L454 469 477 475 496 479" stroke="#6F8B89" stroke-width="1"/>
+ <path d="M479 481L494 450 520 431 548 428 574 448 583 480Z" fill="#55767A"/>
+ <path d="M479 481L494 450 520 431 548 428 574 448" stroke="#A2B8AD" stroke-width="1.6"/>
+ <path d="M520 431L522 459 501 474M522 459L558 463 574 448M558 463L566 480" stroke="#829D97" stroke-width="1.2"/>
+ <path d="M548 428L574 448 583 480 566 480 558 463Z" fill="#385C67"/>
+ <path d="M576 481L585 463 609 454 636 460 652 480Z" fill="#45646C"/>
+ <path d="M585 463L609 454 636 460 652 480M609 454L616 475" stroke="#829E98" stroke-width="1.2"/>
+ <path d="M682 485L692 474 708 472 720 485Z M370 486L380 478 394 482 401 489Z" fill="#567477"/>
+ <!-- Sparse freshwater vegetation: long ribbons, not coral branching. -->
+ <g fill="#709988" stroke="#8CAB98" stroke-width=".7">
+ <path d="M76 348Q64 317 74 290Q68 325 82 348Z"/>
+ <path d="M81 348Q88 312 81 279Q97 315 86 348Z"/>
+ <path d="M86 348Q107 322 103 303Q116 325 91 348Z"/>
+ <path d="M738 479Q720 441 731 410Q726 450 743 479Z"/>
+ <path d="M742 479Q758 432 747 397Q768 433 747 479Z"/>
+ <path d="M748 479Q780 449 774 425Q789 451 754 479Z"/>
+ <path d="M713 480Q709 458 699 452Q716 459 718 480Z"/>
+ <path d="M839 482Q827 456 832 438Q830 459 844 482Z"/>
+ <path d="M844 482Q857 457 851 440Q865 460 850 482Z"/>
+ </g>
+ <!-- Small detritus on the deeper bottom. -->
+ <path d="M793 486L812 481 829 484M812 481L818 472" stroke="#7C8C7C" stroke-width="2"/>
+</g>
+<g id="freshwater-fish" stroke-linejoin="round">
+ <!-- Bass-like profile: distinct dorsal fin, broad head and forked tail. -->
+ <path d="M642 313Q662 296 687 305L696 313 685 321Q661 331 642 318L628 329 632 316 628 303Z" fill="#94B2A0"/>
+ <path d="M656 303L661 295 669 300 676 298 681 304M660 324L668 333 676 325" fill="#779A8D"/>
+ <path d="M649 315Q669 310 691 313" stroke="#486B68" stroke-width="1.7"/>
+ <path d="M680 307Q676 313 680 320" stroke="#527870" stroke-width="1"/>
+ <circle cx="688" cy="311" r="1.5" fill="#163843"/>
+ <!-- Smaller sunfish near the shallow ledge. -->
+ <path d="M204 288Q218 271 234 279L245 288 235 300Q218 309 204 294L193 302 196 290 193 278Z" fill="#AEB89C"/>
+ <path d="M214 279L219 272 230 277M216 303L224 309 233 301" fill="#7E9A88"/>
+ <path d="M222 278Q216 290 225 303M230 281Q225 290 231 300" stroke="#698C80" stroke-width="1.5"/>
+ <circle cx="238" cy="287" r="1.3" fill="#1D4149"/>
+</g>
+<g id="diver" transform="translate(346 221)" stroke-linecap="round" stroke-linejoin="round">
+ <!-- Anatomical silhouette in neutral trim: head left, bent knees, blade fins. -->
+ <!-- Far arm and leg sit behind the torso. -->
+ <path d="M15 20L4 36-15 35" stroke="#62989F" stroke-width="5"/>
+ <path d="M43 23L65 40Q68 43 73 39L88 28" stroke="#62989F" stroke-width="6"/>
+ <path d="M85 26L97 23 117 18 109 29 91 33Z" fill="#64A99F"/>
+ <!-- Suit torso and shoulder: curved silhouette rather than a stick figure. -->
+ <path d="M0 14Q3 8 12 9L35 13Q44 15 49 22L44 29 22 27 8 24Q2 24 0 19Z" fill="#102B3B" stroke="#8DBDBE" stroke-width="1.2"/>
+ <!-- Cylinder with domed ends, bands and valve. -->
+ <path d="M8 1Q4 1 4 6L4 9Q4 13 8 13L33 16Q38 16 38 12L38 9Q38 5 34 5Z" fill="#C7B185" stroke="#E1D0A5" stroke-width=".9"/>
+ <path d="M10 4L31 7" stroke="#F1E0B7" stroke-width="1.6"/>
+ <path d="M13 3L12 14M29 5L28 16" stroke="#3A555F" stroke-width="2.5"/>
+ <path d="M4 6L0 6M0 4V9" stroke="#ABBFC0" stroke-width="2"/>
+ <!-- BCD straps and waist. -->
+ <path d="M9 15L7 23M30 17L28 27" stroke="#6D9DA3" stroke-width="2"/>
+ <path d="M39 20L37 28" stroke="#486F7A" stroke-width="2"/>
+ <!-- Head, hood, mask and regulator. -->
+ <path d="M1 16L-4 16" stroke="#ADD0C9" stroke-width="4"/>
+ <path d="M-5 12Q-9 7-15 9Q-23 12-22 19Q-20 26-12 26L-5 22Z" fill="#173445" stroke="#8DBDBE" stroke-width="1.1"/>
+ <path d="M-21 16L-12 15-11 20-21 21Z" fill="#A9E6DC" stroke="#D1F1E7" stroke-width=".9"/>
+ <path d="M-11 16L-5 16" stroke="#B2D4CC" stroke-width="1.1"/>
+ <path d="M-21 23L-16 23" stroke="#C6E4DC" stroke-width="2"/>
+ <path d="M-17 24Q-5 32 5 17" stroke="#8BB6B7" stroke-width="1.3"/>
+ <!-- Near arm bends forward, hands together, clear of the bottom. -->
+ <path d="M12 22Q10 29 1 34L-14 32" stroke="#B1D8D1" stroke-width="5.5"/>
+ <path d="M-14 32L-20 31" stroke="#C6E5D9" stroke-width="3.5"/>
+ <!-- Hip, bent knee, lower leg, boot and near blade fin. -->
+ <path d="M43 25L63 28Q68 28 71 23L80 12" stroke="#A8D2CC" stroke-width="6.5"/>
+ <path d="M79 13L84 10" stroke="#18394A" stroke-width="5"/>
+ <path d="M82 8L90 7 108-1 104 10 88 16 82 14Z" fill="#8BD6C2" stroke="#ADDCCB" stroke-width=".7"/>
+ <path d="M88 11L101 5M95 27L109 22" stroke="#386C70" stroke-width=".8" opacity=".55"/>
+ <g stroke="#A3D6D3" stroke-width="1" opacity=".65"><circle cx="-24" cy="-2" r="2"/><circle cx="-29" cy="-16" r="3"/><circle cx="-23" cy="-34" r="3.7"/><circle cx="-30" cy="-57" r="2"/></g>
+</g>
+</svg>

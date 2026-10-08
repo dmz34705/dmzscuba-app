@@ -1,0 +1,655 @@
+{
+ "batch": "notable-united-kingdom-11",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-notable-1167",
+   "name": "SMS V45",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "V045 V45 Destroyer Sunk Salvaged 1922"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in 1922",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1196",
+   "name": "SMS S50",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "S050 S50 Destroyer Sunk Salvaged October 1924"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in October 1924",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1168",
+   "name": "SMS V46",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "V046 V46 Destroyer Beached Transferred to French control, broken up in 1924"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Beached, not sunk; broken up in 1924",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1166",
+   "name": "SMS S36",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "S036 S36 Destroyer Sunk Salvaged April 1925"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in April 1925",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1194",
+   "name": "SMS S32",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "S032 S32 Destroyer Sunk Salvaged June 1925"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in June 1925",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1163",
+   "name": "SMS G38",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "G038 G38 Destroyer Sunk Salvaged September 1924"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in September 1924",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1164",
+   "name": "SMS G39",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "G039 G39 Destroyer Sunk Salvaged July 1925"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in July 1925",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1165",
+   "name": "SMS G40",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "G040 G40 Destroyer Sunk Salvaged July 1925"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in July 1925",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-979",
+   "name": "SMS Derfflinger",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Derfflinger Battlecruiser Sunk 14:45 Salvaged August 1939"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in August 1939",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1203",
+   "name": "SMS G102",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "G102 Destroyer Beached Transferred to American control, sunk as a target in 1921"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Beached, not sunk here; sunk as a target in 1921",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-973",
+   "name": "SMS Seydlitz",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Seydlitz Battlecruiser Sunk 13:50 Salvaged November 1928"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in November 1928",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-964",
+   "name": "SMS Moltke",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Moltke Battlecruiser Sunk 13:10 Salvaged June 1927"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in June 1927",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-978",
+   "name": "SMS Hindenburg",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Hindenburg Battlecruiser Sunk 17:00 Salvaged July 1930"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in July 1930",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-966",
+   "name": "SMS Von der Tann",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Von der Tann Battlecruiser Sunk 14:15 Salvaged December 1930"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in December 1930",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1009",
+   "name": "SMS Nürnberg",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Nürnberg Cruiser Beached Transferred to British control, sunk as a target in 1922"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Beached, not sunk here; sunk as a target in 1922",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-905",
+   "name": "SMS Prinzregent Luitpold",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Scuttling_of_the_German_fleet_in_Scapa_Flow",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Prinzregent Luitpold Battleship Sunk 13:15 Salvaged March 1931"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged (raised) in March 1931",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-299",
+   "name": "Gutter Sound",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Gutter_Sound",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Gutter Sound is four miles long and a mile wide at its widest point"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A four-mile-long sound of Scapa Flow, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-944",
+   "name": "HMS Vanguard",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Vanguard_(1909)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "It was designated as a controlled site under the Protection of Military Remains Act 1986 , and diving on the wreck is generally forbidden."
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "PMRA controlled site and war grave; diving forbidden without MoD permission",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-918",
+   "name": "HMS Bullen",
+   "sources": {
+    "s1": {
+     "url": "https://her.highland.gov.uk/Monument/MHG47045",
+     "publisher": "Highland Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "this location appears to be an approximation, and remains unverified. No source or position-fixing technique is cited, and neither diver nor remote survey is mentioned."
+    }
+   },
+   "notDiveSite": {
+    "kind": "unlocated",
+    "reason": "Wreck position is an unverified approximation; no diver or remote survey on record",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1050",
+   "name": "HMS King Edward VII",
+   "sources": {
+    "s1": {
+     "url": "https://her.highland.gov.uk/Monument/MHG23278",
+     "publisher": "Highland Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The least echo sounder depth was 94 in a general depth of 108 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 94,
+     "bottom": 108
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Pre-dreadnought battleship lost to a German-laid mine in January 1916 and now a large wreck off the north coast, surveyed by side-scan sonar in 1984. At roughly 100 m it is a deep technical dive.",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Least depth 94 m in 108 m general depth (1984 survey)"
+  },
+  {
+   "id": "x-wikipedia-187",
+   "name": "SMS Dresden (1917)",
+   "sources": {
+    "s1": {
+     "url": "https://scapaflowwrecks.com/wrecks/dresden/diving.php",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "Max-Depth: 38m … the northward pointing bow sitting in 25 metres. The remainder of the ship slopes southward toward the stern at 38 metres."
+    },
+    "s2": {
+     "url": "https://scubaverse.com/dive-notes-small-island-part-5-scapa-flow-orkney-islands/",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "quote": "She now rests on her port side in a maximum of 38m water at the stern and is largely intact. The northward pointing bow lies in 30m, the shallowest point is around 16m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 25,
+     "bottom": 38
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 16,
+     "bottom": 38
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Armoured control tower with viewing slits",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Original features still inside the hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "German light cruiser scuttled in 1919 that lies on her port side on a slope, bow shallow and stern deep, which suits a multi-level dive. Fairly intact, with the control tower and original fittings; often a first dive of a Scapa trip.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Bow 25-30 m, stern 38 m, shallowest ~16 m"
+  },
+  {
+   "id": "osm-n663869622",
+   "name": "SMS König",
+   "sources": {
+    "s1": {
+     "url": "https://scapaflowwrecks.com/wrecks/konig/diving.php",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "Max-Depth: 38m … König lies almost completely overturned and has been extensively opened up by the salvage teams."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SMS_K%C3%B6nig",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lying at a depth of 40 m (130 ft) on a sandy floor to the east of Cava . She turned over as she sank and the hull faces upwards at about 20 m (66 ft) down."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 38
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 20,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upturned hull opened up by salvage blasting",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Casemate guns lying upside down on seabed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Blast debris scattered along the hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Upturned WWI German battleship east of Cava, scuttled in 1919 and heavily broken by salvage blasting. Less impressive than her sisters but the openings reveal internal structure; the hull top is around 20 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Hull top ~20 m, seabed 38-40 m"
+  },
+  {
+   "id": "x-notable-1240",
+   "name": "HMS Pheasant",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/hms-pheasant/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "in 82 metres of water. The wreck lies on its side as is well broken particularly from bow to bridge … The wreck is protected under The Military Remains Act 1986."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Pheasant_(1916)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck lies roughly E-W, in 82 metres (269 ft) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 82
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 82
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected under the Military Remains Act 1986",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Wreck heavily broken from bow to bridge",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "M-class destroyer lost with all hands to a mine west of Hoy in March 1917. She lies on her side in about 82 m, broken forward of the bridge, so it is a deep technical dive on a protected war wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1221",
+   "name": "SM UB-116",
+   "sources": {
+    "s1": {
+     "url": "https://scapaflowwrecks.com/wrecks/other/ub116.php",
+     "publisher": "Scapa Flow Wrecks",
+     "kind": "operator",
+     "quote": "It lies at the mouth of Pan Hope, a large inlet on the east side of Flotta. … the only really identifiable elements aside from plates, pipes, wires and so on are the ballast tanks and a deck gun."
+    },
+    "s2": {
+     "url": "https://www.scubaverse.com/return-to-scapa-flow-beyond-the-battleships/",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "quote": "the submarine is very broken up with the conning tower as one of the few remaining identifiable features. The wreck of UB-116 is pretty small, and relatively shallow for Scapa Flow"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Conning tower, ballast tanks and deck gun remain",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Wreck very broken up after torpedo clearance",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The last U-boat sunk in WWI, destroyed by a mine in Hoxa Sound in 1918, raised, then lost again at the mouth of Pan Hope off Flotta. Small, shallow for Scapa and badly broken, so an easy second dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

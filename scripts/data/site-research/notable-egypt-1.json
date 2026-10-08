@@ -1,0 +1,1243 @@
+{
+ "batch": "notable-egypt-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869765",
+   "name": "Abu Galawa Kebir",
+   "sources": {
+    "s1": {
+     "url": "https://www.blueocean-eg.com/itineraries/fury-shoals-(mini-safari)",
+     "publisher": "Blue Ocean Divers",
+     "kind": "operator",
+     "quote": "The Chinese barge named Tien Hsing sank in 1943 and lays between 5 m and 18 m depth directly at the reef"
+    },
+    "s2": {
+     "url": "https://www.pro-taucher.com/?p=1671",
+     "publisher": "Pro-Taucher",
+     "kind": "press",
+     "quote": "Type of vessel: Tug boat … Maximum depth: Wreck: 0 to 17 meters, reef: 35 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 17
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Small Chinese vessel sunk in 1943 on the Abu Galawa Kebir reef in the Fury Shoals. It lies shallow, roughly 5 to 18 m, and has long since grown into the reef, with the reef itself falling to about 35 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Wreck 5-18 m; surrounding reef to about 35 m"
+  },
+  {
+   "id": "osm-n663869769",
+   "name": "Hamada",
+   "sources": {
+    "s1": {
+     "url": "https://www.lonelyplanet.com/egypt/red-sea-coast/marsa-alam/attractions/hamada/a/poi-sig/1426595/355258",
+     "publisher": "Lonely Planet",
+     "kind": "press",
+     "quote": "Lying on its side in just 14m of water, Hamada is a fairly easy, extremely picturesque dive site. Depth: 6m to 14m. Rating: novice."
+    },
+    "s2": {
+     "url": "https://www.blueocean-eg.com/blog/wreck-diving-egypt-salem-express",
+     "publisher": "Blue Ocean Divers",
+     "kind": "operator",
+     "quote": "the Hamada, is at 14 meters of water at Abo Ghosum reef … Abu Ghosum is a site that suits divers of all levels of experience … so parts of the wreck are so shallow that you can even snorkel them … the propeller who is still intact"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 14
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 14
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Parts shallow enough to snorkel",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Intact propeller",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A roughly 65 m cargo ship lying on its side on an inshore reef at Abu Ghosum south of Marsa Alam, in only about 14 m of water. Easy and photogenic, suitable for all experience levels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-437",
+   "name": "Marsa Alam",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Marsa_Alam",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a tourist town in south-eastern Egypt, located on the western shore of the Red Sea"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Marsa Alam is a tourist town, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-458",
+   "name": "El Ikhwa Islands",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/El_Ikhwa_Islands",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "are two small Red Sea islands in the Red Sea Governorate of Egypt"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Two Red Sea islands (the Brothers) containing many separate dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-435",
+   "name": "Safaga",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Safaga",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a port city in Egypt, on the coast of the Red Sea"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Safaga is a port city, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-446",
+   "name": "El Gouna",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/El_Gouna",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Egyptian Red Sea resort city"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "El Gouna is a resort city, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-443",
+   "name": "Shadwan Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Shadwan_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "measures 16 kilometres (9.9 mi) in length, and between 3 and 5 kilometres"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A 16 km long island with many separate dive sites, not one site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-445",
+   "name": "Ras Muhammad National Park",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Ras_Muhammad_National_Park",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a national park in Egypt at the southern extreme of the Sinai Peninsula"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A national park with many separate dive sites, not one site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-432",
+   "name": "Dahab",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Dahab",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a small town on the southeast coast of the Sinai Peninsula in Egypt"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Dahab is a small coastal town, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-427",
+   "name": "Taba, Egypt",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Taba,_Egypt",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a town in the South Sinai of Egypt"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Taba is a town, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869865",
+   "name": "Ras Abu Galum",
+   "sources": {
+    "s1": {
+     "url": "https://www.lonelyplanet.com/egypt/sinai-coast/attractions/ras-abu-gallum-protectorate/a/poi-sig/1453519/1330651",
+     "publisher": "Lonely Planet",
+     "kind": "press",
+     "quote": "Ras Abu Gallum Protectorate covers 400 sq km of coastline between Dahab and Nuweiba"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Ras Abu Galum is a 400 sq km protectorate with several dive sites, not one site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1040",
+   "name": "HMS Medway",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Medway_(1928)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "off Port Said , the German submarine U-372 fired two torpedoes that sank Medway"
+    }
+   },
+   "notDiveSite": {
+    "kind": "unlocated",
+    "reason": "HMS Medway sank in the Mediterranean off Port Said (about 32.05N 30.92E); this pin is inland in the Nile Delta, and Egypt-labelled Red Sea/fresh water does not apply",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-zvbfl0",
+   "name": "Salem Express, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://www.dive-the-world.com/diving-sites-egypt-salem-express.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "quote": "She rests on her starboard side on a flat sand bottom at 27m of depth, with the shallowest section at just 7m … Reef Summary Depth 12 - 27m Visibility 15 - 30m Currents Can be strong … Experience level Intermediate - advanced … Lying on the sea floor are everyday personal items such as a handbag"
+    },
+    "s2": {
+     "url": "https://www.blueocean-eg.com/blog/wreck-diving-egypt-salem-express",
+     "publisher": "Blue Ocean Divers",
+     "kind": "operator",
+     "quote": "The wreck rests on her starboard side in 30 meters of Red Sea water. It is a spooky and controversial dive at a maritime grave. Many dive guides refuse to dive the Salem Express. Penetration is not considered a no-go zone but frowned upon"
+    },
+    "s3": {
+     "url": "https://indepthmag.com/wreck-salem-express/",
+     "publisher": "InDEPTH",
+     "kind": "press",
+     "quote": "lying on its port side in 30 meters/100 ft of seawater … we first saw the two giant propellers and the rudder"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 27
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "penetration": {
+    "value": "Penetration frowned upon; many guides refuse as it is a maritime grave",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two giant propellers and rudder",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Personal items still lie on the seabed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Currents can be strong",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Memorial wreck; many guides will not dive it",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A ferry lost in 1991 near Safaga, now on her side on sand with her highest point near 7 m and her deepest about 27 to 30 m. A sombre, advanced boat dive on a grave site, where penetration is discouraged.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-444",
+   "name": "Shaʽb Abu Nuħas",
+   "sources": {
+    "s1": {
+     "url": "https://seasoftscuba.com/the-ship-graveyard-diving-the-4-iconic-wrecks-of-abu-nuhas-red-sea/",
+     "publisher": "Seas of Scuba",
+     "kind": "operator",
+     "quote": "wrecks sit at various depths within recreational limits (roughly 5 to 32 meters) … The current can be strong and usually runs from north to south … Generally excellent, often exceeding 20–30 meters … accessible for both day boats and liveaboards … The stern section lies at a 45-degree angle, resting on its port side at about 24 meters deep"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/egypts-graveyard-diving-in-the-deep-sea-shipwrecks/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "rising to 12m at the bow … slid off the reef into 30-32m of water … which gives the wreck its nickname Tile Wreck … Coral growth is profuse because the wreck has been down almost 150 years"
+    },
+    "s3": {
+     "url": "https://egyptdivers.com/hurghada/dive-sites/abu-nuhas/",
+     "publisher": "Egypt Divers",
+     "kind": "operator",
+     "quote": "At least four complete wrecks lie here … Abu Nuhas is exposed to current and wind"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 32
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 32
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Giannis D stern tilted at 45 degrees",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Chrisoula K tile cargo in the holds",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Carnatic wreck heavily coral-encrusted",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Exposed reef; wind and swell make mooring hard",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    },
+    {
+     "text": "Strong north-south current",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef at the mouth of the Gulf of Suez that has claimed at least four large ships, among them the Carnatic, Giannis D, Chrisoula K and Kimon M, lying within a few hundred metres at roughly 5 to 32 m. Exposed to wind and current.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869819",
+   "name": "Dunraven",
+   "sources": {
+    "s1": {
+     "url": "https://www.circledivers.com/diving-in-dahab/dive-sites/ss-dunraven-wreck-ras-mohammed",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "quote": "Depth: 29 M Difficulty: Intermediate Type: Drift dive, Wreck … now lies with the top of bow at 15 metres and the stern on the sea bed at 29 metres"
+    },
+    "s2": {
+     "url": "https://egyptianstreets.com/2023/09/15/the-shipwrecks-of-the-red-sea-a-divers-paradise/",
+     "publisher": "Egyptian Streets",
+     "kind": "press",
+     "quote": "rests at a depth of 30 meters adjacent to the reef wall. The wreck is entirely inverted and split into two sections. The stern section of the Dunraven is around 29 meters deep … The exit area is filled with thousands of glass fish"
+    },
+    "s3": {
+     "url": "https://dive3d.eu/models/egypt/dunraven/",
+     "publisher": "dive3d.eu",
+     "kind": "press",
+     "quote": "She now lies at a depth of between 15 and 30 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 29
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 15,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Inverted hull with swim-through by the boiler",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Thousands of glassfish at the exit",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The Dunraven sank in 1876 on the Beacon Rock reef at the northwest edge of Ras Mohammed and now lies upside down in two sections, from about 15 m at the bow to 29-30 m at the stern, heavily encrusted with coral and glassfish.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n255316037",
+   "name": "SS Thistlegorm",
+   "sources": {
+    "s1": {
+     "url": "https://www.dive-the-world.com/diving-sites-egypt-thistlegorm.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "quote": "sits upright on the seabed at 33m … Reef Summary Depth 16 - 33m Visibility 15 - 25m Currents Can be strong … Experience level Intermediate - advanced … it is possible to swim through the wreck from Hold 1 to 3, using the internal interconnecting doorways at a maximum depth of 25m … BSA motorbikes, Morris automobiles, Bedford trucks"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Thistlegorm",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The depth of around 30 m (100 feet) at its deepest is ideal for diving"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 33
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 25,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "penetration": {
+    "value": "Holds 1 to 3 can be swum through at up to 25 m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "BSA motorbikes, trucks and cars in the holds",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Ship largely intact, upright on sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Currents can be strong",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A British freighter bombed in 1941 and now sitting upright on sand at about 30 m in the Gulf of Suez, with her wartime cargo of vehicles and motorbikes still stowed in the holds. A deep, advanced boat dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n8559506183",
+   "name": "Thomas reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.circledivers.com/diving-in-dahab/dive-sites/thomas-reef-tiran",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "quote": "Depth: 0-30 M Difficulty: Intermediate … plateau at 25 metres with a row of huge fan corals … currents can be strong at the most northerly tip of the reef"
+    },
+    "s2": {
+     "url": "https://www.cameldive.com/dive-sites/thomas-reef/",
+     "publisher": "Camel Dive Club & Hotel",
+     "kind": "operator",
+     "quote": "The reef reaches from 0.5 to 28m where it forms a plateau"
+    },
+    "s3": {
+     "url": "https://scubadiverlife.com/diving-the-straits-of-tiran-red-sea/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "large plateaus at around 82 feet, (25 m) on the southeastern side, can feature sleeping sharks in the sandy areas … there are usually strong currents on the southern and northern ends of the reef"
+    },
+    "s4": {
+     "url": "https://dive-the-world.com/diving-sites-egypt-straits-of-tiran.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "quote": "The lack of mooring points makes drift diving necessary here … you descend down a wall splendidly covered in gorgonians, whip corals and black corals, and arrive at a large ledge at 25m depth, where you can often find resting whitetip reef sharks and leopard sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0.5,
+     "bottom": 28
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s4"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "mooring": {
+    "value": "No mooring points; drift dive",
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Plateau with a row of large gorgonian fans",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    },
+    {
+     "text": "Whitetip and leopard sharks on the ledge",
+     "refs": [
+      "s4"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents at the north and south ends",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Thomas Canyon runs to 90 m; technical divers only",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The smallest and most colourful of the four Tiran reefs, dived as a drift along a wall of gorgonians to a plateau near 25 m, with sharks resting on the ledge. Currents can be strong at either end.",
+    "refs": [
+     "s1",
+     "s3",
+     "s4"
+    ]
+   }
+  },
+  {
+   "id": "osm-w23185891",
+   "name": "Woodhouse Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.circledivers.com/diving-in-dahab/dive-sites/woodhouse-reef-tiran",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "quote": "Depth: 0-30 M Difficulty: Intermediate … The longest and narrowest of the four reefs in Tiran stretching approx. 1 kilometre in length"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/diving-the-straits-of-tiran-red-sea/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Starting in the south there is a wall to about 98 feet (30 m) with coral growth all the way down from the surface … a canyon at the halfway point, 82 feet (25 m), where you will start to notice the current strengthen … Washing Machine — so called due to the very strong currents in all directions"
+    },
+    "s3": {
+     "url": "https://www.cameldive.com/dive-sites/woodhouse-reef/",
+     "publisher": "Camel Dive Club & Hotel",
+     "kind": "operator",
+     "quote": "a wall that starts from the surface, reaching about 45m"
+    },
+    "s4": {
+     "url": "https://dive-the-world.com/diving-sites-egypt-straits-of-tiran.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "quote": "no shelter or fixed moorings for dive boats, and diving here is a drift from south to north"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 0,
+     "bottom": 45
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s4"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "No fixed moorings; drift south to north",
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall running from the surface down",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    },
+    {
+     "text": "Giant morays, groupers, barracuda and jacks",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "\"Washing Machine\" currents between Woodhouse and Jackson",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The longest reef in the Straits of Tiran, a wall dropping from the surface to about 30 m or more, dived as a south-to-north drift with a canyon midway. Currents build toward the north end where it meets Jackson Reef.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n2628832137",
+   "name": "Laguna Reef",
+   "sources": {
+    "s1": {
+     "url": "https://dive-the-world.com/diving-sites-egypt-straits-of-tiran.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "quote": "a shallow hard coral lagoon (10-12m), known as Laguna Reef … susceptible to strong tidal flows which dictate dive plans"
+    },
+    "s2": {
+     "url": "https://www.cameldive.com/dive-sites/laguna-reef/",
+     "publisher": "Camel Dive Club & Hotel",
+     "kind": "operator",
+     "quote": "A drift dive around the outer wall of the South Laguna of Tiran island … This is a dive for all levels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong tidal flows dictate the dive plan",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Lagoon 10-12 m; outer wall deeper",
+   "summary": {
+    "text": "A shallow hard-coral lagoon on the west of Tiran island, split in two by a coral wall into North and South Laguna, with a drift along the outer wall suited to all levels. Tidal flow controls when and how it is dived.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869872",
+   "name": "Canyon",
+   "sources": {
+    "s1": {
+     "url": "https://www.lonelyplanet.com/egypt/sinai/dahab/attractions/canyon/a/poi-sig/1429280/355262",
+     "publisher": "Lonely Planet",
+     "kind": "press",
+     "quote": "the Canyon is a long, narrow trench that runs perpendicular to the reef shelf … Depth: 5m to 33m. Rating: intermediate. Access: shore."
+    },
+    "s2": {
+     "url": "https://www.circledivers.com/diving-in-dahab/dive-sites/the-canyon-dive-site-dahab",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "quote": "Depth: 0-30 M Difficulty: Intermediate … the penetration point, which is at around 15 metres … The canyon itself is a cave with an open ceiling … We slowly descend into the canyon from 18 to 30 metres"
+    },
+    "s3": {
+     "url": "https://www.cameldive.com/dive-sites/canyon/",
+     "publisher": "Camel Dive Club & Hotel",
+     "kind": "operator",
+     "quote": "A great site for octopus, stonefish and devil scorpion fish … deep fissure in the reef … filled with light shafts and over hangs where glassfish and cave sweepers reside"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 33
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Open-topped canyon with glassfish and light shafts",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    },
+    {
+     "text": "Octopus, stonefish and scorpionfish",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shore dive north of Dahab that crosses a shallow lagoon and coral garden to a deep open-topped fissure in the reef, filled with glassfish and lit by shafts of light. Intermediate level, roughly 5 to 30 m.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869869",
+   "name": "Blue Hole",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Blue_Hole_(Red_Sea)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Depth range 6 to 100 m … maximum depth within the hole of just over 100 m … Entry type Shore … there is frequently a current flowing inward through the arch into the Blue Hole … Local dive centres take appropriately qualified divers to 30 m"
+    },
+    "s2": {
+     "url": "https://www.cameldive.com/dive-sites/blue-hole/",
+     "publisher": "Camel Dive Club & Hotel",
+     "kind": "operator",
+     "quote": "the famous Blue hole dive site is a large submarine sinkhole, 150m across and 110m deep"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 110
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Saddle opening to the sea at about 6 m",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Popular freediving venue",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "The Arch (ceiling 55 m) has killed many divers",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Inward current through the Arch",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A circular sinkhole on the Gulf of Aqaba shore north of Dahab, just over 100 m deep, reached by walking in. Recreational divers keep to about 30 m on the Bells route; the Arch at 55 m is a notorious technical hazard.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Hole just over 100 m; Arch ceiling at 55 m"
+  },
+  {
+   "id": "osm-n271181711",
+   "name": "The Bells",
+   "sources": {
+    "s1": {
+     "url": "https://www.circledivers.com/diving-in-dahab/dive-sites/bells-blue-hole-dive-site-dahab",
+     "publisher": "Circle Divers",
+     "kind": "operator",
+     "quote": "Depth: 0-30 M Difficulty: Intermediate … The chimney closes at around 23 metres but divers can continue down to the next opening at 26-28 metres … at about 18 metres there is a cleaner fish family"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Blue_Hole_(Red_Sea)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The Bells entry is from the shore … Local dive centres take appropriately qualified divers to 30 m … At 26 m at the bottom of the Bells is a mini arch that should not be confused with the arch in the Blue Hole"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Chimney descent lit by sun rays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Cleaner fish station at about 18 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Narrow chimney entry; mini arch at 26 m is not the Arch",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shore entry through a narrow reef chimney that exits onto a wall at about 26-28 m, then follows the wall to the saddle into the Blue Hole. Guided centres take qualified divers to 30 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

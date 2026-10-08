@@ -1,0 +1,868 @@
+{
+ "batch": "notable-united-kingdom-10",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-195",
+   "name": "SS Rondo",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-35-the-rondo/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "The bow now rests dug into the seabed in 50m, with the stern rising to just 5m below the surface … strong currents that flow along the Sound of Mull … Visibility is normally excellent … The Rondo is best suited to sport divers and above"
+    },
+    "s2": {
+     "url": "https://www.tynesidebsac.co.uk/sound-of-mull/",
+     "publisher": "Tyneside BSAC",
+     "kind": "operator",
+     "quote": "she now lies bow down with her rudder at 6 metres and her bow down at 50 metres … The visibility was quite good, 10 metres plus"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 6,
+     "bottom": 50
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-through beneath the keel at about 36 m",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Wreck runs from 5 m stern to 50 m bow",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents funnel along the Sound of Mull",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Bow lies at 50 m, deep for sport divers",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steamer wrecked in the Sound of Mull in 1935 that now lies on a steep slope, with the stern shallow on the rudder post and the bow buried near 50 m. A boat dive for experienced sport divers, with strong tides.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Stern/rudder 5-6 m, bow dug into seabed at 50 m"
+  },
+  {
+   "id": "x-wikipedia-200",
+   "name": "SS Hispania (1912)",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-2-the-hispania/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "the stern in 32m and the bows in 24m … Best suited to Sports Divers or equivalent and above … Strong tides … An amazingly intact wreck that is covered from bow to stern in densely packed marine life"
+    },
+    "s2": {
+     "url": "https://scottishshipwrecks.com/hispania",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "Depths on the deck range from 15 – 20 metres with of course the holds and engine room much deeper … in 30 metres of water … She is normally buoyed and therefore very easily located"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 24,
+     "bottom": 32
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Normally buoyed",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact wreck smothered in anemones and hydroids",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong tides; dive at slack water",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Engine-room route partly blocked by debris",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A largely intact steamer lying upright on a slope in the Sound of Mull, with the deck in the high teens of metres and the stern near 30 m. Heavily encrusted in marine life; dive it at slack water.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-r20325186",
+   "name": "HMS Port Napier",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-12-the-port-napier/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "The Port Napier now rests in 16m on its starboard side … from newly qualified divers through to experienced wreck explorers … There are no dedicated dive boats in the area, but local charter-boats will take out parties of divers … can be dived at all states of the tide"
+    },
+    "s2": {
+     "url": "https://her.highland.gov.uk/Monument/MHG25580",
+     "publisher": "Highland Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The wreck lies in 21 metres of water but parts uncover at low water … She lies on her starboard side"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 16
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 21
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bow guns and kelp-covered port side",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Light through cut openings in the hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Shallow wreckage can hole a boat",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sharp metal at hull openings",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A minelayer lying on her starboard side in Loch Alsh off Skye, partly drying at low water. Wide range of dives from easy to penetration, reached by local charter boat from Kyle of Lochalsh or Kyleakin.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "penetration": {
+    "value": "Possible through cut openings; take a twinset",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1244",
+   "name": "HMS Jason",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/argonauts-dive-long-lost-hms-jason-at-93m/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "the 93m-deep wreck of HMS Jason … was off the island of Coll"
+    },
+    "s2": {
+     "url": "https://www.scottishshipwrecks.com/hms-jason/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "lies in 93 metres … well broken … clearly a war grave"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 93
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 93
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "War grave; exact position not published",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A WWI minesweeper that struck a mine between Mull and Coll in 1917 and lies broken in about 93 m, relocated by divers in 2022. A trimix-level war grave dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1081",
+   "name": "U-1206",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/u-1206/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "She lies in position 57° 18.246’N, 01° 35.832’W in 86 metres … remarkably in tact and the open torpedo tubes fore and aft"
+    },
+    "s2": {
+     "url": "https://uboat.net/boats/u1206.htm",
+     "publisher": "uboat.net",
+     "kind": "press",
+     "quote": "the remains of U-1206 were found in approx. 70m depth at 57.24N, 01.36W"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 86
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Remarkably intact U-boat with open torpedo tubes",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Sources give 70 m (1970s survey) and 86 m (diver-identified)"
+  },
+  {
+   "id": "x-notable-993",
+   "name": "HMS Natal",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Natal",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck itself is now designated as a controlled site under the Protection of Military Remains Act 1986"
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Designated a controlled site under the Protection of Military Remains Act 1986 (war grave, largely demolished)",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1301",
+   "name": "HMS Tantivy",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/tantivy/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "The wreck lies upright in 38m rising around 10 metres from the seabed and is in amazingly good condition … The six forward torpedo tubes are all in place, with the external doors open … periscopes rise around 10m above the sea bed"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 28,
+     "bottom": 38
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright submarine with torpedo tube doors open",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Periscopes rise 10 m off the seabed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Seabed 38 m; highest point (periscopes) about 28 m"
+  },
+  {
+   "id": "x-notable-1212",
+   "name": "HMS Erne",
+   "sources": {
+    "s1": {
+     "url": "https://scottishshipwrecks.com/hms-erne",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "driven ashore half a mile south of Rattray Head lighthouse … Some remains of what is thought to be HMS Erne survive at the site today exposed at low water"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Driven ashore on sand at Rattray Head in 1915 and broken up in place; only remains exposed at low water",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1114",
+   "name": "HMS Iolaire",
+   "sources": {
+    "s1": {
+     "url": "https://her.cne-siar.gov.uk/Monument/MWE102823",
+     "publisher": "Comhairle nan Eilean Siar Historic Environment Record",
+     "kind": "agency",
+     "quote": "General water depth = 11 … The vessel is totally broken up"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-news/1919-scottish-wreck-becomes-war-grave/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "now lies at a depth of around 11m … protected as a war grave from 2 September"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 11
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 11
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected war grave since Sept 2019; do not remove items",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Badly broken up, scattered wreckage",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A badly broken-up WWI naval yacht lost on the Beasts of Holm at the entrance to Stornoway harbour, lying in roughly 11 m. It is a protected war grave, so look but do not touch.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1129",
+   "name": "HMS Exmouth",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/hms-exmouth/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "She lies upturned in 56 metres … The wreck is partially in tact but collapsing"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/hms-exmouth-record-and-remember/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "In 2002, she was designated a controlled site under the Protection of Military Remains Act 1986 … In 2024, a licence to dive the site was obtained from the MOD"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 52,
+     "bottom": 56
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "PMRA-designated war grave; MOD licence needed to dive",
+    "refs": [
+     "s2"
+    ]
+   },
+   "depthNote": "Upturned hull rises about 4 m from the seabed; protection category sources differ"
+  },
+  {
+   "id": "x-notable-1072",
+   "name": "HMS Lynx",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/hms-lynx/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "press",
+     "quote": "She was well broken lying on seabed of mud and sand in a general depth of 57 metres … dived in 2000 in position 58° 09.900'N, 02° 30.650'W"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Lynx_(1913)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "struck a mine off the Moray Firth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 57
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A WWI destroyer mined in the Moray Firth in 1915, now well broken on a mud and sand seabed at about 57 m. Found by survey in 1991 and first dived in 2000; a technical-level dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1254",
+   "name": "HMS Sword Dance (possibly)",
+   "sources": {
+    "s1": {
+     "url": "https://her.highland.gov.uk/Monument/MHG24272",
+     "publisher": "Highland Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The least echosounder depth was 70 in a general depth of 77 metres … The vessel is about 50 metres (164 feet) long"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 70,
+     "bottom": 77
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Echo-sounder survey; identification as Sword Dance unconfirmed"
+  },
+  {
+   "id": "x-notable-924",
+   "name": "HMS Hawke",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-news/dive-team-finds-notable-ww1-warship-at-110m/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "at a depth of 110m, about 70 miles east of Fraserburgh"
+    },
+    "s2": {
+     "url": "https://codelift-managed.xray-mag.com/content/wreck-world-war-1-cruiser-hms-hawke",
+     "publisher": "X-Ray Mag",
+     "kind": "press",
+     "quote": "at a depth of around 110 metres (360ft)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 110
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A WWI cruiser torpedoed by U-9 in 1914, found by volunteer divers about 70 miles off the Aberdeenshire coast in around 110 m. Remarkably well preserved but a deep trimix dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1110",
+   "name": "HMS Seahorse",
+   "sources": {
+    "s1": {
+     "url": "https://uboat.net/allies/warships/ship/3420.html",
+     "publisher": "uboat.net",
+     "kind": "press",
+     "quote": "Loss position 54° 19'N, 7° 30'E … no wreck was reported to have been found. HMS Seahorse had disappeared without a trace and it is likely that she was probably mined"
+    }
+   },
+   "notDiveSite": {
+    "kind": "unlocated",
+    "reason": "Lost off Heligoland (54°19'N 7°30'E) in 1940 and never found; catalogue pin is in the central North Sea",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-304",
+   "name": "Calve Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Calve_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "an uninhabited low-lying island off the east coast of the Isle of Mull"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-174",
+   "name": "Tobermory, Mull",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Tobermory,_Mull",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Tobermory (Scottish Gaelic: Tobar Mhoire) is a harbour town in the Inner Hebrides, Scotland."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A harbour town, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-323",
+   "name": "St Kilda, Scotland",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/St_Kilda,_Scotland",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "a remote archipelago situated 35 nautical miles (65 kilometres) west-northwest of North Uist in the North Atlantic Ocean"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An island archipelago, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-305",
+   "name": "Bottle Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Bottle_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is one of the Summer Isles in Loch Broom, Scotland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-329",
+   "name": "Summer Isles",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Summer_Isles",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "an archipelago lying in the mouth of Loch Broom, in the Highland region of Scotland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An island archipelago, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{"batch":"notable-israel-1","researchedAt":"2026-10-07","sites":[
+{"id":"osm-n8577535117","name":"סטי\"ל","sources":{
+"s1":{"url":"https://www.adrex.com/en/articles/water/scuba-diving/sufa-satil-wreck-dive-in-the-red-sea-eilat-israel/","publisher":"Adrex","kind":"operator","quote":"she lies in a depth of 25 meters and the average dive depth ranges from 20 to max. 30 meters … The underwater visibility in the area is very good as it exceeds 15 meters."},
+"s2":{"url":"https://www.eilatredsea.com/?CategoryID=169&ArticleID=86","publisher":"Eilat Red Sea","kind":"press","quote":"This is a wreck dive to 24m which can be made at any time of day. … Ramp access to the water from the northernmost corner of Village Beach … reaches a depth of 12m"},
+"s3":{"url":"https://divemasteraustin.com/dive-sites/satil-wreck","publisher":"Divemaster Austin","kind":"press","quote":"The main deck sits at roughly 72 ft (22 m), and the deepest point of the wreck is around 75 ft (23 m). … Advanced Open Water"}},
+"depth":[{"ref":"s1","unit":"m","bottom":25},{"ref":"s2","unit":"m","top":12,"bottom":24}],
+"entry":{"value":"shore","refs":["s2"]},
+"types":{"value":["wreck"],"refs":["s2"]},
+"level":{"value":"intermediate","refs":["s3"]},
+"vis":{"low":15,"high":30,"unit":"m","refs":["s1"]},
+"mooring":{"value":"Position marked with buoys","refs":["s1"]},
+"access":{"value":"Shore entry via ramp at Village Beach, Eilat","refs":["s2"]},
+"penetration":{"value":"Semi-penetration at bow and stern; some parts sealed","refs":["s1","s2"]},
+"highlights":[{"text":"Bridge covered in soft purple coral","refs":["s2"]}],
+"summary":{"text":"A decommissioned Israeli Navy missile boat sunk off Eilat in 1994 as a reef. It sits upright on sand a short swim from Village Beach, with a bridge near 12 m and a deck around 20 m, and parts of the interior can be explored.","refs":["s1","s2"]},
+"depthNote":"Bridge 12 m, bow 18 m, stern 21 m, sand about 24-25 m"}
+]}

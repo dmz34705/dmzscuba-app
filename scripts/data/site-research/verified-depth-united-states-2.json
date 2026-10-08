@@ -1,0 +1,792 @@
+{
+ "batch": "verified-depth-united-states-2",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "noaa-fknms-benwood-wreck",
+   "name": "Benwood Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/benwood.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "The vessel lies between French Reef and Dixie Shoals surrounded by low-profile coral reef and sand in depths ranging from 25 to 45 feet. \u2026 The bow of the ship is the most-intact feature, forming a 25-foot vertical profile in the water column."
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/the-florida-keys-shipwreck-trail/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "Resident schools of porkfish, goatfish and schoolmaster snapper are the iconic highlights."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 45
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact bow rising about 25 ft off the bottom",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Resident porkfish, goatfish and schoolmaster snapper",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A freighter lost in 1942 and now a Florida Keys Shipwreck Trail dive off Key Largo, lying in 25-45 ft among low reef and sand. The bow is the most complete section, and schooling snapper and porkfish make it a popular, comfortable wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-spiegel-grove-wreck",
+   "name": "Spiegel Grove Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Spiegel_Grove",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her top deck is about 60 feet (18 m) below the water's surface. \u2026 is as much as 135 feet (41 m) under water. \u2026 The depth of the wreck requires that divers have an advanced certification. \u2026 Silt can get kicked up and reduce visibility inside to almost zero, which can cause disorientation."
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/the-florida-keys-shipwreck-trail/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "so immense that each dive is but a vignette of the whole. \u2026 overhead environment beyond ambient light"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 135
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Silt-outs inside the hull cause disorientation",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Overhead environment beyond ambient light",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Huge wreck: one dive covers only a fraction of it",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 510-ft Navy landing ship dock sunk off Key Largo as an artificial reef, with its top deck near 60 ft and hull to about 135 ft. Its sheer size rewards repeat dives, but depth and a silt-prone interior make it an advanced-diver wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-grecian-rocks",
+   "name": "Grecian Rocks",
+   "sources": {
+    "s1": {
+     "url": "https://www.afar.com/magazine/the-best-places-to-snorkel-in-key-largo-florida",
+     "publisher": "Afar",
+     "kind": "press",
+     "quote": "more protected than many other reefs, making it a fine option for choppy, windy days. \u2026 bright-purple fan corals swaying gently in the current"
+    },
+    "s2": {
+     "url": "https://reefsmartguides.com/?p=8046",
+     "publisher": "Reef Smart Guides",
+     "kind": "press",
+     "quote": "Grecian Rocks sits just south of the Christ of the Abyss statue, off the coast of Key Largo. \u2026 parts of the reef are exposed at high tide making it a popular snorkeling site"
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Purple fan corals swaying in the current",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow patch reef off Key Largo beside the Christ of the Abyss site, whose crest breaks the surface at high tide. It is sheltered enough to dive or snorkel on breezy days and is rich in fan corals and reef fish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-north-dry-rocks",
+   "name": "North Dry Rocks",
+   "sources": {
+    "s1": {
+     "url": "https://www.rainbowreef.com/dive-locations-in-key-largo/key-largo-northern-dry-rocks/north-dry-rocks",
+     "publisher": "Rainbow Reef Dive Center",
+     "kind": "operator",
+     "quote": "12-25 feet \u2026 Open Water \u2026 Any one of the 2 or 3 mooring balls features abundant colorful coral and tropical fish under it."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "2-3 mooring balls on site",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral mounds with abundant tropical fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-notable-788",
+   "name": "Half Moon",
+   "sources": {
+    "s1": {
+     "url": "https://home.nps.gov/articles/halfmoon.htm",
+     "publisher": "National Park Service",
+     "kind": "agency",
+     "quote": "resting in eight-ten ft. of water, three-four ft. below the surface. \u2026 The preserve is open to the public year round, free of charge."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/floridas-underwater-archaeological-preserves-half-moon/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "8 to 10 feet (2.4 to 3 m) of water \u2026 Mooring balls \u2026 especially suited for snorkelers because of its depth \u2026 damselfish, sergeant majors, spiny lobster, bristle worms, angelfish and porcupinefish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 3,
+     "bottom": 10
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 3,
+     "bottom": 10
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring balls on site",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Florida Underwater Archaeological Preserve; open year round, free of charge",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Damselfish, sergeant majors, spiny lobster, angelfish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The 1930 wreck of a former racing yacht sits on a shoal off Key Biscayne in only 8-10 ft of water, with just a few feet over the hull. A free state archaeological preserve with mooring balls, it suits snorkelers and relaxed shallow dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869458",
+   "name": "S.S. Inchulva / Delray Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://www.waterfront-properties.com/blog/its-a-wreck-out-there-delray-beach.html",
+     "publisher": "Waterfront Properties",
+     "kind": "press",
+     "quote": "rests in only 25 feet of water \u2026 excellent for the beginner diver \u2026 a couple hundred feet off the Delray Beach Municipal Beach"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Delray_Wreck",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "located about 150 yards (140 m) offshore \u2026 is now a popular dive site"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The remains of a steamship wrecked in a 1903 hurricane lie just off Delray Beach's public beach in about 25 ft of water. The shallow depth and short distance from shore make it a popular first wreck for newer divers and snorkelers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-228",
+   "name": "USCGC Mohawk (WPG-78)",
+   "sources": {
+    "s1": {
+     "url": "https://visitfortmyers.com/listing/uss-mohawk-memorial-reef/45594",
+     "publisher": "Visit Fort Myers",
+     "kind": "press",
+     "quote": "90 feet under water, roughly 28 nautical miles off of Sanibel Island \u2026 2 Moorings: Bow and Stern \u2026 Highest Relief: 60 Feet"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/USCGC_Mohawk_(WPG-78)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "28 nautical miles off the coast of Captiva Island \u2026 the first dedicated veterans memorial military ship reef in the United States of America"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Bow and stern moorings",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright 165-ft cutter with smokestack and engine room",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 165-ft Coast Guard cutter sunk in 2012 as a veterans memorial reef about 28 nautical miles offshore of southwest Florida. Resting upright in roughly 90 ft with bow and stern moorings, it is a boat-only wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-pbc-bath-tennis-reef-pbc2",
+   "name": "Bath & Tennis Reef PBC2",
+   "sources": {
+    "s1": {
+     "url": "https://www.waterfront-properties.com/blog/jupiter-area-dive-spots.html",
+     "publisher": "Waterfront Properties",
+     "kind": "press",
+     "quote": "40-60 feet; just east of Mar-A-Lago, Trump's seaside mansion, is a prolific reef less visited by divers, who enjoy the ledge relief and numerous fish."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ledge relief and numerous fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-pbc-flower-garden",
+   "name": "Flower Garden",
+   "sources": {
+    "s1": {
+     "url": "https://www.waterfront-properties.com/blog/5-dive-spots-in-palm-beach.html",
+     "publisher": "Waterfront Properties",
+     "kind": "press",
+     "quote": "Swarming with sponges, bright tropical fish and many sea creatures \u2026 inward and outward ledge drop \u2026 shallow and quiet dive site \u2026 recommended for intermediate divers"
+    },
+    "s2": {
+     "url": "https://scubaverse.com/florida-fly-drive-dive-part-2-palm-beach-county",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "quote": "Dive sites such as Juno's Ledge and Flower Gardens offered up both the small stuff with numerous types of shrimp, crab and nudis to the big stuff with Goliath grouper, barracuda and sharks."
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sponges, tropical fish, Goliath grouper, barracuda",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A ledge reef a few miles off Palm Beach with an inside and outside drop, covered in sponges and busy with reef fish. Calm and fairly shallow, it ranges from small critters to grouper and barracuda and suits intermediate divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-pbc-zion-train-bow",
+   "name": "Zion Train Bow",
+   "sources": {
+    "s1": {
+     "url": "https://www.waterfront-properties.com/blog/5-dive-spots-in-palm-beach.html",
+     "publisher": "Waterfront Properties",
+     "kind": "press",
+     "quote": "Dutch 164 foot long shipwreck that rests one mile north of the Jupiter Inlet \u2026 about 90 feet of water \u2026 compartments and the fascinating engine room"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Compartments and engine room in a 164-ft steel hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-curated-618",
+   "name": "Peacock Springs",
+   "sources": {
+    "s1": {
+     "url": "https://www.floridacaves.com/peacock.htm",
+     "publisher": "FloridaCaves.com",
+     "kind": "press",
+     "quote": "Those without at least a cavern certification at Orange Grove may only dive if an instructor is present. \u2026 your caver certification card on your vehicle dashboard while you are diving so that the rangers may check. \u2026 Scooters (DPVs) are not allowed in Peacock Springs"
+    },
+    "s2": {
+     "url": "https://www.florida-backroads-travel.com/wes-skiles-peacock-springs-state-park.html",
+     "publisher": "Florida Backroads Travel",
+     "kind": "press",
+     "quote": "over 38,000 feet of passages \u2026 one of the longest underwater cave systems in the continental United States"
+    }
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "State park; certification card displayed on dashboard; cavern/cave cert needed in cave systems; no scooters",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Overhead cave passages require cave certification",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Over 38,000 ft of mapped passages",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Suwannee County state park holding one of the longest underwater cave networks in the continental U.S. Divers walk in from the car park, must show certification, and need cavern or cave training for most of the systems; scooters are banned.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-316",
+   "name": "Circle of Heroes",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Circle_of_Heroes",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "10 miles off the coast of Honeymoon Island State Park in the Gulf of Mexico \u2026 36 to 40 ft (11 to 12 m) \u2026 average visibility of 31 to 35 ft (9.4 to 10.7 m) \u2026 by boat"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 36,
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 31,
+    "high": 35,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ring of 13 veteran statues around a central monument",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "osm-n3149301713",
+   "name": "Weeki Wachee Spring",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Weeki_Wachee_Springs",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The 407 ffw depth makes the cave system under Weeki Wachee springs the deepest known freshwater cave system in the United States. \u2026 the discharge level at Weeki Wachee spring dropped to a level that allowed for cave divers to gain effective entry into the cave system"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 407
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Cave entry only practical when spring discharge is unusually low (as in 2007)",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Deepest known freshwater cave system in the US",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-216",
+   "name": "USS Accokeek",
+   "sources": {
+    "s1": {
+     "url": "https://floridapanhandledivetrail.com/Ships/Accokeek",
+     "publisher": "Florida Panhandle Shipwreck Trail",
+     "kind": "agency",
+     "quote": "100 ft."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/USS_Accokeek",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a recreational dive site of the Florida Panhandle Shipwreck Trail"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n3167637595",
+   "name": "Troy Spring",
+   "sources": {
+    "s1": {
+     "url": "https://map.mysuwanneeriver.com/district-springs/troy-spring-23",
+     "publisher": "Suwannee River Water Management District",
+     "kind": "agency",
+     "quote": "70-foot-deep \u2026 offers many opportunities for swimming, snorkeling, and diving \u2026 the remains of the Civil War-era steamboat Madison, which was scuttled at the spring in 1863"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 70
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Civil War steamboat Madison scuttled in 1863",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 70-ft-deep spring on the Suwannee River whose main draw is the steamboat Madison, scuttled in 1863 to keep it from capture. Open for swimming, snorkeling and diving.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-798",
+   "name": "Urca de Lima",
+   "sources": {
+    "s1": {
+     "url": "https://www.nps.gov/articles/urcadelima.htm",
+     "publisher": "National Park Service",
+     "kind": "agency",
+     "quote": "10-15 ft. of water \u2026 200 yards offshore \u2026 The preserve is open to the public year round, free of charge."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/floridas-underwater-archaeological-preserves-urca-de-lima/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "10 to 15 feet (3 to 4.5 m) of water on the first offshore reef \u2026 200 yards (180 m) offshore \u2026 sea urchins, sea cucumbers, flounder, wrasse and blue tang"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 15
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Underwater archaeological preserve; free, open year round; no souvenir collecting",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea urchins, flounder, wrasse and blue tang",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Florida's first underwater archaeological preserve: the scattered remains of a 1715 Spanish treasure fleet ship lie 200 yards off Fort Pierce in 10-15 ft of water. Shallow and free to visit, it is a good snorkel or easy dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

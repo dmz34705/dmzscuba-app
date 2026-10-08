@@ -1,0 +1,124 @@
+{
+ "batch": "notable-saudi-arabia-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-notable-1158",
+   "name": "IMO 6611461",
+   "sources": {
+    "s1": {
+     "url": "https://lifeinsaudiarabia.net/what-is-al-fahad-shipwreck-in-jedda/",
+     "publisher": "Life in Saudi Arabia",
+     "kind": "press",
+     "quote": "Mooring line should be followed which is basically between the wreck and dive boat, it is the safest. … protruding sharp rusty edges of the wreck … it is possible that the wreck may collapse suddenly."
+    },
+    "s2": {
+     "url": "https://www.listmag.com/en/see-and-do/a-birds-eye-view-of-the-al-fahad-shipwreck-2376",
+     "publisher": "The List Magazine",
+     "kind": "press",
+     "quote": "is home to a wide variety of sea creatures and marine life."
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/MV_Free_Enterprise_III",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "has subsequently become popular as a scuba dive site"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring line runs between the wreck and the dive boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rusting 385 ft ferry wreck grounded on the reef",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Fish sheltering under and around the hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Sharp rusty edges",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Wreck may collapse suddenly",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The former cross-Channel ferry Free Enterprise III, later Al Fahad, ran aground on the Jeddah coast in 2004 and is now a boat-accessed wreck dive. Divers follow the mooring line past a corroding hull busy with reef fish.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-48",
+   "name": "Red Sea",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Red_Sea",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The Red Sea is a mediterranean sea lying between the Arabian Peninsula and Africa."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An entire sea, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-385",
+   "name": "Al-Bad'",
+   "sources": {
+    "s1": {
+     "url": "https://madainproject.com/al_bada",
+     "publisher": "Madain Project",
+     "kind": "press",
+     "quote": "is a small town in the province of Tabuk in modern day Saudi Arabia."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A town inland in Tabuk Province, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

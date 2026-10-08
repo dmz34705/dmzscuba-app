@@ -1,0 +1,6 @@
+{ "batch": "notable-myanmar-1", "researchedAt": "2026-10-07", "sites": [
+  { "id": "x-wikipedia-364", "name": "Mergui Archipelago",
+    "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Mergui_Archipelago", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "Archipelago in far southern Myanmar … contributing to the region's growing popularity as a diving destination" } },
+    "notDiveSite": { "kind": "area", "reason": "A whole island archipelago in the Andaman Sea, not a single dive site", "refs": ["s1"] } }
+] }

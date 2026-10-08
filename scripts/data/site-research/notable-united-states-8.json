@@ -1,0 +1,1302 @@
+{
+ "batch": "notable-united-states-8",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikilist-767",
+   "name": "T. H. Camp",
+   "sources": {
+    "s1": {
+     "url": "https://www.wisconsinshipwrecks.org/Vessel/Details/597",
+     "publisher": "Wisconsin Historical Society / Wisconsin Sea Grant (Wisconsin Shipwrecks)",
+     "kind": "agency",
+     "quote": "one of the earliest generation of steam powered fishing boats to appear on the Great Lakes … Vessel is completely intact; rests in 170 feet of water; 20 tons of overwinter supplies also intact."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/T.H._Camp_(shipwreck)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Sank November 16, 1900 Notes Added to the National Register of Historic Places in 2004"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 170
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hull completely intact",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "About 20 tons of supplies still aboard",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small steam fishing tug that foundered in 1900 off Madeline Island, overloaded with lumber-camp supplies. The state lists it as completely intact on the bottom at about 170 ft, a deep Lake Superior dive.",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Intact hull on the bottom at 170 ft"
+  },
+  {
+   "id": "x-wikipedia-80",
+   "name": "SS Marquette (1881)",
+   "sources": {
+    "s1": {
+     "url": "https://www.wisconsinshipwrecks.org/Vessel/Details/417",
+     "publisher": "Wisconsin Historical Society / Wisconsin Sea Grant (Wisconsin Shipwrecks)",
+     "kind": "agency",
+     "quote": "The Marquette lies in 215 feet of water five miles east of Michigan Island, Lake Superior."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Marquette_(1881)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The remains of the Marquette rest in 215 feet (66 m) of water about five miles … the hull is progressively broken from bow (which is almost intact) to stern."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 215
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 215
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bow section almost intact",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden ore steamer that foundered in 1903 and now lies deep off the Apostle Islands. Located in 2004 by wreck hunters, it sits in about 215 ft with the bow nearly whole and the hull breaking up toward the stern.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Wreck rests in about 215 ft"
+  },
+  {
+   "id": "x-wikipedia-480",
+   "name": "Moonlight",
+   "sources": {
+    "s1": {
+     "url": "https://www.wisconsinshipwrecks.org/Vessel/Details/441",
+     "publisher": "Wisconsin Historical Society / Wisconsin Sea Grant (Wisconsin Shipwrecks)",
+     "kind": "agency",
+     "quote": "The wreck of the schooner barge Moonlight lies in 240 feet of water seven miles east of Michigan Island … The hull is broken up, but large hull structures remain intact and many artifacts liter the site undisturbed."
+    },
+    "s2": {
+     "url": "https://www.wisconsinhistory.org/Records/NationalRegister/NR2183",
+     "publisher": "Wisconsin Historical Society (National Register record)",
+     "kind": "agency",
+     "quote": "The remains of the schooner barge Moonlight rest in 240 feet of water east of Michigan Island in Lake Superior."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 240
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 240
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large hull sections still intact",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Artifacts lie undisturbed on the site",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden schooner barge that sank in 1903 east of Michigan Island. It lies in about 240 ft: the hull is broken up but large structures survive and many artifacts remain undisturbed, making it a technical-depth dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Wreck lies in about 240 ft"
+  },
+  {
+   "id": "x-wikipedia-152",
+   "name": "SS Onoko",
+   "sources": {
+    "s1": {
+     "url": "https://mnhs.gitlab.io/archive/shipwrecks/www.mnhs.org/places/nationalregister/shipwrecks/onoko/onopd.html",
+     "publisher": "Minnesota Historical Society (archived Minnesota Lake Superior shipwreck pages)",
+     "kind": "agency",
+     "quote": "The wreck lies in 220 feet of water … broken almost in half forward the boiler and both sections lie upside down on a mud bottom."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Onoko",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her wreck rests upside down in 220 feet (67 m) of water with her stern buried almost completely in mud."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 220
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 220
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Iron hull lies upside down on a mud bottom",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Hull broken nearly in half",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An 1880s iron bulk freighter that leaked and sank in 1915, found by wreck hunters in 1988. It lies inverted on mud in about 220 ft south of Knife Island, with the hull split in two forward of the boilers; a deep technical dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Inverted hull in 220 ft on mud"
+  },
+  {
+   "id": "x-wikipedia-153",
+   "name": "SS Robert Wallace",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Robert_Wallace",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "rests relatively intact in 240 feet (73 m) of water about seven miles"
+    },
+    "s2": {
+     "url": "https://3dshipwrecks.org/shipwreck-robert-wallace/",
+     "publisher": "3DShipwrecks.org",
+     "kind": "press",
+     "quote": "Depth 240′ GPS Coordinates 46 o 50.819’N 91 o 43.729′ W Site Description: The wreck lies mid lake near the shipping lanes off of Knife River, MN."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 240
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 240
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Relatively intact hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel-era Lake Superior freighter that sprang a leak and sank in 1902, found in 2006. It rests relatively intact in about 240 ft off Knife River, a deep technical dive well out in the shipping lanes.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Intact wreck in 240 ft"
+  },
+  {
+   "id": "x-wikipedia-631",
+   "name": "John M. Osborn",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council (Whitefish Point Underwater Preserve)",
+     "kind": "park",
+     "quote": "John Osborn (1884) 145′ to 165′ N 46° 51.974 W 085° 05.210"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/John_M._Osborn",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The Osborn lies in 165 feet (50 m) of water at 46°51.974′N 85°05.210′W"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 145,
+     "bottom": 165
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 165
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Within the Whitefish Point Underwater Preserve (Michigan)",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A wooden steamer lost in 1884 after a collision in fog in Whitefish Bay. It lies at roughly 145 to 165 ft within the Whitefish Point Underwater Preserve, making it an advanced to technical dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Listed 145-165 ft"
+  },
+  {
+   "id": "x-wikipedia-164",
+   "name": "Thomas Friant (fish tug)",
+   "sources": {
+    "s1": {
+     "url": "https://www.wisconsinhistory.org/Records/NationalRegister/NR2647",
+     "publisher": "Wisconsin Historical Society (National Register record)",
+     "kind": "agency",
+     "quote": "are the remains of the converted fish tug Thomas Friant lies in 293 feet of water"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Thomas_Friant_(fish_tug)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Thomas Friant rests upright and totally intact in 290 to 305 feet (88 to 93 m) of water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 293
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 290,
+     "bottom": 305
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright and totally intact",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden passenger steamer turned fish tug that was holed by ice and sank in 1924. It sits upright and intact in roughly 290-305 ft of Lake Superior off Port Wing, Wisconsin; a deep technical dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Upright, intact in about 293 ft"
+  },
+  {
+   "id": "x-wikipedia-524",
+   "name": "SS Henry B. Smith",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Henry_B._Smith",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The ship lies in 535 feet (163 m) of water, 30 mi (48 km) north of Marquette."
+    },
+    "s2": {
+     "url": "https://www.mprnews.org/story/2013/06/09/1913-shipwreck-found-in-lake-superior",
+     "publisher": "Minnesota Public Radio",
+     "kind": "press",
+     "quote": "found the wreck last month in about 535 feet of water off the shore of Marquette, Mich."
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Lies in about 535 ft of water far offshore, well beyond sport and technical diving depths",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-517",
+   "name": "SS Benjamin Noble",
+   "sources": {
+    "s1": {
+     "url": "https://shotlinediving.com/wreck/benjamin-noble-1909/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "Depth at Wreck Site : 111 m / 365 ft Location : Near Knife Island … located approximately 8 miles off Knife Island at a depth of 365 feet"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Benjamin_Noble",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "the hulk of the Benjamin Noble was rediscovered in the autumn of 2004."
+    },
+    "s3": {
+     "url": "https://news.minnesota.publicradio.org/features/2005/07/20_hemphills_superiorwreck/",
+     "publisher": "Minnesota Public Radio",
+     "kind": "press",
+     "quote": "The front half of the ship is buried in 40 feet of mud."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 365
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Forward half buried in 40 ft of mud",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel steamer that foundered in a Lake Superior gale in April 1914 with all hands, her cargo of steel rails thought to have made her top-heavy. Rediscovered in 2004 about 8 miles off Knife Island at roughly 365 ft, far beyond recreational limits.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Wreck at about 365 ft"
+  },
+  {
+   "id": "x-wikipedia-155",
+   "name": "Niagara (tug)",
+   "sources": {
+    "s1": {
+     "url": "https://mnhs.gitlab.io/archive/shipwrecks/www.mnhs.org/places/nationalregister/shipwrecks/niagara/niapd.html",
+     "publisher": "Minnesota Historical Society (archived Minnesota Lake Superior shipwreck pages)",
+     "kind": "agency",
+     "quote": "lying on a rocky slope off Knife Island … Its forward end is at a depth of 65 feet and the after end is in 85 feet of water."
+    },
+    "s2": {
+     "url": "https://3dshipwrecks.org/shipwreck-niagara/",
+     "publisher": "3DShipwrecks.org",
+     "kind": "press",
+     "quote": "Depth 50’ to 90’ GPS Coordinates 46 o 56.679′ N 91 o 46.358′ W Site Description: The wreck lies on the lake side of Knife Island"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 95
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The broken remains of a wooden rafting tug that wrecked in 1904, scattered in four main sections down a steep rocky slope on the lake side of Knife Island. Pieces lie from roughly 65 to 95 ft.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Sections from 65 ft to 95 ft down a rocky slope"
+  },
+  {
+   "id": "x-wikipedia-519",
+   "name": "SS Harriet B.",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Harriet_B.",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "rests upright, and almost totally intact in 656 feet (200 m) of water approximately four miles off Two Harbors, Minnesota."
+    },
+    "s2": {
+     "url": "https://3dshipwrecks.org/shipwreck-harriet-b/",
+     "publisher": "3DShipwrecks.org",
+     "kind": "press",
+     "quote": "The wreck lies in 656 ft of water four miles east of Two Harbors, MN in Lake Superior."
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Rests in about 656 ft of water, far beyond sport and technical diving depths",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-511",
+   "name": "Sevona",
+   "sources": {
+    "s1": {
+     "url": "https://www.wisconsinshipwrecks.org/Vessel/Details/565",
+     "publisher": "Wisconsin Historical Society / Wisconsin Sea Grant (Wisconsin Shipwrecks)",
+     "kind": "agency",
+     "quote": "The Sevona lies in 20 feet of water on Sand Island Shoal. … This lower hull consists of two large sections … The bottom is flat sandstone."
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/sevona-emily-p-weed/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "Depth at Wreck Site : 6 m / 20 ft … Access is by boat from Little Sand Bay, approximately 4 miles away. The dive conditions are freshwater with visibility ranging from 15 to 40 ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 40,
+    "unit": "ft",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Boat from Little Sand Bay (about 4 miles); state archaeological site, no artifact removal",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two large lower-hull sections on sandstone",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Keel, floors and stringers visible",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel freighter that struck Sand Island Shoal in 1905 and was later blasted by the Army Corps. The shallow remains, about 20 ft down, are two big lower-hull sections and a debris field on flat sandstone, reached by boat from Little Sand Bay.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Shallow wreck in about 20 ft"
+  },
+  {
+   "id": "x-wikipedia-141",
+   "name": "Samuel P. Ely",
+   "sources": {
+    "s1": {
+     "url": "https://mnhs.gitlab.io/archive/shipwrecks/www.mnhs.org/places/nationalregister/shipwrecks/ely/elypd.html",
+     "publisher": "Minnesota Historical Society (archived Minnesota Lake Superior shipwreck pages)",
+     "kind": "agency",
+     "quote": "The wreck is estimated to be 70 percent complete … The Ely's hull is still largely intact."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Samuel_P._Ely_(shipwreck)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "she drifted toward the breakwater . Around midnight, she was wedged against the rocks of the breakwater"
+    },
+    "s3": {
+     "url": "https://www.northshorevisitor.com/attractions/shipwrecks/",
+     "publisher": "North Shore Visitor",
+     "kind": "press",
+     "quote": "In 1962 divers found the Ely in about 30 feet of water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hull largely intact, about 70 percent complete",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [],
+   "summary": {
+    "text": "A wooden schooner swept onto the Two Harbors breakwater in an 1896 storm and left wedged there. Its oak hull is largely intact and estimated about 70 percent complete, lying in shallow water that divers have visited since the 1950s.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Shallow, about 30 ft (1962 report)"
+  },
+  {
+   "id": "x-wikipedia-150",
+   "name": "SS Lafayette (1900)",
+   "sources": {
+    "s1": {
+     "url": "https://www.forgottenminnesota.com/2013/11/01/2013-11-the-gales-of-november-the-lafayette/",
+     "publisher": "Forgotten Minnesota",
+     "kind": "press",
+     "quote": "The debris sits in ten to twenty feet of water just off the shore."
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/lafayette/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "However, the site is not suitable for standard diving due to shoreline hazards and poor visibility."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Shoreline hazards and poor visibility",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Scattered remains of a 454-ft steel freighter wrecked against the rocky shore in the 1905 Mataafa storm. Only small debris sits in 10-20 ft just offshore, and the site is described as unsuited to standard diving.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Debris in 10-20 ft just off shore"
+  },
+  {
+   "id": "x-wikipedia-135",
+   "name": "Madeira",
+   "sources": {
+    "s1": {
+     "url": "https://mnhs.gitlab.io/archive/shipwrecks/www.mnhs.org/places/nationalregister/shipwrecks/madeira/madpd.html",
+     "publisher": "Minnesota Historical Society (archived Minnesota Lake Superior shipwreck pages)",
+     "kind": "agency",
+     "quote": "Water visibility varies from 20 to 60 feet in both shallow and deeper areas of the site. Water depths range from 15 to over 100 feet. … The bow section is located in 40 feet of water"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Madeira_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The bow is upside-down in 40 to 50 feet (12 to 15 meters) of water, and the stern, containing a large steam winch and open hatches, lies on its starboard side at 65 feet (20 meters) ."
+    },
+    "s3": {
+     "url": "https://3dshipwrecks.org/shipwreck-madeira/",
+     "publisher": "3DShipwrecks.org",
+     "kind": "press",
+     "quote": "Depth 20 to 200 ft … the main visited sections are the broken bow, stern, and pilothouse which lie on the south side of Gold Rock Point and are buoyed by GLSPS."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 65
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 60,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Great Lakes Shipwreck Preservation Society buoys on the main wreck sections",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upside-down bow in about 40 ft",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Stern with steam winch and open hatches",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Pilothouse and boat deck survive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel schooner-barge smashed against Gold Rock cliff near Split Rock Lighthouse in the 1905 storm. The bow, stern and pilothouse lie at roughly 40 to 70 ft among scattered wreckage, with visibility of 20 to 60 ft and buoys on the main sections.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Bow about 40 ft, stern about 65-70 ft"
+  },
+  {
+   "id": "x-wikipedia-503",
+   "name": "SS Hesper",
+   "sources": {
+    "s1": {
+     "url": "https://mnhs.gitlab.io/archive/shipwrecks/www.mnhs.org/places/nationalregister/shipwrecks/hesper/hespd.html",
+     "publisher": "Minnesota Historical Society (archived Minnesota Lake Superior shipwreck pages)",
+     "kind": "agency",
+     "quote": "The well preserved wreck of the wooden-hulled steamer Hesper is located in approximately 30 to 48 feet of water. The wreck lies about halfway down the west breakwall of the Silver Bay Harbor"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Hesper",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck of Hesper is well preserved and lies in 30 to 48 feet (9 to 15 meters) of water about halfway down the west breakwall of the Silver Bay harbor."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 48
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 48
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Well preserved wooden hull",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Engine mount with 2-3 ft bolts",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden steamer lost in 1905 and now lying along the west breakwall of Silver Bay harbor on Minnesota's North Shore. The well-preserved hull sits in about 30 to 48 ft, with its keelson, frames and engine mount still visible.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Hull in 30-48 ft along the breakwall"
+  },
+  {
+   "id": "x-wikilist-759",
+   "name": "George Spencer",
+   "sources": {
+    "s1": {
+     "url": "https://mnhs.gitlab.io/archive/shipwrecks/www.mnhs.org/places/nationalregister/shipwrecks/spencer/spepd.html",
+     "publisher": "Minnesota Historical Society (archived Minnesota Lake Superior shipwreck pages)",
+     "kind": "agency",
+     "quote": "lies just off the beach approximately 1 mile south of Sugar Loaf Cove. … lies 40 feet from shore in 3 feet of water, the opposite end lying in 20 feet."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_George_Spencer",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "A piece of her hull, possibly the bow lies in 3 feet (0.91 m) of water and about 40 feet (12 m) from the beach. … Her stern lies in 20 feet (6.1 m) ."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 3,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 3,
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "141 ft of hull base with keelson and stringers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The remains of a steel-era bulk freighter wrecked in the 1905 Mataafa storm, lying just off a cobble beach about a mile south of Sugar Loaf Cove. A 141-ft section of hull base runs from 3 ft near shore out to about 20 ft, an easy shallow wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Hull runs from 3 ft near shore to 20 ft"
+  },
+  {
+   "id": "x-wikilist-769",
+   "name": "Western Reserve",
+   "sources": {
+    "s1": {
+     "url": "https://www.smithsonianmag.com/smart-news/historic-century-old-shipwreck-discovered-600-feet-beneath-the-surface-of-lake-superior-180986220/",
+     "publisher": "Smithsonian Magazine",
+     "kind": "press",
+     "quote": "Using side-scan sonar and remotely operated underwater vehicles, researchers with the Great Lakes Shipwreck Historical Society located the Western Reserve … It’s submerged 600 feet deep."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Western_Reserve",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "the hulk was finally found laying 600 feet (180 m) deep off the coast of Whitefish Point."
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Lies about 600 ft down, found and explored only with sonar and remotely operated vehicles",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-764",
+   "name": "Mesquite",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council (Keweenaw Underwater Preserve)",
+     "kind": "park",
+     "quote": "Mesquite (1989) 82′ to 112′ N 47° 23.440 W 087° 44.530"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/USCGC_Mesquite",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck was lowered to the bottom in 117 feet (36 m) of water."
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/USCGC_Mesquite",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She was scuttled nearby as a recreational diving attraction."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 82,
+     "bottom": 112
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 117
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Within the Keweenaw Underwater Preserve",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A former Coast Guard buoy tender that ran aground off Keweenaw Point in 1989 and was then deliberately sunk nearby as a dive attraction. It rests at roughly 82 to 112 ft in the Keweenaw Underwater Preserve.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "depthNote": "Listed 82-112 ft; sunk intentionally as a dive site"
+  },
+  {
+   "id": "x-wikipedia-148",
+   "name": "SS William C. Moreland",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/keweenaw-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserve Council (Keweenaw Underwater Preserve)",
+     "kind": "park",
+     "quote": "William C. Moreland (1910) 40′ N 47° 25.070 W 088° 19.600"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_William_C._Moreland",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Moreland ' s bow section eventually slipped off the reef into 25–40 feet (7.6–12.2 m) of water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Within the Keweenaw Underwater Preserve",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A steel bulk freighter that grounded and broke up on a reef near Eagle River in 1910. The surviving bow section lies in about 25 to 40 ft within the Keweenaw Underwater Preserve, a shallow wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Bow section in 25-40 ft"
+  },
+  {
+   "id": "x-wikipedia-311",
+   "name": "Sund Rock",
+   "sources": {
+    "s1": {
+     "url": "https://seattledivetours.com/sund-rock",
+     "publisher": "Seattle Dive Tours",
+     "kind": "operator",
+     "quote": "Divers can explore the north or south walls, and a shallow basin in between; the site varies from 20' to 110' … limited entry (resrevation based) is closed to fishing … Giant Pacific Octopus, Wolf eels, Rockfish"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Sund_Rock",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "These walls have depths 70 to 80 feet (21 to 24 m) , depending upon the tide. … Recreational divers appreciate Sund Rock because it is not a current-sensitive area"
+    },
+    "s3": {
+     "url": "https://explorehoodcanal.com/thingstodo/scuba",
+     "publisher": "Explore Hood Canal",
+     "kind": "press",
+     "quote": "Sund Rock Marine Preserve The crown jewel of Hood Canal diving. Deep walls draped in plumose anemones, resident wolf eels and giant Pacific octopus in relatively shallow water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Marine preserve with limited, reservation-based entry; closed to fishing",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "North and south walls",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Giant Pacific octopus and wolf eels",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    },
+    {
+     "text": "Plumose anemone-draped walls",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A protected cove on Hood Canal near Hoodsport with north and south walls and a shallow basin between them. Main walls run about 70-80 ft with deeper ones past 100 ft, little current, and resident wolf eels and giant Pacific octopus.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Site spans 20-110 ft; main walls 70-80 ft"
+  },
+  {
+   "id": "x-wikipedia-312",
+   "name": "Octopus Hole Conservation Area",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Octopus_Hole_Conservation_Area",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Dive type Open-water Depth range 20 to 60 ft (6.1 to 18.3 m) Average visibility 26 to 30 ft (7.9 to 9.1 m)"
+    },
+    "s2": {
+     "url": "https://explorehoodcanal.com/thingstodo/scuba",
+     "publisher": "Explore Hood Canal",
+     "kind": "press",
+     "quote": "Octopus Hole Conservation Area Protected waters near Hoodsport with reliable octopus encounters. The conservation designation means marine life is unusually bold and abundant. A must-do for macro photographers. ⭐ All skill levels · Depth to 60 ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "vis": {
+    "low": 26,
+    "high": 30,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Conservation area: no hunting or gathering of any kind",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reliable giant Pacific octopus encounters",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Wolf eels, lingcod and nudibranchs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A protected Hood Canal dive site near Hoodsport known for bold, abundant marine life, especially giant Pacific octopus. Most diving is within about 20-60 ft with roughly 26-30 ft visibility; no hunting or gathering is allowed.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Typical range 20-60 ft"
+  },
+  {
+   "id": "x-wikipedia-531",
+   "name": "SS Hudson (1887)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Hudson_(1887)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Hudson today [ edit ] The wreck of the Hudson rests in 825 feet (251 m) of water, with her hull completely intact. … Due to the depth of her wreck, she is almost impossible for divers to explore."
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Rests in about 825 ft of water; described as almost impossible for divers to explore",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-538",
+   "name": "SS C. F. Curtis",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_C._F._Curtis",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her wreck rests in roughly 500 feet (152.4 m) of water, approximately 20 miles (32.2 km) off Grand Marais, Michigan"
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Rests in roughly 500 ft of water about 20 miles offshore, beyond sport and technical diving depths",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-534",
+   "name": "129 (barge)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/129_(barge)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "found in 35 miles (56.3 km) off Vermilion Point in 650 feet (198.1 m) of water. … 129 ' s wreck was explored during the summer of 2022 using a remotely operated vehicle"
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Lies in about 650 ft of water 35 miles offshore; explored only by remotely operated vehicle",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

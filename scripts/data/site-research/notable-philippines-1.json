@@ -1,0 +1,671 @@
+{
+ "batch": "notable-philippines-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-notable-952",
+   "name": "Pandanan Shipwreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Pandanan_shipwreck",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "had a depth of approximately 40 meters below sea level. … only 250 meters away from the northeast coast"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-367",
+   "name": "Tubbataha Reef",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Tubbataha_Reef",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "All trips are vessel-based or 'liveaboard' as there are no accommodation facilities. … operate during the diving season from mid-March to mid-June"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/destination/tubbataha-reef-diving",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "March–June only … Some Tubbataha dive sites experience strong currents. … 32 to 114 feet (10-35 meters), depending on the tides."
+    },
+    "s3": {
+     "url": "https://www.liveaboard.com/diving/season-calendar/best-time-to-dive-in-tubbataha",
+     "publisher": "Liveaboard.com",
+     "kind": "operator",
+     "quote": "Diving in Tubbataha is only permitted between mid-March and mid-June."
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 35,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "season": {
+    "from": 3,
+    "to": 6,
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Park entrance fee; liveaboard access only, no onshore accommodation",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Remote Sulu Sea atoll reef park reached only by liveaboard in a short spring window. Steep coral walls and exposed reef corners, often with current, make it best for intermediate-to-advanced divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-899",
+   "name": "San Diego",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/San_Diego_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "They discovered the wreck about 50 meters deep near Fortune Island, outside of Manila Bay."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-115",
+   "name": "TSS Waterford",
+   "sources": {
+    "s1": {
+     "url": "https://ss-panay.com/en/?p=117",
+     "publisher": "SS Panay dive site page (Sipalay)",
+     "kind": "operator",
+     "quote": "The wreck is upright at about 41 m deep (135 ft) at the bottom of the Campomanes Bay … Level: advanced only … Current: uncommon … Visibility: Ø 6tf - 50ft"
+    },
+    "s2": {
+     "url": "https://sea-explorers.com/dive-sites-sipalay/",
+     "publisher": "Sea Explorers",
+     "kind": "operator",
+     "quote": "With the upper part of the wreck beginning at approximately 33 metres … this dive is intended for advanced divers who are comfortable with deeper profiles and limited bottom time."
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/TSS_Waterford",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "now a dive site attraction near the city of Sipalay"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 41
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 33
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Passenger-ship wreck lying upright in Campomanes Bay near Sipalay, Negros. Its upper parts start around 33 m and the sand bottom is near 41 m, so it is a deep, short-bottom-time dive for advanced divers in mostly calm water.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Upper wreck ~33 m, bottom ~41 m",
+   "vis": {
+    "low": 2,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-380",
+   "name": "Ōryoku Maru",
+   "sources": {
+    "s1": {
+     "url": "https://pacificwrecks.com/ship/maru/oryoku.html",
+     "publisher": "Pacific Wrecks",
+     "kind": "press",
+     "quote": "The wreck lies only 500 meters from shore near Alava Pier"
+    },
+    "s2": {
+     "url": "https://camayandivers.com/scuba-diving/wreck-diving/ss-oryoku-maru",
+     "publisher": "Camayan Divers",
+     "kind": "operator",
+     "quote": "Classification: Advanced Open Water, Experienced Divers … a maximum depth of 27 meters … It often has the worst visibility of all the Subic dive sites"
+    },
+    "s3": {
+     "url": "https://scubatechphilippines.com/scuba_blog/subic-bay-wreck-diving-sites",
+     "publisher": "Scuba Tech Philippines",
+     "kind": "operator",
+     "quote": "at a maximum depth of 27 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 27
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "WWII Japanese transport 'hell ship' wreck",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Often poor visibility from river outflow",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Sunken WWII Japanese transport lying roughly half a kilometre off Olongapo in Subic Bay. Operators rate it for experienced divers, with about 27 m maximum depth and typically murky water near the river mouth.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-379",
+   "name": "Apo Reef",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/stunning-apo-reef-national-park/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "the dramatic walls of about 70 meters deep, comprised of mostly hard corals on the top … shallow wall of about 20 meters … the Western side's strong currents offer excellent drift dives"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Apo_Reef",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The reef and its surrounding waters are protected areas administered as the Apo Reef Natural Park. … All people accessing Apo Reef need to pay an environmental fee."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Natural park; environmental fee required",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gray reef, whitetip and blacktip sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Large protected atoll reef off Occidental Mindoro with a deep western wall and a shallower eastern wall. The west side gives strong-current drift dives with reef sharks; entry requires a park environmental fee.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-378",
+   "name": "Pescador Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Pescador_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "a wall covered with hard corals dropping down to about 40 metres (130 ft) … an open-top underwater cave nicknamed 'the Cathedral' can be found"
+    },
+    "s2": {
+     "url": "https://www.lakwatsero.com/?p=3581",
+     "publisher": "Lakwatsero",
+     "kind": "press",
+     "quote": "Below is a wall, we will drift northward around the wall. … school of sardines clouding us"
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall",
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "highlights": [
+    {
+     "text": "'Cathedral' open-top cave on west side",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Large sardine school",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "access": {
+    "value": "Marine park and fish sanctuary; per-diver fee paid by dive shops",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Small islet off Moalboal with a coral wall circling it, dropping to about 40 m below a shallow sandy slope. Known for a sardine school and the open-top Cathedral cave, with drift diving along the wall.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n4003440589",
+   "name": "Dakit-Dakit",
+   "sources": {
+    "s1": {
+     "url": "https://sea-explorers.com/dive-sites-malapascua/",
+     "publisher": "Sea Explorers",
+     "kind": "operator",
+     "quote": "Dakit-Dakit is the only dive site visible directly from the Sea Explorers Malapascua dive centre. … soft corals provide shelter for flatworms, nudibranchs, shrimp and small reef fish."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Soft corals, nudibranchs, flatworms, shrimp",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-notable-1197",
+   "name": "BRP Sierra Madre",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/BRP_Sierra_Madre",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Remains in commission as a forward outport."
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Commissioned Philippine Navy vessel grounded at Second Thomas Shoal, manned by marines",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-355",
+   "name": "Bohol Sea",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Bohol_Sea",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The Bohol Sea, also called the Mindanao Sea, is a sea located between the Visayas and Mindanao islands in the Philippines."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An entire sea, not one dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-366",
+   "name": "Panglao, Bohol",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Panglao,_Bohol",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a municipality in the province of Bohol, Philippines."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A municipality, not one dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-390",
+   "name": "Coron Bay",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Coron_Bay",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "a well-known recreational diving region in the Sulu Sea in the western Philippines"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole diving region/bay with ten wrecks",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-361",
+   "name": "Coron Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Coron_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Coron is the third-largest island in the Calamian Islands in northern Palawan in the Philippines."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-360",
+   "name": "Coron, Palawan",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Coron,_Palawan",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a municipality in the province of Palawan, Philippines"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A municipality, not one dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-359",
+   "name": "Busuanga Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Busuanga_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Busuanga, is the largest island in the Calamian Group of islands in the province of Palawan in the Philippines."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-357",
+   "name": "Puerto Galera",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Puerto_Galera",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a municipality in the province of Oriental Mindoro, Philippines."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A municipality with many dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-362",
+   "name": "Mabini, Batangas",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Mabini,_Batangas",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a municipality in the province of Batangas, Philippines."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A municipality, not one dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-375",
+   "name": "Subic Bay",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Subic_Bay",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Subic Bay is a bay on the west coast of the island of Luzon in the Philippines"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole bay with many wrecks",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-369",
+   "name": "Malapascua",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Malapascua",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Malapascua is a Philippine island situated in the Visayan Sea"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island with many dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-382",
+   "name": "Cagdanao",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Cagdanao",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Cagdanao Island offers a variety of diving sites around the island."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island with several dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

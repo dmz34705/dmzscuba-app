@@ -123,14 +123,16 @@ assert.ok(haighRatings.visibility === null && haighRatings.exposureDeep, 'Inland
 // Site photos: any listed site, only openly licensed Commons files, always credited.
 const PHOTOS = require(path.join(root, 'features/oceanAtlas/data/siteImages.json')).images;
 const listedIds = new Set(C.catalogSites().map((site) => site.id));
-// Researched wrecks that are gone (raised, ashore) or never found keep their photo data but have no pin.
+// Researched records intentionally hidden from the dive map (gone, unlocated, restricted,
+// area-level or too deep for scuba) may keep their licensed reference photo without a pin.
 const PROFILES = require(path.join(root, 'features/oceanAtlas/data/siteProfiles.json')).sites;
-const goneIds = new Set(Object.entries(PROFILES).filter(([, row]) => ['ashore', 'unlocated'].includes(row.status)).map(([id]) => id));
+const PROFILE_MODEL = loadSourceModule(path.join(root, 'features/oceanAtlas/siteProfiles.js'), root);
+const hiddenProfileIds = new Set(Object.entries(PROFILES).filter(([, row]) => PROFILE_MODEL.HIDDEN_STATUSES.includes(row.status)).map(([id]) => id));
 // Researched sites (siteProfiles.json) supersede the derived datasets built before them: their depths, positions
 // and entries are corrected afterwards, so the derived-data invariants below don't apply to them.
 const researchedIds = new Set(Object.keys(PROFILES));
 for (const [id, [url, attribution, license, page]] of Object.entries(PHOTOS)) {
-  assert.ok(listedIds.has(id) || goneIds.has(id), `${id} photo belongs to a listed (not merged-away) site`);
+  assert.ok(listedIds.has(id) || hiddenProfileIds.has(id), `${id} photo belongs to a listed or intentionally hidden site`);
   assert.ok(/^https:\/\/(upload|thumb)\.wikimedia\.org\/[^?]+$/.test(url) && /^https:\/\/commons\.wikimedia\.org\//.test(page) && attribution, `${id} photo is a credited Commons file`);
   assert.match(license, /^(cc0|public domain|pd\b|pdm|cc by(-sa)?( \d(\.\d)?)?$)/i, `${id} photo is openly licensed`);
 }
@@ -160,7 +162,7 @@ assert.equal(Math.round(named('Haigh Quarry').maxDepthMeters * 3.28084), 85); as
 assert.ok(named('Geneva Lake').depthIsWholeLake && R.experienceRating(named('Geneva Lake'), null, false).confidence === 'features', 'A lake’s deepest point is not a dive depth.');
 assert.ok(named('SS Milwaukee (1868)').maxDepthMeters > 100, 'Wikipedia wreck depths fill gaps.');
 // Depths from an article's wreck / diving sections (fathoms included), never the ship's design or other ships.
-assert.equal(named('SS Andrea Doria').maxDepthMeters, 73, 'The Andrea Doria lies on the bottom at 73 m (its "Wreck site" section).');
+assert.ok(named('SS Andrea Doria').maxDepthMeters >= 73 && named('SS Andrea Doria').maxDepthMeters <= 74, 'The Andrea Doria lies on the bottom at about 73 m (its sourced wreck-site depth).');
 const DEPTHS = require(path.join(root, 'features/oceanAtlas/data/publishedDepths.json')).depths;
 const depthOf = (name) => DEPTHS[C.catalogSites().find((site) => site.name === name)?.id];
 assert.ok(!depthOf('HMS Safari') && !depthOf('Seven Stones Reef'), 'A submarine’s design depth and ships lost on a reef are not the dive’s depth.');
@@ -180,9 +182,10 @@ assert.ok(!everySite.some((site) => /&#0*39;|&amp;/.test(site.name)), 'site name
 // the same wreck from Wikipedia and Wikidata (same article) or under "SS X" / "X (Wreck)" shown once.
 const prins = everySite.find((site) => site.name === 'MV Prins Willem V');
 assert.ok(prins && Math.abs(prins.latitude - 43.026) < 0.01 && Math.round(prins.maxDepthMeters) === 24, 'the Prins Willem V is off Milwaukee, in about 24 m (80 ft)');
-for (const name of [/^Gallinipper$/, /^SS Senator$/, /^SS Harriet B\.$/, /Wexford/, /^Ottawa/, /Wazee/]) {
+for (const name of [/^Gallinipper$/, /^SS Senator$/, /Wexford/, /^Ottawa/, /Wazee/]) {
   assert.equal(everySite.filter((site) => name.test(site.name) && site.latitude > 41 && site.latitude < 49.5 && site.longitude > -93 && site.longitude < -75).length, 1, `${name} appears once`);
 }
+assert.ok(!everySite.some((site) => site.name === 'SS Harriet B.'), 'the 656 ft-deep SS Harriet B. is not presented as a scuba site');
 assert.equal(everySite.filter((site) => /^Moonhole( Wreck)?$/.test(site.name)).length, 2, 'a reef and the wreck beside it stay two sites');
 // Notable wrecks worldwide (Wikipedia article, ≤ 100 m of water), with what their protection means for a diver;
 // war graves closed to divers are not listed.
@@ -196,7 +199,7 @@ assert.equal(everySite.filter((site) => /^New Orleans \(18(38|85)\)$/.test(site.
 // Encyclopedia facts: keyed to listed sites, short credited summaries, ship histories only with real facts.
 const FACTS = require(path.join(root, 'features/oceanAtlas/data/siteFacts.json')).facts;
 for (const [id, [summary, article, ship]] of Object.entries(FACTS)) {
-  assert.ok(listedIds.has(id) || goneIds.has(id), `${id} facts belong to a listed site`);
+  assert.ok(listedIds.has(id) || hiddenProfileIds.has(id), `${id} facts belong to a listed or intentionally hidden site`);
   if (summary) assert.ok(summary.length <= 420 && /^https:\/\/[a-z]+\.wikipedia\.org\/wiki\//.test(article), `${id} summary is short and linked to its article`);
   if (ship) assert.ok(/^https:\/\/www\.wikidata\.org\/wiki\/Q\d+$/.test(ship[7]) && ship.slice(0, 7).some((value) => value && (!Array.isArray(value) || value.length)), `${id} ship history cites Wikidata and says something`);
 }

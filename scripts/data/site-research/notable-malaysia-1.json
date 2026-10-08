@@ -1,0 +1,264 @@
+{
+ "batch": "notable-malaysia-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-71",
+   "name": "HMS Prince of Wales (53)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Prince_of_Wales_(53)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck lies upside down in 223 feet (68 m) of water … The wreck site was designated a 'Protected Place' in 2001 under the Protection of Military Remains Act 1986"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 223
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Designated Protected Place (war grave) under UK military remains law",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Protected war grave; looted by salvagers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-397",
+   "name": "Sipadan",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Sipadan",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is the only oceanic island in Malaysia, rising 600 metres (2,000 ft) from the seabed"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island with many separate dive sites, not one site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-399",
+   "name": "Mabul Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Mabul_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Mabul (Malay: Pulau Mabul) is a small island near the southeastern coast of Sabah in Malaysia."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1063",
+   "name": "Atago Maru",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Atago_Maru",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Atago Maru rests upright in 14 metres (46 ft) of water, about one mile (1.6 km) offshore. … The wreck is a popular dive site."
+    },
+    "s2": {
+     "url": "https://divernet.com/world-dives/discover-diving-in-sarawak/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "The Atago Maru Wreck, a World War II Japanese ship, lies in a depth of about 14 metres, covered with corals. … normally around 20 – 40 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 14
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 14
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hull covered with corals",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "WWII Japanese ship sitting upright in about 14 m roughly 1.6 km off Miri, Sarawak, where it was bombed at anchor in 1944. Coral-encrusted and a popular local wreck dive; visibility can be challenging.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-423",
+   "name": "Mataking Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Mataking_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Mataking Island (Malay: Pulau Mataking) is a Malaysian island located in the Celebes Sea on the state of Sabah."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-419",
+   "name": "Pom Pom Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Pom_Pom_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Pom Pom Island (Malay: Pulau Pom Pom) is a small coral reef island in the Celebes Sea"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-400",
+   "name": "Tabawan Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Tabawan_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Tabawan Island or Tabauawan (Malay: Pulau Tabawan) is the highest and largest of a group of heavily wooded islands"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-943",
+   "name": "HMS Tally-Ho",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Tally-Ho",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She was sold to Thos. W. Ward and scrapped at Briton Ferry, Wales on 10 February 1967."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Submarine was scrapped at Briton Ferry, Wales in 1967; no wreck at the pin",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-941",
+   "name": "HMS Stygian",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Stygian",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "finally scrapped by Metal Industries of Ardgour in August 1950."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Submarine was broken up for scrap in 1949-50; no wreck at the pin",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-418",
+   "name": "Mantanani Islands",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Mantanani_Islands",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "are a group of three islands off the north-west coast of the state of Sabah, Malaysia"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A group of three islands, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

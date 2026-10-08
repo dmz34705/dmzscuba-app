@@ -1,0 +1,175 @@
+{ "batch": "notable-united-kingdom-7", "researchedAt": "2026-10-07", "sites": [
+{ "id": "x-wikipedia-191", "name": "Stanegarth",
+  "sources": {
+    "s1": { "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-18-the-stanegarth/", "publisher": "Divernet", "kind": "press", "quote": "The Stanegarth lies in 20m. … At only 18.7m long and 71 tons … There are no obstructions inside." },
+    "s2": { "url": "https://www.stoneycove.com/?p=24201", "publisher": "Stoney Cove", "kind": "operator", "quote": "The Stangarth can be found on a 190° bearing form the Bus Stop (A). The Stangarth can also be found on a 220° bearing form slip way (B)." },
+    "s4": { "url": "https://en.wikipedia.org/wiki/Stanegarth", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck now sits in 20 metres (66 ft) of fresh water" },
+    "s3": { "url": "https://www.stoneycove.com/?p=24179", "publisher": "Stoney Cove", "kind": "operator", "quote": "Stanegarth is one of Stoney Cove's most popular diving features and the UK's most dived wreck." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 20 }, { "ref": "s4", "unit": "m", "bottom": 20 } ],
+  "entry": { "value": "shore", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "penetration": { "value": "Interior cleared of obstructions for swim-throughs", "refs": ["s1"] },
+  "highlights": [ { "text": "Largest inland wreck in a UK dive centre", "refs": ["s3"] } ],
+  "summary": { "text": "A 1910 steam tug sunk in a flooded Leicestershire quarry as a training and attraction wreck. It lies in about 20 m, has been stripped so divers can swim through, and is among the most visited wrecks in Britain.", "refs": ["s1", "s3"] }
+},
+{ "id": "osm-w24920367", "name": "Stoney Cove",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Stoney_Cove", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The site has a range of depths to 36 metres (118 ft)." },
+    "s2": { "url": "https://www.stoneycove.com/?p=24179", "publisher": "Stoney Cove", "kind": "operator", "quote": "with depths of 7 metres (entry level), 22 metres (intermediate) and 36 metres (expert). … beware the deep silt, which can reduce visibility to zero." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 36 }, { "ref": "s2", "unit": "m", "bottom": 36 } ],
+  "highlights": [ { "text": "Stanegarth tug, bus, Viscount cockpit, galleon", "refs": ["s1"] } ],
+  "hazards": [ { "text": "Deep silt can drop visibility to zero", "refs": ["s2"] } ],
+  "summary": { "text": "A flooded inland quarry with terraced zones from about 7 m for beginners to 36 m for experts, scattered with sunken vehicles, aircraft parts and the Stanegarth tug. Silt at depth can kill visibility.", "refs": ["s1", "s2"] }
+},
+{ "id": "osm-w132766337", "name": "Dosthill Quarry",
+  "sources": {
+    "s1": { "url": "https://divernet.com/2018/02/07/a-dose-of-dozzi/", "publisher": "Divernet", "kind": "press", "quote": "there is quite a sudden drop-off to 24m there, so decent buoyancy control is key. … Access is very easy, just kit up and in you go." },
+    "s2": { "url": "https://scubaverse.com/the-great-scuba-drive-day-6-dosthill-quarry-tamworth/", "publisher": "Scubaverse", "kind": "press", "quote": "The quarry itself reaches a depth of 26 metres. … Visibility was good, around six metres." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 24 }, { "ref": "s2", "unit": "m", "bottom": 26 } ],
+  "entry": { "value": "shore", "refs": ["s1"] },
+  "vis": { "low": 6, "high": 6, "unit": "m", "refs": ["s2"] },
+  "highlights": [ { "text": "Training platforms at several depths", "refs": ["s2"] }, { "text": "Plane, cars and vans on the bottom", "refs": ["s2"] } ],
+  "hazards": [ { "text": "Sudden drop-off to 24 m; needs good buoyancy", "refs": ["s1"] } ],
+  "summary": { "text": "A Staffordshire inland quarry with easy walk-in access, shallow training platforms and a steep drop to roughly 24-26 m. Sunken vehicles, a plane and trees add interest, and pike and sturgeon live there.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-946", "name": "HMS Vortigern",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Vortigern", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wrecksite is designated as a Protected Place under the Protection of Military Remains Act 1986." }
+  },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected Place under the Protection of Military Remains Act 1986 (war grave)", "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-278", "name": "Dorothea quarry",
+  "sources": {
+    "s1": { "url": "https://finstrokes.com/inland-dive/dorothea", "publisher": "Finstrokes", "kind": "press", "quote": "Dorothea has a max of 104.5m deep, in the sump tunnel, but most of it bottoms out at around 87 ish … Dive to your experiance this can be a dangerous dive." },
+    "s2": { "url": "https://en.wikipedia.org/wiki/Dorothea_quarry", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "the deepest dropping 106m from the surface … under license from the landowner, through the North Wales Technical Divers club … access is strictly limited to those with appropriate qualifications" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 104.5 }, { "ref": "s2", "unit": "m", "bottom": 106 } ],
+  "entry": { "value": "shore", "refs": ["s1"] },
+  "level": { "value": "technical", "refs": ["s1", "s2"] },
+  "access": { "value": "Landowner licence via a local technical diving club; qualified divers only", "refs": ["s2"] },
+  "hazards": [ { "text": "Great depth and cold; dive within experience", "refs": ["s1"] }, { "text": "Steep entry ramp and potholed access track", "refs": ["s1"] } ],
+  "summary": { "text": "A flooded Welsh slate quarry with vertical pits reaching over 100 m, most of it bottoming near 87 m. It has a serious safety record, and diving is now only by licence for qualified divers.", "refs": ["s1", "s2"] }
+},
+{ "id": "osm-n663869563", "name": "Vivian Quarry",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Dinorwic_quarry", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "good visibility and depths ranging from 6–18 metres (20–59 ft) … a platform at 6 metres (20 ft), plus flooded buildings, boats, a van and a gnome garden" },
+    "s2": { "url": "https://www.chronic-wanderlust.com/diving-vivian-quarry-llanberis/", "publisher": "Chronic Wanderlust", "kind": "press", "quote": "20m max depth … submarine, rails, and wagons … register and pay an entry fee" },
+    "s3": { "url": "https://scubaverse.com/the-great-scuba-drive-day-9-vivian-quarry-llanberis-wales/", "publisher": "Scubaverse", "kind": "press", "quote": "Our maximum depth reached was 15 metres." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 6, "bottom": 18 }, { "ref": "s2", "unit": "m", "bottom": 20 }, { "ref": "s3", "unit": "m", "bottom": 15 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Operator-run site; entry fee; check current opening status", "refs": ["s2"] },
+  "highlights": [ { "text": "Flooded buildings, boats, van and a submarine", "refs": ["s1", "s2"] } ],
+  "summary": { "text": "A flooded slate quarry section at Llanberis with a platform at 6 m and a floor around 18-20 m. Divers pass old mine buildings, rails and sunken boats; entry is through the on-site dive operator.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-wikipedia-271", "name": "Dinorwic quarry",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Dinorwic_quarry", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "good visibility and depths ranging from 6–18 metres (20–59 ft)" }
+  },
+  "notDiveSite": { "kind": "area", "reason": "Large slate quarry complex; only the flooded Vivian section is dived", "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-301", "name": "Trearddur",
+  "sources": {
+    "s1": { "url": "https://rhosneigr.co.uk/see-do-anglesey/water-sports/diving/", "publisher": "Rhosneigr.co.uk (Anglesey guide)", "kind": "press", "quote": "can be seen at around 10 metres … some stunning reefs as little as 80-100 metres from the shore" },
+    "s2": { "url": "https://finstrokes.com/shore-dive/treaddur-bay", "publisher": "Finstrokes", "kind": "press", "quote": "15m … a very nice reef about 80m out … Speedboats and jet skis" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 10 }, { "ref": "s2", "unit": "m", "bottom": 15 } ],
+  "entry": { "value": "shore", "refs": ["s2"] },
+  "types": { "value": ["reef", "wreck"], "refs": ["s1"] },
+  "hazards": [ { "text": "Speedboats and jet skis; use an SMB", "refs": ["s2"] } ],
+  "summary": { "text": "A sheltered Anglesey bay dived from the beach, with a rocky reef roughly 80-100 m offshore reaching about 15 m at high tide and a few old wrecks around 10 m.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-wikipedia-303", "name": "Porth Dafarch",
+  "sources": {
+    "s1": { "url": "https://rhosneigr.co.uk/see-do-anglesey/water-sports/diving/", "publisher": "Rhosneigr.co.uk (Anglesey guide)", "kind": "press", "quote": "perfect dive location for beginners. With a fairly gradual incline, the beach also makes for easy entrance and exit from the water. … The seabed is mostly sand with some rocky outcrops" }
+  },
+  "entry": { "value": "shore", "refs": ["s1"] },
+  "level": { "value": "beginner", "refs": ["s1"] }
+},
+{ "id": "x-notable-841", "name": "HMS Nimrod",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Nimrod_(1812)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "not worth repairing … sold … returned to service as a merchant ship" }
+  },
+  "notDiveSite": { "kind": "gone", "reason": "Grounded at Holyhead in 1827 but sold and returned to service, so no wreck remains", "refs": ["s1"] }
+},
+{ "id": "x-notable-838", "name": "Rothsay Castle",
+  "sources": {
+    "s1": { "url": "https://coflein.gov.uk/en/site/427", "publisher": "Coflein (RCAHMW)", "kind": "agency", "quote": "not confirmed as present at this location, but may be in the vicinity" }
+  },
+  "notDiveSite": { "kind": "unlocated", "reason": "Coflein: wreck remains not confirmed at this location", "refs": ["s1"] }
+},
+{ "id": "x-notable-811", "name": "HMS Resistance",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Resistance_(1861)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "broke her up" }
+  },
+  "notDiveSite": { "kind": "gone", "reason": "Foundered in 1899 but raised and broken up ashore at Garston", "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-180", "name": "Royal Charter",
+  "sources": {
+    "s1": { "url": "https://detecting.org.uk/html/Royal_Charter_Treasure_Ship_Metal_Detecting.html", "publisher": "Metal Detecting UK", "kind": "press", "quote": "The remains of Royal Charter lie in very shallow water (8-10 feet)" },
+    "s2": { "url": "https://rcahmw.gov.uk/?p=1888", "publisher": "RCAHMW", "kind": "agency", "quote": "identified small areas of iron wreckage still upstanding on the seabed" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 10 } ],
+  "types": { "value": ["wreck"], "refs": ["s2"] },
+  "hazards": [ { "text": "Visibility usually very poor", "refs": ["s1"] } ]
+},
+{ "id": "x-notable-1316", "name": "HMY Mary",
+  "sources": {
+    "s1": { "url": "https://coflein.gov.uk/en/site/391", "publisher": "Coflein (RCAHMW)", "kind": "agency", "quote": "designated as a Historic Wreck under Protections of Wrecks Act 1973 … which extend from 5m to 25m water depth … very exposed to southerly and westerly winds and strong currents" },
+    "s2": { "url": "https://en.wikipedia.org/wiki/HMY_Mary", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "the south-west corner of The Skerries" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 5, "bottom": 25 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck (Protection of Wrecks Act 1973); diving needs a Welsh Government licence", "refs": ["s1"] },
+  "hazards": [ { "text": "Exposed site with strong currents", "refs": ["s1"] } ],
+  "summary": { "text": "A royal yacht lost in 1675 at the Skerries off Anglesey, now a heavily concreted ballast mound at the foot of a cliff with finds in rocky gullies. It is a designated historic wreck and exposed to wind and tide.", "refs": ["s1", "s2"] },
+  "depthNote": "Gullies hold remains from 5 m to 25 m"
+},
+{ "id": "x-notable-807", "name": "HMS H5",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/HMS_H5", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "designated as a controlled site under the Protection of Military Remains Act" }
+  },
+  "notDiveSite": { "kind": "restricted", "reason": "Controlled site under the Protection of Military Remains Act; diving prohibited without MoD licence", "refs": ["s1"] }
+},
+{ "id": "x-notable-1058", "name": "HMS Cobra",
+  "sources": {
+    "s1": { "url": "https://divernet.com/scuba-news/wrecks/mod-slaps-controlled-site-order-on-bell-wreck/", "publisher": "Divernet", "kind": "press", "quote": "these three warship wrecks can no longer be dived without written permission from the MoD" }
+  },
+  "notDiveSite": { "kind": "restricted", "reason": "Designated a Controlled Site; cannot be dived without written MoD permission", "refs": ["s1"] }
+},
+{ "id": "x-notable-1037", "name": "La Combattante",
+  "sources": {
+    "s1": { "url": "https://www.uboat.net/allies/warships/ship/5458.html", "publisher": "uboat.net", "kind": "press", "quote": "The forepart of La Combattante lays in 11 meters of water … the afterpart lays in 25 meters of water" },
+    "s2": { "url": "https://en.wikipedia.org/wiki/French_destroyer_La_Combattante", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "sank quickly, breaking in two" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 11, "bottom": 25 } ],
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "depthNote": "Forepart in 11 m, afterpart in 25 m"
+},
+{ "id": "osm-w141329817", "name": "Eccleston Delph",
+  "sources": {
+    "s1": { "url": "https://www.underwaterphotography.com/dive-sites/Dive-Site.aspx?ID=4805", "publisher": "Underwater Photography", "kind": "press", "quote": "The typical depth is 0-20 Metres 0-60 Feet. … The typical visibility is 3-10 Metres 10-30 Feet." },
+    "s2": { "url": "https://en.wikipedia.org/wiki/Eccleston_Quarry", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "various depths from 3m to 9m … ropes have been strung between each underwater 'feature' to aid navigation" },
+    "s3": { "url": "https://scubaverse.com/the-great-scuba-drive-day-15-delph-watersports-centre-chorley-lancashire/", "publisher": "Scubaverse", "kind": "press", "quote": "easy to navigate with the ropes and bearings … The visibility was good" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 20 } ],
+  "vis": { "low": 3, "high": 10, "unit": "m", "refs": ["s1"] },
+  "highlights": [ { "text": "Training platforms at 3-9 m", "refs": ["s2"] }, { "text": "Rope lines linking underwater features", "refs": ["s3"] } ],
+  "summary": { "text": "A flooded Lancashire stone quarry used for training and fun diving, with platforms between 3 and 9 m, rope trails linking sunken features and a floor around 20 m. Visibility is typically 3-10 m.", "refs": ["s1", "s2", "s3"] }
+},
+{ "id": "x-wikipedia-185", "name": "MS Piłsudski",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/MS_Pi%C5%82sudski", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "34 metres (112 ft)" },
+    "s2": { "url": "https://www.marineinsight.com/?p=1780614", "publisher": "Marine Insight", "kind": "press", "quote": "Below 100 feet the murky waves is a wreck … In 2008 the forgotten wreck was visited by Polish divers." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 34 }, { "ref": "s2", "unit": "ft", "bottom": 100 } ],
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "summary": { "text": "A large Polish liner that sank off the Humber coast and lies in about 30-34 m. Left undiscovered for decades, it was visited and filmed by Polish divers in 2008.", "refs": ["s1", "s2"] }
+}
+] }

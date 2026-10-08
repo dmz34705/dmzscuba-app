@@ -46,6 +46,18 @@ export function buildSiteGuide(request, { origin = null, units, advicePrefs, div
     ratings: { ...siteRatings(site, guide, { originPoint: origin, inland: profile, life, units,
       estimatedDepthMeters: record ? SITE_BATHYMETRY.sites[record.id]?.[0] ?? SITE_SEAFLOOR.sites[record.id]?.[0] ?? null : null }), inland: profile },
     profile: researched,
+    // Numeric OpenDiveMap aggregates are community context, never promoted to
+    // researched facts. Descriptions and thumbnails from directory sources are not imported.
+    community: record?.communityVisibilityMeters ? { visibilityMeters: record.communityVisibilityMeters,
+      rating: record.communityRating || null, loggedDives: record.communityDives || 0,
+      averageDiveMinutes: record.communityDiveMinutes || null,
+      source: 'OpenDiveMap community aggregate' } : null,
+    structured: record && (record.structuredCurrent || record.structuredAccess || record.structuredHazards?.length || record.structuredMooring || record.structuredFee || record.structuredAccessEase || record.structuredEntryDetails?.length)
+      ? { current: record.structuredCurrent || null,
+        access: [record.structuredAccess, record.structuredFee ? 'Entry fee mapped' : ''].filter(Boolean).join(' · ') || null,
+        hazards: record.structuredHazards || [], mooring: record.structuredMooring || null,
+        accessEase: record.structuredAccessEase || null, entryDetails: record.structuredEntryDetails || [],
+        source: 'OpenStreetMap structured tags' } : null,
     // Openly licensed photo of the site itself, when one exists.
     photo: record && SITE_IMAGES.images[record.id] ? (([url, attribution, license, page]) => ({ url, attribution, license, page }))(SITE_IMAGES.images[record.id]) : null,
     // Encyclopedia summary (Wikipedia, CC BY-SA) and, for wrecks, the ship's history (Wikidata, CC0).

@@ -1,0 +1,6 @@
+{ "batch": "notable-egypt-2", "researchedAt": "2026-10-07", "sites": [
+ { "id": "x-notable-919", "name": "HMS Eridge",
+   "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Eridge_(L68)", "publisher": "Wikipedia", "kind": "encyclopedia",
+     "quote": "Eridge remained at Alexandria as a base and accommodation ship for the rest of the war. She was sold for scrapping in October 1946." } },
+   "notDiveSite": { "kind": "gone", "reason": "Towed to Alexandria after torpedo damage and scrapped in 1946; no wreck on the seabed", "refs": ["s1"] } }
+] }

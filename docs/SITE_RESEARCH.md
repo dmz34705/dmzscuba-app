@@ -27,13 +27,65 @@ Lake Michigan pilot that tested it.
 - `sites[id]` — depth `[top, bottom]` in metres, entry, level, visibility,
   mooring, penetration, access, highlights, hazards, summary, sources,
   and an optional confirmed `position` (applied when it moves the pin > 150 m).
-  `status: ashore | unlocated` removes a pin that isn't a dive.
+  `status: ashore | unlocated | restricted | area | too-deep` removes a pin that isn't a usable scuba site.
 - `regions` — shared conditions by bounding box (Lake Michigan today).
 - `sources` — named sources with URL templates.
 
 Corrections apply after duplicate merging in both `catalog.js` and the map
 (`atlasRuntime.js`). Check with `npm run test:site-profiles`; preview cards with
 `scripts/preview-atlas-site-card.cjs`.
+
+## Completeness goal
+
+The research program targets complete, useful site guides—not only missing
+depths. Run `npm run audit:site-coverage` after each batch. The core facts are a
+published site depth, entry method, water environment, and site type. A useful
+guide should then add, where sources publish them: access or permit rules,
+difficulty, typical visibility and current, hazards, mooring or descent details,
+highlights, a factual summary, and an openly licensed site photo.
+
+Work from exact source identifiers before searching by name. In particular,
+the 2,630 OpenStreetMap records can be refreshed by their node/way/relation IDs;
+their structured tags and Wikipedia/Wikidata/Commons links are safer to match
+than search results. Next prefer open agency, park, preserve, hydrographic, and
+archaeological datasets. Targeted publisher research fills the remaining gaps.
+Never turn a regional estimate into a site-specific fact, and never infer that
+an unmapped facility, hazard, or restriction does not exist.
+
+The broad first pass is reproducible rather than a one-off scrape:
+
+- `npm run sync:global-dive-sites` refreshes the licensed OpenDiveMap catalog.
+  It imports names and factual numeric aggregates only (visibility, rating,
+  logged dives, and average logged-dive time). Third-party descriptions and
+  thumbnails are excluded. The card labels these values as community averages,
+  estimates them visually, and never treats them as researched facts.
+- `npm run fetch:osm-site-source` fetches the exact OpenStreetMap objects already
+  in our catalog; `npm run enrich:osm-sites -- <source.json>` extracts only
+  structured tags for current, access/fee, mapped hazards, mooring/descent lines,
+  and unambiguous feature types.
+- `npm run enrich:global-site-types` spatially joins still-untyped global sites
+  to mapped reefs within 250 m and wrecks or cave entrances within 150 m. Its
+  per-site cache makes the slow lookup resumable and prevents repeated requests.
+- `npm run report:site-gaps -- 30` ranks the remaining country queues by field;
+  `npm run audit:site-coverage` measures both confirmed core facts and a separate
+  planning-ready tier that permits clearly labelled depth and shore estimates.
+
+Baseline on 2026-10-06: 7,277 active catalog sites; 258 (3.5%) have any
+researched profile, 89 (1.2%) have a full researched profile, and 235 (3.2%)
+have all four core facts. (The profile file also retains four researched wrecks
+hidden as ashore or unlocated.) Existing supporting datasets already cover 1,114 encyclopedia
+records, 969 photos, 2,216 protected-area matches, 1,099 shore-facility matches,
+and 5,406 modelled seafloor records; those do not by themselves make a site
+fully researched.
+
+Current checkpoint on 2026-10-08: 7,139 active catalog sites; 529 (7.4%) have
+any researched profile, 464 (6.5%) have a full profile, and 1,444 (20.2%) have
+all four confirmed core facts. The generated profile file contains 671 records
+including 142 researched records intentionally hidden as non-sites, restricted,
+unlocated, ashore or too deep for scuba. The comprehensive queue is 45/430
+batches complete and `notable-mexico-1` is next. Claude is the sole owner of
+new research batches unless the user explicitly reassigns the work; other agents
+may build, validate, audit and publish completed evidence.
 
 ## Filling in missing depths
 
@@ -60,12 +112,13 @@ Bulk official data used so far: Florida FWC artificial reef deployments
 Reefs that are areas rather than points often have no single honest depth;
 they keep their estimate until sources agree.
 
-Current depth-research progress: 8 evidence batches cover 194 unique catalog
-sites. The build accepts 160 sourced depths and holds 34 for a second source or
+Current depth-research progress: 9 evidence batches cover 203 unique catalog
+sites. The build accepts 169 sourced depths and holds 34 for a second source or
 manual review. The accepted set includes the completed Florida, other U.S.
-coasts, inland U.S., and northern/southern Red Sea batches. Cave-system maxima
-are explicitly labelled, and the Florida FWC positions correct the Circle of
-Heroes and Zion Train pins.
+coasts, inland U.S., and northern/southern Red Sea batches, plus the first
+Indonesia batch covering 9 Komodo and Bunaken matches. Indonesia remains in
+progress. Cave-system maxima are explicitly labelled, and the Florida FWC
+positions correct the Circle of Heroes and Zion Train pins.
 
 ## Lake Michigan pilot — review sheet
 

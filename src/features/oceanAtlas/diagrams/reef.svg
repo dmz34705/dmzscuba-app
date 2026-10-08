@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" fill="none">
+<title>DMZ Scuba — reef profile</title>
+<desc>Refined vector illustration of a living coral reef and scuba diver. Generic illustrative profile, not a surveyed reef or calibrated depth diagram. Surface y=38; seabed y=479. Keep site labels in the application.</desc>
+<defs>
+ <linearGradient id="dmz-water" x1="480" y1="38" x2="480" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#246477"/><stop offset=".5" stop-color="#123E51"/><stop offset="1" stop-color="#092637"/></linearGradient>
+ <linearGradient id="dmz-light" x1="480" y1="38" x2="480" y2="445" gradientUnits="userSpaceOnUse"><stop stop-color="#C0F2E7" stop-opacity=".09"/><stop offset="1" stop-color="#C0F2E7" stop-opacity="0"/></linearGradient>
+ <linearGradient id="dmz-hull" x1="510" y1="362" x2="510" y2="477" gradientUnits="userSpaceOnUse"><stop stop-color="#50747C"/><stop offset=".48" stop-color="#345562"/><stop offset="1" stop-color="#1C3949"/></linearGradient>
+ <linearGradient id="dmz-bridge" x1="437" y1="296" x2="437" y2="374" gradientUnits="userSpaceOnUse"><stop stop-color="#66868A"/><stop offset="1" stop-color="#3D626D"/></linearGradient>
+ <linearGradient id="dmz-sand" x1="0" y1="475" x2="0" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#3D525B"/><stop offset="1" stop-color="#263C49"/></linearGradient>
+</defs>
+<!-- Self-contained SVG: paths, circles, gradients. No filters, raster images, fonts or dependencies. -->
+<g id="water">
+ <path fill="#0C2736" d="M0 0H960V560H0Z"/>
+ <path fill="url(#dmz-water)" d="M0 38C80 29 110 47 190 38S310 29 390 38 510 47 590 38 710 29 790 38 910 47 960 38V560H0Z"/>
+ <path fill="url(#dmz-light)" d="M105 38H182L346 466H211Z M363 38H423L593 466H481Z M675 38H734L847 466H732Z"/>
+ <path d="M0 38C80 29 110 47 190 38S310 29 390 38 510 47 590 38 710 29 790 38 910 47 960 38" stroke="#94CBCB" stroke-width="2"/>
+</g>
+<g id="particles" fill="#A1D8D1" opacity=".22"><circle cx="152" cy="168" r="1.3"/><circle cx="616" cy="128" r="1.2"/><circle cx="765" cy="247" r="1.4"/><circle cx="201" cy="368" r="1.2"/><circle cx="849" cy="366" r="1"/><circle cx="503" cy="206" r="1"/></g>
+<g id="seabed">
+ <path d="M0 480C135 471 180 489 284 482S427 485 553 478 763 474 960 483V560H0Z" fill="url(#dmz-sand)"/>
+ <path d="M0 480C135 471 180 489 284 482S427 485 553 478 763 474 960 483" stroke="#7D9598" stroke-opacity=".5" stroke-width="1.5"/>
+ <ellipse cx="504" cy="480" rx="286" ry="10" fill="#082131" opacity=".45"/>
+ <path d="M155 489L172 478 188 480 201 490M771 487L786 478 801 482 809 490" fill="#425E68"/>
+ <path d="M146 507h41m491 16h35m-419-17h18m492 23h31" stroke="#96ABA9" stroke-opacity=".2" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+<g id="reef" stroke-linecap="round" stroke-linejoin="round">
+ <!-- A darker distant ridge creates depth behind the living coral colonies. -->
+ <path d="M168 475Q180 448 208 444Q220 420 248 427Q263 402 295 413Q307 388 338 397Q360 372 391 387Q421 367 447 395Q473 382 497 406Q530 387 551 416Q584 401 607 425Q638 410 658 436Q704 425 730 449Q760 456 782 477Z" fill="#28545E"/>
+ <!-- Back sea fan: slender trunk with a spreading network, no solid blob. -->
+ <g stroke="#729F9B" stroke-width="1.6" opacity=".8">
+ <path d="M665 445Q659 401 654 357M659 410Q629 395 616 367M660 413Q682 390 700 365M655 380L633 350M656 391L677 351M641 397L625 380M676 394L688 378"/>
+ <path d="M617 368L610 354M617 368L627 355M633 350L623 340M633 350L635 335M654 357L646 340M654 357L661 339M677 351L671 337M677 351L687 338M700 365L696 350M700 365L711 354"/>
+ <path d="M611 354Q653 315 711 354M616 367Q660 333 701 365M625 380Q660 351 688 378" stroke-width=".8" opacity=".45"/>
+ </g>
+ <!-- Irregular limestone terraces, crevices, and softly lit upper faces. -->
+ <path d="M186 477Q196 458 222 453Q231 427 258 426Q280 417 297 430Q316 400 347 401Q368 399 382 413Q395 393 416 405Q432 416 448 405Q470 397 489 416Q516 398 540 427Q567 411 592 437Q622 419 649 444Q682 429 708 452Q744 450 766 479Z" fill="#3F6C70" stroke="#769994" stroke-width="1.4"/>
+ <path d="M211 453Q224 453 234 440Q243 421 266 424Q284 422 297 430Q316 400 347 401Q368 399 382 413M402 402Q420 415 437 409Q468 392 489 416M568 423Q584 426 592 437Q613 423 630 433" stroke="#9BB5A6" stroke-width="1.4"/>
+ <path d="M235 477Q240 452 265 451Q278 450 282 460Q303 442 318 470Q344 448 367 459Q380 429 410 431Q432 428 443 446Q467 430 492 459Q526 443 551 469Q577 451 611 475Q643 453 669 473Q702 457 729 481Z" fill="#31525E"/>
+ <path d="M277 468Q282 451 296 452Q309 451 316 465M405 471Q408 449 426 451Q439 450 443 468M579 472Q588 455 600 463L606 466" fill="#163F50"/>
+ <!-- Branching staghorn colony, with tapered forks and smaller branch tips. -->
+ <g stroke="#C49E82">
+ <path d="M322 436L326 407 315 386 319 361M327 410L348 387 350 367M324 403L301 391 291 372M339 397L370 387M315 387L299 361" stroke-width="5"/>
+ <path d="M319 371L333 354M319 361L311 348M350 376L365 361M350 367L343 351M292 373L278 362M301 391L282 388M369 387L377 373M369 387L385 385M300 362L302 349" stroke-width="3"/>
+ <path d="M326 427L329 411M350 381L353 370M315 381L318 369" stroke="#E1B99A" stroke-width="1.4"/>
+ </g>
+ <!-- Tube sponge colony: recessed oval mouths and elongated bodies. -->
+ <g stroke="#80AAA5" stroke-width="1.2">
+ <path d="M484 433L480 372Q490 363 500 373L503 433" fill="#558D88"/>
+ <path d="M503 439L508 392Q517 386 526 395L524 440" fill="#487D7D"/>
+ <path d="M470 439L461 403Q467 397 476 401L484 438" fill="#427475"/>
+ <ellipse cx="490" cy="373" rx="10" ry="4.5" fill="#173E4C"/><ellipse cx="517" cy="395" rx="9" ry="4" fill="#173E4C"/><ellipse cx="469" cy="402" rx="7.5" ry="3.5" fill="#173E4C"/>
+ <path d="M486 382L489 425M513 404L511 431M467 410L474 433" stroke="#A6C4B5" stroke-opacity=".35"/>
+ </g>
+ <!-- Boulder / brain coral, with restrained winding grooves. -->
+ <path d="M358 461C351 447 357 429 373 424 389 412 415 421 423 431 435 444 432 457 425 463Z" fill="#ABAA7E" stroke="#CFCAA0" stroke-width="1.5"/>
+ <g stroke="#727C68" stroke-width="1.7">
+ <path d="M368 453Q362 438 375 435T391 428M379 462Q390 456 380 449T391 437 407 432M401 460Q413 453 402 446T414 439M420 454Q428 445 417 434M364 444L371 445M392 451L387 457"/>
+ </g>
+ <!-- Layered plate coral: thin overhanging shelves, shadowed undersides. -->
+ <path d="M563 437L557 465M592 445L588 466" stroke="#976F62" stroke-width="5"/>
+ <path d="M525 438Q540 431 558 436T597 437L591 445Q554 451 530 443Z" fill="#886B64"/>
+ <path d="M522 437Q540 430 558 434T598 436Q581 442 558 440T522 437Z" fill="#C09A80" stroke="#D8B297" stroke-width="1.2"/>
+ <path d="M549 452Q567 445 587 449T617 449L612 456Q573 462 554 458Z" fill="#795F5C"/>
+ <path d="M549 451Q567 444 587 448T617 449Q600 455 587 453T549 451Z" fill="#B48E76" stroke="#CFA88C" stroke-width="1.2"/>
+ <!-- Foreground soft coral, organic curved stems. -->
+ <g stroke="#89B6A3" stroke-width="2.6">
+ <path d="M240 473Q245 445 237 428M242 456Q225 446 220 434M242 459Q256 449 261 433M237 439L227 427M257 443L271 433"/>
+ <path d="M683 479Q690 460 685 445M688 461Q704 452 705 440M688 465Q674 459 670 449"/>
+ </g>
+ <!-- Small encrusting colonies tie the terraces together without clutter. -->
+ <g fill="#89A996"><circle cx="440" cy="419" r="3"/><circle cx="447" cy="422" r="4"/><circle cx="454" cy="419" r="3"/><circle cx="609" cy="444" r="3"/><circle cx="616" cy="446" r="4"/><circle cx="622" cy="442" r="3"/></g>
+</g>
+<g id="reef-fish" stroke-linejoin="round">
+ <!-- A small school, away from the diver and coral silhouette. -->
+ <g fill="#91C8C1">
+ <path d="M606 280Q620 269 636 280Q620 291 606 280L598 272V288Z"/>
+ <path d="M654 295Q665 286 679 295Q665 304 654 295L647 288V302Z"/>
+ <path d="M698 270Q707 263 719 270Q707 277 698 270L692 264V276Z"/>
+ </g>
+ <g fill="#143C4D"><circle cx="630" cy="279" r="1"/><circle cx="674" cy="294" r=".8"/></g>
+ <!-- A deeper-bodied reef fish near the colony. -->
+ <path d="M190 395Q200 379 213 389L220 398 213 407Q200 417 190 402L181 411V387Z" fill="#CCBC8C"/>
+ <path d="M200 388L201 409M207 387L209 409" stroke="#436871" stroke-width="3"/>
+ <circle cx="214" cy="397" r="1.3" fill="#173C4C"/>
+</g>
+<g id="diver" transform="translate(346 221)" stroke-linecap="round" stroke-linejoin="round">
+ <!-- Anatomical silhouette in neutral trim: head left, bent knees, blade fins. -->
+ <!-- Far arm and leg sit behind the torso. -->
+ <path d="M15 20L4 36-15 35" stroke="#62989F" stroke-width="5"/>
+ <path d="M43 23L65 40Q68 43 73 39L88 28" stroke="#62989F" stroke-width="6"/>
+ <path d="M85 26L97 23 117 18 109 29 91 33Z" fill="#64A99F"/>
+ <!-- Suit torso and shoulder: curved silhouette rather than a stick figure. -->
+ <path d="M0 14Q3 8 12 9L35 13Q44 15 49 22L44 29 22 27 8 24Q2 24 0 19Z" fill="#102B3B" stroke="#8DBDBE" stroke-width="1.2"/>
+ <!-- Cylinder with domed ends, bands and valve. -->
+ <path d="M8 1Q4 1 4 6L4 9Q4 13 8 13L33 16Q38 16 38 12L38 9Q38 5 34 5Z" fill="#C7B185" stroke="#E1D0A5" stroke-width=".9"/>
+ <path d="M10 4L31 7" stroke="#F1E0B7" stroke-width="1.6"/>
+ <path d="M13 3L12 14M29 5L28 16" stroke="#3A555F" stroke-width="2.5"/>
+ <path d="M4 6L0 6M0 4V9" stroke="#ABBFC0" stroke-width="2"/>
+ <!-- BCD straps and waist. -->
+ <path d="M9 15L7 23M30 17L28 27" stroke="#6D9DA3" stroke-width="2"/>
+ <path d="M39 20L37 28" stroke="#486F7A" stroke-width="2"/>
+ <!-- Head, hood, mask and regulator. -->
+ <path d="M1 16L-4 16" stroke="#ADD0C9" stroke-width="4"/>
+ <path d="M-5 12Q-9 7-15 9Q-23 12-22 19Q-20 26-12 26L-5 22Z" fill="#173445" stroke="#8DBDBE" stroke-width="1.1"/>
+ <path d="M-21 16L-12 15-11 20-21 21Z" fill="#A9E6DC" stroke="#D1F1E7" stroke-width=".9"/>
+ <path d="M-11 16L-5 16" stroke="#B2D4CC" stroke-width="1.1"/>
+ <path d="M-21 23L-16 23" stroke="#C6E4DC" stroke-width="2"/>
+ <path d="M-17 24Q-5 32 5 17" stroke="#8BB6B7" stroke-width="1.3"/>
+ <!-- Near arm bends forward, hands together, clear of the bottom. -->
+ <path d="M12 22Q10 29 1 34L-14 32" stroke="#B1D8D1" stroke-width="5.5"/>
+ <path d="M-14 32L-20 31" stroke="#C6E5D9" stroke-width="3.5"/>
+ <!-- Hip, bent knee, lower leg, boot and near blade fin. -->
+ <path d="M43 25L63 28Q68 28 71 23L80 12" stroke="#A8D2CC" stroke-width="6.5"/>
+ <path d="M79 13L84 10" stroke="#18394A" stroke-width="5"/>
+ <path d="M82 8L90 7 108-1 104 10 88 16 82 14Z" fill="#8BD6C2" stroke="#ADDCCB" stroke-width=".7"/>
+ <path d="M88 11L101 5M95 27L109 22" stroke="#386C70" stroke-width=".8" opacity=".55"/>
+ <g stroke="#A3D6D3" stroke-width="1" opacity=".65"><circle cx="-24" cy="-2" r="2"/><circle cx="-29" cy="-16" r="3"/><circle cx="-23" cy="-34" r="3.7"/><circle cx="-30" cy="-57" r="2"/></g>
+</g>
+</svg>

@@ -15,6 +15,19 @@ const MINIMUM_EXPECTED_SITES = 100;
 const MAXIMUM_SNAPSHOT_BYTES = 700 * 1024;
 const MAXIMUM_PAGES = 100;
 const topologyCodes = ['reef', 'wall', 'wreck', 'pinnacle', 'cave', 'cavern', 'muck', 'drift', 'shore', 'other'];
+// OpenDiveMap currently supplies very few structured topologies, while hundreds
+// of site names state the physical feature unambiguously. Use names only—not
+// third-party descriptions—to recover those factual types conservatively.
+const NAME_TOPOLOGIES = [
+  ['wreck', /\b(wreck|shipwreck|wrak|wrack|épave|epave|relitto|pecio|naufragio|vrak|hylky|ss |mv |hms |uss )\b/i],
+  ['reef', /\b(reef|riffe?|riff|arrecife|recif|récif|barriera|coral gardens?)\b/i],
+  ['wall', /\b(wall|drop[ -]?off|pared|falaise)\b/i],
+  ['pinnacle', /\b(pinnacle|needle|seamount|bommie|rocks?|rocher)\b/i],
+  ['cave', /\b(cave|cavern|cenote|grotto|grotte|grotta|cueva|h[oö]hle|sistema)\b/i],
+  ['muck', /\b(muck|mud)\b/i],
+  ['drift', /\bdrift\b/i],
+];
+const nameTopologies = name => NAME_TOPOLOGIES.filter(([, pattern]) => pattern.test(name)).map(([type]) => type);
 
 function validCoordinate(latitude, longitude) {
   return Number.isFinite(latitude) && Number.isFinite(longitude)
@@ -120,25 +133,32 @@ async function main() {
       return null;
     }
     ids.add(id);
-    const topologies = (Array.isArray(properties.topologies) ? properties.topologies : []).map((value) => text(value, 40).toLowerCase()).filter(Boolean);
+    const topologies = [...new Set([...(Array.isArray(properties.topologies) ? properties.topologies : []), ...nameTopologies(name)])]
+      .map((value) => text(value, 40).toLowerCase()).filter(Boolean);
     const topologyMask = topologies.reduce((mask, value) => {
       const code = topologyCodes.indexOf(value);
       return code < 0 ? mask : mask | (1 << code);
     }, 0);
     const unknownTopologies = topologies.filter((value) => !topologyCodes.includes(value)).slice(0, 3);
-    const maxDepth = Number(properties.max_depth);
+    const maxDepth = Number(properties.max_depth), tags = properties.tags || {};
+    const visibility = Number(tags.average_vis_m), rating = Number(tags.average_rating), loggedDives = Number(tags.logged_dives);
+    const averageDiveMinutes = Number(tags.average_divetime_min);
+    const community = [visibility > 0 && visibility <= 100 ? Math.round(visibility * 10) / 10 : 0,
+      rating > 0 && rating <= 5 ? Math.round(rating * 10) / 10 : 0,
+      Number.isSafeInteger(loggedDives) && loggedDives >= 0 ? loggedDives : 0,
+      averageDiveMinutes > 0 && averageDiveMinutes <= 300 ? Math.round(averageDiveMinutes) : 0];
     return [id, name, Math.round(latitude * 1e5), Math.round(longitude * 1e5),
       dictionaryIndex(countries, properties.country_name || properties.country_code),
       dictionaryIndex(seas, properties.sea_name), text(properties.environment, 24), topologyMask,
       text(properties.entry, 24), Number.isFinite(maxDepth) && maxDepth > 0 && maxDepth < 1000 ? maxDepth : 0,
-      aliasesFrom(properties.tags, name), unknownTopologies];
+      aliasesFrom(properties.tags, name), unknownTopologies, community];
   }).filter(Boolean).sort((a, b) => a[1].localeCompare(b[1]));
 
   const defaults = { sea: commonValue(rows.map((row) => row[5])), environment: commonValue(rows.map((row) => row[6])),
     topologyMask: commonValue(rows.map((row) => row[7])), entry: commonValue(rows.map((row) => row[8])),
     aliases: commonValue(rows.map((row) => row[10])), unknownTopologies: commonValue(rows.map((row) => row[11])) };
   if (!rows.every((row) => /^[a-z0-9]{6}$/.test(row[0]))) throw new Error('OpenDiveMap returned an ID outside the compact six-character format; review the schema before updating the snapshot.');
-  const snapshot = { schemaVersion: 3, source: 'OpenDiveMap contributors', sourceUrl: SOURCE_URL,
+  const snapshot = { schemaVersion: 4, source: 'OpenDiveMap contributors', sourceUrl: SOURCE_URL,
     apiUrl: API_URL, license: 'ODbL 1.0', licenseUrl: LICENSE_URL, retrievedAt: new Date().toISOString(),
     recordCount: rows.length, countries, seas, topologyCodes, defaults,
     packedIds: rows.map((row) => row[0]).join(''), names: rows.map((row) => row[1]),
@@ -147,7 +167,9 @@ async function main() {
     seasByIndex: sparseColumn(rows, 5, defaults.sea), environmentsByIndex: sparseColumn(rows, 6, defaults.environment),
     topologyMasksByIndex: sparseColumn(rows, 7, defaults.topologyMask), entriesByIndex: sparseColumn(rows, 8, defaults.entry),
     maxDepthsBase64: uint16Base64(rows.map((row) => row[9])), aliasesByIndex: sparseColumn(rows, 10, defaults.aliases),
-    unknownTopologiesByIndex: sparseColumn(rows, 11, defaults.unknownTopologies) };
+    unknownTopologiesByIndex: sparseColumn(rows, 11, defaults.unknownTopologies),
+    communityFields: ['averageVisibilityMeters', 'averageRating', 'loggedDives', 'averageDiveMinutes'],
+    communityStatsByIndex: rows.flatMap((row, index) => row[12].some(Boolean) ? [[index, ...row[12]]] : []) };
   const serialized = `${JSON.stringify(snapshot)}\n`;
   if (Buffer.byteLength(serialized) > MAXIMUM_SNAPSHOT_BYTES) throw new Error(`Compact snapshot is ${Buffer.byteLength(serialized)} bytes; review the payload before raising the 700 KB safety limit.`);
   fs.writeFileSync(outputPath, serialized);

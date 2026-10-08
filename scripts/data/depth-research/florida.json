@@ -13,7 +13,7 @@
      "unit": "ft",
      "top": 38,
      "bottom": 100,
-     "quote": "Adolphus Busch Sr (MO0057): depth 100 ft, relief 62 ft, deployed 12/05/1998"
+     "quote": "Name: Adolphus Busch Sr Depth: 100.0 Relief: 62.0"
     }
    ]
   },
@@ -28,7 +28,7 @@
      "unit": "ft",
      "top": 95,
      "bottom": 130,
-     "quote": "Bibb (MO0044): depth 130 ft, relief 35 ft, deployed 11/27/1987"
+     "quote": "Name: Bibb Depth: 130.0 Relief: 35.0"
     }
    ]
   },
@@ -43,7 +43,7 @@
      "unit": "ft",
      "top": 68,
      "bottom": 118,
-     "quote": "Duane (MO0043): depth 118 ft, relief 50 ft, deployed 11/27/1987"
+     "quote": "Name: Duane Depth: 118.0 Relief: 50.0"
     },
     {
      "url": "https://floridakeys.noaa.gov/shipwrecktrail/duane.html",
@@ -67,7 +67,7 @@
      "unit": "ft",
      "top": 70,
      "bottom": 110,
-     "quote": "Eagle (MO0026): depth 110 ft, relief 40 ft, deployed 12/19/1985"
+     "quote": "Name: Eagle Depth: 110.0 Relief: 40.0"
     },
     {
      "url": "https://floridakeys.noaa.gov/shipwrecktrail/eagle.html",
@@ -91,7 +91,7 @@
      "unit": "ft",
      "top": 40,
      "bottom": 65,
-     "quote": "Joe's Tug (MO0053): depth 65 ft, relief 25 ft, deployed 01/21/1989"
+     "quote": "Name: Joe's Tug Depth: 65.0 Relief: 25.0"
     }
    ]
   },
@@ -106,7 +106,7 @@
      "unit": "ft",
      "top": 51,
      "bottom": 135,
-     "quote": "Spiegel Grove (MO0061): depth 135 ft, relief 84 ft, deployed 05/17/2002"
+     "quote": "Name: Spiegel Grove Depth: 135.0 Relief: 84.0"
     }
    ]
   },
@@ -121,7 +121,7 @@
      "unit": "ft",
      "top": 45,
      "bottom": 145,
-     "quote": "Hoyt Vandenberg (MO0062): depth 145 ft, relief 100 ft, deployed 05/27/2009"
+     "quote": "Name: Hoyt Vandenberg Depth: 145.0 Relief: 100.0"
     }
    ]
   },
@@ -136,7 +136,7 @@
      "unit": "ft",
      "top": 57,
      "bottom": 84,
-     "quote": "San Pablo (W) Ship (ES0001): depth 84 ft, relief 27 ft, deployed 00/00/1943"
+     "quote": "Name: San Pablo (W) Ship Depth: 84.0 Relief: 27.0"
     }
    ]
   },
@@ -151,7 +151,7 @@
      "unit": "ft",
      "top": 57,
      "bottom": 82,
-     "quote": "Sylvia Tugboat 48' (ES0030): depth 82 ft, relief 25 ft, deployed 06/26/1990"
+     "quote": "Name: Sylvia Tugboat 48' Depth: 82.0 Relief: 25.0"
     }
    ]
   },
@@ -166,7 +166,7 @@
      "unit": "ft",
      "top": 74,
      "bottom": 82,
-     "quote": "P.C. Barge (ES0028): depth 82 ft, relief 8 ft, deployed 06/20/1990"
+     "quote": "Name: P.C. Barge Depth: 82.0 Relief: 8.0"
     }
    ]
   },
@@ -181,7 +181,7 @@
      "unit": "ft",
      "top": 73,
      "bottom": 83,
-     "quote": "Soule Barge (ES0041): depth 83 ft, relief 10 ft, deployed 04/10/1992"
+     "quote": "Name: Soule Barge Depth: 83.0 Relief: 10.0"
     }
    ]
   },
@@ -196,7 +196,7 @@
      "unit": "ft",
      "top": 65,
      "bottom": 75,
-     "quote": "Tessie Steel Boat (ES0009): depth 75 ft, relief 10 ft, deployed 04/05/1988"
+     "quote": "Name: Tessie Steel Boat Depth: 75.0 Relief: 10.0"
     }
    ]
   },
@@ -211,7 +211,7 @@
      "unit": "ft",
      "top": 60,
      "bottom": 82,
-     "quote": "Deliverance Tugboat (ES0025): depth 82 ft, relief 22 ft, deployed 10/24/1989"
+     "quote": "Name: Deliverance Tugboat Depth: 82.0 Relief: 22.0"
     }
    ]
   },
@@ -226,7 +226,7 @@
      "unit": "ft",
      "top": 63,
      "bottom": 100,
-     "quote": "Accokeek (BA0162): depth 100 ft, relief 37 ft, deployed 07/09/2000"
+     "quote": "Name: Accokeek Depth: 100.0 Relief: 37.0"
     }
    ]
   },
@@ -241,7 +241,7 @@
      "unit": "ft",
      "top": 35,
      "bottom": 90,
-     "quote": "USS Mohawk CGC V.M.R. (LE0120): depth 90 ft, relief 55 ft, deployed 07/02/2012"
+     "quote": "Name: USS Mohawk CGC V.M.R. Depth: 90.0 Relief: 55.0"
     }
    ]
   },
@@ -256,7 +256,7 @@
      "unit": "ft",
      "top": 125,
      "bottom": 185,
-     "quote": "USS Curb (MO0016): depth 185 ft, relief 60 ft, deployed 11/24/1983"
+     "quote": "Name: USS Curb Depth: 185.0 Relief: 60.0"
     }
    ]
   },
@@ -271,7 +271,7 @@
      "unit": "ft",
      "top": null,
      "bottom": 80,
-     "quote": "Eidsvag (PB0010): depth 80 ft, relief 0 ft, deployed 00/00/1985"
+     "quote": "Name: Eidsvag Depth: 80.0 Relief: 0.0"
     }
    ]
   },
@@ -286,7 +286,7 @@
      "unit": "ft",
      "top": null,
      "bottom": 80,
-     "quote": "Eidsvag (PB0010): depth 80 ft, relief 0 ft, deployed 00/00/1985"
+     "quote": "Name: Eidsvag Depth: 80.0 Relief: 0.0"
     }
    ]
   },
@@ -310,7 +310,7 @@
    "name": "Amesbury Wreck",
    "claims": [
     {
-     "url": "https://floridakeys.noaa.gov/shipwrecktrail/amesbury.html",
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/",
      "publisher": "NOAA Florida Keys National Marine Sanctuary",
      "kind": "agency",
      "unit": "ft",

@@ -174,26 +174,88 @@ export const atlasStyles = `
 .detail-expanded .sheet-head{position:sticky;z-index:5;background:#0c202d;border-bottom:1px solid var(--line)}
 .detail-expanded .sheet-body{overflow:visible}
 /* Overview: cross-section hero, dive-slate tiles, highlight and hazard chips, season strip. */
-.hero{margin:-8px -16px 16px;border-bottom:1px solid var(--line)}
+.hero{margin:-8px -16px 16px;border-bottom:1px solid var(--line);background:#071c29;overflow:hidden}
 .xsection{display:block;width:100%;height:auto;stroke:none;stroke-width:1;fill:none}
-.xs-sky{fill:#0c202d}
+.profile-art{background:#0b2b39;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.profile-temp rect,.profile-deep-temp rect,.profile-depth rect,.profile-caption rect{fill:#071e2a;fill-opacity:.86;stroke:#b9e6e3;stroke-opacity:.25;stroke-width:1.2}
+.profile-temp text{fill:#f3fbfa;font-size:27px;font-weight:350}
+.profile-temp tspan{fill:#b4d0d1;font-size:12px;font-weight:700;letter-spacing:1.7px}
+.profile-deep-temp text{fill:#eacb84;font-size:13px;font-weight:700;letter-spacing:1.2px}
+.profile-ruler line{stroke:#d5eeee;stroke-opacity:.42;stroke-width:1.2}
+.profile-ruler text{fill:#d5eeee;fill-opacity:.68;font-size:13px;font-weight:700;letter-spacing:1.2px}
+.profile-depth line{stroke:#e6f5f3;stroke-opacity:.5;stroke-width:1.35}
+.profile-depth .key{fill:#9ebbbd;font-size:11px;font-weight:750;letter-spacing:1.25px}
+.profile-depth .value{fill:#f7fcfb;font-size:16px;font-weight:750}
+.profile-limit>line{stroke-width:1.7;stroke-dasharray:9 7;stroke-opacity:.68}
+.profile-limit rect{stroke-width:1.1}
+.profile-limit text{font-size:12px;font-weight:750;letter-spacing:1.05px}
+.profile-limit.good>line{stroke:#91e4c8}.profile-limit.good rect{fill:#07352f;stroke:#91e4c8}.profile-limit.good text{fill:#b5efdc}
+.profile-limit.over>line{stroke:#f2917a}.profile-limit.over rect{fill:#46241f;stroke:#f2917a}.profile-limit.over text{fill:#ffb09e}
+.profile-limit.rec>line{stroke:#e7ca83}.profile-limit.rec rect{fill:#3b321e;stroke:#e7ca83}.profile-limit.rec text{fill:#f0d995}
+.profile-caption rect{fill:#071e2a;fill-opacity:.8;stroke-opacity:.18}
+.profile-caption text{fill:#a9c3c5;font-size:10px;font-weight:700;letter-spacing:1.45px}
+.profile-unknown rect{fill:#071e2a;fill-opacity:.9;stroke:#b9e6e3;stroke-opacity:.32;stroke-width:1.5}
+.profile-unknown text{fill:#ecf7f6;font-size:17px;font-weight:750;letter-spacing:1.5px}
+.xs-sky{fill:#0b2634}
 .detail-expanded #glance .peek-stats,.detail-expanded #glance .peek-tags{display:none}
-.xs-surface{fill:none;stroke:#cdeff5;stroke-opacity:.55;stroke-width:1.2}
-.xs-bed{fill:#2a2b25;stroke:#6f6a55;stroke-width:1}
+.xs-light{fill:#b9f1f5;fill-opacity:.045}
+.xs-caustics{fill:none;stroke:#d7ffff;stroke-opacity:.12;stroke-width:1}
+.xs-particles{fill:#d8f7f7;fill-opacity:.35}
+.xs-surface{fill:none;stroke:#dcfbff;stroke-opacity:.88;stroke-width:1.3}
+.xs-thermo{fill:#90dfe5;fill-opacity:.055;stroke:#b9edf0;stroke-width:.5;stroke-dasharray:2 4;stroke-opacity:.18}
+.xs-temp-badge rect{fill:#052536;fill-opacity:.58;stroke:#bbf3f4;stroke-opacity:.18}
+.xs-bed{fill:url(#xs-bed-fill);stroke:#728078;stroke-width:.8}
 .xs-bed.est{stroke-dasharray:4 3}
-.xs-site{fill:#5f6f75;stroke:#b9c8cc;stroke-width:.8}
-.xs-site.reef{fill:#a86a55;stroke:#e2a58c}
-.xs-site.rock{fill:#3c4442;stroke:#77807c}
-.xs-tick{stroke:#eef5f5;stroke-opacity:.45;stroke-width:1}
-.xs-mark{fill:#eef5f5;font-size:11.5px;font-weight:600;paint-order:stroke;stroke:#071a24;stroke-width:3px;stroke-opacity:.5}
+.xs-site{vector-effect:non-scaling-stroke}
+.xs-scene-shadow{fill:#00141c;fill-opacity:.78;filter:url(#xs-shadow)}
+.xs-wreck-side{fill:url(#xs-wreck-side);stroke:#aac2c5;stroke-width:1.1;stroke-linejoin:round}
+.xs-wreck-top{fill:url(#xs-wreck-fill);stroke:#d0dedf;stroke-width:.85;stroke-linejoin:round}
+.xs-wreck-detail{fill:none;stroke:#d8e7e7;stroke-width:1;stroke-linejoin:round;stroke-linecap:round}
+.xs-wreck-detail circle{fill:#082735;stroke:#c8d8d9;stroke-width:1}
+.xs-rust{fill:none;stroke:#cb7e5c;stroke-opacity:.72;stroke-width:1.25;stroke-linecap:round}
+.xs-rubble{fill:none;stroke:#879b98;stroke-width:1.2;stroke-linecap:round}
+.xs-reef-back{fill:#5e4552;stroke:#a06b71;stroke-width:.8;opacity:.82}
+.xs-site.reef{fill:url(#xs-reef-fill);stroke:#f0b38f;stroke-width:1.05}
+.xs-coral{fill:none;stroke:#f0bf95;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.xs-brain-coral{fill:none;stroke:#e5a57b;stroke-width:1.15;stroke-linecap:round}
+.xs-fish{fill:#c7ece4;fill-opacity:.88}
+.xs-cave-rock{fill:url(#xs-cave-fill);stroke:#81948d;stroke-width:1}
+.xs-cave-rim{fill:none;stroke:#b3c1b8;stroke-width:1.1;stroke-linecap:round}
+.xs-cave-strata{fill:none;stroke:#b0beb5;stroke-width:.7;stroke-opacity:.24;stroke-linecap:round}
+.xs-stalactites{fill:#4e625d;stroke:#93a49b;stroke-width:.8;stroke-linejoin:round}
+.xs-guideline{fill:none;stroke:#f0d17f;stroke-width:1.15;stroke-dasharray:3 2}
+.xs-line-anchor{fill:#f0d17f;stroke:#fff1b5;stroke-width:.7}
+.xs-cave-light{fill:#9ce5df;fill-opacity:.06}
+.xs-site.rock{fill:#354a49;stroke:#8da19b;stroke-width:1}
+.xs-wall-edge{fill:none;stroke:#9cb0aa;stroke-width:1.1}
+.xs-lake-bed{fill:url(#xs-lake-bed);stroke:#788472;stroke-width:1}
+.xs-lake-bed.est{stroke-dasharray:4 3}
+.xs-lake-contour{fill:none;stroke:#a3b29e;stroke-opacity:.23;stroke-width:.8;stroke-dasharray:2 3}
+.xs-lake-log{fill:none;stroke:#a58d6a;stroke-width:2;stroke-linecap:round}
+.xs-lake-life{fill:#66775f;stroke:#a4b58a;stroke-width:1;stroke-linecap:round}
+.xs-diver-beam{fill:#d9ffff;fill-opacity:.075}
+.xs-diver{fill:none;stroke:#e0f5f1;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.xs-diver>circle{fill:#d7efec;stroke:none}
+.xs-diver .xs-tank{fill:#d7b95e;stroke:#f7dea0;stroke-width:.8}
+.xs-diver .xs-bubble{fill:none;stroke:#d7efec;stroke-width:.8;opacity:.7}
+.xs-grid{stroke:#d8f7f7;stroke-opacity:.065;stroke-width:.7}
+.xs-grid-t,.xs-grid-unit{fill:#d8f7f7;fill-opacity:.36;font-size:7.5px;font-weight:600;letter-spacing:.8px}
+.xs-depth-mark line{stroke:#d7eeee;stroke-opacity:.46;stroke-width:.8}
+.xs-depth-mark rect{fill:#061f2c;fill-opacity:.9;stroke:#d4ecee;stroke-opacity:.2;stroke-width:.7}
+.xs-depth-k{fill:#8fb2b8;font-size:6.6px;font-weight:700;letter-spacing:.65px}
+.xs-depth-v{fill:#f4fbfb;font-size:9px;font-weight:700}
 .xs-temp{fill:#eef5f5;font-size:15px;font-weight:300}
 .xs-temp.cold{fill:var(--gold)}
-.xs-note{fill:#cdeff5;fill-opacity:.75;font-size:10px;font-weight:400}
-.xs-big{fill:#eef5f5;font-size:15px;opacity:.8}
-.xs-limit{stroke:var(--mint);stroke-width:1.5;stroke-dasharray:6 4}
-.xs-limit.over{stroke:#f2917a}.xs-limit.rec{stroke:#9db6c0;stroke-opacity:.7}
-.xs-limit-t{fill:var(--mint);font-size:10.5px;font-weight:600;paint-order:stroke;stroke:#071a24;stroke-width:3px;stroke-opacity:.5}
-.xs-limit-t.over{fill:#f2917a}.xs-limit-t.rec{fill:#c7d6db}
+.xs-note{fill:#cdeff5;fill-opacity:.72;font-size:7px;font-weight:600;letter-spacing:.55px}
+.xs-big{fill:#eef5f5;font-size:12px;font-weight:650;letter-spacing:1px;opacity:.8}
+.xs-unknown circle,.xs-unknown path{fill:none;stroke:#c9ebed;stroke-opacity:.18;stroke-width:1}
+.xs-limit-g line{stroke-width:1.1;stroke-dasharray:5 4}.xs-limit-g rect{stroke-width:.7}
+.xs-limit-g text{font-size:7.2px;font-weight:700;letter-spacing:.45px}
+.xs-limit-g.good line{stroke:var(--mint)}.xs-limit-g.good rect{fill:#08352f;stroke:#90e6c9}.xs-limit-g.good text{fill:#a9ecd6}
+.xs-limit-g.over line{stroke:#f2917a}.xs-limit-g.over rect{fill:#46241f;stroke:#f2917a}.xs-limit-g.over text{fill:#ffb09e}
+.xs-limit-g.rec line{stroke:#a7bdc5;stroke-opacity:.64}.xs-limit-g.rec rect{fill:#132d38;stroke:#8da8b2}.xs-limit-g.rec text{fill:#cfdee2}
+.xs-caption rect{fill:#071d28;fill-opacity:.72;stroke:#ccebed;stroke-opacity:.12;stroke-width:.6}
+.xs-caption text{fill:#c7dcdf;fill-opacity:.72;font-size:6.7px;font-weight:700;letter-spacing:.65px}
 .xsection text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 .see-chips,.watch-chips{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
 .see-chips span{font-size:12px;border:1px solid #badbea30;border-radius:14px;padding:6px 10px;color:#dfeaec}

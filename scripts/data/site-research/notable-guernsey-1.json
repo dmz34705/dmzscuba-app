@@ -1,0 +1,10 @@
+{"batch":"notable-guernsey-1","researchedAt":"2026-10-07","sites":[
+{"id":"x-wikipedia-183","name":"SS Stella (1890)",
+ "sources":{
+  "s1":{"url":"https://en.wikipedia.org/wiki/SS_Stella_(1890)","publisher":"Wikipedia","kind":"encyclopedia","quote":"It lies in 49 metres (161 ft) of water south of the Casquets."},
+  "s2":{"url":"https://museums.gov.gg/article/102034/","publisher":"Guernsey Museums","kind":"agency","quote":"Shipwrecks around the Bailiwick of Guernsey are protected by the Wreck and Salvage (Vessels and Aircraft) Law, 1986-98."}
+ },
+ "depth":[{"ref":"s1","unit":"m","bottom":49}],
+ "types":{"value":["wreck"],"refs":["s1"]},
+ "access":{"value":"Restricted historic wreck; licence needed from the States Archaeologist","refs":["s2"]}}
+]}

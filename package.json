@@ -67,6 +67,9 @@
     "test:portable-backup": "node scripts/verify-portable-backup.cjs",
     "build:dive-sites": "node scripts/build-offline-dive-site-catalog.cjs",
     "sync:global-dive-sites": "node scripts/sync-open-dive-map.cjs",
+    "fetch:osm-site-source": "node scripts/fetch-osm-site-source.cjs",
+    "enrich:osm-sites": "node scripts/enrich-osm-site-snapshot.cjs",
+    "enrich:global-site-types": "node scripts/enrich-global-site-topologies.cjs",
     "build:ocean-atlas": "node scripts/build-ocean-atlas.mjs",
     "bundle:ocean-atlas": "node scripts/bundle-ocean-atlas-runtime.cjs",
     "test:ocean-atlas": "node scripts/verify-ocean-atlas.cjs",
@@ -81,14 +84,23 @@
     "test:insurance": "node scripts/verify-insurance.cjs",
     "test:site-dives": "node scripts/verify-site-dives.cjs",
     "test:site-profiles": "node scripts/verify-site-profiles.cjs",
+    "audit:site-coverage": "node scripts/audit-atlas-site-coverage.cjs",
+    "report:site-gaps": "node scripts/report-site-research-gaps.cjs",
+    "research:plan": "node scripts/plan-site-research.cjs",
+    "research:next": "node scripts/plan-site-research.cjs --next",
+    "research:verify": "node scripts/verify-research-quotes.cjs",
+    "research:build": "node scripts/build-site-research.cjs",
     "preview:ocean-atlas": "node scripts/preview-ocean-atlas.cjs",
     "test:layout": "node scripts/verify-layout.cjs",
     "tunnel": "node tunnel.cjs",
     "build:atlas-release": "node scripts/build-atlas-release.cjs",
-    "test:atlas-updates": "node scripts/verify-atlas-update-lifecycle.cjs && node scripts/verify-atlas-updates.cjs"
+    "test:atlas-updates": "node scripts/verify-atlas-update-lifecycle.cjs && node scripts/verify-atlas-updates.cjs",
+    "deploy": "npx expo export -p web && wrangler deploy",
+    "preview": "npx expo export -p web && wrangler dev"
   },
   "private": true,
   "devDependencies": {
-    "netcdfjs": "^3.0.0"
+    "netcdfjs": "^3.0.0",
+    "wrangler": "^4.148.0"
   }
 }

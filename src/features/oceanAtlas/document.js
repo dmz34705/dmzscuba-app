@@ -16,10 +16,14 @@ import { utf8Bytes } from './updateContract';
 // the shared Wikipedia link prefix shortened to "~" (atlasRuntime expands it).
 const WIKIPEDIA = 'https://en.wikipedia.org/wiki/';
 export function buildAtlasData({ temperatureUnit = 'F', depthUnit = 'ft', locationPicker = false } = {}) {
+  // Community aggregates are native guide data delivered only for the selected
+  // site; keep them out of the map bootstrap payload.
+  const { communityStatsByIndex: _communityStats, communityFields: _communityFields, ...embeddedGlobalSites } = globalSites;
   const embeddedExtraSites = { topologyCodes: extraSites.topologyCodes, sources: extraSites.sources,
     sites: extraSites.sites.map(row => (typeof row[9] === 'string' && row[9].startsWith(WIKIPEDIA) ? [...row.slice(0, 9), `~${row[9].slice(WIKIPEDIA.length)}`, ...row.slice(10)] : row)) };
+  const embeddedOsmSites = { ...osmSites, sites: osmSites.sites.map(row => row.slice(0, 9)) };
   return { locationPicker, months: MONTHS, regions: MARINE_REGIONS, oceanRegions: OCEAN_REGIONS, diveRegions: DIVE_REGIONS, remoteAreas: REMOTE_DIVE_AREAS, temperature, land,
-    sites: [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites], globalSites, osmSites, extraSites: embeddedExtraSites, publishedDepths, siteMerges, siteCorrections: siteCorrections(siteProfiles), closedWrecks: CLOSED_WRECKS.source, curatedSiteCount: curatedSites.length,
+    sites: [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites], globalSites: embeddedGlobalSites, osmSites: embeddedOsmSites, extraSites: embeddedExtraSites, publishedDepths, siteMerges, siteCorrections: siteCorrections(siteProfiles), closedWrecks: CLOSED_WRECKS.source, curatedSiteCount: curatedSites.length,
     unit: temperatureUnit === 'C' ? 'C' : 'F', depthUnit: depthUnit === 'm' ? 'm' : 'ft' };
 }
 

@@ -1,0 +1,587 @@
+{
+ "batch": "notable-indonesia-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "odm-6zgdzb",
+   "name": "Crystal Bay, Nusa Penida",
+   "sources": {
+    "s1": {
+     "url": "https://bali.com/places/crystal-bay-nusa-penida/",
+     "publisher": "Bali.com",
+     "kind": "press",
+     "quote": "Depth : 10-25 m … Current : easy … Visibility (avg) : 30 m. … Difficulty : Advanced … Access : Boat, Shore … between August and October"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/dive-site-crystal-bay-nusa-penida-bali-indonesia/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Average depth: 65 feet (20 m) … Note that currents can be very strong and proper experience is vital at this site. … From June to October"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "season": {
+    "from": 8,
+    "to": 10,
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mola mola (ocean sunfish) in the cooler months",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Currents can be very strong",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered bay off Nusa Penida with some of Bali's clearest water, divable in the bay or around the small island offshore. Ocean sunfish visit in the cooler months, but currents outside the bay demand experience.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-qmjree",
+   "name": "Pink Beach Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://divetribekomodo.com/faq/about-komodo-dive-sites/pink-beach-komodo-is-it-a-good-dive-site",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "quote": "3–12m (some deeper drops to 18m) … Mild current, shallow depths, sheltered bay. … 12–20m … Open Water (excellent first dive site)"
+    },
+    "s2": {
+     "url": "https://samaraliveaboard.com/pink-beach-komodo-for-divers-a-rare-marine-canvas/",
+     "publisher": "Samara Liveaboard",
+     "kind": "operator",
+     "quote": "accessible to all skill levels … Pygmy seahorses on delicate sea fans … Blue-spotted rays gliding effortlessly"
+    },
+    "s3": {
+     "url": "https://komodoluxurytour.com/pink-beach-komodo-guide/",
+     "publisher": "Komodo Luxury Tour",
+     "kind": "operator",
+     "quote": "It starts in two metres of water within an easy swim of the sand and slopes to about fifteen metres … Visibility runs 10-25 metres depending on tide and season."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 18
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 2,
+     "bottom": 15
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 12,
+    "high": 20,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pygmy seahorses on sea fans",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Hawksbill turtles feeding on sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A calm, sheltered coral slope on Komodo's coast, shallow and gentle enough for newly certified divers. It makes a relaxed break between Komodo's current-swept dives, with good macro life and turtles.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-wrndzo",
+   "name": "Siaba Besar",
+   "sources": {
+    "s1": {
+     "url": "https://www.komodoresort.com/komodo-diving/siaba-besar/",
+     "publisher": "Komodo Resort",
+     "kind": "operator",
+     "quote": "5 – 18 meters … 10 – 25 meters … Typically mild … April – November … Beginner … Macro life, turtles, coral bommies"
+    },
+    "s2": {
+     "url": "https://diveconcepts.com/siaba-besar-komodo",
+     "publisher": "Dive Concepts",
+     "kind": "operator",
+     "quote": "Although the maximum depth is around 22 meters … a suitable dive site for any kind of level … lacks strong currents"
+    },
+    "s3": {
+     "url": "https://divetribekomodo.com/faq/about-komodo-dive-sites/siaba-besar-turtle-town-komodo",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "quote": "5–25m (most action 5–18m) … 15–25m … Mild … Open Water … Turtle City"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 18
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 5,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 4,
+     "bottom": 22
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 25,
+    "unit": "m",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "season": {
+    "from": 4,
+    "to": 11,
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Green turtles ('Turtle City')",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Macro life on sandy patches",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered bay in central Komodo National Park with coral bommies and sandy patches on a gentle slope. Calm and shallow, it is known for its resident turtles and is popular for first and check-out dives.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-971",
+   "name": "HMAS Perth",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMAS_Perth_(D29)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "reasonably intact, lying on its side at a depth of about 35 m (115 ft)"
+    },
+    "s2": {
+     "url": "https://pacificwrecks.com/ship/hmas/perth.html",
+     "publisher": "Pacific Wrecks",
+     "kind": "press",
+     "quote": "a depth of 35m / 120' … the shipwreck was discovered by an expedition led by Australian David G. Burchell"
+    },
+    "s3": {
+     "url": "https://gulfnews.com/world/oceania/sunken-australian-warship-hmas-perth-ransacked-by-illegal-scavengers-1.2038983",
+     "publisher": "Gulf News",
+     "kind": "press",
+     "quote": "35 metres below the water … only approximately 40 per cent of the vessel remaining"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "WWII light cruiser lost in 1942",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Heavily stripped by illegal salvage",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The Australian light cruiser sunk in 1942 in Sunda Strait lies on a sandy bottom around 35 m, a war grave found in 1967. Large-scale illegal salvage in 2013 removed much of the structure, leaving a broken site.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1026",
+   "name": "USS Chub",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Chub",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Transferred to Turkey, 25 May 1948"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not wrecked here: transferred to Turkey in 1948, later scrapped",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-940",
+   "name": "HMS Sturdy",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Sturdy_(P248)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She arrived at the yards of Clayton and Davie on 9 May 1958 for breaking up."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: broken up for scrap in 1958",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1121",
+   "name": "HMS Sirdar",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Sirdar_(P226)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "arrived at the yards of McLellen on 31 May 1965 for breaking up"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: sold and broken up for scrap in 1965",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-938",
+   "name": "HMS Shalimar",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Shalimar",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "sold for scrap in July 1950"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: sold for scrap in 1950",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-415",
+   "name": "Nusa Lembongan",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Nusa_Lembongan",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is an island located southeast of Bali, Indonesia"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole island with many dive sites, not one site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-396",
+   "name": "Gili Islands",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Gili_Islands",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "are an archipelago of three small islands"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An archipelago of three islands, not one dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-402",
+   "name": "Wakatobi Regency",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Wakatobi_Regency",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Wakatobi Regency is a group of ca. 150 islands forming an administrative regency"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An administrative regency of about 150 islands",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-416",
+   "name": "Bunaken National Park",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Bunaken_National_Park",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Bunaken National Park is a marine park in the north of Sulawesi Island, Indonesia."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole marine park, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-409",
+   "name": "Balabalagan Islands",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Balabalagan_Islands",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "an Indonesian archipelago forming an administrative district of Mamuju Regency"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An archipelago and administrative district",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-421",
+   "name": "Rondo Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Rondo_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "popular with scuba divers"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole uninhabited island, not one dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-424",
+   "name": "Amed (Bali)",
+   "sources": {
+    "s1": {
+     "url": "https://www.starfish.ch/dive/Bali-east.html",
+     "publisher": "Starfish dive guide",
+     "kind": "press",
+     "quote": "The town lies on the shore of Jemeluk bay"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A town with many separate dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

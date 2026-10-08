@@ -1,0 +1,52 @@
+{ "batch": "notable-sri-lanka-1", "researchedAt": "2026-10-07", "sites": [
+{ "id": "x-notable-1083", "name": "Great Basses wreck",
+  "sources": {
+    "s1": { "url": "https://nsd.ccf.gov.lk/shipwrecks/slsgbasm04", "publisher": "Sri Lanka National Shipwreck Database (Central Cultural Fund)", "kind": "agency",
+      "quote": "8.00–12.00 m … Situated near the lighthouse in the Great Basses area … These remains are situated within a narrow trench nestled between two reefs." },
+    "s2": { "url": "https://en.wikipedia.org/wiki/Great_Basses_wreck", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "about 12 km off the south coast of Sri Lanka" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 8, "bottom": 12 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Site is access-restricted; calm seas needed to reach the wreck", "refs": ["s1"] },
+  "summary": { "text": "Early 18th-century Mughal-era wreck wedged in a narrow trench between two reefs near the Great Basses lighthouse, about 12 km off Sri Lanka's south coast. Shallow, but reaching it needs exceptionally calm seas and the site is access-restricted.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-1302", "name": "HMS Tenedos",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Tenedos_(H04)", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "The wreck was removed in February 1944 by HM salvage vessel Salviking." }
+  },
+  "notDiveSite": { "kind": "gone", "reason": "Sunk in Colombo harbour 1942; wreck removed by a salvage vessel in 1944", "refs": ["s1"] }
+},
+{ "id": "x-notable-1283", "name": "HMS Hollyhock",
+  "sources": {
+    "s1": { "url": "https://nsd.ccf.gov.lk/shipwrecks/slekalmm26", "publisher": "Sri Lanka National Shipwreck Database (Central Cultural Fund)", "kind": "agency",
+      "quote": "30.00–42.00 m … about 15km off the coast of Oluvil … The bow (front) section of the wreck is relatively well preserved in comparison to the stern (rear) section … the currents at this location can be very strong." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 30, "bottom": 42 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "current": { "value": "strong", "refs": ["s1"] },
+  "highlights": [ { "text": "Bow section relatively well preserved", "refs": ["s1"] }, { "text": "Exposed boilers; stern in debris field", "refs": ["s1"] } ],
+  "hazards": [ { "text": "Currents can be very strong", "refs": ["s1"] } ],
+  "summary": { "text": "WWII corvette lying 30-42 m on the seabed near a slope, around 15 km off Oluvil on the east coast. The bow is the best-preserved part while the stern is scattered; currents can run hard.", "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-70", "name": "HMS Hermes (95)",
+  "sources": {
+    "s1": { "url": "https://nsd.ccf.gov.lk/shipwrecks/slebattm21", "publisher": "Sri Lanka National Shipwreck Database (Central Cultural Fund)", "kind": "agency",
+      "quote": "maximum depth of 53m, about 8km off the coast of Batticaloa … the shipwreck lies upside down (keel up position) on the seabed" },
+    "s2": { "url": "https://diveadventures.com.au/region/sri-lanka-batticaloa/", "publisher": "Dive Adventures", "kind": "operator",
+      "quote": "recommended for divers with minimum technical training to 50 metres … Moderate to strong currents can be experienced on the dive … optimum from April to September" },
+    "s3": { "url": "https://maritime-executive.com/features/divers-revisit-wreck-of-the-first-purpose-built-carrier", "publisher": "The Maritime Executive", "kind": "press",
+      "quote": "Hermes' wreck lies over 180 feet down" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 40, "bottom": 53 }, { "ref": "s3", "unit": "ft", "bottom": 180 } ],
+
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "technical", "refs": ["s2"] },
+  "current": { "value": "moderate", "refs": ["s2"] },
+  "season": { "from": 4, "to": 9, "refs": ["s2"] },
+  "highlights": [ { "text": "Upturned carrier hull, one propeller clearly visible", "refs": ["s1"] } ],
+  "hazards": [ { "text": "Moderate to strong currents", "refs": ["s2"] }, { "text": "Technical depth, decompression required", "refs": ["s2"] } ],
+  "summary": { "text": "The first purpose-built aircraft carrier, lying upside down in roughly 40-53 m about 8 km off Batticaloa. A technical dive best in April-September, with moderate to strong currents.", "refs": ["s1", "s2", "s3"] }
+}
+]}

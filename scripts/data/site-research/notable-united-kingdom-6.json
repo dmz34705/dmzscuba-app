@@ -1,0 +1,193 @@
+{
+  "batch": "notable-united-kingdom-6",
+  "researchedAt": "2026-10-07",
+  "sites": [
+    {
+      "id": "x-notable-816",
+      "name": "HMS London",
+      "sources": {
+        "s1": { "url": "https://divernet.com/scuba-news/divers-digitally-map-historic-wreck-the-london/", "publisher": "Divernet", "kind": "press",
+                "quote": "50cm visibility is considered good by the diving team … The London is regularly dived by the volunteer licenced team led by diver Steve Ellis" },
+        "s2": { "url": "https://scubaverse.com/17th-century-shipwreck-reveal-secrets", "publisher": "Scubaverse", "kind": "press",
+                "quote": "Protection of Wrecks Act (1973) … Although the underwater dive conditions are difficult with limited visibility" }
+      },
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1", "s2"] },
+      "access": { "value": "Protected wreck (Protection of Wrecks Act 1973); diving only under licence, by the licensee's volunteer team", "refs": ["s1", "s2"] },
+      "hazards": [ { "text": "Very poor visibility, around 50 cm on a good day", "refs": ["s1"] } ],
+      "summary": { "text": "The 1665 warship London lies in two pieces in the Thames Estuary off Southend. It is a legally protected wreck worked by a licensed volunteer dive team in very murky water, so it is not a casual recreational dive.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-notable-1312",
+      "name": "HMT Amethyst",
+      "sources": {
+        "s1": { "url": "https://heritage.kent.gov.uk/Monument/MKE13419", "publisher": "Kent County Council Historic Environment Record", "kind": "agency",
+                "quote": "least echosounder depth 15.8 in general depth 18.7m. Scour depth 22.4m … Large wreck and easy to locate" },
+        "s2": { "url": "https://en.wikipedia.org/wiki/HMT_Amethyst", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "struck a mine in Barrow Deep in the Thames Estuary and sank" }
+      },
+      "depth": [ { "ref": "s1", "unit": "m", "top": 15.8, "bottom": 18.7 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1", "s2"] },
+      "highlights": [ { "text": "Large wreck, easy to locate", "refs": ["s1"] } ],
+      "summary": { "text": "An anti-submarine trawler sunk by a mine in 1940 in the Barrow Deep, Thames Estuary. Survey records show a sizeable, easily found wreck with a scour hole, its shallowest part around 16 m below chart datum.", "refs": ["s1", "s2"] },
+      "depthNote": "Least depth 15.8 m, general seabed 18.7 m (LAT soundings); scour to 22.4 m"
+    },
+    {
+      "id": "x-notable-1222",
+      "name": "HMS Venetia",
+      "sources": {
+        "s1": { "url": "https://heritage.kent.gov.uk/Monument/MKE13428", "publisher": "Kent County Council Historic Environment Record", "kind": "agency",
+                "quote": "Least depth by echo sounder 43.7ft in general depth 48ft. Scour 52ft … Dispersed and difficult to find" },
+        "s2": { "url": "https://en.wikipedia.org/wiki/HMS_Venetia", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "struck a mine off Knob Buoy in the Thames Estuary" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "top": 43.7, "bottom": 48 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1", "s2"] },
+      "hazards": [ { "text": "Wreck dispersed and hard to find", "refs": ["s1"] } ],
+      "summary": { "text": "A First World War-era destroyer mined in the Thames Estuary in December 1940. Hydrographic surveys describe broken-up wreckage in roughly 14-15 m, with a scour beside it, and it has been hard to locate.", "refs": ["s1", "s2"] },
+      "depthNote": "Least depth 43.7 ft, general 48 ft, scour 52 ft (1973 survey, LAT)"
+    },
+    {
+      "id": "x-notable-867",
+      "name": "South Edinburgh Channel Wreck",
+      "sources": {
+        "s1": { "url": "https://heritage.kent.gov.uk/Monument/MKE43271", "publisher": "Kent County Council Historic Environment Record", "kind": "agency",
+                "quote": "There has been no archaeological investigation of the site since designation as the sand has reburied the site" }
+      },
+      "notDiveSite": { "kind": "gone", "reason": "Protected wreck reburied under at least six metres of sand; not diveable", "refs": ["s1"] }
+    },
+    {
+      "id": "x-notable-812",
+      "name": "HMS Whirlwind",
+      "sources": {
+        "s1": { "url": "https://coflein.gov.uk/en/site/507233", "publisher": "Coflein (Royal Commission on the Ancient and Historical Monuments of Wales)", "kind": "agency",
+                "quote": "The wreck of HMS WHIRLWIND lies in 31m of water … It is reported as being collapsed and lying on its port side" },
+        "s2": { "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-139-hms-whirlwind/", "publisher": "Divernet", "kind": "press",
+                "quote": "it is also at a comfortably accessible depth of 36m … Slack water is essential … could put you well into decompression" }
+      },
+      "depth": [ { "ref": "s1", "unit": "m", "top": 31, "bottom": 31 }, { "ref": "s2", "unit": "m", "top": 35, "bottom": 36 } ],
+      "entry": { "value": "boat", "refs": ["s2"] },
+      "types": { "value": ["wreck"], "refs": ["s1", "s2"] },
+      "level": { "value": "advanced", "refs": ["s2"] },
+      "hazards": [ { "text": "Dive only at slack water", "refs": ["s2"] }, { "text": "Easy to run into decompression on one dive", "refs": ["s2"] } ],
+      "highlights": [ { "text": "Cold War frigate with a relatively intact hull", "refs": ["s2"] } ],
+      "summary": { "text": "A Cold War frigate that foundered in Cardigan Bay in 1974 while being used as a trial target. It lies on its port side in about 31-36 m, best done on slack water by experienced divers, with a largely intact hull.", "refs": ["s1", "s2"] },
+      "depthNote": "Coflein 31 m; Divernet tour 35-45 m range, 36 m on the seabed"
+    },
+    {
+      "id": "x-notable-920",
+      "name": "HMS Exmoor",
+      "sources": {
+        "s1": { "url": "https://www.dive125.co.uk/diving/lowestoft/wrecks-and-sites/", "publisher": "Dive 125 (Lowestoft dive operator)", "kind": "operator",
+                "quote": "A destroyer lying on her port side in 33m … both stern and bow twin 4” gun turrets are accessible … must be dived on a look but do not interfer basis" },
+        "s2": { "url": "https://en.wikipedia.org/wiki/HMS_Exmoor_(L61)", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "designated as a protected place under the Protection of Military Remains Act 1986" }
+      },
+      "depth": [ { "ref": "s1", "unit": "m", "top": 33, "bottom": 33 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "access": { "value": "Protected place (Protection of Military Remains Act 1986); look but do not touch", "refs": ["s1", "s2"] },
+      "highlights": [ { "text": "Twin 4-inch gun turrets at bow and stern", "refs": ["s1"] } ],
+      "summary": { "text": "A Hunt-class destroyer lost off Lowestoft in 1941, lying on her port side in about 33 m. Both gun turrets can be reached, but as a protected military wreck she is for observation only.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-notable-1003",
+      "name": "HMS Amphion",
+      "sources": {
+        "s1": { "url": "https://divernet.com/scuba-diving/bsac-team-dives-first-british-ww1-casualty/", "publisher": "Divernet", "kind": "press",
+                "quote": "The wreck remains upright in 37m … in visibility of less than 5m … With permission from the Ministry of Defence" },
+        "s2": { "url": "https://www.southhams-today.co.uk/news/dartmouth-man-dives-on-wreck-of-first-british-ship-sunk-in-great-war-337654", "publisher": "South Hams Today", "kind": "press",
+                "quote": "sits in around 37m of water … the visibility wasn't good. We had around five metres" },
+        "s3": { "url": "https://en.wikipedia.org/wiki/HMS_Amphion_(1911)", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "may not be dived upon without permission from the Ministry of Defence" }
+      },
+      "depth": [ { "ref": "s1", "unit": "m", "top": 37, "bottom": 37 }, { "ref": "s2", "unit": "m", "top": 37, "bottom": 37 } ],
+      "entry": { "value": "boat", "refs": ["s1", "s2"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "level": { "value": "advanced", "refs": ["s1"] },
+      "vis": { "low": 5, "high": 5, "unit": "m", "refs": ["s1", "s2"] },
+      "access": { "value": "Protected military wreck; MoD permission needed to dive", "refs": ["s1", "s3"] },
+      "summary": { "text": "The first British warship lost in the First World War, a cruiser mined in 1914, sits upright but split in two around 37 m down about 40 miles off Harwich. Visits need Ministry of Defence permission, and visibility has been around 5 m.", "refs": ["s1", "s2", "s3"] }
+    },
+    {
+      "id": "x-notable-856",
+      "name": "Dunwich Bank Wreck",
+      "sources": {
+        "s1": { "url": "https://divernet.com/scuba-diving/dunwich-wreck-listed-after-gun-theft/", "publisher": "Divernet", "kind": "press",
+                "quote": "the 15m-deep site … I asked eight or ten times for an excavation license and was refused" },
+        "s2": { "url": "https://www.wessexarch.co.uk/our-work/de-risking-dunwich-bank-wreck", "publisher": "Wessex Archaeology", "kind": "agency",
+                "quote": "there is almost zero visibility for the diving team … protected under law as nationally important archaeological sites" }
+      },
+      "depth": [ { "ref": "s1", "unit": "m", "top": 15, "bottom": 15 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1", "s2"] },
+      "access": { "value": "Protected wreck (Protection of Wrecks Act 1973); diving by licence only", "refs": ["s2"] },
+      "hazards": [ { "text": "Almost zero visibility, work by touch", "refs": ["s2"] }, { "text": "Dive windows only when tidal current eases", "refs": ["s2"] } ],
+      "summary": { "text": "A protected 16th-century wreck mound with bronze guns off Dunwich, Suffolk, in about 15 m. Silty water gives almost no visibility and entry is possible only at slack tide, so work there is by licensed teams.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-notable-1070",
+      "name": "Diamond",
+      "sources": {
+        "s1": { "url": "https://coflein.gov.uk/en/site/307941", "publisher": "Coflein (Royal Commission on the Ancient and Historical Monuments of Wales)", "kind": "agency",
+                "quote": "designated as a Historic Wreck under Protections of Wrecks Act 1973 … unless a license has first been obtained from the Welsh Assembly Government" },
+        "s2": { "url": "https://en.wikipedia.org/wiki/Diamond_(1823_ship)", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "sank in 14 metres (46 ft) of water" }
+      },
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "access": { "value": "Designated historic wreck (Sarn Badrig); no diving without a licence from the Welsh Government / Cadw", "refs": ["s1"] },
+      "depthNote": "Ship reported to sink in about 14 m on Sarn Badrig reef (Wikipedia)"
+    },
+    {
+      "id": "x-wikipedia-276",
+      "name": "National Diving and Activity Centre",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/National_Diving_and_Activity_Centre", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "permanently closed" },
+        "s2": { "url": "https://divernet.com/scuba-news/deep-inland-dive-site-ndac-closes/", "publisher": "Divernet", "kind": "press",
+                "quote": "We are not taking bookings for leisure activities or public diving" }
+      },
+      "notDiveSite": { "kind": "restricted", "reason": "Quarry dive centre permanently closed in 2022; no public diving", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-wikipedia-313",
+      "name": "Martin's Haven",
+      "sources": {
+        "s1": { "url": "https://finstrokes.com/shore-dive/martins-haven", "publisher": "Finstrokes", "kind": "press",
+                "quote": "Depth: 10-30m … Entry and exit to the water is from a gently sloping stony beach … Danger of strong currents outside the bay" },
+        "s2": { "url": "https://scubaverse.com/?p=70581", "publisher": "Scubaverse", "kind": "press",
+                "quote": "the deepest shore dive along the coast (heading down to 30meters) … find the pink seafan" },
+        "s3": { "url": "https://en.wikipedia.org/wiki/Martin%27s_Haven", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "Skomer Marine Conservation Zone … popular for scuba diving" }
+      },
+      "depth": [ { "ref": "s1", "unit": "m", "top": 10, "bottom": 30 }, { "ref": "s2", "unit": "m", "top": 10, "bottom": 30 } ],
+      "entry": { "value": "shore", "refs": ["s1"] },
+      "current": { "value": "variable", "refs": ["s1"] },
+      "access": { "value": "Inside Skomer Marine Conservation Zone; no-take rules apply", "refs": ["s2", "s3"] },
+      "highlights": [ { "text": "Pink sea fans at their northern limit", "refs": ["s2"] }, { "text": "More fish life on the east side", "refs": ["s1"] } ],
+      "hazards": [ { "text": "Strong currents outside the bay", "refs": ["s1"] }, { "text": "Visibility drops badly after storms", "refs": ["s1"] } ],
+      "summary": { "text": "A sheltered cove in the Skomer marine reserve on the Pembrokeshire coast, entered from a stony beach. Depth runs from 10 to 30 m, deeper on the west side, with pink sea fans and good fish life but strong currents beyond the bay mouth.", "refs": ["s1", "s2", "s3"] }
+    },
+    {
+      "id": "x-notable-808",
+      "name": "HMS H47",
+      "sources": {
+        "s1": { "url": "https://coflein.gov.uk/en/site/544481", "publisher": "Coflein (Royal Commission on the Ancient and Historical Monuments of Wales)", "kind": "agency",
+                "quote": "Archaeological remains associated with the loss of HMS H-47 are not confirmed as present at this location" }
+      },
+      "notDiveSite": { "kind": "unlocated", "reason": "Wreck not confirmed at the recorded position", "refs": ["s1"] }
+    },
+    {
+      "id": "x-notable-839",
+      "name": "HMS Cleveland",
+      "sources": {
+        "s1": { "url": "https://coflein.gov.uk/en/site/274189", "publisher": "Coflein (Royal Commission on the Ancient and Historical Monuments of Wales)", "kind": "agency",
+                "quote": "The hull was cut down to beach level" }
+      },
+      "notDiveSite": { "kind": "gone", "reason": "Wrecked on Rhossili beach in 1957 and broken up and cleared on the beach", "refs": ["s1"] }
+    }
+  ]
+}

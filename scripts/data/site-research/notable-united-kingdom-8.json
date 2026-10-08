@@ -1,0 +1,951 @@
+{
+  "batch": "notable-united-kingdom-8",
+  "researchedAt": "2026-10-07",
+  "sites": [
+    {
+      "id": "x-wikipedia-188",
+      "name": "HMS Falmouth (1910)",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_Falmouth_(1910)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "She sits in 16 metres (52 ft) of water … Her wreck was heavily salvaged after the war, but remains a popular diving site."
+        },
+        "s2": {
+          "url": "https://divernet.com/scuba-diving/hms-falmouth-remembered-in-3d",
+          "publisher": "Divernet",
+          "kind": "press",
+          "quote": "HMS Falmouth was herself struck by torpedoes in two U-boat attacks, and sank with the loss of 12 crew."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 16
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "summary": {
+        "text": "Light cruiser lost to two U-boat torpedo attacks in 1916 and now lying in Bridlington Bay off the Yorkshire coast. Salvaged heavily after the war, the remains are still visited by wreck divers in fairly shallow water.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-282",
+      "name": "Capernwray Dive Centre",
+      "sources": {
+        "s1": {
+          "url": "https://scubadiverlife.com/dive-site-capernwray-quarry",
+          "publisher": "Scuba Diver Life",
+          "kind": "press",
+          "quote": "the maximum depth of the quarry is 70 feet (22 m). … Visibility is seasonally consistent at 45 to 65 feet (15 to 20 m)"
+        },
+        "s2": {
+          "url": "https://scubaverse.com/the-great-scuba-drive-day-19-capernwray-diving-centre/",
+          "publisher": "Scubaverse",
+          "kind": "press",
+          "quote": "On the dives we reached a maximum depth of 18 metres, with an average of around 9 metres. … Visibility was excellent, around 15 metres, thanks to the small gravel on the lakebed, which doesn't easily stir up."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 22
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 18
+        }
+      ],
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "vis": {
+        "low": 15,
+        "high": 20,
+        "unit": "m",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Airliner fuselage wreck you can swim through",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Sunken minesweeper, aircraft and boats",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A flooded former limestone quarry in Lancashire used for training and fun diving. Gravel floor keeps visibility good, and divers swim among sunken aircraft, a minesweeper and other boats down to about 22 m.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-328",
+      "name": "Wast Water",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Wast_Water",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "the deepest lake in England"
+        },
+        "s2": {
+          "url": "https://www.eskdale.info/dive.html",
+          "publisher": "Eskdale and Ennerdale info",
+          "kind": "press",
+          "quote": "with depths of upto 76 metres can provide quite a challenge."
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "Whole lake (England's deepest) with several separate dive entries, not a single site",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-843",
+      "name": "SM UC-70",
+      "sources": {
+        "s1": {
+          "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-10-the-uc-70/",
+          "publisher": "Divernet",
+          "kind": "press",
+          "quote": "The wreck today lies with its bows facing south-east in 27m of water, just three miles from Whitby harbour. … Visibility can be poor, especially on the low-water slack."
+        },
+        "s2": {
+          "url": "https://www.wessexarch.co.uk/our-work/uc-70-submarine",
+          "publisher": "Wessex Archaeology",
+          "kind": "agency",
+          "quote": "stands upright 3-4 m proud of the seabed, at a depth of 25 m. … On 18 August 2017, UC-70 was designated under the Protection of Wrecks Act 1973."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 27
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 25
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "intermediate",
+        "refs": [
+          "s1"
+        ]
+      },
+      "access": {
+        "value": "Protected wreck (Protection of Wrecks Act 1973, designated 2017); diving only under licence",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Mine-laying tubes, 88mm gun and conning tower remains",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Poor visibility, especially at low-water slack",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A WWI German minelaying submarine lying upright on the seabed a few miles off Whitby. It is a protected site; divers see mine tubes, deck gun and conning tower remains, best at high-water slack.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "depthNote": "Wessex reports 25 m, Divernet 27 m"
+    },
+    {
+      "id": "x-notable-844",
+      "name": "Seaton Carew Wreck",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Seaton_Carew_Wreck",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "a protected wrecksite lying in the intertidal zone at Seaton Carew"
+        }
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "access": {
+        "value": "Protected wreck (Protection of Wrecks Act); intertidal on the beach, licensee Tees Archaeology",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-226",
+      "name": "MS Oslofjord (1937)",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/MS_Oslofjord_(1937)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "Her wreck lies in 15 metres (49 ft) of water"
+        },
+        "s2": {
+          "url": "https://www.tynesidebsac.co.uk/oslofjord-dive/",
+          "publisher": "Tyneside BSAC",
+          "kind": "operator",
+          "quote": "a fair old current evidently dropping … rises several metres off the seabed"
+        },
+        "s3": {
+          "url": "https://www.tynesidebsac.co.uk/oslofjord-wreck-dive/",
+          "publisher": "Tyneside BSAC",
+          "kind": "operator",
+          "quote": "Here the visibility at best only a couple of metres. … a sizeable shoal of mackerel"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 15
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s2"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "current": {
+        "value": "moderate",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Intact bow section and engine room remains",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Shoals of mackerel and pollack",
+          "refs": [
+            "s2",
+            "s3"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Poor visibility near the seabed",
+          "refs": [
+            "s3"
+          ]
+        },
+        {
+          "text": "Wreckage deteriorating",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A Norwegian liner mined off the Tyne in 1940, whose broken remains mingle with another wreck. Mid-teens of metres deep, with engine blocks and a bow section that rise from the seabed and attract fish; visibility is often poor at the bottom.",
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1057",
+      "name": "HMS H41",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_H41",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "HMS H41 was raised and was then sold on 12 March 1920"
+        }
+      },
+      "notDiveSite": {
+        "kind": "gone",
+        "reason": "Sunk at Blyth in 1919 but raised and sold in 1920",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1002",
+      "name": "HMS Sealion",
+      "sources": {
+        "s1": {
+          "url": "https://scottishshipwrecks.com/hms-sealion",
+          "publisher": "Scottish Shipwrecks",
+          "kind": "press",
+          "quote": "The wreck lies two and a half miles south west of Pladda"
+        }
+      },
+      "notDiveSite": {
+        "kind": "unlocated",
+        "reason": "Wreck is in the Firth of Clyde off Pladda (~62 m), not at this North Sea pin",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1207",
+      "name": "HMS Papua",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_Papua",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "Misr sank after a collision in the Gulf of Suez on 17 May 1953"
+        }
+      },
+      "notDiveSite": {
+        "kind": "unlocated",
+        "reason": "Ship survived the war and sank in the Gulf of Suez in 1953; no wreck off Rathlin",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-894",
+      "name": "HMS Drake",
+      "sources": {
+        "s1": {
+          "url": "https://irishwrecksonline.net/details/DrakeHMS300.htm",
+          "publisher": "Irish Wrecks Online",
+          "kind": "press",
+          "quote": "Charted Depth: 18m … Average Visibility: 6 - 10m … Can be dived at any state of the tide, but make sure the anchor is secure as the wind can blow the boat off station."
+        },
+        "s2": {
+          "url": "https://www.wessexarch.co.uk/our-work/hms-drake-rathlin-island",
+          "publisher": "Wessex Archaeology",
+          "kind": "agency",
+          "quote": "its relatively shallow depth of less than 20 metres and the good visibility in the waters of Church Bay"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 18
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 20
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "vis": {
+        "low": 6,
+        "high": 10,
+        "unit": "m",
+        "refs": [
+          "s1"
+        ]
+      },
+      "summary": {
+        "text": "Armoured cruiser torpedoed in 1917 and now lying in Church Bay, Rathlin Island. It is a shallow wreck under 20 m in good visibility that can be dived at any state of tide, though salvage has left a scrapyard of plates.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1279",
+      "name": "HMS G11",
+      "sources": {
+        "s1": {
+          "url": "https://keystothepast.info/Site-Details?PRN=N5684",
+          "publisher": "Northumberland Historic Environment Record",
+          "kind": "agency",
+          "quote": "Today the G11 makes a good first wreck dive as it is possible to step from the rocks onto the site. … in three narrow gullies with a maximum depth of 10m."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 10
+        }
+      ],
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Large air cylinders litter the site",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x-notable-989",
+      "name": "HMS Nottingham",
+      "sources": {
+        "s1": {
+          "url": "https://divemagazine.com/scuba-diving-news/wreck-of-wwi-hms-nottingham-found-110-years-after-her-sinking",
+          "publisher": "Dive Magazine",
+          "kind": "press",
+          "quote": "60 miles (100km) off the coast of north-east England … international team of technical divers"
+        },
+        "s2": {
+          "url": "https://www.forcesnews.com/feature/mystery-missing-ww1-warship-divers-discover-wreckage-hms-nottingham",
+          "publisher": "Forces News",
+          "kind": "press",
+          "quote": "remarkably well-preserved at a depth of 85 metres (278 feet)"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 85
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "technical",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "summary": {
+        "text": "WWI cruiser found in 2025 about 60 miles off the north-east English coast, lying around 82 to 85 m down. Only technical divers have reached it, so it is an offshore expedition dive and well away from this pin.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "depthNote": "Reports range 82-85 m; wreck is ~60 mi offshore, not at the pin"
+    },
+    {
+      "id": "x-notable-1056",
+      "name": "HMS A10",
+      "sources": {
+        "s1": {
+          "url": "https://rnsubs.co.uk/index.php?PageID=155",
+          "publisher": "Royal Navy Submarine Museum / rnsubs",
+          "kind": "press",
+          "quote": "Submarine A10 was later raised and was sold for scrap on 1st April 1919"
+        }
+      },
+      "notDiveSite": {
+        "kind": "gone",
+        "reason": "Sank alongside at Ardrossan in 1917, raised and scrapped in 1919",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-324",
+      "name": "Farne Islands",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Farne_Islands",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "They form an archipelago, divided into the Inner and the Outer Group."
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "An archipelago with many separate dive sites, not one site",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1054",
+      "name": "HMS Ascot",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_Ascot",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "a depth of 60 metres (200 ft)"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 60
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-143",
+      "name": "SS Abessinia (1900)",
+      "sources": {
+        "s1": {
+          "url": "https://www.private-scuba.com/destinations/europe/united-kingdom/england/northumberland.html",
+          "publisher": "Private Scuba",
+          "kind": "press",
+          "quote": "One of the biggest vessels that came to rest on the seabed is sitting twenty metres below the surface."
+        },
+        "s2": {
+          "url": "https://tynesidebsac.co.uk/rust-and-fur-the-wreck-of-the-ss-abyssinia-and-longstone-wall",
+          "publisher": "Tyneside BSAC",
+          "kind": "operator",
+          "quote": "several playful and inquisitive seals"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 20
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Friendly grey seals accompany dives",
+          "refs": [
+            "s2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x-wikipedia-288",
+      "name": "Firth of Clyde",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Firth_of_Clyde",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The Firth of Clyde is the estuary of the River Clyde, on the west coast of Scotland."
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "A whole estuary/sea area containing many wrecks, not a single site",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1127",
+      "name": "HMS Vandal",
+      "sources": {
+        "s1": {
+          "url": "https://www.scottishshipwrecks.com/hms-vandal/",
+          "publisher": "Scottish Shipwrecks",
+          "kind": "press",
+          "quote": "She lies in position 55° 43.641'N, 05° 19.604'W in 101 metres of water."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 101
+        }
+      ]
+    },
+    {
+      "id": "x-notable-887",
+      "name": "HMS Graph",
+      "sources": {
+        "s1": {
+          "url": "https://www.scottishshipwrecks.com/hms-graph",
+          "publisher": "Scottish Shipwrecks",
+          "kind": "press",
+          "quote": "The gully is about 10 metres deep at the seaward end and slopes gradually to around 6 metres. … This is a very difficult site to visit due to location and prevailing weather conditions"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 6,
+          "bottom": 10
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Remote, weather-exposed site; little wreckage left",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x-notable-1252",
+      "name": "Penola",
+      "sources": {
+        "s1": {
+          "url": "https://www.scottishshipwrecks.com/penola/",
+          "publisher": "Scottish Shipwrecks",
+          "kind": "press",
+          "quote": "in 3-5 metres of water"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 3,
+          "bottom": 5
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Rocky seabed with boulders under thick kelp",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x-wikipedia-290",
+      "name": "Eyemouth",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Eyemouth",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "Eyemouth is a coastal harbour town and civil parish in Berwickshire, in the Scottish Borders area of Scotland."
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "A harbour town serving several dive sites, not one site",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1104",
+      "name": "HMS Repulse",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_Repulse_(1916)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "were sunk by Japanese aircraft on 10 December 1941 when they attempted to intercept landings in British Malaya"
+        }
+      },
+      "notDiveSite": {
+        "kind": "unlocated",
+        "reason": "HMS Repulse (1916) lies off Malaya; no wreck at this Scottish inland pin",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-334",
+      "name": "St Abbs",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/St_Abbs",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "a small fishing village on the southeastern coast of Scotland"
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "A village and marine reserve with many dive sites, not one site",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-1243",
+      "name": "HMS Seagull",
+      "sources": {
+        "s1": {
+          "url": "https://scottishshipwrecks.com/hms-seagull",
+          "publisher": "Scottish Shipwrecks",
+          "kind": "press",
+          "quote": "The wreck lying in seabed depths of 96 metres in position"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 96
+        }
+      ]
+    },
+    {
+      "id": "x-wikipedia-212",
+      "name": "MV Akka",
+      "sources": {
+        "s1": {
+          "url": "https://divernet.com/world-dives/scottish-star-turns/",
+          "publisher": "Divernet",
+          "kind": "press",
+          "quote": "rests on the seabed at around 40m … sits somewhere between 16 and 24m"
+        },
+        "s2": {
+          "url": "https://www.scottishshipwrecks.com/akka",
+          "publisher": "Scottish Shipwrecks",
+          "kind": "press",
+          "quote": "It is possible to penetrate deep inside the wreck … rapidly decreasing visibility"
+        },
+        "s3": {
+          "url": "https://en.wikipedia.org/wiki/MV_Akka",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The seabed is 30 metres (98 ft) below the sea surface at her bow, and 40 metres (130 ft) below the surface at her stern. … Akka is the largest shipwreck in the Firth of Clyde that divers can reach by using compressed air."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 16,
+          "bottom": 40
+        },
+        {
+          "ref": "s3",
+          "unit": "m",
+          "bottom": 40
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s3"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      },
+      "penetration": {
+        "value": "Possible deep inside; lower decks and engine room fairly accessible, holds mostly iron ore",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Bridge, companionways and engine room",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "text": "Dense sealife on superstructure",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Silt-out and low light inside",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Fishing line entanglement",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Swedish-built ore carrier wrecked on the Gantocks in 1956 and the largest Clyde wreck reachable on air. Deck and superstructure sit at about 16 to 24 m, with the seabed near 40 m; divers swim the bridge and companionways among heavy marine growth.",
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      }
+    }
+  ]
+}

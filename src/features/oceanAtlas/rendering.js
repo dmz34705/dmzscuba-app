@@ -1,5 +1,18 @@
 // Rendering helpers are bundled as browser source alongside atlasRuntime.
 // Display interpolation never modifies the native NOAA grid used by readouts.
+// Choose artwork from every structured signal, not just the first label. Specific overhead and wreck
+// features outrank the water environment; otherwise every freshwater site gets the inland profile.
+export function diagramProfileKind(site, profile = null, inlandGuide = false) {
+  const signals = [profile?.types, site?.topologies, site?.siteType]
+    .flat().filter(Boolean).join(' ').toLowerCase();
+  if (/\b(cave|cavern|cenote|mine|overhead)\b/.test(signals)) return 'cave';
+  if (/\bwreck\b/.test(signals)) return 'wreck';
+  if (profile?.water === 'fresh' || inlandGuide || site?.environment === 'fresh') return 'lake';
+  if (/\bwall\b/.test(signals)) return 'wall';
+  if (/\bpinnacle\b/.test(signals)) return 'pinnacle';
+  return 'reef';
+}
+
 export function prepareTemperatureField(values) {
   const field = new Float32Array(values.length);
   for (let i = 0; i < values.length; i++) {

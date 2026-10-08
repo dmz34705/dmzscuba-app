@@ -1,0 +1,1308 @@
+{
+ "batch": "verified-depth-united-states-4",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869518",
+   "name": "Phoenix",
+   "sources": {
+    "s1": {
+     "url": "https://lcmm.org/archaeology/vermont-underwater-historic-preserves/steamboat-phoenix",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "Depth of water: 60′ (bow)–110′ (stern) … The steep angle of the wreck can be disorienting … Underwater lights are necessary … fire-charred framing ends and massive hull"
+    },
+    "s2": {
+     "url": "https://historicsites.vermont.gov/node/137",
+     "publisher": "Vermont Division for Historic Preservation",
+     "kind": "agency",
+     "quote": "Depth of water: 60' (bow) - 110' (stern) … Eperience level: Advanced … The anchor pad to the Preserve buoy rests at approximately 50' depth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 110
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "Preserve buoy; anchor pad about 50 ft down",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fire-charred framing and massive hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Steep wreck angle can disorient divers",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Lights needed; deep open-lake site needs planning",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A burned 19th-century paddle steamer lying on the north side of Colchester Shoal, protected as a Vermont underwater preserve. The hull slopes from roughly 60 ft at the bow to 110 ft at the stern; it is rated advanced and calls for lights and careful planning.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Bow 60 ft, stern 110 ft; buoy anchor pad about 50 ft"
+  },
+  {
+   "id": "osm-n663869517",
+   "name": "Water Witch",
+   "sources": {
+    "s1": {
+     "url": "https://www.lcmm.org/archaeology/vermont-underwater-historic-preserves/lake-schooner-water-witch/",
+     "publisher": "Lake Champlain Maritime Museum",
+     "kind": "park",
+     "quote": "Depth of water: 90' … Experience level: Very Experienced. … Runoff from Otter Creek can cause zero visibility conditions after a heavy rain. … Significant surface and bottom currents may be encountered. … Lights necessary"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Water_Witch_(schooner)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "one of the oldest fully intact commercial sailing ships located underwater in the United States"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "One of the oldest intact commercial sailing ships",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Zero visibility after heavy rain (Otter Creek runoff)",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Surface and bottom currents",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Fragile wreck; control buoyancy",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A remarkably intact lake sailing vessel resting about a quarter mile south of Diamond Island on Lake Champlain, within a Vermont underwater preserve. At about 90 ft with lights required, it suits very experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-508",
+   "name": "Wiawaka bateaux",
+   "sources": {
+    "s1": {
+     "url": "https://dec.ny.gov/places-to-go/submerged-heritage-preserves-program/sunken-1758-fleet",
+     "publisher": "New York State DEC",
+     "kind": "agency",
+     "quote": "This is an intermediate level dive and is open on a first come, first served basis. The fleet is located in 25-50 feet of water. … Generally from Memorial Day until Columbus Day … roughly perpendicular to shore over a 450-foot long area"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Wiawaka_bateaux",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "were scuttled in 1758 during the French and Indian Wars"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 50
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "season": {
+    "from": 5,
+    "to": 10,
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "First come, first served; do not use nearby docks",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Seven 1758 bateaux lying in a 450-ft line",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Fragile wooden wrecks; do not touch",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Lake George submerged heritage preserve holding seven bateaux from the French and Indian War, sunk in 1758 and spread in a line across the lake floor. An intermediate dive in 25-50 ft, open from late spring to autumn.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-505",
+   "name": "Forward shipwreck site",
+   "sources": {
+    "s1": {
+     "url": "https://dec.ny.gov/places-to-go/submerged-heritage-preserves-program/forward-underwater-classroom",
+     "publisher": "New York State DEC",
+     "kind": "agency",
+     "quote": "25-45 feet of water in very soft sediment, with her bow in deeper water … This is an intermediate level dive … a Secchi disk for divers to measure water transparency … Do not touch or damage the wooden hull … Generally from Memorial Day until Columbus Day"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 45
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "season": {
+    "from": 5,
+    "to": 10,
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "First come, first served",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wooden motor launch on a soft sediment slope",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Underwater classroom trail with stations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Fragile wooden hull; do not touch",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden motor launch lying on a silty slope in Lake George, set up as an underwater classroom with a trail of learning stations. A New York preserve rated intermediate, in 25-45 ft, open seasonally.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-147",
+   "name": "Sport",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Sport_(shipwreck)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck is in 45 feet (14 m) of water, with the hull resting upright, listing slightly to starboard. … The wreck is now part of the Sanilac Shores Underwater Preserve, and popular with divers. … The boat is intact, and a number of tools and relics are scattered around the site."
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/sanilac-shores-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "park",
+     "quote": "The depth of water is 45 feet although the Sport rises up about 20 feet off the bottom. … Divers find her intact with an abundance of tools and relics scattered about the wreck site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 45
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Intact tug standing about 20 ft off the bottom",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Tools and relics scattered around the site",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small steel tug lying upright off Lexington on Lake Huron, inside the Sanilac Shores Underwater Preserve. It is intact in about 45 ft with relics around it, and was the first Michigan wreck given its own historical marker.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-654",
+   "name": "Daisy Day",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/surf-zone-shipwrecks-lost-and-found/daisy-day",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "quote": "Located in shallow water off Claybanks Township Park … revealing most of the vessel's keel, partial ribbing, her 5' diameter propeller and a large boiler with a steam condenser … the constantly moving sand has again obscured the wreck site"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "park",
+     "quote": "Daisy Day … 10 feet"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Keel, ribs, propeller and boiler when sand shifts",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Shifting sand often buries the wreck",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Protected site; removing remains is illegal",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steam freighter's remains in the surf zone about 50 yards off Clay Banks Township Park, buried under a sandbar. When the sand shifts it exposes keel, ribs, a propeller and boiler, but often hides everything.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-717",
+   "name": "Salvor",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "park",
+     "quote": "Salvor … 25 to 30 feet of water … 253 foot wooden pseudo-whaleback steamer … Sand covers the midsection of the hull"
+    },
+    "s2": {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/salvor",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "quote": "The Salvor is a shallow, easy dive, with much to see and explore. … massive, bent, metal plates … is covered with zebra mussels and is home to a large colony of Gobi fish."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bent metal plates around the hull perimeter",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Large colony of round gobies",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Hull is broken and partly buried by sand",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden whaleback-style steamer lost north of Muskegon in 1930, now broken and part-buried in 25-30 ft. Easy and shallow, it offers bent plates, tools uncovered by the sand and a gobi colony.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-726",
+   "name": "State of Michigan",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "park",
+     "quote": "State of Michigan … 60 to 75 feet of water off Whitehall … 165 foot wooden passenger and package freight steamer … Her boiler and outer hull are exposed for divers to inspect"
+    },
+    "s2": {
+     "url": "https://columbia.diventures.com/charters/whitehall_shipwrecks_0",
+     "publisher": "Diventures",
+     "kind": "operator",
+     "quote": "She rests in 65ft of water with the highest point of the wreck starting at 45ft. She is partially intact. … Beginner to Advanced with cold-water diving experience."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 75
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Exposed boiler and outer hull",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden passenger and freight steamer wreck off Whitehall on Lake Michigan, partly intact with its boiler and hull exposed. Charter operators run it for a wide range of divers who are comfortable in cold water.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-529",
+   "name": "SS Novadoc",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "park",
+     "quote": "Novadoc … 12 to 15 feet of water off Pentwater … 252 foot steel bulk freighter was built in 1928 in England … broken remains"
+    },
+    "s2": {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/novadoc",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "quote": "Off Juniper Beach near Pentwater, 12-15′ deep … The Novadoc ran aground at about 7 pm that Monday evening, immediately breaking in half"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 15
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Steel freighter broken in half by the 1940 storm",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel freighter driven onto the sandbars off Juniper Beach near Pentwater in the 1940 Armistice Day storm, where it snapped in two. Its broken remains lie in only 12-15 ft, making an easy shallow Lake Michigan wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-500",
+   "name": "SS Anna C. Minch",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "park",
+     "quote": "Anna C. Minch … 36 to 45 feet of water near Pentwater … 380 foot steel bulk freighter … now lies broken into two parts"
+    },
+    "s2": {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/anna-c-minch",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "quote": "approximately 1.5 miles south of Pentwater, Michigan, 35–45 feet … Three Scotch boilers arranged side by side … the starboard side of the hull has collapsed inward"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 36,
+     "bottom": 45
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Three Scotch boilers side by side in the stern",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Two sections of broken hull",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Hull flattened and collapsing after decades of ice",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel freighter lost in the 1940 Armistice Day blizzard, lying in two broken sections south of Pentwater in about 36-45 ft. The stern boilers and a bow winch are the main sights, though ice and waves have flattened much of the hull.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-149",
+   "name": "SS Henry Cort",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/westmichigan.htm",
+     "publisher": "Michigan Underwater Preserves Council",
+     "kind": "park",
+     "quote": "Henry Cort … lying in about 15 feet of water … 320 foot whaleback built in 1892 … stranded at the entrance to Muskegon Harbor on November 30, 1934 … broken and twisted"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 15
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Broken, twisted whaleback hull remains",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The wreck of a large whaleback freighter that stranded at the Muskegon harbor entrance in 1934. Its twisted wreckage lies in shallow water of about 15 ft in the West Michigan Underwater Preserve.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-691",
+   "name": "Manistee",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/manistee",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "quote": "Visibility is described as less than one foot. … Part of her bow rises within four feet of the surface. … steel inner frame, which now litters the wreck area. The corroded edges could easily slice the wetsuits."
+    }
+   },
+   "vis": {
+    "low": 0,
+    "high": 1,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Sharp corroded steel frame litters the site",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Visibility under one foot; entanglement risk",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Bow rises within four feet of the surface",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A burned steamer lying just offshore at Savidge Landing in Spring Lake, close to residential docks. Silty, near-zero visibility and sharp corroded framing make it a hazardous, poorly surveyed dive.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-679",
+   "name": "J. D. Marshall",
+   "sources": {
+    "s1": {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/jd-marshall-nature-preserve/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "quote": "After a rain or storm, underwater visibility is reduced by outfall from local rivers. … The preserve has a flat sandy bottom with few underwater features for navigational reference. … DNR may place mooring buoys for fishing or diving (one boat per buoy permitted) within the boundary."
+    },
+    "s2": {
+     "url": "https://underwaterscience.indiana.edu/research/great-lakes/jd-marshall.html",
+     "publisher": "Indiana University Underwater Science",
+     "kind": "agency",
+     "quote": "now rests upside-down in about 25 feet of water … offshore of the Indiana Dunes State Park pavilion … has been a local dive site since its 1979 discovery"
+    },
+    "s3": {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "quote": "J.D. Marshall … 29 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "bottom": 29
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 25
+    }
+   ],
+   "mooring": {
+    "value": "DNR mooring buoys (one boat per buoy)",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upside-down wooden steamer off Indiana Dunes",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Visibility drops after rain or storms",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Flat sandy bottom; few landmarks to navigate",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A capsized wooden steamer lying upside down roughly 300 yards off Indiana Dunes State Park, in Indiana's first underwater nature preserve. Shallow at 25-29 ft; take a compass because the sandy bottom has few landmarks.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-669",
+   "name": "George F. Williams",
+   "sources": {
+    "s1": {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "quote": "George F. Williams … 15 feet … Abandoned and sunk"
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/george-f-williams-us-86060",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "Resting in 15 ft of water off Whiting/Hammond, Indiana. … The shallow wreck may pose a risk to small recreational boats."
+    },
+    "s3": {
+     "url": "https://www.wrhistoricalsociety.com/the-george-f-williams-shipwreck",
+     "publisher": "Whiting-Robertsdale Historical Society",
+     "kind": "press",
+     "quote": "The hull, propeller, and boiler were still intact and were covered with algae and zebra mussels."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 15
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Hull, propeller and boiler still intact",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Shallow wreck is a risk to small boats",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 1889 steel-era bulk freighter scuttled in 1915 close to the Hammond breakwall in about 15 ft. The hull, propeller and boiler remain, coated with mussels, though the upper decks are gone.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-668",
+   "name": "F. W. Wheeler",
+   "sources": {
+    "s1": {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR",
+     "kind": "agency",
+     "quote": "F.W. Wheeler … 15 feet … Stranded during a winter storm"
+    },
+    "s2": {
+     "url": "https://phoenix.diventures.com/charters/shallow_wrecks_of_michigan_city_in_0",
+     "publisher": "Diventures",
+     "kind": "operator",
+     "quote": "F. W. Wheeler … sits in 30ft of water … Beginner … perfect introduction to shipwreck diving, cold-water diving"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A wooden freighter that stranded near Michigan City in a winter storm of 1893. Its broken remains lie in shallow water and charter operators pitch it as a beginner introduction to cold-water wreck diving.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-716",
+   "name": "Rotarian",
+   "sources": {
+    "s1": {
+     "url": "https://shotlinediving.com/wreck/rotarian-a-wehrle-jr-us-106652/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "Depth at Wreck Site: 25.6 m / 84 ft … partially collapsed … beer bottles"
+    },
+    "s2": {
+     "url": "https://3dshipwrecks.org/?p=6001",
+     "publisher": "3D Shipwrecks",
+     "kind": "press",
+     "quote": "84 ft … The wreck is totally flattened except for what is left of the boiler and walking beam engine base."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 84
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 84
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Boiler and engine base remain",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Prohibition-era beer bottles in the timbers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Collapsed hull and scattered machinery",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A former sidewheel excursion steamer turned floating dance hall and speakeasy, scuttled in Lake Michigan off Chicago in 1931. Now flattened in about 84 ft, with the boiler, engine base and Prohibition-era bottles to see.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-734",
+   "name": "Thomas Hume",
+   "sources": {
+    "s1": {
+     "url": "https://lincoln.diventures.com/charters/thomas_hume_shipwreck_in_new_buffalo_1",
+     "publisher": "Diventures",
+     "kind": "operator",
+     "quote": "The deck sits at 135ft of water … Master Diver (or equivalent experience) … upright and in beautiful condition … 24 miles offshore of New Buffalo"
+    },
+    "s2": {
+     "url": "https://www.mentalfloss.com/geography/wanderlust/4-spectacular-shipwrecks-you-can-dive-near-chicago",
+     "publisher": "Mental Floss",
+     "kind": "press",
+     "quote": "discovered a nearly perfect ship 22 miles offshore and about 150 feet down … a perfect time capsule of maritime life in the late 1800s"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 135
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright, near-perfect schooner with period artifacts",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Over 20 miles offshore; needs full-day charter, good weather",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Cold water and depth call for experience",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A lumber schooner that vanished in 1891 and was found in 2006, now sitting upright and remarkably intact far offshore in southern Lake Michigan. The deck is around 135 ft, so it is reserved for experienced, cold-water divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-642",
+   "name": "Ann Arbor No. 5",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganshipwrecks.org/shipwrecks-2/shipwreck-categories/shipwrecks-found/ann-arbor-no-5",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "press",
+     "quote": "Depth: 160 feet … Its twin propellers, each measuring 12 feet 6 inches in diameter, and its massive rudder remain accessible at a depth of approximately 125 feet. … The wreck's steep angle creates an unusual hazard for divers"
+    }
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Twin 12 ft 6 in propellers and large rudder",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Steep wreck angle hides how deep the bottom falls",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The stern section of a railroad car ferry, standing at a steep angle off South Haven. Its twin propellers and rudder sit at about 125 ft, but the hull drops to roughly 160 ft, so depth is easy to underestimate.",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Props and rudder about 125 ft; bottom about 160 ft"
+  },
+  {
+   "id": "x-wikilist-733",
+   "name": "Thomas H. Smith",
+   "sources": {
+    "s1": {
+     "url": "https://legacy.wisconsinhistory.org/Records/NationalRegister/NR2848",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "quote": "slipped beneath the waves in 90 feet of water within 45 minutes of the accident … Divers may not remove artifacts or structure when visiting this site."
+    },
+    "s2": {
+     "url": "https://www.yahoo.com/news/freight-steamer-fireboat-among-another-110706169.html",
+     "publisher": "Yahoo News",
+     "kind": "press",
+     "quote": "in 80 feet of water about 5.5 miles east of Wind Point … mostly intact with visible damage from where the steamer collided with it"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 80
+    }
+   ],
+   "access": {
+    "value": "State-protected site; do not remove artifacts",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mostly intact hull with collision damage",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small wooden steambarge sunk by a collision in fog in 1893, located east of Wind Point off Racine. The hull sits in roughly 80-90 ft, largely intact, and is a protected Wisconsin historic site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-638",
+   "name": "Alice E. Wilds",
+   "sources": {
+    "s1": {
+     "url": "https://shotlinediving.com/wreck/alice-e-wilds-us-106070/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "Approximately 300 feet (91 metres) of water in Lake Michigan"
+    },
+    "s2": {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/21",
+     "publisher": "Wisconsin Historical Society / Wisconsin Shipwrecks",
+     "kind": "agency",
+     "quote": "It sits upright eighteen miles off of Milwaukee, in over 300 feet of water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 300
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 300
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Wreck sits upright",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden lumber steamer sunk in a fog collision in 1892 and located in 2015. It sits upright about 18 miles off Milwaukee at roughly 300 ft, putting it well into technical-diving territory.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikidata-574",
+   "name": "Tennie and Laura",
+   "sources": {
+    "s1": {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/602",
+     "publisher": "Wisconsin Historical Society / Wisconsin Shipwrecks",
+     "kind": "agency",
+     "quote": "lies in 325 feet of water nine miles southeast of Port Washington, Wisconsin … sat upright on the lake bed … At least one mast was standing."
+    },
+    "s2": {
+     "url": "https://www.shipwreckexplorers.com/tennie-laura/",
+     "publisher": "Shipwreck Explorers",
+     "kind": "operator",
+     "quote": "Depth Deck(ft): 300 ft … Depth Bottom(ft): 318 ft … Dive Type: Expedition … the visibility can be less than ideal. … Her mast is still upright"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 300,
+     "bottom": 318
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 325
+    }
+   ],
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright scow schooner with standing mast",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Extreme depth; visibility can be poor",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The best-preserved scow schooner found in Wisconsin waters, sitting upright with a mast still standing southeast of Port Washington. Deck near 300 ft, so this is an expedition-level technical dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-701",
+   "name": "Mojave",
+   "sources": {
+    "s1": {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/438",
+     "publisher": "Wisconsin Historical Society / Wisconsin Shipwrecks",
+     "kind": "agency",
+     "quote": "295 feet of water off Sheboygan, Wisconsin … The remains of the ship are largely intact"
+    },
+    "s2": {
+     "url": "https://wisconsinhistory.org/Records/NationalRegister/NR2800",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "quote": "Mojave's wheel and worm gear remain within a well at the vessel's stern … the starboard side anchor hangs from the cathead … Divers may not remove artifacts or structure when visiting this site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 295
+    }
+   ],
+   "access": {
+    "value": "State and federal protected site; no removal of artifacts",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ship's wheel and worm gear at the stern",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Anchor still hanging from the cathead",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A well-preserved 1864 barkentine lying far out in Lake Michigan off Sheboygan, a protected historic site. At about 295 ft it is a deep technical dive, with the steering gear and anchor still in place.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-541",
+   "name": "SS Daniel J. Morrell",
+   "sources": {
+    "s1": {
+     "url": "https://shotlinediving.com/wreck/daniel-j-morrell/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "26 miles north of Harbor Beach, Michigan, in Lake Huron … 61 m / 200 ft"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Daniel_J._Morrell",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "found the shipwreck in 220 ft (67 m) of water with the two sections 5 mi (8.0 km) apart."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 200
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 220
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Freighter broken in two; sections 5 miles apart",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 1906 Great Lakes ore carrier that split in two in a November 1966 storm. The halves rest roughly five miles apart on the Lake Huron bottom at about 200-220 ft, a remote deep dive and a memorial to 28 lost crew.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-curated-589",
+   "name": "Devil's Lake",
+   "sources": {
+    "s1": {
+     "url": "https://devilslakewisconsin.com/?p=2114",
+     "publisher": "Devil's Lake Wisconsin",
+     "kind": "press",
+     "quote": "With a maximum depth of about 45 feet, clear water, a fish-filled rocky shoreline … Divers often report better than expected clarity at the 20ft to 30ft range … Most diving takes place on the northeast side of the lake by the furthest parking lot past the East Bluff Trail Head … you must have a surface flag of course and you cannot use a surface air pump or generator"
+    },
+    "s2": {
+     "url": "https://diveaai.com/devils-lake-state-park",
+     "publisher": "Dive AAI",
+     "kind": "operator",
+     "quote": "Maximum depth: 45 feet … large boulders, fallen trees, and many species of fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 45
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 45
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 30,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Surface flag required; no surface air pump or generator",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Boulders, fallen trees and abundant fish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A clear inland lake in a Wisconsin state park, dived from the northeast shore near the far parking lot. Depth tops out around 45 ft, with boulders, sunken trees and plenty of fish, and no motorboats.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

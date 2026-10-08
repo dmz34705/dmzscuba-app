@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" fill="none">
+<title>DMZ Scuba — cave / cenote profile</title>
+<desc>Generic submerged limestone cave / cenote cutaway with an open daylight entrance at left, overhead cavern at right, stalactites, stalagmites, guideline and diver with twin cylinders and a light. Illustrative only, not a surveyed cave, navigation map, clearance measurement or calibrated depth diagram. Surface y=38; deepest floor y=479. Site-specific labels and certification requirements belong in the app.</desc>
+<defs>
+ <linearGradient id="dmz-water" x1="480" y1="38" x2="480" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#286975"/><stop offset=".5" stop-color="#153F50"/><stop offset="1" stop-color="#092838"/></linearGradient>
+ <linearGradient id="dmz-light" x1="480" y1="38" x2="480" y2="445" gradientUnits="userSpaceOnUse"><stop stop-color="#C0F2E7" stop-opacity=".09"/><stop offset="1" stop-color="#C0F2E7" stop-opacity="0"/></linearGradient>
+ <linearGradient id="dmz-sand" x1="0" y1="475" x2="0" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#3D525B"/><stop offset="1" stop-color="#263C49"/></linearGradient>
+</defs>
+<!-- Self-contained SVG: paths, circles, gradients. No filters, raster images, fonts or dependencies. -->
+<g id="water">
+ <path fill="url(#dmz-water)" d="M0 0H960V560H0Z"/>
+ <!-- Entrance opening occupies the left third of the cutaway. -->
+ <path d="M0 0H353V38H0Z" fill="#0C2736"/>
+ <path d="M0 38C62 31 92 43 148 38S250 33 309 38" stroke="#94CBCB" stroke-width="2"/>
+ <path d="M51 38H123L223 477H90Z M168 38H223L344 477H252Z M262 38H301L420 477H355Z" fill="url(#dmz-light)"/>
+ <!-- Deep passage falls into quieter, darker water. -->
+ <path d="M599 179Q794 157 960 210V560H626Q620 362 599 179Z" fill="#092536" opacity=".45"/>
+</g>
+<g id="particles" fill="#A1D8D1" opacity=".22"><circle cx="152" cy="168" r="1.3"/><circle cx="616" cy="128" r="1.2"/><circle cx="765" cy="247" r="1.4"/><circle cx="201" cy="368" r="1.2"/><circle cx="849" cy="366" r="1"/><circle cx="503" cy="206" r="1"/></g>
+<g id="cave-geology" stroke-linecap="round" stroke-linejoin="round">
+ <!-- Rock outside the water opening; this is a section through an overhead cavern. -->
+ <path d="M333 0H960V210Q925 193 886 195L854 184 805 188Q773 169 744 178L699 166Q675 169 653 163L614 159Q591 153 572 138L542 119Q521 110 493 117L461 109Q434 113 419 95L402 78 380 74 367 50 339 39Z" fill="#344B55"/>
+ <!-- Lighter broken limestone lip outlines the ceiling. -->
+ <path d="M339 39L367 50 380 74 402 78 419 95Q434 113 461 109L493 117Q521 110 542 119L572 138Q591 153 614 159L653 163Q675 169 699 166L744 178Q773 169 805 188L854 184 886 195Q925 193 960 210" stroke="#91AAA3" stroke-width="2"/>
+ <path d="M349 21L384 35 401 58 423 62 450 84 488 91M494 59L539 75 565 97 604 115 638 121M670 137L705 129 745 149 778 144 809 158M830 121L869 136 900 134 938 153" stroke="#6A8281" stroke-width="1.3" opacity=".65"/>
+ <path d="M420 32L439 49 435 66M582 52L577 82 590 101M731 67L714 98 725 123M877 47L864 75 873 106" stroke="#213C49" stroke-width="1.5"/>
+ <!-- Stalactites grow from the ceiling; varied lengths retain a natural silhouette. -->
+ <path d="M456 109L464 141 476 194 486 158 493 117Z" fill="#526F73"/>
+ <path d="M476 194L486 158 493 117" stroke="#96ACA2" stroke-width="1.3"/>
+ <path d="M572 138L582 171 590 226 600 185 614 159Z" fill="#49666D"/>
+ <path d="M590 226L600 185 614 159" stroke="#819D98" stroke-width="1.3"/>
+ <path d="M690 168L699 197 707 212 715 182 721 171Z" fill="#425E66" stroke="#78948F" stroke-width="1"/>
+ <path d="M797 184L804 220 811 265 820 229 826 187Z" fill="#47646B"/>
+ <path d="M811 265L820 229 826 187" stroke="#8BA69C" stroke-width="1.3"/>
+ <path d="M905 197L912 225 919 243 928 199Z" fill="#405D65" stroke="#738F8B" stroke-width="1"/>
+ <!-- Far floor ridge, kept subdued in the passage. -->
+ <path d="M0 440Q88 428 154 448Q256 451 323 464L431 463Q528 442 626 450L701 432 769 446Q877 422 960 449V560H0Z" fill="#254853" opacity=".6"/>
+ <!-- Silty limestone floor rises gently into the cave. -->
+ <path d="M0 478Q101 469 183 479T355 477Q436 475 509 465L561 458 595 467Q650 464 697 451L750 458 800 448Q877 435 960 449V560H0Z" fill="url(#dmz-sand)"/>
+ <path d="M0 478Q101 469 183 479T355 477Q436 475 509 465L561 458 595 467Q650 464 697 451L750 458 800 448Q877 435 960 449" stroke="#839E98" stroke-width="1.6"/>
+ <!-- Stalagmites, broken rock and sediment: no reef flora in this scene. -->
+ <path d="M433 476Q446 458 449 444L457 402 465 443Q468 462 482 470Z" fill="#506D71"/>
+ <path d="M449 444L457 402 465 443Q468 462 482 470" stroke="#95AAA0" stroke-width="1.3"/>
+ <path d="M680 457L689 436 695 407 702 434 713 452Z" fill="#48656C" stroke="#819991" stroke-width="1.2"/>
+ <path d="M835 443Q846 421 848 399L856 365 864 398Q868 422 882 440Z" fill="#425F67"/>
+ <path d="M848 399L856 365 864 398Q868 422 882 440" stroke="#819D95" stroke-width="1.3"/>
+ <path d="M278 480L292 462 313 457 334 467 341 479Z" fill="#4A6970"/>
+ <path d="M278 480L292 462 313 457 334 467M313 457L312 475" stroke="#8DA39C" stroke-width="1.2"/>
+ <path d="M538 465L549 444 570 439 593 459 597 468Z" fill="#435F68"/>
+ <path d="M549 444L570 439 593 459M570 439L568 458" stroke="#79958F" stroke-width="1.1"/>
+ <path d="M167 487L180 477 195 480 202 489Z M760 460L772 453 785 459Z" fill="#536F71"/>
+ <path d="M66 510H111M343 511H371M606 504H641M809 492H837" stroke="#94ACA4" stroke-width="1.2" stroke-opacity=".2"/>
+</g>
+<!-- Generic guideline stays clear of formations; not an actual route or survey. -->
+<g id="guideline" stroke-linecap="round">
+ <path d="M0 426Q230 424 390 394T748 348 960 319" stroke="#CAB991" stroke-width="1.3" opacity=".8"/>
+
+</g>
+<!-- A modest torch beam illuminates open water ahead of the diver. -->
+<g id="diver-light">
+ <path d="M517 282L766 260 758 335Z" fill="#C9ECD9" opacity=".065"/>
+ <path d="M517 282L712 280 710 312Z" fill="#C9ECD9" opacity=".045"/>
+</g>
+<g id="diver" transform="translate(487 251) scale(-1 1)" stroke-linecap="round" stroke-linejoin="round">
+ <!-- Anatomical silhouette in neutral trim: head left, bent knees, blade fins. -->
+ <!-- Far arm and leg sit behind the torso. -->
+ <path d="M15 20L4 36-15 35" stroke="#62989F" stroke-width="5"/>
+ <path d="M43 23L65 40Q68 43 73 39L88 28" stroke="#62989F" stroke-width="6"/>
+ <path d="M85 26L97 23 117 18 109 29 91 33Z" fill="#64A99F"/>
+ <!-- Suit torso and shoulder: curved silhouette rather than a stick figure. -->
+ <path d="M0 14Q3 8 12 9L35 13Q44 15 49 22L44 29 22 27 8 24Q2 24 0 19Z" fill="#102B3B" stroke="#8DBDBE" stroke-width="1.2"/>
+ <!-- Cylinder with domed ends, bands and valve. -->
+ <path d="M9 7Q5 7 5 11L5 14Q5 18 9 18L33 21Q38 21 38 17L38 14Q38 10 34 10Z" fill="#899D9A" stroke="#BDD0C4" stroke-width=".8"/>
+ <path d="M8 1Q4 1 4 6L4 9Q4 13 8 13L33 16Q38 16 38 12L38 9Q38 5 34 5Z" fill="#C7B185" stroke="#E1D0A5" stroke-width=".9"/>
+ <path d="M10 4L31 7" stroke="#F1E0B7" stroke-width="1.6"/>
+ <path d="M13 3L12 14M29 5L28 16" stroke="#3A555F" stroke-width="2.5"/>
+ <path d="M4 6L0 6M0 4V9" stroke="#ABBFC0" stroke-width="2"/>
+ <!-- BCD straps and waist. -->
+ <path d="M9 15L7 23M30 17L28 27" stroke="#6D9DA3" stroke-width="2"/>
+ <path d="M39 20L37 28" stroke="#486F7A" stroke-width="2"/>
+ <!-- Head, hood, mask and regulator. -->
+ <path d="M1 16L-4 16" stroke="#ADD0C9" stroke-width="4"/>
+ <path d="M-5 12Q-9 7-15 9Q-23 12-22 19Q-20 26-12 26L-5 22Z" fill="#173445" stroke="#8DBDBE" stroke-width="1.1"/>
+ <path d="M-21 16L-12 15-11 20-21 21Z" fill="#A9E6DC" stroke="#D1F1E7" stroke-width=".9"/>
+ <path d="M-11 16L-5 16" stroke="#B2D4CC" stroke-width="1.1"/>
+ <path d="M-21 23L-16 23" stroke="#C6E4DC" stroke-width="2"/>
+ <path d="M-17 24Q-5 32 5 17" stroke="#8BB6B7" stroke-width="1.3"/>
+ <!-- Torch held ahead of the body. -->
+ <path d="M-25 29L-33 29" stroke="#D0DCC4" stroke-width="3.5"/>
+ <!-- Near arm bends forward, hands together, clear of the bottom. -->
+ <path d="M12 22Q10 29 1 34L-14 32" stroke="#B1D8D1" stroke-width="5.5"/>
+ <path d="M-14 32L-20 31" stroke="#C6E5D9" stroke-width="3.5"/>
+ <!-- Hip, bent knee, lower leg, boot and near blade fin. -->
+ <path d="M43 25L63 28Q68 28 71 23L80 12" stroke="#A8D2CC" stroke-width="6.5"/>
+ <path d="M79 13L84 10" stroke="#18394A" stroke-width="5"/>
+ <path d="M82 8L90 7 108-1 104 10 88 16 82 14Z" fill="#8BD6C2" stroke="#ADDCCB" stroke-width=".7"/>
+ <path d="M88 11L101 5M95 27L109 22" stroke="#386C70" stroke-width=".8" opacity=".55"/>
+ <g stroke="#A3D6D3" stroke-width="1" opacity=".65"><circle cx="-24" cy="-2" r="2"/><circle cx="-29" cy="-16" r="3"/><circle cx="-23" cy="-34" r="3.7"/><circle cx="-30" cy="-57" r="2"/></g>
+</g>
+</svg>

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" fill="none">
+<title>DMZ Scuba — wreck profile</title>
+<desc>Refined vector illustration of a submerged shipwreck and scuba diver. Generic illustrative profile, not a surveyed wreck or calibrated depth diagram. Surface y=38; seabed y=479. Keep site labels in the application.</desc>
+<defs>
+ <linearGradient id="dmz-water" x1="480" y1="38" x2="480" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#246477"/><stop offset=".5" stop-color="#123E51"/><stop offset="1" stop-color="#092637"/></linearGradient>
+ <linearGradient id="dmz-light" x1="480" y1="38" x2="480" y2="445" gradientUnits="userSpaceOnUse"><stop stop-color="#C0F2E7" stop-opacity=".09"/><stop offset="1" stop-color="#C0F2E7" stop-opacity="0"/></linearGradient>
+ <linearGradient id="dmz-hull" x1="510" y1="362" x2="510" y2="477" gradientUnits="userSpaceOnUse"><stop stop-color="#50747C"/><stop offset=".48" stop-color="#345562"/><stop offset="1" stop-color="#1C3949"/></linearGradient>
+ <linearGradient id="dmz-bridge" x1="437" y1="296" x2="437" y2="374" gradientUnits="userSpaceOnUse"><stop stop-color="#66868A"/><stop offset="1" stop-color="#3D626D"/></linearGradient>
+ <linearGradient id="dmz-sand" x1="0" y1="475" x2="0" y2="560" gradientUnits="userSpaceOnUse"><stop stop-color="#3D525B"/><stop offset="1" stop-color="#263C49"/></linearGradient>
+</defs>
+<!-- Self-contained SVG: paths, circles, gradients. No filters, raster images, fonts or dependencies. -->
+<g id="water">
+ <path fill="#0C2736" d="M0 0H960V560H0Z"/>
+ <path fill="url(#dmz-water)" d="M0 38C80 29 110 47 190 38S310 29 390 38 510 47 590 38 710 29 790 38 910 47 960 38V560H0Z"/>
+ <path fill="url(#dmz-light)" d="M105 38H182L346 466H211Z M363 38H423L593 466H481Z M675 38H734L847 466H732Z"/>
+ <path d="M0 38C80 29 110 47 190 38S310 29 390 38 510 47 590 38 710 29 790 38 910 47 960 38" stroke="#94CBCB" stroke-width="2"/>
+</g>
+<g id="particles" fill="#A1D8D1" opacity=".22"><circle cx="152" cy="168" r="1.3"/><circle cx="616" cy="128" r="1.2"/><circle cx="765" cy="247" r="1.4"/><circle cx="201" cy="368" r="1.2"/><circle cx="849" cy="366" r="1"/><circle cx="503" cy="206" r="1"/></g>
+<g id="seabed">
+ <path d="M0 480C135 471 180 489 284 482S427 485 553 478 763 474 960 483V560H0Z" fill="url(#dmz-sand)"/>
+ <path d="M0 480C135 471 180 489 284 482S427 485 553 478 763 474 960 483" stroke="#7D9598" stroke-opacity=".5" stroke-width="1.5"/>
+ <ellipse cx="504" cy="480" rx="286" ry="10" fill="#082131" opacity=".45"/>
+ <path d="M155 489L172 478 188 480 201 490M771 487L786 478 801 482 809 490" fill="#425E68"/>
+ <path d="M146 507h41m491 16h35m-419-17h18m492 23h31" stroke="#96ABA9" stroke-opacity=".2" stroke-width="1.5" stroke-linecap="round"/>
+</g>
+<g id="wreck" stroke-linejoin="round" stroke-linecap="round">
+ <!-- Distant rigging stays quiet; structural edges carry the silhouette. -->
+ <path d="M552 256L478 364M552 256L687 367M552 289L599 317" stroke="#80A7AA" stroke-width="1" opacity=".55"/>
+ <path d="M552 365V250L559 243M530 279H578" stroke="#93B6B5" stroke-width="2"/>
+ <path d="M294 365V331L278 320M294 337L322 349" stroke="#789FA3" stroke-width="2"/>
+ <!-- Deckhouse: tapered bridge, recessed windows, rear deck opening. -->
+ <path d="M386 369V329H409V300H468L488 329H504V369Z" fill="url(#dmz-bridge)" stroke="#A0BCB8" stroke-width="1.7"/>
+ <path d="M409 300H468L472 305H409Z" fill="#A2BCB5" opacity=".35"/>
+ <path d="M416 310H431V323H416Z M439 310H454V323H439Z M462 310H469L477 323H462Z" fill="#173C4D"/>
+ <path d="M416 310H431M439 310H454M462 310H469" stroke="#B4CEC5" stroke-width="1"/>
+ <path d="M393 333H497M417 334V366M478 334V366" stroke="#94B3B0" stroke-opacity=".5" stroke-width="1"/>
+ <path d="M434 344H453V369H434Z" fill="#203F4D"/>
+ <path d="M618 369V347H665V369" fill="#3B5D68" stroke="#85A7A9" stroke-width="1.5"/>
+ <path d="M628 347V322H647L651 347" fill="#4A6C74" stroke="#95B3B0" stroke-width="1.5"/>
+ <path d="M632 329H645" stroke="#213E4C" stroke-width="3"/>
+ <!-- Raised bow, long deck and rounded stern. -->
+ <path d="M224 369H688L736 356 786 363C768 387 754 413 728 434 710 450 687 462 658 467L325 473C281 467 249 446 237 414Z" fill="url(#dmz-hull)" stroke="#9DB9B7" stroke-width="2"/>
+ <path d="M224 369H688L736 356 786 363" stroke="#C1D2C7" stroke-width="2.5"/>
+ <path d="M241 382H685L739 369 771 374" stroke="#7F9EA2" stroke-width="1.2"/>
+ <path d="M260 419C373 436 567 437 717 416M286 449C401 457 575 456 683 444" stroke="#829EA1" stroke-opacity=".35" stroke-width="1"/>
+ <!-- Corrosion and a natural fractured hull opening. -->
+ <path d="M553 426L561 416 573 420 583 413 596 422 604 440 594 451 578 448 566 454 554 444Z" fill="#102F40"/>
+ <path d="M553 426L561 416 573 420 583 413 596 422M604 440L594 451 578 448 566 454" stroke="#769195" stroke-width="1.5"/>
+ <path d="M309 455L323 449 334 451M705 436L710 426M249 395L256 402M492 393L495 411M666 393L663 408" stroke="#B49572" stroke-opacity=".6" stroke-width="2"/>
+ <g fill="#173B4B" stroke="#85A8AA" stroke-width="1.5"><circle cx="324" cy="397" r="5"/><circle cx="359" cy="400" r="5"/><circle cx="394" cy="402" r="5"/><circle cx="429" cy="403" r="5"/><circle cx="464" cy="404" r="5"/><circle cx="660" cy="394" r="5"/></g>
+ <path d="M261 369V352H372M284 353V369M310 353V369M336 353V369M362 353V369M705 365V349H737V356M720 349V361" stroke="#88ABAB" stroke-width="1.2"/>
+ <path d="M296 465Q293 455 300 448M299 455L307 449M699 448Q704 435 699 430" stroke="#82B6A8" stroke-width="2"/>
+</g>
+<g id="diver" transform="translate(346 221)" stroke-linecap="round" stroke-linejoin="round">
+ <!-- Anatomical silhouette in neutral trim: head left, bent knees, blade fins. -->
+ <!-- Far arm and leg sit behind the torso. -->
+ <path d="M15 20L4 36-15 35" stroke="#62989F" stroke-width="5"/>
+ <path d="M43 23L65 40Q68 43 73 39L88 28" stroke="#62989F" stroke-width="6"/>
+ <path d="M85 26L97 23 117 18 109 29 91 33Z" fill="#64A99F"/>
+ <!-- Suit torso and shoulder: curved silhouette rather than a stick figure. -->
+ <path d="M0 14Q3 8 12 9L35 13Q44 15 49 22L44 29 22 27 8 24Q2 24 0 19Z" fill="#102B3B" stroke="#8DBDBE" stroke-width="1.2"/>
+ <!-- Cylinder with domed ends, bands and valve. -->
+ <path d="M8 1Q4 1 4 6L4 9Q4 13 8 13L33 16Q38 16 38 12L38 9Q38 5 34 5Z" fill="#C7B185" stroke="#E1D0A5" stroke-width=".9"/>
+ <path d="M10 4L31 7" stroke="#F1E0B7" stroke-width="1.6"/>
+ <path d="M13 3L12 14M29 5L28 16" stroke="#3A555F" stroke-width="2.5"/>
+ <path d="M4 6L0 6M0 4V9" stroke="#ABBFC0" stroke-width="2"/>
+ <!-- BCD straps and waist. -->
+ <path d="M9 15L7 23M30 17L28 27" stroke="#6D9DA3" stroke-width="2"/>
+ <path d="M39 20L37 28" stroke="#486F7A" stroke-width="2"/>
+ <!-- Head, hood, mask and regulator. -->
+ <path d="M1 16L-4 16" stroke="#ADD0C9" stroke-width="4"/>
+ <path d="M-5 12Q-9 7-15 9Q-23 12-22 19Q-20 26-12 26L-5 22Z" fill="#173445" stroke="#8DBDBE" stroke-width="1.1"/>
+ <path d="M-21 16L-12 15-11 20-21 21Z" fill="#A9E6DC" stroke="#D1F1E7" stroke-width=".9"/>
+ <path d="M-11 16L-5 16" stroke="#B2D4CC" stroke-width="1.1"/>
+ <path d="M-21 23L-16 23" stroke="#C6E4DC" stroke-width="2"/>
+ <path d="M-17 24Q-5 32 5 17" stroke="#8BB6B7" stroke-width="1.3"/>
+ <!-- Near arm bends forward, hands together, clear of the bottom. -->
+ <path d="M12 22Q10 29 1 34L-14 32" stroke="#B1D8D1" stroke-width="5.5"/>
+ <path d="M-14 32L-20 31" stroke="#C6E5D9" stroke-width="3.5"/>
+ <!-- Hip, bent knee, lower leg, boot and near blade fin. -->
+ <path d="M43 25L63 28Q68 28 71 23L80 12" stroke="#A8D2CC" stroke-width="6.5"/>
+ <path d="M79 13L84 10" stroke="#18394A" stroke-width="5"/>
+ <path d="M82 8L90 7 108-1 104 10 88 16 82 14Z" fill="#8BD6C2" stroke="#ADDCCB" stroke-width=".7"/>
+ <path d="M88 11L101 5M95 27L109 22" stroke="#386C70" stroke-width=".8" opacity=".55"/>
+ <g stroke="#A3D6D3" stroke-width="1" opacity=".65"><circle cx="-24" cy="-2" r="2"/><circle cx="-29" cy="-16" r="3"/><circle cx="-23" cy="-34" r="3.7"/><circle cx="-30" cy="-57" r="2"/></g>
+</g>
+</svg>

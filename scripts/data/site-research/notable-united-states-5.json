@@ -1,0 +1,855 @@
+{
+  "batch": "notable-united-states-5",
+  "researchedAt": "2026-10-07",
+  "sites": [
+    {
+      "id": "x-notable-1231",
+      "name": "SS Pendleton",
+      "sources": {
+        "s1": {
+          "url": "https://www.shipwreckworld.com/maps/ss-pendleton",
+          "publisher": "Shipwreck World",
+          "kind": "press",
+          "quote": "The remains of the Pendleton lie in around 40 feet of water off Pollock Rip Shoal \u2026 it is also a hazard to divers. \u2026 Diving on the Pendleton is allowed as the wreck is marked an Exempted Wreck Site by the state of Massachusetts."
+        },
+        "s2": {
+          "url": "https://www.capeandislands.org/in-this-place/2016-01-30/ss-pendleton-wreckage-after-60-years-its-almost-unrecognizable",
+          "publisher": "Cape & Islands NPR (WCAI)",
+          "kind": "press",
+          "quote": "The remains of the wreck lie in about 30 feet of water off Monomoy."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 40
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 30
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1"
+        ]
+      },
+      "access": {
+        "value": "Exempted wreck site in Massachusetts; diving allowed but removing or disturbing wreckage is unlawful",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Jagged metal left over from the blast",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Rough water; suited to experienced divers",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Shallow, broken remains of a wrecked ship's stern section off Monomoy near Chatham, Cape Cod. Rough water and sharp wreckage make it a dive for experienced divers; it may be dived but not disturbed.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-779",
+      "name": "Brother Jonathan",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Brother_Jonathan_(steamer)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "a depth of 275 feet (84 m) \u2026 About 4.5 mi (7.2 km) SW of Point St. George \u2026 rocky passageways, underwater currents, and underwater darkness"
+        },
+        "s2": {
+          "url": "https://sandiegoreader.com/news/1998/jan/08/courtroom-treasure-hunters",
+          "publisher": "San Diego Reader",
+          "kind": "press",
+          "quote": "it located Brother Jonathan 260 feet down, in murky waters ten miles northwest of Crescent City"
+        },
+        "s3": {
+          "url": "https://1715fleetsociety.com/?p=61216",
+          "publisher": "1715 Fleet Society",
+          "kind": "press",
+          "quote": "Although the wreck was not particularly deep (about 272 feet)"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 275
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 260
+        },
+        {
+          "ref": "s3",
+          "unit": "ft",
+          "bottom": 272
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "technical",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Underwater currents and darkness",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Murky water at about 260-275 ft",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Historic steamer lost on the rocks off Point St. George near Crescent City in 1865 and found by minisub in 1993. It lies roughly 260-275 ft down in murky, current-swept water, well beyond recreational limits.",
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      },
+      "depthNote": "Reported 260 to 275 ft depending on source"
+    },
+    {
+      "id": "x-wikipedia-559",
+      "name": "Argo (barge)",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Argo_(barge)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "about 40 feet of water \u2026 The wreck was covered in 'hundreds of thousands, if not millions' of zebra mussels"
+        },
+        "s2": {
+          "url": "https://shotlinediving.com/wreck/argo-1911/",
+          "publisher": "Shotline Diving",
+          "kind": "press",
+          "quote": "45 feet (15 meters) \u2026 over 200,000 gallons of hazardous material \u2026 diving and exploration are highly regulated"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 40
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 45
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Hazardous cargo leaking from the hull",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "text": "Heavy zebra mussel cover",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Tank barge lost in Lake Erie in 1937 and rediscovered in 2015, resting in roughly 40-45 ft of water. Its leftover hazardous cargo made it a priority wreck for NOAA, so access is tightly regulated.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikilist-655",
+      "name": "David Dows",
+      "sources": {
+        "s1": {
+          "url": "https://shotlinediving.com/docs/david-dows-us-157029/",
+          "publisher": "Shotline Diving",
+          "kind": "press",
+          "quote": "Depth at Wreck Site: 12.8 m / 42 ft \u2026 Approximately 10 miles southeast of Chicago, off the coast of Whiting, Indiana"
+        },
+        "s2": {
+          "url": "https://wrhistoricalsociety.com/david-dows-shipwreck",
+          "publisher": "Whiting-Robertsdale Historical Society",
+          "kind": "press",
+          "quote": "The remains of the David Dows, nicknamed the Queen of the Lakes, can be found in 42 feet of water \u2026 Over the years, divers have visited the Queen of the Lakes"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 42
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 42
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "summary": {
+        "text": "Remains of the five-masted schooner nicknamed the Queen of the Lakes, lying in about 42 ft of southern Lake Michigan off Whiting, Indiana. It is a long-visited, moderately shallow wreck reached by boat.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-558",
+      "name": "SS James H. Reed",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/SS_James_H._Reed",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "Resting in 76 feet (23.2 m) of water near a shipping lane \u2026 to within 45 feet (13.7 m) of the lake's surface \u2026 her wreck is disarticulated and scattered over a wide area"
+        },
+        "s2": {
+          "url": "https://www.shipwreckworld.com/maps/james-h-reed",
+          "publisher": "Shipwreck World",
+          "kind": "press",
+          "quote": "Depth: 76 ft (23.2 m)"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "top": 45,
+          "bottom": 76
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 76
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Shipping lane nearby",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Dynamited, scattered wreckage",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Large Lake Erie freighter sunk in a 1944 collision and later dynamited as a navigation hazard, leaving scattered wreckage in about 76 ft of water beside a shipping lane. Rated an intermediate dive.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-560",
+      "name": "SS Howard S. Gerken",
+      "sources": {
+        "s1": {
+          "url": "https://shotlinediving.com/wreck/howard-s-gerken-no-130/",
+          "publisher": "Shotline Diving",
+          "kind": "press",
+          "quote": "Depth at Wreck Site: 24 m / 80 ft \u2026 upside-down in silty mud; access is possible for technical divers"
+        },
+        "s2": {
+          "url": "https://www.regsciconsort.com/shipwrecks/howard-gerken/",
+          "publisher": "Regional Science Consortium",
+          "kind": "press",
+          "quote": "79\u2032 depth \u2026 Sports divers reported finding the Gerkin using a sonar device in 2009."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 80
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 79
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Upside-down hull partly buried in silt",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Silty bottom",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Capsized sand dredge about 7 miles off Erie, Pennsylvania, lying upside down in silt at roughly 80 ft. Found by sonar in 2009 and dived since.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-509",
+      "name": "Dunkirk Schooner Site",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Dunkirk_Schooner_Site",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "It lies about 20 miles (32 km) off Dunkirk resting in 170 feet (52 m) of cold freshwater"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 170
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-124",
+      "name": "USS YF-415",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/USS_YF-415",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "It lies at a depth of approximately 240 feet (73 m) \u2026 approximately 14 miles (23 km) northeast of Boston Harbor \u2026 visited by divers on July 20, 2003"
+        },
+        "s2": {
+          "url": "https://northernatlanticdive.com/shipwrecks/yf-415/",
+          "publisher": "Northern Atlantic Dive",
+          "kind": "operator",
+          "quote": "240\u2032 \u2026 150 tons of ammunition, which included obsolete pyrotechnics, black powder, and 50-caliber projectiles"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 240
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 240
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Ordnance cargo, including black powder",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Navy lighter that sank in 1944 while carrying ammunition for disposal, now lying near 240 ft about 14 miles off Boston. Found in 2002 and dived by deep technical divers.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-832",
+      "name": "USS New Hampshire",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/USS_New_Hampshire_(1864)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The shipwreck is in 30 ft (9.1 m) of water, and is an easy scuba dive mission. \u2026 the hull is mostly buried in the sand, small artifacts and copper spikes may still be found."
+        },
+        "s2": {
+          "url": "https://www.wreckhunter.net/DataPages/newhampshire-dat.htm",
+          "publisher": "Wreck Hunter",
+          "kind": "press",
+          "quote": "30' Maximum \u2026 Graves Island, Manchester, MA, just off east side of island \u2026 Hull is broken up and mostly buried in sand."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 30
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 30
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Copper spikes and small artifacts in the sand",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Broken-up remains of a burned 19th-century ship of the line off Graves Island, Manchester-by-the-Sea, in about 30 ft of water. The hull is mostly sand-covered; copper spikes can still be found.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-156",
+      "name": "SS Senator",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/SS_Senator",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "She lies in 450 feet (140 m) of water 16 miles northeast of Port Washington, Wisconsin."
+        },
+        "s2": {
+          "url": "https://wisconsinshipwrecks.org/Vessel/Details/564",
+          "publisher": "Wisconsin Historical Society",
+          "kind": "agency",
+          "quote": "nearly 500 feet of water \u2026 16 miles northeast of Port Washington"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 450
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 500
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "technical",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "summary": {
+        "text": "Freighter that sank in 1929 after a collision and now lies roughly 450-500 ft down, 16 miles off Port Washington, Wisconsin. Far beyond recreational limits, it has been surveyed with ROV and sonar.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-140",
+      "name": "SS Regina (1907)",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/SS_Regina_(1907)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The wreck is largely intact but is upside down and in about 77\u201380 feet (23\u201324 m) of water. \u2026 an active dive site for scuba divers and is now part of Michigan's underwater Preserve system."
+        },
+        "s2": {
+          "url": "https://www.michiganpreserves.org/sanilac-shores-underwater-preserve/",
+          "publisher": "Michigan Underwater Preserves",
+          "kind": "agency",
+          "quote": "She rests upside down on the bottom in about 80 feet of water. The bottom of the hull can be reached at 25 feet. \u2026 There is a 56 foot hole in the hull that permits entry to the hold area by qualified divers."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 80
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "top": 25,
+          "bottom": 80
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "penetration": {
+        "value": "56 ft hole in the hull allows entry to the hold for qualified divers",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Largely intact upside-down steel freighter",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Upside-down steel freighter lost in the 1913 Great Storm, lying in about 80 ft in Michigan's Sanilac Shores Underwater Preserve in Lake Huron. The hull bottom rises to 25 ft, and a large hole allows qualified divers into the hold.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-506",
+      "name": "St. Peter",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/St._Peter_(shipwreck)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "It sits upright on the bottom of Lake Ontario in 117 feet (36 m) of water northeast of Pultneyville, New York. \u2026 Its deck and lower hull are intact. \u2026 one of the most accessible shipwrecks for recreational divers in the sanctuary."
+        },
+        "s2": {
+          "url": "https://sanctuaries.noaa.gov/earthisblue/wk312-st-peter.html",
+          "publisher": "NOAA Office of National Marine Sanctuaries",
+          "kind": "agency",
+          "quote": "135-foot, three-masted schooner \u2026 rests upright in 117 feet of water"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 117
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 117
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Upright schooner with intact deck and lower hull",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Upright three-masted schooner lost in 1898 and lying in 117 ft northeast of Pultneyville in the Lake Ontario national marine sanctuary. Its deck and lower hull survive, and it is among the sanctuary's more accessible wrecks.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-139",
+      "name": "Land Tortoise",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Land_Tortoise",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The sunken vessel lies at a depth of about 105 feet (32 m) in the southern basin of Lake George \u2026 The site is accessible to the diving public with advanced diving skills."
+        },
+        "s2": {
+          "url": "https://www.shipwreckworld.com/maps/land-tortoise",
+          "publisher": "Shipwreck World",
+          "kind": "press",
+          "quote": "105 feet deep. \u2026 Not a beginner dive. \u2026 Lake george is cold and dark at this depth. Soft bottom can silt easily."
+        },
+        "s3": {
+          "url": "https://dec.ny.gov/things-to-do/boating/shipwreck-preserves-diving-guidelines",
+          "publisher": "New York State DEC",
+          "kind": "agency",
+          "quote": "Diving the Radeau is by registration only. The Radeau Preserve is open from the second Saturday of June through Labor Day. \u2026 Auxiliary air (pony tank and regulator) are required \u2026 visibility may be extremely limited."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "bottom": 105
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 105
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "season": {
+        "from": 6,
+        "to": 9,
+        "refs": [
+          "s3"
+        ]
+      },
+      "access": {
+        "value": "Registration only at the NYS DEC booth at Lake George Beach; open second Saturday of June to Labor Day; pony tank and regulator required",
+        "refs": [
+          "s3"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Silty soft bottom; visibility may be very limited",
+          "refs": [
+            "s2",
+            "s3"
+          ]
+        },
+        {
+          "text": "Cold, dark water at depth",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Seven-sided 1758 military radeau in the Lake George state underwater preserve, at about 105 ft. Diving is by DEC registration with a pony bottle; the cold, silty site is not a beginner dive.",
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      }
+    },
+    {
+      "id": "x-wikilist-695",
+      "name": "Milwaukee Fireboat 17",
+      "sources": {
+        "s1": {
+          "url": "https://www.shipwreckexplorers.com/fireboat-no-17/",
+          "publisher": "Shipwreck Explorers",
+          "kind": "operator",
+          "quote": "Lake Michigan, ~6.3 miles NE of Milwaukee \u2026 120ft to 135ft (36.6 to 41.2m) \u2026 careful buoyancy is required to avoid disturbing silt"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "ft",
+          "top": 120,
+          "bottom": 135
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Fine silt; careful buoyancy needed",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "x-wikipedia-314",
+      "name": "Ricks Spring",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Ricks_Spring",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The second cave is an extensive network of both wet and dry passages that is only accessible by cave diving. \u2026 As of 2009, it has been explored to about 2200 feet."
+        }
+      },
+      "types": {
+        "value": [
+          "cave"
+        ],
+        "refs": [
+          "s1"
+        ]
+      }
+    }
+  ]
+}

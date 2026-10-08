@@ -1,0 +1,238 @@
+{
+ "batch": "verified-depth-indonesia-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n7182771889",
+   "name": "Wainilu",
+   "sources": {
+    "s1": {
+     "url": "https://divetribekomodo.com/faq/about-komodo-dive-sites/what-is-wainilu-komodo-muck-dive",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "quote": "3–18m (most action 5–12m) … Mild … 8–15m typical … Open Water … Blue-ringed octopus — rare and highly venomous"
+    }
+   },
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 8,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro critters on sand and rubble",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Rare, highly venomous blue-ringed octopus",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "osm-n1485422409",
+   "name": "Pantai Merah",
+   "sources": {
+    "s1": {
+     "url": "https://divetribekomodo.com/faq/about-komodo-dive-sites/pink-beach-komodo-is-it-a-good-dive-site",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "quote": "3–12m (some deeper drops to 18m) … Mild … Open Water (excellent first dive site) … 12–20m … Coral garden + sand"
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 12,
+    "high": 20,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Healthy coral garden, turtles, whitetip reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "osm-n5760423321",
+   "name": "Sebayor Kecil Dive Site",
+   "sources": {
+    "s1": {
+     "url": "https://divetribekomodo.com/komodo-dive-sites/sebayur-kecil",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "quote": "Max Depth 18m … Mild — gentle, suitable for all levels … Beginner … bumphead parrotfish schools … turtles in the shallows … 15m avg"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bumphead parrotfish schools and turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "osm-n5767096953",
+   "name": "Cystal Rock Dive Site",
+   "sources": {
+    "s1": {
+     "url": "https://divetribekomodo.com/komodo-dive-sites/crystal-rock",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "quote": "Max Depth 30m … Strong — reef hook recommended … 20m avg … Advanced"
+    },
+    "s2": {
+     "url": "https://www.lagaligoliveaboard.com/diving/komodo/dive-site/crystal-rock/",
+     "publisher": "Lagaligo Liveaboard",
+     "kind": "operator",
+     "quote": "The maximum depth is 30 meters, but the average dive depth is around 25 meters. … Strong currents underwater mean it's not recommended for beginners"
+    },
+    "s3": {
+     "url": "https://www.diveplanit.com/dive-site/crystal-rock-komodo",
+     "publisher": "DivePlanIt",
+     "kind": "press",
+     "quote": "Crystal Rock can be subject to strong currents which attract big marine life."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 20,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barracuda schools, grey and whitetip reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong current; reef hook recommended",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A current-swept seamount pinnacle in northern Komodo National Park, known for clear water and abundant sharks and pelagics. Best for confident divers comfortable with drifts and hooks.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  }
+ ]
+}

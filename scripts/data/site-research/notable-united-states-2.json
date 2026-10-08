@@ -1,0 +1,146 @@
+{ "batch": "notable-united-states-2", "researchedAt": "2026-10-07", "sites": [
+{ "id": "x-wikipedia-285", "name": "Amberjack Hole",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Amberjack_Hole", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "The rim of the hole is approximately 34 m (112 ft) below the surface, and its depth is approximately 72 m (236 ft)." },
+    "s2": { "url": "https://oceanexplorer.noaa.gov/?p=2832", "publisher": "NOAA Ocean Exploration", "kind": "agency",
+      "quote": "The rim of Amberjack Hole is 34 meters (113 feet) from the surface" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 34, "bottom": 72 }, { "ref": "s2", "unit": "m", "top": 34 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "depthNote": "Blue hole rim at 34 m; hole about 72 m deep"
+},
+{ "id": "x-wikipedia-221", "name": "USS Rankin",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/USS_Rankin", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "She rests on her starboard side at a depth of 130 feet" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 130 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-243", "name": "USS Muliphen",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/USS_Muliphen", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "in a depth of 175 ft (53 m) of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 175 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-245", "name": "USS Mindanao (ARG-3)",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/USS_Mindanao_(ARG-3)", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "85-foot-deep (26 m) water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 85 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+},
+{ "id": "osm-n663869446", "name": "USS Oriskany",
+  "sources": {
+    "s1": { "url": "https://myfwc.com/fishing/saltwater/artificial-reefs/oriskany/", "publisher": "Florida Fish and Wildlife Conservation Commission", "kind": "agency",
+      "quote": "The Oriskany sits on seafloor at roughly 212 feet deep. … The flight deck is at approximately 145-150 feet. … The top of the decking on the island is at 84 feet deep. … Divers should have advance training to go beyond 100 feet" },
+    "s2": { "url": "https://floridapanhandledivetrail.com/Ships/Oriskany", "publisher": "Florida Panhandle Dive Trail", "kind": "press",
+      "quote": "Water depth to the top of the ship is 80 feet, and the flight deck is at 145 feet. … Depth 80 ft. to 212 ft." },
+    "s3": { "url": "https://reefsmartguides.com/oriskany/", "publisher": "Reef Smart Guides", "kind": "press",
+      "quote": "She now rests in over 200 feet (61 meters) of water. … experienced tech divers can explore the cavernous hanger bay below decks." }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "top": 84, "bottom": 212 }, { "ref": "s2", "unit": "ft", "top": 80, "bottom": 212 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1"] },
+  "highlights": [ { "text": "Island structure within recreational depths", "refs": ["s1"] }, { "text": "Hangar bay open to tech divers", "refs": ["s3"] } ],
+  "hazards": [ { "text": "Below 135 ft requires technical training", "refs": ["s1"] } ],
+  "summary": { "text": "A huge decommissioned aircraft carrier sunk upright off Pensacola as an artificial reef. Recreational divers visit the island superstructure while the flight deck and hangar bay below call for advanced or technical training.", "refs": ["s1", "s3"] },
+  "depthNote": "Island top 84 ft, flight deck ~145 ft, seafloor 212 ft"
+},
+{ "id": "x-notable-828", "name": "SS Tarpon",
+  "sources": {
+    "s1": { "url": "https://www.nps.gov/articles/sstarpon.htm", "publisher": "National Park Service", "kind": "agency",
+      "quote": "The wreck is submerged in 95 ft. of water … The preserve is open to the public year round, free of charge." },
+    "s2": { "url": "https://scubadiverlife.com/floridas-underwater-archaeological-preserves-ss-tarpon/", "publisher": "Scuba Diver Life", "kind": "press",
+      "quote": "the 160-foot (48 m) wreck lays at a depth of 90 feet (27 m), 7.8 nautical miles from shore. … Visibility is decent, although it can become murky after rainfall." }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 95 }, { "ref": "s2", "unit": "ft", "bottom": 90 } ],
+  "entry": { "value": "boat", "refs": ["s1", "s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Florida Underwater Archaeological Preserve; open year round, free of charge", "refs": ["s1"] },
+  "hazards": [ { "text": "Visibility can turn murky after rain", "refs": ["s2"] } ],
+  "summary": { "text": "The remains of a 160-foot Gulf coast steamer lie about eight nautical miles off Panama City at roughly 90 to 95 feet. It is a state underwater archaeological preserve that has become a reef for corals, grunts and amberjacks.", "refs": ["s1", "s2"] }
+},
+{ "id": "osm-n663869447", "name": "USS Massachusetts",
+  "sources": {
+    "s1": { "url": "https://scubadiverlife.com/floridas-underwater-archaeological-preserves-uss-massachusetts-bb-2/", "publisher": "Scuba Diver Life", "kind": "press",
+      "quote": "Due to the shallow depth (26 to 30 feet), the turrets rise close to the surface and at times are awash. … diving at an unsuitable time can cause low visibility and strong surge." },
+    "s2": { "url": "https://www.florida-backroads-travel.com/uss-massachusetts-shipwreck.html", "publisher": "Florida Backroads Travel", "kind": "press",
+      "quote": "rests in 26–30 feet of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "top": 26, "bottom": 30 }, { "ref": "s2", "unit": "ft", "top": 26, "bottom": 30 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "highlights": [ { "text": "Turrets, cupolas and anchor chain", "refs": ["s1"] }, { "text": "Goliath groupers and turtles", "refs": ["s1"] } ],
+  "hazards": [ { "text": "Strong surge and low visibility at wrong tide", "refs": ["s1"] } ],
+  "summary": { "text": "A pre-dreadnought battleship scuttled in very shallow water near Pensacola Pass. Its turrets sit close to the surface and attract a full reef community; timing the dive for slack high tide keeps surge and silt down.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-wikipedia-302", "name": "Wakulla Springs",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Wakulla_Springs", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "350 ft (110 m) … Advanced cave diving" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 350 } ],
+  "types": { "value": ["cave"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1"] }
+},
+{ "id": "osm-n3170772458", "name": "Madison Blue Spring",
+  "sources": {
+    "s1": { "url": "https://karstunderwater.org/?p=5463", "publisher": "Karst Underwater Research", "kind": "press",
+      "quote": "Max Depth: 144 feet … Surveyed Passage: about 8 Miles and Growing" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 144 } ],
+  "types": { "value": ["cave"], "refs": ["s1"] }
+},
+{ "id": "osm-n3154391263", "name": "Vortex Spring",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Vortex_Spring", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "Experienced divers are allowed to dive to 115 feet (35 m). … Water temperature is steady at 68 °F (20 °C) with no thermocline." }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 115 } ],
+  "waterTemp": { "low": 68, "high": 68, "unit": "F", "note": "steady, no thermocline", "refs": ["s1"] }
+},
+{ "id": "osm-n1939166702", "name": "Ichetucknee Spring",
+  "sources": {
+    "s1": { "url": "https://www.floridarambler.com/central-florida-getaways/best-springs-in-florida/", "publisher": "Florida Rambler", "kind": "press",
+      "quote": "Blue Hole is open for swimming, snorkeling and certified scuba diving from 8 AM until one hour before park closing at sunset." }
+  },
+  "access": { "value": "Blue Hole open to certified divers until one hour before park closing", "refs": ["s1"] }
+},
+{ "id": "x-wikipedia-227", "name": "Wreck Alley",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Wreck_Alley", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "Depth: 68 Feet (Highest point at stern) to 105 Feet (Lowest point at bow) … Wreck Alley is an area a few miles off the coast of Mission Beach, San Diego, California" },
+    "s2": { "url": "https://cadivingnews.com/?p=1833", "publisher": "California Diving News", "kind": "press",
+      "quote": "the 366-foot Canadian destroyer Yukon, put down in 2000 in 100 feet of water … Top of the wreck is only 50 feet … Currents are a constant here but rarely strong." },
+    "s3": { "url": "https://www.sandiego.org/article/the-hmcs-yukon-dive-in-san-diego", "publisher": "San Diego Tourism Authority", "kind": "press",
+      "quote": "Dozens of access holes have been cut into the hull, many interior bulkheads have been removed. … Be cautious about penetrating" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "top": 68, "bottom": 105 }, { "ref": "s2", "unit": "ft", "top": 50, "bottom": 100 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "current": { "value": "light", "refs": ["s2"] },
+  "hazards": [ { "text": "Penetration needs caution inside HMCS Yukon", "refs": ["s3"] } ],
+  "summary": { "text": "Several ships sunk deliberately a few miles off Mission Beach, led by the Canadian destroyer HMCS Yukon and the cutter Ruby E. Depths run from about 50 to 105 feet, with steady but rarely strong current.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-wikipedia-52", "name": "Scripps Canyon",
+  "sources": {
+    "s1": { "url": "https://cadivingnews.com/?p=1118", "publisher": "California Diving News", "kind": "press",
+      "quote": "The head of the canyon is marked with a buoy that is tied off at about 70 feet. … It is far more practical to conduct the dive from a boat … Like any wall dive, Scripp's Canyon demands excellent diving skills and careful planning." },
+    "s2": { "url": "https://en.wikipedia.org/wiki/Scripps_Canyon", "publisher": "Wikipedia", "kind": "encyclopedia",
+      "quote": "A popular site for scientific and recreational diving due to its vertical walls and high density of marine life." }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "top": 70 } ],
+  "entry": { "value": "boat-shore", "refs": ["s1"] },
+  "types": { "value": ["wall"], "refs": ["s1", "s2"] },
+  "level": { "value": "advanced", "refs": ["s1"] },
+  "hazards": [ { "text": "Cold upwellings, dark; light and backup needed", "refs": ["s1"] } ],
+  "summary": { "text": "A vertical-walled submarine canyon off La Jolla whose head begins around 70 feet. Rich in marine life but cold and dark, it is best reached by boat and suits experienced divers.", "refs": ["s1", "s2"] }
+}
+] }

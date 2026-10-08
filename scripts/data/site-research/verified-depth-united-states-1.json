@@ -1,0 +1,1216 @@
+{
+ "batch": "verified-depth-united-states-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-224",
+   "name": "USS Scrimmage",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Scrimmage",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "sunk in the Pacific Ocean approximately one mile off Waianae, Hawai'i, in 90 feet (27 meters) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-249",
+   "name": "USS Curb",
+   "sources": {
+    "s1": {
+     "url": "https://diveinkeywest.net/uss-curb.php",
+     "publisher": "Dive In Key West",
+     "kind": "operator",
+     "quote": "185 feet \u2026 definitely for advanced divers \u2026 You can penetrate the interior of the ship, but you should do so cautiously"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/USS_Curb",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "her hulk sunk as an artificial reef off Key West, Florida, 23 November 1983"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 185
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright former salvage ship with penetrable decks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Silt inside the wreck can reduce visibility",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Bottom depth from a single operator page"
+  },
+  {
+   "id": "noaa-fknms-sand-key-reef",
+   "name": "Sand Key Reef",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/sandkey.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "The spurs are ridges of coral 5 to 20 feet deep, with grooves of sandy bottom between cliff-like structures \u2026 gentle ledge at about 65 feet, dropping to 90 feet in some places. \u2026 ranging from 15 to 110 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90,
+     "top": 5
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 110,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spur-and-groove reef beside a 1853 iron lighthouse",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Fire coral common on sections of the reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A spur-and-groove reef seven miles off Key West, topped by a historic red iron lighthouse. Coral ridges rise in shallow water and the south side slopes off to a deeper ledge; visibility swings widely with wind and tide.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-rock-key",
+   "name": "Rock Key",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/rockkey.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "ranges in depth from 5 to 35 feet \u2026 rubble zone and long fingers of coral with sand and coral-filled canyons"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 35,
+     "top": 5
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral fingers and sand-floored canyons",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A bank reef off Key West made up of a rubble zone, long coral fingers and sandy, coral-lined canyons, in water shallow enough for relaxed dives.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-eastern-dry-rocks",
+   "name": "Eastern Dry Rocks",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/eastern.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "ranges in depth from 5 to 35 feet \u2026 contains a concentration of important bank reef habitats \u2026 rubble zone and long fingers of coral with sand and coral-filled canyons"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 35,
+     "top": 5
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral fingers and sand-floored canyons",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small bank reef near Key West packing several reef habitats into about 90 acres, with rubble, coral ridges and sandy canyons in shallow water.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-sombrero-reef",
+   "name": "Sombrero Reef",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/sombrero.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "depths inside the SPA boundaries under 30 feet \u2026 classic spur-and-groove reef formation extending over 208 acres in size \u2026 one of the most popular sites for snorkeling and diving in the Middle Keys"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Classic spur-and-groove reef formation",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large spur-and-groove reef in the Middle Keys, shallower than 30 feet inside its protected zone and a favourite for both snorkelers and divers.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-molasses-reef",
+   "name": "Molasses Reef",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/molasses.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "famous for its clear water, fish populations, and numerous boulder corals. It is a classic outer reef with a well-defined spur and groove system \u2026 most heavily visited reef in the Upper Keys for scuba diving"
+    },
+    "s2": {
+     "url": "https://www.bwdiver.com/dive-sites/",
+     "publisher": "Black Water Diver",
+     "kind": "operator",
+     "quote": "One of the most visited reefs in the Upper Keys, Molasses Reef is known for clear water, boulder corals, and abundant marine life."
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Boulder corals on a spur-and-groove outer reef",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Ship's winch and old Spanish anchor on the bottom",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Key Largo's busiest outer reef, with spur-and-groove coral, big boulder corals and plentiful fish. Water is often clear, and a winch and an old anchor lie off the lighthouse.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-alligator-reef",
+   "name": "Alligator Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.islamoradadivecenter.com/florida-keys-dive-sites",
+     "publisher": "Islamorada Dive Center",
+     "kind": "operator",
+     "quote": "A shallow, protected reef marked by the historic 136-foot Alligator Reef Lighthouse and teeming with marine life across depths of 10 to 25 feet"
+    },
+    "s2": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/alligator.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "some parts of the reef lie at a depth of only 8 feet \u2026 a small bank reef protecting a spur-and-groove system \u2026 ideal for beginning snorkelers and divers \u2026 632 known species"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 25,
+     "top": 10
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Historic lighthouse marks the reef",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Over 600 reef fish species recorded",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow protected bank reef off the Alligator lighthouse, with spur-and-groove coral and a big fish list. Calm depths make it a good fit for newer divers and snorkelers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-newfound-harbor",
+   "name": "Newfound Harbor",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/newfound.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "half-mile square inshore patch reef \u2026 some of the best boulder corals in the Keys as well as star corals and giant brain corals, all in depths of 18 feet or less \u2026 Easily accessible by boaters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Boulder, star and giant brain corals",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow inshore patch reef off Little Palm Island with large boulder, star and brain corals and reef fish, all within 18 feet of the surface.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-snapper-ledge",
+   "name": "Snapper Ledge",
+   "sources": {
+    "s1": {
+     "url": "https://www.rainbowreef.com/dive-locations-in-key-largo/snapper-ledge",
+     "publisher": "Rainbow Reef Dive Center",
+     "kind": "operator",
+     "quote": "Site Depth: 15-25 Feet \u2026 Site Level: Open Water \u2026 One of the largest and healthiest Boulder Brain Corals (Colpophyllia natans) in the Upper Keys can be found on Snapper's Ledge."
+    },
+    "s2": {
+     "url": "https://www.bwdiver.com/dive-sites/",
+     "publisher": "Black Water Diver",
+     "kind": "operator",
+     "quote": "A shallow reef averaging around 25 feet, Snapper Ledge is known for schools of yellowtail snapper, nurse sharks, and moray eels."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 25,
+     "top": 15
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Huge boulder brain coral",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Yellowtail snapper, nurse sharks, morays",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow Key Largo ledge reef suited to open-water divers, known for a very large boulder brain coral and schools of snapper with nurse sharks and morays around.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-duane-wreck",
+   "name": "Duane Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/duane.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "lies upright on a sandy bottom in 120 feet of water \u2026 The mast and crow's nest, protruding high above the hull, are only 60 feet deep. \u2026 The superstructure deck is at 90 feet"
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/the-silver-anniversary-of-the-uscgc-duane/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "the Gulf Stream currents that rage so fiercely at times that the site's three mooring buoys are pulled underwater \u2026 The Duane makes for an excellent multilevel dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 120,
+     "top": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "Three mooring buoys on site",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact upright cutter with rails, ladders and props",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Multilevel dive from mast down to main deck",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Gulf Stream current can be fierce at times",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 327-foot Coast Guard cutter sitting upright on sand near Molasses Reef, with the mast near 60 feet and decks stepping down to 120. Currents can run hard, but it makes an easy multilevel wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Mast 60 ft, bridge 70 ft, main deck 100 ft, sand 120 ft"
+  },
+  {
+   "id": "x-wikipedia-222",
+   "name": "USCGC Duane",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/duane.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "lies upright on a sandy bottom in 120 feet of water \u2026 The mast and crow's nest, protruding high above the hull, are only 60 feet deep."
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/the-silver-anniversary-of-the-uscgc-duane/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "the Gulf Stream currents that rage so fiercely at times that the site's three mooring buoys are pulled underwater \u2026 The Duane makes for an excellent multilevel dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 120,
+     "top": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "Three mooring buoys on site",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A decommissioned Coast Guard cutter sunk upright off Key Largo as an artificial reef, with mast and bridge in shallow water and the main deck near 100 feet. Currents can be strong.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-bibb-wreck",
+   "name": "Bibb Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://rainbowreef.com/dive-locations-in-key-largo/uscg-bibb-wreck",
+     "publisher": "Rainbow Reef Dive Center",
+     "kind": "operator",
+     "quote": "Site Depth: 97-130 feet \u2026 The currents can make her undiveable at times \u2026 Advanced Open Water"
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/the-silver-anniversary-of-the-uscgc-duane/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "the Bibb came to rest on its side \u2026 became a much deeper dive site at 90 to 130 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 130,
+     "top": 97
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 130,
+     "top": 90
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Current can make the wreck undiveable at times",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The Duane's sister cutter, lying on its side in deeper water off Key Largo. It is a deeper, advanced dive, and current can shut it down on some days.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-eagle-wreck",
+   "name": "Eagle Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/eagle.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "lying on its starboard side in 110 feet of water 3 miles northeast of Alligator Reef Light \u2026 The deck railings at 70 feet, and its propeller and rudder at 110 feet, are still intact."
+    },
+    "s2": {
+     "url": "https://www.keydives.com/article/dive-sites-information",
+     "publisher": "Key Dives",
+     "kind": "operator",
+     "quote": "This 287-foot freighter is one of the great places to dive for wreck enthusiasts. Look for massive goliath groupers, bull sharks, and thousands of schooling jacks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 110,
+     "top": 70
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Goliath groupers and bull sharks",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Schooling jacks around the hull",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Propeller and rudder still intact",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Wreck broken in half by Hurricane Georges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 287-foot freighter resting on its starboard side off Islamorada, with rails near 70 feet and propeller at 110. Big groupers, bull sharks and jacks circle the wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Rails 70 ft, prop and rudder 110 ft"
+  },
+  {
+   "id": "noaa-fknms-vandenberg-wreck",
+   "name": "Vandenberg Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://visitfloridakeys.com/experiences/what-were-famous-for/diving-snorkeling/shipwrecks",
+     "publisher": "Florida Keys & Key West tourism council",
+     "kind": "press",
+     "quote": "the bottom of its hull rests on sand in depths averaging 145 feet, but its superstructure rises to about 45 feet below the surface"
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/the-florida-keys-shipwreck-trail/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "The ship offers a solid 100 ft (30 m) of relief with dive profiles for everyone from novice divers to advanced technical and wreck-penetration divers. \u2026 rests at a depth of 140 ft (43 m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 145,
+     "top": 45
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 140
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "About 100 ft of vertical relief",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 523-foot former missile-tracking ship sunk off Key West, one of the largest purpose-sunk wrecks anywhere. Its hull sits at about 145 feet while the top reaches 45 feet, so there is a profile for most divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Superstructure 45 ft, hull on sand about 145 ft"
+  },
+  {
+   "id": "noaa-fknms-joe-s-tug-wreck",
+   "name": "Joe's Tug Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://www.keywestdivecenter.com/joes-tug-dive-site/",
+     "publisher": "Key West Dive Center",
+     "kind": "operator",
+     "quote": "one of the most popular and well-known novice scuba diving wreck sites \u2026 standing proudly on the ocean floor in 65 feet of water \u2026 the bow and stern are separated by approximately 30 feet"
+    },
+    "s2": {
+     "url": "https://diveinkeywest.net/joes-tug.php",
+     "publisher": "Dive In Key West",
+     "kind": "operator",
+     "quote": "65 feet below the surface of the sea \u2026 The visibility of the area is usually excellent \u2026 a steel-hull shrimper which measures 75 feet in length"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 65
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 65
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Moray eels and schools of fish in the hull",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Resident goliath grouper known as Elvis",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 75-foot steel shrimp boat, not a tug, lying in two halves in about 65 feet off Key West. A popular novice wreck with schooling fish, morays and often excellent visibility.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-adolphus-busch-wreck",
+   "name": "Adolphus Busch Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://dan.org/alert-diver/article/the-florida-keys-shipwreck-trail/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "It now sits upright in 115 ft (35 m) of water about 3.5 nautical miles (6 km) west of Looe Key's main dive sites."
+    },
+    "s2": {
+     "url": "https://visitfloridakeys.com/experiences/what-were-famous-for/diving-snorkeling/shipwrecks",
+     "publisher": "Florida Keys & Key West tourism council",
+     "kind": "press",
+     "quote": "The 210-foot island freighter Adolphus Busch Senior \u2026 in 100 feet of water southwest of Big Pine Key"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 115
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A 210-foot freighter standing upright on sand near Looe Key in the Lower Keys, sunk in 1998 as an artificial reef and now part of the Florida Keys shipwreck trail.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-amesbury-wreck",
+   "name": "Amesbury Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/amesbury.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "two sections of hull and superstructure lying 600 feet (200 yards) apart"
+    },
+    "s2": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "less than 30 feet of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two hull sections 600 ft apart with 5-inch gun mount",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-adelaide-baker",
+   "name": "Adelaide Baker",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/adelaide.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "In 20 feet of water, 4 miles south-southeast of Duck Key, lie the remains of a three-masted \u2026 diverse overgrowth of organisms such as gorgonians, sponges, and encrusting corals"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Iron mast and hull remains with gorgonians and sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The scattered remains of a three-masted sailing ship wrecked in 1889, lying in about 20 feet near Duck Key and covered with sponges, gorgonians and corals.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-san-pedro-wreck",
+   "name": "San Pedro Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://floridakeys.noaa.gov/shipwrecktrail/sanpedro.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "sank in 18 feet of water 1 mile south of Indian Key \u2026 The large pile of ballast \u2026 In 1989, this site became a State of Florida Underwater Archaeological Preserve."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "State of Florida Underwater Archaeological Preserve",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ballast pile of a 1733 Spanish fleet wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The ballast mound of a Spanish ship lost in the 1733 hurricane, resting in about 18 feet south of Indian Key. It is a protected state archaeological preserve.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-244",
+   "name": "USS Fred T. Berry",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Fred_T._Berry",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "scuttled \u2026 in 55 fathoms (330 feet; 100 m) of water to form an artificial reef off Key West, Florida \u2026 Johnson Sea Link became entangled in her wreckage"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 330
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Submersible entangled in wreckage in 1973 (two deaths)",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

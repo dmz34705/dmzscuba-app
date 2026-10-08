@@ -1,0 +1,188 @@
+{ "batch": "notable-united-kingdom-5", "researchedAt": "2026-10-07", "sites": [
+{ "id": "x-notable-792", "name": "SM U-8",
+  "sources": {
+    "s1": { "url": "https://www.canterburydivers.org.uk/u-8-ship-wreck/", "publisher": "Canterbury Divers (BSAC)", "kind": "operator", "quote": "Today the wreck sits in a scour of 35m with the decks at 32-33m, i did however get a depth of 37m under the stern. … although we had some nice Viz of 3-4m … there is a large net hanging down off the stern" },
+    "s2": { "url": "https://heritage.kent.gov.uk/Monument/MKE98560", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "is designated under the Protection of Wrecks Act 1973 … lying within the hazardous Dover traffic separation zone … recorded the submarine in very good condition sitting upright on the seabed" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 32, "bottom": 37 } ],
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "vis": { "low": 3, "high": 4, "unit": "m", "refs": ["s1"] },
+  "access": { "value": "Protected wreck (Protection of Wrecks Act 1973); licence needed", "refs": ["s2"] },
+  "hazards": [ { "text": "Large net hanging off the stern", "refs": ["s1"] }, { "text": "Busy Dover shipping separation zone", "refs": ["s2"] } ],
+  "summary": { "text": "A First World War German U-boat lying upright in the Dover Strait, with its decks around 32 m and the sand scour deeper still. It is a legally protected wreck, so visits are by licence, and fishing net and line snag the stern.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-776", "name": "SMS Grosser Kurfürst",
+  "sources": {
+    "s1": { "url": "https://www.wessexarch.co.uk/news/investigating-wreck-grosser-kurfurst", "publisher": "Wessex Archaeology", "kind": "agency", "quote": "Although it is partially collapsed, you can see that the hull is upside-down." },
+    "s2": { "url": "https://www.scubaverse.com/wreck-of-sms-grosser-kurfurst-memorial-granted-protection", "publisher": "Scubaverse", "kind": "press", "quote": "recreational divers have permission to dive the wreck" },
+    "s3": { "url": "https://en.wikipedia.org/wiki/SMS_Grosser_Kurf%C3%BCrst_(1875)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "the wreck itself would be scheduled under the Ancient Monuments and Archaeological Areas Act 1979." }
+  },
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Scheduled monument; recreational diving allowed, no salvage or removal", "refs": ["s2", "s3"] },
+  "summary": { "text": "A large 1870s German ironclad that sank in a collision off Folkestone and now lies capsized and partly collapsed. Scheduled in 2020, it can still be visited by recreational divers who leave everything in place.", "refs": ["s1", "s2", "s3"] }
+},
+{ "id": "x-notable-902", "name": "HMS Brazen",
+  "sources": {
+    "s1": { "url": "https://divernet.com/scuba-diving/below-with-brazen/", "publisher": "Divernet", "kind": "press", "quote": "It lies in 25-30m about eight miles out of Dover harbour. … so many intact portholes, complete with glass" },
+    "s2": { "url": "https://heritage.kent.gov.uk/Monument/MKE13299", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "depth 19.3 in general depth 26m, no scour. … upright with bow NW, high point at forward end, superstructure and guns visible on sonar." },
+    "s3": { "url": "https://www.canterburydivers.org.uk/?p=345", "publisher": "Canterbury Divers (BSAC)", "kind": "operator", "quote": "together with the excellent visibility it's still worth a visit. … torpedo tubes, depth chargers and the guns are still present" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 25, "bottom": 30 }, { "ref": "s2", "unit": "m", "bottom": 26 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "highlights": [ { "text": "Intact portholes with glass", "refs": ["s1"] }, { "text": "Guns, torpedo tubes and depth charges", "refs": ["s3"] } ],
+  "hazards": [ { "text": "Tide turns and current builds quickly", "refs": ["s1"] } ],
+  "summary": { "text": "A 1930s destroyer sunk by German aircraft in 1940, lying in roughly 25-30 m east of Dover. Guns, torpedo tubes and depth-charge gear remain, and parts of the hull can be entered, though shifting sand buries and uncovers sections.", "refs": ["s1", "s2", "s3"] }
+},
+{ "id": "x-wikipedia-209", "name": "SS Maloja (1910)",
+  "sources": {
+    "s1": { "url": "https://www.canterburydivers.org.uk/maloja", "publisher": "Canterbury Divers (BSAC)", "kind": "operator", "quote": "however the top is at 18m and the sides only drop down 2m to a max depth of around 20m … can suffer from poor viz for a large part of the year. … does make a very good dive for inexperienced divers and training dives." },
+    "s2": { "url": "https://en.wikipedia.org/wiki/SS_Maloja_(1910)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Maloja's wreck lies in 80 to 100 feet (24 to 30 m) of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 18, "bottom": 20 }, { "ref": "s2", "unit": "ft", "top": 80, "bottom": 100 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "beginner", "refs": ["s1"] },
+  "hazards": [ { "text": "Poor visibility much of the year, near Dover", "refs": ["s1"] } ],
+  "summary": { "text": "A liner mined off Dover in 1916 and later salvaged and blown up, leaving a broken, sand-filled mound. It is clean and suits less experienced divers and training dives, though visibility is often poor.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-1052", "name": "HMS Glatton",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Glatton_(1914)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "There she remains, buried by landfill underneath the current car ferry terminal." } },
+  "notDiveSite": { "kind": "gone", "reason": "Wreck moved within Dover harbour and buried by landfill under the car ferry terminal", "refs": ["s1"] }
+},
+{ "id": "x-notable-1042", "name": "HMS B2",
+  "sources": {
+    "s1": { "url": "https://www.canterburydivers.org.uk/?p=314", "publisher": "Canterbury Divers (BSAC)", "kind": "operator", "quote": "The sub is in a depth of 33m on a mixed bed of sand and chalk. … The conning tower is still in place with its hatch open." },
+    "s2": { "url": "https://heritage.kent.gov.uk/Monument/MKE13140", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "general depth 23m, scour 25m, height 5m, lying NW/SE." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 33 }, { "ref": "s2", "unit": "m", "bottom": 25 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "highlights": [ { "text": "Conning tower with hatch open", "refs": ["s1"] } ],
+  "summary": { "text": "A small Edwardian B-class submarine lost in 1912 and lying on sand and chalk northeast of Dover at around 25-33 m. The hull stands about 5 m high with the conning tower intact.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-980", "name": "HMS Codrington",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Codrington", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Half of the ship was refloated and moved to a nearby beach for demolition that lasted for several years. … the wreck was lifted at an unknown date" } },
+  "notDiveSite": { "kind": "gone", "reason": "Sunk in Dover harbour in 1940; wreck salvaged and removed after the war", "refs": ["s1"] }
+},
+{ "id": "x-notable-864", "name": "Langdon Bay Wreck",
+  "sources": {
+    "s1": { "url": "https://heritage.kent.gov.uk/Monument/MKE7025", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "The bronzes lie at a depth of 7.13m on a chalk sea bed where visibility is 2m or less." },
+    "s2": { "url": "https://heritage.kent.gov.uk/Monument/MKE17348", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "Site discovered in August 1974 by members of the Dover sub-aqua club on the eastern side of Langdon Bay. … it is currently felt that protection should remain in place." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 7.13 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck site", "refs": ["s2"] },
+  "hazards": [ { "text": "Visibility 2 m or less", "refs": ["s1"] } ],
+  "summary": { "text": "A shallow chalk-bed site off Dover where a Middle Bronze Age cargo of bronze tools and weapons was found by local divers in 1974. It is a protected wreck site with little to see and typically poor visibility.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-wikipedia-223", "name": "Preussen",
+  "sources": {
+    "s1": { "url": "https://www.canterburydivers.org.uk/?p=485", "publisher": "Canterbury Divers (BSAC)", "kind": "operator", "quote": "The max depth I had on her was 7m in a bit of scour, the general depth is abut 3-5m. … viz can be very poor, the water is often very cloudy here from the chalk." },
+    "s2": { "url": "https://en.wikipedia.org/wiki/Preussen_(ship)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "She sits in 6 metres (3.3 fathoms) of water at" },
+    "s3": { "url": "https://heritage.kent.gov.uk/Monument/MKE13126", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "Tugs took her in tow but cables snapped and she ran ashore and broke in two." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 3, "bottom": 7 }, { "ref": "s2", "unit": "m", "bottom": 6 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "hazards": [ { "text": "Very poor, chalky visibility close inshore", "refs": ["s1"] }, { "text": "Dived at slack water only", "refs": ["s1"] } ],
+  "summary": { "text": "The remains of a giant five-masted German sailing ship wrecked at Crab Bay in 1910, now a very shallow, flattened site of plate and decking in about 3-7 m. Visibility is often poor and it is dived around slack water.", "refs": ["s1", "s2", "s3"] }
+},
+{ "id": "x-notable-911", "name": "U-12",
+  "sources": { "s1": { "url": "https://heritage.kent.gov.uk/Monument/MKE44360", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "Precise location unknown. … TR 44 46 (point) Approximate" } },
+  "notDiveSite": { "kind": "unlocated", "reason": "Kent HER records the precise location of U-12 as unknown", "refs": ["s1"] }
+},
+{ "id": "x-notable-913", "name": "Iona II",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Iona_II", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The site was designated under the Protection of Wrecks Act on 6 December 1989. … lies upright on the seabed." },
+    "s2": { "url": "https://www.wessexarch.co.uk/news/iona-ii-dive-trail-officially-open", "publisher": "Wessex Archaeology", "kind": "agency", "quote": "the compulsory, free of charge, licence to dive the wreck" }
+  },
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck; compulsory free diving licence", "refs": ["s2"] },
+  "summary": { "text": "A paddle steamer lying upright off Lundy's east coast, protected since 1989. Diving needs a free licence, and a dive trail with guide materials helps visitors interpret the remains.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-858", "name": "Gull Rock Wreck",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Gull_Rock_Wreck", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The site was designated under the Protection of Wrecks Act on 12 February 1990." } },
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck (Protection of Wrecks Act 1990); licence needed", "refs": ["s1"] }
+},
+{ "id": "x-notable-912", "name": "Admiral Gardner",
+  "sources": { "s1": { "url": "https://heritage.kent.gov.uk/Monument/MKE17338", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "The site lies at a depth of 12 to 18 metres. … Protected Wreck Site 1000062: Admiral Gardner. … By the 2003 visit the site was found to be completely buried." } },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 12, "bottom": 18 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck site; licence needed", "refs": ["s1"] },
+  "hazards": [ { "text": "Site often buried by moving sand", "refs": ["s1"] } ],
+  "summary": { "text": "A protected Goodwin Sands wreck lying at about 12-18 m. Moving sands bury and uncover it, so what is visible varies, and diving is restricted to licensed visits.", "refs": ["s1"] }
+},
+{ "id": "x-notable-824", "name": "South Australian",
+  "sources": {
+    "s1": { "url": "https://divernet.com/scuba-news/lundy-clipper-wreck-becomes-monument/", "publisher": "Divernet", "kind": "press", "quote": "The South Australian lies at a depth of around 42m north-east of Lundy Island in the Bristol Channel. … They can still be dived by leisure divers who respect the site and do not damage or remove anything" },
+    "s2": { "url": "https://en.wikipedia.org/wiki/South_Australian_(clipper_ship)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "found South Australian's cargo of iron at a depth of 42 metres (140 ft) in the Bristol Channel" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 42 }, { "ref": "s2", "unit": "m", "bottom": 42 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Scheduled monument; divers may visit but not disturb", "refs": ["s1"] },
+  "highlights": [ { "text": "Large stack of iron rails rising about 4 m", "refs": ["s1"] } ],
+  "summary": { "text": "A clipper carrying a cargo of iron rails, lying near 42 m northeast of Lundy. Scheduled as a monument in 2019, it remains open to deep, experienced leisure divers who leave it undisturbed.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-1144", "name": "HMS Niger",
+  "sources": { "s1": { "url": "https://heritage.kent.gov.uk/Monument/MKE13257", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "Swept clear at 9.9m … Well broken up (East Kent Maritime Trust, 23-JUL-1984)." } },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 9.9 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+},
+{ "id": "x-notable-859", "name": "Goodwins & Downs 8",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Goodwins_%26_Downs_8", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The site was designated under the Protection of Wrecks Act" } },
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck site; licence needed", "refs": ["s1"] }
+},
+{ "id": "x-notable-817", "name": "HMS Northumberland",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Northumberland_(1679)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck is a Protected Wreck managed by Historic England. … much of the structure is thought to be buried below the sand." },
+    "s2": { "url": "https://www.wessexarch.co.uk/news/northumberland", "publisher": "Wessex Archaeology", "kind": "agency", "quote": "The site is administered by English Heritage and the licensee monitors the site." }
+  },
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck site; diving by licence only", "refs": ["s1", "s2"] },
+  "summary": { "text": "A 70-gun ship of the line lost on the Goodwin Sands in the 1703 storm, now a low mound with much of the structure buried in sand. It is a protected wreck monitored by a licensee.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-818", "name": "HMS Restoration",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Restoration_(1678)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck is a Protected Wreck managed by Historic England." } },
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck site; licence needed", "refs": ["s1"] }
+},
+{ "id": "x-notable-819", "name": "HMS Stirling Castle",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Stirling_Castle_(1679)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck lies in 12.1 metres (40 ft) of water near the North Sand Head, Goodwin Knoll." },
+    "s2": { "url": "https://heritage.kent.gov.uk/Monument/MKE17335", "publisher": "Kent County Council Historic Environment Record", "kind": "agency", "quote": "The site lies in approximately 15 metres of water on the Goodwin Sands, … increasingly buried by sediment. … Divers studied details of two decks of gunports" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 12.1 }, { "ref": "s2", "unit": "m", "bottom": 15 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck site; licence needed", "refs": ["s1"] },
+  "hazards": [ { "text": "Wreck repeatedly buried and uncovered by sand", "refs": ["s2"] } ],
+  "summary": { "text": "A 1703 warship on the Goodwin Sands in roughly 12-15 m, found by recreational divers in 1979. Sand covers and re-exposes it, and it is a protected wreck.", "refs": ["s1", "s2"] }
+},
+{ "id": "x-notable-842", "name": "Rooswijk",
+  "sources": {
+    "s1": { "url": "https://en.wikipedia.org/wiki/Rooswijk", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "It lies in about 24 metres (79 ft) of water at the northeast end of Kellett Gut." },
+    "s2": { "url": "https://english.cultureelerfgoed.nl/latest/weblog/2020/rooswijk-shipwreck-excavation-update-2020", "publisher": "Cultural Heritage Agency of the Netherlands", "kind": "agency", "quote": "The protected nature of the wreck means it is only possible to visit the site with a permit" },
+    "s3": { "url": "https://www.kentarchaeology.org.uk/magazine/72/13-wreck-of-the-rooswijk-designated", "publisher": "Kent Archaeological Society", "kind": "press", "quote": "except under the authority of a license" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 24 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Protected wreck; permit required to visit", "refs": ["s2", "s3"] },
+  "summary": { "text": "An 18th-century Dutch East Indiaman on the Goodwin Sands in about 24 m of water. A protected wreck, it can only be visited with a permit and diving qualification.", "refs": ["s1", "s2", "s3"] }
+},
+{ "id": "x-notable-840", "name": "Hirano Maru",
+  "sources": {
+    "s1": { "url": "https://coflein.gov.uk/en/site/274680", "publisher": "Coflein (RCAHMW)", "kind": "agency", "quote": "has been assigned to the maritime named location BRISTOL CHANNEL pending more information" }
+  },
+  "notDiveSite": { "kind": "unlocated", "reason": "Coflein holds only a placeholder Bristol Channel location; wreck position unknown", "refs": ["s1"] }
+}
+] }

@@ -1,0 +1,1305 @@
+{
+ "batch": "verified-depth-united-states-5",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikilist-738",
+   "name": "Trinidad",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-news/wrecks/trinidad-shines-even-among-great-lakes-wrecks/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "located at a depth of 82m in Lake Michigan … the deck-house containing the crew's possessions and other artefacts such as dishes remains intact"
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/trinidad-us-24621/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "At a depth of 91 metres (300 feet) … About 10 miles off Algoma, Wisconsin … accessible only to technical divers or ROVs"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 82
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 91
+    }
+   ],
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact deck-house with crew's belongings",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A canal-sized schooner from 1867 lying roughly 10 miles off Algoma, Wisconsin, in deep Lake Michigan. Cold fresh water has left its deck-house and gear remarkably intact, but the depth puts it firmly in technical-diving territory.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-549",
+   "name": "SS Monrovia",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Monrovia",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck lies upright in 140 feet (43 m) deep water."
+    },
+    "s2": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/monrovia.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "140 feet … upright on the lake bottom and is largely intact except for the collision damage"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 140
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 140
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Large freighter sitting upright and largely intact",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large ocean-going freighter lost in a 1959 fog collision, now sitting upright and mostly intact in about 140 ft of Lake Huron within Thunder Bay National Marine Sanctuary, some 11 nautical miles north of Thunder Bay Island.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-647",
+   "name": "C. E. Redfern",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganshipwrecks.org/?p=2241",
+     "publisher": "Michigan Shipwreck Research Association",
+     "kind": "operator",
+     "quote": "In 275′ of water about 4 miles off Point Betsie, just north of Frankfort."
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/c-e-redfern-1890/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "275 feet (83.8 meters) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 275
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 275
+    }
+   ],
+   "summary": {
+    "text": "A converted 1890 schooner-barge that foundered in a 1937 storm and now rests upright and in good condition roughly 4 miles off Point Betsie in Lake Michigan, at a depth reachable only by technical divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-746",
+   "name": "W. C. Kimball",
+   "sources": {
+    "s1": {
+     "url": "https://shotlinediving.com/wreck/w-c-kimball-1888/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "located at a depth of approximately 300 feet, making it accessible primarily to technical divers … nearly intact, with masts upright"
+    },
+    "s2": {
+     "url": "https://99wfmk.com/in-lake-michigan-the-most-intact-shipwreck-i-have-ever-encountered/",
+     "publisher": "99 WFMK",
+     "kind": "press",
+     "quote": "In 300 feet of water, something was sticking up 90 feet off the bottom."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 300
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 300
+    }
+   ],
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Nearly intact schooner with masts standing",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small wooden scow-schooner lost in an 1891 gale and found in 2018 near the Manitou Passage in Lake Michigan. Its masts still stand about 90 ft off the bottom in around 300 ft of water, a technical-diver wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-773",
+   "name": "Alvin Buckingham",
+   "sources": {
+    "s1": {
+     "url": "https://thunderbay.noaa.gov/shipwrecks/buckingham.html",
+     "publisher": "NOAA Thunder Bay National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "8 Feet … rest in less than 10 feet of water … 1.2 miles from shore … popular place for divers, snorkelers, and paddlers to explore"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 8
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Fairly intact hull in clear shallow water",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden schooner that grounded on a reef near Black River, Lake Huron, in 1870. Its hull lies in under 10 ft of clear water about 1.2 miles offshore, making it a favorite for divers, snorkelers and paddlers in Thunder Bay National Marine Sanctuary.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-712",
+   "name": "P. J. Ralph",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/manitou.htm",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "35 feet"
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/p-j-ralph-us-160460/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "The boiler is located at approximately 40 feet … depths ranging from 16 to 40 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 16,
+     "bottom": 40
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 35
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Boiler and machinery fragments in shallow water",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden steam barge driven ashore in a 1924 gale while sheltering off South Manitou Island. The wreckage, including its boiler, lies in 16 to 40 ft of water in the Manitou Passage Underwater Preserve.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-750",
+   "name": "William T. Graves",
+   "sources": {
+    "s1": {
+     "url": "https://shotlinediving.com/wreck/william-t-graves-us-26172/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "~6 m (20 ft) depth … Dover's Point, North Manitou Island … marked on dive charts"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/manitou.htm",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "20 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 20
+    }
+   ],
+   "summary": {
+    "text": "A wooden steamer lost in a snowstorm in 1885 off Dover's Point on North Manitou Island. The wreck sits in about 20 ft of water inside the Manitou Passage Underwater Preserve and is marked on dive charts.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-146",
+   "name": "SS Isaac M. Scott",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Isaac_M._Scott",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "55 metres (180 ft 5 in) of water … rests upside down and is half buried in mud"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/thunder-bay-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "Isaac M. Scott … 175′"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 175
+    },
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 55
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Upside-down steel freighter half buried in mud",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel freighter swamped and capsized in a 1913 Lake Huron storm, found by divers in 1976. It lies upside down and half buried in mud in roughly 175 ft of water northeast of Thunder Bay Island, inside the sanctuary.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869532",
+   "name": "Cedarville (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/cedarville/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "Depth: 40′ to 110′ … Intermediate to Advanced … the visibility is often reduced to 35 ft or less … upside down orientation"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "40′ to 110′"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 110
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 0,
+    "high": 35,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Bow and stern mooring buoys, typically late May to mid-September",
+    "refs": [
+     "s1"
+    ]
+   },
+   "penetration": {
+    "value": "Penetration not advised without proper training, experience and equipment",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Huge upside-down lake freighter",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Large, deep, inverted wreck with variable visibility",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A big lake freighter lost in a 1965 collision east of the Mackinac Bridge, now lying inverted in the Straits of Mackinac Shipwreck Preserve from about 40 to 110 ft. Moorings make it reachable, but size, depth and poor visibility demand caution.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-708",
+   "name": "Northwest",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/northwest/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "The Northwest now lies in 73′ of water, six miles west of the bridge in Lake Michigan … Intermediate to Advanced … Upright, but collapsed to one side and somewhat broken up"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "52′ to 73′"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 52,
+     "bottom": 73
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 73
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy near the donkey boiler, normally late May to mid-September",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Donkey engine, bilge pumps, windlass and rudder",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Schools of fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A collapsed but upright wooden wreck about six miles west of the Mackinac Bridge, in 52 to 73 ft of water. Divers find a donkey engine, pumps, windlass and a detached rudder, with a buoyed mooring in season.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-718",
+   "name": "Sandusky",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/sandusky/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "70′ to 84′ … Intermediate to Advanced … the Sandusky is showing signs of severe wear and damage … Mooring is available from late-May to mid-September"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "sits in 80 feet of water and her deck can be reached at 70 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 84
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring off the port side aft, available late May to mid-September",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Wreck is fragile and showing severe wear",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden schooner in the Straits of Mackinac Shipwreck Preserve, with its deck at about 70 ft and the bottom near 80 ft. A seasonal mooring and a guide line to the rail help divers, though the aging wreck is badly worn.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-689",
+   "name": "Maitland",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/maitland/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "70′ to 85′ … Intermediate to Advanced … This helix mooring is located just off the port bow of the wreck, and a small line leads to the rail for when visibility is reduced … these wrecks are fragile!"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "sank quickly in Lake Michigan in 85 feet of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 85
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 85
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Helix mooring off the port bow with a guide line to the rail",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Fragile wreck; do not force through openings",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A schooner that went down quickly in the Straits area and now sits in about 85 ft of Lake Michigan water. A helix mooring beside the bow and a line to the rail make it an approachable dive for experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-667",
+   "name": "Fred McBrier",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/fred-mcbrier/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "84′ to 100′ … Intermediate to Advanced … A guideline extends from this mooring to the boiler piping in case of poor visibility."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Straits_of_Mackinac_Shipwreck_Preserve",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "96 to 104 ft (29 to 32 m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 84,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 96,
+     "bottom": 104
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Helix mooring off the starboard side with a guideline to the boiler piping",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A wreck in the Straits of Mackinac Shipwreck Preserve lying roughly 84 to 100 ft down. A seasonal helix mooring beside the engine area has a guideline to the boiler piping for use when visibility drops.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-698",
+   "name": "Minneapolis",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/minneapolis/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "100′ to 125′ … Advanced … Being at narrowest part of the Straits, there if frequently a strong, and sometimes confusing current … upright facing southwest and mostly intact in 125′ … Schools of fish frequent this wreck."
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "just southwest of the Mackinac Bridge's south tower in 124 feet of water … Currents can be very strong near the shipwreck."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 100,
+     "bottom": 125
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 124
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy, typically late May to mid-September",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright, mostly intact wreck",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Schools of fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong, sometimes confusing current",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Upright and mostly intact wreck lying beside the Mackinac Bridge, roughly 100 to 125 ft down. It sits in the narrowest part of the Straits, where strong and confusing currents make it a dive for advanced divers only.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-658",
+   "name": "Eber Ward",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/eber-ward/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "Depth: 110′ to 140′ … 145′ of water … Advanced … normally marked, from late May to mid-September, with a bow and stern buoy … The engine room and cargo holds are accessible to trained divers."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Straits_of_Mackinac_Shipwreck_Preserve",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "111 to 145 ft (34 to 44 m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 110,
+     "bottom": 145
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 111,
+     "bottom": 145
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Bow and stern buoys, normally late May to mid-September",
+    "refs": [
+     "s1"
+    ]
+   },
+   "penetration": {
+    "value": "Engine room and cargo holds accessible to trained divers",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Several anchors on the bow incl. rare mushroom anchor",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Accessible engine room and cargo holds",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Depth demands careful dive planning",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel freighter lost in the Straits of Mackinac in 1909 and rediscovered in 1980, lying from about 110 to 145 ft. Buoyed in season, it rewards advanced divers with anchors on the bow and an accessible engine room and holds.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-652",
+   "name": "Col. Ellsworth",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/straits-of-mackinac-shipwreck-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "70′ to 85′"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 85
+    }
+   ],
+   "summary": {
+    "text": "A schooner lost in a 1896 collision in the Straits of Mackinac, now listed in the Straits of Mackinac Shipwreck Preserve at about 70 to 85 ft.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikilist-657",
+   "name": "Dolphin",
+   "sources": {
+    "s1": {
+     "url": "https://www.straitspreserve.com/shipwrecks/dolphin/",
+     "publisher": "Straits of Mackinac Shipwreck Preserve",
+     "kind": "park",
+     "quote": "110′ … Intermediate to Advanced … a pair of helix anchors about 10-12 ft apart … do not enter the cabin or touch hatch covers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 110
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring line to a pair of helix anchors",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Fragile hatch covers; do not enter the cabin",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wreck in the Straits of Mackinac Shipwreck Preserve at about 110 ft, reached by a seasonal mooring tied to helix anchors. Divers are asked to leave the cabin and hatch covers alone to protect the site.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-151",
+   "name": "SS J. H. Sheadle",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/marquette-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "15′"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 15
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-630",
+   "name": "SS Samuel Mather (1887)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Samuel_Mather_(1887)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her mast can be reached at 75 feet, her deck at 155 feet, and the bottom at 180 feet … she sits upright with an intact deck and mostly intact stern superstructure … she claimed the life of three scuba divers"
+    },
+    "s2": {
+     "url": "https://www.shipwreckexplorers.com/samuel-mather/",
+     "publisher": "Shipwreck Explorers",
+     "kind": "operator",
+     "quote": "Depth Deck(ft): 155 ft … Depth Bottom(ft): 180 ft … Technical"
+    },
+    "s3": {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "Samuel Mather … 140′ to 170′"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 140,
+     "bottom": 170
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 155,
+     "bottom": 180
+    }
+   ],
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright wreck, intact deck and stern superstructure",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Three diver fatalities (1998, 1999, 2012)",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A well-preserved 1891 wooden steamer in Whitefish Bay, Lake Superior, sitting upright with its deck near 155 ft and bottom near 180 ft. Its condition draws technical divers, but the depth has proved fatal on several occasions.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869534",
+   "name": "Panther (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "Panther … 90′ to 110′ … was built in 1890 … was found in 1975 in 90 to 110 feet of water"
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/panther-c-138004/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "Resting at a depth of 90 to 100 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 90,
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 90,
+     "bottom": 100
+    }
+   ],
+   "summary": {
+    "text": "A wooden grain steamer rammed in Whitefish Bay in 1916 and found in 1975, now resting at roughly 90 to 110 ft in the Whitefish Point Underwater Preserve on Lake Superior.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-479",
+   "name": "Lucerne",
+   "sources": {
+    "s1": {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/386",
+     "publisher": "Wisconsin Historical Society (Wisconsin Shipwrecks)",
+     "kind": "agency",
+     "quote": "The hull lies in 24 feet of water with substantial portions settled into the sand bottom … buoyed annually … remarkably intact with the bow and starboard midships preserved up to the deck level"
+    },
+    "s2": {
+     "url": "https://home.nps.gov/apis/planyourvisit/diving.htm",
+     "publisher": "National Park Service, Apostle Islands National Lakeshore",
+     "kind": "agency",
+     "quote": "Visibility normally ranges from 10 to 80 feet, but can be reduced to zero under certain weather conditions … A current of about 2 knots is common"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 24
+    }
+   ],
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 80,
+    "unit": "ft",
+    "refs": [
+     "s2"
+    ]
+   },
+   "mooring": {
+    "value": "Wreck is buoyed annually",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact bow and starboard side to deck level",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Capstan, windlass and iron ore cargo",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current of about 2 knots is common",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A three-masted schooner that sank in a snowstorm in 1886 off Long Island in Chequamegon Bay, Lake Superior. The hull is remarkably intact in about 24 ft, with its iron-ore cargo and deck fittings, and the site is buoyed each year.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-624",
+   "name": "SS M.M. Drake",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_M.M._Drake",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lying on her side in 40 feet (12 m) of water with about 5 feet (1.5 m) feet of water over her"
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "was located in 1978 in 40 to 50 feet of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 50
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 40
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Boiler still standing among scattered remains",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wooden steamer lost in 1901 near Vermilion Point on Lake Superior. Ice and storms have broken it up, leaving mainly the boiler and scattered wreckage in 40 to 50 ft of water inside the Whitefish Point Underwater Preserve.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-478",
+   "name": "Big Bay sloop",
+   "sources": {
+    "s1": {
+     "url": "https://www.wisconsinhistory.org/Records/NationalRegister/NR2310",
+     "publisher": "Wisconsin Historical Society",
+     "kind": "agency",
+     "quote": "25 feet of water within Madeline Island's Big Bay … 300 feet east of Big Bay State Park"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Big_Bay_sloop",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wire rigging and metal cleat on the sloop indicate that it dates from sometime between 1880 and 1920."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 25
+    }
+   ],
+   "summary": {
+    "text": "An unidentified small sailing sloop from roughly 1880 to 1920, resting in about 25 ft of water just off Big Bay State Park on Madeline Island, Lake Superior. It is the only known vessel of its kind in Wisconsin waters and is protected by law.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-171",
+   "name": "SS John Mitchell (1906)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_John_Mitchell_(1906)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "resting upside down in between 140 feet (43 m) and 150 feet (46 m) of water … Although resting upside-down, John Mitchell's wreck is penetrable."
+    },
+    "s2": {
+     "url": "https://www.michiganpreserves.org/whitefish-point-underwater-preserve/",
+     "publisher": "Michigan Underwater Preserves",
+     "kind": "agency",
+     "quote": "John Mitchell … 125′ to 150′"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 140,
+     "bottom": 150
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 125,
+     "bottom": 150
+    }
+   ],
+   "penetration": {
+    "value": "Penetrable: cargo holds, engine room and steering quadrant room",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upside-down steel freighter, engine room accessible",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel freighter lost to a 1911 collision, now lying upside down in 125 to 150 ft off Whitefish Point in Lake Superior. Holds, engine room and steering quadrant can be reached by trained divers, in a preserve run as an underwater museum.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-515",
+   "name": "SS R. G. Stewart",
+   "sources": {
+    "s1": {
+     "url": "https://wisconsinshipwrecks.org/Vessel/Details/518",
+     "publisher": "Wisconsin Historical Society (Wisconsin Shipwrecks)",
+     "kind": "agency",
+     "quote": "partially covered by sands in the relatively shallow waters off the southeast shore of Michigan island … an area approximately 165 feet long and 170 feet wide … mixed cobble and large boulders"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_R._G._Stewart",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "off the coast of Michigan Island … The site of the wreck was added to the National Register of Historic Places in 1991."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Hull remains and artifact scatter in sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small packet steamer that grounded and burned off Michigan Island in the Apostle Islands in 1899. Hull remains and an artifact scatter, partly buried in sand, lie in shallow water over cobble and boulders; the site is on the National Register of Historic Places.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

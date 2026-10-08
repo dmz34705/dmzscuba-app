@@ -1,0 +1,1373 @@
+{
+ "batch": "notable-united-kingdom-4",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-notable-781",
+   "name": "Earl of Abergavenny",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MWX2117",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "least estimated depth 16.3m in a general depth of 17.1m, no scour. Chelmsford Archaeological Group of divers report that 140 feet of keel has been uncovered and that the highest point is no more than 1 foot above the seabed."
+    },
+    "s2": {
+     "url": "https://deeperdorset.co.uk/wreck/earl-of-abergavenny/",
+     "publisher": "Deeper Dorset",
+     "kind": "operator",
+     "quote": "Explosives during the early part of the 20th century flattened the wreck because it was a danger to navigation in and out of Weymouth and Portland Harbours."
+    },
+    "s3": {
+     "url": "https://garethjones.org/siriol/Cumming-Abergavenny.htm",
+     "publisher": "Gareth Jones (diver's account)",
+     "kind": "press",
+     "quote": "at Weymouth, 20 metres below the surface, lies the wreck of the"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16.3,
+     "bottom": 17.1
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "About 140 ft of keel exposed",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "1805 East Indiaman wreck",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The remains of an East Indiaman lost on the Shambles reef in 1805 and later blasted as a navigation hazard. Today it is a low, flattened site off Weymouth, with the keel exposed in roughly 17 m of water, reached by boat.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-338",
+   "name": "Swanage Pier",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/above-18m-the-swanage-pier-dive/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Exact depth will vary depending on tides and where you choose to go, with the maximum being 5m. … Variable depending on wind direction, run-off and other factors, but can be 6-8m if you’re lucky. On less-ideal days, it’s very much reduced. An average is probably 3-4m."
+    },
+    "s2": {
+     "url": "https://bsac.com/news-and-blog/a-dive-to-remember-pier-review",
+     "publisher": "British Sub-Aqua Club",
+     "kind": "agency",
+     "quote": "unchallenging but diverse shore dive site with a maximum depth of 5m"
+    },
+    "s3": {
+     "url": "https://divernet.com/world-dives/above-18m-the-swanage-pier-dive/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "limited parking on a “first come first served” basis (£9 for a full day)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 5
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 5
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 3,
+    "high": 8,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Pier parking is paid and limited; arrive early",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lobster, flounder and John Dory",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Smelt shoals among the pier legs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Boat traffic near entry points",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Slippery steps and overhead beams",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow, easy shore dive beneath a Victorian pier in Swanage Bay, entered by seawall steps or a pier ladder. Marine life gathers around the pier legs, but visibility varies a lot with wind and run-off.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-857",
+   "name": "Chesil Beach cannon",
+   "sources": {
+    "s1": {
+     "url": "https://maritimearchaeologytrust.org/chesil-wrecks/",
+     "publisher": "Maritime Archaeology Trust",
+     "kind": "agency",
+     "quote": "The sites lie between 12 – 15 metres depth."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-news/local-divers-tackle-chesil-mystery-wrecks",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "The Chesil Cannon sites lie 300m apart at depths of around 12m. … which can be dived only under an Historic England licence."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; dive only under a Historic England licence",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Concreted cast-iron cannon, 1650-1725",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Two clusters of concreted 17th to 18th century iron cannon off Chesil Beach, thought to be from separate unidentified wrecks. They are protected sites in 12 to 15 m and can only be dived with a licence.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-860",
+   "name": "Wreck site of the Klein Hollandia",
+   "sources": {
+    "s1": {
+     "url": "https://english.cultureelerfgoed.nl/topics/maritime-heritage/international-projects/united-kingdom/article-klein-hollandia",
+     "publisher": "Cultural Heritage Agency of the Netherlands",
+     "kind": "agency",
+     "quote": "this wreck has lain off the coast of South England at 32 meters of depth … Both are technical divers and work with breathing gas and so-called rebreathers … to be able to stay at 32 meters for prolonged amounts of time."
+    },
+    "s2": {
+     "url": "https://archaeology.co.uk/articles/features/the-klein-hollandia.htm",
+     "publisher": "Current Archaeology / archaeology.co.uk",
+     "kind": "press",
+     "quote": "When you are 32m underwater, visibility is often not great … visibility has ranged from 2m to 10m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 32
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 32
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 2,
+    "high": 10,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; licensed divers only",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bronze and iron cannon on the seabed",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Hull frames and planking protruding from sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 17th century Dutch warship lying off Eastbourne at about 32 m, protected by law and visited under licence. Divers can see cannon and surviving hull structure, but the depth makes it a planned, demanding dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1088",
+   "name": "HMS Ariadne",
+   "sources": {
+    "s1": {
+     "url": "https://www.dive125.co.uk/diving/eastbourne/wrecks-and-sites/",
+     "publisher": "Dive 125",
+     "kind": "operator",
+     "quote": "Personally I class this dispersed WW1 battleship as a drift as she’s less than 2m tall but blown over a big area in 20m, this is however the drift for the more experienced diver"
+    },
+    "s2": {
+     "url": "https://www.uboat.net/wwi/ships_hit/439.html",
+     "publisher": "uboat.net",
+     "kind": "press",
+     "quote": "U-boat attacks on Minelayer Ariadne … off Beachy Head"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dispersed WW1 wreck, under 2 m tall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A First World War cruiser-turned-minelayer torpedoed off Beachy Head and now scattered widely across the seabed. Eastbourne operators run it as a drift dive for experienced divers rather than a wreck to explore.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1266",
+   "name": "Mortar Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-news/750-year-old-wreck-found-off-dorset-timbers-and-all/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Divers require a licence administered by HE on behalf of the Department for"
+    },
+    "s2": {
+     "url": "https://www.maritime-executive.com/article/uk-grants-protected-status-to-ultra-rare-13th-century-shipwreck",
+     "publisher": "The Maritime Executive",
+     "kind": "press",
+     "quote": "Their status means that divers need a special license administered by Historic England to dive the wrecks."
+    },
+    "s3": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Designation/DDO21046",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The site covers an area approximately 20m by 15m, and is orientated NE-SW. The centre of the site comprises a large mound measuring approximately 1m high"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; dive only under a Historic England licence",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "13th-century hull under a mound of Purbeck stone",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A medieval cargo vessel in Poole Bay carrying quarried Purbeck stone, designated a protected wreck in 2022. The site is a small mound of stone over the hull remains and can only be dived with a licence.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-866",
+   "name": "Studland Bay Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://www.shiplib.org/index.php/studland_bay",
+     "publisher": "Ship Lib (shiplib.org)",
+     "kind": "press",
+     "quote": "The site consists of three areas resting in approx. 12m of water, about 370m east of Hook Sands."
+    },
+    "s2": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Designation/DDO19927",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The site was discovered in January 1983 by divers from Hamworthy Sub-Aqua Club investigating a fisherman's net fastening."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck site (Protection of Wrecks Act)",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Scattered remains of an early 16th century merchant ship, found by divers in 1983 near Hook Sands at the mouth of Poole Harbour. Most of the hull is reburied, so little structure is visible.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-845",
+   "name": "Swash Channel Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://wessexarch.co.uk/our-work/swash-channel-wreck",
+     "publisher": "Wessex Archaeology",
+     "kind": "agency",
+     "quote": "The wreck lies in approximately 6-9 metres of water with its long axis orientated north-east to south-west."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/fame-at-last-poole-wreck-mystery-solved/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Lying between 7 and 9m deep with about 40m of the port side of the hull remaining, and now buried under sand, the vessel was designated a Protected Wreck Site"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 9
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 7,
+     "bottom": 9
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Designated Protected Wreck Site",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "The partly buried hull of an early 17th century sailing ship on the edge of the Swash Channel at Poole Harbour entrance. It lies in 6 to 9 m and is a designated protected wreck, so access is controlled.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-869",
+   "name": "HMS Pomone",
+   "sources": {
+    "s1": {
+     "url": "https://maritimearchaeologytrust.org/projects-research/needles-protected-wreck-site/",
+     "publisher": "Maritime Archaeology Trust",
+     "kind": "agency",
+     "quote": "It is an area of sharp eroded chalk gullies and ridges … It is a very interesting site to dive: complex and irregular gullies offer a broad range of environments for divers to examine. … Trials of stations aimed at establishing a dive trail on the site proved ineffective due to the highly dynamic environment."
+    },
+    "s2": {
+     "url": "https://wightspirit.co.uk",
+     "publisher": "Wight Spirit Diving Charters",
+     "kind": "operator",
+     "quote": "we head to the protected wreck sites of HMS Assurance and HMS Pomone on Goose Rock at the Needles. Lovely day, flat calm and bright sinshine. On slack water divers examined the site, strewn with cannons and carronades"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck site licensed to the Maritime Archaeology Trust",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cannon and carronades strewn on the site",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Chalk gullies and ridges with wreck material",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Highly dynamic seabed; dive on slack water",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The scattered remains of a frigate lost on Goose Rock at the Needles in 1811. No hull survives; artefacts lie concreted or wedged in eroded chalk gullies, best visited at slack water on this protected wreck site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1092",
+   "name": "HMS Assurance",
+   "sources": {
+    "s1": {
+     "url": "https://maritimearchaeologytrust.org/projects-research/needles-protected-wreck-site/",
+     "publisher": "Maritime Archaeology Trust",
+     "kind": "agency",
+     "quote": "It is an area of sharp eroded chalk gullies and ridges … It is a very interesting site to dive: complex and irregular gullies offer a broad range of environments for divers to examine. … Trials of stations aimed at establishing a dive trail on the site proved ineffective due to the highly dynamic environment."
+    },
+    "s2": {
+     "url": "https://wightspirit.co.uk",
+     "publisher": "Wight Spirit Diving Charters",
+     "kind": "operator",
+     "quote": "we head to the protected wreck sites of HMS Assurance and HMS Pomone on Goose Rock at the Needles. Lovely day, flat calm and bright sinshine. On slack water divers examined the site, strewn with cannons and carronades"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck site licensed to the Maritime Archaeology Trust",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cannon and carronades strewn on the site",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Highly dynamic seabed; dive on slack water",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A frigate lost at the Needles in the 18th century, now mixed with the remains of HMS Pomone on one protected wreck site. Divers find artefacts among chalk gullies, with little of the ship itself surviving.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-862",
+   "name": "West Bay Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Designation/DDO19929",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The remains lie in approximately 12m of water and the surrounding seabed comprises generally fine sand"
+    },
+    "s2": {
+     "url": "https://www.wessexarch.co.uk/news/west-bay",
+     "publisher": "Wessex Archaeology",
+     "kind": "agency",
+     "quote": "The cargo consists of a mound of pig iron and possible scrap guns (including a rare Bronze gun) and an iron anchor … West Bay is designated under The Protection of Wrecks Act (1973)."
+    },
+    "s3": {
+     "url": "https://heritage.dorsetcouncil.gov.uk/Monument/MDO19920",
+     "publisher": "Dorset Council Historic Environment Record",
+     "kind": "agency",
+     "quote": "The remains lie in 11 to 12 metres of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 11,
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck designated under the Protection of Wrecks Act",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mound of iron bars with a bronze gun",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Iron anchor beside the mound",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small cargo wreck off West Bay in Lyme Bay: a low mound of concreted iron bars with a bronze gun and iron anchor, lying in about 12 m on sand. It is a designated protected wreck site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-861",
+   "name": "Yarmouth Roads Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://maritimearchaeologytrust.org/projects-research/yarmouth-roads/",
+     "publisher": "Maritime Archaeology Trust",
+     "kind": "agency",
+     "quote": "This historic wreck was first discovered in 1984 during an archaeological survey of the seabed off Yarmouth … Only limited amounts of wooden structure are visible above the seabed."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Yarmouth_Roads_Wreck",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "with iron fastenings and believed to have been up to 32m in length."
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck site licensed to the Maritime Archaeology Trust",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The partly buried remains of a 16th century carrack off Yarmouth, Isle of Wight, found in 1984 and now a protected wreck. Only a little timber shows above the seabed, so it is of most interest to heritage-minded divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-178",
+   "name": "HMS A1",
+   "sources": {
+    "s1": {
+     "url": "https://peninsulapartnership.org.uk/projects/chasm/a1-submarine/",
+     "publisher": "Manhood Peninsula Partnership",
+     "kind": "agency",
+     "quote": "allowing divers to access the site through the license scheme administered by Historic England and DCMS"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_A1",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She was actually sunk twice: first in 1904 when she became the first submarine casualty, with the loss of all hands; however, she was recovered, but sank again in 1911"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; divers access via a licence scheme",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "An early Royal Navy submarine that sank twice, in 1904 and again in 1911, and was only rediscovered by a fisherman in 1989. It is a protected wreck that divers can visit through the licensing scheme.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-794",
+   "name": "HMS Invincible",
+   "sources": {
+    "s1": {
+     "url": "https://cma.soton.ac.uk/2013/06/21/underwater-rti-hms-invincible",
+     "publisher": "University of Southampton Centre for Maritime Archaeology",
+     "kind": "agency",
+     "quote": "In c. 8 meters of water with a southeasterly rising tide bringing dirty water in from the Solent"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/archaeology-diver/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Nothing had quite prepared me for the sheer size and scale of the hull timbers that protrude from the seabed. On that day in March, so early in the season, we had at least 5m of visibility"
+    },
+    "s3": {
+     "url": "https://www.wessexarch.co.uk/news/invincible-solent",
+     "publisher": "Wessex Archaeology",
+     "kind": "agency",
+     "quote": "The site is now mostly buried and it is surveyed by a site Licensee, who monitors the sand levels on and condition of the wreck."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 8
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "vis": {
+    "low": 0,
+    "high": 5,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck monitored by a licensee",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large hull timbers protrude from the seabed",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Dirty water and tidal flow in the Solent",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An 18th century warship lying in the eastern Solent, mostly buried in sand but with large hull timbers showing. It is a protected wreck under licensed archaeological investigation, in shallow water with variable visibility.",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-238",
+   "name": "Unknown Wreck off Thorness Bay",
+   "sources": {
+    "s1": {
+     "url": "https://msdsmarine.com/projects/dive-trails/thornessbay",
+     "publisher": "MSDS Marine",
+     "kind": "agency",
+     "quote": "The dive trail is located in 21m of water but it can be fairly dark so it may be more suitable for divers with more experience."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-news/thorness-bay-wreck-trail-ready-for-divers/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "lies in 21m off the Isle of Wight … but the wreck can be dived with a licence from Historic England (HE)."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 21
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 21
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; dive with a Historic England licence",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large iron windlass and deck equipment",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Fairly dark at 21 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An unidentified 19th century wooden sailing ship of about 27 m, lying in 21 m off the north-west Isle of Wight. A protected wreck with a diver trail, it is best for more experienced divers and needs a licence.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-914",
+   "name": "Hazardous",
+   "sources": {
+    "s1": {
+     "url": "https://www.wessexarch.co.uk/hazardous",
+     "publisher": "Wessex Archaeology",
+     "kind": "agency",
+     "quote": "lies approximately 800 metres SE of Bracklesham Bay slipway, West Sussex, at a depth of 7m."
+    },
+    "s2": {
+     "url": "https://hazardousproject.info/project.html",
+     "publisher": "Hazardous Project",
+     "kind": "operator",
+     "quote": "principally the lower hull, which lays in fine sand and silt to the north and on fossil bed formations to the south, east and west, in a general sea bed depth of 7 metres."
+    },
+    "s3": {
+     "url": "https://divernet.com/world-dives/the-hazardous-crew/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "often visibility was confined to about 1m in all directions. … In 1986 Hazardous was officially designated a protected wreck-site, and the group was granted a licence to dive it."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 7
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 7
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected wreck; dived under licence",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lower hull of an early 18th-century warship",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Visibility often only about 1 m",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The lower hull of a warship run ashore in 1706, lying in about 7 m off Bracklesham Bay. A protected wreck worked by licensed volunteers, in shallow water where visibility is often very poor.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-849",
+   "name": "Amsterdam",
+   "sources": {
+    "s1": {
+     "url": "https://shipwreckmuseum.co.uk/amsterdam",
+     "publisher": "Shipwreck Museum, Hastings",
+     "kind": "agency",
+     "quote": "In just a few months the Amsterdam sank about 8m into the beach, so that nowadays the remains of her decks are buried"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Wreck is buried in the Bulverhythe beach, seen only at the lowest tides",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-814",
+   "name": "HMS Anne",
+   "sources": {
+    "s1": {
+     "url": "https://www.maritime-executive.com/blog/the-wreck-of-the-anne",
+     "publisher": "The Maritime Executive",
+     "kind": "press",
+     "quote": "lies on the beach just beyond the eastern end of the shoreline houses of Pett Level in the U.K. When the tides are extremely low and the sands have moved you can visit the wreck whose bottom is buried about four meters deep in the sand."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Beached wreck buried in Pett Level foreshore, visited on foot at very low tide",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-181",
+   "name": "HMS Ghurka (1907)",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.kent.gov.uk/Monument/MKE13025",
+     "publisher": "Kent Historic Environment Record",
+     "kind": "agency",
+     "quote": "Mined off Dungeness … Depth 26.0 In general depth 31m, scour 1m deep, length 75ft. … Dived on, stern section of warship, only one propellor seen. Several guns on quarterdeck, two pairs of boat davits"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Ghurka_(1907)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck is located at a depth of 30 metres at"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 26,
+     "bottom": 31
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Stern section with guns on quarterdeck",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Boat davits and a possible torpedo tube",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Tribal-class destroyer mined off Dungeness in 1917. The stern section survives in about 30 m, with guns, davits and a propeller still visible on dives, so it needs good depth planning.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1211",
+   "name": "HMS Blackwater",
+   "sources": {
+    "s1": {
+     "url": "https://heritage.kent.gov.uk/Monument/MKE13045",
+     "publisher": "Kent Historic Environment Record",
+     "kind": "agency",
+     "quote": "In depth 20.8 general depth 27-28m, scour depth 31m height 8.4m length 68m. … Damage apparently indicates she was struck on the starboard side amidships and virtually cut in two."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Blackwater_(1903)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Sank after a collision, 6 April 1909"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 20.8,
+     "bottom": 28
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wreck stands about 8 m off the seabed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A destroyer sunk in a 1909 collision off Dungeness, almost cut in two. Her remains rise about 8 m from a seabed at roughly 28 m, making a moderately deep boat dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1149",
+   "name": "HMHS Rewa",
+   "sources": {
+    "s1": {
+     "url": "https://www.shipwreckworld.com/maps/hmhs-rewa",
+     "publisher": "Shipwreck World",
+     "kind": "press",
+     "quote": "200 ft (61 m) … has been called a difficult wreck to dive because of the location she's in; the conditions often including high currents and large amounts of silt clouding the water."
+    },
+    "s2": {
+     "url": "https://ahoy.tk-jk.net/macslog/WreckofHMHSRewaidentified.html",
+     "publisher": "Ahoy - Mac's Web Log (citing Divernet)",
+     "kind": "press",
+     "quote": "lying upright in about 60 metres of water"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/HMHS_Rewa",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "of water which makes it difficult for all but the most experienced divers to explore."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 61
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents and heavy silt",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Wreck broken up by depth charging",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A torpedoed WWI hospital ship lying upright in about 60 m off north Devon and Cornwall. Currents and silt plus a collapsed, depth-charged hull make it a demanding site reserved for experienced technical divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1288",
+   "name": "HMS Laforey",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Laforey_(1913)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "at approximately 50° 38.600' N 000° 13.800' W, and is a recreational dive site."
+    },
+    "s2": {
+     "url": "https://www.shipindex.org/vessels/Q5633049",
+     "publisher": "ShipIndex",
+     "kind": "encyclopedia",
+     "quote": "Her wreck lies about 10 miles south of Shoreham-by-Sea and is a notable site for recreational diving."
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "First World War destroyer lost to a mine in 1917 that split her in two. The remains are dived from Sussex boats out of Shoreham, though no depth could be confirmed.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

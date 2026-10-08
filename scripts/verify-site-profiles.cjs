@@ -18,12 +18,26 @@ for (const [id, row] of Object.entries(data.sites)) {
   assert.ok(raw.has(id), `${id} is a catalog site`);
   assert.equal(raw.get(id).name, row.name, `${id} is still named ${row.name}`);
   assert.ok(row.sources?.length && row.sources.every(([key]) => data.sources[key]), `${row.name}: every fact has a named source`);
+  if (P.HIDDEN_STATUSES.includes(row.status) && row.researchBatch) {
+    // Pins research found are not dive sites: hidden, with a reason and a source.
+    assert.ok(row.reason && row.sources.length, `${row.name}: hidden with a reason and a source`);
+    assert.ok(!listed.has(id), `${row.name}: hidden from the map`);
+    continue;
+  }
   if (row.basis === 'depth') {
     // Depth-only entries (scripts/build-depth-research.cjs): a sourced bottom depth, each source a named web page.
     assert.ok(row.depth?.[1] > 0 && row.sources.every(([key, url, publisher]) => key === 'web' && /^https:\/\//.test(url) && publisher), `${row.name}: sourced depth`);
     continue;
   }
   assert.ok(row.summary.length >= 30 && row.summary.length <= 400, `${row.name}: a one- or two-sentence summary`);
+  if (row.researchBatch) {
+    // Automated full profiles (scripts/build-site-research.cjs): web sources; other fields only when sourced.
+    assert.ok(row.sources.every(([key, url, publisher]) => key === 'web' && /^https:\/\//.test(url) && publisher), `${row.name}: sourced profile`);
+    assert.ok(row.level == null || LEVELS.includes(row.level), `${row.name}: level`);
+    assert.ok(row.entry == null || ['boat', 'shore', 'boat-shore'].includes(row.entry), `${row.name}: entry`);
+    assert.ok(row.vis == null || (row.vis[1] > 0 && row.vis[1] <= 80), `${row.name}: visibility`);
+    continue;
+  }
   assert.ok(LEVELS.includes(row.level), `${row.name}: level`);
   assert.ok(['boat', 'shore', 'boat-shore'].includes(row.entry), `${row.name}: entry`);
   if (row.depth) {
@@ -44,10 +58,19 @@ for (const [id, row] of Object.entries(data.sites)) {
     if (row.depth?.[1]) assert.equal(site.maxDepthMeters, row.depth[1], `${row.name}: researched depth is the site's depth`);
     const guide = buildSiteGuide({ id, latitude: site.latitude, longitude: site.longitude, key: id }, {});
     assert.equal(guide.profile?.summary, row.summary, `${row.name}: the card receives the profile`);
-    if (row.basis !== 'depth') assert.ok(guide.profile.region?.name === 'Lake Michigan' && guide.profile.region.tempDeepC, `${row.name}: regional conditions attached`);
+    if (row.basis !== 'depth' && !row.researchBatch) assert.ok(guide.profile.region?.name === 'Lake Michigan' && guide.profile.region.tempDeepC, `${row.name}: regional conditions attached`);
     assert.ok(guide.profile.sources.every(source => source.name && (source.url === null || /^https:\/\//.test(source.url))), `${row.name}: source links`);
   }
 }
+const communitySite = C.catalogSites().find(site => site.communityVisibilityMeters);
+assert.ok(communitySite, 'OpenDiveMap community visibility reaches the native catalog');
+const communityGuide = buildSiteGuide({ id: communitySite.id, latitude: communitySite.latitude, longitude: communitySite.longitude, key: communitySite.id }, {});
+assert.equal(communityGuide.community.visibilityMeters, communitySite.communityVisibilityMeters, 'Community visibility is delivered on demand with the site guide');
+assert.equal(communityGuide.community.averageDiveMinutes, communitySite.communityDiveMinutes, 'Community dive duration is delivered on demand with the site guide');
+const structuredSite = C.catalogSites().find(site => site.structuredCurrent || site.structuredAccess || site.structuredHazards?.length || site.structuredMooring || site.structuredFee);
+assert.ok(structuredSite, 'Exact OSM structured details reach the native catalog');
+const structuredGuide = buildSiteGuide({ id: structuredSite.id, latitude: structuredSite.latitude, longitude: structuredSite.longitude, key: structuredSite.id }, {});
+assert.equal(structuredGuide.structured.source, 'OpenStreetMap structured tags');
 // The map applies the same corrections (atlasRuntime.js mirrors applySiteCorrections).
 const corrections = buildAtlasData().siteCorrections;
 assert.deepEqual(corrections, P.siteCorrections(data), 'The map receives the corrections');

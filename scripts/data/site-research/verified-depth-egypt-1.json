@@ -1,0 +1,775 @@
+{
+ "batch": "verified-depth-egypt-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "osm-n663869779",
+   "name": "Numidia",
+   "sources": {
+    "s1": {
+     "url": "https://ssthistlegorm.com/other-wrecks/numidia",
+     "publisher": "SS Thistlegorm (dive guide)",
+     "kind": "operator",
+     "quote": "stretches from the shallows down to over 80m deep \u2026 All diving here requires surface support because of strong currents and the potential to be swept off the reef. \u2026 Only liveaboard boats can dive the Brothers"
+    },
+    "s2": {
+     "url": "https://www.liveaboard.com/diving/egypt/the-brothers?cid=7161",
+     "publisher": "Liveaboard.com",
+     "kind": "operator",
+     "quote": "The wreck starts at 8 meters/26 ft. with the stem of the boat, but the ship's main body starts around 20 meters/65 ft. The Stern is around 80 meters/260 ft. \u2026 The currents on both wrecks can be severe. \u2026 30-meter-plus (100-feet) visibility"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 8,
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 30,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Liveaboard only, with RIB support",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong current, risk of being swept off the reef",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Prop lies beyond recreational depth",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A long steamship wreck on the Big Brother reef, reached only by liveaboard. The bow sits near 8 m while the hull falls past 80 m, so most divers see the upper sections in a current that can be fierce.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869780",
+   "name": "Aida",
+   "sources": {
+    "s1": {
+     "url": "https://www.liveaboard.com/diving/egypt/the-brothers?cid=7161",
+     "publisher": "Liveaboard.com",
+     "kind": "operator",
+     "quote": "The currents on both wrecks can be severe. \u2026 A serious, current-exposed dive best suited to experienced wreck divers."
+    },
+    "s2": {
+     "url": "https://www.blueocean-eg.com/blog/wreck-diving-egypt",
+     "publisher": "Blue Ocean Dive Center",
+     "kind": "operator",
+     "quote": "stretching from 25 meters to 60 metres from bow to stern"
+    },
+    "s3": {
+     "url": "https://ssthistlegorm.com/other-wrecks/numidia",
+     "publisher": "SS Thistlegorm (dive guide)",
+     "kind": "operator",
+     "quote": "Only liveaboard boats can dive the Brothers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 25,
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Liveaboard only",
+    "refs": [
+     "s3"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Severe current exposure",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small supply ship wrecked on the Brothers reef and now lying on a steep slope. It is a demanding, current-swept dive for experienced wreck divers, reachable only from liveaboards.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869812",
+   "name": "Giannis D",
+   "sources": {
+    "s1": {
+     "url": "https://seasoftscuba.com/the-ship-graveyard-diving-the-4-iconic-wrecks-of-abu-nuhas-red-sea/",
+     "publisher": "Seasoft Scuba",
+     "kind": "operator",
+     "quote": "The stern section lies at a 45-degree angle, resting on its port side at about 24 meters deep. \u2026 The 'A-frame' mast reaches toward the surface, encrusted in soft corals and surrounded by swirling clouds of glassfish and hunting trevally."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/egypts-graveyard-diving-in-the-deep-sea-shipwrecks/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "The deepest part of the stern lies in just 24m \u2026 penetrate deep into the engine-room, crew's quarters and bridge"
+    },
+    "s3": {
+     "url": "https://www.liveaboard.com/diving/egypt/abu-nuhas/?cid=7161",
+     "publisher": "Liveaboard.com",
+     "kind": "operator",
+     "quote": "the Giannis D's mast reaches to about 13 ft (4 m) with its stern near 79 ft (24 m) \u2026 the current funneling through the Gulf of Suez here can be strong"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 4,
+     "bottom": 24
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 24
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Glassfish clouds and trevally around the mast",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Engine room, crew quarters and bridge to explore",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Disorienting tilted interior",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Current can be strong and shift quickly",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large cargo ship lying on its side on Abu Nuhas reef, with the mast near the surface and the stern around 24 m. Experienced wreck divers can swim into the engine room and bridge, though the tilt is disorienting.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869809",
+   "name": "Carnatic",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/egypts-graveyard-diving-in-the-deep-sea-shipwrecks/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "now lies on its port side in 26m, rising to 12m at the bow \u2026 penetration is simple because of all the entry/exit points through the iron framework"
+    },
+    "s2": {
+     "url": "https://www.liveaboard.com/diving/egypt/abu-nuhas/?cid=7161",
+     "publisher": "Liveaboard.com",
+     "kind": "operator",
+     "quote": "the Carnatic sits around 59-89 ft (18-27 m) \u2026 the current funneling through the Gulf of Suez here can be strong"
+    },
+    "s3": {
+     "url": "https://seasoftscuba.com/the-ship-graveyard-diving-the-4-iconic-wrecks-of-abu-nuhas-red-sea/",
+     "publisher": "Seasoft Scuba",
+     "kind": "operator",
+     "quote": "purple and orange sea fans cover every inch of the remaining ribs"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 27
+    },
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 26
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "penetration": {
+    "value": "Easy entry and exit through the open iron framework",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea fans covering the skeletal ribs",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current can be strong and shift quickly",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 19th-century iron steamship wreck on Abu Nuhas, resting on its port side with the bow far shallower than the stern. The open framework is easy to swim through and heavily covered in sea fans and coral.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869810",
+   "name": "Chrisoula K",
+   "sources": {
+    "s1": {
+     "url": "https://seasoftscuba.com/the-ship-graveyard-diving-the-4-iconic-wrecks-of-abu-nuhas-red-sea/",
+     "publisher": "Seasoft Scuba",
+     "kind": "operator",
+     "quote": "The bow is remarkably shallow, sitting in just 3 to 5 meters of water \u2026 thousands of tiles still neatly stacked in their crates"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/egypts-graveyard-diving-in-the-deep-sea-shipwrecks/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "sitting in 26m-28m \u2026 Full penetration is possible in certain areas for experienced wreck-divers"
+    },
+    "s3": {
+     "url": "https://www.liveaboard.com/diving/egypt/abu-nuhas/?cid=7161",
+     "publisher": "Liveaboard.com",
+     "kind": "operator",
+     "quote": "the Chrisoula K spans roughly 13-92 ft (4-28 m) \u2026 the current funneling through the Gulf of Suez here can be strong"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 4,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 28
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s3"
+    ]
+   },
+   "penetration": {
+    "value": "Full penetration possible in certain areas for experienced wreck divers",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cargo of floor tiles still stacked in crates",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current can be strong and shift quickly",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An upright cargo freighter on Abu Nuhas whose bow almost reaches the surface and whose stern rests near 28 m. Its hold still contains stacked tiles and experienced wreck divers can enter parts of the interior.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869811",
+   "name": "Kimon M",
+   "sources": {
+    "s1": {
+     "url": "https://seasoftscuba.com/the-ship-graveyard-diving-the-4-iconic-wrecks-of-abu-nuhas-red-sea/",
+     "publisher": "Seasoft Scuba",
+     "kind": "operator",
+     "quote": "large groupers, schooling snappers, and the occasional resident turtle"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/egypts-graveyard-diving-in-the-deep-sea-shipwrecks/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "slid off the reef into 30-32m of water \u2026 relatively easy to get into the engineering department, and from there into the holds"
+    },
+    "s3": {
+     "url": "https://www.liveaboard.com/diving/egypt/abu-nuhas/?cid=7161",
+     "publisher": "Liveaboard.com",
+     "kind": "operator",
+     "quote": "the Kimon M is the deepest, with sections down to around 100 ft (30 m) or more \u2026 the current funneling through the Gulf of Suez here can be strong"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 32
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s3"
+    ]
+   },
+   "penetration": {
+    "value": "Engineering department and holds are fairly easy to enter",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large groupers and schooling snappers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current can be strong and shift quickly",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The deepest of the four Abu Nuhas wrecks, a freighter that slid off the reef to rest around 30 m. Divers can reach the engine spaces and holds, and groupers and snappers gather on the hull.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869830",
+   "name": "Ras Umm Sid",
+   "sources": {
+    "s1": {
+     "url": "https://www.cameldive.com/dive-sites/ras-umm-sid/",
+     "publisher": "Camel Dive Club",
+     "kind": "operator",
+     "quote": "wall reaching from the surface to 18m \u2026 a column of Gorgonian Fans that reaches from 14 to 28m"
+    },
+    "s2": {
+     "url": "https://www.sharm-club.com/egypt/diving/ras-um-el-sid-dive-site",
+     "publisher": "Sharm Club",
+     "kind": "operator",
+     "quote": "currents can be strong \u2026 fantastic giant sea fan collections"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 14,
+     "bottom": 28
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Column of gorgonian fans from 14 to 28 m",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Giant sea fan collections",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Currents can be strong",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A fringing reef beneath the Ras Umm Sid lighthouse near Sharm el Sheikh, known for a band of large gorgonian sea fans along the wall and a coral garden on the plateau. Currents can pick up, so a drift suits it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869852",
+   "name": "Kormoran",
+   "sources": {
+    "s1": {
+     "url": "https://www.cameldive.com/ru/dive-sites/kormoran",
+     "publisher": "Camel Dive Club",
+     "kind": "operator",
+     "quote": "within a 12m depth range \u2026 perfect dive site for all diving levels \u2026 only possible on a very calm day due to it's location and shallow depth"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Zingara_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "wrecked in the Straits of Tiran in the Red Sea on 21 August 1984"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Dive only possible on very calm days",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow cargo ship wreck lying in the Straits of Tiran since 1984, with its winch, engine and propeller all within about 12 m. Suitable for all levels but accessible only in very calm weather.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869797",
+   "name": "Abu Ramada South",
+   "sources": {
+    "s1": {
+     "url": "https://www.blueparadise.be/dive-sites/abu-ramada-south",
+     "publisher": "Blue Paradise",
+     "kind": "operator",
+     "quote": "5-35M \u2026 Beginner \u2026 Always sheltered and very busy on a windy day \u2026 A terrace-profiled plateau next to a shallow wall at the very south tip of Abu Ramada Island"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 35
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869792",
+   "name": "Shaab Sabrina",
+   "sources": {
+    "s1": {
+     "url": "https://egyptdivers.com/hurghada/dive-sites/shaab-sabina/",
+     "publisher": "Egypt Divers",
+     "kind": "operator",
+     "quote": "The coral cascades down from the reef top towards the seabed 14 meters below \u2026 Regardless of the sometimes strong currents, this location is suitable for every diving level. \u2026 Boats moor on the southern reef side"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 14
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Boats moor on the southern reef side",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663869851",
+   "name": "Kormoran",
+   "sources": {
+    "s1": {
+     "url": "https://www.cameldive.com/ru/dive-sites/kormoran",
+     "publisher": "Camel Dive Club",
+     "kind": "operator",
+     "quote": "within a 12m depth range"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ]
+  },
+  {
+   "id": "osm-n408451459",
+   "name": "Shaab Claudio",
+   "sources": {
+    "s1": {
+     "url": "https://redsea-diving.com/the-fury-shoals/",
+     "publisher": "Red Sea Diving Safari",
+     "kind": "operator",
+     "quote": "max. 16 m \u2026 the massive cave opening at 12 metres"
+    },
+    "s2": {
+     "url": "https://cassiopeiasafari.com/the-claudia-reef-diving-at-fury-shoal-in-egypt/",
+     "publisher": "Cassiopeia Safari",
+     "kind": "operator",
+     "quote": "between 6 and 9 metres \u2026 an expansive and spectacular system of caves \u2026 strong currents"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "cave"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shallow cave system with light shafts",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow reef in the Fury Shoals with a spacious, partly open-roofed cave network, popular for sunbeams and photography. Maximum depth is about 16 m, though currents can be strong on the approach.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

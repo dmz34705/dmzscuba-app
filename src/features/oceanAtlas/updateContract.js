@@ -57,6 +57,10 @@ export function validateAtlasDatasets(data) {
     const str = g[field];
     if (typeof str !== 'string' || !/^[A-Za-z0-9+/]*={0,2}$/.test(str) || Math.floor(str.replace(/=+$/, '').length * 3 / 4) !== g.recordCount * bytes) fail('globalSites');
   }
+  if (!Array.isArray(g.communityStatsByIndex) || !g.communityStatsByIndex.every(r => Array.isArray(r) && (r.length === 4 || r.length === 5)
+    && Number.isInteger(r[0]) && r[0] >= 0 && r[0] < g.recordCount
+    && Number.isFinite(r[1]) && r[1] >= 0 && r[1] <= 100 && Number.isFinite(r[2]) && r[2] >= 0 && r[2] <= 5
+    && Number.isSafeInteger(r[3]) && r[3] >= 0 && (r.length === 4 || Number.isInteger(r[4]) && r[4] >= 0 && r[4] <= 300))) fail('globalSites');
   const t = data.temperature;
   if (!Array.isArray(t.latitudes) || !Array.isArray(t.longitudes) || t.latitudes.length !== 89 || t.longitudes.length !== 180 || !Array.isArray(t.packedMonths) || t.packedMonths.length !== 12
     || !t.packedMonths.every(m => typeof m === 'string' && m.length >= 89 * 180 && m.length <= 89 * 180 * 2)) fail('temperature');

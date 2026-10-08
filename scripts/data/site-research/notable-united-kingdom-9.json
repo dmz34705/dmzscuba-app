@@ -1,0 +1,527 @@
+{
+ "batch": "notable-united-kingdom-9",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-notable-1201",
+   "name": "MV Captayannis",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/captayannis-2-2",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "operator",
+     "quote": "She lies in 8 to 9 metres of murky water on a muddy seabed. … visible at all states of the tide"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/MV_Captayannis",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Area: Sand bank between Greenock and Helensburgh … her thinner deck plates are starting to rust through with holes opening up in places."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 9
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Murky, silty water on a muddy seabed",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Deck plates rusting through, holes opening up",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sugar freighter that grounded on a sandbank in the middle of the Clyde between Greenock and Helensburgh, still partly above water at every tide. Below, the hull sits in murky, silty water around 9 m and is deteriorating.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1307",
+   "name": "HMS Whiting",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Whiting_(1812)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "ran aground on the Doom Bar as the tide was ebbing … sand completely covers the site, preventing further investigation at this time."
+    }
+   },
+   "notDiveSite": {
+    "kind": "unlocated",
+    "reason": "Wreck is off Padstow (Doom Bar), Cornwall, not the Firth of Forth; sand covers the site and it has not been located",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1287",
+   "name": "HMS K13",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_K13",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The submarine was finally salvaged on 15 March, repaired and recommissioned as HMS K22."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Raised in 1917, recommissioned as K22 and later scrapped; no wreck on the Gareloch seabed",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-177",
+   "name": "Loch Long",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Loch_Long",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Loch Long is a body of water in the council area of Argyll and Bute, Scotland. … It measures approximately 20 miles (30 kilometres) in length,"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole 20-mile sea loch, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-957",
+   "name": "SS Orsova",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Orsova_(1908)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Her last voyage was on 20 June 1936, and she was broken up at Bo'ness, Scotland."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Scrapped at Bo'ness in 1936; no wreck",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1245",
+   "name": "Blessing of Burntisland",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Blessing_of_Burntisland",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "has never been found, not least because 500 other shipwrecks lie at the bottom of the Firth of Forth."
+    }
+   },
+   "notDiveSite": {
+    "kind": "unlocated",
+    "reason": "The ship has never been positively found or identified",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1053",
+   "name": "HMS Campania",
+   "sources": {
+    "s1": {
+     "url": "https://portal.historicenvironment.scot/designation/HMPA4",
+     "publisher": "Historic Environment Scotland",
+     "kind": "agency",
+     "quote": "The wreck site lies at a depth of 22-25m below chart datum, 1.7km SSE of the entrance to Burntisland harbour, Fife. … Responsible recreational diving is encouraged."
+    },
+    "s2": {
+     "url": "https://www.scottishshipwrecks.com/hms-campania/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "operator",
+     "quote": "lying in 25 metres of water"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Campania_(1914)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "This designation was revoked in 2013 when the site was re-designated as a Historic Marine Protected Area."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Historic Marine Protected Area: responsible diving encouraged, no artefact recovery, file a visit report with HES",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The remains of a Cunard liner turned seaplane carrier lie off Burntisland in the Firth of Forth, in roughly 22-25 m. A protected site, it is still a big upstanding iron hull that divers may visit under HES guidelines.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Seabed 22-25 m; hull stands up to ~12 m proud"
+  },
+  {
+   "id": "x-wikipedia-295",
+   "name": "Loch Fyne",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Loch_Fyne",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a sea loch off the Firth of Clyde and forms part of the coast of the Cowal Peninsula. … It extends 65 kilometres (40 mi) inland from the Sound of Bute"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A 65 km sea loch, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1044",
+   "name": "USS Stockton",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/ludlow-g57/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "operator",
+     "quote": "She now lies off Yellowcraigs beach in 6m of water … Seabed depths are around 6.5 – 7 metres at high water and 3-4 metres at low water. … mostly buried in the sand."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/USS_Stockton_(DD-73)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "although well broken up, her remains are still visible just above the surface at low tide."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 7
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 6
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Wreck mostly buried; structures stand 3-4 m off seabed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A broken-up former US destroyer (later HMS Ludlow) used as a rocket target, lying off Yellowcraigs beach in about 6 m. Much is buried in sand in two sections, with remains breaking the surface at low tide.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-891",
+   "name": "HMS Pathfinder",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/hms-pathfinder/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "operator",
+     "quote": "in 62 metres of water and rises 8 metres above the seabed … there is ammunition scattered among the wreckage … To date the wreck has not been officially protected"
+    },
+    "s2": {
+     "url": "https://www.scubaverse.com/diver-lays-wreath-wreck-torpedoed-wwi-cruiser/",
+     "publisher": "Scubaverse",
+     "kind": "press",
+     "quote": "which lies 68m (223ft) below the surface … The wreck is in remarkably good condition."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 62
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 68
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Ammunition scattered among the wreckage",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The WWI cruiser torpedoed by U-21 lies upright off St Abbs Head, roughly 62-68 m down, and is reported in remarkably good condition. Only suited to technical divers; she is a war grave.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Seabed 62 m (one source says 68 m); wreck rises ~8 m"
+  },
+  {
+   "id": "x-notable-1008",
+   "name": "SMS München",
+   "sources": {
+    "s1": {
+     "url": "https://www.scottishshipwrecks.com/sms-munchen/",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "operator",
+     "quote": "The least depth over the wreck is around 43-44 metres dependant on the state of the tide. … lie in position 56°07.295’N, 02°46.464’W in 54 metres … The extensive wreckage is still fairly in tact with her distinctive sloping bow"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 43,
+     "bottom": 54
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1218",
+   "name": "HMS K17",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Battle_of_May_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The site of the two sunken submarines, 100 metres apart and about 50 metres down"
+    },
+    "s2": {
+     "url": "https://oldsaltblog.com/surveying-the-site-of-the-battle-of-may-island-for-new-windfarm/",
+     "publisher": "Old Salt Blog",
+     "kind": "press",
+     "quote": "The site of the two sunken submarines, 100 metres apart and about 50 metres down, has long been known."
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/HMS_K17",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck is designated as a protected place under the Protection of Military Remains Act 1986."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected place under the Protection of Military Remains Act 1986 (war grave)",
+    "refs": [
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-929",
+   "name": "HMS K4",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Battle_of_May_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The site of the two sunken submarines, 100 metres apart and about 50 metres down"
+    },
+    "s2": {
+     "url": "https://oldsaltblog.com/surveying-the-site-of-the-battle-of-may-island-for-new-windfarm/",
+     "publisher": "Old Salt Blog",
+     "kind": "press",
+     "quote": "The site of the two sunken submarines, 100 metres apart and about 50 metres down, has long been known."
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/HMS_K4",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck is designated as a protected place under the Protection of Military Remains Act 1986."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected place under the Protection of Military Remains Act 1986 (war grave)",
+    "refs": [
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1300",
+   "name": "HMS Success",
+   "sources": {
+    "s1": {
+     "url": "https://scottishshipwrecks.com/hms-success",
+     "publisher": "Scottish Shipwrecks",
+     "kind": "operator",
+     "quote": "part of her keel is visible in the shallows … little remains at the site today"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Salvaged after grounding off Kingsbarns; little remains, only part of the keel in the shallows",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1048",
+   "name": "HMS Argyll",
+   "sources": {
+    "s1": {
+     "url": "https://her.aberdeenshire.gov.uk/Monument/MAB1368",
+     "publisher": "Aberdeenshire Council HER",
+     "kind": "agency",
+     "quote": "The dispersed remains of the cruiser HMS Argyll lie in 6m depth of water to the W of the Bell Rock. … The guns and propellers have been removed."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Argyll_(1904)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She remains a diveable wreck."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 6
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Scattered remains of a cruiser that ran onto the Bell Rock reef in 1915, lying in about 6 m just west of the lighthouse. Her guns and propellers were salvaged, but she is still regarded as diveable.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

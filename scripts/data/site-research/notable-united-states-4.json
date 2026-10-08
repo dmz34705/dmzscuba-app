@@ -1,0 +1,915 @@
+{
+ "batch": "notable-united-states-4",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-49",
+   "name": "SS Andrea Doria",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Andrea_Doria",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Strong currents and heavy sediment that can reduce visibility to zero pose serious hazards to diving this site \u2026 the top of the wreck is now at 58 metres (190 ft) \u2026 lines, which can snag scuba gear \u2026 the bridge bell lying on the bottom at 73 m (241 ft)"
+    },
+    "s2": {
+     "url": "https://www.boston.com/news/local-news/2017/08/02/the-lures-and-dangers-of-diving-to-the-andrea-doria/",
+     "publisher": "Boston.com",
+     "kind": "press",
+     "quote": "which rests in about 240 feet of water \u2026 divers usually can\u2019t see the Andrea Doria until they\u2019re about 40 or 50 feet away from it"
+    },
+    "s3": {
+     "url": "https://dvtenacious.com/s-s-andrea-doria/",
+     "publisher": "Dive Vessel Tenacious",
+     "kind": "operator",
+     "quote": "the cold water, notorious New England currents, poor visibility, and distance from shore add to Andrea Doria's reputation as a challenging dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 190,
+     "bottom": 241
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 240
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents and near-zero visibility",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Fishing nets and lines that snag gear",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Collapsing passageways",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The famous liner sunk in 1956 off Nantucket, a deep offshore boat dive reserved for technical divers. Cold water, strong currents, poor visibility and a decaying hull make it one of the hardest wrecks in the Atlantic.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Hull top about 190 ft, sand near 240 ft"
+  },
+  {
+   "id": "x-wikipedia-132",
+   "name": "SS Tahoe",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Tahoe",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "the wreck presently lies in 400 feet (120 m) of water off Glenbrook, Nevada"
+    },
+    "s2": {
+     "url": "https://advanceddivermagazine.com/articles/sstahoe/sstahoe.html",
+     "publisher": "Advanced Diver Magazine",
+     "kind": "press",
+     "quote": "lies the shipwreck of the Steamship Tahoe. Scuttled in 1940, the ship rests on a 30-degree slope. Her bow is at 365 feet and stern at 475 \u2026 frigid 39-degree water. She beckons the technical diving enthusiast"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 400
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 365,
+     "bottom": 475
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "waterTemp": {
+    "low": 39,
+    "high": 39,
+    "unit": "F",
+    "note": "at wreck depth",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A steamship scuttled in 1940 and now sitting on a slope in Lake Tahoe at technical depths. Reached by charter boat from Nevada, it is a cold, high-altitude dive for trimix-trained divers only.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Bow about 365 ft, stern about 475 ft on a slope"
+  },
+  {
+   "id": "x-wikipedia-497",
+   "name": "USS California (ACR-6)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_California_(ACR-6)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck presently lies in 110 ft (34 m) of water, with the highest parts just 66 ft (20 m) below the surface \u2026 Nicknamed the \"Lobster Hotel\" for the abundance of lobsters living there, it is also a home to many kinds of fish"
+    },
+    "s2": {
+     "url": "https://www.shipwreckworld.com/maps/uss-san-diego-ca-6",
+     "publisher": "Shipwreck World",
+     "kind": "press",
+     "quote": "USS San Diego lies off Cherry Grove on Fire Island, New York in 110 feet of water \u2026 San Diego is a popular diving site"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 66,
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 110
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lobsters and many fish on the wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Inverted, decayed hull; fatalities among divers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The armored cruiser sunk by a mine in 1918 (later renamed San Diego) lies upside down south of Fire Island, New York. A very popular wreck dive with a shallowest point near 66 ft and plenty of lobster and fish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-830",
+   "name": "USCS Robert J. Walker",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USCS_Robert_J._Walker",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in the 1970s, 10 nautical miles (19 km; 12 mi) off the New Jersey coast in 85 feet (26 m) of water, and divers visited it regularly thereafter"
+    },
+    "s2": {
+     "url": "https://www.phillymag.com/news/2013/08/27/happened-wreck-jersey-shore/",
+     "publisher": "Philadelphia Magazine",
+     "kind": "press",
+     "quote": "The hulking wreck has been a regular destination for divers but a riddle to historians: What ship came to rest in 85 feet of water 10 miles off New Jersey\u2019s coastline?"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 85
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 85
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "An iron-hulled survey steamer lost in a collision in 1860 and lying about ten miles off the New Jersey coast. A long-time regular destination for wreck divers, its identity was confirmed by NOAA in 2013.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-119",
+   "name": "PS Anthony Wayne",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/PS_Anthony_Wayne",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lying in 50 feet (15 m) of water about 8 miles (13 km) north of Vermilion, Ohio"
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/anthony-wayne-general-wayne/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "The wreck lies in approximately 20 meters (66 feet) of water and is accessible to experienced divers. The site is in a fragile state"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 66
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The oldest known steamboat wreck in Lake Erie, a wooden sidewheeler that blew its boilers in 1850 and lies roughly eight miles off Vermilion, Ohio. The wooden remains are fragile and it is a boat dive for experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "geonames-gilboa-fixture-2564638",
+   "name": "Gilboa Quarry",
+   "sources": {
+    "s1": {
+     "url": "https://gilboaquarry.com/scuba-diving/",
+     "publisher": "Gilboa Quarry",
+     "kind": "operator",
+     "quote": "exceptional water clarity (30-40 feet average, up to 80 feet in perfect conditions), depths ranging from shallow 25-foot training areas to a maximum of 140 feet \u2026 sunken planes and helicopters"
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/the-quarries-of-northwest-ohio/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "Its maximum depth is 137 feet, although divers can certainly choose to spend their bottom time at shallower depths. Those who dive the deep side must be certified or accompanied by an instructor"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 140
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 137
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "quarry"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 30,
+    "high": 40,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Private quarry; deep side requires certification or an instructor",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken planes and helicopters",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nemo's Garden underwater biosphere",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A spring-fed former limestone quarry west of Findlay, Ohio, popular for training and deep diving. It has sunken aircraft and vehicles and clear water, with a deep side to about 137-140 ft.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-309",
+   "name": "Homestead caldera",
+   "sources": {
+    "s1": {
+     "url": "https://geology.utah.gov/map-pub/survey-notes/geosights/midway-hot-pots",
+     "publisher": "Utah Geological Survey",
+     "kind": "agency",
+     "quote": "the Homestead Crater (at Homestead Resort [outside link]), which is over 200 feet in diameter, 55 feet high, and the water inside the crater is over 65 feet deep. A 110-foot-long tunnel provides access to the water for soaking, swimming, and scuba diving \u2026 At the Homestead Crater, the water temperature remains relatively constant at 95 to 96"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Homestead_caldera",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The water in the crater is about 65 feet deep and an 8\u201314 foot deep layer of silt covers the bottom of the crater"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 65
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 65
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "waterTemp": {
+    "low": 95,
+    "high": 96,
+    "unit": "F",
+    "note": "geothermal, near-constant",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Reached through a 110-foot tunnel at Homestead Resort",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Silt layer on the bottom stirs up easily",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A geothermal limestone dome at Homestead Resort in Midway, Utah, with warm, mineral-rich water about 65 ft deep. Divers enter through a tunnel and dive year-round beneath the open oculus overhead.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-296",
+   "name": "Blue Lake (Utah)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Blue_Lake_(Utah)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The lake is 60 feet (18 m) deep"
+    },
+    "s2": {
+     "url": "https://geology.utah.gov/map-pub/survey-notes/glad-you-asked/winter-scuba-diving-in-utah",
+     "publisher": "Utah Geological Survey",
+     "kind": "agency",
+     "quote": "Blue Lake is the largest natural geothermal pool in the state, with a surface area of 9 acres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "spring"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "The largest natural geothermal pool in Utah, about 9 acres and around 60 ft deep, on the edge of the Great Salt Lake Desert south of Wendover. Spring-fed and warm enough to dive year-round.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1192",
+   "name": "United States lightship LV-117",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/United_States_lightship_LV-117",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The lightship now rests about 200 ft (61 m) deep, lying on her port side in an area with unpredictable currents up to 3 kn \u2026 a difficult and dangerous dive, as the wreck is entangled in many fishing nets"
+    },
+    "s2": {
+     "url": "https://wreckhunter.net/DataPages/nantucketlightship-dat.htm",
+     "publisher": "Hunting New England Shipwrecks",
+     "kind": "press",
+     "quote": "Water Depth (feet) 180' \u2026 Wreck Condition Partially intact Diving Considerations A deep and dangerous dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 200
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 180
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Entangled in fishing nets",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Unpredictable currents up to 3 knots",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steel lightship rammed and sunk by the liner Olympic in 1934, lying on its side far offshore south of Nantucket. A deep, demanding wreck that is remarkably intact but tangled in nets.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-995",
+   "name": "SS City of Columbus",
+   "sources": {
+    "s1": {
+     "url": "https://www.wreckhunter.net/DataPages/cityofcolumbus-dat.htm",
+     "publisher": "Hunting New England Shipwrecks",
+     "kind": "press",
+     "quote": "Water Depth (feet) Probably 50' maximum \u2026 Wreck Condition Probably mostly broken up Diving Considerations Strong current area"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong current area",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Iron steamer lost on Devil's Bridge off Gay Head, Martha's Vineyard in 1884. Shallow (about 50 ft) but mostly broken up and in a strong-current area.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-curated-608",
+   "name": "Lake Tahoe \u2014 Sand Harbor",
+   "sources": {
+    "s1": {
+     "url": "https://parks.nv.gov/parks/lake-tahoe-nevada-state-park",
+     "publisher": "Nevada State Parks",
+     "kind": "park",
+     "quote": "Gently sloping beaches, crystal-clear water and interesting rock formations allow for wonderful swimming and scuba diving."
+    },
+    "s2": {
+     "url": "https://joescuba.com/dive-sites/nevada-dive-sites/sand-harbor-lake-tahoe/",
+     "publisher": "Joe's Scuba Shop",
+     "kind": "operator",
+     "quote": "During the Summer, you are only allowed to dive the small cove (Diver\u2019s Cove) between the boat ramp area and the main beach \u2026 the water gets to about 30 feet toward the end of the rocky point"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "lake"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "In summer diving is limited to Divers Cove at Sand Harbor State Park",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Shore dive from Sand Harbor State Park on Lake Tahoe's Nevada side, with clear water and granite boulders. In summer only the small Divers Cove is open, and the cove is also a common training site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-239",
+   "name": "USS APL-31",
+   "sources": {
+    "s1": {
+     "url": "https://njscuba.net/artificial-reefs/new-jersey-reefs/shark-river-reef/apl-31",
+     "publisher": "NJ Scuba Diving",
+     "kind": "operator",
+     "quote": "Depth: 125 ft \u2026 The highest point of the wreck is at a depth of 80 feet. \u2026 The APL-31 is lying on its starboard side and deteriorating quickly."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/USS_APL-31",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "sunk as an artificial reef on 23 July 2001. [ 2 ] The wreck is now a scuba diving destination off the New Jersey coast"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 80,
+     "bottom": 125
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Penetration very dangerous; loose debris",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Navy barracks ship sunk in 2001 as part of New Jersey's Shark River artificial reef, now lying on its side with its high point near 80 ft. Interior penetration is hazardous as the structure deteriorates.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-218",
+   "name": "USS Algol (AKA-54)",
+   "sources": {
+    "s1": {
+     "url": "https://njscuba.net/artificial-reefs/new-jersey-reefs/shark-river-reef/uss-algol-aka-54",
+     "publisher": "NJ Scuba Diving",
+     "kind": "operator",
+     "quote": "from the top of the superstructure at 70 ft to the main deck at 110 ft to the sand at 140 ft \u2026 Because of its multi-level nature, the Algol is often used for advanced training dives"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/USS_Algol_(AKA-54)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Algol was sunk as part of New Jersey's Shark River artificial reef on 18 November 1991"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 140
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A 459-foot attack cargo ship sunk in 1991 on New Jersey's Shark River reef, upright and largely intact. Its multi-level layout runs from about 70 ft down to sand near 140 ft, with doors and hatches removed for easy penetration.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Superstructure 70 ft, main deck 110 ft, sand 140 ft"
+  },
+  {
+   "id": "x-wikipedia-499",
+   "name": "HMS Culloden (1776)",
+   "sources": {
+    "s1": {
+     "url": "https://www.wreckhunter.net/DataPages/culloden-dat.htm",
+     "publisher": "Hunting New England Shipwrecks",
+     "kind": "press",
+     "quote": "Location 150' off Culloden Point, Montauk, NY \u2026 Water Depth (feet) 20' \u2026 Scattered wood and several iron cannons remain, mostly buried in the sand."
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Culloden_(1776)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Since 1979 the wreck site has been listed on the National Register of Historic Places, which prohibits SCUBA divers from taking artifacts from, or otherwise disturbing the wreck"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "National Register site; no taking of artifacts or disturbing the wreck",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Scattered timbers and iron cannons",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The remains of a Royal Navy ship of the line that ran aground off Montauk in 1781, a shallow site about 150 ft from shore. Little more than scattered wood and cannon survive, and it is protected as a historic site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-273",
+   "name": "Portland Brownstone Quarries",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Portland_Brownstone_Quarries",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Scuba diving is becoming a popular recreational use within the park, with divers coming from all over Connecticut and even some from out of state."
+    },
+    "s2": {
+     "url": "https://dan.org/?p=45161",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "scuba diving is available in an area filled with sunken attractions such as speedboats. The deepest and clearest water is closest to the far quarry wall, and a navigation tour is available near the shore for divers."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "quarry"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken speedboats and other attractions",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A flooded brownstone quarry in Portland, Connecticut, now part of an adventure park that offers scuba diving. Divers find sunken boats and a navigation course near shore, with the deepest, clearest water along the far wall.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

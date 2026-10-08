@@ -1,0 +1,20 @@
+{"batch":"notable-sudan-1","researchedAt":"2026-10-07","sites":[
+{"id":"x-wikipedia-325","name":"Port Sudan","sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Port_Sudan","publisher":"Wikipedia","kind":"encyclopedia","quote":"is a major port city on the Red Sea in eastern Sudan, and the capital of Red Sea State"}},"notDiveSite":{"kind":"area","reason":"A port city and state capital, not a single dive site","refs":["s1"]}},
+{"id":"osm-n663869681","name":"Umbria","sources":{
+"s1":{"url":"https://en.wikipedia.org/wiki/SS_Umbria","publisher":"Wikipedia","kind":"encyclopedia","quote":"lies on her port side at a maximum depth of 38 metres (125 ft)"},
+"s2":{"url":"https://www.dive-the-world.com/diving-sites-sudan.php","publisher":"Dive the World","kind":"operator","quote":"a maximum depth of 38m and a minimum of only 5m … varies between 10 and 20m … the ship sank with some 350,000 bombs on board"}},
+"depth":[{"ref":"s1","unit":"m","bottom":38},{"ref":"s2","unit":"m","top":5,"bottom":38}],
+"entry":{"value":"boat","refs":["s2"]},
+"types":{"value":["wreck"],"refs":["s1"]},
+"vis":{"low":10,"high":20,"unit":"m","refs":["s2"]},
+"highlights":[{"text":"Holds still stacked with bombs and trucks","refs":["s2"]}],
+"hazards":[{"text":"Munitions remain aboard the wreck","refs":["s2"]}],
+"summary":{"text":"A large Italian ship scuttled in 1940 near Wingate Reef, close to Port Sudan. It rests tilted on its port side with the top only a few metres down, still carrying its wartime cargo, and is regarded as one of the Red Sea's best wreck dives.","refs":["s1","s2"]}},
+{"id":"osm-n9720994071","name":"Shaab Rumi, Precontinent 2","sources":{
+"s1":{"url":"https://en.wikipedia.org/wiki/Continental_Shelf_Station_Two","publisher":"Wikipedia","kind":"encyclopedia","quote":"at Sha’ab Rumi off Sudan … The rest became undersea destinations for recreational divers."},
+"s2":{"url":"https://www.dive-the-world.com/diving-sites-sudan.php","publisher":"Dive the World","kind":"operator","quote":"The remains of this Sudanese underwater village litter the sea floor."}},
+"entry":{"value":"boat","refs":["s2"]},
+"types":{"value":["reef"],"refs":["s2"]},
+"highlights":[{"text":"Remains of Cousteau's undersea village","refs":["s1","s2"]}],
+"summary":{"text":"Remains of Cousteau's 1960s undersea habitat project on the Sha'ab Rumi reef off Sudan. Two structures were removed afterwards; the rest, including the submersible hangar and shark cages, is now a diveable relic.","refs":["s1","s2"]}}
+]}

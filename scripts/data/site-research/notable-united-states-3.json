@@ -1,0 +1,218 @@
+{
+  "batch": "notable-united-states-3",
+  "researchedAt": "2026-10-07",
+  "sites": [
+    {
+      "id": "x-wikipedia-269",
+      "name": "USS Yancey",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/USS_Yancey", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "rests on her starboard side at a depth of 160 feet (49 m)" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 160 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] }
+    },
+    {
+      "id": "x-wikipedia-225",
+      "name": "USCGC Cuyahoga",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/USCGC_Cuyahoga", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "She sits upright on the seafloor in 100 feet (30 meters) of water." }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 100 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] }
+    },
+    {
+      "id": "x-notable-851",
+      "name": "U-701",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/German_submarine_U-701", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "At 115 feet (35 m) below the surface, U-701 is still intact, retaining its 8.8 cm (3.5 in) deck gun." },
+        "s2": { "url": "https://dan.org/?p=24597", "publisher": "Divers Alert Network", "kind": "press",
+                "quote": "the largely intact U-701 lies 115 feet deep, mired in the ever-undulating shoals off Cape Hatteras." },
+        "s3": { "url": "https://scubadiverlife.com/preserving-americas-underwater-battlefield-u-701/", "publisher": "Scuba Diver Life", "kind": "press",
+                "quote": "visibility also varies, but commonly ranges from 10 to 40 feet (3 to 12 m). … the strength of the ocean currents on the site vary widely from slight to very swift." }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 115 }, { "ref": "s2", "unit": "ft", "bottom": 115 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "current": { "value": "variable", "refs": ["s3"] },
+      "vis": { "low": 3, "high": 12, "unit": "m", "refs": ["s3"] },
+      "highlights": [ { "text": "Largely intact U-boat with 88 mm deck gun", "refs": ["s1", "s2"] } ],
+      "hazards": [ { "text": "Shifting sand can bury the wreck; currents vary widely", "refs": ["s2", "s3"] } ],
+      "summary": { "text": "A World War II German submarine sunk by aircraft in 1942 and lying largely intact in the shoals off Cape Hatteras. Sand and current decide whether it is visible on a given day, but the deck gun can still be seen when conditions allow.", "refs": ["s1", "s2", "s3"] }
+    },
+    {
+      "id": "x-notable-785",
+      "name": "SS City of Rio de Janeiro",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/SS_City_of_Rio_de_Janeiro", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "The wreck lies in 287 feet (87 m) of water just off the Golden Gate … the currents are too strong and the water too deep for anyone other than professional divers." },
+        "s2": { "url": "https://sanctuaries.noaa.gov/news/dec14/city-of-rio.html", "publisher": "NOAA Office of National Marine Sanctuaries", "kind": "agency",
+                "quote": "lies 287 feet below the surface just outside the Golden Gate, not far from where it ran aground in 1901." }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 287 }, { "ref": "s2", "unit": "ft", "bottom": 287 } ],
+      "entry": { "value": "boat", "refs": ["s2"] },
+      "types": { "value": ["wreck"], "refs": ["s2"] },
+      "level": { "value": "technical", "refs": ["s1"] },
+      "current": { "value": "strong", "refs": ["s1"] },
+      "hazards": [ { "text": "Strong currents and great depth off the Golden Gate", "refs": ["s1"] } ],
+      "summary": { "text": "The 1901 passenger steamer lies deep off the Golden Gate, found again by NOAA sonar surveys. Depth and strong currents put it beyond ordinary recreational diving; it is a site for technical or professional teams.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-wikipedia-214",
+      "name": "USS Arthur W. Radford",
+      "sources": {
+        "s1": { "url": "https://njscuba.net/artificial-reefs/delaware-reefs/deljerseyland-reef", "publisher": "NJScuba.net", "kind": "press",
+                "quote": "Depth: 120-140 ft" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "top": 120, "bottom": 140 } ],
+      "depthNote": "Reef site depth 120-140 ft; Radford listed near 130 ft",
+      "types": { "value": ["wreck"], "refs": ["s1"] }
+    },
+    {
+      "id": "x-wikipedia-142",
+      "name": "SS Washingtonian (1913)",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/SS_Washingtonian_(1913)", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "lies upright down in about 100 feet (30 m) of water. … a popular night dive" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 100 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "highlights": [ { "text": "Popular night dive and lobster wreck", "refs": ["s1"] } ]
+    },
+    {
+      "id": "x-notable-774",
+      "name": "Queen Anne's Revenge",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/Queen_Anne's_Revenge", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "The shipwreck lies in 28 feet (8.5 m) of water about one mile (1.6 km) offshore of Fort Macon State Park" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 28 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] }
+    },
+    {
+      "id": "osm-n6748047776",
+      "name": "U-1105",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/German_submarine_U-1105", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "more than 91 feet (28 m) of water, landing upright on the river bottom … Between April and December, a large blue and white mooring buoy is anchored about 70 feet (21 m) from the wreck" },
+        "s2": { "url": "https://mht.maryland.gov/Pages/archaeology/archaeology-U1105.aspx", "publisher": "Maryland Historical Trust", "kind": "agency",
+                "quote": "It lies upright in more than 90 feet of water with about 65 feet over its conning tower. … Advanced dive only: deep water, near-zero visibility, strong currents." }
+      },
+      "depth": [ { "ref": "s2", "unit": "ft", "top": 65, "bottom": 90 }, { "ref": "s1", "unit": "ft", "bottom": 91 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "level": { "value": "advanced", "refs": ["s2"] },
+      "current": { "value": "strong", "refs": ["s2"] },
+      "mooring": { "value": "Mooring buoy April to December", "refs": ["s1"] },
+      "access": { "value": "Maryland historic shipwreck preserve; no commercial charters operate there", "refs": ["s2"] },
+      "hazards": [ { "text": "Near-zero visibility and strong currents", "refs": ["s2"] } ],
+      "summary": { "text": "A German Type VII submarine sunk in the Potomac after the war and now Maryland's first historic shipwreck preserve. It sits upright in deep, dark, current-swept water, so it is an advanced dive with a buoy on site in season.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-wikipedia-310",
+      "name": "Blue Hole (New Mexico)",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/Blue_Hole_(New_Mexico)", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "The depth of the main pool is more than 80 feet (24 m) below the surface. … constant 62 °F (17 °C) temperature" },
+        "s2": { "url": "https://www.santarosabluehole.com/?p=2972", "publisher": "City of Santa Rosa Blue Hole", "kind": "operator",
+                "quote": "To dive into the Blue Hole, you are required to purchase a $25 SCUBA Permit that is good for one week. … Visibility is a consistent 100 feet" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 80 } ],
+      "types": { "value": [], "refs": ["s1"] },
+      "vis": { "low": 100, "high": 100, "unit": "ft", "refs": ["s2"] },
+      "waterTemp": { "low": 62, "high": 62, "unit": "F", "note": "spring-fed, constant all year", "refs": ["s1"] },
+      "access": { "value": "SCUBA permit required ($25 per week); certification card required", "refs": ["s2"] },
+      "summary": { "text": "A spring-fed pool beside old Route 66 in Santa Rosa, popular for training thanks to steady cool water and long visibility. Divers buy a city permit and show a certification card; the cave passages below are gated off.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-wikipedia-280",
+      "name": "Begg Rock",
+      "sources": {
+        "s1": { "url": "https://wildlife.ca.gov/Conservation/Marine/MPAs/Begg-Rock", "publisher": "California Department of Fish and Wildlife", "kind": "agency",
+                "quote": "diving this site is for advanced divers only due to strong currents and steep drop-offs. … a seven- to eight-hour boat ride from Ventura" },
+        "s2": { "url": "https://cadivingnews.com/?p=1857", "publisher": "California Diving News", "kind": "press",
+                "quote": "Depths: 20 to well over 130 feet. Many sections a vertical drop to very deep water. … Visibility is generally very good, averaging 40 feet with many days of over 100." }
+      },
+      "depth": [ { "ref": "s2", "unit": "ft", "top": 20, "bottom": 130 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["pinnacle", "wall"], "refs": ["s2"] },
+      "level": { "value": "advanced", "refs": ["s1"] },
+      "current": { "value": "strong", "refs": ["s1"] },
+      "vis": { "low": 12, "high": 30, "unit": "m", "refs": ["s2"] },
+      "access": { "value": "State Marine Reserve (no-take); 7-8 hour boat ride from Ventura", "refs": ["s1"] },
+      "highlights": [ { "text": "Vertical walls dropping past 130 ft", "refs": ["s2"] } ],
+      "hazards": [ { "text": "Strong currents and steep drop-offs", "refs": ["s1"] } ],
+      "summary": { "text": "A remote pinnacle system far off San Nicolas Island, reached on long boat trips from Ventura. Sheer walls and strong current make it a dive for advanced divers, with typically very good water clarity.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-wikipedia-320",
+      "name": "San Mateo Rocks",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/San_Mateo_Rocks", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "the rocks are a common destination for local dive boats and scuba diving." }
+      },
+      "entry": { "value": "boat", "refs": ["s1"] }
+    },
+    {
+      "id": "osm-n369172549",
+      "name": "Shaws Cove",
+      "sources": {
+        "s1": { "url": "https://beachcitiesscuba.com/pages/dive-site-shaws-cove", "publisher": "Beach Cities Scuba", "kind": "operator",
+                "quote": "Max/Min Depths: 0' - 51' … Average Clarity: Ranges from 5' to 25'+" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "top": 0, "bottom": 51 } ],
+      "entry": { "value": "shore", "refs": ["s1"] },
+      "vis": { "low": 5, "high": 25, "unit": "ft", "refs": ["s1"] },
+      "highlights": [ { "text": "Lobster, sheephead, garibaldi, bat rays", "refs": ["s1"] } ]
+    },
+    {
+      "id": "x-wikipedia-96",
+      "name": "SS Cuba (1920)",
+      "sources": {
+        "s1": { "url": "https://en.wikipedia.org/wiki/SS_Cuba_(1920)", "publisher": "Wikipedia", "kind": "encyclopedia",
+                "quote": "Cuba's wreck forms an artificial reef, and supports marine life including the California sheephead. As such, it is now a wreck diving site." },
+        "s2": { "url": "https://scubadiverlife.com/noaa-national-marine-sanctuary-shipwrecks-ss-cuba/", "publisher": "Scuba Diver Life", "kind": "press",
+                "quote": "Today, Cuba is a popular sanctuary dive site. … The triple-expansion steam engines and boilers are still in their original upright position" }
+      },
+      "entry": { "value": "boat", "refs": ["s2"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "highlights": [ { "text": "Steam engines and boilers still upright", "refs": ["s2"] } ],
+      "summary": { "text": "A 1923 steamship wreck off San Miguel Island inside Channel Islands National Marine Sanctuary. The hull is well consolidated, with engines and boilers still upright, and it now shelters local reef life.", "refs": ["s1", "s2"] }
+    },
+    {
+      "id": "x-notable-833",
+      "name": "SS Lancing",
+      "sources": {
+        "s1": { "url": "https://monitor.noaa.gov/shipwrecks/lancing.html", "publisher": "NOAA Monitor National Marine Sanctuary", "kind": "agency",
+                "quote": "Lying in about 160 feet of water, Lancing remains sitting nearly upside down on the seafloor … The hull is broken into two pieces allowing access inside the ship" }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 160 } ],
+      "entry": { "value": "boat", "refs": ["s1"] },
+      "types": { "value": ["wreck"], "refs": ["s1"] },
+      "penetration": { "value": "Hull broken in two; openings allow access to the machinery space", "refs": ["s1"] },
+      "depthNote": "Wreck lies in about 160 ft; pin on Wikipedia differs from NOAA position"
+    },
+    {
+      "id": "x-curated-594",
+      "name": "Bonne Terre Mine",
+      "sources": {
+        "s1": { "url": "https://www.diventures.com/diving-near-me/usa-dive-sites/bonne-terre-mine/", "publisher": "Diventures", "kind": "operator",
+                "quote": "Max Depth: 40-60 feet on average … Approximately 58°F year-round … often exceeding 100 feet" },
+        "s2": { "url": "https://www.visitmo.com/things-to-do/bonne-terre-mine", "publisher": "Missouri Division of Tourism", "kind": "agency",
+                "quote": "The clear, 58-degree water, illuminated from above, affords divers visibility … Diving is conducted in groups of nine, always accompanied by two guides." }
+      },
+      "depth": [ { "ref": "s1", "unit": "ft", "bottom": 60 } ],
+      "entry": { "value": "shore", "refs": ["s2"] },
+      "vis": { "low": 100, "high": 100, "unit": "ft", "refs": ["s1"] },
+      "waterTemp": { "low": 58, "high": 58, "unit": "F", "note": "constant all year", "refs": ["s1", "s2"] },
+      "access": { "value": "Guided dives only, groups of nine with two guides", "refs": ["s2"] },
+      "summary": { "text": "A flooded former lead mine in Missouri, run as a guided dive resort with stadium-style lighting. Still, cool water and very long visibility let groups tour pillars, mining equipment and a flooded shaft.", "refs": ["s1", "s2"] }
+    }
+  ]
+}

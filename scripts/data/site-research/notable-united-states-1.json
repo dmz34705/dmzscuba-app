@@ -1,0 +1,1061 @@
+{
+ "batch": "notable-united-states-1",
+ "researchedAt": "2026-10-07",
+ "sites": [
+  {
+   "id": "x-wikipedia-236",
+   "name": "Carthaginian II",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Carthaginian_II",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "sunk at a depth of approximately 97 feet (30 m)"
+    },
+    "s2": {
+     "url": "https://goscubadivemaui.com/carthaginian-wreck-dive/",
+     "publisher": "Go Scuba Dive Maui",
+     "kind": "operator",
+     "quote": "Since the Carthaginian lays at 100 feet, you need to hold an advanced certification for this charter."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 97
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A scuttled replica whaling ship lying upright on sand off Lahaina, Maui, about half a mile offshore. Deep enough that operators ask for advanced certification; it is a popular artificial reef wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-251",
+   "name": "Major General Wallace F. Randolph",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Major_General_Wallace_F._Randolph_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck sits on a flat sandy bottom 120 feet (37 m) below the surface of the water"
+    },
+    "s2": {
+     "url": "https://floridakeys.noaa.gov/ShipwreckTrail/thunderbolt.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "now lies intact and upright on a sand bottom in 120 feet of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 120
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 120
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact upright hull with cable reel on the bow",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The Thunderbolt, a former Army minelayer sunk as an artificial reef about four miles off Marathon in the Florida Keys. It sits upright and intact on sand and offers penetration, but depth and current make it an advanced dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Cable reel at 80 ft, superstructure 75 ft, props at 120 ft"
+  },
+  {
+   "id": "x-wikipedia-113",
+   "name": "SS Arratoon Apcar",
+   "sources": {
+    "s1": {
+     "url": "https://www.nps.gov/places/arratoon-apcar-wreck.htm",
+     "publisher": "National Park Service, Biscayne National Park",
+     "kind": "park",
+     "quote": "The wreck of Arratoon Apcar lies in ten to twenty feet of water near Fowey Rocks. … The coral-encrusted lower hull and iron beams of the vessel can still be seen"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SS_Arratoon_Apcar",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck is at a depth of 10 to 20 feet (3 to 6 m) near Fowey Rocks."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral-encrusted hull and iron beams",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The remains of an 1878 iron steamer in shallow water on Fowey Rocks in Biscayne National Park, part of the park's wreck trail. Coral-covered hull ribs and lots of fish make it good for snorkelers and divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-250",
+   "name": "MV Mercedes I",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/MV_Mercedes_I",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She currently rests upright in 97 feet (30 m)."
+    },
+    "s2": {
+     "url": "https://www.southfloridadiving.com/dive-sites/wreck-dive-sites/mercedes-i/",
+     "publisher": "South Florida Diving Headquarters",
+     "kind": "operator",
+     "quote": "The wreckage is twisted in two pieces with large gaping holes … Penetration is tricky, watch out for entanglement … Advanced Open Water or equivalent experience"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 97
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Entanglement risk when penetrating",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A freighter scuttled in 1985 off Fort Lauderdale as an artificial reef. It lies broken in two pieces with gaping holes in about 97 feet; divers need Advanced certification and care with entanglement.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-129",
+   "name": "USCGC Lotus",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USCGC_Lotus",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "235 feet (72 m) of water"
+    },
+    "s2": {
+     "url": "https://www.wreckwiki.com/miami-dade",
+     "publisher": "WreckWiki",
+     "kind": "press",
+     "quote": "Lotus Freighter 110' 235"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 235
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 235
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1292",
+   "name": "HMS Looe",
+   "sources": {
+    "s1": {
+     "url": "https://bigpinekey.com/hms-looe/",
+     "publisher": "Big Pine Key (visitor guide)",
+     "kind": "press",
+     "quote": "She sits in 25 feet of water"
+    },
+    "s2": {
+     "url": "https://www.justgottadive.com/dive_resources/travel_articles/hms-looe-diving-big-pine-keys-favorite-frigate",
+     "publisher": "Just Gotta Dive",
+     "kind": "press",
+     "quote": "lies in just twenty five feet of clear, warm water, on the east edge of Looe reef"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck",
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Iron ballast stack and scattered artifacts of 1744 frigate",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The remains of an 18th-century British frigate lost in 1744 on the eastern edge of Looe Key reef off Big Pine Key. Shallow, clear water and the stacked iron ballast make it an easy historic wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1278",
+   "name": "HMS Fowey",
+   "sources": {
+    "s1": {
+     "url": "https://www.allatsea.net/colonial-shipwrecks-in-biscayne-national-park/",
+     "publisher": "All At Sea",
+     "kind": "press",
+     "quote": "only twenty feet of gloriously clear water … the park service has no plans to open these wrecks up to the public"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 20
+    }
+   ],
+   "access": {
+    "value": "Wreck site not open to the public (National Park archaeological site)",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-829",
+   "name": "San José y Las Animas",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/San_Jos%C3%A9_y_Las_Animas_(shipwreck)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The San Jose sank in twenty-eight-foot waters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 28
+    }
+   ]
+  },
+  {
+   "id": "x-notable-947",
+   "name": "Nuestra Señora de Atocha",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Nuestra_Se%C3%B1ora_de_Atocha",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "approximately 17 metres (56 ft) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 56
+    }
+   ]
+  },
+  {
+   "id": "noaa-fknms-looe-key",
+   "name": "Looe Key",
+   "sources": {
+    "s1": {
+     "url": "https://dan.org/alert-diver/article/looe-key/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "The depth ranges from 7 feet to 30 feet. … a spur-and-groove reef with coral fingers that extend out to sea, separated by white-sand channels"
+    },
+    "s2": {
+     "url": "https://scubaschedules.com/looe-key/",
+     "publisher": "Scuba Schedules",
+     "kind": "operator",
+     "quote": "Max Depth: 30 ft. … the depth ranges from 7 feet to 30 feet"
+    },
+    "s3": {
+     "url": "https://floridakeys.noaa.gov/zones/spas/looekey.html",
+     "publisher": "NOAA Florida Keys National Marine Sanctuary",
+     "kind": "agency",
+     "quote": "located approximately 6.3 miles south of Ramrod Key … a classic spur and groove coral formation"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 7,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 7,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Sanctuary Preservation Area with special regulations; boat only",
+    "refs": [
+     "s3",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A spur-and-groove coral reef about six miles offshore of Ramrod and Big Pine Keys, protected as a sanctuary preservation area. Shallow coral fingers and sand channels hold reef sharks, rays and groupers.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "noaa-fknms-pickles-reef",
+   "name": "Pickles Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.rainbowreef.com/dive-locations-in-key-largo/pickles-reef",
+     "publisher": "Rainbow Reef Dive Center",
+     "kind": "operator",
+     "quote": "Depths range from 6 to 30 feet"
+    },
+    "s2": {
+     "url": "https://scubafunflorida.com/florida-keys-dive-sites-key-largo-dive-sites/",
+     "publisher": "Scuba Fun Florida",
+     "kind": "operator",
+     "quote": "Barrel-shaped coral heads, spur-and-groove formation. Easy navigation, healthy coral, stingrays and juvenile nurse sharks in the sand channels. … 10–25 ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 6,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Juvenile nurse sharks and stingrays in sand channels",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Remains of the Pickle Barrel civil-war era wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow spur-and-groove reef off Key Largo with barrel-shaped coral heads, easy navigation and sea fans. Gentle depths suit new divers and snorkelers, and small fish make it a good photo site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-w952659147",
+   "name": "S.S. Sapona",
+   "sources": {
+    "s1": {
+     "url": "https://www.bahamas.com/natural-wonders/sapona-shipwreck",
+     "publisher": "Bahamas Ministry of Tourism",
+     "kind": "agency",
+     "quote": "The wreck sits in 15 feet of water, just a few miles off Bennett's Harbour in South Bimini"
+    },
+    "s2": {
+     "url": "https://www.sailabacos.com/bahamas/dive-sites/ss-sapona-wreck",
+     "publisher": "Sail Abacos",
+     "kind": "operator",
+     "quote": "15-30 feet (5-9 meters) … Currents are generally mild … Beginner to Intermediate"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Concrete ship partly above water with swim-throughs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A WWI-era concrete freighter aground in shallow water off South Bimini, Bahamas (not the US). Holes from WWII bombing practice let light into swim-throughs, making it easy for snorkelers and new divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Pin is in the Bahamas (Bimini), not the United States"
+  },
+  {
+   "id": "osm-n12601944496",
+   "name": "Lofthus",
+   "sources": {
+    "s1": {
+     "url": "https://www.nps.gov/articles/lofthus.htm",
+     "publisher": "National Park Service",
+     "kind": "park",
+     "quote": "It rests in 15-20 feet of water, with wreckage rising as much as six feet off the sea floor depending on sand movement. … anchor in the sand"
+    },
+    "s2": {
+     "url": "https://coralheads.com/shipwrecks-lofthus-palm-beach-county-wreck-dive/",
+     "publisher": "Coral Heads",
+     "kind": "press",
+     "quote": "15 to 20 feet of water … Snorkel"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Florida Underwater Archaeological Preserve, open free year-round; anchor in sand",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Sand movement buries or exposes parts of the wreck",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An 1898 iron barque wrecked and later blasted, leaving a scattered wreck site just off Manalapan near Boynton Beach in about 15 to 20 feet. It is a state archaeological preserve suited to snorkelers and new divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-233",
+   "name": "Amaryllis",
+   "sources": {
+    "s1": {
+     "url": "https://coralheads.com/shipwrecks-amaryllis-palm-beach-county-wreck-dive/",
+     "publisher": "Coral Heads",
+     "kind": "press",
+     "quote": "80 Feet … during flood tide, as an outgoing tide will pull murky water from the inlet … Advanced Divers"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Amaryllis_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Sunk in 85 feet (26 m) of water … advanced dive site"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 80
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 85
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Murky inlet water on outgoing tide",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A cargo ship scuttled in 1968 off Riviera Beach near Palm Beach Inlet. Only the hull and lower deck remain; strong currents and tide-dependent visibility make it an advanced dive best done on a flood tide.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-hz36jx",
+   "name": "Black Rock - Hawaii",
+   "sources": {
+    "s1": {
+     "url": "https://www.in2scubadivingmaui.com/maui-guided-scuba-shore-dives/black-rock-maui/",
+     "publisher": "In2Scuba Diving Maui",
+     "kind": "operator",
+     "quote": "depths to 32 feet … an easy beginner to intermediate shore dive site … Currents can be running along shore from north or south, making for a great drift dive."
+    },
+    "s2": {
+     "url": "https://kaanapali-beach.com/scuba-diving-black-rock-lahaina-maui/",
+     "publisher": "Kaanapali Beach (visitor site)",
+     "kind": "press",
+     "quote": "With depths of upto 30 feet, you have plenty to explore along the underwater rocky ledge"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 32
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Green sea turtles and night-time eels, lobsters, reef squid",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Black Rock (Pu'u Keka'a) at Ka'anapali is an easy beach-entry dive along a rocky ledge reaching about 30 feet. Suited to beginners, with turtles by day and octopus, eels and squid at night.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1227",
+   "name": "San Esteban (1554 shipwreck)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/San_Esteban_(1554_shipwreck)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She had sunk in just 12 to 18 feet (3.7 to 5.5 m) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 12,
+     "bottom": 18
+    }
+   ]
+  },
+  {
+   "id": "odm-b4trti",
+   "name": "Manta Ray Heaven, Garden Eel Cove",
+   "sources": {
+    "s1": {
+     "url": "https://konahonudivers.com/how-deep-do-manta-rays-dive-in-kona/",
+     "publisher": "Kona Honu Divers",
+     "kind": "operator",
+     "quote": "Manta Heaven has a slightly wider depth range, from 20 to 50 feet, but most of the action happens at an average depth of around 35 feet."
+    },
+    "s2": {
+     "url": "https://jacksdivinglocker.com/favorite-boat-dive-sites",
+     "publisher": "Jack's Diving Locker",
+     "kind": "operator",
+     "quote": "The reef starts at about 20' and gently slopes 50-100 yards to 40' where the drop off starts."
+    },
+    "s3": {
+     "url": "https://bigislanddivers.com/charters/night-dives/kona-manta-ray-night-scuba-dive/",
+     "publisher": "Big Island Divers",
+     "kind": "operator",
+     "quote": "Garden Eel Cove (northern Airport site) … 80 to 100 feet of visibility not uncommon"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Night manta ray feeding under dive lights",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Garden eels on the sandy bottom",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Exposed to open ocean; boat ride can be choppy",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A coral shelf in Makako Bay off Kona airport that is a day site for garden eels and, at night, the Big Island's manta ray dive. Operators run boat trips; divers kneel on sand at about 35 feet while mantas feed on plankton.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-0tgusx",
+   "name": "Kapalua Beach",
+   "sources": {
+    "s1": {
+     "url": "https://www.in2scubadivingmaui.com/kapalua-bay-maui/",
+     "publisher": "In2Scuba Diving Maui",
+     "kind": "operator",
+     "quote": "An Easy beginner to intermediate site … depths to 45 feet on the outer reaches … Very protected bay, so diving is good here even when others are not"
+    },
+    "s2": {
+     "url": "https://www.shorediving.com/Earth/Hawaii/Maui/Kapalua/review_9446.htm",
+     "publisher": "Shore Diving",
+     "kind": "press",
+     "quote": "Maximum depth of 24.9 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 45
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 24.9
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Protected C-shaped bay, good night diving",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tb91a5",
+   "name": "Ulua Beach Park",
+   "sources": {
+    "s1": {
+     "url": "https://www.shorediving.com/Earth/Hawaii/Maui/Ulua/review_5.htm",
+     "publisher": "Shore Diving",
+     "kind": "press",
+     "quote": "Maximum Depth: 40 feet … Beginner … If Sound swells are running - vis will be poor."
+    },
+    "s2": {
+     "url": "https://wailearesortassociation.com/things-to-do-in-maui/recreation-in-wailea-resort-association/wailea-scuba",
+     "publisher": "Wailea Resort Association",
+     "kind": "agency",
+     "quote": "mellow waters and gradual incline … great turtle cleaning station on the second reef"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtle cleaning station on the second reef",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Poor visibility when swells are running",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A beach-entry reef dive in Wailea, South Maui, used for scuba instruction thanks to gentle conditions and a gradual slope. Turtles visit a cleaning station on the second reef; swells can ruin visibility.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

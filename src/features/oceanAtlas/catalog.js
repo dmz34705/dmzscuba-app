@@ -43,23 +43,33 @@ export function rawCatalogSites() {
   const depths = numbers(g.maxDepthsBase64, 2, 'getUint16');
   const column = entries => new Map(entries || []);
   const environments = column(g.environmentsByIndex), masks = column(g.topologyMasksByIndex), entries = column(g.entriesByIndex);
+  const community = new Map((g.communityStatsByIndex || []).map(([index, ...values]) => [index, values]));
   const global = ids.map((recordId, index) => {
     const mask = masks.get(index) ?? g.defaults.topologyMask;
+    const stats = community.get(index) || [];
     return { id: `odm-${recordId}`, name: g.names[index], latitude: coordinates[index * 2] / 1e5, longitude: coordinates[index * 2 + 1] / 1e5,
       country: g.countries[countries[index]] || '', environment: environments.get(index) ?? g.defaults.environment,
-      topologies: g.topologyCodes.filter((_, code) => mask & (1 << code)), entry: entries.get(index) ?? g.defaults.entry, maxDepthMeters: depths[index] || null };
+      topologies: g.topologyCodes.filter((_, code) => mask & (1 << code)), entry: entries.get(index) ?? g.defaults.entry, maxDepthMeters: depths[index] || null,
+      communityVisibilityMeters: stats[0] || null, communityRating: stats[1] || null, communityDives: stats[2] || 0,
+      communityDiveMinutes: stats[3] || null };
   });
   const listed = [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites].map(site => ({ id: site.id, name: site.name, latitude: site.latitude, longitude: site.longitude,
     country: site.country || '', region: site.region || '', environment: site.environment || '', topologies: site.topologies || featuresOf(site.siteType),
     entry: site.entry || '', maxDepthMeters: site.maxDepthMeters || null }));
-  const osm = osmSource.sites.map(([osmId, name, latitude, longitude, depth, entryCode, mask, fresh, difficulty]) => ({ id: `osm-${osmId}`, name, latitude, longitude,
-    country: '', region: '', environment: fresh ? 'fresh' : '', topologies: osmSource.topologyCodes.filter((_, code) => mask & (1 << code)),
-    entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, difficulty: difficulty || '' }));
+  const osm = osmSource.sites.map(([osmId, name, latitude, longitude, depth, entryCode, mask, fresh, difficulty, currentCode, accessCode, hazardMask, mooringCode, fee, accessEase, entryDetailMask]) => ({ id: `osm-${osmId}`, name, latitude, longitude,
+    country: '', region: '', environment: fresh ? 'fresh' : 'ocean', topologies: osmSource.topologyCodes.filter((_, code) => mask & (1 << code)),
+    entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, difficulty: difficulty || '',
+    structuredCurrent: ['', 'none', 'light', 'moderate', 'strong'][currentCode] || '',
+    structuredAccess: ['', 'Permit required', 'Private access', 'Access for customers', 'Permissive access'][accessCode] || '',
+    structuredHazards: ['Strong or changing current', 'Depth', 'Fishing nets', 'Underwater obstacles', 'Boat traffic', 'Potentially dangerous species', 'Explosive or hazardous material', 'Spearfishing activity', 'Rockfall', 'Surfers'].filter((_, code) => hazardMask & (1 << code)),
+    structuredMooring: ['', 'Descent line mapped', 'Mooring buoy mapped', 'Descent line and mooring buoy mapped'][mooringCode] || '',
+    structuredFee: Boolean(fee), structuredAccessEase: ['', 'Easy to locate', 'Moderately difficult to locate', 'Difficult to locate'][accessEase] || '',
+    structuredEntryDetails: ['Steps entry', 'Ladder entry', 'Rocky entry', 'Steep entry'].filter((_, code) => entryDetailMask & (1 << code)) }));
   const extra = extraSource.sites.map(([id, name, latitude, longitude, depth, entryCode, mask, fresh, source, , own]) => {
     // A source-wide caveat (reef-program positions) follows the row's own note, as in atlasRuntime.js.
     const note = [own, extraSource.sources[source]?.note].filter(Boolean).join(' ');
     return { id: `x-${id}`, name, latitude, longitude,
-      country: '', region: '', environment: fresh ? 'fresh' : '', topologies: extraSource.topologyCodes.filter((_, code) => mask & (1 << code)),
+      country: '', region: '', environment: fresh ? 'fresh' : 'ocean', topologies: extraSource.topologyCodes.filter((_, code) => mask & (1 << code)),
       entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, ...(note ? { note } : {}) };
   });
   const everything = [...listed, ...global, ...osm, ...extra];
@@ -104,6 +114,17 @@ export function applySiteMerges(list, merges) {
       topologies: [...new Set([keep, ...others].flatMap(site => site.topologies || []))],
       entry: keep.entry || others.find(site => site.entry)?.entry || '',
       environment: keep.environment || others.find(site => site.environment)?.environment || '',
+      communityVisibilityMeters: keep.communityVisibilityMeters || others.find(site => site.communityVisibilityMeters)?.communityVisibilityMeters || null,
+      communityRating: keep.communityRating || others.find(site => site.communityRating)?.communityRating || null,
+      communityDives: keep.communityDives || others.find(site => site.communityDives)?.communityDives || 0,
+      communityDiveMinutes: keep.communityDiveMinutes || others.find(site => site.communityDiveMinutes)?.communityDiveMinutes || null,
+      structuredCurrent: keep.structuredCurrent || others.find(site => site.structuredCurrent)?.structuredCurrent || '',
+      structuredAccess: keep.structuredAccess || others.find(site => site.structuredAccess)?.structuredAccess || '',
+      structuredHazards: [...new Set([...(keep.structuredHazards || []), ...others.flatMap(site => site.structuredHazards || [])])],
+      structuredMooring: keep.structuredMooring || others.find(site => site.structuredMooring)?.structuredMooring || '',
+      structuredFee: Boolean(keep.structuredFee || others.some(site => site.structuredFee)),
+      structuredAccessEase: keep.structuredAccessEase || others.find(site => site.structuredAccessEase)?.structuredAccessEase || '',
+      structuredEntryDetails: [...new Set([...(keep.structuredEntryDetails || []), ...others.flatMap(site => site.structuredEntryDetails || [])])],
       ...(keep.note || others.some(site => site.note) ? { note: keep.note || others.find(site => site.note).note } : {}),
       sources: [...(keep.sources || []), ...others.flatMap(site => site.sources || [])],
     });

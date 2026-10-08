@@ -56,3 +56,9 @@ metro.log
 /.claude/worktrees/
 /.codex/
 /clean-rebuild.sh
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
