@@ -9,6 +9,7 @@ import { colors, spacing, radii } from '../../theme';
 import { GEAR_STORAGE_KEY } from './storage';
 import { normalizeGearState } from './model';
 import { ADVICE_DEFAULTS, DIVE_USES, advicePreferenceError, coldDiverTemplate, normalizeAdvicePreferences, orderedTemperatureRange, recommendDiveGear } from './diveAdvice';
+import { buildDiveDayAdvice } from '../oceanAtlas/diveDayAdvice';
 
 export const ADVICE_PREFERENCES_KEY = '@dmz-scuba/gear-advice/v1';
 const KEY = ADVICE_PREFERENCES_KEY;
@@ -32,7 +33,7 @@ export default function GearAdviceSheet({ context = {}, preferencesOnly = false,
   const [state, setState] = useState(null), [prefs, setPrefs] = useState(ADVICE_DEFAULTS);
   const [editing, setEditing] = useState(preferencesOnly), [draft, setDraft] = useState(null);
   const [error, setError] = useState(''), [retry, setRetry] = useState(0), [saving, setSaving] = useState(false);
-  const [use, setUse] = useState(''), [depth, setDepth] = useState(''), [bottom, setBottom] = useState('');
+  const [use, setUse] = useState('Open water'), [depth, setDepth] = useState(''), [bottom, setBottom] = useState('');
   const [longDive, setLongDive] = useState(false), [expanded, setExpanded] = useState(null);
   const [outfitOpen, setOutfitOpen] = useState(null);
   const [conditionsOpen, setConditionsOpen] = useState(false);
@@ -67,16 +68,19 @@ export default function GearAdviceSheet({ context = {}, preferencesOnly = false,
   const bottomC = fromTemp(bottom), depthM = numeric(depth) == null ? null : numeric(depth) / (feet ? 3.28084 : 1);
   const invalidPlan = (bottom !== '' && (bottomC == null || bottomC < -2 || bottomC > 40)) || (depth !== '' && (depthM == null || depthM < 0 || depthM > 300));
   const result = state ? recommendDiveGear(state, prefs, { ...context, use, bottomTemperatureC: bottomC, depthMeters: depthM, longDive }) : null;
+  const dayPlan = buildDiveDayAdvice({ weather: context.weather, waterTemperatureC: bottomC ?? context.temperatureC,
+    exposureLabel: result?.advice?.label, motionSensitive: prefs.motionSensitive, marine: context.marine === true });
   const updateSuitRange = (id, min, max) => setDraft(old => ({ ...old, suits: { ...old.suits, [id]: { ...old.suits[id], min, max } } }));
   const updateCombination = (id, patch) => setDraft(old => ({ ...old, combinations: old.combinations.map(entry => entry.id === id ? { ...entry, ...patch } : entry) }));
   return <KeyboardAvoidingView style={[styles.screen, { paddingTop: insets.top, paddingBottom: insets.bottom }]} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-    <View style={styles.header}><Text style={styles.title}>{editing ? 'Your dive preferences' : 'Gear for this dive'}</Text><Button label="Close" onPress={onClose} /></View>
+    <View style={styles.header}><Text style={styles.title}>{editing ? 'Your dive preferences' : 'Dive-day gear plan'}</Text><Button label="Close" onPress={onClose} /></View>
     <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag">
       {error ? <Copy warning>{error}</Copy> : null}
       {!state ? error ? <Button label="Try again" onPress={() => setRetry(value => value + 1)} /> : <ActivityIndicator color={colors.cyan} /> : editing ? <>
         <Copy>Teach the Atlas how you actually dive. Ranges describe your personal comfort, not a manufacturer’s rating or proof of training. Saved setups are never changed.</Copy>
         <FormField label={`Prefer a drysuit below (${tempUnit})`} value={draft.threshold} keyboardType="numbers-and-punctuation" onChangeText={threshold => setDraft(old => ({ ...old, threshold }))} />
         <ChoiceGroup label="How do you tend to feel in the water?" choices={['I run cold', 'Typical', 'I run warm']} value={{ cold: 'I run cold', typical: 'Typical', warm: 'I run warm' }[draft.thermalTendency]} onChange={value => setDraft(old => ({ ...old, thermalTendency: { 'I run cold': 'cold', Typical: 'typical', 'I run warm': 'warm' }[value] }))} />
+        <ChoiceGroup label="Are you prone to motion sickness on boats?" choices={['No', 'Yes']} value={draft.motionSensitive ? 'Yes' : 'No'} onChange={value => setDraft(old => ({ ...old, motionSensitive: value === 'Yes' }))} />
         <Copy>Cold or warm shifts provisional exposure guidance and your drysuit threshold by about 4°F / 2°C toward more or less insulation. This is an editable planning preference, not a physiological rating. Your saved combinations use actual water temperature. Deep inland dives remain conservative until bottom conditions are confirmed.</Copy>
         <Button label={combinationsOpen ? 'Hide temperature combinations' : `Temperature combinations · optional${draft.combinations.length ? ` (${draft.combinations.length})` : ''}`} onPress={() => setCombinationsOpen(value => !value)} />
         {combinationsOpen ? <>
@@ -100,8 +104,9 @@ export default function GearAdviceSheet({ context = {}, preferencesOnly = false,
       </> : <>
         <Text style={styles.heading}>{context.name || 'Your next dive'}</Text>
         <Copy>{context.month == null ? '' : `${new Date(2026, context.month, 1).toLocaleString('en', { month: 'long' })} · `}{context.temperatureC == null ? 'Water temperature unavailable' : `${displayTemp(context.temperatureC)}${tempUnit} monthly surface estimate`}{context.broad ? ' · Broad location: choose a specific site for depth and terrain guidance.' : ''}</Copy>
+        <View style={[styles.card, styles.dayPlan]}><Text style={styles.eyebrow}>CONDITIONS → WHAT TO PACK</Text><Text style={styles.heading}>{dayPlan.headline}</Text>{dayPlan.items.map(item => <View key={item.kind} style={styles.planRow}><Text style={styles.planTitle}>{item.title}</Text><Copy>{item.detail}</Copy></View>)}</View>
         <ChoiceGroup label="What dive are you planning?" choices={DIVE_USES} value={use} onChange={setUse} />
-        <Copy>A deep site or wreck is not automatically a technical or penetration dive. Choose your actual plan.</Copy>
+        <Copy>Open water is the starting assumption. Change it when your actual plan is technical, overhead or freediving; a deep site or wreck is not automatically a technical or penetration dive.</Copy>
         <Button label={conditionsOpen ? 'Hide dive conditions' : 'Refine depth, bottom temperature or duration'} onPress={() => setConditionsOpen(value => !value)} />
         {conditionsOpen ? <>
         <FormField label={`Planned depth (${feet ? 'ft' : 'm'}, optional)`} value={depth} keyboardType="numbers-and-punctuation" onChangeText={setDepth} helper={context.site?.maxDepthMeters && !context.site.depthIsWholeLake ? `Published maximum: ${Math.round(context.site.maxDepthMeters * (feet ? 3.28084 : 1))} ${feet ? 'ft' : 'm'}; not your planned depth.` : 'Confirm depth and conditions with the local operator.'} />
@@ -110,7 +115,7 @@ export default function GearAdviceSheet({ context = {}, preferencesOnly = false,
         </> : bottom || depth || longDive ? <Copy>{[depth && `${depth} ${feet ? 'ft' : 'm'} planned`, bottom && `${bottom}${tempUnit} at depth`, longDive && 'Long / repetitive'].filter(Boolean).join(' · ')}</Copy> : null}
         <View style={styles.card}><Text style={styles.eyebrow}>EXPOSURE STARTING POINT</Text><Text style={styles.heading}>{result.advice.label}</Text><Copy>{result.advice.temperatureBasis}</Copy>{result.advice.reasons.map(reason => <Copy key={reason}>{reason}</Copy>)}</View>
         <Button label="Personalize my gear matches" onPress={edit} />
-        {invalidPlan ? <Copy warning>Check your planned depth and bottom temperature before viewing gear matches.</Copy> : !use ? <Copy>Choose your planned dive type above to see setup suggestions.</Copy> : <>
+        {invalidPlan ? <Copy warning>Check your planned depth and bottom temperature before viewing gear matches.</Copy> : <>
           <Text style={styles.heading}>From your Gear Locker</Text>
           {!result.ranked.length ? <Copy>No matching saved setup yet. Add gear to a setup and tell us its dive uses in Your dive preferences. Technical and overhead matches require your explicit designation.</Copy> : null}
           {result.ranked.map((entry, index) => <View key={entry.setup.id} style={styles.card}><Text style={styles.eyebrow}>{index === 0 ? 'CLOSEST STARTING POINT' : 'ALTERNATIVE'} · {entry.setup.type.toUpperCase()}</Text><Text style={styles.heading}>{entry.setup.name}</Text>{entry.combination ? <Copy>{entry.combination.name} · your temperature combination</Copy> : null}<Copy>{entry.suit ? `Exposure: ${[entry.suit, ...entry.layers].map(item => item.name).join(' + ')}` : 'Exposure protection still needed'}</Copy>{entry.changes.length ? <Copy>Bring instead / add: {entry.changes.map(item => item.name).join(', ')}</Copy> : <Copy>Keep the saved gear combination.</Copy>}{entry.removed.length ? <Copy>Leave from this proposal: {entry.removed.map(item => item.name).join(', ')}</Copy> : null}{entry.warnings.map(warning => <Copy warning key={warning}>{warning}</Copy>)}<Button label={expanded === entry.setup.id ? 'Hide proposed gear' : `View ${entry.items.length} proposed items`} onPress={() => setExpanded(expanded === entry.setup.id ? null : entry.setup.id)} />{expanded === entry.setup.id ? entry.items.map(item => <Copy key={item.id}>{item.name} · {item.category}</Copy>) : null}</View>)}
@@ -135,6 +140,9 @@ const styles = StyleSheet.create({
   copy: { color: colors.muted, fontSize: 14, lineHeight: 21 },
   warning: { color: colors.warning },
   card: { backgroundColor: colors.surface, borderRadius: radii.md, padding: spacing.md, gap: spacing.sm, borderWidth: 1, borderColor: colors.line },
+  dayPlan: { borderColor: colors.cyan, backgroundColor: colors.surfaceSoft },
+  planRow: { gap: 2, paddingTop: spacing.sm, borderTopWidth: 1, borderColor: colors.line },
+  planTitle: { color: colors.text, fontSize: 15, fontWeight: '700' },
   button: { backgroundColor: colors.surfaceSoft, padding: spacing.sm, minHeight: 44, justifyContent: 'center', borderRadius: radii.sm, borderWidth: 1, borderColor: colors.line },
   selected: { borderColor: colors.cyan },
   buttonText: { color: colors.cyan, fontWeight: '700', textAlign: 'center' },

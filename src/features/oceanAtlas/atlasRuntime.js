@@ -765,12 +765,12 @@ export function atlasRuntime(DATA, MODEL) {
   }
   const spec = (label, value, detail = '') => `<div class="spec"><span class="spec-k">${label}</span><div class="spec-v"><strong>${value}</strong>${detail ? `<span>${detail}</span>` : ''}</div></div>`;
   const EST = '<em class="est">est.</em>';
-  // This month in one card: water temperature, what to wear and a way into the diver's own Gear Locker.
+  // This month in one card: water temperature and the exposure starting point.
   function thisMonth(site, ng) {
     const w = ng.wear?.[state.month], water = monthWater(site, ng), inland = ng.guide?.inland;
     const label = w?.label && w.label !== 'Confirm water temperature' ? (/mm$/.test(w.label) ? `${w.label} wetsuit` : w.label) : 'Plan your exposure protection';
     const why = w?.reason || (water != null ? `${inland ? 'Estimated surface water' : 'Average surface water'} · colder at depth${w?.personal ? ' · adjusted for how you feel the cold' : ''}` : 'No water temperature here — confirm it locally');
-    return `<div class="section-label">This month · ${months[state.month]}</div><button id="gear-for-dive" class="month-card"><span class="mc-top"><span class="mc-temp">${inland?.ice.includes(state.month) ? '❄' : temp(water)}<small>${inland ? 'water · est.' : 'surface'}</small></span><span class="mc-wear"><small>What to wear</small><strong>${esc(label)}</strong></span></span><span class="mc-why">${esc(why)}</span><b>Match it to my Gear Locker →</b></button>`;
+    return `<div class="section-label">Water this month · ${months[state.month]}</div><div class="month-card"><span class="mc-top"><span class="mc-temp">${inland?.ice.includes(state.month) ? '❄' : temp(water)}<small>${inland ? 'water · est.' : 'surface'}</small></span><span class="mc-wear"><small>Exposure starting point</small><strong>${esc(label)}</strong></span></span><span class="mc-why">${esc(why)}</span></div>`;
   }
   function waterYear(site, ng) {
     const inland = ng.guide?.inland;
@@ -1006,22 +1006,33 @@ export function atlasRuntime(DATA, MODEL) {
   function weatherCard(weather) {
     if (!weather || weather.status === 'loading') return `<section class="forecast loading" aria-live="polite"><div class="forecast-loading"><i></i><span><strong>Surface forecast</strong><small>Loading conditions at this site…</small></span></div></section>`;
     if (weather.status !== 'ready' || !weather.data?.hours?.length) return `<section class="forecast unavailable"><span class="forecast-mark">↻</span><span><strong>Surface forecast unavailable</strong><small>The rest of the site guide is still available. Try again when you have a connection.</small></span></section>`;
-    const data = weather.data, hours = data.hours, now = hours[0];
+    const data = weather.data, hours = data.hours, now = hours[0], marine = data.marine?.hours?.[0];
     const symbol = code => /thunder/.test(code) ? ['ϟ', 'Thunderstorms'] : /snow|sleet/.test(code) ? ['✣', 'Snow or sleet'] : /rain|shower/.test(code) ? ['╱', 'Rain showers'] : /fog/.test(code) ? ['≋', 'Fog'] : /partlycloud/.test(code) ? ['◒', 'Partly cloudy'] : /cloudy/.test(code) ? ['●', 'Cloudy'] : /fair/.test(code) ? ['◐', 'Fair'] : ['○', 'Clear'];
     const [mark, condition] = symbol(now.symbolCode || '');
     const compass = degrees => Number.isFinite(degrees) ? ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(((degrees % 360) + 360) % 360 / 45) % 8] : '—';
     const wind = Number.isFinite(now.windSpeedMps) ? `${Math.round(now.windSpeedMps * (imperial ? 2.23694 : 3.6))} ${imperial ? 'mph' : 'km/h'}` : '—';
     const rain = hours.slice(0, 6).reduce((sum, hour) => sum + (Number.isFinite(hour.precipitationMm) ? hour.precipitationMm : 0), 0);
     const rainText = rain > 0 && rain < .1 ? '&lt;0.1 mm' : `${rain.toFixed(rain >= 10 ? 0 : 1)} mm`;
+    const uv = Math.max(...hours.slice(0, 12).map(hour => Number.isFinite(hour.uvIndexClearSky) ? hour.uvIndexClearSky : 0));
     const points = [0, 3, 6, 9].map((offset, index) => hours[Math.min(offset, hours.length - 1)] ? { ...hours[Math.min(offset, hours.length - 1)], offset: index ? `+${offset}h` : 'Now' } : null).filter(Boolean);
     const timeline = points.map(point => { const [glyph, label] = symbol(point.symbolCode || ''); return `<span title="${esc(label)}"><small>${point.offset}</small><b>${glyph}</b><strong>${temp(point.airTemperatureC)}</strong></span>`; }).join('');
     const source = data.source || { name: 'MET Norway', url: 'https://api.met.no/', license: 'CC BY 4.0' };
     return `<section class="forecast">
-      <div class="forecast-head"><span class="forecast-mark">${mark}</span><div><small>Surface forecast · now</small><strong>${esc(condition)}</strong></div><em>${temp(now.airTemperatureC)}</em></div>
-      <div class="forecast-stats"><span><small>Wind</small><strong>${esc(wind)}</strong><b>${compass(now.windDirectionDeg)}</b></span><span><small>Next 6h rain</small><strong>${rainText}</strong><b>${Number.isFinite(now.humidityPercent) ? `${Math.round(now.humidityPercent)}% humidity` : ''}</b></span><span><small>Sky</small><strong>${Number.isFinite(now.cloudPercent) ? `${Math.round(now.cloudPercent)}% cloud` : '—'}</strong><b>${Number.isFinite(now.pressureHpa) ? `${Math.round(now.pressureHpa)} hPa` : ''}</b></span></div>
+      <div class="forecast-head"><span class="forecast-mark">${mark}</span><div><small>Surface forecast · now</small><strong>${esc(condition)}${Number.isFinite(now.apparentTemperatureC) ? ` · feels ${temp(now.apparentTemperatureC)}` : ''}</strong></div><em>${temp(now.airTemperatureC)}</em></div>
+      <div class="forecast-stats"><span><small>Wind</small><strong>${esc(wind)}</strong><b>${compass(now.windDirectionDeg)}</b></span><span><small>Next 6h rain</small><strong>${rainText}</strong><b>${Number.isFinite(now.humidityPercent) ? `${Math.round(now.humidityPercent)}% humidity` : ''}</b></span><span><small>Clear-sky UV</small><strong>${uv ? uv.toFixed(1) : '—'}</strong><b>${uv >= 8 ? 'very high' : uv >= 6 ? 'high' : uv >= 3 ? 'moderate' : uv ? 'low' : ''}</b></span><span><small>Open-ocean waves</small><strong>${marine ? `${marine.waveHeightM.toFixed(1)} m` : '—'}</strong><b>${marine?.wavePeriodS ? `${marine.wavePeriodS.toFixed(0)} s period` : 'model unavailable'}</b></span></div>
       <div class="forecast-line">${timeline}</div>
-      <div class="forecast-foot"><span>Atmospheric surface forecast — not waves, current, visibility or dive clearance.</span><a href="${esc(source.url)}">${esc(source.name)} · ${esc(source.license)} ↗</a></div>
+      <div class="forecast-foot"><span>Forecast guidance, not dive clearance. Offshore waves can differ at the entry, reef, harbor or lee shore; confirm locally.</span><a href="${esc(source.url)}">${esc(source.name)} · ${esc(source.license)} ↗</a>${data.marine?.source ? `<a href="${esc(data.marine.source.url)}">${esc(data.marine.source.name)} · ${esc(data.marine.source.license)} ↗</a>` : ''}</div>
     </section>`;
+  }
+  function diveDayGearCard(site, ng) {
+    const water = monthWater(site, ng), wear = ng.wear?.[state.month];
+    const label = wear?.label && wear.label !== 'Confirm water temperature' ? (/mm$/.test(wear.label) ? `${wear.label} wetsuit` : wear.label) : 'Confirm exposure protection';
+    const marine = !ng.guide?.inland && ng.profile?.water !== 'fresh';
+    const loading = !ng.weather || ng.weather.status === 'loading';
+    const plan = buildDiveDayAdvice({ weather: ng.weather?.data, waterTemperatureC: water, exposureLabel: label, motionSensitive: ng.comfort?.motionSensitive === true, marine: marine && !loading });
+    if (loading) plan.items.splice(1, 0, { kind: 'weather', tone: 'neutral', title: 'Surface recommendations loading…', detail: 'Wind, temperature, UV, rain and sea-state guidance will appear here when the site forecast arrives.' });
+    const marks = { water: '≈', warmth: '▰', recovery: '◇', rain: '╱', sun: '☼', heat: '☼', boat: '≋', motion: '↝' };
+    return `<section class="day-plan"><div class="day-plan-head"><span><small>Dive-day gear plan</small><strong>${esc(plan.headline)}</strong></span><b>Conditions → what to pack</b></div><div class="day-plan-list">${plan.items.map(item => `<div class="day-item tone-${item.tone}"><i>${marks[item.kind] || '•'}</i><span><strong>${esc(item.title)}</strong><small>${esc(item.detail)}</small></span></div>`).join('')}</div><button id="gear-for-dive">Match my saved Gear Locker setup →</button></section>`;
   }
   function conditionsTab(site, ng) {
     const region = ng.profile?.region, vis = siteVis(ng), current = siteCurrent(ng), depth = siteDepth(site, ng);
@@ -1036,7 +1047,7 @@ export function atlasRuntime(DATA, MODEL) {
       `Community average${ng.community.loggedDives ? ` across ${ng.community.loggedDives.toLocaleString()} logged dives` : ''} — not a recommended limit`));
     if (current) rows.push(spec('Current', `${esc(current.value)}${current.estimated ? ` ${EST}` : ''}`, current.estimated ? `Typical for ${esc(region?.name || 'the area')} — wind and waves can change it` : ''));
     const notes = region?.notes?.length ? `<div class="section-label">Good to know</div><ul class="see-list">${region.notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : '';
-    return weatherCard(ng.weather) + thisMonth(site, ng) + seasonStrip(ng) + (rows.length ? `<div class="section-label">In the water</div><div class="specs">${rows.join('')}</div>` : '') + waterYear(site, ng) + notes;
+    return weatherCard(ng.weather) + diveDayGearCard(site, ng) + thisMonth(site, ng) + seasonStrip(ng) + (rows.length ? `<div class="section-label">In the water</div><div class="specs">${rows.join('')}</div>` : '') + waterYear(site, ng) + notes;
   }
   function lifeTab(site, ng) {
     const g = glanceParts(ng.ratings), deep = (siteDepth(site, ng)?.meters || 0) > 12;
@@ -1270,7 +1281,7 @@ export function atlasRuntime(DATA, MODEL) {
     if (s.kind === 'site' && s.custom) body += `<p class="note">Conditions and marine life here come from the waters around this pin. Confirm access, entry and hazards locally.</p><button class="cluster-zoom" id="remove-my-site">Remove from My sites</button>`;
     $('detail-body').innerHTML = body;
     if ($('remove-my-site')) $('remove-my-site').onclick = () => post('deleteMySite', { id: s.id, name: s.name });
-    if ($('gear-for-dive')) $('gear-for-dive').onclick = () => post('gearAdvice', { id: s.kind === 'site' ? s.id : null, name: s.name, latitude: s.latitude, longitude: s.longitude, month: state.month });
+    if ($('gear-for-dive')) $('gear-for-dive').onclick = () => post('gearAdvice', { key: guideKey(s), id: s.kind === 'site' ? s.id : null, name: s.name, latitude: s.latitude, longitude: s.longitude, month: state.month });
     pinHeader();
     $('sheet').scrollTop = scroll;
     $('detail-body').querySelectorAll('[data-dive]').forEach(button => button.onclick = () => post('openDive', { id: button.dataset.dive }));
@@ -1553,7 +1564,7 @@ export function atlasRuntime(DATA, MODEL) {
     } else if (message.type === 'siteGuide') {
       if (message.key) {
         const previous = siteGuides.get(message.key);
-        siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, diver: message.diver || null, profile: message.profile || null, community: message.community || null, structured: message.structured || null, weather: previous?.weather || { status: 'loading' } });
+        siteGuides.set(message.key, { guide: message.guide, places: message.places || [], ratings: message.ratings || null, photo: message.photo || null, facts: message.facts || null, protection: message.protection || [], seafloor: message.seafloor || null, shore: message.shore || null, bathymetry: message.bathymetry || null, lakeDepth: message.lakeDepth || null, nearbyDepths: message.nearbyDepths || null, wear: message.wear || null, comfort: message.comfort || null, diver: message.diver || null, profile: message.profile || null, community: message.community || null, structured: message.structured || null, weather: previous?.weather || { status: 'loading' } });
       }
       if (selected && ['site', 'area'].includes(selected.kind) && guideKey(selected) === message.key) renderDetails();
     } else if (message.type === 'siteWeather') {

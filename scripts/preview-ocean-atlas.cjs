@@ -32,7 +32,9 @@ http.createServer((request, response) => {
   }
   if (request.url.startsWith('/__site-weather?')) {
     const params = new URL(request.url, 'http://127.0.0.1').searchParams;
-    fetchSiteWeather(Number(params.get('latitude')), Number(params.get('longitude')))
+    const guide = buildSiteGuide(Object.fromEntries(params), { units: unitSystem(settings) });
+    const marine = !guide.guide?.inland && guide.profile?.water !== 'fresh';
+    fetchSiteWeather(Number(params.get('latitude')), Number(params.get('longitude')), { marine })
       .then(weather => {
         response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
         response.end(JSON.stringify(weather));

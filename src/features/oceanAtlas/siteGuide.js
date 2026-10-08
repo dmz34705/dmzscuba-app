@@ -42,6 +42,7 @@ export function buildSiteGuide(request, { origin = null, units, advicePrefs, div
     key: String(request.key || '').slice(0, 120),
     guide: { temps: guide.temps, highlights: guide.highlights, animals: guide.animals, hasObservations: guide.hasObservations, inland: profile },
     wear,
+    comfort: { motionSensitive: prefs.motionSensitive === true },
     // No published depth: the modelled seafloor at the pin (finer NOAA / EMODnet first) sets the experience level.
     ratings: { ...siteRatings(site, guide, { originPoint: origin, inland: profile, life, units,
       estimatedDepthMeters: record ? SITE_BATHYMETRY.sites[record.id]?.[0] ?? SITE_SEAFLOOR.sites[record.id]?.[0] ?? null : null }), inland: profile },

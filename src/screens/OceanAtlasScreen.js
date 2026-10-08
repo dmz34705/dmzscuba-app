@@ -38,6 +38,7 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
   const ready = useRef(false);
   const locating = useRef(false);
   const logRequest = useRef(0);
+  const weatherByKey = useRef(new Map());
   const allowedDiveIds = useRef(new Set());
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -193,7 +194,8 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
       const point = site || { latitude: message.latitude, longitude: message.longitude, topologies: [] };
       const inland = isInland(point) ? inlandProfile(point) : null;
       const temperatureC = inland ? inland.surface?.[month] ?? null : seasonGuide(point).temps?.[month] ?? null;
-      setGearAdvice({ site: point, inland, temperatureC, month, broad: !site, name: site?.name || String(message.name || 'This location').slice(0, 200) });
+      const weather = weatherByKey.current.get(String(message.key || '').slice(0, 120)) || null;
+      setGearAdvice({ site: point, inland, temperatureC, month, broad: !site, name: site?.name || String(message.name || 'This location').slice(0, 200), weather, marine: !inland && site?.environment !== 'fresh' });
     }
     else if (message.type === 'placeAt' && validCoordinate(message.latitude, message.longitude)) {
       let place = null;
@@ -225,12 +227,15 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
       send({ type: 'regionGuide', key: `${message.kind}:${message.id.slice(0, 60)}`, guide });
     } else if (message.type === 'siteGuide' && validCoordinate(message.latitude, message.longitude)) {
       const key = String(message.key || '').slice(0, 120);
+      let guidePayload = null;
       try {
-        send({ type: 'siteGuide', ...buildSiteGuide(message, { origin: origin.current, units: unitsRef.current, advicePrefs: advicePrefs.current, diver: diver.current }) });
+        guidePayload = buildSiteGuide(message, { origin: origin.current, units: unitsRef.current, advicePrefs: advicePrefs.current, diver: diver.current });
+        send({ type: 'siteGuide', ...guidePayload });
       } catch { send({ type: 'siteGuide', key, guide: null, places: [] }); }
       send({ type: 'siteWeather', key, status: 'loading' });
-      fetchSiteWeather(message.latitude, message.longitude)
-        .then(weather => send({ type: 'siteWeather', key, status: 'ready', weather }))
+      const marine = !guidePayload?.guide?.inland && guidePayload?.profile?.water !== 'fresh';
+      fetchSiteWeather(message.latitude, message.longitude, { marine })
+        .then(weather => { weatherByKey.current.set(key, weather); send({ type: 'siteWeather', key, status: 'ready', weather }); })
         .catch(() => send({ type: 'siteWeather', key, status: 'error' }));
     }
     else if (message.type === 'deleteMySite' && typeof message.id === 'string') {

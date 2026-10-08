@@ -139,7 +139,7 @@ for (const [name, svg] of Object.entries(diagramProfiles)) {
   assert.ok(!/<script|\son\w+=|\shref=/i.test(svg), `${name} profile must stay self-contained and script-free.`);
 }
 const runtimeRaw = `const DIAGRAM_PROFILES=${JSON.stringify(diagramProfiles)};\n`
-  + ['model.js', 'rendering.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(runtimeRoot, name), 'utf8').replace(/^export /gm, '')).join('\n');
+  + ['model.js', 'rendering.js', 'diveDayAdvice.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(runtimeRoot, name), 'utf8').replace(/^export /gm, '')).join('\n');
 assert.equal(runtimeSourceHash, require('node:crypto').createHash('sha1').update(runtimeRaw).digest('hex'), 'Regenerate the browser runtime after changes (npm run bundle:ocean-atlas).');
 assert.equal((html.match(/<script>/g) || []).length, 2);
 assert.ok(!html.includes('<script src='), 'No third-party JavaScript can read personal pins.');

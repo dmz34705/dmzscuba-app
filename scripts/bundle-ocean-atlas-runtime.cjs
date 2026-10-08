@@ -10,7 +10,7 @@ const diagramProfiles = Object.fromEntries(['wreck', 'cenote', 'reef', 'inland']
   fs.readFileSync(path.join(diagramDir, `${name}.svg`), 'utf8'),
 ]));
 const raw = `const DIAGRAM_PROFILES=${JSON.stringify(diagramProfiles)};\n`
-  + ['model.js', 'rendering.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(root, name), 'utf8').replace(/^export /gm, '')).join('\n');
+  + ['model.js', 'rendering.js', 'diveDayAdvice.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(root, name), 'utf8').replace(/^export /gm, '')).join('\n');
 
 // Minify the WebView shell runtime; Atlas datasets are transferred separately on native. Top-level names are kept
 // because document.js calls atlasRuntime(DATA, { temperatureAt, regionAt, … }) by name.

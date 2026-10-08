@@ -39,6 +39,7 @@ assert.equal(A.ADVICE_DEFAULTS.combinations.length, 0, 'A cold-diver template mu
 assert.equal(A.normalizeAdvicePreferences({}).drysuitBelowC, E.DEFAULT_DRYSUIT_BELOW_C);
 assert.equal(A.advicePreferenceError(A.normalizeAdvicePreferences(A.coldDiverTemplate())), '');
 assert.equal(A.normalizeAdvicePreferences({ runsCold: true }).thermalTendency, 'cold', 'Preserve earlier cold preference on migration.');
+assert.equal(A.normalizeAdvicePreferences({ motionSensitive: true }).motionSensitive, true, 'Boat motion sensitivity remains an explicit opt-in preference.');
 const warmDiver = A.recommendDiveGear(state, { ...prefs, thermalTendency: 'warm' }, { temperatureC: 17 });
 const coldDiver = A.recommendDiveGear(state, { ...prefs, thermalTendency: 'cold' }, { temperatureC: 17 });
 assert.equal(warmDiver.advice.dry, false);
