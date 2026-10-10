@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Alert,
   Animated,
+  FlatList,
   Image,
   Keyboard,
   Modal,
@@ -118,6 +119,8 @@ import { shareLogbookExport } from '../features/diveLog/shareLogbookExport';
 
 const DIVE_MODE_LABELS = { oc: 'Open circuit', ccr: 'Closed circuit', scr: 'Semi-closed', gauge: 'Gauge', freedive: 'Freedive' };
 const WATER_TYPE_LABELS = { salt: 'Salt', fresh: 'Fresh' };
+const GALLERY_INITIAL_PHOTO_BATCH = 32;
+const GALLERY_PHOTO_BATCH_SIZE = 32;
 
 // ---------------------------------------------------------------------------
 // Form <-> record mapping
@@ -2266,16 +2269,54 @@ function BatchPhotoReviewModal({ review, dives, units, saving, progress, onCance
   );
 }
 
+function PhotoViewerPage({ photo, width }) {
+  const [loading, setLoading] = useState(true);
+  const [failed, setFailed] = useState(false);
+  const [attempt, setAttempt] = useState(0);
+
+  useEffect(() => {
+    setLoading(true);
+    setFailed(false);
+  }, [photo.uri, attempt]);
+
+  return (
+    <View style={[styles.photoViewerPage, { width }]}>
+      <Image
+        key={`${photo.uri}#${attempt}`}
+        source={{ uri: photo.uri }}
+        style={styles.photoViewerImage}
+        resizeMode="contain"
+        onLoadStart={() => { setLoading(true); setFailed(false); }}
+        onLoadEnd={() => setLoading(false)}
+        onError={() => { setLoading(false); setFailed(true); }}
+      />
+      {loading ? (
+        <View style={styles.photoViewerStatus} pointerEvents="none">
+          <ActivityIndicator color={colors.cyan} />
+          <Text style={styles.photoViewerStatusText}>Loading full-resolution photo…</Text>
+        </View>
+      ) : null}
+      {failed ? (
+        <View style={styles.photoViewerStatus}>
+          <Text style={styles.photoViewerErrorTitle}>Photo unavailable</Text>
+          <Text style={styles.photoViewerStatusText}>It may still need to download from iCloud or the original link may need recovery.</Text>
+          <SecondaryButton label="Try again" onPress={() => setAttempt((value) => value + 1)} style={styles.photoViewerRetry} />
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
 function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMeta }) {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
-  const scrollRef = useRef(null);
+  const listRef = useRef(null);
   const current = photos[index] || null;
 
   // Keep the pager on the active photo when the index changes from outside
   // (e.g. a photo was removed and the list shifted).
   useEffect(() => {
-    scrollRef.current?.scrollTo({ x: index * width, animated: false });
+    listRef.current?.scrollToIndex({ index, animated: false });
   }, [index, width]);
 
   if (!current) return null;
@@ -2288,24 +2329,29 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMet
             <Text style={styles.photoViewerClose}>Done</Text>
           </Pressable>
         </View>
-        <ScrollView
-          ref={scrollRef}
+        <FlatList
+          ref={listRef}
+          data={photos}
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          contentOffset={{ x: index * width, y: 0 }}
+          initialScrollIndex={index}
+          initialNumToRender={1}
+          maxToRenderPerBatch={1}
+          windowSize={3}
+          removeClippedSubviews
+          keyExtractor={(photo, itemIndex) => `${photo.id || photo.uri}#${itemIndex}`}
+          getItemLayout={(_, itemIndex) => ({ length: width, offset: width * itemIndex, index: itemIndex })}
+          renderItem={({ item }) => <PhotoViewerPage photo={item} width={width} />}
+          onScrollToIndexFailed={({ index: failedIndex }) => {
+            listRef.current?.scrollToOffset({ offset: failedIndex * width, animated: false });
+          }}
           onMomentumScrollEnd={(e) => {
             const next = Math.round(e.nativeEvent.contentOffset.x / width);
             if (next !== index) onIndex(next);
           }}
           style={styles.photoViewerPager}
-        >
-          {photos.map((photo) => (
-            <View key={photo.id} style={[styles.photoViewerPage, { width }]}>
-              <Image source={{ uri: photo.uri }} style={styles.photoViewerImage} resizeMode="contain" />
-            </View>
-          ))}
-        </ScrollView>
+        />
         {renderMeta ? <View style={styles.photoViewerMeta}>{renderMeta(current)}</View> : null}
         <View style={[styles.photoViewerActions, { paddingBottom: Math.max(insets.bottom, spacing.lg) }]}>
           {onRemove ? (
@@ -2390,6 +2436,7 @@ function PhotoGalleryView({
   const [sortKey, setSortKey] = useState(DEFAULT_GALLERY_SORT);
   const [columnCount, setColumnCount] = useState(DEFAULT_GALLERY_COLUMNS);
   const [gridWidth, setGridWidth] = useState(0);
+  const [renderLimit, setRenderLimit] = useState(GALLERY_INITIAL_PHOTO_BATCH);
   const columnCountRef = useRef(DEFAULT_GALLERY_COLUMNS);
   const pinchRef = useRef(null);
 
@@ -2454,11 +2501,16 @@ function PhotoGalleryView({
     const kept = (photos || []).filter((photo) => matchingIds.has(photo.diveId));
     return sortGalleryPhotos(kept, diveById, sortKey);
   }, [photos, matchingIds, diveById, sortKey]);
+  const renderedPhotos = useMemo(() => visible.slice(0, renderLimit), [visible, renderLimit]);
   const diveCount = useMemo(() => new Set(visible.map((p) => p.diveId)).size, [visible]);
   const hasLegacyPhotoLinks = (photos || []).some((photo) => !isManagedDivePhotoUri(photo.uri));
 
   const availableGridWidth = gridWidth || Math.max(0, width - spacing.lg * 2);
   const tile = galleryTileSize(availableGridWidth, columnCount);
+
+  useEffect(() => {
+    setRenderLimit(GALLERY_INITIAL_PHOTO_BATCH);
+  }, [filter, sortKey]);
 
   if (photos == null) return <Text style={styles.muted}>Loading photos…</Text>;
 
@@ -2522,7 +2574,7 @@ function PhotoGalleryView({
             onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}
             style={[styles.galleryGrid, { gap: GALLERY_GRID_GAP }]}
           >
-            {visible.map((photo, i) => {
+            {renderedPhotos.map((photo, i) => {
               const row = diveById.get(photo.diveId);
               return (
                 <Pressable
@@ -2542,6 +2594,13 @@ function PhotoGalleryView({
               );
             })}
           </View>
+          {renderedPhotos.length < visible.length ? (
+            <SecondaryButton
+              label={`Load ${Math.min(GALLERY_PHOTO_BATCH_SIZE, visible.length - renderedPhotos.length)} more photos`}
+              onPress={() => setRenderLimit((limit) => Math.min(visible.length, limit + GALLERY_PHOTO_BATCH_SIZE))}
+              style={styles.galleryLoadMore}
+            />
+          ) : null}
         </>
       )}
 
@@ -3676,6 +3735,10 @@ const styles = StyleSheet.create({
   photoViewerPager: { flex: 1 },
   photoViewerPage: { alignItems: 'center', height: '100%', justifyContent: 'center' },
   photoViewerImage: { height: '100%', width: '100%' },
+  photoViewerStatus: { alignItems: 'center', backgroundColor: 'rgba(4,18,27,0.92)', borderRadius: 16, gap: 10, left: spacing.xl, padding: spacing.lg, position: 'absolute', right: spacing.xl },
+  photoViewerErrorTitle: { color: colors.text, fontSize: 17, fontWeight: '900' },
+  photoViewerStatusText: { color: colors.muted, fontSize: 13, lineHeight: 19, textAlign: 'center' },
+  photoViewerRetry: { alignSelf: 'stretch', marginTop: 4 },
   photoViewerActions: { flexDirection: 'row', gap: 12, padding: spacing.lg },
   photoViewerButton: { flex: 1 },
   photoViewerMeta: { gap: 4, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
@@ -3696,6 +3759,7 @@ const styles = StyleSheet.create({
   galleryZoomHint: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
   galleryZoomHintText: { color: colors.faint, fontSize: 10, fontWeight: '700' },
   galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 6 },
+  galleryLoadMore: { marginTop: spacing.md },
   galleryTile: { borderRadius: 10, overflow: 'hidden' },
   galleryThumb: { backgroundColor: colors.surface, height: '100%', width: '100%' },
   galleryTileTag: { backgroundColor: 'rgba(0,0,0,0.5)', bottom: 0, left: 0, paddingHorizontal: 4, paddingVertical: 2, position: 'absolute', right: 0 },

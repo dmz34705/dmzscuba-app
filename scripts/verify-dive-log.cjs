@@ -1676,6 +1676,18 @@ function memoryStorage(seed = {}) {
   // Full-screen viewer is a swipeable pager over all the dive's photos, always
   // has a Close button, and shows the same depth/site footer as the gallery.
   assert.match(screen, /pagingEnabled/);
+  assert.match(screen, /<FlatList/);
+  assert.match(screen, /initialNumToRender=\{1\}/);
+  assert.match(screen, /maxToRenderPerBatch=\{1\}/);
+  assert.match(screen, /windowSize=\{3\}/);
+  assert.doesNotMatch(
+    screen.match(/function PhotoViewerModal[\s\S]*?\/\/ The dive-data footer/)?.[0] || '',
+    /photos\.map/,
+    'The full-screen viewer must not mount every original photo at once.',
+  );
+  assert.match(screen, /GALLERY_INITIAL_PHOTO_BATCH/);
+  assert.match(screen, /Load .* more photos/);
+  assert.match(screen, /Photo unavailable/);
   assert.match(screen, /<PhotoViewerModal\s+photos=\{dive\.photos\}/);
   assert.match(screen, /label="Close" onPress=\{onClose\}/);
   assert.match(screen, /function PhotoMetaBody/);
