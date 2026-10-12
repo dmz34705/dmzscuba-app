@@ -1,0 +1,308 @@
+{
+ "batch": "popular-panama-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-rbuddo",
+   "name": "Wahoo",
+   "sources": {
+    "s1": {
+     "url": "https://panamadivecenter.com/coiba-national-park-dive-sites/",
+     "publisher": "Panama Diving Center",
+     "kind": "operator",
+     "quote": "In Wahoo it is worth looking up and around you again and again, since plankton can often accumulate here, which then attracts the big stars to snack. Even without \"the big ones\", Wahoo, with its many reef fish, moray eels and turtles, is always worth a dive."
+    },
+    "s2": {
+     "url": "https://coiba-island.com/best-diving-sites-coiba-island-panama/",
+     "publisher": "Coiba-Island.com",
+     "kind": "operator",
+     "quote": "Wahoo Rock 18–35 m (60–115 ft) Advanced Strong currents, pelagic action, reef sharks, big schools, occasional rays and whale sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 35
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef sharks, moray eels, turtles; plankton draws whale sharks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents on an exposed seamount",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An exposed offshore rock in Coiba National Park known for strong current and pelagic action. Reef sharks, morays and turtles gather along steep faces, and plankton can pull in bigger visitors; advanced divers only.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-3tqd2e",
+   "name": "Buffet",
+   "sources": {
+    "s1": {
+     "url": "https://panamadivecenter.com/coiba-national-park-dive-sites/",
+     "publisher": "Panama Diving Center",
+     "kind": "operator",
+     "quote": "Buffet is one of the highlights of the Coiba National Park and one of our personal favorites. Along the buoy line one descends to about 12 meters, from where the reef begins and extends to a depth of about 28 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 28
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Sharks resting on sand, morays, barracuda and jacks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ayijk6",
+   "name": "Faro",
+   "sources": {
+    "s1": {
+     "url": "https://panamadivecenter.com/coiba-national-park-dive-sites/",
+     "publisher": "Panama Diving Center",
+     "kind": "operator",
+     "quote": "Due to its exposed location at the western tip of Isla Canales, we often come across currents in this dive spot. The special thing about Faro is that it has both, shallower areas at the ends that allow easy entry, and a wonderful reef that descends to depths of around 30 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 30
+    }
+   ],
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Frequent currents; good fitness needed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Big-eye jacks, snappers; mantas and whale sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-e6ark6",
+   "name": "Punta Deseo",
+   "sources": {
+    "s1": {
+     "url": "https://panamadivecenter.com/coiba-national-park-dive-sites/",
+     "publisher": "Panama Diving Center",
+     "kind": "operator",
+     "quote": "Punta Deseo, which translates as \"Wish Point\", is increasingly living up to its name. We usually drop the anchor in the sandy area of the first part of the reef at about 6 to 7 meters. … everyone else can reach depths to up to 18 meters. … the rock formation, which extends to a depth of 22 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 22
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Sharks resting on sand, turtles; whale sharks with plankton",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2g6ryp",
+   "name": "La lengua",
+   "sources": {
+    "s1": {
+     "url": "https://panamadivecenter.com/coiba-national-park-dive-sites/",
+     "publisher": "Panama Diving Center",
+     "kind": "operator",
+     "quote": "This diving spot is suitable for both beginners and advanced divers. The sandy entry point, where we usually drop anchor, is around 4-5 meters deep, and you are then able to leisurely drop into deeper regions to up to 25 meters. … the many reef fish that feel comfortable in La Lengua."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dozing sharks along a short wall; morays, turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-4yz1mc",
+   "name": "Isla Frijoles",
+   "sources": {
+    "s1": {
+     "url": "https://panamadivecenter.com/coiba-national-park-dive-sites/",
+     "publisher": "Panama Diving Center",
+     "kind": "operator",
+     "quote": "Once the anchor is in position, we descend along the line to about 10 meters. From there you can decide whether you want remain in the shallows along the reef or follow the gravel-covered sand bottom to the deep reef at over 25 meters."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Boulder reef with jacks, barracuda, resting sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2q4np6",
+   "name": "Iglesia",
+   "sources": {
+    "s1": {
+     "url": "https://panamadivecenter.com/coiba-national-park-dive-sites/",
+     "publisher": "Panama Diving Center",
+     "kind": "operator",
+     "quote": "in Iglesia (Church) you can see one of Coiba’s greatest biodiversity, especially if there is a little bit of current. … you can easily explore the area up to 12 meters. … you can easily dive up to 30 meters"
+    },
+    "s2": {
+     "url": "https://coiba-island.com/best-diving-sites-coiba-island-panama/",
+     "publisher": "Coiba-Island.com",
+     "kind": "operator",
+     "quote": "Iglesia (Ranchería area) 15–30 m (50–100 ft) Intermediate / Advanced Rocky “cathedral” formations, mixed reef and blue-water, reef fish, sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock formations with reef sharks and turtles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef of separate rock formations linked by sand in Coiba National Park, dived anywhere from 12 to 30 m. Rock walls and overhangs create cathedral-like passages with reef sharks and turtles, best with a little current.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-w4dazj",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-g8bx4h",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

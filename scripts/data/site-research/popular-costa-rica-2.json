@@ -1,0 +1,178 @@
+{
+ "batch": "popular-costa-rica-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-r5ekch",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-ybxjy7",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-ppw3ri",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-cqafvc",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-f2s9z9",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-r7r4xc",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-a5zfrg",
+   "name": "Bat Island: Big Scare, Gran Susto",
+   "sources": {
+    "sdc": {
+     "url": "https://www.scuba-dive-costa-rica.com/bat-islands-islas-murcielago/",
+     "publisher": "Rocket Frog Divers",
+     "kind": "operator",
+     "quote": "Due to the possibility of strong currents, this area is not recommended for the new diver, and the dives can be quite deep, sometimes reaching over 100 feet (30 meters)."
+    },
+    "ltc": {
+     "url": "https://letstravelcostarica.com/diving-in-playas-del-coco/",
+     "publisher": "Lets Travel Costa Rica",
+     "kind": "press",
+     "quote": "You will usually dive the “Big Scare” first, where you will descend to 30 meters quite quickly in sometimes rough conditions with no anchor line. For this reason, some dive shops in Playas del Coco will only take advanced divers to this location."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sdc",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "ltc",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "ltc"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "sdc"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bull sharks",
+     "refs": [
+      "sdc"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents and rough conditions; no anchor line",
+     "refs": [
+      "sdc",
+      "ltc"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep, current-prone dive at the outermost Bat Island, famous as Costa Rica's bull shark site. Descents are fast in rough water without an anchor line, so operators usually restrict it to advanced divers.",
+    "refs": [
+     "sdc",
+     "ltc"
+    ]
+   }
+  },
+  {
+   "id": "odm-xsuiwg",
+   "name": "Alcyone, Cocos Island",
+   "sources": {
+    "vci": {
+     "url": "http://www.visitcocosisland.com/bajo-alcyone/",
+     "publisher": "Visit Cocos Island",
+     "kind": "operator",
+     "quote": "Bajo Alcyone is one of the few dive sites in Cocos Island where you can see the endemic Cocos Barnacle Blenny … Maximum Depth: 30 meters (100 feet) Average Depth: 25 meters (82 feet)"
+    },
+    "cr": {
+     "url": "https://media.costarica.com/activities/cocos-island-dive-sites",
+     "publisher": "Costa Rica Tourism Board",
+     "kind": "agency",
+     "quote": "Alcyone is one of the deepest cleaning stations at Cocos Island. Depth: 90-120 feet; visibility: 65 feet."
+    },
+    "dan": {
+     "url": "https://dan.org/alert-diver/article/cocos-island/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "Alcyone is one of the top dive sites in the world. It is a small, isolated seamount off the island’s southern coast. Looking up from its 90-foot-deep high points, you’ll see hundreds of scalloped hammerhead sharks silhouetted overhead in the sweeping currents. There’s a mooring line that is a must for descending, especially when the current is strong. Two cleaning stations have developed here"
+    }
+   },
+   "depth": [
+    {
+     "ref": "vci",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "cr",
+     "unit": "ft",
+     "top": 90,
+     "bottom": 120
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "dan"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "dan"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "dan"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hundreds of scalloped hammerheads at cleaning stations",
+     "refs": [
+      "dan"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong, sweeping currents; mooring line needed to descend",
+     "refs": [
+      "dan"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An isolated seamount off the south coast of Cocos Island whose summit sits around 27 m, home to a hammerhead cleaning station. Strong current makes the mooring line essential, so it is a dive for experienced divers.",
+    "refs": [
+     "dan",
+     "cr"
+    ]
+   }
+  }
+ ]
+}

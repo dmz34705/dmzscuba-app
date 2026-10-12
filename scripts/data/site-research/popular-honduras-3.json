@@ -1,0 +1,651 @@
+{
+ "batch": "popular-honduras-3",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-9ic20k",
+   "reason": "page spells the name differently and a second page places a Lighthouse Reef elsewhere"
+  },
+  {
+   "id": "odm-mnj1q8",
+   "reason": "only banned directories describe Bando Beach"
+  },
+  {
+   "id": "odm-wlqbbu",
+   "reason": "sources only cover a combined Jack Neil - Madelene's site; unclear which pin"
+  },
+  {
+   "id": "odm-myht6s",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-2daifo",
+   "reason": "only banned/directory listings"
+  },
+  {
+   "id": "odm-oqkz7g",
+   "reason": "single passing mention, no facts"
+  },
+  {
+   "id": "odm-2pfxih",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-stva3h",
+   "reason": "only an unreliable page with conflicting top depth"
+  },
+  {
+   "id": "odm-so4s8c",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-9n4629",
+   "reason": "combined Jack Neil site; unclear which pin"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-uavx82",
+   "name": "Black Coral Wall",
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Black coral from about 25 ft; deep wall on the south side",
+   "highlights": [
+    {
+     "text": "Black coral at about 25 ft, unusually shallow",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Macro subjects for photographers",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A south-side wall named for black coral growing unusually shallow, from around 25 ft, with one of the deeper drop-offs on that coast. The sandy reef top is full of juvenile fish and a favourite with macro photographers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Black Coral Wall The site is named after the black coral that can be found around 25 ft (much shallower than typical) … one of the deepest walls on the south side of the island"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/the-best-dive-sites-in-utila/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Black Coral Wall and Pretty Bush, both macro photographers’ dreams"
+    }
+   }
+  },
+  {
+   "id": "odm-rbcd62",
+   "name": "Moon Hole",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 35
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Round sand crater ringed by shallow reef",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Crustaceans and octopus",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Moon Hole - Rons Wreck The site gets its name from the large round sandy crater surrounded by shallow reef … The maximum depth in the sand is 35 ft … a large variety of crustaceans and octopus"
+    }
+   }
+  },
+  {
+   "id": "odm-d3qfa6",
+   "name": "Little Bight",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 70
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Seahorses, pipefish, garden eels, southern stargazer",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Little Bight The site has a wide sand channel that starts from the beach … reef walls that start at 15 ft and gradually get deeper until they reach 70 ft … the rare Southern Stargazer"
+    }
+   }
+  },
+  {
+   "id": "odm-fpn5jz",
+   "name": "Airport Caves",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-through caverns with glassy sweepers",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Seahorses and toadfish on the reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A south-side reef wall off the old airstrip with a U-shaped swim-through cave around 15 ft and a sandy floor sloping to roughly 70 ft. Glassy sweepers shelter inside, and seahorses, stingrays and eagle rays are common.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Airport Caves The reef wall drops to about 40 ft and then extends into a sandy floor that slopes to about 70 ft. … The cave is at 15 feet. … Sea Horses and Toad Fish"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/the-best-dive-sites-in-utila/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Airport Caves offers beautiful caverns and swim-throughs, with hundreds of glassy sweepers hiding inside."
+    }
+   }
+  },
+  {
+   "id": "odm-hpj90l",
+   "name": "The Halliburton (Wreck)",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "penetration": {
+    "value": "Several areas can be entered and explored",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright wreck with many nooks and crannies",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deliberately sunk ship standing upright on sand near the mouth of Utila harbour, with the bridge top near 65 ft and the seabed around 100 ft. Several compartments can be explored and it is full of small marine life.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Halliburton … its deepest point is at a 100 ft … the top of the 3-tiered bridge is at 65 ft … several interesting areas of the wreck that can be entered and explored"
+    },
+    "s2": {
+     "url": "https://techdivetravels.com/top-destinations/dive-sites-north-america/dive-sites-in-utila/",
+     "publisher": "Tech Dive Travels",
+     "kind": "press",
+     "quote": "The Halliburton Wreck is a purposely sunk cargo ship that sits upright on a sandy bottom at approximately 30 meters (100 feet). … The Halliburton Wreck has numerous nooks and crannies where divers can find hidden treasures."
+    }
+   }
+  },
+  {
+   "id": "odm-g730ni",
+   "name": "Ted's Point",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 60
+    }
+   ],
+   "depthNote": "Wall to about 40 ft; sailboat wreck at about 60 ft",
+   "highlights": [
+    {
+     "text": "Small sunken sailboat at about 60 ft",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Groupers, blue tang, morays, eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Ted's Point The top of the reef is shallow at about 10-15 ft … A small sunken sailboat wreck can be found at about 60 ft. … Groupers, Blue Tang and Green Moray Eels"
+    }
+   }
+  },
+  {
+   "id": "odm-a86wi6",
+   "name": "Big Rock",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 90
+    }
+   ],
+   "depthNote": "Sand slopes to 60-90 ft",
+   "highlights": [
+    {
+     "text": "Flounder, seahorses, pipefish and garden eels",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Big Rock … The top of the reef is at 10-15 ft but the sand slopes down to between 60-90 ft … Flounder, Sea Horses, Pipe Fish and Pipe Horses, Garden Eels"
+    }
+   }
+  },
+  {
+   "id": "odm-vvg8ej",
+   "name": "Stingray Point",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 5,
+     "bottom": 130
+    }
+   ],
+   "depthNote": "Sand channel slopes from 20 ft to 130 ft",
+   "highlights": [
+    {
+     "text": "Healthy coral including huge pillar corals",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Seahorses and garden eels in the sand channel",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Stingray Point The top of the reef ranges from as little as 5 ft to about 25 ft … sloping down all the way to 130 ft … including huge pillar corals"
+    }
+   }
+  },
+  {
+   "id": "odm-m1t6m4",
+   "name": "Ron’s Wreck",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Crossing over the western wall and heading south leads to Ron's Wreck, a small fishing boat at about 60 ft, within a U-shaped reef wall with a gently sloping sandy bottom."
+    }
+   }
+  },
+  {
+   "id": "odm-yfty64",
+   "name": "Black Hills",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 130
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barracuda, spadefish, jacks and king mackerel",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Potentially strong current at depth",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A seamount a few miles off Utila's south shore, rising to about 35 ft and falling past 130 ft. Current brings schools of barracuda, jacks and spadefish, and strong flow means it is reserved for advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Black Hills The top of the sea mound is at 35 ft and it slopes down to 130 ft+ at its base. … there is often some current here … Barracuda, Atlantic Spade Fish, Horse-eyed Jacks, King Mackerel"
+    },
+    "s2": {
+     "url": "https://techdivetravels.com/top-destinations/dive-sites-north-america/dive-sites-in-utila/",
+     "publisher": "Tech Dive Travels",
+     "kind": "press",
+     "quote": "Black Hills is an underwater seamount located just a few miles off the southern shore of Utila. … Due to its depth and potential for strong currents, Black Hills is best suited for advanced divers."
+    }
+   }
+  },
+  {
+   "id": "odm-nvh4dd",
+   "name": "The Maze",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Maze-like channels with scorpionfish and lobster",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Cave at 70 ft with lionfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "The Maze The site is named after its unique maze-like channels that start at around 15 ft and drop down to 40 ft. … Towards the west there is a cave at 70 ft where Lion Fish often hide."
+    }
+   }
+  },
+  {
+   "id": "odm-zs8tsp",
+   "name": "Spotted Bay",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 90
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Nurse sharks, stingrays and eagle rays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Horseshoe-shaped sand channel leading to the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Spotted Bay The edge of the reef is at about 20 ft and then drops down to about 90 ft. … a horseshoe-shaped sand channel in the shallows … Nurse Sharks, Stingrays, Spotted Eagle Rays"
+    }
+   }
+  },
+  {
+   "id": "odm-n4t0w6",
+   "name": "Raggedy Cay",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Nurse sharks, turtles, morays and eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Raggedy Cay … The top of the reef is at 25 ft and the wall drops down to between 80-100 ft … Nurse Sharks, Turtles, Moray Eels, Spotted Eagle Rays"
+    }
+   }
+  },
+  {
+   "id": "odm-3y6sgu",
+   "name": "Duppy Waters",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 140
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large barrel sponges, big grouper and turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Duppy Waters … The top of the reef is at about 20-25 ft … the wall, which drops down to more than 140 ft … Large Barrel Sponges can be found along the wall"
+    }
+   }
+  },
+  {
+   "id": "odm-9f0m4x",
+   "name": "Iron Bound",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 50
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Swim-through at 40 ft",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Southern stingrays, snapper, grouper, morays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Iron Bound The top of the reef is at 10-15 ft and the wall then drops down to 50ft … an interesting swim thru at 40 ft … Southern Stingrays, Snapper, Grouper, Green Moray eels"
+    }
+   }
+  }
+ ]
+}

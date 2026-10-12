@@ -1,0 +1,67 @@
+{
+ "batch": "popular-cuba-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-xwznfg",
+   "name": "Jardines de la Reina",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Jardines_de_la_Reina",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Jardines de la Reina (English: Gardens of the Queen) is an archipelago in the southern part of Cuba"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An archipelago and national park, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-r6dqy8",
+   "name": "Los Mogotes",
+   "sources": {
+    "s1": {
+     "url": "https://cubandivingcenters.com/mogotes.php",
+     "publisher": "Cuban Diving Centers",
+     "kind": "operator",
+     "quote": "The reef wall at Mogotes is between 14 and 18m deep. Below the wall was a shallow ledge, and, as with most walls in the area, you find dozens of schooling tarpon and circling reefs sharks."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 14,
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schooling tarpon and circling reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-p2s8w2",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

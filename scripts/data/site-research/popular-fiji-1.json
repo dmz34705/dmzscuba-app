@@ -1,0 +1,285 @@
+{
+  "batch": "popular-fiji-1",
+  "researchedAt": "2026-10-08",
+  "skipped": [
+    {
+      "id": "odm-bjt43b",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-udfzc5",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-tx5bmy",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-imxfa1",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-lwlowy",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-ur7wrk",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-6ez200",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-cf3c6f",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-dv1fpv",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-6g6sy1",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-vnbjme",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-rex9r0",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-qyzhkx",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-9r2l75",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-qxr4nw",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-8jfdlf",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-cycvbc",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-zyhofd",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-gkgtzo",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-2m2uzu",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-8lc9mm",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-hd5awc",
+      "reason": "no usable non-banned source with site-specific facts"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-q9qgu7",
+      "name": "Mellow Yellow",
+      "sources": {
+        "pg": {
+          "url": "https://fijipocketguide.com/best-dive-sites-on-the-suncoast/",
+          "publisher": "Fiji Pocket Guide",
+          "kind": "press",
+          "quote": "Mellow Yellow … This underwater spectacle reaches depths between 10 to 30 m."
+        },
+        "dwwb": {
+          "url": "https://www.diveworldwide.com/locations/bligh-water",
+          "publisher": "Dive Worldwide",
+          "kind": "operator",
+          "quote": "Mellow Yellow is named after the vast numbers of yellow soft corals that cover the current facing is the pinnacle."
+        },
+        "da": {
+          "url": "https://diveadventures.com.au/region/fiji-rakiraki/",
+          "publisher": "Dive Adventures",
+          "kind": "operator",
+          "quote": "A sea of gold anthias, crimson sea fans and blue water add even more colour to this dive."
+        }
+      },
+      "depth": [
+        {
+          "ref": "pg",
+          "unit": "m",
+          "top": 10,
+          "bottom": 30
+        }
+      ],
+      "types": {
+        "value": [
+          "pinnacle"
+        ],
+        "refs": [
+          "dwwb"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Yellow soft corals cover the current-facing side",
+          "refs": [
+            "dwwb"
+          ]
+        },
+        {
+          "text": "Thick schools of anthias and crimson sea fans",
+          "refs": [
+            "da"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A Bligh Water pinnacle named for the yellow soft corals that smother its current-facing side. Anthias swarm around the rock and sea fans add colour, so it is best dived with some water movement.",
+        "refs": [
+          "dwwb",
+          "da"
+        ]
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "dwwb"
+        ]
+      }
+    },
+    {
+      "id": "odm-5ptebc",
+      "name": "Black Magic Mountain",
+      "sources": {
+        "pg": {
+          "url": "https://fijipocketguide.com/best-dive-sites-on-the-suncoast/",
+          "publisher": "Fiji Pocket Guide",
+          "kind": "press",
+          "quote": "At 18-30 m, this dive site is best for seasoned divers."
+        },
+        "da": {
+          "url": "https://diveadventures.com.au/region/fiji-rakiraki/",
+          "publisher": "Dive Adventures",
+          "kind": "operator",
+          "quote": "Named for the massive bushes of black corals blanketing this soaring pinnacle."
+        },
+        "bw": {
+          "url": "https://www.bluewaterdivetravel.com/resort/wananavu-fiji-scuba-diving-resort",
+          "publisher": "Bluewater Dive Travel",
+          "kind": "operator",
+          "quote": "huge schools of pelagic fish"
+        }
+      },
+      "depth": [
+        {
+          "ref": "pg",
+          "unit": "m",
+          "top": 18,
+          "bottom": 30
+        }
+      ],
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "pg"
+        ]
+      },
+      "types": {
+        "value": [
+          "pinnacle"
+        ],
+        "refs": [
+          "da"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Schools of big-eye jacks, barracuda and fusiliers",
+          "refs": [
+            "bw"
+          ]
+        },
+        {
+          "text": "Black coral bushes cover the pinnacle",
+          "refs": [
+            "da"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A tall Bligh Water pinnacle dived by experienced divers. It is better known for its crowds of schooling fish than for coral, with sharks and eagle rays often passing.",
+        "refs": [
+          "pg",
+          "bw"
+        ]
+      }
+    },
+    {
+      "id": "odm-w2h1ed",
+      "name": "Instant Replay",
+      "sources": {
+        "pg": {
+          "url": "https://fijipocketguide.com/best-dive-sites-on-the-suncoast/",
+          "publisher": "Fiji Pocket Guide",
+          "kind": "press",
+          "quote": "Instant Replay … The depth of this one is 15-25 m."
+        },
+        "tas": {
+          "url": "https://twoatsea.com/rakiraki-scuba-diving/",
+          "publisher": "Two at Sea",
+          "kind": "press",
+          "quote": "a wall of red and yellow soft corals so dense, waving softly in the current"
+        }
+      },
+      "depth": [
+        {
+          "ref": "pg",
+          "unit": "m",
+          "top": 15,
+          "bottom": 25
+        }
+      ],
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "tas"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Dense red and yellow soft coral wall",
+          "refs": [
+            "tas"
+          ]
+        },
+        {
+          "text": "Nudibranchs and pygmy seahorses for macro",
+          "refs": [
+            "pg"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A Rakiraki dive along a wall thick with red and yellow soft corals that sway in the current, with small macro life such as nudibranchs among the coral heads.",
+        "refs": [
+          "pg",
+          "tas"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,390 @@
+{
+  "batch": "popular-indonesia-5a",
+  "researchedAt": "2026-10-08",
+  "skipped": [],
+  "sites": [
+    {
+      "id": "odm-jmm5r5",
+      "name": "FRIWEN WALL",
+      "sources": {
+        "s1": {
+          "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/friwen/",
+          "publisher": "Lagaligo Liveaboard",
+          "kind": "operator",
+          "quote": "limestone that sink down under the water to 25 meters depth … Right at the start there is actually 2 small caves in the wall which are quite cool to check out."
+        },
+        "s2": {
+          "url": "https://divernet.com/content-marketing/local-guide-to-raja-ampat-dive-sites-friwin-wall/",
+          "publisher": "Divernet",
+          "kind": "press",
+          "quote": "Depths: 0.5m to 25m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 25
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 0.5,
+          "bottom": 25
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Macro life and many nudibranchs",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Two small caves at the start",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A limestone wall in the Dampier Strait that drops to about 25 m and turns into a sloping reef. It is known for macro life, with whip corals, fans and sponges, and is usually an easy dive.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-6ejd9q",
+      "name": "Mike’s Point",
+      "sources": {
+        "s1": {
+          "url": "https://divernet.com/world-dives/raja-ampat-dive-sites-mikes-point-2/",
+          "publisher": "Divernet",
+          "kind": "press",
+          "quote": "you can find a massive reef wall that extends to depths over 40m … subject to powerful currents that bring large schools of marine life"
+        },
+        "s2": {
+          "url": "https://rajaampatbiodiversity.com/top-5-raja-ampat-dive-sites-in-the-dampier-straight/",
+          "publisher": "Raja Ampat Biodiversity Eco Resort",
+          "kind": "operator",
+          "quote": "Mikes is known to have some of the strongest currents in Raja Ampat!"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 40
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "strong",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Colourful hard coral plateaus",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Powerful currents; dive at slack with a guide",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A pinnacle between Gam and Mansuar in the middle of the Dampier Strait, with a south wall past 40 m and a shallow coral plateau. It is current-swept and best on slack tide with an experienced guide.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-bh3uk7",
+      "name": "Alamanda",
+      "sources": {
+        "s1": {
+          "url": "https://www.amedwhitesanddivers.com/fun-dives/dive-sites-tulamben/",
+          "publisher": "Amed White Sand Divers",
+          "kind": "operator",
+          "quote": "Coral Slope next to the Tulamben Drop Off. … Huge sponges and table corals, all kinds of fish, moray eels, turtles, bumphead parrotfish."
+        },
+        "s2": {
+          "url": "https://baliaqua.com/bali-dive-sites/tulamben-diving/",
+          "publisher": "Bali Aqua",
+          "kind": "operator",
+          "quote": "5–30+ meters … Calm to light current, flexible entry/exit by boat"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 5,
+          "bottom": 30
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s2"
+        ]
+      },
+      "current": {
+        "value": "light",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Huge sponges and table corals",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Turtles, morays, bumphead parrotfish",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A coral slope beside the Tulamben drop-off with large sponges and table corals, turtles, morays and bumphead parrotfish. Conditions are calm with little current, and it is dived from a boat.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-rzove1",
+      "name": "Taket Malang",
+      "sources": {
+        "s1": {
+          "url": "https://www.gilidivers.com/fun-dives/dive-sites",
+          "publisher": "Gili Divers",
+          "kind": "operator",
+          "quote": "Dropping down to 40m you can explore the depths between the pinnacles … a large flat plane at 12m covered in huge barrel sponges, bommies and sea fans"
+        },
+        "s2": {
+          "url": "https://www.divecentralgili.com/sites-best-places-to-go-underwater-location-trawangan-meno-air",
+          "publisher": "Dive Central Gili",
+          "kind": "operator",
+          "quote": "Maximum depth: 40m"
+        },
+        "s3": {
+          "url": "https://www.starfish.ch/dive/Lombok.html",
+          "publisher": "Starfish (Zubi)",
+          "kind": "operator",
+          "quote": "the plateau lies on about 10m, but drops down to 40m."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 40
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 40
+        },
+        {
+          "ref": "s3",
+          "unit": "m",
+          "top": 10,
+          "bottom": 40
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "pinnacle"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Hawksbill and green turtles",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Barrel sponges, bommies and sea fans on the plateau",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A seamount-style dive north of the Gilis with a plateau at about 10-12 m covered in barrel sponges and sea fans, dropping to 40 m between pinnacles and canyons. Turtles are the star attraction.",
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      }
+    },
+    {
+      "id": "odm-5j289m",
+      "name": "Bio Rocks",
+      "sources": {
+        "s1": {
+          "url": "https://www.gilidivers.com/fun-dives/dive-sites",
+          "publisher": "Gili Divers",
+          "kind": "operator",
+          "quote": "hosting pipefish, juvenile frogfish, flatworms and crustaceans"
+        },
+        "s2": {
+          "url": "https://www.divecentralgili.com/sites-best-places-to-go-underwater-location-trawangan-meno-air",
+          "publisher": "Dive Central Gili",
+          "kind": "operator",
+          "quote": "Average depth: 15m … Maximum depth: 25m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 25
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Pipefish, juvenile frogfish, flatworms",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Corals growing on bio rock frames",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A shallow artificial reef of submerged metal frames off east Gili Trawangan, now encrusted with coral. It is a relaxed macro dive with pipefish, juvenile frogfish and flatworms, reaching about 25 m at most.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-ps4trz",
+      "name": "Gili Biaha, Candidasa",
+      "sources": {
+        "s1": {
+          "url": "https://baliaqua.com/bali-dive-sites/gili-tepekong-mimpang-diving/",
+          "publisher": "Bali Aqua",
+          "kind": "operator",
+          "quote": "10–40+ meters … Moderate to very strong current, downcurrent risk in canyon, big surge."
+        },
+        "s2": {
+          "url": "https://www.aquamarinediving.com/bali-diving/dive-sites/padangbai/",
+          "publisher": "Aqua Marine Diving",
+          "kind": "operator",
+          "quote": "Sharks are often sighted around Mimpang, Tepekong, and Biaha."
+        }
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "strong",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Shark cave with resting reef sharks",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Pelagics and seasonal mola mola",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Surge and unpredictable up and down currents",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "An island off Padang Bai and Candidasa with swim-throughs, sharks and pelagics. Strong, unpredictable currents and surge make it a site for experienced divers with good buoyancy.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    }
+  ]
+}

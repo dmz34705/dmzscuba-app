@@ -1,0 +1,475 @@
+{
+  "batch": "popular-dominican-republic-1",
+  "researchedAt": "2026-10-09",
+  "skipped": [
+    {
+      "id": "odm-f3bmk9",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-aejdg0",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-10hakd",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-auekus",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-cl1j3o",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-3jecqj",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-9db3bt",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-bxdxuy",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-m7csey",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-zssx80",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-5v9e6f",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-3j2si1",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-17j6rb",
+      "reason": "no usable page found with site-specific facts"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-b8irph",
+      "sources": {
+        "s1": {
+          "url": "https://www.buceoenrepublicadominicana.com/en/dive-sites/atlantic-princess/",
+          "publisher": "Buceo en República Dominicana",
+          "kind": "operator",
+          "quote": "rests at a depth of about 12 meters … perfect and completely accessible for divers of all levels"
+        },
+        "s2": {
+          "url": "https://godivebayahibe.com/dive-sites-bayahibe/",
+          "publisher": "Go Dive Bayahibe",
+          "kind": "operator",
+          "quote": "Atlantic Princess … 39 ft / 12 m … The wavy seas during the hurricane season 2016 made the wreck even more unsafe to penetrate."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 12
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 12
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Penetration unsafe after storm damage",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "name": "Atlantic Princess (Wreck)"
+    },
+    {
+      "id": "odm-litzbk",
+      "sources": {
+        "s1": {
+          "url": "https://www.buceoenrepublicadominicana.com/en/dive-sites/atlantic-princess/",
+          "publisher": "Buceo en República Dominicana",
+          "kind": "operator",
+          "quote": "rests at a depth of about 12 meters … perfect and completely accessible for divers of all levels"
+        },
+        "s2": {
+          "url": "https://godivebayahibe.com/dive-sites-bayahibe/",
+          "publisher": "Go Dive Bayahibe",
+          "kind": "operator",
+          "quote": "Atlantic Princess … 39 ft / 12 m … The wavy seas during the hurricane season 2016 made the wreck even more unsafe to penetrate."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 12
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 12
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Penetration unsafe after storm damage",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "name": "Atlantic Princess Wreck (Bayahibe)"
+    },
+    {
+      "id": "odm-gfpa66",
+      "sources": {
+        "s1": {
+          "url": "https://jackcana.tours/en/diving-at-catalina-island/",
+          "publisher": "JackCana Tours",
+          "kind": "operator",
+          "quote": "At The Wall you can enjoy a 100-meter wall that plunges into the deepest part of the Caribbean Sea."
+        },
+        "s2": {
+          "url": "https://www.passionparadise.co/catalina-island/",
+          "publisher": "Passion Paradise",
+          "kind": "operator",
+          "quote": "The Wall is on the east side of Catalina Island and is a drop … 5 m (16 ft) … 40+ m (131+ ft)"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 5,
+          "bottom": 40
+        }
+      ],
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "summary": {
+        "text": "Drop-off on the east side of Catalina Island, reached by boat from La Romana or Bayahibe, where the wall falls away in steps into deep Caribbean water. Divers choose their depth to match certification.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "Catalina The Wall"
+    },
+    {
+      "id": "odm-bj9x3w",
+      "sources": {
+        "s1": {
+          "url": "https://www.passionparadise.co/catalina-island/",
+          "publisher": "Passion Paradise",
+          "kind": "operator",
+          "quote": "The Aquarium is on the west side of Catalina Island, starting at about 8m (26ft) … 12+ m (39+ ft)"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 8,
+          "bottom": 12
+        }
+      ],
+      "name": "Catalina Aquarium"
+    },
+    {
+      "id": "odm-qb0cq6",
+      "sources": {
+        "s1": {
+          "url": "https://godivebayahibe.com/dive-sites-bayahibe/",
+          "publisher": "Go Dive Bayahibe",
+          "kind": "operator",
+          "quote": "Viva Shallow … 16–29 ft / 5–9 m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 5,
+          "bottom": 9
+        }
+      ],
+      "name": "Viva Shallow"
+    },
+    {
+      "id": "odm-7dj3an",
+      "sources": {
+        "s1": {
+          "url": "https://godivebayahibe.com/dive-sites-bayahibe/",
+          "publisher": "Go Dive Bayahibe",
+          "kind": "operator",
+          "quote": "Saint George Wreck … 144 ft / 44 m … you have to be an Advanced Open Water Diver to visit this dive site"
+        },
+        "s2": {
+          "url": "https://www.scubafun.info/en/stgeorge.html",
+          "publisher": "ScubaFun",
+          "kind": "operator",
+          "quote": "The maximum depth is 40m (120ft)."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 44
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 40
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "St. George (Wreck)"
+    },
+    {
+      "id": "odm-u53v5n",
+      "sources": {
+        "s1": {
+          "url": "https://godivebayahibe.com/dive-sites-bayahibe/",
+          "publisher": "Go Dive Bayahibe",
+          "kind": "operator",
+          "quote": "Coco Reef … 39 ft / 12 m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 12
+        }
+      ],
+      "name": "Coco Reef"
+    },
+    {
+      "id": "odm-c0hocr",
+      "sources": {
+        "s1": {
+          "url": "https://www.scubaspotadvisor.com/en/diving-spots/dominican-republic/boca-chica/catuan-wreck-1345",
+          "publisher": "Scuba Spot Advisor",
+          "kind": "press",
+          "quote": "Catuan … at a maximum depth of 20 meters … This site is ideal for both beginner and experienced divers."
+        },
+        "s2": {
+          "url": "https://www.tropicalseadivers.com/en/",
+          "publisher": "Tropical Sea Divers",
+          "kind": "operator",
+          "quote": "Catuan … 22m … A small wreck near Boca Chica, resting in a beautiful coral reef."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 20
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 22
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "summary": {
+        "text": "Small tugboat of about 33 m sunk off Boca Chica in 2006 as an artificial reef, now encrusted with coral and resting around 20 m; suitable for a range of experience levels.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "Catuan (Wreck)"
+    },
+    {
+      "id": "odm-c4zgbs",
+      "sources": {
+        "s1": {
+          "url": "https://www.tropicalseadivers.com/en/",
+          "publisher": "Tropical Sea Divers",
+          "kind": "operator",
+          "quote": "Picadilly … 15-26m … From very shallow to fairly deep diving - suitable for everyone."
+        },
+        "s2": {
+          "url": "https://xpotours.com/en/5-dives-package-scuba-diving-boca-chica/",
+          "publisher": "Xpo Tours",
+          "kind": "operator",
+          "quote": "Since of its shallow depth, the \"Picadilly\" is especially popular among beginners."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 15,
+          "bottom": 26
+        }
+      ],
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "Picadilly"
+    },
+    {
+      "id": "odm-oxulny",
+      "sources": {
+        "s1": {
+          "url": "https://www.tropicalseadivers.com/en/",
+          "publisher": "Tropical Sea Divers",
+          "kind": "operator",
+          "quote": "Canyon … 12-26m … Fantastic dives through coral canyons."
+        },
+        "s2": {
+          "url": "https://xpotours.com/en/5-dives-package-scuba-diving-boca-chica/",
+          "publisher": "Xpo Tours",
+          "kind": "operator",
+          "quote": "Canyones … A naturally grown coral reef at 27m depth with a vertical drop of steep wall on the north side."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 12,
+          "bottom": 26
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 27
+        }
+      ],
+      "types": {
+        "value": [
+          "reef",
+          "wall"
+        ],
+        "refs": [
+          "s2"
+        ]
+      },
+      "name": "Canyones, Boca Chica"
+    },
+    {
+      "id": "odm-4l4qnp",
+      "sources": {
+        "s1": {
+          "url": "https://www.tropicalseadivers.com/en/",
+          "publisher": "Tropical Sea Divers",
+          "kind": "operator",
+          "quote": "Nitrox Garden … 18-40m … A great dive for those who want something deeper, with healthy corals and plenty of fish."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 18,
+          "bottom": 40
+        }
+      ],
+      "name": "Nitrox Garden"
+    },
+    {
+      "id": "odm-sbt5vf",
+      "sources": {
+        "s1": {
+          "url": "https://www.tropicalseadivers.com/en/",
+          "publisher": "Tropical Sea Divers",
+          "kind": "operator",
+          "quote": "Almendra … 12-50m … Almost a drop-off, with interesting rock and coral formations."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 12,
+          "bottom": 50
+        }
+      ],
+      "name": "Almendra"
+    }
+  ]
+}

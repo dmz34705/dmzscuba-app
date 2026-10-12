@@ -1,0 +1,8 @@
+{"batch":"popular-united-states-virgin-islands-2","researchedAt":"2026-10-09","skipped":[],
+"sites":[
+{"id":"odm-o3h2px","name":"French Cap Pinnacle",
+"sources":{"s1":{"url":"https://www.aadivers.com/scubadivesites.php","publisher":"Admiralty Dive Center (AA Divers)","kind":"operator","quote":"French Cap is an uninhabited island approximately 6 miles south of St. Thomas. Because it is unprotected, the seas must be relatively calm before we even THINK about going there. In 90 feet of water"}},
+"depth":[{"ref":"s1","unit":"ft","top":60,"bottom":90}],
+"entry":{"value":"boat","refs":["s1"]},
+"types":{"value":["pinnacle"],"refs":["s1"]},
+"hazards":[{"text":"Unprotected; dive only in calm seas","refs":["s1"]}]}]}

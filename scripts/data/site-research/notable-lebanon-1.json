@@ -1,0 +1,9 @@
+{"batch":"notable-lebanon-1","researchedAt":"2026-10-08","skipped":[],
+"sites":[{"id":"x-notable-1140","name":"HMS Victoria",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Victoria_(1887)","publisher":"Wikipedia","kind":"encyclopedia","quote":"140 metres (460 ft) of water"},
+"s2":{"url":"https://xray-mag.com/content/no-secret-victoria","publisher":"X-Ray Magazine","kind":"press","quote":"rising up from 140m to 77m with her bow deeply embedded in the thick layer of sediment … long decompression stops in 18° C (64F) cold water"}},
+"depth":[{"ref":"s1","unit":"m","bottom":140},{"ref":"s2","unit":"m","top":77,"bottom":140}],
+"types":{"value":["wreck"],"refs":["s2"]},
+"level":{"value":"technical","refs":["s2"]},
+"depthNote":"Stands vertically, stern about 77 m, bow in sediment at 140 m",
+"summary":{"text":"A Victorian battleship lost in a 1893 collision, standing upright with its bow buried in sediment off Tripoli. The stern is near 77 m and the wreck falls to about 140 m, so only trimix rebreather divers visit.","refs":["s1","s2"]}}]}

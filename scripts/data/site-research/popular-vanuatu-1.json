@@ -1,0 +1,217 @@
+{
+ "batch": "popular-vanuatu-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-kbhsgy",
+   "reason": "The Abyss not found on any fetched page"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-3j8n9y",
+   "name": "SS President Coolidge (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.diveplanit.com/dive-site/ss-president-coolidge",
+     "publisher": "Diveplanit",
+     "kind": "operator",
+     "quote": "Top: 20M Bottom: 70M. … It's a shore dive."
+    },
+    "s3": {
+     "url": "https://www.vanuatu.travel/diving-guide-4-days-in-espiritu-santo",
+     "publisher": "Vanuatu Tourism Office",
+     "kind": "agency",
+     "quote": "the wreck’s deepest point at 70 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 20,
+     "bottom": 70
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Serious decompression issues; deep wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 199 m WWII troopship lying on its side off Luganville, reached from the beach. The bow sits near 20 m and the stern near 70 m, so most of it is deep and involves deco. Holds, jeeps and 'The Lady' statue make it a multi-day wreck.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-4ht14c",
+   "name": "Million Dollar Point",
+   "sources": {
+    "s1": {
+     "url": "https://reefsmartguides.com/?p=24096",
+     "publisher": "Reefsmart Guides",
+     "kind": "press",
+     "quote": "Snorkel-friendly shallows down to depths exceeding 130 ft (40 m)."
+    },
+    "s2": {
+     "url": "https://pacificwrecks.com/location/vanuatu_million_dollar_point.html",
+     "publisher": "Pacific Wrecks",
+     "kind": "press",
+     "quote": "This is an extremely easy dive, either from the shore (so long as the seas are flat) or from a boat. … start following the wreckage to the west along the sand bottom (about 35 meters)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bulldozers, trucks and jeeps dumped after WWII",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A slope off Luganville where the US military pushed surplus vehicles and machinery into the sea after WWII. Easy from the beach in calm weather; wreckage runs from the shallows to about 35-40 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-gbencc",
+   "name": "West Side Story (Mele 2)",
+   "sources": {
+    "s1": {
+     "url": "https://www.vanuatu.travel/diving-guide-4-days-in-efate",
+     "publisher": "Vanuatu Tourism Office",
+     "kind": "agency",
+     "quote": "Long fingers covered in yellow, blue and green staghorn coral drop down to a depth of more than 30 metres. … This huge field of staghorn coral comes to within six metres of the surface."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 30
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Large staghorn coral field",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A big staghorn coral field near Hideaway Island off Efate, with the reef beginning about 6 m below the surface and falling away past 30 m. Damselfish and anemones live among the branches.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-ipf01g",
+   "name": "The Cathedral",
+   "sources": {
+    "s1": {
+     "url": "https://www.vanuatu.travel/diving-guide-4-days-in-efate",
+     "publisher": "Vanuatu Tourism Office",
+     "kind": "agency",
+     "quote": "The Cathedral is a striking tall narrow cavern, about a 20-minute boat ride from Port Vila. … The entrance to the cavern is tall and wide, about 22m deep at the sandy bottom"
+    },
+    "s2": {
+     "url": "https://www.diveplanit.com/vanuatu/port-vila",
+     "publisher": "Diveplanit",
+     "kind": "operator",
+     "quote": "an impressive tall narrow cavern stretching down to 28m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 22
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 28
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Chimney to the surface beyond the pulpit",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A tall, narrow cavern a short boat ride from Port Vila, with a wide entrance on a sandy floor around 22-28 m and a chimney that lets divers surface inside.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

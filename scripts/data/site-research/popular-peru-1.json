@@ -1,0 +1,39 @@
+{
+ "batch": "popular-peru-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-63oc8d",
+   "reason": "only banned directories found for Pucusana sites"
+  },
+  {
+   "id": "odm-jj2hlq",
+   "reason": "only banned directories found for Pucusana sites"
+  },
+  {
+   "id": "odm-ay7hwk",
+   "reason": "only banned directories found for Pucusana sites"
+  },
+  {
+   "id": "odm-oh0rhw",
+   "reason": "only banned directories found for Pucusana sites"
+  },
+  {
+   "id": "odm-ujkvnj",
+   "reason": "only banned directories found for Pucusana sites"
+  },
+  {
+   "id": "odm-ie5s1q",
+   "reason": "only banned directories found for Pucusana sites"
+  },
+  {
+   "id": "odm-x0gwb2",
+   "reason": "only banned directories found for Pucusana sites"
+  },
+  {
+   "id": "odm-9qn5j4",
+   "reason": "only banned directories found for Pucusana sites"
+  }
+ ],
+ "sites": []
+}

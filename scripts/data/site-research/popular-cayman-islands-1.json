@@ -1,0 +1,798 @@
+{
+ "batch": "popular-cayman-islands-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-iln4tb",
+   "reason": "listed by name only"
+  },
+  {
+   "id": "odm-zslhrm",
+   "reason": "listed by name only"
+  },
+  {
+   "id": "odm-s7urxt",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-14d8mi",
+   "reason": "only one source, shallow depth conflicts with catalog"
+  },
+  {
+   "id": "odm-fzi8xo",
+   "reason": "only one source, depth conflicts"
+  },
+  {
+   "id": "odm-vn206d",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-uqqe38",
+   "reason": "only one source"
+  },
+  {
+   "id": "odm-o66ymo",
+   "reason": "listed by name only"
+  },
+  {
+   "id": "odm-wleklw",
+   "reason": "same spot as Sunset House Reef; no separate source"
+  },
+  {
+   "id": "odm-30y3vs",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-b4sq09",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-5fbobf",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-d4culf",
+   "reason": "only one source, depth conflicts"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-7xo2eu",
+   "name": "Sunset House Reef",
+   "sources": {
+    "s1": {
+     "url": "https://sunsethouse.com/your-guide-to-coral-reef-diving-in-grand-cayman/",
+     "publisher": "Sunset House",
+     "kind": "operator",
+     "quote": "Sunset House Reef is accessible from the shore … The legendary Sunset House Reef is a haven for macro photography enthusiasts and offers incredible experiences at all times of day, including night dives"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Sunset (House) Reef / Siren of Amphitrite A popular shore dive, the reef has plenty of coral, sponges and sea whips to see while the 9 foot tall bronze mermaid statue"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Submerged bronze mermaid statue (Amphitrite)",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Macro life; good for night dives",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Coral, sponges and sea whips",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shore-entry house reef at Sunset House in George Town, popular for macro photography and night dives. Expect healthy coral, sponge and sea-whip growth, a nine-foot bronze mermaid statue underwater and a small landing-craft wreck nearby.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-8lm7ec",
+   "name": "USS Kittiwake (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Kittiwake_(ASR-13)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "At its most shallow, the wreck of Kittiwake was 15 feet (4.6 meters) below the water's surface and at its deepest, 64 feet (20 meters) below the surface"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Kittiwake Wreck Ranging in depth from 15 to 65 feet (5-20m) deep, this former US Navy submarine rescue vessel … The ship is 251 feet (76m) long and has 5 decks to explore"
+    },
+    "s3": {
+     "url": "https://www.walltowalldiving.com/top-10-dive-sites/",
+     "publisher": "Wall to Wall Diving",
+     "kind": "operator",
+     "quote": "Ex USS Kittiwake … The wreck has been made extremely diver friendly. So much so that you do not need to have a wreck certification to dive on it"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 64
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 65
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Five decks to explore; ex US Navy rescue ship",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Open, diver-friendly layout",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "access": {
+    "value": "Wreck certification not required; follow an instructor if not wreck-certified",
+    "refs": [
+     "s3"
+    ]
+   },
+   "summary": {
+    "text": "A 251 ft former US Navy submarine rescue ship sunk as an artificial reef off Seven Mile Beach in 2011. It lies in roughly 15 to 65 ft of water and was prepared for diving, so it suits recreational divers without wreck training.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-b8r5n8",
+   "name": "Oro Verde (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Oro Verde Wreck About 50 feet (15m) deep, this 184 foot (56m) long steel cargo vessel was sunk in 1980 and has since broken up"
+    },
+    "s2": {
+     "url": "https://diveredsailcayman.com/dive-sites/",
+     "publisher": "Red Sail Sports Cayman",
+     "kind": "operator",
+     "quote": "Paradise Reef/Oro Verde Wreck - max depth 50 feet"
+    },
+    "s3": {
+     "url": "https://sunsethouse.com/your-guide-to-coral-reef-diving-in-grand-cayman/",
+     "publisher": "Sunset House",
+     "kind": "operator",
+     "quote": "the nearby Oro Verde wreck too. This former Venezuelan freighter sitting on the seafloor has become an artificial reef where you may spot groupers, barracudas, and eagle rays"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 50
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "184 ft steel cargo ship, broken up against the reef",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Groupers, barracuda, eagle rays, jacks",
+     "refs": [
+      "s3",
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 184 ft steel freighter sunk in 1980 in about 50 ft of water just off Seven Mile Beach. Now broken up against the reef, it is a shallow wreck with jacks, groupers and eels, often dived together with neighbouring Paradise Reef.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-d34nh7",
+   "name": "Paradise Reef",
+   "sources": {
+    "s1": {
+     "url": "https://diveredsailcayman.com/dive-sites/",
+     "publisher": "Red Sail Sports Cayman",
+     "kind": "operator",
+     "quote": "Paradise Reef/Oro Verde Wreck - max depth 50 feet … Arguably one of the best shallow dive sites in Grand Cayman! Paradise reef is fantastic on it’s own"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Paradise Reef This relatively shallow site is about 35 feet (11m) deep and features a spur and groove coral reef covered in sponges and with plenty of fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spur-and-groove reef covered in sponges",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Dived with the nearby Oro Verde wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow spur-and-groove reef off Seven Mile Beach, covered in sponges and busy with fish. Boats usually pair it with the neighbouring Oro Verde wreck for an easy, shallow dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-n0h9g3",
+   "name": "Turtle Reef / Macabuca - Grand Cayman",
+   "sources": {
+    "s1": {
+     "url": "https://redsailcayman.com/the-ultimate-guide-to-diving-in-the-cayman-islands/",
+     "publisher": "Red Sail Sports Cayman",
+     "kind": "operator",
+     "quote": "Scuba diving at Turtle Reef, a mini wall with a sharp descent to around 60 feet, is a highlight"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mini-wall dropping to about 60 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cadn7u",
+   "name": "Devil’s Grotto North",
+   "sources": {
+    "s1": {
+     "url": "https://sunsethouse.com/your-guide-to-coral-reef-diving-in-grand-cayman/",
+     "publisher": "Sunset House",
+     "kind": "operator",
+     "quote": "Devil’s Grotto … huge, hulking coral heads with swim-throughs, caverns, and open chimneys … At its shallowest, Devil’s Grotto is only 14ft (four metres) deep … The maximum depth here is 50 feet (15 meters) and there is easy access from the shore"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Eden Rock / Devil’s Grotto Close to George Town and with a maximum depth of 45 feet (14m), these sites are very popular and are ideal for shore dives"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 14,
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 45
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "cavern",
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-throughs, caverns and chimneys in coral heads",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Silverside schools, tarpon and barracuda",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow shore dive off George Town built around big coral heads riddled with swim-throughs, caverns and chimneys. It tops out within a few feet of the surface, reaches about 45 to 50 ft, and is popular with beginners and snorkellers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-p5eqac",
+   "name": "Trinity Caves",
+   "sources": {
+    "s1": {
+     "url": "https://diveredsailcayman.com/dive-sites/",
+     "publisher": "Red Sail Sports Cayman",
+     "kind": "operator",
+     "quote": "Trinity Caves - max depth 100 feet … a series of 3 large, beautiful swim-throughs that weave in and out of the main reef, bringing you out on the wall at around 80 feet"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Trinity Caves This popular dive site, ranging in depth from 50 to 70 feet ( 15-21m) deep, has made the pages of dive magazines due to it’s trinity (three) of grottoes with long swim-throughs"
+    },
+    "s3": {
+     "url": "https://sunsethouse.com/your-guide-to-coral-reef-diving-in-grand-cayman/",
+     "publisher": "Sunset House",
+     "kind": "operator",
+     "quote": "Trinity Caves … labyrinthine passages and swim-throughs winding through the main reef"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Three long swim-throughs exiting onto the wall",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Moray eels and nudibranchs in side chambers",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A West Wall favourite where three long swim-throughs wind through the reef and emerge on the wall around 80 ft. The dive tops out near 100 ft and finishes on the wall top, with sponges, gorgonians, crustaceans and moray eels along the way.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-7sg6wb",
+   "name": "Doc Poulson (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Doc Poulson Wreck This former cable laying ship sits in 50 feet (15m) of water and is home to plenty of coral growth as well as young fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Former cable-laying ship covered in coral",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Young fish on the wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5l3hwm",
+   "name": "Aquarium - Grand Cayman",
+   "sources": {
+    "s1": {
+     "url": "https://diveredsailcayman.com/dive-sites/",
+     "publisher": "Red Sail Sports Cayman",
+     "kind": "operator",
+     "quote": "Aquarium North & South - max depth 50 feet … Aquarium North & South are always a great choice! Follow the coral fingers around at the start of your dive keeping an eye out in the sand for Garden Eels, Stingrays"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Aquarium (Reef) This relatively shallow site is about 35 feet (11m) deep and is home to lots of coral and tons of fish including sergeant majors, angelfish and snappers. A great spot for beginners"
+    },
+    "s3": {
+     "url": "https://sunsethouse.com/your-guide-to-coral-reef-diving-in-grand-cayman/",
+     "publisher": "Sunset House",
+     "kind": "operator",
+     "quote": "Aquarium, close to the Kittiwake wreck off Seven Mile Beach, is home to stunning coral formations, a wide range of tropical fish, and majestic sea turtles"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral fingers, garden eels and stingrays in the sand",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Dense fish life; sea turtles",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow reef next to the Kittiwake off Seven Mile Beach, with coral fingers, sand patches holding garden eels and stingrays, and thick schools of tropical fish. Easy depths make it a good choice for beginners.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-0h8fcy",
+   "name": "Eagle Ray Pass",
+   "sources": {
+    "s1": {
+     "url": "https://diveredsailcayman.com/dive-sites/",
+     "publisher": "Red Sail Sports Cayman",
+     "kind": "operator",
+     "quote": "Eagle Ray Pass - max depth 100 feet … Eagle Ray Pass is a deep coral chasm leading to the wall … a regular gathering place for Eagle Rays that cruise along the face of the wall"
+    },
+    "s2": {
+     "url": "https://www.walltowalldiving.com/top-10-dive-sites/",
+     "publisher": "Wall to Wall Diving",
+     "kind": "operator",
+     "quote": "Eagle Ray Pass: A firm favourite amongst regular Cayman divers. A spectacular canyonway cuts through the reef here and spills you onto the wall at 100ft … the top of the wall is only at 45ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral canyon spilling onto the wall",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Eagle rays cruising along the wall",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Sponges, gorgonians and black coral",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A North Wall dive where a coral canyon cuts through the reef and spills onto a near-vertical wall at about 100 ft, with the wall top only about 45 ft down. Eagle rays are regular visitors along the wall face.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-0cavlp",
+   "name": "Eagle Ray Rock",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Eagle Ray Rock Starting around 50 feet (15m) deep, this steep vertical wall has a cut and ravine feature along with colorful sponges, large coral pillars and plenty of rays"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cut and ravine on a steep vertical wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Colourful sponges, coral pillars, rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-1z8mif",
+   "name": "Big Dipper",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Big Dipper For advanced divers, this wall plunges more than 70 feet (21m) deep"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Rated for advanced divers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

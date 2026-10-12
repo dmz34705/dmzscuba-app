@@ -1,0 +1,144 @@
+{ "batch": "notable-australia-1", "researchedAt": "2026-10-08", "sites": [
+ { "id": "x-wikipedia-466", "name": "HMS J1",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_J1", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "is submerged in 38 metres (125 ft) of water" },
+   "s2": { "url": "https://divernet.com/world-dives/wreck-diving-with-a-twist-melbournes-hidden-submarine-fleet/", "publisher": "Divernet", "kind": "press", "quote": "It lies in 39m and points upwards, running east-west with an east facing bow, its keel on the sandy bottom. … While penetration is possible, it's considered very hazardous due to tight doorways and potential silt outs." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 38 }, { "ref": "s2", "unit": "m", "bottom": 39 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1"] },
+  "hazards": [ { "text": "Penetration very hazardous: tight doors, silt-outs", "refs": ["s2"] } ],
+  "summary": { "text": "A World War I J-class submarine scuttled in 1926 in the Victorian Ships' Graveyard off the Port Phillip Heads. It rests upright on a sandy seabed at about 38-39 m and suits experienced divers; entering the hull is risky.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-467", "name": "HMS J2",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_J2", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "submerged in 39 metres (128 ft) of water … accessible by experienced divers" },
+   "s2": { "url": "https://divernet.com/world-dives/wreck-diving-with-a-twist-melbournes-hidden-submarine-fleet/", "publisher": "Divernet", "kind": "press", "quote": "Lying on its keel at 38m, broken in two places with the section behind the conning tower having collapsed, … is considered the most hazardous for divers." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 39 }, { "ref": "s2", "unit": "m", "bottom": 38 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1"] },
+  "hazards": [ { "text": "Fine silt and collapsed sections inside the hull", "refs": ["s2"] } ],
+  "summary": { "text": "The deepest of the Port Phillip J-class submarine wrecks, lying on its keel at roughly 38-39 m in the Ships' Graveyard. The hull is broken in places, so it is treated as an experienced-diver dive with silting risk if entered.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-468", "name": "HMS J4",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_J4", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "is submerged in 27 metres (89 ft) of water" },
+   "s2": { "url": "https://divernet.com/world-dives/wreck-diving-with-a-twist-melbournes-hidden-submarine-fleet/", "publisher": "Divernet", "kind": "press", "quote": "lies on its keel, running North-South in 26m. … divers should remain wary of potentially strong surge that can pump through the wreck." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 27 }, { "ref": "s2", "unit": "m", "bottom": 26 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "hazards": [ { "text": "Strong surge pumping through the wreck", "refs": ["s2"] } ],
+  "summary": { "text": "The shallowest of the J-class submarines scuttled off Port Phillip Heads, sitting upright on its keel in about 26-27 m. It is a popular charter dive, though surge can push strongly through the hull.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-469", "name": "HMS J5",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_J5", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "39 metres (128 ft) of water" },
+   "s2": { "url": "https://divernet.com/world-dives/wreck-diving-with-a-twist-melbournes-hidden-submarine-fleet/", "publisher": "Divernet", "kind": "press", "quote": "Deriving its nickname from its yellow zoanthid encrusted hull, the J5 sits at 40m." },
+   "s3": { "url": "https://50greatdives.com/50gtdives/entry/44/", "publisher": "50 Great Dives", "kind": "press", "quote": "was located lying upright fully intact in 36 metres … 8 – 30 metres" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 39 }, { "ref": "s2", "unit": "m", "bottom": 40 }, { "ref": "s3", "unit": "m", "bottom": 36 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "vis": { "low": 8, "high": 30, "unit": "m", "refs": ["s3"] },
+  "highlights": [ { "text": "Hull covered in yellow zoanthids", "refs": ["s2"] } ],
+  "summary": { "text": "The 'Yellow Submarine', a scuttled J-class boat resting upright off the Port Phillip Heads at roughly 36-40 m. Its hull is encrusted with yellow zoanthids, and it is a deep boat dive.", "refs": ["s2", "s3"] }
+ },
+ { "id": "x-wikipedia-457", "name": "HMAS Coogee",
+  "sources": {
+   "s1": { "url": "https://50greatdives.com/auswreckx/entry/443/", "publisher": "50 Great Dives", "kind": "press", "quote": "Coogee now lies on her keel on sand in 33 metres … 8 – 30 metres … covered in brilliant yellow zoanthids, sponges and whip corals." },
+   "s2": { "url": "https://divernet.com/scuba-diving/general-wrecks/victoria-wreck-diving-australia/", "publisher": "Divernet", "kind": "press", "quote": "SS Coogee (28–34m)" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 33 }, { "ref": "s2", "unit": "m", "top": 28, "bottom": 34 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "vis": { "low": 8, "high": 30, "unit": "m", "refs": ["s1"] },
+  "highlights": [ { "text": "Yellow zoanthids, sponges and whip corals", "refs": ["s1"] } ],
+  "summary": { "text": "SS Coogee, a scuttled coaster about 4 km south-west of the Port Phillip Heads, lies upright on sand at about 28-34 m. It is a favourite deep wreck with Melbourne divers, with colourful growth over the remains.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-455", "name": "HMAS Goorangai",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMAS_Goorangai", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "anchoring there is prohibited. … Strong tidal currents make timing important for those diving at the site." }
+  },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "current": { "value": "strong", "refs": ["s1"] },
+  "hazards": [ { "text": "Strong tidal currents; no anchoring on the site", "refs": ["s1"] } ]
+ },
+ { "id": "x-wikipedia-475", "name": "South Channel Fort",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/South_Channel_Fort", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "a popular diving site" },
+   "s2": { "url": "https://www.parks.vic.gov.au/places-to-see/sites/south-channel-fort", "publisher": "Parks Victoria", "kind": "park", "quote": "South Channel Fort can only be accessed by boat. … Strong currents" }
+  },
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "current": { "value": "strong", "refs": ["s2"] },
+  "access": { "value": "Boat access only", "refs": ["s2"] },
+  "summary": { "text": "A 19th-century artificial island fort in the South Channel of Port Phillip, managed within Mornington Peninsula National Park. It is a boat-only dive around the rock ring, with strong currents to plan around.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-notable-786", "name": "HMVS Cerberus",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMVS_Cerberus", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck sits in approximately 10 feet (3.0 m) of water, less than 650 feet (200 m) from shore." },
+   "s2": { "url": "https://cerberus.com.au/press/living_heritage_1-3.html", "publisher": "Friends of the Cerberus", "kind": "press", "quote": "RESTING IN THREE METRES OF WATER off Melbourne's Half Moon Bay" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 3 }, { "ref": "s2", "unit": "m", "bottom": 3 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-476", "name": "Piccaninnie Ponds Conservation Park",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Piccaninnie_Ponds_Conservation_Park", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Underwater visibility is excellent and may exceed 40 metres (130 ft). … Snorkelling and cave diving at Piccaninnie Ponds is by permit only. … a depth of about 35 metres (115 ft)" },
+   "s2": { "url": "https://50greatdives.com/50gtdives/entry/48/", "publisher": "50 Great Dives", "kind": "press", "quote": "Visibility is listed as 30+ metres" }
+  },
+  "access": { "value": "Government permit required for diving and snorkelling; cave divers need CDAA qualification", "refs": ["s1"] },
+  "hazards": [ { "text": "Fine silt can drop visibility to near zero", "refs": ["s2"] } ]
+ },
+ { "id": "x-wikipedia-453", "name": "Ewens Ponds",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Ewens_Ponds", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "approximately 9 metres (30 feet) deep" },
+   "s2": { "url": "https://www.parks.sa.gov.au/find-a-park/browse_by_region/limestone_coast/ewens-ponds-conservation-park", "publisher": "Parks SA (Department for Environment and Water)", "kind": "park", "quote": "three basin-shaped ponds which are approximately 10 metres deep. … A permit is required to snorkel and dive at Ewens Ponds. … average water temperature is between 10 – 15 degrees, full length wetsuits are mandatory." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 9 }, { "ref": "s2", "unit": "m", "bottom": 10 } ],
+  "waterTemp": { "low": 10, "high": 15, "unit": "C", "note": "spring-fed ponds, average", "refs": ["s2"] },
+  "access": { "value": "Permit required to snorkel or dive; book before arrival", "refs": ["s2"] },
+  "summary": { "text": "Three connected spring-fed limestone ponds in South Australia's Limestone Coast, about 9-10 m deep and very clear, with weed beds and fish to see. Permits are required and cold water means full wetsuits.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-491", "name": "Little Blue Lake",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Little_Blue_Lake", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Diving in the sinkhole is only permitted for cave divers who hold at least the CDAA Deep Cavern grade rating. … a maximum recorded depth of just over 42 metres" },
+   "s2": { "url": "https://trade.southaustralia.com/products/limestone-coast/attraction/little-blue-lake", "publisher": "South Australian Tourism Commission", "kind": "agency", "quote": "The shallowest point is a depth of about 25 metres. … a maximum depth of about 47 metres … Access for cave diving is limited to holders of the CDAA Deep Cavern grade." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 42 }, { "ref": "s2", "unit": "m", "top": 25, "bottom": 47 } ],
+  "access": { "value": "Cave divers with CDAA Deep Cavern grade or higher only", "refs": ["s2"] },
+  "hazards": [ { "text": "Often poor visibility and silting", "refs": ["s1"] } ],
+  "summary": { "text": "A water-filled sinkhole south of Mount Gambier with a rubble pile top around 25 m and a floor at roughly 42-47 m. Only qualified cave divers can dive it, and silt often cuts visibility.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-495", "name": "Kilsby sinkhole",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Kilsby_sinkhole", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "access to the site is highly controlled" }
+  },
+  "access": { "value": "Highly controlled access; pre-booked sinkhole or snorkelling tours", "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-462", "name": "Engelbrecht Cave",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Engelbrecht_Cave", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "is only accessible by cave diving for the majority of its length" }
+  },
+  "types": { "value": ["cave"], "refs": ["s1"] },
+  "access": { "value": "Underwater access by permit; CDAA Cave / Advanced Cave grade", "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-459", "name": "Fossil Cave",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Fossil_Cave", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Fossil Cave is a notable cave diving site." },
+   "s2": { "url": "https://bookings.parks.sa.gov.au/dew-cave-diving-sites", "publisher": "Parks SA (Department for Environment and Water)", "kind": "park", "quote": "Divers must not dive beyond the depth of 13 metres into the phreatic passage" }
+  },
+  "types": { "value": ["cave"], "refs": ["s1"] },
+  "access": { "value": "Cave-qualified CDAA members only; limited to 13 m in the phreatic passage unless advanced cave", "refs": ["s2"] }
+ },
+ { "id": "x-wikipedia-474", "name": "Rapid Bay, South Australia",
+  "sources": {
+   "s1": { "url": "https://50greatdives.com/50gtdives/entry/49/", "publisher": "50 Great Dives", "kind": "press", "quote": "3 – 11 metres … 5 – 15 metres … making access to the water easy via the diving platform at the end of the new jetty … surely, the seadragon capital of the world!" },
+   "s2": { "url": "https://divernet.com/world-dives/australia-oceania/south-australias-rapid-bay/", "publisher": "Divernet", "kind": "press", "quote": "make the 240-metre trek to the end in order to swim out to the historic Old Jetty … they usually cling to the pylons for shelter" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 3, "bottom": 11 } ],
+  "entry": { "value": "shore", "refs": ["s1"] },
+  "level": { "value": "beginner", "refs": ["s1"] },
+  "vis": { "low": 5, "high": 15, "unit": "m", "refs": ["s1"] },
+  "highlights": [ { "text": "Leafy seadragons around the old jetty pylons", "refs": ["s2"] } ],
+  "summary": { "text": "A shore dive from the new jetty at Rapid Bay, swimming across to the old jetty pylons where leafy seadragons live. The water is shallow and easy, but the jetty walk is long and respect for the animals matters.", "refs": ["s1", "s2"] }
+ }
+]}

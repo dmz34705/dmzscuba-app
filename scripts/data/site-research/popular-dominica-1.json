@@ -1,0 +1,294 @@
+{
+ "batch": "popular-dominica-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-l5vvgi",
+   "name": "Scotts Head Pinnacle",
+   "sources": {
+    "s1": {
+     "url": "https://www.ssmrdominica.com/dive-sites-in-the-ssmr/",
+     "publisher": "Soufrière Scotts Head Marine Reserve",
+     "kind": "park",
+     "quote": "Scotts Head Pinnacle is justifiably one of the island’s most famous dive sites; … At a depth of only 35 feet, a picturesque swim-through bisects the pinnacle, bringing you to the “other side” — a steep wall on the inside of the volcanic crater that falls off to more than 120 feet."
+    },
+    "s2": {
+     "url": "https://divedominica.com/dominica-dive-sites/",
+     "publisher": "Dive Dominica",
+     "kind": "operator",
+     "quote": "Scott's Head Pinnacle: Scotts Head Pinnacle is justifiably one of the island's most famous dive sites. … At a depth of only 35 ft, a picturesque swim-through bisects the pinnacle"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 120
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-through full of soldierfish; deepwater sea fans",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A volcanic pinnacle in the Soufrière Scotts Head Marine Reserve, pierced by a swim-through at about 35 ft that leads to a crater wall falling past 120 ft. Soldierfish fill the passage and the wall is covered in sea fans.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-54bnjj",
+   "name": "Scotts Head Drop Off",
+   "sources": {
+    "s1": {
+     "url": "https://www.ssmrdominica.com/dive-sites-in-the-ssmr/",
+     "publisher": "Soufrière Scotts Head Marine Reserve",
+     "kind": "park",
+     "quote": "Scott’s Head Drop-Off (Scott’s Head Point), my second favourite dive site on the island. This wall is spectacular at any depth, from forty to one hundred feet."
+    },
+    "s2": {
+     "url": "https://divedominica.com/dominica-dive-sites/",
+     "publisher": "Dive Dominica",
+     "kind": "operator",
+     "quote": "Scott’s Head Drop Off (Scott's Head Point): This wall is spectacular at any depth, from 40 to 100 ft."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Colourful vase and tube sponges; lobster, cleaner shrimp",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sponge-covered wall at Scotts Head Point on the sheltered Soufrière bay side, worth diving anywhere between about 40 and 100 ft. Nooks hide lobsters and cleaner shrimp.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-rcylum",
+   "name": "Craters Edge",
+   "sources": {
+    "s1": {
+     "url": "https://www.ssmrdominica.com/dive-sites-in-the-ssmr/",
+     "publisher": "Soufrière Scotts Head Marine Reserve",
+     "kind": "park",
+     "quote": "Continuing northwest from Scott’s Head Pinnacle there is a volcanic ridge that leads out to Crater’s Edge , another personal favourite."
+    },
+    "s2": {
+     "url": "https://divedominica.com/dominica-dive-sites/",
+     "publisher": "Dive Dominica",
+     "kind": "operator",
+     "quote": "Crater's Edge: Continuing northwest from Scott's Head Pinnacle there is a volcanic ridge that leads out to Crater's Edge. … The Crater's Edge Pinnacle can easily be circumnavigated during a single dive"
+    }
+   },
+   "types": {
+    "value": [
+     "pinnacle",
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Jacks, tuna and cero hunting baitfish; giant barracuda",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A pinnacle at the end of a volcanic ridge northwest of Scotts Head Pinnacle that can be circled in one dive. Pelagic hunters work schools of baitfish beside a wall of barrel sponges.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-klqqza",
+   "name": "Danglebens Pinnacles",
+   "sources": {
+    "s1": {
+     "url": "https://www.ssmrdominica.com/dive-sites-in-the-ssmr/",
+     "publisher": "Soufrière Scotts Head Marine Reserve",
+     "kind": "park",
+     "quote": "Dangleben’s Pinnacles . A series of five pinnacles ranging in depths from forty to eighty feet, they are covered in every imaginable form of sponge and coral."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 80
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Winter jack and cero feeding frenzy at south pinnacle",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2eklmp",
+   "name": "Champagne",
+   "sources": {
+    "s1": {
+     "url": "https://divedominica.com/dominica-dive-sites/",
+     "publisher": "Dive Dominica",
+     "kind": "operator",
+     "quote": "Champagne Reef: Champagne Reef gets its name from the bubbles produced from the underwater hot springs. … This is a dive for all levels; calm water and Currents here are usually light."
+    },
+    "s2": {
+     "url": "https://www.ssmrdominica.com/dive-sites-in-the-ssmr/",
+     "publisher": "Soufrière Scotts Head Marine Reserve",
+     "kind": "park",
+     "quote": "Champagne Reef is the northernmost dive site in the Marine Reserve and is Dominica’s most famous diving and snorkeling site. This sub-aquatic hot spring"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Underwater hot-spring bubbles; seahorses, frogfish, squid",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef over a submerged hot spring at the northern edge of the Soufrière Scotts Head Marine Reserve, where warm bubbles rise around the dive. Calm and easy for all levels, with seahorses and frogfish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-krmrgv",
+   "name": "Point Guirnard",
+   "sources": {
+    "s1": {
+     "url": "https://divedominica.com/dominica-dive-sites/",
+     "publisher": "Dive Dominica",
+     "kind": "operator",
+     "quote": "Pointe Guignard: This gradually sloping reef is best known for its swim-through when returning to the boat. There is a cave at about 50 ft that has some interesting life, but it is narrow and can very quickly silt up"
+    },
+    "s2": {
+     "url": "https://www.ssmrdominica.com/dive-sites-in-the-ssmr/",
+     "publisher": "Soufrière Scotts Head Marine Reserve",
+     "kind": "park",
+     "quote": "Point Guignard , a gradually sloping area rich with small creatures like seahorses, nudibranches and sea slugs."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Seahorses, nudibranchs, frogfish; cave near 50 ft",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Narrow cave silts up quickly",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hjhawe",
+   "name": "Soufreire Pinnacles",
+   "sources": {
+    "s1": {
+     "url": "https://www.ssmrdominica.com/dive-sites-in-the-ssmr/",
+     "publisher": "Soufrière Scotts Head Marine Reserve",
+     "kind": "park",
+     "quote": "North of the village of Soufriere, the first dive site is Soufriere Pinnacles , a popular second-dive site. This summer this dive site was noted for having six frogfish and two seahorses."
+    }
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish and seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-eocojb",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-csrsuj",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

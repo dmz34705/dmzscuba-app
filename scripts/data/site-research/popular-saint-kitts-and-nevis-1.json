@@ -1,0 +1,48 @@
+{
+ "batch": "popular-saint-kitts-and-nevis-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-w2m98f",
+   "name": "River Taw Wreck, Saint Kitts",
+   "sources": {
+    "s1": {
+     "url": "https://www.dive-the-world.com/diving-sites-st-kitts.php",
+     "publisher": "Dive The World",
+     "kind": "operator",
+     "quote": "The most famous is the River Taw, a 144-foot (44m) freighter resting upright at a maximum depth of 50 feet (15m), now encrusted in corals and sponges."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright freighter with turtles, stingrays, octopus, snapper",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-skndr9",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

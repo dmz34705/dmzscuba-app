@@ -1,0 +1,845 @@
+{
+ "batch": "popular-cayman-islands-2",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-xbmcoj",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-lhrfta",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-gbdm0f",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-0z55e5",
+   "reason": "only shore-entry mention; no usable facts"
+  },
+  {
+   "id": "odm-8h2ws7",
+   "reason": "only one thin source"
+  },
+  {
+   "id": "odm-c9o5uz",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-dwiwfm",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-5nk30h",
+   "reason": "only one thin source"
+  },
+  {
+   "id": "odm-d7nt6u",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-s1odxo",
+   "reason": "only one source, depth conflicts"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-laph2r",
+   "name": "MV Captain Keith Tibbetts (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.explorecayman.com/mv-captain-keith-tibbetts",
+     "publisher": "Cayman Islands Department of Tourism (Explore Cayman)",
+     "kind": "agency",
+     "quote": "The top of the wreck is at a depth of about 20 feet and the bottom at a depth of about 80 feet … The ship is approximately 330 feet (100 meters) long"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/bloody-bay-marine-park-little-caymans-biggest-attraction/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "MV Captain Keith Tibbetts wreck … The site starts at 30 feet (10 m), but rests at 90 feet (30 m) … There’s usually little to no current and 90- to 100-foot (30 to 33 m) visibility"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 80
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 90
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "330 ft ex-Cuban Navy frigate with intact guns",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sponge-covered hull; turtles, barracuda, groupers",
+     "refs": [
+      "s2",
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Mid-section and stern storm-damaged: tangled structure",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 330 ft former Soviet-built frigate sunk in 1996 off Cayman Brac as an artificial reef. It sits between about 20 and 90 ft, is covered in sponges, and storm damage has opened the structure up while leaving guns and the bow's red star.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-broe8z",
+   "name": "Jackson Wall and Reef - Grand Cayman",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/cayman-islands-diving-little-cayman-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Jackson Reef / Wall / The Meadows This site is shore accessible and features mini-walls with swim-throughs and plenty of large fish as well as the occasional ray"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/bloody-bay-marine-park-little-caymans-biggest-attraction/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Jackson’s Reef … healthy reefs start at about 30 feet (10 m). There’s little to no current and visibility can reach 100 feet in winter (33 m) and up to 200 feet (66 m) in summer"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mini-walls with swim-throughs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles, rays, reef sharks and barracuda",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Large fish and occasional rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-b196uu",
+   "name": "Bloody Bay Wall",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/cayman-islands-diving-little-cayman-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Bloody Bay Wall Marine Park, possibly the best diving area in all of the Caribbean! Ranging in depth from 20 to over 5,000 feet deep, the wall is alive with a variety of corals and colourful sponges, tubes and fans"
+    },
+    "s2": {
+     "url": "https://www.explorecayman.com/bloody-bay-wall",
+     "publisher": "Cayman Islands Department of Tourism (Explore Cayman)",
+     "kind": "agency",
+     "quote": "Bloody Bay Wall in Little Cayman … Situated along the north shore of Little Cayman, the drop off plunges to staggering depths, reaching over 1,000 meters"
+    },
+    "s3": {
+     "url": "https://scubadiverlife.com/bloody-bay-marine-park-little-caymans-biggest-attraction/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Most are on the edge of one of the Caribbean’s deepest drop-offs of approximately 6,000 feet (2,000 m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20
+    }
+   ],
+   "depthNote": "Wall top about 20 ft; drops thousands of feet",
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sheer wall with sponges, tubes and gorgonian fans",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Large fish, rays and sharks",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles and Nassau groupers",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheer wall along Little Cayman's north shore that starts at about 20 ft and falls thousands of feet. Coral, sponges and fans cover the face, and turtles, groupers, rays and sharks cruise past in very clear water.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-9wqk11",
+   "name": "Turtle Alley",
+   "sources": {
+    "s1": {
+     "url": "https://world.dan.org/alert-diver/article/cayman-brac/",
+     "publisher": "Divers Alert Network (Alert Diver)",
+     "kind": "press",
+     "quote": "newly named moored sites, Turtle Alley … the mid-reef in 45 to 55 feet of water was rich with barrel and row pore rope sponges as well as the gorgonians typical of deeper reefs with a bit of current flow"
+    }
+   },
+   "mooring": {
+    "value": "Moored site",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barrel and rope sponges, gorgonians on mid-reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-otnxdi",
+   "name": "East Chute",
+   "sources": {
+    "s1": {
+     "url": "https://dan.org/alert-diver/article/caymans-sister-islands/",
+     "publisher": "Divers Alert Network (Alert Diver)",
+     "kind": "press",
+     "quote": "East Chute and what used to be the wreck of the Cayman Mariner … The vertical face of the wall begins at about 70 feet, and large coral mounds surrounding the valley rise to about 45 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Deep sandy valley cutting the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Storm-flattened Cayman Mariner tug wreck",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Green tube and orange elephant-ear sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cda7k5",
+   "name": "Little Cayman",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Little_Cayman",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Little Cayman is the smallest and least populous of the three islands that make up the Cayman Islands"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-wyovcg",
+   "name": "Cayman Brac",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Cayman_Brac",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Cayman Brac is an island that is part of the Cayman Islands"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-7v5tjk",
+   "name": "The Maze",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/the-maze-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 49 ft Max Depth 100 ft … Just 40–45 feet on top of the wall, with incredible topography, sharks, abundant coral, and teeming fish life"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 49 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyons and buttresses to navigate",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sharks and teeming fish on the wall top",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-mpzfzz",
+   "name": "Lighthouse Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/lighthouse-wall-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 64 ft Max Depth 100 ft … Lighthouse Wall is formed of jagged rocky points jutting into the blue with flowing sandy channels between them plunging into the abyss"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 64 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rocky points and sand channels down the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Star corals in horizontal plates at depth",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-1f6xn6",
+   "name": "Babylon, Cayman",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/babylon-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 50 ft Max Depth 100 ft … rises from over 100 feet in the depths and tops out at just 45 feet at its peak … Babylon is an easy dive"
+    },
+    "s2": {
+     "url": "https://www.walltowalldiving.com/top-10-dive-sites/",
+     "publisher": "Wall to Wall Diving",
+     "kind": "operator",
+     "quote": "Babylon: Another North wall site but this is situated down towards the East end of the island … A beautiful pinnacle sits snug up against the main wall and the gap in between is full of luxuriant black coral and gorgonian fan growth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "pinnacle",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 50 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Freestanding pinnacle beside the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Corals and sponges grow across the gap",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Black coral and gorgonian fans between pinnacle and wall",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A North Wall classic where a freestanding pinnacle rises from over 100 ft to within 45 ft of the surface, set tight against the main wall. The gap between is full of black coral and gorgonians, and the dive is easy enough for first-time ocean divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-cs4i1y",
+   "name": "Three Sisters Cayman",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/three-sisters-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 69 ft Max Depth 100 ft … Three Sisters, with its several towering pinnacles and columns … The three prominent pinnacles were named for the Conolly sisters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "pinnacle",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 69 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Three towering pinnacles; the third leans",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Narrow canyon leads to first pinnacle",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-whjar3",
+   "name": "Little House on the Prairie",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/little-house-on-the-prairie-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 29 ft Max Depth 60 ft … Little House on the Prairie is a Swiss cheese paradise full of holes … interconnected tunnels below the boat"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 29 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Interconnected tunnels under the boat",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Star corals; coral spawning night dives",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rcz97f",
+   "name": "Kelly’s Caverns",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/kellys-caverns-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 31 ft Max Depth 60 ft … canyons and tunnels — especially to the east of the pin … The rubble field at 45–50 feet along the edge of the miniwall is a macro lover's dream"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 31 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyons and tunnels under the boat",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Macro life on rubble field at 45-50 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8sck8d",
+   "name": "Split Rock",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/split-rock-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 58 ft Max Depth 100 ft … Split Rock is a great wall dive … ledge profuse with black coral … It is not unusual to feel a little current rounding each headland"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 58 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Narrow canyon splitting the reef",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Black coral ledges; swim-throughs in wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hutguf",
+   "name": "Black Rock Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/black-rock-reef-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 30 ft Max Depth 60 ft … sandy channels, rolling coral gardens, shallow hardpan, and freestanding coral heads separated by narrow channels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 30 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral gardens and freestanding coral heads",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Resident school of reef squid",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

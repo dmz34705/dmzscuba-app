@@ -1,0 +1,199 @@
+{
+  "batch": "notable-mexico-1",
+  "researchedAt": "2026-10-08",
+  "sites": [
+    {
+      "id": "x-wikipedia-368",
+      "name": "Banco Chinchorro",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Banco_Chinchorro",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "It covers an area of 800 square kilometres"
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "Atoll biosphere reserve of about 800 km2, not a single dive site",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-394",
+      "name": "Socorro Island",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Socorro_Island",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "Socorro Island is a popular scuba diving destination"
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "Whole island in the Revillagigedo archipelago with many dive sites",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-417",
+      "name": "Arrecifes de Cozumel National Park",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Arrecifes_de_Cozumel_National_Park",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The park size is 120 square kilometres (46 sq mi)."
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "National marine park of 120 km2 covering many sites",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-391",
+      "name": "Guadalupe Island Biosphere Reserve",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/Guadalupe_Island_Biosphere_Reserve",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "a large expanse of surrounding ocean"
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "Biosphere reserve covering an island and surrounding ocean",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-wikipedia-383",
+      "name": "San Pedro Nolasco Island",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/San_Pedro_Nolasco_Island",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The island is protected as a nature reserve"
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "Whole island nature reserve, not a single dive site",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-l8izat",
+      "name": "Cenote Angelita",
+      "sources": {
+        "s1": {
+          "url": "https://deepmexico.com/experiences/angelita-cenote-diving.php",
+          "publisher": "Deep Mexico",
+          "kind": "operator",
+          "quote": "This cenote is around 60 meters deep in places. … it is only suitable for advanced open water divers or those with deep certification."
+        },
+        "s2": {
+          "url": "https://advanceddivermagazine.com/articles/angelita/angelita.html",
+          "publisher": "Advanced Diver Magazine",
+          "kind": "press",
+          "quote": "Thirty feet below, brown hydrogen sulfide is forever trapped … intersect with the floor at a maximum depth of 203 feet."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 60
+        },
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "bottom": 203
+        }
+      ],
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Hydrogen sulfide cloud hovering above the floor",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A deep cenote in Quintana Roo where a layer of hydrogen sulfide forms a misty cloud over the bottom. Reserved for advanced or deep-certified divers because of the depths involved.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-v6xsbe",
+      "name": "Casa Cenote",
+      "sources": {
+        "s1": {
+          "url": "https://www.prodiveinternational.com/fr/dive-site/casa-cenote/",
+          "publisher": "Pro Dive International",
+          "kind": "operator",
+          "quote": "The dive follows the course of the river at a depth of no more than 8m. … Due to the connection with the ocean, both fresh and saltwater fish live there."
+        },
+        "s2": {
+          "url": "https://bucketlistbri.com/casa-cenote-tulum/",
+          "publisher": "Bucket List Bri",
+          "kind": "press",
+          "quote": "depth is around 6-8 m or 20-25 ft"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 8
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 7
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Mangrove roots overhead, fresh and salt water fish",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A shallow, calm dive along a mangrove-fringed channel that links the cenote to the sea near Tulum. Easy conditions suit beginners, with small fish among the roots and a cave line leading into the dark.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    }
+  ]
+}

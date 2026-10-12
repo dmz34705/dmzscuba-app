@@ -1,0 +1,556 @@
+{
+ "batch": "popular-tanzania-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-8g8v8n",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-53n847",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-wmsavu",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-1089t8",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-rzl7dy",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-1e60l5",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-yh72t8",
+   "name": "Msumbiji",
+   "sources": {
+    "ma": {
+     "url": "https://mafiaisland.com/diving/",
+     "publisher": "Mafia Island Diving",
+     "kind": "operator",
+     "quote": "Msumbiji This site consists of a small primary reef with a variety of soft and hard corals on slopes and sheer walls down to 15 m."
+    },
+    "tm": {
+     "url": "https://www.tanzaniatourism.com/safari/scuba-diving-in-mafia-island",
+     "publisher": "Tanzania Tourism",
+     "kind": "press",
+     "quote": "Msumbiji: This site consists of a small primary reef with a variety of soft and hard corals on slopes and sheer walls down to 15 m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "ma",
+     "unit": "m",
+     "bottom": 15
+    },
+    {
+     "ref": "tm",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "summary": {
+    "text": "A compact reef with soft and hard corals on slopes and short walls, plus coral spires with archways and overhangs away from the main formation. Visibility can be unpredictable.",
+    "refs": [
+     "ma",
+     "tm"
+    ]
+   }
+  },
+  {
+   "id": "odm-065uo7",
+   "name": "Mwana Wa Mwana",
+   "sources": {
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Mwana Wa Mwana Dive Type: Coral garden Depth: 3-12 m, 12-18 m Mwana Wa Mwana is a brilliant dive site for snorkelers, beginner and qualified divers"
+    },
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Mwana na Mwana (2-12m): Soft and hard coral bommies with glass fish sheltering in the crevices. Frogfish have been spotted here"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "tgi"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "tgi"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral bommies with glassfish, frogfish",
+     "refs": [
+      "zw"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3zmhib",
+   "name": "The Great Northern",
+   "sources": {
+    "oo5": {
+     "url": "https://zanzibaroneocean.com/dive-sites-stone-town/",
+     "publisher": "One Ocean Zanzibar",
+     "kind": "operator",
+     "quote": "The Great Northern Level: beginner Depth: 4-12 m A British cable-laying ship, The Great Northern was built in 1870 and sank on New Year’s Eve in 1902. She now rests in the sand between 4 and 12 m and is a magnificent artificial reef."
+    }
+   },
+   "depth": [
+    {
+     "ref": "oo5",
+     "unit": "m",
+     "top": 4,
+     "bottom": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "oo5"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "oo5"
+    ]
+   }
+  },
+  {
+   "id": "odm-9jt7jm",
+   "name": "Bawe South",
+   "sources": {
+    "oo5": {
+     "url": "https://zanzibaroneocean.com/dive-sites-stone-town/",
+     "publisher": "One Ocean Zanzibar",
+     "kind": "operator",
+     "quote": "Bawe Reef Level: beginner-intermediate Depth: 5-18 m The island Bawe just off the coast of Stone Town, is our go-to reef."
+    }
+   },
+   "depth": [
+    {
+     "ref": "oo5",
+     "unit": "m",
+     "top": 5,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "oo5"
+    ]
+   }
+  },
+  {
+   "id": "odm-dihvvt",
+   "name": "Bawe Island - North",
+   "sources": {
+    "oo5": {
+     "url": "https://zanzibaroneocean.com/dive-sites-stone-town/",
+     "publisher": "One Ocean Zanzibar",
+     "kind": "operator",
+     "quote": "Bawe Reef Level: beginner-intermediate Depth: 5-18 m The island Bawe just off the coast of Stone Town, is our go-to reef. We have 3 dive sites around the island. One is on the North side and is a continuous coral wall teeming with life."
+    }
+   },
+   "depth": [
+    {
+     "ref": "oo5",
+     "unit": "m",
+     "top": 5,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "oo5"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "oo5"
+    ]
+   }
+  },
+  {
+   "id": "odm-fzn8az",
+   "name": "HauntedWall / Ras Misikitini",
+   "sources": {
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Ras Misikitini Dive Type: Small wall Depth: 5-12 m, 12-20 m Ras Misikitini is an impressive dive site for snorkelers, beginner and qualified divers"
+    },
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Tumbatu – Haunted wall (2-15m): A small eerie looking wall with beautiful soft corals sheltering nudibranchs and leaf fish, with inquisitive bat fish cruising past."
+    }
+   },
+   "depth": [
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 5,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "tgi"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "tgi",
+     "zw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Soft corals with nudibranchs, leaf fish, batfish",
+     "refs": [
+      "zw"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-zd7kzr",
+   "name": "Shetani / Three Turtles",
+   "sources": {
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Shetani Dive Type: Small wall Depth: 3-16 m Shetani is a vibrant dive site for snorkelers, beginner and qualified divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 3,
+     "bottom": 16
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "tgi"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "tgi"
+    ]
+   }
+  },
+  {
+   "id": "odm-oz5j2f",
+   "name": "Shane’s",
+   "sources": {
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Shane’s Reef Dive Type: Coral reef Depth: 10-20 m Shane´s Reef is a unique dive site for beginner and qualified divers"
+    },
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Shanes Reef (12-16m): This weird and wonderful dive offers the best array of macro life around. Flying gurnards frogfish and Mauritius scorpion fish make this site a photographers dream."
+    }
+   },
+   "depth": [
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 10,
+     "bottom": 20
+    },
+    {
+     "ref": "zw",
+     "unit": "m",
+     "top": 12,
+     "bottom": 16
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "tgi"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro life: flying gurnards, frogfish, scorpionfish",
+     "refs": [
+      "zw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sand-and-coral reef off northern Zanzibar prized for macro photography, with frogfish, gurnards and scorpionfish. Depths stay moderate, so it works for newer divers.",
+    "refs": [
+     "zw",
+     "tgi"
+    ]
+   }
+  },
+  {
+   "id": "odm-h5jnsd",
+   "name": "Mbwangawa",
+   "sources": {
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Mbwangawa Dive Type: Coral reef Depth: 7-18 m Mbwangawa is a relaxing dive site for both the experienced and inexperienced divers"
+    },
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Mbwangawa (12-18m): An eclectic mix of life, including lobster sheltering beneath plate corals and frequent encounters with cuttlefish."
+    }
+   },
+   "depth": [
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 7,
+     "bottom": 18
+    },
+    {
+     "ref": "zw",
+     "unit": "m",
+     "top": 12,
+     "bottom": 18
+    }
+   ],
+   "current": {
+    "value": "light",
+    "refs": [
+     "tgi"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lobsters under plate corals, cuttlefish, turtles",
+     "refs": [
+      "zw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An extensive reef of hard and soft corals with plate-coral patches off northeast Zanzibar. A mild current allows a relaxed drift, with lobsters, cuttlefish and turtles regularly seen.",
+    "refs": [
+     "zw",
+     "tgi"
+    ]
+   }
+  },
+  {
+   "id": "odm-ncb5d0",
+   "name": "Kichafi",
+   "sources": {
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Kichafi Dive Type: Coral reef Depth: 10-16 m Kichafi is an amazing reef for both the experienced and inexperienced divers"
+    },
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Kichafi (12-18m): A very healthy reef with vast expanses of plate corals."
+    }
+   },
+   "depth": [
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 10,
+     "bottom": 16
+    },
+    {
+     "ref": "zw",
+     "unit": "m",
+     "top": 12,
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "zw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Healthy reef with extensive plate corals",
+     "refs": [
+      "zw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A healthy coral reef with broad plate-coral fields, suited to mixed-experience groups. A sandy area next to the reef makes it popular for training dives.",
+    "refs": [
+     "zw",
+     "tgi"
+    ]
+   }
+  },
+  {
+   "id": "odm-gaxxgd",
+   "name": "Renco",
+   "sources": {
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Renco Bommi (7-14m): A huge coral bommi coming up from the sand, with an explosion of marine life. Leaf fish, Octopus, and the colorful Mantis shrimps are a common site here. An ideal dive site for the less experienced."
+    }
+   },
+   "depth": [
+    {
+     "ref": "zw",
+     "unit": "m",
+     "top": 7,
+     "bottom": 14
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "zw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Leaf fish, octopus, mantis shrimp",
+     "refs": [
+      "zw"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rf10xu",
+   "name": "Haji",
+   "sources": {
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Haji (10-18m): A submerged coral ridge attracts an abundance of marine life and sports a vast array of hard coral formations. There are numerous Crocodile fish and Nudibranchs to be found here."
+    }
+   },
+   "depth": [
+    {
+     "ref": "zw",
+     "unit": "m",
+     "top": 10,
+     "bottom": 18
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Submerged coral ridge, crocodilefish, nudibranchs",
+     "refs": [
+      "zw"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-a81yjh",
+   "name": "Hunga",
+   "sources": {
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Hunga Reef Dive Type: Coral bommies Depth: 10-17 m Hunga Reef is a stunning dive site for qualified divers"
+    },
+    "ts": {
+     "url": "https://tanzania-specialist.com/blog/zanzibar-scuba-diving-sites/",
+     "publisher": "Tanzania Specialist",
+     "kind": "press",
+     "quote": "Hunga Reef Located underneath Shane’s Reef and to the northwest of Zanzibar, this circular reef is another that is found in the open sea with a depth of 10 to 17 meters. Hunga is known for its excellent level of visibility"
+    }
+   },
+   "depth": [
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 10,
+     "bottom": 17
+    },
+    {
+     "ref": "ts",
+     "unit": "m",
+     "top": 10,
+     "bottom": 17
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Excellent visibility, large coral bommies",
+     "refs": [
+      "ts"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A circular open-sea reef with big coral bommies off northwest Zanzibar, known for clear water. Aimed at certified divers rather than first-timers.",
+    "refs": [
+     "tgi",
+     "ts"
+    ]
+   }
+  }
+ ]
+}

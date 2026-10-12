@@ -1,0 +1,374 @@
+{
+  "batch": "popular-dominican-republic-2",
+  "researchedAt": "2026-10-09",
+  "skipped": [
+    {
+      "id": "odm-f806as",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-bkuym1",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-eqs2ol",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-9q2h3t",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-wq8tvs",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-u8vbdk",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-zho6eg",
+      "reason": "no usable page found with site-specific facts"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-s37j9n",
+      "sources": {
+        "s1": {
+          "url": "https://godivebayahibe.com/dive-sites-bayahibe/",
+          "publisher": "Go Dive Bayahibe",
+          "kind": "operator",
+          "quote": "El Peñon … 26–32 ft / 8–10 m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 8,
+          "bottom": 10
+        }
+      ],
+      "name": "El Peñon - Dominican Republic"
+    },
+    {
+      "id": "odm-o90ivo",
+      "sources": {
+        "s1": {
+          "url": "https://puntacanadiving.com/local-diving-bavaro-punta-cana-for-padi-esa-divers.html",
+          "publisher": "Nautilus Punta Cana Diving",
+          "kind": "operator",
+          "quote": "Astron Wreck … Depth between 8 and 14 meters (26-45 feet)."
+        },
+        "s2": {
+          "url": "https://divejourney.io/destinations/punta-cana-dominican-republic",
+          "publisher": "Dive Journey",
+          "kind": "press",
+          "quote": "Do the Astron in calm weather, not just any day."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 8,
+          "bottom": 14
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Strong current; dive in calm weather",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "name": "Astron, wreck"
+    },
+    {
+      "id": "odm-8ha5yw",
+      "sources": {
+        "s1": {
+          "url": "https://puntacanadiving.com/local-diving-bavaro-punta-cana-for-padi-esa-divers.html",
+          "publisher": "Nautilus Punta Cana Diving",
+          "kind": "operator",
+          "quote": "Park Reef … Depth between 8 and 15 meters (26-50 feet). … A beautiful, shallow reef ideal for all levels of divers."
+        },
+        "s2": {
+          "url": "https://divejourney.io/destinations/punta-cana-dominican-republic",
+          "publisher": "Dive Journey",
+          "kind": "press",
+          "quote": "Park Reef is a shallow boat reef for beginner-friendly Caribbean diving."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 8,
+          "bottom": 15
+        }
+      ],
+      "types": {
+        "value": [
+          "reef"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s2"
+        ]
+      },
+      "name": "Park Reef"
+    },
+    {
+      "id": "odm-d9gw7o",
+      "sources": {
+        "s1": {
+          "url": "https://seaprodivers.com/3-unique-type-of-dive-sites-in-punta-cana/",
+          "publisher": "SeaPro Divers",
+          "kind": "operator",
+          "quote": "At a depth of 13 meters it is a popular hangout spot among nurse sharks."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 13
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Nurse sharks",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "Paradise - Dominican Republic"
+    },
+    {
+      "id": "odm-7ckxbl",
+      "sources": {
+        "s1": {
+          "url": "https://divejourney.io/destinations/samana-and-las-galeras-dominican-republic",
+          "publisher": "Dive Journey",
+          "kind": "press",
+          "quote": "Cuevitas is a boat-dived tunnel reef with coral and swim-throughs."
+        }
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Tunnel reef with swim-throughs",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "Cuevitas - Dominican Republic"
+    },
+    {
+      "id": "odm-dv7i5t",
+      "sources": {
+        "s1": {
+          "url": "https://divejourney.io/destinations/samana-and-las-galeras-dominican-republic",
+          "publisher": "Dive Journey",
+          "kind": "press",
+          "quote": "Shallow canyons with arches and swim-throughs."
+        }
+      },
+      "highlights": [
+        {
+          "text": "Shallow canyons, arches and swim-throughs",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "Canyons - Dominican Republic"
+    },
+    {
+      "id": "odm-fv5d6h",
+      "sources": {
+        "s1": {
+          "url": "https://divejourney.io/destinations/samana-and-las-galeras-dominican-republic",
+          "publisher": "Dive Journey",
+          "kind": "press",
+          "quote": "A Las Terrenas reef line with a small wreck and sea fans."
+        }
+      },
+      "types": {
+        "value": [
+          "reef"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Small wreck and sea fans",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "Creole Reef"
+    },
+    {
+      "id": "odm-2eaa7g",
+      "sources": {
+        "s1": {
+          "url": "https://divejourney.io/destinations/punta-cana-dominican-republic",
+          "publisher": "Dive Journey",
+          "kind": "press",
+          "quote": "Easy-access reef diving with coral gardens, swim-throughs, and nearby wrecks."
+        }
+      },
+      "types": {
+        "value": [
+          "reef"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Coral gardens and swim-throughs",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "Bavaro"
+    },
+    {
+      "id": "odm-2or957",
+      "sources": {
+        "s1": {
+          "url": "https://divejourney.io/destinations/samana-and-las-galeras-dominican-republic",
+          "publisher": "Dive Journey",
+          "kind": "press",
+          "quote": "Samaná wall with coral, blue water, and marine life."
+        }
+      },
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Coral wall with blue water and marine life",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "Cabo Cabron - The Wall"
+    },
+    {
+      "id": "odm-0h9a3p",
+      "sources": {
+        "s1": {
+          "url": "https://superiordivesosua.com/diving-dominican-republic-dive-sites-sosua/",
+          "publisher": "Superior Dive Sosua",
+          "kind": "operator",
+          "quote": "West Wall & La Puntilla (Max Depth 20m/65ft) … the West Wall is home to 3 sunken cannons from an old galleon."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 5,
+          "bottom": 20
+        }
+      ],
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Three sunken galleon cannons",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "West Wall"
+    },
+    {
+      "id": "odm-mvsyus",
+      "sources": {
+        "s1": {
+          "url": "https://superiordivesosua.com/diving-dominican-republic-dive-sites-sosua/",
+          "publisher": "Superior Dive Sosua",
+          "kind": "operator",
+          "quote": "In the Coral Gardens itself you will find beautiful patches of corals inhabited by sea fans, whips & sponges."
+        },
+        "s2": {
+          "url": "https://scubadivesosua.com/dive-sites",
+          "publisher": "Scuba Dive Sosua",
+          "kind": "operator",
+          "quote": "patches of soft corals with fans and whips"
+        }
+      },
+      "types": {
+        "value": [
+          "reef"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Coral patches with sea fans and whips",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "name": "Coral Gardens - Dominican Republic"
+    }
+  ]
+}

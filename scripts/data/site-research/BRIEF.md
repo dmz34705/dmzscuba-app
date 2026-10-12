@@ -30,7 +30,9 @@ Fill the gaps; confirm or correct what is known.
 
 ## Output file: `scripts/data/site-research/<batch name>.json`
 ```json
-{ "batch": "<name>", "researchedAt": "YYYY-MM-DD", "sites": [ {
+{ "batch": "<name>", "researchedAt": "YYYY-MM-DD",
+  "skipped": [ { "id": "<id>", "reason": "only banned directories" } ],
+  "sites": [ {
   "id": "<id exactly as in the queue>", "name": "<name exactly as in the queue>",
   "sources": {
     "s1": { "url": "https://… exact page (https only)", "publisher": "Who publishes it", "kind": "agency|park|encyclopedia|operator|press",
@@ -38,6 +40,7 @@ Fill the gaps; confirm or correct what is known.
   },
   "depth": [ { "ref": "s1", "unit": "ft", "top": 15, "bottom": 60 } ],
   "entry": { "value": "boat", "refs": ["s1"] },
+  "water": { "value": "fresh", "refs": ["s1"] },
   "types": { "value": ["reef", "wall"], "refs": ["s1"] },
   "level": { "value": "intermediate", "refs": ["s2"] },
   "current": { "value": "moderate", "refs": ["s2"] },
@@ -49,10 +52,13 @@ Fill the gaps; confirm or correct what is known.
   "highlights": [ { "text": "Hammerhead sharks in winter", "refs": ["s2"] } ],
   "hazards": [ { "text": "Strong down-currents on the outer wall", "refs": ["s2"] } ],
   "summary": { "text": "…your own words…", "refs": ["s1", "s2"] },
-  "depthNote": "optional ≤ 120 chars, e.g. 'Bow at 60 ft, sand at 110 ft'"
+  "depthNote": "optional ≤ 120 chars, e.g. 'Bow at 60 ft, sand at 110 ft'",
+  "position": { "at": [55.835, -1.81], "refs": ["s1"] }
 } ] }
 ```
-Omit any field you have no source for. Include only sites with at least one sourced fact. Save after every few
+`position` (decimal degrees) only when the pin is clearly in the wrong place AND an agency/park/encyclopedia page (or two
+publishers) states the site's coordinates — the quote must contain them. Moves over 100 km are held. A site with two sourced facts (entry, level, current, highlights…) is kept even without a depth or summary — always record them. Omit any field
+you have no source for. Include only sites with at least one sourced fact; list every other batch site under `skipped` with a short reason (a file covering < 80 % of its batch is re-queued). Save after every few
 sites so nothing is lost if you are stopped.
 
 ## Rules — legal and quality (the build enforces them; breaking them wastes your work)
@@ -65,8 +71,13 @@ sites so nothing is lost if you are stopped.
 3. **Good sources, best first**: agency / marine park / sanctuary / preserve pages (`agency`, `park`); Wikipedia
    (`encyclopedia`); dive operators, liveaboards, resorts (`operator`); magazines, newspapers, guidebooks (`press`).
 4. **Depth** is accepted with one agency/park claim, or two DIFFERENT websites agreeing within ~20 %. A summary
-   needs two different websites (or one agency/park). Try for two.
-5. **Open every page** (WebFetch) and copy the quote from the page itself. A verifier re-downloads every page
+   needs two different websites (or one agency/park). Try for two. **Shortcut:** when the queue's `known.depthM`
+   comes from the `community map record` and one good page agrees with it within ~20 %, that depth is accepted —
+   don't spend searches on a second depth source for it.
+5. **Open every page** (WebFetch) and copy the quote from the page itself — a full phrase that ties the fact to
+   this site (a `notDiveSite` quote needs at least 6 words; a lone word like "scuttled" proves nothing).
+   From a page covering several sites, quote the line WITH the site's name (e.g. "Batu Bolong … 5–40 m"): the
+   verifier drops a quote when the site's name is not on the page near it. A verifier re-downloads every page
    and drops any claim whose numbers are not on it. Never rely on search snippets or memory.
 6. **Same site?** Same name AND same area as `place`/`lat`/`lon` — names repeat worldwide. Pages that cover many
    sites: make sure the number belongs to this one.
@@ -78,7 +89,14 @@ sites so nothing is lost if you are stopped.
    with its source (and nothing else for that site). The build hides the pin. Only do this with a source that says so.
 9. **Skip** generic names you cannot pin down ("House Reef", "Dive Site 3") and businesses — leave them out
    (mention them in your report). Towns, parks and whole lakes: mark `notDiveSite` (`area`) when a page shows it.
-10. Budget: ~3–5 searches per site. Breadth over perfection — cover the whole batch.
+10. Budget: ~3–4 searches per site; stop once two sources agree. Breadth over perfection — cover the whole batch.
+
+## Area-first method (popular / logged batches — do this, it is the cheapest way)
+Batches are grouped by area. For each area in the batch: search once or twice for multi-site guides ("<area> dive
+sites depth", operator/liveaboard "dive sites" pages, marine park pages); fetch 2–4 such pages from DIFFERENT
+publishers; extract every batch site they cover (depth, entry, level, current, highlights, hazards). Only then do at
+most ONE targeted search per site still empty. Write a summary only when two fetched pages (different publishers)
+already describe that site. Skip the rest with a reason. Target: ≤ 2 fetches per site on average.
 
 ## Check before you finish
 ```

@@ -1,0 +1,341 @@
+{
+  "batch": "popular-fiji-2",
+  "researchedAt": "2026-10-08",
+  "skipped": [
+    {
+      "id": "odm-4d3hvs",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-vcedfj",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-0tufjm",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-ellxb7",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-savwev",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-j7vb2y",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-5uught",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-2j9a6a",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-7v7zea",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-mub9dq",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-oinwh3",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-k0e1d8",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-q4oklk",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-zmytr4",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-c5e1h0",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-plcez1",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-6lf756",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-41p9vw",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-850gkk",
+      "reason": "no usable non-banned source with site-specific facts"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-2oqc9b",
+      "name": "Vatu Express",
+      "sources": {
+        "pg": {
+          "url": "https://fijipocketguide.com/best-dive-sites-on-the-suncoast/",
+          "publisher": "Fiji Pocket Guide",
+          "kind": "press",
+          "quote": "Vatu Express … depths between 15-30 m … renowned for its powerful currents"
+        }
+      },
+      "depth": [
+        {
+          "ref": "pg",
+          "unit": "m",
+          "top": 15,
+          "bottom": 30
+        }
+      ],
+      "current": {
+        "value": "strong",
+        "refs": [
+          "pg"
+        ]
+      },
+      "types": {
+        "value": [
+          "wall",
+          "drift"
+        ],
+        "refs": [
+          "pg"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Soft coral wall with reef fish and pelagics",
+          "refs": [
+            "pg"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-pu4bdk",
+      "name": "Golden Dream",
+      "sources": {
+        "bw": {
+          "url": "https://www.bluewaterdivetravel.com/resort/wananavu-fiji-scuba-diving-resort",
+          "publisher": "Bluewater Dive Travel",
+          "kind": "operator",
+          "quote": "Golden Dreams reminds many divers of Mellow Yellow just on a shallower scale. The highlight of this dive is the current side rock face with many yellow soft coral trees and the near-by swim-though lined with the same soft corals."
+        }
+      },
+      "highlights": [
+        {
+          "text": "Yellow soft coral trees on current-side rock face",
+          "refs": [
+            "bw"
+          ]
+        },
+        {
+          "text": "Swim-through lined with yellow soft coral",
+          "refs": [
+            "bw"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-l1hlm5",
+      "name": "Amazing Maze",
+      "sources": {
+        "pg": {
+          "url": "https://fijipocketguide.com/best-dive-sites-on-the-suncoast/",
+          "publisher": "Fiji Pocket Guide",
+          "kind": "press",
+          "quote": "Amazing Maze … found at depths between 15-35 m"
+        },
+        "dtw": {
+          "url": "https://www.dive-the-world.com/diving-sites-fiji-viti-levu-dive-sites-rakiraki.php",
+          "publisher": "Dive the World",
+          "kind": "press",
+          "quote": "this site bottoms out at around only 20m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "pg",
+          "unit": "m",
+          "top": 15,
+          "bottom": 35
+        },
+        {
+          "ref": "dtw",
+          "unit": "m",
+          "bottom": 20
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Channels, swim-throughs and canyons",
+          "refs": [
+            "dtw"
+          ]
+        },
+        {
+          "text": "Reef fish sheltering in coral formations",
+          "refs": [
+            "pg"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A maze of channels, swim-throughs and canyons on the outer reef by Nananu-i-Ra. Depth is modest so buoyancy control matters more than the numbers, and the coral nooks suit photography.",
+        "refs": [
+          "pg",
+          "dtw"
+        ]
+      }
+    },
+    {
+      "id": "odm-7pzjw9",
+      "name": "Neptune’s Rhapsody",
+      "sources": {
+        "bw": {
+          "url": "https://www.bluewaterdivetravel.com/resort/wananavu-fiji-scuba-diving-resort",
+          "publisher": "Bluewater Dive Travel",
+          "kind": "operator",
+          "quote": "Neptunes Rhapsody is a series of coral bommies with schools of Anthias living within soft corals"
+        },
+        "dwr": {
+          "url": "https://www.diveworldwide.com/locations/rakiraki",
+          "publisher": "Dive Worldwide",
+          "kind": "operator",
+          "quote": "Neptune's Rhapsody is a collection of coral bommies hiding swim throughs and white tip reef sharks"
+        }
+      },
+      "highlights": [
+        {
+          "text": "Coral bommies with swim-throughs",
+          "refs": [
+            "bw",
+            "dwr"
+          ]
+        },
+        {
+          "text": "Whitetip reef sharks, anthias, nudibranchs",
+          "refs": [
+            "bw",
+            "dwr"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A cluster of soft-coral-topped bommies near Rakiraki with swim-throughs along their bases. Anthias swarm over the tops and whitetip reef sharks and nudibranchs turn up around the formations.",
+        "refs": [
+          "bw",
+          "dwr"
+        ]
+      }
+    },
+    {
+      "id": "odm-afpeme",
+      "name": "Breath Taker",
+      "sources": {
+        "dtw": {
+          "url": "https://www.dive-the-world.com/diving-sites-fiji-viti-levu-dive-sites-rakiraki.php",
+          "publisher": "Dive the World",
+          "kind": "press",
+          "quote": "Breathtaker . 3 coral heads sit at around 25 to 30m from a base of around 100m"
+        },
+        "da": {
+          "url": "https://diveadventures.com.au/region/fiji-rakiraki/",
+          "publisher": "Dive Adventures",
+          "kind": "operator",
+          "quote": "This is a deep reef with three coral heads and a drop off to 100 meters."
+        }
+      },
+      "depth": [
+        {
+          "ref": "dtw",
+          "unit": "m",
+          "top": 25,
+          "bottom": 30
+        }
+      ],
+      "depthNote": "Three coral heads at 25-30 m on a drop-off to about 100 m",
+      "types": {
+        "value": [
+          "reef"
+        ],
+        "refs": [
+          "da"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Blacktip, grey reef and whaler sharks",
+          "refs": [
+            "dtw"
+          ]
+        },
+        {
+          "text": "Barracuda and swim-throughs on the wall",
+          "refs": [
+            "da"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A deep Bligh Water reef of three coral heads on the edge of a very deep drop-off, famous for shark encounters. Sharks, barracuda and big schooling fish gather around the point.",
+        "refs": [
+          "dtw",
+          "da"
+        ]
+      }
+    },
+    {
+      "id": "odm-baa2eo",
+      "name": "The Awakening Bull Shark Dive",
+      "sources": {
+        "dpiAw": {
+          "url": "https://www.diveplanit.com/diving/awakening-shark-dive/",
+          "publisher": "DivePlanit",
+          "kind": "press",
+          "quote": "suitable for newly qualified open water divers … 15 minute boat ride from the island resort … 22m of warm, clear water"
+        }
+      },
+      "depth": [
+        {
+          "ref": "dpiAw",
+          "unit": "m",
+          "bottom": 22
+        }
+      ],
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "dpiAw"
+        ]
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "dpiAw"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Bull sharks fed behind a low reef wall",
+          "refs": [
+            "dpiAw"
+          ]
+        }
+      ]
+    }
+  ]
+}

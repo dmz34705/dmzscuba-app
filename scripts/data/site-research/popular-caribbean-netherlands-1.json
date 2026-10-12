@@ -1,0 +1,803 @@
+{
+  "batch": "popular-caribbean-netherlands-1",
+  "researchedAt": "2026-10-08",
+  "skipped": [
+    {
+      "id": "odm-9jfodm",
+      "reason": "resort, not a dive site"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-8clalj",
+      "name": "Salt Pier (49)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/salt-pier-dive/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore … Depth 3-30 meters … Current Limited to strong"
+        },
+        "s2": {
+          "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+          "publisher": "Dive Friends Bonaire",
+          "kind": "operator",
+          "quote": "Salt Pier A Photographer's Dream Shore Dive | Depth: 15-50 ft | Beginner-Intermediate … man-made structures overgrown with marine life … Turtles, seahorses, and schools of silversides … Diving is only allowed when no ships are present"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Limited to strong current",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "ft",
+          "top": 15,
+          "bottom": 50
+        }
+      ],
+      "access": {
+        "value": "Dive only when no ship is at the pier",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Pilings overgrown with marine life",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Turtles and seahorses",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Shore dive under the old salt-loading pier south of Kralendijk. The pilings are encrusted with sponges and coral and shelter turtles and fish schools. Dive it only while no ship is moored; the light shafts suit photographers.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "types": {
+        "value": [
+          "reef"
+        ],
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-v45eoo",
+      "name": "Buddy’s Reef (29)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/buddys-reef/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Type Shore diving and boat diving possible … Maximum depth 40 meters (drop-off at 8 meters)"
+        }
+      },
+      "entry": {
+        "value": "boat-shore",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-3ftcdp",
+      "name": "Hilma Hooker (Wreck) (43)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/hilma-hooker/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Depth 18-30 meters … Current Moderate to strong"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 18,
+          "bottom": 30
+        }
+      ],
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Moderate to strong current",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-f4k304",
+      "name": "Invisibles (51)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/invisibles/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Depth 8-40 meters, double reef system … Special feature Frequent eagle ray sightings"
+        },
+        "s2": {
+          "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+          "publisher": "Dive Friends Bonaire",
+          "kind": "operator",
+          "quote": "Invisibles A Unique Double Reef Dive Shore Dive | Depth: 20-100 ft | Beginner-Intermediate … Invisibles is one of the last remaining double-reef dive sites in Bonaire, featuring stunning coral formations separated by sand chutes"
+        }
+      },
+      "highlights": [
+        {
+          "text": "Double reef split by sand chutes",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Eagle rays frequent",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s2"
+        ]
+      },
+      "types": {
+        "value": [
+          "reef"
+        ],
+        "refs": [
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-m9skky",
+      "name": "Thousand Steps (16)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/1000-steps-dive/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Drop-off Steep wall from 9 meters depth … Visibility 20-30 meters underwater … 67 concrete steps you must descend to reach the water"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "vis": {
+        "low": 20,
+        "high": 30,
+        "unit": "m",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Steep drop-off from 9 m",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-wp57t5",
+      "name": "Karpata (9)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/karpata-dive/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore … Depth 3-30 meters … Current None to moderate"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-qmbnx3",
+      "name": "Oil Slick Leap (20)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/oil-slick-leap/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Entry Steel ladder or giant stride from platform … Depth 3-24 meters (39 feet maximum) … Visibility 10-30 meters, average 25 meters"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 3,
+          "bottom": 24
+        }
+      ],
+      "vis": {
+        "low": 10,
+        "high": 30,
+        "unit": "m",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-i7pv56",
+      "name": "The Lake (42)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/the-lake/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore … Depth 3-35 meters … Current Limited"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "light",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-7v2fe0",
+      "name": "Bachelor Beach (38)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/bachelors-beach-dive/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access 7 steps to beach … Depth 3-30 meters, ideal for all levels"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-o5ssz0",
+      "name": "Bari’s Reef (30)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/bari-reef/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Accessibility Shore diving, all levels … Depth 3 to 49 meters … Special #1 biodiversity in the Caribbean (300+ fish species)"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "#1 biodiversity in the Caribbean (300+ fish species)",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-dvdm14",
+      "name": "Calabas Reef",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/calabas-reef/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Divi Flamingo Resort pier or beach … Depth 2-35 meters … Special Features House reef, night diving possible, sea turtles"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "House reef",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Night diving possible",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Sea turtles",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-6bs41l",
+      "name": "Angel City (44)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/angel-city/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Accessibility Shore diving, suitable for beginners … Maximum depth 40 meters … Special feature Double reef system with sand channel"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Double reef system with sand channel",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-j9d8iz",
+      "name": "Cliff (28)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/the-cliff/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Depth 3-40+ meters … Level Advanced divers (Advanced Open Water)"
+        }
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-ozhrj8",
+      "name": "Alice in Wonderland (45)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/alice-in-wonderland/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore diving via Cargill sign parking area … Depth 3-45 meters (first reef 8-20m, second reef 30m+) … Current Minimal to moderate … Visibility 15-30 meters (average 20 meters)"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "vis": {
+        "low": 15,
+        "high": 30,
+        "unit": "m",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-qan8ns",
+      "name": "Something Special (32)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/something-special/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore … Depth 2-30 meters … Current Limited, sometimes strong"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Limited, sometimes strong current",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-09s073",
+      "name": "18th Palm",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/eighteenth-palm/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore … Depth 3-40 meters … Current Weak to moderate"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-dbtzl2",
+      "name": "Tolo (13)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/tolo-dive/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore … Depth 3-45 meters … Current Limited to moderate"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-qkgonx",
+      "name": "Red Slave (60)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/red-slave/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Depth 3-40+ meters … Experience Advanced divers only … Current Unpredictable and strong"
+        },
+        "s2": {
+          "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+          "publisher": "Dive Friends Bonaire",
+          "kind": "operator",
+          "quote": "Red Slave (Shore Dive) – Unique topography with strong currents for advanced divers"
+        }
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "strong",
+        "refs": [
+          "s1"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Strong currents",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-dtng4q",
+      "name": "Andrea II (22)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/andrea-ii/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Entry Shore diving from rocky coastline … Depth 6-60+ meters (reef plateau to deep wall) … Suitable for Intermediate divers (PADI Open Water minimum)"
+        },
+        "s2": {
+          "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+          "publisher": "Dive Friends Bonaire",
+          "kind": "operator",
+          "quote": "Andrea II A Relaxing & Colorful Dive Shore Dive | Depth: 20-100 ft | Beginner-Intermediate … Large coral formations in the shallows … Reef Renewal Foundation coral trees have been planted here"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "intermediate",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Large coral formations in the shallows",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Reef Renewal coral trees",
+          "refs": [
+            "s2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-sfc36u",
+      "name": "Pink Beach (53)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/pink-beach-dive/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore dive + boat dive possible … Depth 3-40 meters (suitable for all levels) … Visibility 15-30 meters, average 20 meters … Special feature Cleaning stations and chance of eagle rays"
+        },
+        "s2": {
+          "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+          "publisher": "Dive Friends Bonaire",
+          "kind": "operator",
+          "quote": "Pink Beach (Shore Dive) – Beautiful both above and below water, with stingray sighting"
+        }
+      },
+      "entry": {
+        "value": "boat-shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "vis": {
+        "low": 15,
+        "high": 30,
+        "unit": "m",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Stingray sightings",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Cleaning stations, eagle rays possible",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-p73z2m",
+      "name": "Andrea I (23)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/andrea-i-dive/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore dive from coral beach … Maximum depth 45 meters"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-l9b75t",
+      "name": "Yellow Submarine",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/yellow-sub/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Type Shore diving training reef … Depth 0-30 meters (training zone to 5m) … Current Minimal to none"
+        },
+        "s2": {
+          "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+          "publisher": "Dive Friends Bonaire",
+          "kind": "operator",
+          "quote": "Yellow Submarine A Classic First Dive Shore Dive | Depth: 20-100 ft | Beginner-Intermediate … Often surprises divers with eagle rays, frogfish, and turtles … Amazing night dive with octopuses and bioluminescence"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "light",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Eagle rays, frogfish and turtles",
+          "refs": [
+            "s2"
+          ]
+        },
+        {
+          "text": "Octopus on night dives",
+          "refs": [
+            "s2"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-0hmuoj",
+      "name": "Windsock (36)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/windsock-steep/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Access Shore … Depth 3-60 meters … Current Weak to moderate"
+        }
+      },
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-qmyylt",
+      "name": "Tori’s Reef (52)",
+      "sources": {
+        "s1": {
+          "url": "https://bonaire.com/en/dive-sites/toris-reef/",
+          "publisher": "Bonaire.com",
+          "kind": "press",
+          "quote": "Maximum depth 40 meters … Visibility 15-30 meters (average 20 meters) … Unique features 70-meter sandy flat, salt pond outlet channel"
+        }
+      },
+      "vis": {
+        "low": 15,
+        "high": 30,
+        "unit": "m",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "70-meter sandy flat",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Salt pond outlet channel",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    }
+  ]
+}

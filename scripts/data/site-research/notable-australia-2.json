@@ -1,0 +1,66 @@
+{ "batch": "notable-australia-2", "researchedAt": "2026-10-08", "sites": [
+ { "id": "x-wikipedia-464", "name": "Dhilba Guuranda–Innes National Park",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Dhilba_Guuranda%E2%80%93Innes_National_Park", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Dhilba Guuranda–Innes National Park, formerly Innes National Park, is an IUCN-designated protected area" } },
+  "notDiveSite": { "kind": "area", "reason": "A whole national park on southwest Yorke Peninsula, not a single dive site", "refs": ["s1"] } },
+ { "id": "x-notable-852", "name": "Hive shipwreck",
+  "sources": { "s1": { "url": "https://apps.environment.nsw.gov.au/dpcheritageapp/ViewHeritageItemDetails.aspx?ID=5001044", "publisher": "NSW Heritage Register (Heritage NSW)", "kind": "agency", "quote": "lying 1.8 - 2.5 meters below sand in approximately 2 meters water depth" } },
+  "notDiveSite": { "kind": "gone", "reason": "Remains lie buried 1.8-2.5 m under sand in the surf zone off Bherwerre Beach", "refs": ["s1"] } },
+ { "id": "x-notable-853", "name": "M24 Japanese Midget Submarine wreck site",
+  "sources": { "s1": { "url": "https://apps.environment.nsw.gov.au/dpcheritageapp/ViewHeritageItemDetails.aspx?ID=5060289", "publisher": "NSW Heritage Register (Heritage NSW)", "kind": "agency", "quote": "A No-entry Protected Zone was declared around the fragile wreck site. … Entry to the zone is restricted to researchers and site managers" } },
+  "notDiveSite": { "kind": "restricted", "reason": "No-entry protected zone around the wreck (54 m, likely crew grave); researchers only", "refs": ["s1"] } },
+ { "id": "x-notable-1079", "name": "Geffrard",
+  "sources": { "s1": { "url": "https://www.museum.wa.gov.au/maritime-archaeology-db/maritime-reports/busselton-area-survey-2009-and-2011-and-finding-geffrard", "publisher": "Western Australian Museum", "kind": "agency", "quote": "to attempt to determine if the anomaly was the Geffrard." } },
+  "notDiveSite": { "kind": "unlocated", "reason": "Only a magnetic anomaly has been found; wreck not confirmed or dived (WA Museum)", "refs": ["s1"] } },
+ { "id": "x-wikipedia-493", "name": "Great Southern Reef",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Great_Southern_Reef", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "a system of interconnected reefs that spans the southern coast of continental Australia and Tasmania." } },
+  "notDiveSite": { "kind": "area", "reason": "A 8,000 km reef system across southern Australia, not one site", "refs": ["s1"] } },
+ { "id": "x-wikipedia-465", "name": "Whyalla",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Whyalla", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "is a city in South Australia." } },
+  "notDiveSite": { "kind": "area", "reason": "A city, not a dive site", "refs": ["s1"] } },
+ { "id": "x-wikipedia-105", "name": "Wardang Island",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Wardang_Island", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "A dive trail showcases eight of nine identified shipwrecks around the island" } },
+  "notDiveSite": { "kind": "area", "reason": "Whole island with a trail of eight wreck sites; landing needs permission", "refs": ["s1"] } },
+ { "id": "x-wikipedia-454", "name": "Broughton Island (New South Wales)",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Broughton_Island_(New_South_Wales)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "There are a few recreational dive sites at the Broughton Islands." } },
+  "notDiveSite": { "kind": "area", "reason": "A whole island with several separate dive sites (Looking Glass, Cod Rock, Big Shark Gutters)", "refs": ["s1"] } },
+ { "id": "x-wikipedia-488", "name": "Sanko Harvest",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Sanko_Harvest", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck rests in 40 metres (130 ft) of water, with the highest points accessible 13 metres (43 ft) from the surface. … It is considered an advanced dive, containing enclosed spaces and potential hazards such as sharp metal debris." },
+   "s2": { "url": "https://50greatdives.com/auswreckx/entry/465/", "publisher": "50 Great Dives", "kind": "press", "quote": "18 – 40 metres … Advanced Diver … March to May best … 16 – 21°C" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 13, "bottom": 40 }, { "ref": "s2", "unit": "m", "top": 18, "bottom": 40 } ],
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1", "s2"] },
+  "hazards": [ { "text": "Sharp metal debris and enclosed spaces", "refs": ["s1"] } ],
+  "summary": { "text": "A large bulk carrier lost on Harvest Reef near Hood Island, off Esperance, now broken up on the seabed. Its highest parts reach about 13-18 m and it bottoms near 40 m, so it is an advanced boat dive with sharp debris.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-64", "name": "SS Clan Ranald (1900)",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/SS_Clan_Ranald_(1900)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Clan Ranald lies at a depth of 60 feet (18 m)" } },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 18 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "odm-wmglo1", "name": "HMAS Perth II",
+  "sources": {
+   "s1": { "url": "https://50greatdives.com/ausfmr-warshipsx/entry/67/", "publisher": "50 Great Dives", "kind": "press", "quote": "5 – 36 metres … 5 – 20 metres … 500 metres (550 yd) southwest of Seal Island in King George Sound … There is an historic interpretive trail around the wreck" },
+   "s2": { "url": "https://en.wikipedia.org/wiki/HMAS_Perth_(D38)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "scuttled as a dive wreck off the coast of Albany, Western Australia, on 24 November 2001" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 5, "bottom": 36 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s2"] },
+  "vis": { "low": 5, "high": 20, "unit": "m", "refs": ["s1"] },
+  "summary": { "text": "A guided-missile destroyer deliberately sunk in 2001 in King George Sound near Albany as a dive wreck. It sits upright on its keel, with the upper structure shallow and the seabed near 36 m, and an interpretive trail around it.", "refs": ["s1", "s2"] }
+ },
+ { "id": "odm-eyqsdu", "name": "Cheynes III (Wreck)",
+  "sources": {
+   "s1": { "url": "https://50greatdives.com/auswreckx/entry/469/", "publisher": "50 Great Dives", "kind": "press", "quote": "14-22 metres … 10-25 metres … Open Water … Hard to spot leafy seadragons can also be found amongst the kelp near the wreck." },
+   "s2": { "url": "https://shipwreckswa.com/cheynes-iii-thorgrim-1947-1982/", "publisher": "Shipwrecks WA", "kind": "press", "quote": "an excellent recreational diving site" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 14, "bottom": 22 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "vis": { "low": 10, "high": 25, "unit": "m", "refs": ["s1"] },
+  "highlights": [ { "text": "Leafy seadragons in kelp near the wreck", "refs": ["s1"] } ],
+  "summary": { "text": "A former whale chaser scuttled in the early 1980s off Michaelmas Island, King George Sound, as a recreational dive site. The hull has since split in two; the dive is moderate in depth and leafy seadragons live in nearby kelp.", "refs": ["s1", "s2"] }
+ }
+]}

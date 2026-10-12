@@ -1,0 +1,186 @@
+{
+ "batch": "popular-costa-rica-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-4e4wk6",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-sfowl4",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-jhjf96",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-bhsuow",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-wld3f1",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-33zm62",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-jlbgxq",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-c4lfw4",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-rwosxa",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-we5shr",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-im9tco",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-vs27dx",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-q3fz9e",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-knp3zi",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-9xl456",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-t74ht6",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-cexvem",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-1y8akd",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-0tbjx3",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-p5updy",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-hwe4ax",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-sxsnat",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-o1jb8q",
+   "name": "Catalinas Island, Clásico",
+   "sources": {
+    "dts": {
+     "url": "https://downtoscuba.com/diving-in-costa-rica-catalina-islands/",
+     "publisher": "Down To Scuba",
+     "kind": "operator",
+     "quote": "Clasico The most famous dive site in the Catalinas, Clasico features strong currents that attract large schools of fish, manta rays (seasonal), white-tipped reef sharks, and vibrant coral formations, making it ideal for advanced divers."
+    },
+    "bw": {
+     "url": "https://bewaterdiving.com/dive-sites/",
+     "publisher": "Be Water Diving",
+     "kind": "operator",
+     "quote": "Clasico, Catalina Islands The renowned Clasico dive site is located on the western side of the islands"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "dts"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "dts"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fish schools, seasonal mantas, white-tip reef sharks",
+     "refs": [
+      "dts"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-lla5v7",
+   "name": "Cuatro piedras, Catalina Islands",
+   "sources": {
+    "bw": {
+     "url": "https://bewaterdiving.com/dive-sites/",
+     "publisher": "Be Water Diving",
+     "kind": "operator",
+     "quote": "Cuatro Piedras Cuatro Piedras is an excellent dive site for beginners, with a shallow sandy patch nestled between the rocks. However, currents can sometimes make it challenging to stay in the sand patch."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "bw"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Currents can make it hard to stay on the sand patch",
+     "refs": [
+      "bw"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3l2wvd",
+   "name": "Guacamaya Island",
+   "sources": {
+    "bw": {
+     "url": "https://bewaterdiving.com/dive-sites/",
+     "publisher": "Be Water Diving",
+     "kind": "operator",
+     "quote": "Guacamaya Island Guacamaya Island is suitable for all diving levels, with depths ranging from 5 meters (16 feet) on the east side to nearly 30 meters (98 feet) on the west. This small island is always teeming with fish"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "bw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small island teeming with fish",
+     "refs": [
+      "bw"
+     ]
+    }
+   ]
+  }
+ ]
+}

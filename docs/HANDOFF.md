@@ -186,3 +186,67 @@ When a batch is done: run the build, run tests, re-bundle if runtime code change
 - 2026-10-07: `build-site-research.cjs` keeps a coastal `area` pin (shallowest nearby seafloor ≤ 40 m) on the map when no
   other listed site lies within 20 km, so a destination like Puerto Galera never loses its only pin. Whole seas and
   inland towns are still hidden. Kept pins are listed as `held` with "area pin kept".
+
+## 2026-10-08: usage-efficiency changes
+- `npm run research:fates` (scripts/scan-wikipedia-fates.cjs): zero-AI pass reading each linked Wikipedia ship's
+  `fate` line; scrapped/broken-up ships (or raised then scrapped) become sourced `notDiveSite` evidence in
+  `site-research/auto-wikipedia-fate.json`. Articles mentioning divers, wreckage or a sinking under tow are skipped.
+  Run `research:verify -- auto-wikipedia-fate` after it. Agent batches for the same site override it.
+- Queue re-tiered (`research:plan`): verified-depth → notable (article/photos) → popular (≥100 logged dives,
+  sorted by dives) → logged (1–99). Pins with no logged dives, article or photos (~2,700) and generic/business
+  names are not queued. Sites in any evidence file are never re-planned.
+- Agents take 3–7 batches each, stop once two sources agree, and return ≤12-line reports.
+- Builder: sourced `position: {at, refs}` moves a pin (agency/park/encyclopedia or two publishers; >100 km held);
+  a position-only entry (e.g. `pins-1.json`) merges into earlier research instead of replacing it.
+- Fixed: places.json has three countries coded AU; Australia was shown as "Ashmore and Cartier Islands".
+  places.js now merges same-code entries under the largest part's name (regression check in test:atlas-places).
+- 2026-10-08 (user decision): a single-source depth is accepted when the pin's pre-research map depth (OpenDiveMap /
+  OSM record in the raw catalog, not a whole-lake depth) agrees within max(3 m, 20 %). The published page stays
+  the cited source; the row carries `depthCheck: 'map'` (54 depths on first run). BRIEF tells agents to stop at one
+  agreeing page in that case. Not yet shown on the card (siteGuide/atlasRuntime are Codex's area right now).
+- Notable tier finished 2026-10-08 (all 126 notable batches have files). Now working the popular tier.
+- Re-running `research:plan` renumbers unfinished batches (e.g. popular-indonesia-1x). Only re-plan when no
+  research agent is running; the `skipped`-list coverage check re-queues a batch whose file no longer matches.
+
+## REMINDER: end-of-research audit (do this when the queue is finished)
+Claude owns all dive-site research from 2026-10-08 (Codex no longer does research). Several sessions were cut off by
+usage limits; before calling the research done, straighten up:
+1. **Truncated batches.** List batch files covering < 80 % of their queued sites (the coverage audit one-liner:
+   compare each `<batch>.json`'s `sites` + `skipped` ids with `queue.json`). ~50 pre-2026-10-08 notable/popular files
+   have no `skipped` list; their agents reported deliberate skips, but spot-check a sample and re-queue any that were
+   actually cut off. Renamed partials: popular-indonesia-2a / 4a / 5a — confirm no site is researched twice with
+   conflicting facts.
+2. **Unverified quotes.** Re-run `research:verify` for batches whose pages were unreachable (kept, unverified) and drop
+   what still fails.
+3. **REVIEW.md backlog.** Work through it: pin moves with sourced coordinates, wrong country labels (Jutland wrecks,
+   Great Lakes wrecks labelled Canada, Gibraltar/Alderney), duplicate pins (Jura, Echtzer See, Bedfordshire), non-dive
+   pins without a source yet (car parks, hotels, churches, film titles), Al-Bad' kept by the area rule.
+4. **Weak hides.** Hides still held for a < 6-word quote (El Gouna, Tegernsee, Fleesensee, SMS Bremse, HMS Resistance,
+   Wicher x2): re-quote or leave visible.
+5. **Card follow-ups.** Show `depthCheck: 'map'` (map-corroborated depth) on the site card.
+6. **Checks + commit.** `npm run research:process`, `test:ocean-atlas`, `test:atlas-places`, `test:site-profiles`; then
+   commit with the user's go-ahead.
+- 2026-10-08: quotes from multi-site pages must name the site: the verifier records quotes whose page does not
+  show the site's name near them (`unnamed` in verified.json) and the build drops those when the page is cited for
+  several sites (caught e.g. USS Puritan quoting a George M. Cox line). ~32 citations dropped on first run.
+- Stop rule: `npm run research:process` prints per-batch yield. When a tier's batches average < 5 accepted sites,
+  stop that tier and ask the user before continuing (the `logged` tier is expected to run dry).
+- 2026-10-08: sites with ≥ 2 singly-sourced facts (level, current, entry, highlights…) but no accepted depth or
+  summary are now kept (`basis: 'depth'`, no depth) instead of discarded — 104 sites recovered from existing
+  evidence. Only depth and summary need two sources; other facts always needed one.
+
+## 2026-10-10: research stopped; audit results
+- Logged-tier pilot (logged-indonesia-2/3): 6 of 50 sites accepted (~18k tokens/site) — below the stop line, so the
+  logged tier (~1,050 sites) is NOT being researched. Re-open only with a cheaper source.
+- Final: 1,833 automated entries (860 full profiles, 1,174 sourced depths, 336 facts-only), 218 pins removed, 24 moved.
+- Audit done: unreachable pages retried (35 → 15 unreachable, kept unverified; 12 quotes newly missing → dropped);
+  duplicate research entries checked (auto-fate overlaps agree; one in-file duplicate removed); 50 pre-`skipped`
+  batches under 80 % accepted as deliberate skips per their agents' reports.
+- Country fixes in places.js: same-code countries (AU) merged; dateline-spanning boxes (Kiribati) no longer capture
+  Maldives/Malpelo sites. Remaining known limitation: offshore pins with no listed country take the nearest country
+  outline (Jutland wrecks → Norway/Denmark, Gibraltar → Spain, Channel wrecks → France). A proper fix needs EEZ data.
+- Still open (REVIEW.md backlog, low value per token): pin moves without stated coordinates, duplicate pins to merge
+  via siteMerges.json, catalog name aliases (Cedar Pass/Paso del Cedral etc.), the map-depth mismatches, card display
+  of `depthCheck: 'map'` (atlasRuntime/siteGuide are Codex's area).
+- test:ocean-atlas fails only on the stale runtime bundle from Codex's in-progress atlasRuntime.js edits
+  (`npm run bundle:ocean-atlas` once Codex is done).

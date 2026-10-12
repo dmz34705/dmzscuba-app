@@ -1,0 +1,464 @@
+{
+ "batch": "popular-indonesia-6",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-kisqye",
+   "reason": "Rabbit Hole (Batupahet): no page with depth/conditions found"
+  },
+  {
+   "id": "odm-ec5kux",
+   "reason": "Bat Rock: only a directory-style listing with no depth"
+  },
+  {
+   "id": "odm-l8tn5w",
+   "reason": "Santai Divers House Reef: a business house reef"
+  },
+  {
+   "id": "odm-0pywj9",
+   "reason": "Pangabatang South: sources only cover Pangabatang North/island generally"
+  },
+  {
+   "id": "odm-li2bu4",
+   "reason": "Turtle Point Selayar: no source found"
+  },
+  {
+   "id": "odm-51fngx",
+   "reason": "Shark Point Selayar: pages found are Bira or directory-style"
+  },
+  {
+   "id": "odm-dpgueg",
+   "reason": "Little Wall Selayar: no source found"
+  },
+  {
+   "id": "odm-5jlqmj",
+   "reason": "Magic Wall Selayar: no depth source found"
+  },
+  {
+   "id": "odm-bkcfv0",
+   "reason": "Bidadari: no dive-site page with depth; only a single logbook and shallow-reef mentions"
+  },
+  {
+   "id": "odm-xbo605",
+   "reason": "Waecicu: found only as a beach, no dive facts"
+  },
+  {
+   "id": "odm-va2cfu",
+   "reason": "Nabucco Spice Island: a resort, no site-level facts"
+  },
+  {
+   "id": "odm-6nqzno",
+   "reason": "Proco House Reef: a business house reef"
+  },
+  {
+   "id": "odm-596thm",
+   "reason": "Mujiu: no page found for this name"
+  },
+  {
+   "id": "odm-9ct29n",
+   "reason": "Arefi Reef: no source found (Arefi is a village)"
+  },
+  {
+   "id": "odm-texl3a",
+   "reason": "Saonek Mondei: no source found"
+  },
+  {
+   "id": "odm-bsvmo8",
+   "reason": "Tabularasa Wreck: only Dive Champ, which repackages SSI directory data"
+  },
+  {
+   "id": "odm-7n2ope",
+   "reason": "Pulau Air Bagian Barat: no source found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-3r9khb",
+   "name": "Batu Bolong, Nusa Penida",
+   "sources": {
+    "s1": {
+     "url": "https://nusapenida.org/bali-nusa-penida-diving-guide/20-best-dive-sites-bali-nusa-penida/",
+     "publisher": "Nusa Penida Diving Guide (nusapenida.org)",
+     "kind": "press",
+     "quote": "Batu Bolong Advanced only Strongest, fully exposed Pelagics, sharks, rays, Mola Year-round 30 min 30 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pelagics, sharks, rays and Mola mola",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strongest, fully exposed current of Nusa Penida sites",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-886kmr",
+   "name": "Labyrinth",
+   "sources": {
+    "s1": {
+     "url": "https://nusapenidadive.com/dive-sites-in-nusa-penida/",
+     "publisher": "Nusa Penida Dive",
+     "kind": "operator",
+     "quote": "Labyrinth Advanced · Dramatic Rock Maze · Swell & Surge Just around the corner from Manta Point, Labyrinth is a jumble of huge rock pillars and boulders – some over 15 m tall"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock pillars forming tunnels and passages",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Swell and surge",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jmjjur",
+   "name": "Jack Point",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "Jack Point … This dive site is an impressive wall that is famous for the big green soft corals … The massive overhangs and crevasses … Maximum depth: 40+ meters"
+    },
+    "s2": {
+     "url": "https://www.starfish.ch/dive/Togian-Banggai.html",
+     "publisher": "Starfish (Zubi) dive guide",
+     "kind": "press",
+     "quote": "Jack's point: This is a corner where the reef forms a small edge around 30 meters and then continues down much deeper."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Big green soft corals; overhangs and crevasses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ep4tmk",
+   "name": "Wairterang Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://santaidivers.com/divingmaumere/",
+     "publisher": "Santai Divers Maumere",
+     "kind": "operator",
+     "quote": "Wairterang … Lying between 12 and 33 meters, it is now largely covered with coral and is home to a great diversity of underwater life."
+    },
+    "s2": {
+     "url": "https://www.neptuneliveaboards.com/blog/maumere-diving/",
+     "publisher": "Neptune Liveaboards",
+     "kind": "operator",
+     "quote": "Wairterang Wreck Off Wairterang beach 12 to 33 m Easy to intermediate Second World War freighter, dived from the shore, critters in the sand alongside"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 33
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 33
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Groupers, trevally, lionfish on the wreck",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Critters in the surrounding sand",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Second World War ship lying off Wairterang beach in Maumere Bay at roughly 12-33 m, largely coral-covered. It can be dived from shore, has no penetration, and the nearby sand is good for muck-style critters.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-xp91rg",
+   "name": "The Crack at Pulau Babi",
+   "sources": {
+    "s1": {
+     "url": "https://santaidivers.com/divingmaumere/",
+     "publisher": "Santai Divers Maumere",
+     "kind": "operator",
+     "quote": "The Crack, famous for the scar left in the reef by the 1992 earthquake. From the surface to 15 meters deep, the reef has been split and widened, forming a small cave."
+    },
+    "s2": {
+     "url": "https://www.neptuneliveaboards.com/blog/maumere-diving/",
+     "publisher": "Neptune Liveaboards",
+     "kind": "operator",
+     "quote": "The Crack Pulau Babi 5 to 30 m Intermediate The 1992 earthquake fissure, plus a wall of sea fans, sponges and sea squirts"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Earthquake fissure in the reef",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Sea fans, sponges and sea squirts",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef on Pulau Babi split open by the 1992 Flores earthquake, leaving a fissure and small cave in the wall. Divers look down into the crack rather than enter it, over walls of sea fans and sponges.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Fissure itself at roughly 18-20 m per Neptune"
+  },
+  {
+   "id": "odm-ye35d4",
+   "name": "Sabolon Kecil",
+   "sources": {
+    "s1": {
+     "url": "https://www.aquradive.com/diving",
+     "publisher": "Aqura Dive Komodo",
+     "kind": "operator",
+     "quote": "Sabolon Kecil … Large schools of Chevron Barracudas, Bigeye Trevallies and Batfish can be observed enjoying the split current north of the pinnacle"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Barracuda, trevally and batfish schools",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Shallow reef top, healthy coral, white sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cifpc4",
+   "name": "Sabolan Besar",
+   "sources": {
+    "s1": {
+     "url": "https://www.aquradive.com/diving",
+     "publisher": "Aqura Dive Komodo",
+     "kind": "operator",
+     "quote": "Sabolon Besar … The sloping reef is encrusted in huge sponges which are often home to Scorpionfish, Batfish and all kinds of reef life."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Sponge-covered sloping reef with scorpionfish, batfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rjvf7w",
+   "name": "Wakatobi House Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.wakatobi.com/scuba-diving/house-reef/",
+     "publisher": "Wakatobi Dive Resort",
+     "kind": "operator",
+     "quote": "House Reef … At it’s outer edge, the reef drops abruptly from depths of less than two meters to more than 40 … mild to medium currents can run along the outer reef slope during tide changes."
+    },
+    "s2": {
+     "url": "https://divernet.com/world-dives/on-the-house-wakatobis-house-reef/",
+     "publisher": "DIVER magazine",
+     "kind": "press",
+     "quote": "Wakatobi’s … the reef crest begins just two meters from the surface and plunges to depths of more than 70 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 2,
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall with overhangs, turtles, hard and soft corals",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Shallow macro: frogfish, pipefish, stonefish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shore-accessible fringing reef in front of the Wakatobi resort: shallow coral flats about 70 m wide, then a wall falling past 40 m. Mild currents along the slope make drift dives easy, and critters fill the shallows.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Crest ~2 m; wall past 40 m (Wakatobi) to 70+ m (DIVER)"
+  }
+ ]
+}

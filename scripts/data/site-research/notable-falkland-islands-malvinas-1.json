@@ -1,0 +1,14 @@
+{"batch":"notable-falkland-islands-malvinas-1","researchedAt":"2026-10-08","skipped":[],
+"sites":[
+{"id":"x-notable-948","name":"RFA Sir Galahad",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/RFA_Sir_Galahad_(1966)","publisher":"Wikipedia","kind":"encyclopedia","quote":"is now an official war grave"}},
+"notDiveSite":{"kind":"restricted","reason":"Official war grave, protected under military remains law","refs":["s1"]}},
+{"id":"x-notable-893","name":"HMS Ardent",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Ardent_(F184)","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck is designated as a prohibited area under the Falkland Islands Protection of Wrecks Act."}},
+"notDiveSite":{"kind":"restricted","reason":"Prohibited area under Falkland Islands Protection of Wrecks Act","refs":["s1"]}},
+{"id":"x-notable-890","name":"HMS Antelope",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Antelope_(F170)","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck is designated as a prohibited area under the Falkland Islands Protection of Wrecks Act."}},
+"notDiveSite":{"kind":"restricted","reason":"Prohibited area under Falkland Islands Protection of Wrecks Act","refs":["s1"]}},
+{"id":"x-notable-1006","name":"HMS Coventry",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Coventry_(D118)","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck site is a controlled site under the Protection of Military Remains Act."}},
+"notDiveSite":{"kind":"restricted","reason":"Controlled site under Protection of Military Remains Act","refs":["s1"]}}]}

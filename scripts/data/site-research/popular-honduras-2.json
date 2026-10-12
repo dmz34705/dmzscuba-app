@@ -1,0 +1,487 @@
+{
+ "batch": "popular-honduras-2",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-lh2dzx",
+   "reason": "only a one-line comparison, no site-specific facts"
+  },
+  {
+   "id": "odm-tw1995",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-fklgtb",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-9x3a50",
+   "reason": "generic mention only"
+  },
+  {
+   "id": "odm-gfka4h",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-rjdu3n",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-qts2ql",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-b73wwi",
+   "reason": "name not matched to a source"
+  },
+  {
+   "id": "odm-z9wtyf",
+   "reason": "single blog line, no facts beyond shark dive"
+  },
+  {
+   "id": "odm-73z4qr",
+   "reason": "ambiguous with Overheat Reef"
+  },
+  {
+   "id": "odm-yvj4xl",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-ndefhz",
+   "reason": "only a one-word wall mention"
+  },
+  {
+   "id": "odm-imqifa",
+   "reason": "no usable source for this site"
+  },
+  {
+   "id": "odm-ld885u",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-00zwfh",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-yo8e2x",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-z2ajdq",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-3ramq9",
+   "reason": "no usable source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-qhfl8r",
+   "name": "Moonlight",
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Best Dive Sites in Roatan for Open Water Divers … Wall: Moonlight, Lighthouse, Half Moon Bay Wall"
+    }
+   }
+  },
+  {
+   "id": "odm-smeeg8",
+   "name": "Half Moon Wall",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 150
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays, eels, turtles and healthy coral",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Tunnel opening onto the wall at about 70 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A pretty West End wall right off Half Moon Bay, with a shallow reef top that drops past 150 ft. Healthy coral, eels, turtles and eagle rays are the draw, and open-water divers can enjoy the upper section.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "HALF MOON BAY Still one of the prettiest dives … the reef stands as shallow as 30ft plunging down to 150ft and then beyond … This is the best site to see Eagle Rays"
+    },
+    "s2": {
+     "url": "https://www.ikelite.com/blogs/features/an-insiders-guide-to-diving-roatan-bay-islands",
+     "publisher": "Ikelite",
+     "kind": "press",
+     "quote": "this wall dive is home to eels, turtles, and healthy coral"
+    },
+    "s3": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Best Dive Sites in Roatan for Open Water Divers … Wall: Moonlight, Lighthouse, Half Moon Bay Wall"
+    }
+   }
+  },
+  {
+   "id": "odm-rg2x9v",
+   "name": "Pillar Coral",
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral pillar rising from the blue",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Shallow swim-through cavern beside the mooring",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "There is a mysterious kind of sea mound pillar that looms up and out of the blue … a beautiful swim-through cavern next to the mooring that opens up in 5ft of water"
+    }
+   }
+  },
+  {
+   "id": "odm-omkwux",
+   "name": "Spooky Channel",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Narrow channel with light filtering from above",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Swim-throughs, lobster and starfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A channel through the barrier reef linking the lagoon with the outer reef, entered through a small opening that widens into a cavernous gorge to about 90 ft. Light filters down from above, making it an atmospheric dive for photographers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "SPOOKY CHANNEL A very different dive, dive through a deep channel that links the lagoon with the outer reef. … reaches a maximum depth of 90 feet … Fascinating rock structures, swim-throughs, lobster and starfish"
+    },
+    "s2": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "There is a small opening in the reef wall, which quickly opens up into a cavernous channel … for Advanced Open Water Divers … Unique experience: Spooky Channel … This is a must dive for photographers!"
+    }
+   }
+  },
+  {
+   "id": "odm-rzixho",
+   "name": "Pablo’s Place",
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dense soft corals on a vertical wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Barrel sponges and large coral columns",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A vertical wall just around the northern tip of West End, noted for dense soft corals, barrel sponges and big coral columns. Conditions swing with weather and current, from a calm drift to a stronger one, so it is rated for advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Pablo’s has a greater density of soft corals … can be a nice, chill drift or a thrilling one … for Advanced Open Water Divers … Wall: West End Wall, Pablos Place"
+    },
+    "s2": {
+     "url": "https://roatan-octopusdiveschool.com/blog/roatan-diving-how-deep-are-the-dives-in-roatan/",
+     "publisher": "Octopus Dive School",
+     "kind": "operator",
+     "quote": "Pablo’s Place features many barrel sponges and large coral columns and a vertical reef about 50 ft below the surface that extends indefinitely."
+    }
+   }
+  },
+  {
+   "id": "odm-nrsscs",
+   "name": "Texas (The Point)",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s5"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Giant barrel sponges and soft corals on a drift",
+     "refs": [
+      "s2",
+      "s5"
+     ]
+    },
+    {
+     "text": "Sargassum triggerfish and barracuda",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Wall top is deep; hard to ascend against the current",
+     "refs": [
+      "s4"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A current-swept drift at the western tip of Roatán, where two ocean currents meet over huge barrel sponges and coral plains at around 90 ft. Conditions vary and it is recommended for advanced divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatan-octopusdiveschool.com/blog/roatan-diving-how-deep-are-the-dives-in-roatan/",
+     "publisher": "Octopus Dive School",
+     "kind": "operator",
+     "quote": "Texas Recommended for advanced divers, Texas is a wonderful dive site where you will often find triggerfish … The maximum depth of the Texas dive site is 90 feet."
+    },
+    "s2": {
+     "url": "https://bluebahia.com/best-dive-sites-near-roatan-hotels/",
+     "publisher": "Blue Bahia Resort",
+     "kind": "operator",
+     "quote": "Texas, at 90 feet underwater, sits off Roatan’s western and southernmost tip … the only locations around Roatan where the Sargassum Triggerfish can be found"
+    },
+    "s3": {
+     "url": "https://roatan-diving.com/dive-sites",
+     "publisher": "Roatan Diving (Caribbean Divemaster)",
+     "kind": "press",
+     "quote": "its a condition dependant dive more than any other … The north and south currents combine here"
+    },
+    "s4": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "The actual wall top at Texas is quite deep at 100ft and beyond … sometimes difficult to work your way shallower against the current"
+    },
+    "s5": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Texas is a perfect drift dive from West End Wall"
+    }
+   }
+  },
+  {
+   "id": "odm-7vxlgx",
+   "name": "Dolphins Den",
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral canyons, tunnels and swim-throughs",
+     "refs": [
+      "s1",
+      "s2",
+      "s3"
+     ]
+    },
+    {
+     "text": "Much quieter than Mary's Place",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A north-shore site with coral canyons, tunnels and swim-throughs reminiscent of Mary's Place but visited by far fewer boats. Soft and hard corals, snapping shrimp and slipper lobsters fill the nooks.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatan-diving.com/dive-sites",
+     "publisher": "Roatan Diving (Caribbean Divemaster)",
+     "kind": "press",
+     "quote": "Dolphin’s Den is situated on the northern side of the island. … The coral canyons of Dolphin Den’s are quite similar to that of Mary’s Place."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/the-best-dive-sites-in-roatan/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "abounds with coral canyons similar to those at Mary’s Place, and they’re far less crowded"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/roatan-scuba-diving-travel-guide",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "offers a maze of tunnels, caverns and swim-throughs"
+    }
+   }
+  }
+ ]
+}

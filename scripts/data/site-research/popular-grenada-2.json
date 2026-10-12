@@ -1,0 +1,897 @@
+{
+ "batch": "popular-grenada-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-xwzcpq",
+   "reason": "no usable non-banned source found for this site name"
+  },
+  {
+   "id": "odm-xd4pez",
+   "reason": "no usable non-banned source found for this site name"
+  },
+  {
+   "id": "odm-nr4pmz",
+   "reason": "no usable non-banned source found for this site name"
+  },
+  {
+   "id": "odm-juuh41",
+   "reason": "no usable non-banned source found for this site name"
+  },
+  {
+   "id": "odm-fmxvd2",
+   "reason": "no usable non-banned source found for this site name"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-mnljsp",
+   "name": "Windmill Shallows",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Windmill Shallows This dive site ranges in depth from 60 to 125 feet (18-40m) and features a sloped reef with a drop-off covered in … as well as large fish and sharks. A great drift dive for experienced divers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 125
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sloped reef with drop-off, gorgonians, anchors and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-c6eevg",
+   "name": "Boss Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.justgottadive.com/dive_resources/travel_articles/reef-diving-adventures-grenada-red-buoy-purple-rain",
+     "publisher": "Just Gotta Dive",
+     "kind": "press",
+     "quote": "Boss Reef A huge reef with gently rolling mounds of rock, sandy valleys, and big areas of plate coral, Boss Reef extends all the … stingrays all along the reef, and with depths ranging from 6 to 24 meters"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Boss Reef This dive site ranges in depth from 20 to 80 feet (5-25m)"
+    },
+    "s3": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "hawksbill turtles, shrimp, crab, green moray, eels, trunkfish, stingray, and barracuda! This site has it all! Depth: 20 – 80 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 24
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 80
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 80
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hawksbill and green turtles, nurse sharks, stingrays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Big hole with barracuda at 14-18 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A huge reef of rolling rock mounds, sandy valleys and plate coral running several miles off St George's. Depths of about 6-25 m suit all divers, with turtles, morays, nurse sharks and rays along its length.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1k1u1e",
+   "name": "Grand Mal Wall",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-ronde-island/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Grand Mal Reef This dive site ranges in depth from 20 to 90 feet (6-28m) and features an ‘s’ shaped pillar coral wall with … A good drift dive for experienced divers but can also be enjoyed by beginners."
+    },
+    "s2": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "Grand Mal Bay just north of St. George’s harbor. It’s a diverse dive from a geography standpoint and you’re sure to see Southern Stingray, lobster, rays, angelfish and more. Depth: 20-90 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "S-shaped pillar coral wall with canyons",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Southern stingrays, lobster, octopus",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef north of St George's harbour in Grand Mal Bay, with an S-shaped pillar-coral wall cut by canyons. Good as a drift dive for experienced divers, though beginners can also enjoy it; rays, lobster and octopus are common.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-58559r",
+   "name": "Mabouya Whirlpool, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Whirlpool This dive site has a maximum depth of 90 feet (27m) and features a reef, a wreck, boulders as well as bubbles from volcanic activity beneath the ocean floor. A great dive site for beginners."
+    },
+    "s2": {
+     "url": "https://oceanpulse.substack.com/p/carriacou-falling-in-love-with-the",
+     "publisher": "Ocean Pulse",
+     "kind": "press",
+     "quote": "Whirlpool is my favourite of the reefs. It features a coral reef with lots of life, a small picturesque wreck, a swim-through with volcanic … bed, and a volcanic boulder garden. The maximum depth is 23m at the wreck"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 23
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef, small wreck and volcanic bubbles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-w3te2u",
+   "name": "Sandy Island Garden, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Sandy Island Garden This dive site ranges in depth from 20 to 60 feet (6-18m) and features a ridge reef home to plenty of … A good site for beginners to drift dive as well as for underwater photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 60
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ridge reef with turtles, rays and seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5mci32",
+   "name": "Mabouya Garden, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Mabouya Garden This dive site features a coral reef and an abundance of aquatic life including schools of fish as well as lobsters, turtles, eels, rays and sharks. A good dive site for both beginners and experienced divers."
+    },
+    "s2": {
+     "url": "https://oceanpulse.substack.com/p/carriacou-falling-in-love-with-the",
+     "publisher": "Ocean Pulse",
+     "kind": "press",
+     "quote": "Mabouya Garden, Sharky’s Hideaway, Sharky’s Part II, and Rock Garden. The maximum depth for these dives is 18m, average depth is around 14m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of fish, lobsters, turtles, eels, rays and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-lvwhas",
+   "name": "Jack-A-Dan, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-north-and-west-of-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Jack-A-Dan This dive site has a maximum depth of 60 feet (18m) and features a reef plus a sandy bottom frequented by rays. A good dive site for beginners."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 60
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef and sandy bottom frequented by rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-iejn4k",
+   "name": "Sandy Island Lighthouse, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Sandy Island Lighthouse / Divers Surprise / Sandy Island Drift This dive site ranges in depth from 20 to 70 feet (6-21m) and features … crustaceans, eels, turtles, rays and large fish. A good dive site for underwater photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 70
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Sloping reef with turtles, rays, eels and large fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-snbzx0",
+   "name": "Jack-A-Dan West, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-north-and-west-of-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Jack-A-Dan West Side This dive site has a maximum depth of 50 feet (15m) and features a shallow reef with eels and schools of … the potential of strong currents, this dive site is recommended for experienced divers only."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 50
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shallow reef with eels and schools of fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Potential strong currents",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-arvs3h",
+   "name": "Sharkies Hideaway Part 1",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Sharky’s Hideaway / Sharky’s Part 1 This dive site ranges in depth from 40 to 70 feet (12-22m) and features a diverse reef landscape … as eels and of course, sharks. A great drift dive site for underwater photography."
+    },
+    "s2": {
+     "url": "https://oceanpulse.substack.com/p/carriacou-falling-in-love-with-the",
+     "publisher": "Ocean Pulse",
+     "kind": "press",
+     "quote": "Mabouya Garden, Sharky’s Hideaway, Sharky’s Part II, and Rock Garden. The maximum depth for these dives is 18m, average depth is around 14m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall with overhangs, caves and canyons; sharks and eels",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rg88gy",
+   "name": "Barracuda Point, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Barracuda Point / Little Sister Rock This dive site ranges in depth from 30 to 75 feet (9-23m) and features a sloping black coral … well as turtles and sharks. This dive site is recommended for advanced divers only."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 75
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sloping black coral reef with turtles and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cuukqo",
+   "name": "White Sand Beach, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "White Sand Beach This dive site ranges in depth from 20 to 40 feet (6-12m) and features corals and gorgonians as well as fish, … A good site for beginners to drift dive as well as for underwater photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 40
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Corals and gorgonians with turtles and rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rz4m8e",
+   "name": "Deep Blue, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Deep Blue / The Sisters Rock / The Big Sisters This dive site ranges in depth from 30 to 130 feet (9-40m) and features … the depth and strong currents, this dive site is recommended for advanced divers only."
+    },
+    "s2": {
+     "url": "https://oceanpulse.substack.com/p/carriacou-falling-in-love-with-the",
+     "publisher": "Ocean Pulse",
+     "kind": "press",
+     "quote": "The Sisters Rocks are home to two dive sites: Deep Blue and Barracuda Point. Depths down to 35 m can be reached here … currents can get super-strong and unmanageable for most"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 130
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral wall with drop-off, sharks and big fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Depth and strong currents",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-52krua",
+   "name": "Westsider Wreck, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Westsider Shipwreck The 100-foot tugboat sits in 90 feet (28m) of water. This artificial reef features a variety of coral, along with lobsters and … photography. Due to the depth, this dive site is recommended for advanced divers only."
+    },
+    "s2": {
+     "url": "https://www.lastortugasvilla.com/diving-in-carriacou-reefs-wrecks-and-the-island-of-reefs/",
+     "publisher": "Las Tortugas Villa",
+     "kind": "operator",
+     "quote": "The Westsider, a 30-metre wreck officially sunk in 2004"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral-encrusted tugboat with lobsters and large fish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A roughly 30 m tugboat intentionally sunk in 2004 off Mabouya Island, lying in about 28 m. It is heavily coral-encrusted and good for photography, but the depth makes it an advanced dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-xt5j6j",
+   "name": "La Jetée, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://oceanpulse.substack.com/p/carriacou-falling-in-love-with-the",
+     "publisher": "Ocean Pulse",
+     "kind": "press",
+     "quote": "“Le Jettois,” the Hillsborough Jetty. No longer used as a port, the jetty has become home to an amazing variety of marine life. It’s a shallow shore dive, no more than 5m"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-north-and-west-of-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Jetty (Hillsborough) Shore Dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 5
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Over 50 fish species incl. seahorses and eels",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-7pr9ci",
+   "name": "A World Adrift Underwater Sculpture Park",
+   "sources": {
+    "s1": {
+     "url": "https://www.lastortugasvilla.com/diving-in-carriacou-reefs-wrecks-and-the-island-of-reefs/",
+     "publisher": "Las Tortugas Villa",
+     "kind": "operator",
+     "quote": "Just 15 to 20 feet below the surface sits A World Adrift"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Underwater sculpture park by Jason deCaires Taylor",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-90bmai",
+   "name": "Tugboat Boris (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Boris Shipwreck The 100-foot tugboat sits in water ranging from 50 to 80 feet (16-24m) of water and features a variety of encrusted coral, along with large fish. A good spot for a night dive."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 80
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Encrusted coral and large fish; good night dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-snwm7m",
+   "name": "Sandy Island Drift, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-carriacou-marine-park/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Sandy Island Lighthouse / Divers Surprise / Sandy Island Drift This dive site ranges in depth from 20 to 70 feet (6-21m) and features … crustaceans, eels, turtles, rays and large fish. A good dive site for underwater photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 70
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Sloping reef with turtles, rays, eels and large fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fcgong",
+   "name": "Seaview, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Seaview This dive site has a maximum depth of 40 feet (12m) and features eels, octopus, as well as schools of fish, and if you are lucky maybe seahorses. A great dive site for beginners."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 40
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eels, octopus, schools of fish, seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-r7hped",
+   "name": "Jack Iron Point, Carriacou",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-carriacou/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Jack Iron Point This dive site has a maximum depth of 50 feet (15m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 50
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Lobsters, octopus, eels and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

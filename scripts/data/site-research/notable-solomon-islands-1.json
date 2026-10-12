@@ -1,0 +1,24 @@
+{"batch":"notable-solomon-islands-1","researchedAt":"2026-10-08","sites":[
+{"id":"x-wikipedia-50","name":"USS Aaron Ward (DD-483)",
+ "sources":{
+  "s1":{"url":"https://divernet.com/world-dives/exploring-the-ww2-destroyer-uss-aaron-ward/","publisher":"Divernet","kind":"press","quote":"Today, the wreck lies upright in warm, clear water with its deck at approximately 60m and the bottom at 70m. … especially heading towards the bow."},
+  "s2":{"url":"https://pacificwrecks.com/ship/usn/DD-483.html","publisher":"Pacific Wrecks","kind":"press","quote":"The shipwreck is upright on a sandy bottom at about 240' / 70m off Tinete Point … all dives are decompression dives which require the appropriate training and experience in extended range diving."}},
+ "depth":[{"ref":"s1","unit":"m","top":60,"bottom":70},{"ref":"s2","unit":"m","top":65,"bottom":70}],
+ "entry":{"value":"boat","refs":["s1"]},
+ "types":{"value":["wreck"],"refs":["s1","s2"]},
+ "level":{"value":"technical","refs":["s2"]},
+ "current":{"value":"variable","refs":["s1"]},
+ "hazards":[{"text":"Decompression dive; extended-range training needed","refs":["s2"]},{"text":"Current can be strong, especially toward the bow","refs":["s1"]}],
+ "summary":{"text":"A US destroyer lost in 1943 that now sits upright off Florida Island near Tulagi. It is an extended-range decompression dive, with the deck near 60 m and sand near 70 m, so it suits experienced technical divers only.","refs":["s1","s2"]}},
+{"id":"x-wikipedia-73","name":"Kashi Maru",
+ "sources":{
+  "s1":{"url":"https://pacificwrecks.com/ship/maru/kashi.html","publisher":"Pacific Wrecks","kind":"press","quote":"The shipwreck is upright at a depth of 50' / 15.24m and encrusted with coral and home to marine life."},
+  "s2":{"url":"https://www.nigelmarshphotography.com/blog-posts/munda-divelog","publisher":"Nigel Marsh Photography","kind":"press","quote":"today rests in a sheltered bay in only 18m of water … we were blessed with 15m visibility"}},
+ "depth":[{"ref":"s1","unit":"m","top":15.24,"bottom":15.24},{"ref":"s2","unit":"m","top":18,"bottom":18}],
+ "entry":{"value":"boat","refs":["s2"]},
+ "types":{"value":["wreck"],"refs":["s1","s2"]},
+ "highlights":[{"text":"Cargo still in the hold; mast above water","refs":["s2"]}]},
+{"id":"x-wikipedia-95","name":"Tulagi",
+ "sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Tulagi","publisher":"Wikipedia","kind":"encyclopedia","quote":"Tulagi (less commonly known as Tulaghi) is a small island in Solomon Islands, just off the south coast of Ngella Sule."}},
+ "notDiveSite":{"kind":"area","reason":"A whole island and former capital, not a single dive site","refs":["s1"]}}
+]}

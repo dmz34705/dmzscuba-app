@@ -1,0 +1,459 @@
+{
+ "batch": "popular-caribbean-netherlands-4",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-8mttsl",
+   "reason": "only page found places it on the west coast, pin is north coast"
+  },
+  {
+   "id": "odm-hei8pl",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-krseko",
+   "reason": "no usable source found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-sm85fu",
+   "name": "Atlantis",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/atlantis/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore diving, sand beach entry … Depth 3-40 meters (all levels) … Special Reef, sand bottom and open ocean in one dive"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sand bottom",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Open ocean in one dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-kugk4a",
+   "name": "Larry’s Lair (47)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/larrys-lair/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Depth 3-45 meters, double reef system … Special feature Only dive site without yellow buoy, navigation challenge"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Only dive site without yellow buoy",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Navigation challenge",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-siylcm",
+   "name": "No Name (A)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/no-name-klein-bonaire/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat only (giant stride entry) … Dive depth 8-15 meters typical, max 25 meters … Experience Intermediate level minimum required … Special feature Unique granite blocks of volcanic origin"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Unique granite blocks of volcanic origin",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-gsnev4",
+   "name": "Bonaire",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Bonaire",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a Caribbean island in the Leeward Antilles. A special municipality (officially \"public body\") of the Netherlands"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "The whole island of Bonaire, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-10qe1n",
+   "name": "White Hole (62)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/white-hole/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Type Boat dive (200m wade from shore possible) … Depth 15-30 meters … Suitable for Advanced Open Water divers … Specialty Schools of tarpon, sea turtles, eagle rays"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of tarpon",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sea turtles",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-6ndnc7",
+   "name": "Cai (63)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/cai-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore diving and boat diving … Experience Advanced divers only … Highlight Large tarpon schools and giant anemones"
+    }
+   },
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large tarpon schools",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Giant anemones",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-6w05b4",
+   "name": "Willemstoren Lighthouse",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/willemstoren-lighthouse-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Dive Level Expert divers only (Advanced Open Water+) … Currents Strong and unpredictable, caution required"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong and unpredictable, caution required current",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-9jdj9n",
+   "name": "Customs House",
+   "sources": {
+    "s1": {
+     "url": "https://dive-the-world.com/diving-sites-saba.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "Customs House is named after the abandoned structure that sits on the cliff edge overlooking Ladder Bay … this site is home to a cleaning station for them … Fields of garden eels will rise and fall"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Cleaning station for roughtail stingrays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Garden eel fields",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Coral-encrusted old anchors on the bottom",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2t3bao",
+   "name": "Ladder Labyrinth Red",
+   "sources": {
+    "s1": {
+     "url": "https://dive-the-world.com/diving-sites-saba.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "Ladder Labyrinth is home to innumerable crustacea for whom the ridges, nooks and channels of this lava flow provide an idea habitat"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Lava-flow ridges and channels full of crustaceans",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Macro life: jawfish and dragonets",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3yy8t2",
+   "name": "Babylon, Saba",
+   "sources": {
+    "s1": {
+     "url": "https://dive-the-world.com/diving-sites-saba.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "Babylon is a shallow site ranging from around 45 ft (14m) to 100 ft (30m) … many overhangs sheltering glassy sweeper and fan corals"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 100
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Overhangs with glassy sweepers and fan corals",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8fl24x",
+   "name": "Playa Funchi (3)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/playa-funchi-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Depth 5-40 meters … Difficulty Advanced divers only … Special feature Washington Plantation remains underwater"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Washington Plantation remains underwater",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-nzul8q",
+   "name": "Boca Slagbaai (6)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/boca-slagbaai-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Dive type Shore diving, advanced divers only … Maximum depth 40 meters"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-xha42m",
+   "name": "Wayaka (5)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/wayaka-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore diving from sandy beach … Maximum depth 45+ meters … Certification Advanced Open Water minimum"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-gbewqb",
+   "name": "Big Rock Market",
+   "sources": {
+    "s1": {
+     "url": "https://dive-the-world.com/diving-sites-saba.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "These windward dive sites are less frequently visited since they are more exposed to adverse Atlantic conditions … These coastlines include Big Rock Market … they promise excellent visibility"
+    }
+   },
+   "hazards": [
+    {
+     "text": "Exposed to Atlantic swell; dived less often",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Excellent visibility in calm weather",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-onem9e",
+   "name": "Hole in the Corner",
+   "sources": {
+    "s1": {
+     "url": "https://dive-the-world.com/diving-sites-saba.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "These windward dive sites are less frequently visited since they are more exposed to adverse Atlantic conditions … and Hole in the Corner … they promise excellent visibility"
+    }
+   },
+   "hazards": [
+    {
+     "text": "Exposed to Atlantic swell; dived less often",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Excellent visibility in calm weather",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

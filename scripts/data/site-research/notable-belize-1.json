@@ -1,0 +1,108 @@
+{
+ "batch": "notable-belize-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-wikipedia-460",
+   "name": "Lighthouse Reef",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Lighthouse_Reef",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "approximately 35 kilometres (22 mi) long from north to south, and about 8 kilometres (5.0 mi) wide"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Atoll about 35 km long containing many dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-450",
+   "name": "Hol Chan Marine Reserve",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Hol_Chan_Marine_Reserve",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The cut is approximately 23 m (75 ft) wide and 9 m (30 ft) deep … snorkeling and diving are permitted on payment of a fee."
+    },
+    "s2": {
+     "url": "https://www.thetraveler.org/hol-chan-marine-reserve-diving-guide-from-san-pedro/",
+     "publisher": "The Traveler",
+     "kind": "press",
+     "quote": "The maximum depth is around 30 feet … Currents vary with tides … All visitors, snorkelers and divers alike, must enter with a licensed tour operator and a registered guide."
+    },
+    "s3": {
+     "url": "https://www.elpescador.com/adventures/sea/dive-on-the-hol-chan-marine-reserve-tour/",
+     "publisher": "El Pescador",
+     "kind": "operator",
+     "quote": "Dive Site is 28 feet; snorkel site is 11 feet."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "bottom": 28
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Reserve fee; licensed operator and guide required",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dense fish life, turtles and rays",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow channel through the barrier reef off Ambergris Caye, about 30 feet deep, reached by boat from San Pedro. Fish density is high and turtle and ray sightings are reliable; tidal current varies.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

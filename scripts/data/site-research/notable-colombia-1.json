@@ -1,0 +1,121 @@
+{
+ "batch": "notable-colombia-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "x-wikipedia-447",
+   "name": "Gorgona Island (Colombia)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Gorgona_Island_(Colombia)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Gorgona is a Colombian island in the Pacific Ocean situated about 28 km (17 mi) off the Colombian Pacific coast."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island / national park, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-441",
+   "name": "Lake Tota",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Lake_Tota",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Lake Tota (Spanish: Lago de Tota) is the largest lake in Colombia"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole lake, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-281",
+   "name": "Archipelago of San Bernardo",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Archipelago_of_San_Bernardo",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Since 1996, part of the archipelago belongs to the Rosario and San Bernardo Corals National Natural Park."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Island archipelago, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-284",
+   "name": "Múcura Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/M%C3%BAcura_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Múcura Island (Isla Múcura) is a coral island located in the Archipelago of San Bernardo"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-277",
+   "name": "Rosario Islands",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Rosario_Islands",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is an archipelago located off the coast of Colombia, approximately 20 kilometres (12 miles) from Cartagena"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Archipelago with 28 dive sites, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-275",
+   "name": "Tayrona National Natural Park",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Tayrona_National_Natural_Park",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a protected area in the Colombian northern Caribbean region"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "National park, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

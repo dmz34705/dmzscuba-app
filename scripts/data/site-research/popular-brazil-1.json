@@ -1,0 +1,593 @@
+{
+ "batch": "popular-brazil-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-t2ofil",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-9yxseq",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-w54ytw",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-uje1qv",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-hz93wi",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-t88l58",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-fes03k",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-z0c727",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-nsqls7",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-yncqqu",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-h0fw2f",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-fobwbw",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-8yzgox",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-iqm2oo",
+   "reason": "no usable source found for this exact site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-medcsg",
+   "name": "Ilha do Meio",
+   "sources": {
+    "v": {
+     "url": "https://feel.visitbrasil.com/en/recreational-diving-within-the-marine-national-park-of-fernando-de-noronha/",
+     "publisher": "Visit Brasil (Embratur)",
+     "kind": "agency",
+     "quote": "At dive sites like Ilha do Meio (up to 16 meters) or Laje Dois Irmãos (up to 24 meters)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "v",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "v"
+    ]
+   }
+  },
+  {
+   "id": "odm-kyqz2y",
+   "name": "Ressurreta",
+   "sources": {
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Ressurreta / Canal da Rata Good for drift diving, with depths between 8 and 15 metres."
+    },
+    "h": {
+     "url": "https://esim.holafly.com/travel-tips/scuba-diving-fernando-de-noronha",
+     "publisher": "Holafly travel guide",
+     "kind": "press",
+     "quote": "4- Ressurreta Depth : 8 to 18 meters Recommended level : All levels Perfect for beginners or as a second dive of the day, Ressurreta is a lively reef teeming with parrotfish, turtles, and brain corals . The currents are gentle"
+    }
+   },
+   "depth": [
+    {
+     "ref": "b",
+     "unit": "m",
+     "top": 8,
+     "bottom": 15
+    },
+    {
+     "ref": "h",
+     "unit": "m",
+     "top": 8,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "h"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "h"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Parrotfish, turtles and brain corals",
+     "refs": [
+      "h"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A calm reef beside the Canal da Rata that works as an easy second dive for newer divers or as a gentle drift. Depths run roughly 8-15 m, with turtles and reef fish on the coral.",
+    "refs": [
+     "b",
+     "h"
+    ]
+   }
+  },
+  {
+   "id": "odm-bg5rd3",
+   "name": "Buraco das Cabras",
+   "sources": {
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Buraco das Cabras Volcanic rock formations with several schools of small fish; usually with a drift ending in the Canal da Rata. Depth to 15 metres."
+    },
+    "h": {
+     "url": "https://esim.holafly.com/travel-tips/scuba-diving-fernando-de-noronha",
+     "publisher": "Holafly travel guide",
+     "kind": "press",
+     "quote": "5- Buraco das Cabras Depth : 10 to 25 meters Recommended level : Intermediate Buraco das Cabras is a striking site known for its unique terrain. The rock formations form a natural corridor that opens into a wide underwater crevice"
+    }
+   },
+   "depth": [
+    {
+     "ref": "b",
+     "unit": "m",
+     "bottom": 15
+    },
+    {
+     "ref": "h",
+     "unit": "m",
+     "top": 10,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "h"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock corridor opening into a crevice",
+     "refs": [
+      "h"
+     ]
+    },
+    {
+     "text": "Schools of small fish",
+     "refs": [
+      "b"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Volcanic rock formations that form a corridor leading into a wide crevice, usually dived as a drift that finishes in the Canal da Rata. Sponges, soft corals and small-fish schools line the walls.",
+    "refs": [
+     "b",
+     "h"
+    ]
+   }
+  },
+  {
+   "id": "odm-o9sjtx",
+   "name": "Laje Dois Irmãos",
+   "sources": {
+    "v": {
+     "url": "https://feel.visitbrasil.com/en/recreational-diving-within-the-marine-national-park-of-fernando-de-noronha/",
+     "publisher": "Visit Brasil (Embratur)",
+     "kind": "agency",
+     "quote": "At dive sites like Ilha do Meio (up to 16 meters) or Laje Dois Irmãos (up to 24 meters)"
+    },
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Dois Irmãos Slab Next to the Dois Irmãos hill, it has an average depth of 23 metres, with rocks, sand and lots of marine life."
+    },
+    "h": {
+     "url": "https://esim.holafly.com/travel-tips/scuba-diving-fernando-de-noronha",
+     "publisher": "Holafly travel guide",
+     "kind": "press",
+     "quote": "8- Laje dos Irmãos Depth : 15 to 30 meters Recommended level : Intermediate to advanced Located near the islet group known as Dois Irmãos"
+    }
+   },
+   "depth": [
+    {
+     "ref": "v",
+     "unit": "m",
+     "bottom": 24
+    },
+    {
+     "ref": "b",
+     "unit": "m",
+     "bottom": 23
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "v"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "h"
+    ]
+   },
+   "summary": {
+    "text": "A submerged slab beside the Dois Irmãos hill, with rock, sand and plenty of fish at roughly 23-24 m. Reef sharks may pass, and with favourable current it turns into a drift.",
+    "refs": [
+     "v",
+     "b"
+    ]
+   }
+  },
+  {
+   "id": "odm-fhuqtd",
+   "name": "Pedras Secas",
+   "sources": {
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Dry rocks A group of rocks that rise to the surface, where the local depth is around 15 metres, with lots of sponges, thresher and sand sharks (lambarú), large barracudas, rays and turtles. It has several entrances forming small canyons and visibility is usually excellent. Beware of the currents."
+    },
+    "h": {
+     "url": "https://esim.holafly.com/travel-tips/scuba-diving-fernando-de-noronha",
+     "publisher": "Holafly travel guide",
+     "kind": "press",
+     "quote": "1- Pedras Secas Depth : 8 to 25 meters Recommended level: Intermediate to advanced Arguably the most iconic dive site in Fernando de Noronha, Pedras Secas features a network of tunnels, crevices, and natural arches covered in colorful corals and sponges. … The current can be moderate, so some prior diving experience is recommended"
+    }
+   },
+   "depth": [
+    {
+     "ref": "b",
+     "unit": "m",
+     "bottom": 15
+    },
+    {
+     "ref": "h",
+     "unit": "m",
+     "top": 8,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "h"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "h"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Tunnels, crevices and natural arches",
+     "refs": [
+      "h"
+     ]
+    },
+    {
+     "text": "Thresher and sand sharks, barracuda, rays",
+     "refs": [
+      "b"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Currents",
+     "refs": [
+      "b",
+      "h"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Rocks breaking the surface, undercut by canyons, tunnels and arches covered in sponges and coral. Expect barracuda, rays, turtles and sharks, and watch for moderate current.",
+    "refs": [
+     "b",
+     "h"
+    ]
+   }
+  },
+  {
+   "id": "odm-o208bl",
+   "name": "Caverna da Sapata",
+   "sources": {
+    "v": {
+     "url": "https://feel.visitbrasil.com/en/recreational-diving-within-the-marine-national-park-of-fernando-de-noronha/",
+     "publisher": "Visit Brasil (Embratur)",
+     "kind": "agency",
+     "quote": "For more experienced divers, the Sapata Cave (up to 27 meters) offers a cinematic dive."
+    },
+    "h": {
+     "url": "https://esim.holafly.com/travel-tips/scuba-diving-fernando-de-noronha",
+     "publisher": "Holafly travel guide",
+     "kind": "press",
+     "quote": "2- Caverna da Sapata Depth : 15 to 35 meters Recommended level : Advanced Located at the western tip of the main island, Caverna da Sapata is as stunning as it is challenging . The cave entrance sits around 24 meters deep"
+    }
+   },
+   "depth": [
+    {
+     "ref": "v",
+     "unit": "m",
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "v",
+     "h"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "h"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Currents change with the season",
+     "refs": [
+      "h"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A cave at the tip of Sapata with its entrance near 24 m and sunbeams cutting through, rated for experienced divers. Orange corals and sponges cover the walls, and current varies with season.",
+    "refs": [
+     "v",
+     "h"
+    ]
+   }
+  },
+  {
+   "id": "odm-8094ev",
+   "name": "Cagarras",
+   "sources": {
+    "h": {
+     "url": "https://esim.holafly.com/travel-tips/scuba-diving-fernando-de-noronha",
+     "publisher": "Holafly travel guide",
+     "kind": "press",
+     "quote": "6- Cagarras Depth : 10 to 20 meters Recommended level : All levels Situated in Mar de Dentro, Cagarras is one of the most accessible and colorful sites in the park"
+    },
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Cagarras With a rocky coastline, this is a great place for beginners to make deep dives, with depths of up to 30 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "h",
+     "unit": "m",
+     "top": 10,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "h",
+     "b"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Octopus, lobsters and small reef sharks",
+     "refs": [
+      "h"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-n7qdz1",
+   "name": "Ilha do Frade",
+   "sources": {
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Frade Island An excellent place to meet turtles, especially the part of the island facing the open sea. Various types of corals and sponges, with depths down to 20 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "b",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Turtles, corals and sponges",
+     "refs": [
+      "b"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-el05cp",
+   "name": "Corveta Ipiranga V17",
+   "sources": {
+    "n": {
+     "url": "https://www.naui.org/?p=21330",
+     "publisher": "NAUI",
+     "kind": "press",
+     "quote": "It is a technical dive, with depth between 175 and 200 feet (54 and 62 meters). … The well-preserved Ipiranga has an imposing cannon on the stern."
+    },
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Corveta Ipiranga shipwreck Corveta Ipiranga shipwreck … It lies at a depth of 64 metres, but the dive usually doesn’t go beyond 53 metres due to the long decompression time."
+    }
+   },
+   "depth": [
+    {
+     "ref": "n",
+     "unit": "m",
+     "top": 54,
+     "bottom": 62
+    },
+    {
+     "ref": "b",
+     "unit": "m",
+     "bottom": 64
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "b"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "n",
+     "b"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "n"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cannon on the stern; well preserved",
+     "refs": [
+      "n"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Long decompression time",
+     "refs": [
+      "b"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Brazilian Navy corvette sunk in 1983 off Noronha, rated one of the country's best wrecks. It sits around 54-64 m, so it is a technical or deep-experienced dive with long decompression.",
+    "refs": [
+     "n",
+     "b"
+    ]
+   }
+  },
+  {
+   "id": "odm-r82tnc",
+   "name": "Pontal do Norte",
+   "sources": {
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Pontal do Norte A large submerged rock, like a skyscraper, which makes for a beautiful dive from the sand, with large fish and lots of marine life, down to 42 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "b",
+     "unit": "m",
+     "bottom": 42
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Large submerged rock with big fish",
+     "refs": [
+      "b"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-bnizop",
+   "name": "Cabeço da Sapata",
+   "sources": {
+    "b": {
+     "url": "https://www.bahia.ws/en/diving-spots-in-the-fernando-de-noronha-archipelago/",
+     "publisher": "Bahia.ws",
+     "kind": "press",
+     "quote": "Cabeço da Sapata With depths down to 42 metres, this is a wall with a wide variety of passing fish reaching the surface. Suitable for experienced divers."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "b"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "b"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall with passing fish",
+     "refs": [
+      "b"
+     ]
+    }
+   ]
+  }
+ ]
+}

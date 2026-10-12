@@ -1,0 +1,122 @@
+{
+ "batch": "notable-switzerland-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "osm-n371470562",
+   "name": "Terlinden",
+   "sources": {
+    "s1": {
+     "url": "https://taucher.net/tauchplatz-zuerichsee__terlinden-bericht-hlz13666",
+     "publisher": "Taucher.Net (diver report)",
+     "kind": "press",
+     "quote": "Die Steilwand beginnt bei etwa 33m Tiefe und zieht parallel dem ganzen Ufer entlang … Lampe aber immer nötig, da ab 15m stockdunkel"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Dark below 15 m; lamp needed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Wall starts around 33 m and continues deeper"
+  },
+  {
+   "id": "osm-n663870011",
+   "name": "Blausee",
+   "sources": {
+    "s1": {
+     "url": "https://taucher.net/tauchplatz-blausee-haz11331",
+     "publisher": "Taucher.Net (diver report)",
+     "kind": "press",
+     "quote": "Max. Tiefe: 12m Schwierigkeit: Für Anfänger … nach Voranmeldung und in Kombination mit einem 4-Gänge Menü im Restaurant des Hotels Blausee und nur zwischen November und März möglich … Wasser ist mit etwa 8ºC … Sichtweite von 10-15 Metern"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "waterTemp": {
+    "low": 8,
+    "high": 8,
+    "unit": "C",
+    "note": "mountain lake in winter diving season",
+    "refs": [
+     "s1"
+    ]
+   },
+   "season": {
+    "from": 11,
+    "to": 3,
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Private lake; diving by advance booking with Hotel Blausee, November to March only",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870185",
+   "name": "Römerbrücke / Ponte dei Salti",
+   "sources": {
+    "s1": {
+     "url": "https://www.ticino.ch/de/commons/details/Die-R%C3%B6merbr%C3%BCcke-Ponte-dei-Salti/2707.html",
+     "publisher": "Ticino Turismo",
+     "kind": "agency",
+     "quote": "Die beliebtesten Tauchstellen sind der \"Pozzo della Misura\" und der \"Pozzo dei Salti\" … Beachten Sie deshalb bitte die Hinweisschilder vor Ort"
+    }
+   },
+   "hazards": [
+    {
+     "text": "River hazards; follow posted warning signs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

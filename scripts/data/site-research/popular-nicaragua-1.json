@@ -1,0 +1,53 @@
+{
+ "batch": "popular-nicaragua-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-dpcpjd",
+   "reason": "only directory-style sources found"
+  },
+  {
+   "id": "odm-f6afga",
+   "reason": "only directory-style sources found"
+  },
+  {
+   "id": "odm-78j7ld",
+   "reason": "only directory-style sources found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-6oimyk",
+   "sources": {
+    "s1": {
+     "url": "https://www.justgottadive.com/dive_resources/travel_articles/diving-little-corn-island-nicaragua-shark-hole-tarpon-channel",
+     "publisher": "Just Gotta Dive",
+     "kind": "press",
+     "quote": "Tarpon Channel is without a doubt, the best place to do just that. … While maximum depth here is 22 meters … Not for beginners, but definitely suitable for intermediate divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 22
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hammerhead sharks, eagle rays, tunnels and caves",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "Tarpon Channel"
+  }
+ ]
+}

@@ -1,0 +1,486 @@
+{
+ "batch": "popular-indonesia-4",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-wjvyu2",
+   "reason": "China Shop: only banned directory pages state facts"
+  },
+  {
+   "id": "odm-w5emtk",
+   "reason": "Dermaga Pulau Pramuka: no usable non-directory page"
+  },
+  {
+   "id": "odm-xpbe23",
+   "reason": "Soft Coral: generic name, no depth source"
+  },
+  {
+   "id": "odm-wadx2e",
+   "reason": "Pulau Panggang Barat: no source found"
+  },
+  {
+   "id": "odm-9376pl",
+   "reason": "Timur Pramuka: no source found"
+  },
+  {
+   "id": "odm-quk13e",
+   "reason": "Sea Garden: generic name, no depth/conditions source"
+  },
+  {
+   "id": "odm-82efj8",
+   "reason": "Tanjung Penyu: no fetched page with facts"
+  },
+  {
+   "id": "odm-hddvuv",
+   "reason": "Poso Wreck: only Dive Champ, which repackages SSI directory data"
+  },
+  {
+   "id": "odm-seqijs",
+   "reason": "Papa Theo Wreck: only Dive Champ, which repackages SSI directory data"
+  },
+  {
+   "id": "odm-dgoaa1",
+   "reason": "Pulau Pramuka: only Dive Champ, which repackages SSI directory data"
+  },
+  {
+   "id": "odm-wjc2d1",
+   "reason": "Monkey Reef: only one source (Bali Fun Diving) found"
+  },
+  {
+   "id": "odm-5ud559",
+   "reason": "Angels Canyon Bali: no page with facts found"
+  },
+  {
+   "id": "odm-57mg36",
+   "reason": "Abwonderdive House Reef: business house reef"
+  },
+  {
+   "id": "odm-q2z8ub",
+   "reason": "Coral Stairs Bali: only name-only listings found"
+  },
+  {
+   "id": "odm-7vsied",
+   "reason": "Out Of Eden Bali: only name-only listings found"
+  },
+  {
+   "id": "odm-shdtkx",
+   "reason": "Gumi Cenik 1, Bali: no page found"
+  },
+  {
+   "id": "odm-zjxycn",
+   "reason": "Ben Ben Garden: no page found"
+  },
+  {
+   "id": "odm-lh0ua1",
+   "reason": "The Drop Bali: cannot confirm it is Tulamben Drop Off; no source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-n0pe90",
+   "name": "Pillarsteen",
+   "sources": {
+    "s1": {
+     "url": "https://www.komodonationalpark.org/dive_sites.htm",
+     "publisher": "Komodo National Park (dive sites page)",
+     "kind": "park",
+     "quote": "Pillaarsteen … Diving is particularly good at around 30-40m depth. … This area may be effected by surge when there are swells from the southwest."
+    },
+    "s2": {
+     "url": "https://www.bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive Komodo",
+     "kind": "operator",
+     "quote": "Pillarsteen … Avg. Depth: 18m; Max Depth: 40m … This dive is still quite good when other places have too much current, but can be prone to swell."
+    },
+    "s3": {
+     "url": "https://www.neptuneliveaboards.com/blog/best-dive-sites-komodo/",
+     "publisher": "Neptune Liveaboards",
+     "kind": "operator",
+     "quote": "Pillarsteen … Depth 5 to 30-plus metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Fusilier schools over soft-coral slope",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Caves and swim-throughs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sharks and the odd turtle",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Surge in southwest swell",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Komodo reef slope off Padar with boulders, caves and swim-throughs, carpeted in soft corals and patrolled by fusiliers, sharks and turtles. Useful when other sites run hard current, but can surge in swell.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-xz5eol",
+   "name": "Lighthouse Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive Komodo",
+     "kind": "operator",
+     "quote": "The Lighthouse, located off the point of Gili Lawa Laut, is a drift dive for the more experienced diver. … Avg. Depth: 15m; Max Depth: 35m"
+    },
+    "s2": {
+     "url": "https://www.komodoresort.com/blog/komodo-dive-sites/",
+     "publisher": "Komodo Resort",
+     "kind": "operator",
+     "quote": "Lighthouse … There are big table corals, whip corals, soft corals, and sandy areas in the reef."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Table, whip and soft corals on a sloping reef",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "White-tip reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A drift-style reef off Gili Lawa Laut in northern Komodo, with two pinnacles on a sloping reef and table corals, whip corals and white-tip sharks. Operators rate it for more experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-7tmcao",
+   "name": "Gindang",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubajunkiekomodo.com/central/",
+     "publisher": "Scuba Junkie Komodo",
+     "kind": "operator",
+     "quote": "Gindang … Generally unaffected by current, this is best dived at a nice slow relaxed pace to better locate the hidden treasures within!"
+    }
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro: wonderpus, ribbon eels, seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-f4rbpv",
+   "name": "Secret Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.bottles-up-diving.com/EN-pages/BU_divingbali_secretbay_EN.html",
+     "publisher": "Bottles Up Diving",
+     "kind": "operator",
+     "quote": "The dives at Secret Bay are very shallow - no more than 10 metres during high tide - and visibility is varies between 5 metres - low tide - up to 15m."
+    },
+    "s2": {
+     "url": "https://www.vilondo.com/things-to-do-in-bali/diving-bali/diving-gilimanuk-secret-bay/",
+     "publisher": "Vilondo",
+     "kind": "press",
+     "quote": "Secret Bay … Currents Very gentle Depth (m) 3 - 10 … frogfish, nudibranch, seahorses, yellow-margin moray eels, ghost pipefish and dragonets can be seen"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 10
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 10
+    }
+   ],
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 5,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish, ghost pipefish, dragonets, seahorses",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Visibility drops at low tide or if silt is kicked up",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A very shallow muck site beside Gilimanuk harbour on Bali's west tip. Fine black volcanic sand and rubble, not coral, hold frogfish, ghost pipefish and dragonets; best at high tide when visibility is better.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-cni042",
+   "name": "Temple Wall",
+   "sources": {
+    "s1": {
+     "url": "https://searovers.net/diving-nw-bali/pemuteran-bay-treasures/",
+     "publisher": "Sea Rovers Dive Center Pemuteran",
+     "kind": "operator",
+     "quote": "Temple Wall / Pura Tembok (the Maze, Temple Garden) Trip Time: ±10 minutes Current: Slight to strong … The wall bottom ranges from 16 to 35 m"
+    },
+    "s2": {
+     "url": "https://www.easy-divers.eu/pemuteran-dive-sites",
+     "publisher": "Easy Divers Bali",
+     "kind": "operator",
+     "quote": "Temple Wall … Currents are usually mild but the depth makes it a dive for experienced divers with solid buoyancy and good air management. Depth: 18 – 35 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sponges, gorgonians and soft corals on the wall",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Crustaceans and large gorgonians on the deep section",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A boat dive in Pemuteran Bay: a wall beneath the underwater temple statues, dropping to around 35 m and covered in sponges, gorgonians and soft corals. Depth and occasional current make it one for experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-569wrp",
+   "name": "Pemuteran Bio Rock Project",
+   "sources": {
+    "s1": {
+     "url": "https://searovers.net/diving-nw-bali/pemuteran-bay-treasures/",
+     "publisher": "Sea Rovers Dive Center Pemuteran",
+     "kind": "operator",
+     "quote": "Kebun Batu (The Rock Garden)& Karang Lestari (Biorock) Trip Time: ±5mins Current: Rarely Brief: Artificial Reef project, max. 18 m depth plenty of critters and small fish, excellent for night dives"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Critters and small fish; good night dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-eoy29e",
+   "name": "Boga Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://tulambenscuba.com/dive-spot-boga-wreck/",
+     "publisher": "Tulamben Scuba",
+     "kind": "operator",
+     "quote": "Boga Wreck … The 50-meter-long ship is currently a home for fish and coral. You can find it at a depth of 14 meters to 32 meters for the deepest part."
+    },
+    "s2": {
+     "url": "https://balidiving.co/bali-diving-sites/boga-wreck/",
+     "publisher": "Bali Diving",
+     "kind": "operator",
+     "quote": "Boga Wreck … Depth range 18–40 m Access Shore … Experience level Advanced … known for batfish, trevally, barracuda, moray eels, and lionfish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 14,
+     "bottom": 32
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Batfish, trevally, barracuda, morays, lionfish",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Wreck props: wheel, statues, cars",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A purpose-sunk wreck at Kubu, just north of Tulamben, reached from the beach. It lies at roughly 14-40 m depending on the part and the guide, so it is rated advanced; fish and coral now cover the hull.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

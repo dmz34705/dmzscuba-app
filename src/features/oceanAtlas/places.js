@@ -58,7 +58,15 @@ let index = null;
 function places() {
   if (index) return index;
   const make = (kind, id, name, rings, extra = {}) => ({ kind, id, name, rings, bbox: bboxOf(rings), ringBoxes: rings.map(ring => bboxOf([ring])), ...extra });
-  const countries = PLACES.countries.map(([code, name, rings]) => make('country', code, name, rings.map(r => decodeRing(r, PLACES.scale))));
+  // Natural Earth gives some dependencies their sovereign's code (Ashmore and Cartier Islands and the Indian Ocean
+  // Territories are both AU): one place per code, named after its largest part.
+  const byCode = new Map();
+  for (const [code, name, rings] of PLACES.countries) {
+    const entry = byCode.get(code) || byCode.set(code, { name, size: 0, rings: [] }).get(code);
+    if (rings.length > entry.size) Object.assign(entry, { name, size: rings.length });
+    entry.rings.push(...rings);
+  }
+  const countries = [...byCode].map(([code, { name, rings }]) => make('country', code, name, rings.map(r => decodeRing(r, PLACES.scale))));
   const states = PLACES.states.map(([code, name, rings]) => make('state', code, name, rings.map(r => decodeRing(r, PLACES.scale))));
   const islands = PLACES.islands.map(([name, catalogCountry, code, areaKm2, ring], i) => {
     const island = make('island', `island-${i}`, name, [decodeRing(ring, PLACES.scale)], { areaKm2 });
@@ -88,13 +96,17 @@ function sitesByPlace() {
     let code = countryCode(site.country);
     const listed = code && countries.find(country => country.id === code);
     if (!code || (listed && !near(listed, latitude, longitude, TERRITORY_KM))) {
-      const around = countries.filter(country => inBox(country.bbox, latitude, longitude, 1));
+      // Per-ring boxes: a country's overall box can span the globe (Kiribati across the dateline).
+      const around = countries.filter(country => country.ringBoxes.some(box => inBox(box, latitude, longitude, 1)));
       const inside = around.find(country => contains(country, latitude, longitude));
       // A "marine" record with no ocean within a few hundred km is bad data and stays unplaced.
       if (inside && !/fresh/i.test(site.environment) && !temperatureProfile(site)) { misplaced.push(site); continue; }
       // Unlabelled offshore spots (e.g. OpenStreetMap reefs) look further out for the nearest country.
-      const candidates = inside ? [] : around.length ? around : countries.filter(country => inBox(country.bbox, latitude, longitude, 8));
-      code = (inside || candidates.map(country => ({ country, d: distanceTo(country, latitude, longitude) })).sort((a, b) => a.d - b.d)[0]?.country)?.id || code;
+      const candidates = inside ? [] : around.length ? around : countries.filter(country => country.ringBoxes.some(box => inBox(box, latitude, longitude, 8)));
+      const best = inside || candidates.map(country => ({ country, d: distanceTo(country, latitude, longitude) })).sort((a, b) => a.d - b.d)[0]?.country;
+      // A listed country whose outline is simply incomplete at this map scale (the Maldives' southern atolls) stays,
+      // unless the other country really is closer: a box spanning the dateline (Kiribati) is not "nearby".
+      code = (best && (!listed || inside || distanceTo(best, latitude, longitude) < distanceTo(listed, latitude, longitude)) ? best.id : null) || code;
     }
     if (code) add(byCountry, code, site);
     if (code === 'US') {

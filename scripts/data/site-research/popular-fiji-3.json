@@ -1,0 +1,306 @@
+{
+  "batch": "popular-fiji-3",
+  "researchedAt": "2026-10-08",
+  "skipped": [
+    {
+      "id": "odm-q56myu",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-frk5ni",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-eqscwx",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-w7kyse",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-ce4n5n",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-p07uwf",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-il24u7",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-87s3z8",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-7jehh3",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-0g2pyl",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-8oww0v",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-0br28h",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-ia7e3o",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-uzee85",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-kik9lk",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-9ejzpr",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-7uuqok",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-79hrg2",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-50wxye",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-pm8wbi",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-mkjhno",
+      "reason": "no usable non-banned source with site-specific facts"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-jg7nht",
+      "name": "Sea Fan City",
+      "sources": {
+        "dpiSFC": {
+          "url": "https://www.diveplanit.com/dive-site/sea-fan-city/",
+          "publisher": "DivePlanit",
+          "kind": "press",
+          "quote": "Top: 10M Median: 20M Bottom: 40M"
+        },
+        "bf": {
+          "url": "https://www.barefootkuatafiji.com/fiji-diving",
+          "publisher": "Barefoot Kuata Island Resort",
+          "kind": "operator",
+          "quote": "The wall, as it's name suggests, is abundant with sea fans. … Max Depth: 15-30m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "dpiSFC",
+          "unit": "m",
+          "top": 10,
+          "bottom": 40
+        },
+        {
+          "ref": "bf",
+          "unit": "m",
+          "top": 15,
+          "bottom": 30
+        }
+      ],
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "bf"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Wall covered in large sea fans",
+          "refs": [
+            "bf"
+          ]
+        },
+        {
+          "text": "Pygmy seahorses can hide in the fans",
+          "refs": [
+            "bf"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A coral wall off Kuata abundant with sea fans, with a shallow hard-coral garden above and nooks for macro life. Most of the best of it lies above about 20 m.",
+        "refs": [
+          "dpiSFC",
+          "bf"
+        ]
+      }
+    },
+    {
+      "id": "odm-nul5dj",
+      "name": "THE COLOSSEUM Coral Coast Divers private shark sanctuary",
+      "sources": {
+        "ccd": {
+          "url": "https://coralcoastdivers.com/shark-dives/",
+          "publisher": "Coral Coast Divers",
+          "kind": "operator",
+          "quote": "Descend to 18–20 metres and kneel along the wall"
+        }
+      },
+      "depth": [
+        {
+          "ref": "ccd",
+          "unit": "m",
+          "bottom": 20
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "ccd"
+        ]
+      },
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "ccd"
+        ]
+      },
+      "access": {
+        "value": "Open Water certification required; minimum 4 guests",
+        "refs": [
+          "ccd"
+        ]
+      }
+    },
+    {
+      "id": "odm-1j010k",
+      "name": "The BISTRO - Shark Dive AQUATREK",
+      "sources": {
+        "at": {
+          "url": "https://www.aquatrek.com/dive-sites",
+          "publisher": "Aqua-Trek Beqa",
+          "kind": "operator",
+          "quote": "Bistro (60ft)"
+        },
+        "dn": {
+          "url": "https://divernet.com/world-dives/beqa-lagoon-fiji-shark-diving-coral-reefs/",
+          "publisher": "Divernet",
+          "kind": "press",
+          "quote": "starts at 5m depth"
+        }
+      },
+      "depth": [
+        {
+          "ref": "at",
+          "unit": "ft",
+          "bottom": 60
+        },
+        {
+          "ref": "dn",
+          "unit": "m",
+          "top": 5,
+          "bottom": 25
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "dn"
+        ]
+      },
+      "types": {
+        "value": [
+          "pinnacle"
+        ],
+        "refs": [
+          "dn"
+        ]
+      },
+      "hazards": [
+        {
+          "text": "Bull and other sharks pass close during the feed",
+          "refs": [
+            "dn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-9ul3tk",
+      "name": "Plantation Pinnacle",
+      "sources": {
+        "dpiPP": {
+          "url": "https://www.diveplanit.com/dive-site/plantation-pinnacle/",
+          "publisher": "DivePlanit",
+          "kind": "press",
+          "quote": "Plantation Pinnacle … top at 10 m and the bottom at 25 m"
+        },
+        "sub": {
+          "url": "https://fijidiving.com/dive-sites",
+          "publisher": "Subsurface Fiji",
+          "kind": "operator",
+          "quote": "The top is covered in a vibrant clownfish garden, making it one of our most photographed spots!"
+        }
+      },
+      "depth": [
+        {
+          "ref": "dpiPP",
+          "unit": "m",
+          "top": 10,
+          "bottom": 25
+        }
+      ],
+      "types": {
+        "value": [
+          "pinnacle"
+        ],
+        "refs": [
+          "sub"
+        ]
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "dpiPP"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Clownfish and anemone garden on top",
+          "refs": [
+            "sub"
+          ]
+        },
+        {
+          "text": "Swim-through at the base",
+          "refs": [
+            "sub"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A trio of pinnacles in the Mamanucas topped with an anemone garden full of clownfish, with swim-throughs at depth. Beginners can stay on the shallow top while experienced divers go deeper.",
+        "refs": [
+          "dpiPP",
+          "sub"
+        ]
+      }
+    }
+  ]
+}

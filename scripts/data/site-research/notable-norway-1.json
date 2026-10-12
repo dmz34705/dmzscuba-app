@@ -1,0 +1,549 @@
+{
+ "batch": "notable-norway-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-notable-791",
+   "name": "HMS Invincible",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Invincible_(1907)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "lying on a sandy bottom at a depth of 180 feet (55 m)"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/general-wrecks/big-guns-of-jutland/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Our first dive was on a large section of wreckage lying in 54m, some 300m from the other large part of the wreck."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 55
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 54
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "The battlecruiser broke in two when she blew up at Jutland in 1916 and the halves lie on sand around 55 m down, a long boat trip offshore. A protected military grave that divers have nonetheless explored on expeditions.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Wreckage sections lie at 54-55 m"
+  },
+  {
+   "id": "x-notable-783",
+   "name": "HMS Warrior",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Warrior_(1905)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The ship lies completely upside down, at a depth of 80 meters in an area of soft sea bed"
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/last-british-jutland-casualty-located/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "has been located at a depth of 83m by a Danish-British survey team … The ship lies inverted, with the highest point at 68m, according to the Sea War Museum."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 80
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 68,
+     "bottom": 83
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The last Jutland casualty to be found, discovered in 2016 well offshore. She lies inverted and largely intact on soft seabed at 68-83 m, so it is a technical-depth dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-972",
+   "name": "German cruiser Karlsruhe",
+   "sources": {
+    "s1": {
+     "url": "https://www.statnett.no/en/about-statnett/news-and-press-releases/news-archive-2020/unique-discovery-on-the-seabed-wreck-of-sunken-wwii-warship-discovered-after-80-years/",
+     "publisher": "Statnett",
+     "kind": "agency",
+     "quote": "490 meters below sea level, Norwegian Statnett discovered the German cruiser"
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Wreck lies about 490 m down, reachable only by ROV",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-874",
+   "name": "Blücher",
+   "sources": {
+    "s1": {
+     "url": "https://xray-mag.com/content/blucher-wreck-wwii-german-cruiser-norway",
+     "publisher": "X-Ray Mag",
+     "kind": "press",
+     "quote": "rests on the bottom of the Oslofjord at 90m deep. … the visibility was never more than 5 to 10m"
+    },
+    "s2": {
+     "url": "https://advanceddivermagazine.com/blucher.html",
+     "publisher": "Advanced Diver Magazine",
+     "kind": "press",
+     "quote": "The Blücher lies at a depth of 92 meters (302 feet) in the Oslo Fjord … the strong tidal currents make diving possible only during brief periods of slack water."
+    },
+    "s3": {
+     "url": "https://mia.no/oslofjordmuseet/tales-of-the-blucher",
+     "publisher": "Oslofjord Museum",
+     "kind": "agency",
+     "quote": "On 22 April 2016, the cruiser Blücher was given protected heritage status. … it is now forbidden to dive the wreck without permission."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 92
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 5,
+    "high": 10,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Protected heritage wreck; diving forbidden without permission",
+    "refs": [
+     "s3"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong tidal currents; slack water only",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Heavy shipping traffic in the strait",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The German heavy cruiser sunk in the Drobak Narrows in 1940 lies upside down about 90 m deep. Dives are only possible at brief slack water and need a heritage-authority permit since the wreck was protected in 2016.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1034",
+   "name": "HMS Tanatside",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Tanatside",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She was removed from the effective list in 1963 and scrapped in 1964."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Ship was scrapped in 1964, not wrecked",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1317",
+   "name": "HNoMS Thor",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HNoMS_Thor_(1872)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "the wreck remains largely intact and now lies at a depth of 8 to 14 meters southwest of Verdens Ende"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 14
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-906",
+   "name": "SMS Möwe",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/oldenburg-through-two-world-wars/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "The stern lies at a depth of 75m. … The wreck of the Oldenburg lies on the west side of the fjord, and it’s a shore-dive."
+    },
+    "s2": {
+     "url": "https://xray-mag.com/content/oldenburg-wreck-german-raider-world-wars",
+     "publisher": "X-Ray Mag",
+     "kind": "press",
+     "quote": "Image The stern at 75m. Photo by René B. Andersen Vadheim"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 75
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 75
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The former WWI raider, sunk as the cargo ship Oldenburg in a 1945 air attack, lies on the west side of Vadheim in Sognefjord. It can be reached from shore but the stern is at about 75 m, so it suits technical divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1000",
+   "name": "SS Sanct Svithun",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Sanct_Svithun",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The remains are located off Buholmen at a depth of between five and thirty metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-936",
+   "name": "HMS Satyr",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Satyr_(P214)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "she was broken up in April 1962 at Charlestown, Fife"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Submarine survived the war and was broken up in 1962",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-935",
+   "name": "HMS Sceptre",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Sceptre_(P215)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "the submarine continued training operations, and was sold for scrap in September 1949"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Submarine survived the war and was sold for scrap in 1949",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1047",
+   "name": "HMS Searcher",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Searcher_(D40)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Scrapped on 21 April 1976 in Taiwan"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Escort carrier survived and was scrapped in Taiwan in 1976",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-991",
+   "name": "MS Rigel",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/MS_Rigel",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck remained half-sunk until 1969, when it was demolished"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Wreck was demolished in 1969",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-903",
+   "name": "German submarine U-64",
+   "sources": {
+    "s1": {
+     "url": "https://uboat.net/boats/u64.htm",
+     "publisher": "uboat.net",
+     "kind": "encyclopedia",
+     "quote": "The wreck was raised on 7 August 1957 and later scrapped in Sandnessjøen"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Wreck raised in 1957 and scrapped",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-103",
+   "name": "German destroyer Z2 Georg Thiele",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/German_destroyer_Z2_Georg_Thiele",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The ship, having broken up, is now a popular diving site."
+    },
+    "s2": {
+     "url": "https://submerged.co.uk/narvik-georg-thiele/",
+     "publisher": "Submerged",
+     "kind": "press",
+     "quote": "The bows stick out of the water and the stern is in 52 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 52
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A destroyer beached and broken up at Narvik in 1940, now a popular wreck dive. The bow breaks the surface while the stern lies at roughly 52 m, with guns and torpedo tubes on the hull.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1113",
+   "name": "SS Dronning Maud",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Dronning_Maud_(1925)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The ship is still upright at around 26 to 35 metres (85 to 115 ft) depth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 26,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-823",
+   "name": "U-711",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/German_submarine_U-711",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a well-documented dive-site, lying at approximately 50 meters depth and only having minor damage"
+    },
+    "s2": {
+     "url": "https://www.uboat.net/fates/dive/dive_norway.htm",
+     "publisher": "uboat.net",
+     "kind": "encyclopedia",
+     "quote": "The u-boat is standing on the seabed at aproximately 50 meters depth, the deepest part being the stern."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A Type VIIC U-boat sunk at Kilbotn near Harstad in 1945, upright on the seabed at around 50 m with only minor damage. It is a well-documented technical dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

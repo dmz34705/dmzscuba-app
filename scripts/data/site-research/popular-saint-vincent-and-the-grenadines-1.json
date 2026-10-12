@@ -1,0 +1,195 @@
+{
+ "batch": "popular-saint-vincent-and-the-grenadines-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-ljhjbc",
+   "name": "Stratmann Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://discoversvg.com/what-to-do/diving-snorkelling/",
+     "publisher": "Discover SVG (tourism)",
+     "kind": "agency",
+     "quote": "Stratmann Wreck (max 18m/60ft) – The Stratmann tug is an interesting wreck to explore for intermediate divers and ends with the beautiful Devil’s Table reef."
+    },
+    "s2": {
+     "url": "https://thelookoutbequia.com/blog-post.php?p=81",
+     "publisher": "The Lookout Bequia",
+     "kind": "operator",
+     "quote": "Stratmann Wreck Max Depth: 18m/60ft Description: This old tug is an interesting wreck to explore for those at an intermediate level and the dive ends at the beautiful Devil's Table reef."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Tug with garden eels, moray and lobster; night dive",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sunken tug off Bequia lying on sand at about 18 m, with the mooring on top near 5 m. Portholes, propeller and cargo hold hold eels and lobsters, and the dive finishes over the Devil's Table reef.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1107fb",
+   "name": "Devil’s Table",
+   "sources": {
+    "s1": {
+     "url": "https://thelookoutbequia.com/blog-post.php?p=81",
+     "publisher": "The Lookout Bequia",
+     "kind": "operator",
+     "quote": "Devils Table \\ Rocky Bay Max Depth: 18m/60ft Description: This is the closest site and is a great dive for both beginners and intermediate divers. Starting in the sheltered Rocky Bay, divers make their way along a gradually deepening reef."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-bp5jzb",
+   "name": "North-West Point",
+   "sources": {
+    "s1": {
+     "url": "https://thelookoutbequia.com/blog-post.php?p=81",
+     "publisher": "The Lookout Bequia",
+     "kind": "operator",
+     "quote": "North-West Point Max Depth: 25m/82ft Description: A truly memorable dive for intermediate divers along a healthy, vibrant reef which starts at 7m/25ft and drops to 25m/82ft."
+    },
+    "s2": {
+     "url": "https://onecaribbeanusa.com/st-vincent-and-the-grenadines-dive-bequia/",
+     "publisher": "One Caribbean",
+     "kind": "press",
+     "quote": "A truly memorable dive for intermediate divers along a healthy, vibrant reef which starts at 7m/25ft and drops to 25m/82ft. This site is dived depending on the current."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish, white morays, barracuda, rays and turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Dived depending on the current",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tk8hjo",
+   "name": "Coral Nursery",
+   "sources": {
+    "s1": {
+     "url": "https://thelookoutbequia.com/blog-post.php?p=81",
+     "publisher": "The Lookout Bequia",
+     "kind": "operator",
+     "quote": "In June of 2022, Cathy from Dive Bequia collaborated with Reef Renewal to start a conservation project in Rocky Bay. One of the newly installed moorings allows safe access to the coral nursery which has eight hundred fragments of Elkhorn coral"
+    }
+   },
+   "mooring": {
+    "value": "Dedicated mooring gives access to the nursery",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Elkhorn coral restoration nursery (~800 fragments)",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-i12l63",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-b94xrs",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

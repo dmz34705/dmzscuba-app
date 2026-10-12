@@ -1,0 +1,909 @@
+{
+ "batch": "popular-french-polynesia-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-k94pup",
+   "reason": "no non-banned source found"
+  },
+  {
+   "id": "odm-nzivax",
+   "reason": "no source for this Tahiti pin; Moorea Vaiare guides give different depth"
+  },
+  {
+   "id": "odm-xthj2l",
+   "reason": "single operator-guide depth only; no second source"
+  },
+  {
+   "id": "odm-fad6zk",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-ulgmzu",
+   "reason": "generic name; Tikehau manta site not matched to this pin by any page"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-9uiyc9",
+   "name": "Rotui",
+   "sources": {
+    "s1": {
+     "url": "https://diveotion.com/scuba-diving-in-moorea/",
+     "publisher": "Diveotion",
+     "kind": "press",
+     "quote": "Rotui Dive Specs: Max depth 17m, dive time 45 minutes … The Rotui dive site in Moorea is a lovely one, named for one of the mountains of Moorea … This reef dive has tons of juvenile and adult fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 17
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Juvenile and adult reef fish, turtles, blacktip sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-pew820",
+   "name": "Tiki",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/moorea-scuba-diving/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "Tiki Point is one of the famous dive spots in Moorea … You can expect calm waters here … reaching depths between 55 to 75 feet (16-22 meters)"
+    },
+    "s2": {
+     "url": "https://topdive.com/tiki-moorea/",
+     "publisher": "TOPDIVE Moorea",
+     "kind": "operator",
+     "quote": "A dive site known for its important concentration of grey sharks … The Tiki dive site is located 10 minutes away by boat from the pass and close to the oceanic slope."
+    },
+    "s3": {
+     "url": "https://lostbetweenoceans.com/diving-in-moorea/",
+     "publisher": "Lost Between Oceans",
+     "kind": "press",
+     "quote": "Skill level Diving in Moorea, specifically in Tiki Point , is suitable for beginners and intermediate divers due to mild cur rents and shallow depths."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 22
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey reef sharks and lemon sharks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Underwater sculptures by a local artist",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An outer-reef dive on Moorea's northwest coast, near the pass and the oceanic slope. Grey and lemon sharks gather around a submerged tiki statue and sculptures. Calm, clear water and gentle current make it accessible, though it is a short boat ride out.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-zgdh07",
+   "name": "Temae",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/moorea-scuba-diving/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "Right in front of Temae village, in the east of Moorea lies a dive site called Temae. It offers a relaxed diving experience with its gentle currents and great visibility and has a depth of approximately 66 feet."
+    },
+    "s2": {
+     "url": "https://lostbetweenoceans.com/diving-in-moorea/",
+     "publisher": "Lost Between Oceans",
+     "kind": "press",
+     "quote": "Temae Depth, duration, and visibility Typical dive depth : 20 meters (66 feet) … Skill level Ideal for divers of all levels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 66
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip sharks, turtles, tuna, garden eels",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An easy dive off Moorea's east coast in front of Temae village: a coral shelf gives way to a gentle slope. Mild current and good visibility suit divers of all levels, with blacktip sharks, turtles and a garden-eel nursery.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-w4fdqb",
+   "name": "Aquarium de Cook",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/moorea-scuba-diving/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "The Aquarium is a go-to spot for both diving and snorkeling, situated within the lagoon and reaching depths of up to 40 feet. The waters here are shallow with little to no currents."
+    },
+    "s2": {
+     "url": "https://lostbetweenoceans.com/diving-in-moorea/",
+     "publisher": "Lost Between Oceans",
+     "kind": "press",
+     "quote": "The Aquarium Depth, duration, and visibility Typical dive depth : 12 meters (40 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral heads, anemones, hawksbill turtles, eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-29qwuq",
+   "name": "Tapu",
+   "sources": {
+    "s1": {
+     "url": "https://www.boraboraislandguide.com/bora-bora-scuba-diving.html",
+     "publisher": "Bora Bora Island Guide",
+     "kind": "press",
+     "quote": "Tapu This dive site just outside the Bora Bora pass, ranges from 30–130 feet. It's the classic Bora Bora shark dive. You will see hundreds of black tip reef sharks and lemon sharks"
+    },
+    "s2": {
+     "url": "https://travelingwithscubajay.com/the-ultimate-guide-to-scuba-diving-in-bora-bora/",
+     "publisher": "Traveling with Scuba Jay",
+     "kind": "press",
+     "quote": "Tapu Off of the West side of the main island is the private island of Motu Tapu. At this site you’ll hit the coral at about 30ft, but can descend down a nice drop-off to about 130ft. All level of divers can dive here"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 130
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 130
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip and lemon sharks, giant wrasse, eagle rays",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Bora Bora's classic shark dive on the outer reef beside the pass and Motu Tapu. Coral begins around 10 m and a drop-off runs to roughly 40 m, with many blacktip and lemon sharks, wrasse and turtles. Depth discipline matters because the wall drops away quickly.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-hkbgje",
+   "name": "Toopua",
+   "sources": {
+    "s1": {
+     "url": "https://www.boraboraislandguide.com/bora-bora-scuba-diving.html",
+     "publisher": "Bora Bora Island Guide",
+     "kind": "press",
+     "quote": "Toopua/Toopua Iti This Bora Bora lagoon dive will take you through coral walls, caves and swim-throughs abounding with tropical fish … The dive is 15–100 feet."
+    },
+    "s2": {
+     "url": "https://travelingwithscubajay.com/the-ultimate-guide-to-scuba-diving-in-bora-bora/",
+     "publisher": "Traveling with Scuba Jay",
+     "kind": "press",
+     "quote": "Toopua This dive site is located off of the South East side of To’opuaiti. … Depths at this dive site range from about 15ft to 100ft and this is also a good spot for all level of divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall",
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays and stingrays over sand, morays, giant clams",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A lagoon dive off Motu Toopua with coral walls, small caves and swim-throughs, then a sandy floor where eagle rays and stingrays feed. Suits all levels and sometimes runs as a drift dive depending on weather.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1vh2op",
+   "name": "Haapiti",
+   "sources": {
+    "s1": {
+     "url": "https://travelingwithscubajay.com/the-ultimate-guide-to-scuba-diving-in-bora-bora/",
+     "publisher": "Traveling with Scuba Jay",
+     "kind": "press",
+     "quote": "Haapiti West of the Motu Mute Airport you’ll find Haapiti, another dive site good for everyone. An easy slope filled with beautiful coral formations will guide you down to the site’s maximum depth of about 98ft."
+    },
+    "s2": {
+     "url": "https://mikeandlauratravel.com/scuba-diving-bora-bora/",
+     "publisher": "Mike and Laura Travel",
+     "kind": "press",
+     "quote": "Haapiti, situated on the northern reef off Bora Bora Island, is another one of the best diving sites in Bora Bora. The depth here reaches 30 meters"
+    },
+    "s3": {
+     "url": "https://one-million-places.com/en/island-bora-bora/diving-in-the-south-sea-french-polynesia",
+     "publisher": "One Million Places",
+     "kind": "press",
+     "quote": "Haapiti: From a gently sloping drop-off, shallow craters retain more varied fauna. … Maximum depth : 100 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 98
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip, grey and lemon sharks, napoleon wrasse",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An outer-reef dive on Bora Bora's north side along an easy coral slope with tunnels, swim-throughs and canyons. Reef sharks, trigger fish and napoleon wrasse are common, and the depth to about 30 m keeps it manageable for most certified divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-y7xwj9",
+   "name": "Teavanui Pass",
+   "sources": {
+    "s1": {
+     "url": "https://www.boraboraislandguide.com/bora-bora-scuba-diving.html",
+     "publisher": "Bora Bora Island Guide",
+     "kind": "press",
+     "quote": "Teavanui Pass This is the drift dive through Bora Bora's only pass. This Bora Bora dive is 15–130 feet."
+    },
+    "s2": {
+     "url": "https://mikeandlauratravel.com/scuba-diving-bora-bora/",
+     "publisher": "Mike and Laura Travel",
+     "kind": "press",
+     "quote": "Teavanui Pass, often referred to as the “gateway to the Pacific Ocean,” … the depth varies from 10 to 40 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 130
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 10,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sharks, eagle rays, mantas, napoleon wrasse",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A drift dive through Bora Bora's only channel to the open ocean, riding the current from the outer reef into the lagoon. Sharks, eagle rays, jacks and napoleon wrasse use the pass, and occasionally mantas, along coloured coral walls.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-o7hans",
+   "name": "Anau",
+   "sources": {
+    "s1": {
+     "url": "https://www.boraboraislandguide.com/bora-bora-scuba-diving.html",
+     "publisher": "Bora Bora Island Guide",
+     "kind": "press",
+     "quote": "Anau Ranging from 15–100 feet, this lagoon dive explores the manta ray channel also known as the ‘manta ray ballet’. Divers regularly encounter these gentle giants in this deep area of the lagoon."
+    },
+    "s2": {
+     "url": "https://travelingwithscubajay.com/the-ultimate-guide-to-scuba-diving-in-bora-bora/",
+     "publisher": "Traveling with Scuba Jay",
+     "kind": "press",
+     "quote": "Anau Anau Lagoon is located on the East side of the main island. … goes to a maximum depth of about 100ft. It is good for all level of divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Protected site; dive times may be limited",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Manta rays at a cleaning station",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Bora Bora's best-known manta site, a calm lagoon channel on the east side with two coral formations and a sand alley between them. Mantas come to be cleaned here and are regularly seen; the site is protected and diving time can be restricted.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1ch1rz",
+   "name": "Aquarium",
+   "sources": {
+    "s1": {
+     "url": "https://www.boraboraislandguide.com/bora-bora-scuba-diving.html",
+     "publisher": "Bora Bora Island Guide",
+     "kind": "press",
+     "quote": "The Aquarium This beautiful coral garden is a perfect diving spot for beginner dives. It's in a sheltered, shallower part of the Bora Bora lagoon (13–16 feet)."
+    },
+    "s2": {
+     "url": "https://travelingwithscubajay.com/the-ultimate-guide-to-scuba-diving-in-bora-bora/",
+     "publisher": "Traveling with Scuba Jay",
+     "kind": "press",
+     "quote": "The Aquarium is a wonderful dive site for beginners and snorkelers … Located off of the South side of Pitiuu Uta in depths only between about 13ft and 16ft deep"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 13,
+     "bottom": 16
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 13,
+     "bottom": 16
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Colourful coral heads with many reef fish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A very shallow, sheltered coral garden in the Bora Bora lagoon south of Pitiu Uta, popular for beginners and snorkelers. Large coral heads hold a dense variety of reef fish, with the occasional eagle ray passing through.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-icj8ng",
+   "name": "Tupitipiti",
+   "sources": {
+    "s1": {
+     "url": "https://www.boraboraislandguide.com/bora-bora-scuba-diving.html",
+     "publisher": "Bora Bora Island Guide",
+     "kind": "press",
+     "quote": "Tupitipiti This legendary dive location is a 40 minute ride to the southern outer reef of Bora Bora. … Note that this dive is only possible during calm weather conditions."
+    },
+    "s2": {
+     "url": "https://mikeandlauratravel.com/scuba-diving-bora-bora/",
+     "publisher": "Mike and Laura Travel",
+     "kind": "press",
+     "quote": "Tupitipiti is one of the few hidden gems among Bora Bora’s diving sites … The depth here ranges from 10-30 meters throughout the reef, making it a great intermediate diving site in Bora Bora."
+    }
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "About 40 min boat ride to the southern outer reef",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral caves, canyons and swim-throughs; sponges",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Only dived in calm weather",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Guides give 10-30 m and 20-150 ft; not reconciled"
+  },
+  {
+   "id": "odm-lct3ve",
+   "name": "Passe de Tikehau - Tuheiava",
+   "sources": {
+    "s1": {
+     "url": "https://tahititourisme.pf/en-pf/activities/points-of-interest/tuheiava-pass-tikehau-en-en-pf-3380558/",
+     "publisher": "Tahiti Tourisme",
+     "kind": "agency",
+     "quote": "The dive in the pass descends to between 8 and 23 meters."
+    },
+    "s2": {
+     "url": "https://www.raiemantadiving.com/en/diving/diving-spots.html",
+     "publisher": "Raie Manta Diving Tikehau",
+     "kind": "operator",
+     "quote": "Tuheiava Pass (incoming current) Undoubtedly the most beautiful dive in Tikehau … barracudas, hammerhead sharks, tiger sharks, and manta rays... … Practiced by drifting, it is accessible to experienced divers from Level 1."
+    },
+    "s3": {
+     "url": "https://topdive.com/tuheiava-pass-tikehau/",
+     "publisher": "TOPDIVE Tikehau",
+     "kind": "operator",
+     "quote": "This small pass is approximately 660ft wide (in the narrowest part) and offers beautiful shallow waters full of sea life. … the current could be really strong in that area"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 23
+    }
+   ],
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barracuda, hammerheads, mantas, big fish schools",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Tikehau's only pass, a narrow channel dived as a drift with the incoming tide. Shoals of barracuda, tuna and sharks, with hammerheads and mantas possible, make it the atoll's top dive; the tide must be timed with a local guide.",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-ealdvw",
+   "name": "Poito",
+   "sources": {
+    "s1": {
+     "url": "https://www.raiemantadiving.com/en/diving/diving-spots.html",
+     "publisher": "Raie Manta Diving Tikehau",
+     "kind": "operator",
+     "quote": "Poito - the buoy The most famous of the Poito sites, the reef pass offers the chance to observe napoleons and wild trevally, and you'll encounter a colossal school of jacks and barracudas."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Napoleon wrasse, trevally, jacks and barracuda",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-yazdvs",
+   "name": "Teonai",
+   "sources": {
+    "s1": {
+     "url": "https://www.divediscovery.com/tahiti/divesites/tikehau-diving.php",
+     "publisher": "Dive Discovery Tahiti",
+     "kind": "operator",
+     "quote": "Teonai A gentle slope overlooking a reef that drops off to a depth of around 60 feet."
+    },
+    "s2": {
+     "url": "https://www.raiemantadiving.com/en/diving/diving-spots.html",
+     "publisher": "Raie Manta Diving Tikehau",
+     "kind": "operator",
+     "quote": "Teonai Dive into a huge aquarium … The site is home to eagle rays"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Eagle rays and reef sharks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fh5tkf",
+   "name": "Tombant d Ohotu",
+   "sources": {
+    "s1": {
+     "url": "https://topdive.com/scuba-diving-fakarava/",
+     "publisher": "TOPDIVE Fakarava",
+     "kind": "operator",
+     "quote": "Ohotu reef On the right side upon leaving the Garuae pass is the magnificent reef-flat at 40 feet, dipping gently to around 100 feet just before the drop-off wall."
+    },
+    "s2": {
+     "url": "https://www.bluerides.com/dive-sites/fakarava-ohotu",
+     "publisher": "Blue Rides",
+     "kind": "operator",
+     "quote": "Dive site facts: Fakarava - Ohotu Reef Depth 5–40 m Typical dive 15–30 m, 45–60 min Current Strong (drift) Visibility 10–30 m"
+    }
+   },
+   "types": {
+    "value": [
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey and whitetip sharks, tuna, manta rays on the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Reef flat at 40 ft sloping to about 100 ft before the wall"
+  },
+  {
+   "id": "odm-8l7hob",
+   "name": "Alibaba",
+   "sources": {
+    "s1": {
+     "url": "https://topdive.com/scuba-diving-fakarava/",
+     "publisher": "TOPDIVE Fakarava",
+     "kind": "operator",
+     "quote": "Be prepared for the Ali Baba canyon where the fish gather to shelter from the currents! This dive is from around a 50-70 foot depth. It requires significant experience with strong currents"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyon where fish shelter from the current",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ud1p7g",
+   "name": "Tombant de Papeari",
+   "sources": {
+    "s1": {
+     "url": "https://tahitiitidiving.com/en/colio-item/the-papearii-drop-off/",
+     "publisher": "Tahiti Iti Diving",
+     "kind": "operator",
+     "quote": "This reef drop-off is covered with gorgonians and soft coral. Without fail you’ll see schools of chubs and paddletail snappers at a depth of 20m."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gorgonians, chub and snapper schools, spadefish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

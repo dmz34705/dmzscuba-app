@@ -1,0 +1,132 @@
+{
+ "batch": "popular-ecuador-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "odm-cz4pqt",
+   "sources": {
+    "s1": {
+     "url": "https://aquaventuresgps.com/what-its-like-to-dive-at-kicker-rock-depth-marine-life-practical-tips/",
+     "publisher": "Aquaventures Dive Center",
+     "kind": "operator",
+     "quote": "Kicker Rock is not a site to underestimate. Recreational diving depths usually range between 14 and 25 meters , depending on where you enter and the direction of the current."
+    },
+    "s2": {
+     "url": "https://quitotourbus.com/en/kicker-rock",
+     "publisher": "Quito Tour Bus",
+     "kind": "operator",
+     "quote": "The scuba diving tour starts at $250 USD for two dives at depths of 59–98 feet (18–30 m). It requires at least an Open Water certification plus prior experience in currents. … the currents are strong and demand control."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 14,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 30
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hammerhead sharks, typically around 12-15 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "Kicker Rock / Léon Dormido, San Cristobal, Galapagos"
+  },
+  {
+   "id": "odm-43fxxc",
+   "sources": {
+    "s1": {
+     "url": "https://www.galapagosdivingdaytrips.com/gordon-rocks",
+     "publisher": "Galapagos Diving Day Trips",
+     "kind": "operator",
+     "quote": "Experienced divers with a minimum of 25 dives can do these dives at this dive site as the currents range from moderate to strong. … depths up to 30 meters"
+    },
+    "s2": {
+     "url": "https://www.toursingalapagos.com/tour/gordon-gocks-diving-tour",
+     "publisher": "Tours in Galapagos",
+     "kind": "operator",
+     "quote": "It is an extinct volcanic crater with a sandy bottom at 32 meters … it is a popular site where intermediate and advanced divers go due to challenging currents and upwellings"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 32
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of hammerhead and Galapagos sharks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents and upwellings (the Washing Machine)",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sunken volcanic crater off Santa Cruz ringed by three exposed rocks, with a sandy floor near 30 m. Currents and upwellings are strong, so it is for experienced divers, and they pull in schools of hammerhead and other sharks.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "name": "Gordon Rocks, Galapagos"
+  }
+ ]
+}

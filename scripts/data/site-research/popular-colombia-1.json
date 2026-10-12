@@ -1,0 +1,99 @@
+{
+ "batch": "popular-colombia-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-1qb399",
+   "name": "Malpelo",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Malpelo_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Malpelo is an oceanic island in the eastern Pacific Ocean, about 500 km (310 mi) west of the Colombian mainland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole oceanic island and sanctuary with many separate dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-qc1hu6",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-iioi5j",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-f3myrh",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-lv6grn",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-yuuxl7",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-c44wzd",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-degbuw",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-1tfucm",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-qx1a77",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-5kc7bk",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-80804x",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-6isssk",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-b910mv",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-3c1xan",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-4qjv2e",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-ln7zqj",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-zow9yv",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-kydcew",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

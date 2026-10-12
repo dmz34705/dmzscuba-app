@@ -1,0 +1,68 @@
+{
+ "batch": "notable-cayman-islands-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-wikipedia-270",
+   "name": "Stingray City, Grand Cayman",
+   "sources": {
+    "s1": {
+     "url": "https://redsailcayman.com/the-ultimate-guide-to-stingray-city-in-grand-cayman/",
+     "publisher": "Red Sail Cayman",
+     "kind": "operator",
+     "quote": "Stingray Deep is a section of deeper water reaching depths of up to 12 feet."
+    },
+    "s2": {
+     "url": "https://www.thingstodocayman.net/stingray-city-grand-cayman/",
+     "publisher": "Things To Do Cayman",
+     "kind": "press",
+     "quote": "The sea is about 12 feet deep here, meaning that you can’t stand up. … Scuba divers can hand-feed wild stingrays with squid."
+    },
+    "s3": {
+     "url": "https://www.explorecayman.com/grand-cayman/things-to-do/stingray-city",
+     "publisher": "Explore Cayman",
+     "kind": "operator",
+     "quote": "Stingray City lies in 12 feet of water, so is ideal for snorkellers and divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 12
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 12
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Divers can hand-feed wild stingrays",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A North Sound dive in about 12 feet of water where wild southern stingrays gather. Reached by boat from Grand Cayman; the shallower sandbar nearby is for wading, while the deeper site is for divers and snorkellers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

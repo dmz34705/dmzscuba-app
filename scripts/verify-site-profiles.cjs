@@ -26,7 +26,8 @@ for (const [id, row] of Object.entries(data.sites)) {
   }
   if (row.basis === 'depth') {
     // Depth-only entries (scripts/build-depth-research.cjs): a sourced bottom depth, each source a named web page.
-    assert.ok(row.depth?.[1] > 0 && row.sources.every(([key, url, publisher]) => key === 'web' && /^https:\/\//.test(url) && publisher), `${row.name}: sourced depth`);
+    assert.ok((row.depth?.[1] > 0 || row.position?.at || ['level', 'current', 'entry', 'highlights', 'hazards', 'access', 'vis', 'types'].some(k => row[k] != null)) && row.sources.every(([key, url, publisher]) => key === 'web' && /^https:\/\//.test(url) && publisher), `${row.name}: sourced depth`);
+    if (row.position?.at) assert.deepEqual([listed.get(id).latitude, listed.get(id).longitude], row.position.at, `${row.name}: pin moved to the sourced position`);
     continue;
   }
   assert.ok(row.summary.length >= 30 && row.summary.length <= 400, `${row.name}: a one- or two-sentence summary`);
@@ -36,6 +37,7 @@ for (const [id, row] of Object.entries(data.sites)) {
     assert.ok(row.level == null || LEVELS.includes(row.level), `${row.name}: level`);
     assert.ok(row.entry == null || ['boat', 'shore', 'boat-shore'].includes(row.entry), `${row.name}: entry`);
     assert.ok(row.vis == null || (row.vis[1] > 0 && row.vis[1] <= 80), `${row.name}: visibility`);
+    if (row.position?.at) assert.deepEqual([listed.get(id).latitude, listed.get(id).longitude], row.position.at, `${row.name}: pin moved to the sourced position`);
     continue;
   }
   assert.ok(LEVELS.includes(row.level), `${row.name}: level`);
@@ -77,4 +79,4 @@ assert.deepEqual(corrections, P.siteCorrections(data), 'The map receives the cor
 const niagara = listed.get('x-wikipedia-78');
 assert.ok(Math.abs(niagara.latitude - 43.4885) < 0.001, 'The Niagara pin sits at the archaeological position off Harrington Beach, not 28 km south');
 assert.ok(!listed.has('x-wikipedia-512') && !listed.has('x-wikidata-579'), 'The Alvin Clark (destroyed) and Lottie Cooper (ashore) are not offered as dives');
-console.log(`Site profile checks passed: ${Object.values(data.sites).filter(r => r.basis !== 'depth').length} researched sites, ${Object.values(data.sites).filter(r => r.basis === 'depth').length} sourced depths, ${Object.values(data.sites).filter(r => r.position?.at).length} corrected pins, ${Object.values(data.sites).filter(r => P.HIDDEN_STATUSES.includes(r.status)).length} removed, sources and regional conditions.`);
+console.log(`Site profile checks passed: ${Object.values(data.sites).filter(r => r.basis !== 'depth').length} researched sites, ${Object.values(data.sites).filter(r => r.depth?.[1] > 0).length} sourced depths, ${Object.values(data.sites).filter(r => r.basis === 'depth' && !r.depth && !P.HIDDEN_STATUSES.includes(r.status)).length} facts-only sites, ${Object.values(data.sites).filter(r => r.position?.at).length} corrected pins, ${Object.values(data.sites).filter(r => P.HIDDEN_STATUSES.includes(r.status)).length} removed, sources and regional conditions.`);

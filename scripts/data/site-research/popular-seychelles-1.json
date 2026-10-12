@@ -1,0 +1,562 @@
+{
+ "batch": "popular-seychelles-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-mpsdz4",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-wyk6n4",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-at8asu",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-5rg0u6",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-ae64v9",
+   "reason": "depth or name mismatch across guides"
+  },
+  {
+   "id": "odm-o15b0t",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-57o0uw",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-o1190l",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-ahqwfh",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-s6lfk0",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-qesu9e",
+   "reason": "depth or name mismatch across guides"
+  },
+  {
+   "id": "odm-9m88mo",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-4nwfri",
+   "reason": "no usable non-directory page found for this exact site"
+  },
+  {
+   "id": "odm-zmqzdx",
+   "reason": "depth or name mismatch across guides"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-ca8165",
+   "name": "Twin Barges",
+   "sources": {
+    "uw": {
+     "url": "https://www.underwaterphotography.com/Dive-Sites/Country.aspx?ID=345",
+     "publisher": "UnderwaterPhotography.com",
+     "kind": "press",
+     "quote": "Twin Barges, Seychelles Small wreck lying at 16m. Plenty of macro life and very nice reef system adjacent to it."
+    }
+   },
+   "depth": [
+    {
+     "ref": "uw",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "uw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro life and an adjacent reef",
+     "refs": [
+      "uw"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-week61",
+   "name": "Aquarium",
+   "sources": {
+    "uw": {
+     "url": "https://www.underwaterphotography.com/Dive-Sites/Country.aspx?ID=345",
+     "publisher": "UnderwaterPhotography.com",
+     "kind": "press",
+     "quote": "Aquarium, Beau Vallon., Seychelles Diverse reef fish, nudi's, sea slugs, turtles, scorpionfish, stonefish, water temperate around 25-26 C, none to very mild current, perfect for novice divers and above."
+    },
+    "km": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-mahe-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "Aquarium sits just off the northern tip of Mahé near Beau Vallon, at depths between 5 and 18 metres, with minimal current and good visibility on calm days."
+    }
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "uw",
+     "km"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "uw",
+     "km"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef fish, nudibranchs, turtles, stonefish",
+     "refs": [
+      "uw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered, fish-rich reef off Beau Vallon on Mahé's north tip with little or no current. It is the usual first dive for newly certified divers, with nudibranchs, turtles and scorpionfish among the rocks.",
+    "refs": [
+     "uw",
+     "km"
+    ]
+   }
+  },
+  {
+   "id": "odm-05nt11",
+   "name": "Baie Ternay Marine Park",
+   "sources": {
+    "km": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-mahe-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "Bay Ternay Marine Park diving is the standout inshore option for intermediate divers. … Permit fees apply and are collected through your dive operator … The sites within the park run 8 to 22 metres, with nurse sharks under ledges being the reliable highlight. Visibility averages 12 to 18 metres."
+    }
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "km"
+    ]
+   },
+   "vis": {
+    "low": 12,
+    "high": 18,
+    "unit": "m",
+    "refs": [
+     "km"
+    ]
+   },
+   "access": {
+    "value": "Marine park permit fee, paid through the dive operator",
+    "refs": [
+     "km"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Nurse sharks under ledges",
+     "refs": [
+      "km"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-s5ni7r",
+   "name": "L’Ilot",
+   "sources": {
+    "km": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-mahe-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "L'ilot, a small islet off the northeast coast, offers slightly more topographic interest — granite boulders at 12 to 20 metres with resident moray eels, lionfish, and occasional turtle sightings. Current here is mild to moderate depending on tide"
+    },
+    "sm": {
+     "url": "https://www.seyvillas.com/en/guide/islands/mahe/diving?lang=en",
+     "publisher": "Seyvillas Seychelles travel guide",
+     "kind": "press",
+     "quote": "rocky formations that are home to large reef fish and formations of soft coral. From November to March, you may even get luck and encounter a whale shark."
+    }
+   },
+   "depth": [
+    {
+     "ref": "km",
+     "unit": "m",
+     "bottom": 20,
+     "top": 12
+    }
+   ],
+   "current": {
+    "value": "variable",
+    "refs": [
+     "km"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Granite boulders with morays and lionfish",
+     "refs": [
+      "km"
+     ]
+    },
+    {
+     "text": "Soft coral and reef fish",
+     "refs": [
+      "sm"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-560ets",
+   "name": "Light House",
+   "sources": {
+    "km": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-mahe-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "Lighthouse Rock, closer to Mahé's southern tip, is an intermediate site that gets overlooked in favour of the more marketed northern sites. Depths run 12 to 25 metres, current is moderate"
+    }
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "km"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "km"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Granite topography south of Mahé",
+     "refs": [
+      "km"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-p19pv4",
+   "name": "Shark Bank",
+   "sources": {
+    "sm": {
+     "url": "https://www.seyvillas.com/en/guide/islands/mahe/diving?lang=en",
+     "publisher": "Seyvillas Seychelles travel guide",
+     "kind": "press",
+     "quote": "Shark Bank is a huge rock that is located 8 km north-west of Mahé, extending down into the ocean depths. … The diversity on show here is something at which to marvel, between 18 metres and 30 metres deep."
+    },
+    "km": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-mahe-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "Shark Bank sits approximately 8 kilometres west of Mahé, rising from around 40 metres to a shallowest point of 18 metres. Current here ranges from negligible to genuinely punishing"
+    }
+   },
+   "depth": [
+    {
+     "ref": "sm",
+     "unit": "m",
+     "bottom": 30,
+     "top": 18
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "km"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "km"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Snapper, jack and batfish schools; reef sharks",
+     "refs": [
+      "sm"
+     ]
+    },
+    {
+     "text": "House-sized granite boulders and arches",
+     "refs": [
+      "km"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current can be punishing",
+     "refs": [
+      "km"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An offshore granite seamount about 8 km from Mahé, rising from deep water to roughly 18 m. Big schools, turtles and reef sharks gather around boulders and arches; currents range from glassy to strong, so it suits advanced divers.",
+    "refs": [
+     "sm",
+     "km"
+    ]
+   }
+  },
+  {
+   "id": "odm-s4k62e",
+   "name": "Aldebaran Wreck",
+   "sources": {
+    "sm": {
+     "url": "https://www.seyvillas.com/en/guide/islands/mahe/diving?lang=en",
+     "publisher": "Seyvillas Seychelles travel guide",
+     "kind": "press",
+     "quote": "The Aldebaran is a 28 metres fishing boat that sunk in 2008. These days, it attracts colourful marine life, including small fish, moray eels, lionfish, sweetlips, starfish, and batfish. … The wreck is located about 28 - 40 metres deep into the water, where the currents can be strong."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sm",
+     "unit": "m",
+     "bottom": 40,
+     "top": 28
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "sm"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "sm"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Morays, lionfish, sweetlips, batfish",
+     "refs": [
+      "sm"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents",
+     "refs": [
+      "sm"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-nnhxmz",
+   "name": "Conception Rocks",
+   "sources": {
+    "km": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-mahe-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "it's a 40-minute boat ride minimum, it's exposed to southwest swell during the Southeast Monsoon … When conditions allow, the granite formations around Conception Rocks drop to 30 metres … Hawksbill turtles here are so common"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Common hawksbill turtles",
+     "refs": [
+      "km"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Exposed to swell in the Southeast Monsoon",
+     "refs": [
+      "km"
+     ]
+    }
+   ],
+   "access": {
+    "value": "Long boat ride (40+ min); not run by all operators",
+    "refs": [
+     "km"
+    ]
+   }
+  },
+  {
+   "id": "odm-wrbvju",
+   "name": "Brizare Rock, Mahé",
+   "sources": {
+    "sm": {
+     "url": "https://www.seyvillas.com/en/guide/islands/mahe/diving?lang=en",
+     "publisher": "Seyvillas Seychelles travel guide",
+     "kind": "press",
+     "quote": "Brissare Rocks , which you can visit from September to May. Due to strong currents, the area attracts different big fish, including smaller sharks and barracudas. The colourful coral arrays bring with them an impressive collection of fish down to a maximum depth of 20 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sm",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "sm"
+    ]
+   },
+   "season": {
+    "from": 9,
+    "to": 5,
+    "refs": [
+     "sm"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Smaller sharks and barracuda",
+     "refs": [
+      "sm"
+     ]
+    },
+    {
+     "text": "Colourful coral and fish",
+     "refs": [
+      "sm"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents",
+     "refs": [
+      "sm"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-b76zgw",
+   "name": "Ave Maria",
+   "sources": {
+    "sp": {
+     "url": "https://www.seyvillas.com/en/guide/islands/praslin/diving-snorkelling",
+     "publisher": "Seyvillas Seychelles travel guide",
+     "kind": "press",
+     "quote": "Ave Maria is a small island located between Praslin and the Sister Island Atoll. Here, divers can achieve a maximum depth of about 20 metres. … Reef sharks, stingrays, batfish, lobsters, and octopuses can be seen here, along with barracuda."
+    },
+    "kp": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-praslin-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "Ave Maria: 15–22 metres, intermediate, visibility 18–28 metres. The best visibility in the Praslin dive site network, consistently."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sp",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "kp"
+    ]
+   },
+   "vis": {
+    "low": 18,
+    "high": 28,
+    "unit": "m",
+    "refs": [
+     "kp"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef sharks, stingrays, batfish",
+     "refs": [
+      "sp"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A rocky islet between Praslin and the Sister Islands with granite arches and deeper boulders, reaching about 20 m. Reef sharks, rays and lobsters are regular, and visibility is among the best on the inner islands.",
+    "refs": [
+     "sp",
+     "kp"
+    ]
+   }
+  },
+  {
+   "id": "odm-2l0jei",
+   "name": "St. Pierre",
+   "sources": {
+    "sp": {
+     "url": "https://www.seyvillas.com/en/guide/islands/praslin/diving-snorkelling",
+     "publisher": "Seyvillas Seychelles travel guide",
+     "kind": "press",
+     "quote": "Here you can see beautiful, lush shoals at depths of up to 12 metres. The small island of St. Pierre is a great diving & snorkelling point."
+    },
+    "kp": {
+     "url": "https://koek.sc/seychelles-diving-guide/diving-praslin-seychelles",
+     "publisher": "Koek Seychelles diving guide",
+     "kind": "press",
+     "quote": "St. Pierre: 10–25 metres, intermediate to advanced depending on tidal phase, visibility 15–25 metres in the inter-monsoon windows. Not suitable for beginners when the current is running."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sp",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "kp"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Not for beginners when current runs",
+     "refs": [
+      "kp"
+     ]
+    }
+   ]
+  }
+ ]
+}

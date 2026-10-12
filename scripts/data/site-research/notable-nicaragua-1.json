@@ -1,0 +1,8 @@
+{"batch":"notable-nicaragua-1","researchedAt":"2026-10-08","skipped":[],
+"sites":[
+{"id":"x-wikipedia-279","name":"San Andrés (island)",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/San_Andr%C3%A9s_(island)","publisher":"Wikipedia","kind":"encyclopedia","quote":"San Andrés (Islander Creole English: San Andres) is a coral island in the Caribbean Sea."}},
+"notDiveSite":{"kind":"area","reason":"A whole island with many dive sites","refs":["s1"]}},
+{"id":"x-wikipedia-267","name":"Providencia Island, Colombia",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Providencia_Island,_Colombia","publisher":"Wikipedia","kind":"encyclopedia","quote":"Most of the waters are in protected areas of the UNESCO Seaflower Biosphere Reserve and are warm, calm and clear"}},
+"notDiveSite":{"kind":"area","reason":"A whole island and biosphere reserve, many dive sites","refs":["s1"]}}]}

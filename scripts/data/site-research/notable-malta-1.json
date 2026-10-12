@@ -1,0 +1,558 @@
+{
+ "batch": "notable-malta-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-notable-953",
+   "name": "ORP Kujawiak",
+   "sources": {
+    "s1": {
+     "url": "https://heritagemalta.mt/explore/orp-kujawiak-l72/",
+     "publisher": "Heritage Malta",
+     "kind": "agency",
+     "quote": "lying at a depth of 97m on her port side"
+    },
+    "s2": {
+     "url": "https://maltadives.com/4951",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Depth 98m (avg) , 100+m (max) Qualification Technical Shore access Boat only … The wreck is a war grave"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 97
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "War grave; boat only, Heritage Malta permission needed",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Technical depth near 100 m",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Polish escort destroyer lost to a mine in 1942 and found by a Polish expedition in 2014 east of Valletta. It lies on its port side at roughly 97 to 100 m, a war grave reachable only by boat and only by technical divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Heritage Malta 97 m, dive guide 98 m avg / 100+ m max"
+  },
+  {
+   "id": "x-notable-928",
+   "name": "HMS Jersey",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/hmsjersey/en",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Depth 15m (avg) , 19m (max) Qualification Advanced Shore access Hard … struck a mine in May 1941 at the entrance to Grand Harbour"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Jersey_(F72)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Depth (m.): 19 max. / 15.8 min."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 19
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15.8,
+     "bottom": 19
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Wreckage of a British destroyer mined in 1941 at the mouth of Grand Harbour, Valletta, scattered at about 15 to 19 m beside the breakwater. A little-dived, advanced rated site with difficult shore access.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n1245126314",
+   "name": "HMS Maori",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/hmsmaori-valletta",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Depth 12m (avg) , 16m (max) Qualification Beginner Shore access Easy … maximum depth of 16 metres"
+    },
+    "s2": {
+     "url": "https://www.calypsosac.org/hms-maori/",
+     "publisher": "Calypso Sub-Aqua Club",
+     "kind": "operator",
+     "quote": "Access: Shore Dive Depth: 12-16 metres … very sharp edges ready to collapse … kicking up silt can create hazardous situations"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 16
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Sharp collapsing edges; avoid penetration",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Silt reduces visibility to zero",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Broken destroyer remains lying upright on sand in St Elmo Bay by the Marsamxett entrance, at about 12 to 16 m. One of Malta's few shallow wrecks, entered from shore and suitable for newer divers, though silt and sharp metal call for care.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-425",
+   "name": "Merkanti Reef",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/merkantireef/en",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Qualification Beginner Shore access Medium … without going deeper than 10-12 metres, although it is possible to find depths over 20 metres"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Merkanti_Reef",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "divers are advised to use marker buoys"
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Summer jet-ski traffic; use a marker buoy",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shallow reef pair off St Julian's running parallel to shore, with tops reaching the surface and canyons between them. Most dives stay at 10 to 12 m, with depths beyond 20 m possible; surface boat traffic means a marker buoy is advised.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-230",
+   "name": "MV Rozi",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/rozi-cirkewwa",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Depth 20m (avg) , 34m (max) Qualification Advanced Shore access Easy"
+    },
+    "s2": {
+     "url": "https://www.calypsosac.org/rozi-tugboat/",
+     "publisher": "Calypso Sub-Aqua Club",
+     "kind": "operator",
+     "quote": "Access: Shore Dive Depth: Maximum depth is 34 metres Visibility: 10-30 metres"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/MV_Rozi",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Scuttled as an artificial dive site, 1992"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 34
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 34
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Former harbour tug deliberately sunk in 1992 as a dive attraction off Cirkewwa on Malta's northwest tip. It sits upright with a maximum depth near 34 m, reached from shore, and rates as an advanced dive.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "osm-n4159831390",
+   "name": "P31 - Patrol Boat",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/p31/en",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Depth 15m (avg) , 20m (max) Qualification Beginner Shore access Boat only … deliberately scuttled in 2009 as diving attraction and artificial reef"
+    },
+    "s2": {
+     "url": "https://www.calypsosac.org/p31/",
+     "publisher": "Calypso Sub-Aqua Club",
+     "kind": "operator",
+     "quote": "Access: Boat Dive Depth: 16 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Former Maltese patrol boat sunk in 2009 as an artificial reef off Comino's west coast, lying at about 16 to 20 m. Boat access only, and gentle enough to count as beginner level.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n4159831392",
+   "name": "Crystal Lagoon",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/crystallagoon/en",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Interest Reef Popularity Low Depth 9m (avg) , 22m (max) Qualification Advanced Shore access Boat only"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 22
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n384941960",
+   "name": "Xlendi Tunnel",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/xlenditunnel-xlendibay/en",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Interest Cave Popularity Medium Depth 6m (avg) , 10m (max) Qualification Beginner Shore access Hard … The shallow tunnel cave is about 70 metres long"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 10
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-408",
+   "name": "Għar Lapsi",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/gharlapsi",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Interest Cave & Reef & Wall Popularity High Depth 6m (avg) , 25m (max) Qualification Beginner Shore access Easy"
+    },
+    "s2": {
+     "url": "https://www.calypsosac.org/ghar-lapsi/",
+     "publisher": "Calypso Sub-Aqua Club",
+     "kind": "operator",
+     "quote": "strong currents and surge in the cave"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "cave",
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents and surge in the cave",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-422",
+   "name": "Kristu tal-Baħħara",
+   "sources": {
+    "s1": {
+     "url": "https://maltadives.com/sites/statueofchrist",
+     "publisher": "MaltaDives.com",
+     "kind": "press",
+     "quote": "Depth 35m (max) Qualification Experienced Shore access Boat only"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Kristu_tal-Ba%C4%A7%C4%A7ara",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Alfred Camilleri Cauchi from concrete covered fiberglass … The statue lies below 35 metres of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Submerged statue of Christ made of concrete-covered fibreglass, placed for the Pope's 1990 visit and later moved to a spot off Qawra Point beside the Imperial Eagle wreck. It lies at about 35 m and is a boat dive for experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

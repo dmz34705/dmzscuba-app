@@ -1,0 +1,202 @@
+{
+ "batch": "notable-guam-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "x-wikipedia-318",
+   "name": "Blue Hole (Guam)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Blue_Hole_(Guam)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The top of the underwater sinkhole begins at about 60 ft (18 m) and drops to more than 300 ft (91 m)"
+    },
+    "s2": {
+     "url": "https://www.guamdiveguide.com/all-dive-sites/southern-sites/blue-hole",
+     "publisher": "Guam Dive Guide",
+     "kind": "operator",
+     "quote": "Strong currents are typical, especially later in the day. \u2026 The first opportunity to exit the shaft is at 127 feet."
+    },
+    "s3": {
+     "url": "https://www.mdaguam.com/blue-hole/",
+     "publisher": "Mariana Dive Adventures",
+     "kind": "operator",
+     "quote": "you will need to have a special certification to dive past 130 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 300
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Easy to go too deep; shaft exit at 127 ft",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Strong currents, especially later in the day",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A submarine sinkhole beside a wall in Agat Bay, reached only by boat from Apra Harbor. The shaft drops far beyond recreational limits, so most divers stay on the upper plateau or wall and watch their gauges.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1256",
+   "name": "Kitsugawa Maru",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Kizugawa_Maru",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The top of Kizugawa Maru's mast is at 60 feet (18 m), while the bow gun sits at 100 feet (30 m). Damage from six bombs is at 130 feet (40 m), with the silt bottom of the harbor at 140 feet (43 m)."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 140
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-777",
+   "name": "SMS Cormoran",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Cormoran_(1914)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Dive typeOpen-water, Deep, WreckDepth range80 to 120 ft (24 to 37 m)Average visibility25 to 40 ft (7.6 to 12.2 m)Entry typeBoat, very rarely shore"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 80,
+     "bottom": 120
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663871204",
+   "name": "Tokai Maru",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Tokai_Maru",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The Tokai Maru shipwreck, 120 feet (37 m) under water, is listed on the U.S. National Register of Historic Places, as is the shipwreck of SMS Cormoran, which it lies beside."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 120
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-319",
+   "name": "Piti Bomb Holes Marine Preserve",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Piti_Bomb_Holes_Marine_Preserve",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Piti Bomb Holes Marine Preserve is a marine protected area comprising all of Piti Bay on the western coast of Guam"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole-bay marine preserve; dive spot is Fish Eye within it",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

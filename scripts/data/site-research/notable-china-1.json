@@ -1,0 +1,5 @@
+{"batch":"notable-china-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-wikipedia-436","reason":"bay/resort area, no dive facts found"},{"id":"x-wikipedia-451","reason":"scenic rock beach attraction, no dive facts"},{"id":"x-notable-1210","reason":"mine sinking 1904, no depth/dive info"}],
+"sites":[{"id":"x-wikipedia-430","name":"Tung Ping Chau",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Tung_Ping_Chau","publisher":"Wikipedia","kind":"encyclopedia","quote":"It occupies a sea area of about 270 hectares which encloses the island of Ping Chau."}},
+"notDiveSite":{"kind":"area","reason":"Whole island and marine park, not a single dive site","refs":["s1"]}}]}

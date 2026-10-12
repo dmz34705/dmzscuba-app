@@ -1,0 +1,1128 @@
+{
+ "batch": "popular-indonesia-3x",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-zxz2vd",
+   "reason": "Shark Point Raja Ampat: no matching page for this location found"
+  },
+  {
+   "id": "odm-gprqd1",
+   "reason": "Agusta Reef: only search snippets, no page text confirming"
+  },
+  {
+   "id": "odm-27l9vh",
+   "reason": "Crystal Bay Komodo: not covered by any fetched page"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-drqdsk",
+   "name": "Fam Slope",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Fam Slope Snorkelling Friendly Level : All Levels Depth : 2m-25m Current : None-Mild"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Fam Slope … This dive site has one of the steepest slops and in some areas a wall dive. The main attraction for this dive site is the gorgonian coral that can be found here. … It is a fantastic drift dive."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gorgonian corals on a steep slope",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Steep slope that becomes a wall in places, in the Fam Islands. A relaxed drift past gorgonian corals, with little current and a depth from about 2 to 25 m, so it works for most levels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-fcf2uh",
+   "name": "Warahnus",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Warahnus … Located in front of Warahnus Dive Homestay jetty, offers you variation big corals structures along the reef. Group of fusiliers playing on shallow 12 -15 meters, with variation of soft coral through the slope topography."
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Big coral structures, fusiliers at 12-15 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-duelxb",
+   "name": "Ot Di Ma",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Otdima Level : intermediate – Advanced Depth : 5m-25m Current : Mild-Strong"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Ot Di Ma … remember look into blue for big sea creatures passing by, reef starts at 5 meter to 40 meter"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-x772r1",
+   "name": "Friwen garden",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Firwen – Garden Snorkelling Friendly Level : All Levels Depth : 2m-35m Current : Mild-Strong … hundreds of Fusiliers swimming in the split current. You will find big trevallies hunting the Fusiliers"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Friwen garden … Shallow reef with combination of soft and hard corals. Usually very mild current. If current gets stronger, possible to do drift dive as reef is long enough. The best depth to 3-14m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2,
+     "bottom": 35
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fusilier schools hunted by trevally",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Pygmy seahorses on a gorgonian at 20 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shallow soft and hard coral reef beside Friwen Wall; current is usually mild but can pick up into an easy drift. Fusiliers gather where the current splits, and trevally and reef sharks often hunt them.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-sf8l6t",
+   "name": "Koi island",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Koi island … Ten minutes boat ride away from Soul scuba divers, slopy wall, drift dive within many sharks and schools of fishes. The reef starts from 5 meter until 40 meters."
+    }
+   },
+   "types": {
+    "value": [
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Many sharks and fish schools",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-a991zo",
+   "name": "Sorido Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Sorido Wall … Ten minutes boat ride from Soul scuba divers dive centre, near to Cape kri dive site, amazing wall with lots of activity within sharks and fish schools. Take your torch because on the wall you have some nice overhangs and caves."
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sharks and fish schools; overhangs and caves",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8deakf",
+   "name": "Turtle House Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Turtle House Reef … Wonderful close by house reef right in front of Turtle Divers Raja Ampat center, offers sensation of slope colorful soft and hard corals combination. Average shallow between 12 - 16 meters with mostly light current condition give you calm and easy dive experience."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 16
+    }
+   ],
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-6w01fn",
+   "name": "P-47 Plane Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/amazing-p47-ww2-plane-wreck/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Of the three found P47’s, the “Santa Maria” is the most intact and accessible at 28m on a sloping reef. … While the wreck is found upside down, the fuselage and wings are fully intact."
+    },
+    "s2": {
+     "url": "https://papua-diving.com/pioneering-raja-ampat-dive-sites/",
+     "publisher": "Papua Diving",
+     "kind": "operator",
+     "quote": "you can find these P-47D plane wrecks near Wai Island: one broken up at a depth of 2m because of wave action and the other two totally intact at 28m and 38m underwater, respectively."
+    },
+    "s3": {
+     "url": "https://petitesbullesdailleurs.fr/en/epave-avion-raja-ampat-20160228/",
+     "publisher": "Petites Bulles d'Ailleurs",
+     "kind": "press",
+     "quote": "this wreck lies at a depth of between 26 and 33 meters, making it one of the few wrecks in the area easily accessible for recreational diving. … The plane is not very big, about fifteen meters long."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 28
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 26,
+     "bottom": 33
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact WWII P-47 fighter, upside down",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "About 15 m long, soft corals and fish",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An American WWII P-47 fighter near Wai Island, lying upside down on a sloping reef at roughly 28 m with fuselage and wings intact. A second intact plane lies deeper, and a third is broken up in shallows.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-uzr2a0",
+   "name": "Francisco Reef",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Francisco Reef Snorkelling Friendly Level : All Levels Depth : 3m-25m Current : None – Mild"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Francisco Reef … This site is named after a house guest at Biodiversity Resort who explored this area. Descending onto a shallow rock, your dive starts immediately with the welcoming site of colorful Anthias and Fusiliers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Anthias and fusiliers from the start",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Easy reef near Biodiversity Resort, 3 to 25 m with little current. The dive starts on a shallow rock alive with anthias and fusiliers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-uv6xq3",
+   "name": "Crossover",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Crossover … Ten minutes boat ride from Soul scuba divers dive centre, epic wall dive site, best in high tides, many type of sharks and schools of fishies, near to Cape kri"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sharks and fish schools along the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ihxhcd",
+   "name": "New Reef (Dom Te Te)",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "New Reef (Dom Te Te) … 15 minutes away from Soul Scuba divers dive centre, coral bummies, reef starts at 5 meters until 40 meters, fishy dive sites with lots of different schools of fishes. You can finish the dive on the top where the corals are amazingly colorfoul."
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral bommies, many fish schools",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-li53tn",
+   "name": "Pasir Timbul",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Pasir Timbul … Ten minutes away from the Soul scuba divers dive centre, beautiful slope coral reef, drift dive site with plenty of action with fish and sharks."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fish and shark action on a coral slope",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-gbca81",
+   "name": "Menara Telkomsel",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Menara Telkomsel … 5 minutes far from Soul Scuba divers, a nice coral slope for a drift dive. If the current is strong enough you might even drift until Soul Scuba divers jetty!"
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-5d1jby",
+   "name": "The Passage",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The Passage … One hour away from Soul scuba divers dive centre. This is a narrow canyon, situated between Gam Island and Waigeo Island, good for macro lovers. The current might be strong and you can feel like flying in a river."
+    }
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Narrow canyon, good macro",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current can be strong",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5glpuu",
+   "name": "Mambetron",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Mambetron … North site of kri island near Soulscuba house reef. Don’t forget to have a look into the blue you can have some ocean gift manta ray passing by. And also some sharks."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Occasional manta rays and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fafxxb",
+   "name": "Felici garden",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Felici garden … This is the new coral plantation location of the NGO the Sea People (Orang Laut). The goal is to plant 1 hectare of corals."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Coral planting project",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2dvynj",
+   "name": "Crystal Rock Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://komodoresort.com/komodo-diving/crystal-rock/",
+     "publisher": "Komodo Resort",
+     "kind": "operator",
+     "quote": "Crystal Rock Dive Site … 10 – 30 meters … Advanced … Similar to Castle Rock, slightly more sheltered. … The flow can still push hard"
+    },
+    "s2": {
+     "url": "https://www.lagaligoliveaboard.com/diving/komodo/dive-site/crystal-rock/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "The maximum depth is 30 meters, but the average dive depth is around 25 meters. … Strong currents underwater mean it’s not recommended for beginners."
+    },
+    "s3": {
+     "url": "https://www.wetfrogdivers.com/scuba-diving-komodo/dive-spots-komodo/",
+     "publisher": "Wet Frog Divers",
+     "kind": "operator",
+     "quote": "divers descend quickly with the current down to 20-25 m … only experienced divers should join for the dives at Crystal Rock"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "White-tip and grey reef sharks, giant trevally",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Giant sea fans, barrel sponges, plate corals",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong current; depth reached quickly",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "North Komodo pinnacle in the lee of Gili Lawa Laut, a little more sheltered than Castle Rock but still current-swept. Sharks, trevally and turtles patrol corals-covered slopes to roughly 25-30 m; advanced divers only.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-waitdg",
+   "name": "Castle Rock Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://www.komodoresort.com/komodo-diving/castle-rock/",
+     "publisher": "Komodo Resort",
+     "kind": "operator",
+     "quote": "Castle Rock Dive Site … 10 – 30 meters … Variable, often strong … Advanced"
+    },
+    "s2": {
+     "url": "https://www.lagaligoliveaboard.com/diving/komodo/dive-site/castle-rock/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "Max Depth: 35 meters. … a pinnacle about 4m below the surface … The big attraction is the hunting sharks playing around in the current."
+    },
+    "s3": {
+     "url": "https://dragondivekomodo.com/?p=36587",
+     "publisher": "Dragon Dive Komodo",
+     "kind": "operator",
+     "quote": "Castle Rock … The top of the pinnacle sits at about 5-7 meters. … Location North Komodo Depth 7m - 30m+ Level Advanced (AOW) Current Very Strong"
+    },
+    "s4": {
+     "url": "https://www.bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive",
+     "kind": "operator",
+     "quote": "Castle Rock … Avg. 15 m, max. 35 m … this seamount rises from depths of 75 metres to about 3-4 metres under the surface"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 4,
+     "bottom": 35
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    },
+    {
+     "ref": "s4",
+     "unit": "m",
+     "top": 4,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s2",
+     "s4"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hunting grey, white-tip and black-tip reef sharks",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Trevally, tuna, mackerel above the rock",
+     "refs": [
+      "s4"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong current, negative entry needed",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Submerged seamount in north Komodo topping out a few metres below the surface and falling to deep water. Current is strong, so divers drop in fast and often hook on while reef sharks and trevally hunt nearby; advanced divers only.",
+    "refs": [
+     "s2",
+     "s3",
+     "s4"
+    ]
+   }
+  },
+  {
+   "id": "odm-tkdxxx",
+   "name": "Siaba Kecil",
+   "sources": {
+    "s1": {
+     "url": "https://diveconcepts.com/siaba-kecil-komodo",
+     "publisher": "Dive Concepts Komodo",
+     "kind": "operator",
+     "quote": "The maximum depth of this site is 30 meters. … Current is strong and fast-moving, so the dive is a drift."
+    },
+    "s2": {
+     "url": "https://www.bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive",
+     "kind": "operator",
+     "quote": "Siaba Kecil … Avg. 15 m, max. 30 m … Siaba Kecil is the fastest drift dive in Komodo."
+    },
+    "s3": {
+     "url": "https://www.wetfrogdivers.com/scuba-diving-komodo/dive-spots-komodo/",
+     "publisher": "Wet Frog Divers",
+     "kind": "operator",
+     "quote": "As currents can be strong here it is rather a dive spot for more experienced divers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "drift",
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small caves with angelfish and batfish",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Turtles and mandarin fish in shallow coral garden",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Fast drift current",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Fast drift through canyons and small caves along a reef face in central Komodo, ending in a shallow hard-coral garden. The current can fly, so it suits experienced drift divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-57r9m5",
+   "name": "Secret Garden",
+   "sources": {
+    "s1": {
+     "url": "https://redwhaledc.com/dive-site/",
+     "publisher": "Red Whale Diving",
+     "kind": "operator",
+     "quote": "Secret Garden (Sloping Reef, Max 25m, Level 1/3) a serene dive through colorful coral gardens teeming with small reef fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral gardens with small reef fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-96vkf8",
+   "name": "Three Sisters Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://www.lagaligoliveaboard.com/diving/komodo/dive-site/three-sisters/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "The maximum depth is 30 meters … This dive site is a bit advanced because of the currents here, so it’s not recommended for divers who are not experienced."
+    },
+    "s2": {
+     "url": "https://www.bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive",
+     "kind": "operator",
+     "quote": "Three Sisters … Avg. 15 m, max. 40 m … Three large pinnacles about 10 m apart, rising from about 20 m of water. … often affected by current"
+    },
+    "s3": {
+     "url": "https://www.scubago.com/en/explore/destination/east-nusa-tenggara-9752511",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The Three Sisters are three large rocks all connected to each other, all covered with corals, blue sponges, and are teeming with life. … finish the dive on the peaks which top at 6, 7 and 8 meters respectively."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 6
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Three submerged pinnacles with pristine coral",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    },
+    {
+     "text": "Reef sharks, mobula rays, trevally schools",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Frequent current between pinnacles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Three coral-covered pinnacles in southern Komodo, with tops a few metres below the surface and faces dropping to about 25-30 m. Current is common and makes moving between them hard, so it suits experienced divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-hz0xou",
+   "name": "Mini Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluemarlindive.com/komodo/dive_sites/",
+     "publisher": "Blue Marlin Dive",
+     "kind": "operator",
+     "quote": "Mini Wall … Avg. 15 m, max. 30 m … This dive is an excellent checkout dive or just a nice easy dive if you don't wish to deal with current. … a reef plateau with many reef fish that drops into a 30 m+ wall"
+    },
+    "s2": {
+     "url": "https://www.idivekomodoindonesia.com/mini-wall/",
+     "publisher": "iDIVE Komodo",
+     "kind": "operator",
+     "quote": "Mini Wall Maximum of 30 m … Easy … Hawksbill turtles, cuttlefish, grouper, lionfish, giant trevally, bumphead parrotfish, eagle rays"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays, turtles, batfish and sweetlips",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Easy central Komodo dive: a reef plateau teeming with fish that drops into a wall past 30 m. Little current makes it a popular check-out dive, with turtles, eagle rays and plenty of macro.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

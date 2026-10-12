@@ -1,0 +1,109 @@
+{
+ "batch": "notable-hong-kong-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "x-wikipedia-434",
+   "name": "Ninepin Group",
+   "sources": {
+    "s1": {
+     "url": "https://www.tatlerasia.com/lifestyle/travel/ph-diving-snorkelling-hong-kong",
+     "publisher": "Tatler Asia",
+     "kind": "press",
+     "quote": "stunning underwater scenery reaching seven meters up until 17 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 17
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-433",
+   "name": "Hoi Ha Wan",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Hoi_Ha_Wan",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Hoi Ha Wan (Chinese: 海下灣) or Jone's Cove is a bay at the north of Sai Kung Peninsula"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole bay / marine park, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-429",
+   "name": "Tap Mun",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Tap_Mun",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Grass Island or Tap Mun is an island in Hong Kong, located in the northeastern part of the territory"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole inhabited island, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-442",
+   "name": "Chek Chau",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Chek_Chau",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is an island of Hong Kong under the administration of Tai Po District"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-428",
+   "name": "Double Island, Hong Kong",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Double_Island%2C_Hong_Kong",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Double Island has an area of 2.13 km²"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island of 2 km2, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

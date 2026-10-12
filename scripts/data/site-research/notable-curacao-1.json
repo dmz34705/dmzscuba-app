@@ -1,0 +1,59 @@
+{
+ "batch": "notable-curacao-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "odm-ot5oqj",
+   "name": "Tugboat",
+   "sources": {
+    "s1": {
+     "url": "https://reefsmartguides.com/tugboat-curacao/",
+     "publisher": "ReefSmart Guides",
+     "kind": "press",
+     "quote": "ranging in depth from about 15 to 20 feet (4.5 to 6 meters), where a small tugboat wreck is located."
+    },
+    "s2": {
+     "url": "https://www.travelinmypocket.com/tugboat-curacao-caracas-bay-peninsula/",
+     "publisher": "Travel in My Pocket",
+     "kind": "press",
+     "quote": "at a depth of around five meters, just a few meters from the coastline"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 5
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A small tugboat wreck resting upright in shallow water just off the Caracas Bay shore on Curacao. Easy to reach from the beach, popular with snorkelers and divers, and a good night-dive spot.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

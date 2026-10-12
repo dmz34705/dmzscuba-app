@@ -1,0 +1,6 @@
+{"batch":"notable-turkey-1","researchedAt":"2026-10-08","sites":[{"id":"x-notable-959","name":"Uluburun shipwreck",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Uluburun_shipwreck","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck lay between 44 and 52 meters deep on a steep, rocky slope riddled with sand pockets."},
+"s2":{"url":"https://www.seturmarinas.com/en/highlights/issue-13/shipwrecks-of-kas-silent-witnesses-of-history","publisher":"Setur Marinas","kind":"press","quote":"at a depth of 50 meters"}},
+"depth":[{"ref":"s1","unit":"m","top":44,"bottom":52},{"ref":"s2","unit":"m","bottom":50}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"depthNote":"Bronze Age wreck on a slope at 44-52 m, artifacts to 61 m"}]}

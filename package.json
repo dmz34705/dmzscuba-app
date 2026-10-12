@@ -96,7 +96,9 @@
     "build:atlas-release": "node scripts/build-atlas-release.cjs",
     "test:atlas-updates": "node scripts/verify-atlas-update-lifecycle.cjs && node scripts/verify-atlas-updates.cjs",
     "deploy": "npx expo export -p web && wrangler deploy",
-    "preview": "npx expo export -p web && wrangler dev"
+    "preview": "npx expo export -p web && wrangler dev",
+    "research:fates": "node scripts/scan-wikipedia-fates.cjs",
+    "research:process": "node scripts/process-site-research.cjs"
   },
   "private": true,
   "devDependencies": {

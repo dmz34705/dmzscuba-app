@@ -1,0 +1,151 @@
+{
+ "batch": "popular-argentina-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "odm-ocojtq",
+   "sources": {
+    "s1": {
+     "url": "https://lobolarsen.com/buceo-en-puerto-madryn/",
+     "publisher": "Lobo Larsen Buceo",
+     "kind": "operator",
+     "quote": "Naufragio Urabain, entre 9 y 26 mts de profundidad y 79 metros de eslora"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 9,
+     "bottom": 26
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "Urabain, Wreck"
+  },
+  {
+   "id": "odm-8f764l",
+   "sources": {
+    "s1": {
+     "url": "https://lobolarsen.com/buceo-en-puerto-madryn/",
+     "publisher": "Lobo Larsen Buceo",
+     "kind": "operator",
+     "quote": "Albatros, entre los 15 y los 23 mts de profundidad y 27 mts de eslora … Profundidad entre 15 y 23 mts. Dificultad: Media"
+    },
+    "s2": {
+     "url": "https://abramarbuceo.com.ar/salidas-de-buceo/",
+     "publisher": "Abramar Buceo",
+     "kind": "operator",
+     "quote": "El buque “Albatros”, es un pesquero de 30 mts. de eslora, está a una profundidad de entre los 15 y 24 mts. aproximadamente."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 23
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 24
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A 27-30 m fishing vessel sunk on purpose in Golfo Nuevo off Puerto Madryn to make a dive site. It rests at roughly 15-24 m, is rated medium difficulty, and is covered in life such as tube anemones and large salmon fish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "name": "Albatros, wreck"
+  },
+  {
+   "id": "odm-t7ejkj",
+   "sources": {
+    "s1": {
+     "url": "https://lobolarsen.com/buceo-en-puerto-madryn/",
+     "publisher": "Lobo Larsen Buceo",
+     "kind": "operator",
+     "quote": "el Antonio Miralles, entre los 18 y los 30 mts de profundidad con 50 mts de eslora … Profundidad entre 18 y 30 mts. Dificultad: Media/Alta"
+    },
+    "s2": {
+     "url": "https://abramarbuceo.com.ar/salidas-de-buceo/",
+     "publisher": "Abramar Buceo",
+     "kind": "operator",
+     "quote": "Miralles En marzo del 2004 fue hundido el buque Antonio Miralles … Profundidad máxima de 28 mts. con marea alta y 20 mts. con marea baja."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 20,
+     "bottom": 28
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large interior spaces allow safe penetration to bridge",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The Antonio Miralles was sunk in March 2004 in Golfo Nuevo off Puerto Madryn as an artificial dive site. It lies about 20-30 m deep depending on tide, is rated medium to hard, and its roomy interior allows penetration.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "name": "Miralles, Wreck"
+  }
+ ]
+}

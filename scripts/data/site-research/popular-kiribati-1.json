@@ -1,0 +1,252 @@
+{
+ "batch": "popular-kiribati-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-1nvdxy",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-ja6eta",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-fncpk4",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-swfh5i",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-feff5l",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-0evp9n",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-hh5wbb",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-agb6f1",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-beg58k",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-6jvpg2",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-naer0q",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-5smht8",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-9rbz5a",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-i8saeg",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-uvm37v",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-lom49a",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-87ufl5",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-zsqx4m",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-jgd70r",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-u0s7n7",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  },
+  {
+   "id": "odm-92itdw",
+   "reason": "only banned directories or no per-site data on fetched pages"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-vr4jg0",
+   "sources": {
+    "s1": {
+     "url": "https://pelagicdiversfuvahmulah.com/?p=1166",
+     "publisher": "Pelagic Divers Fuvahmulah",
+     "kind": "operator",
+     "quote": "FARIKEDE (South) Protected marine area Dive Type: Strong currents, AOW diver Depth: Top reef: 10 -15 meters | Slopes into a plateau at a depth of 35 – 60+ meters"
+    },
+    "s2": {
+     "url": "https://www.pelagicdiversfuvahmulah.com/scuba-diving-in-fuvahmulah-maldives/",
+     "publisher": "Pelagic Divers Fuvahmulah",
+     "kind": "operator",
+     "quote": "Farikede (South reef or Plateau) Depth: 30m+/ 100ft Top reef: 15m/50ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 30
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Silvertip, grey reef and thresher sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Top reef 10-15 m, plateau 35-60+ m",
+   "name": "Farikede"
+  },
+  {
+   "id": "odm-9vyf4g",
+   "sources": {
+    "s1": {
+     "url": "https://pelagicdiversfuvahmulah.com/?p=1166",
+     "publisher": "Pelagic Divers Fuvahmulah",
+     "kind": "operator",
+     "quote": "RASGE FANNO (East) Dive Type: Easy, OW diver Depth: Top reef: 5 – 7 meters | Mid: 18 – 30 meters | Slopes into the blue Pelagic: Pelagic Threshers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pelagic thresher sharks; seasonal oceanic mantas",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "Rasgefanno"
+  },
+  {
+   "id": "odm-ghodry",
+   "sources": {
+    "s1": {
+     "url": "https://www.dive-the-world.com/diving-sites-maldives-deep-south.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "British Loyalty lies on its starboard side at 33m near Gan"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Diving_in_the_Maldives",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck is 134 metres long and lies at a depth of 33 metres, on its port side."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 33
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 33
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "name": "British Loyalty (Wreck)"
+  },
+  {
+   "id": "odm-mkqnp7",
+   "sources": {
+    "s1": {
+     "url": "https://www.dive-the-world.com/diving-sites-maldives-deep-south.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "Maa Kandu Channel / Mudakan Manta Point … Hook on to the reef at 20-25m to combat the current … Up to 30 reef mantas have been seen on a single dive here."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 20,
+     "bottom": 25
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef mantas, up to 30 on one dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "Addu Manta Point"
+  }
+ ]
+}

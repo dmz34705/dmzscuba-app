@@ -1,0 +1,47 @@
+{
+ "batch": "popular-curacao-3",
+ "researchedAt": "2026-10-08",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "odm-g27w5i",
+   "name": "Punt Canon",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Oostpunt/ Punt Canon … Drift diving in Curaçao is also possible, but this is only for experienced divers … beautiful intact coral reefs filled with incredible fish … can only be visited with a boat dive"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact coral reefs full of fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

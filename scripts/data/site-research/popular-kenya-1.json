@@ -1,0 +1,311 @@
+{
+ "batch": "popular-kenya-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-dlkqox",
+   "reason": "no non-directory page with site-specific facts"
+  },
+  {
+   "id": "odm-2vg8be",
+   "reason": "no non-directory page with site-specific facts"
+  },
+  {
+   "id": "odm-t5x25j",
+   "reason": "Watamu operator lists only name, no per-site depth/facts found"
+  },
+  {
+   "id": "odm-om69zs",
+   "reason": "Watamu operator lists only name, no per-site depth/facts found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-e5n7fr",
+   "name": "Galu",
+   "sources": {
+    "cg": {
+     "url": "https://www.divingthecrab.com/dive-sites/galu/",
+     "publisher": "Diving the Crab",
+     "kind": "operator",
+     "quote": "GALU GALU Accessible from: Nomad Beach Resort Boat ride: 10 minutes … Suitable for: Beginners, Intermediate & Experienced divers Expect to see: Turtles, ghost pipefish"
+    },
+    "otr": {
+     "url": "https://oceantribe.co/scuba-diving-trips/diani-dive-sites/",
+     "publisher": "Ocean Tribe",
+     "kind": "operator",
+     "quote": "Dive site 02 Galu Up to 25m Coral slope Two moorings A flexible reef with shallow sections, a gentle coral slope and deeper options."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "cg"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "otr"
+    ]
+   },
+   "mooring": {
+    "value": "Two moorings",
+    "refs": [
+     "otr"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles, ghost pipefish, seahorses, frogfish",
+     "refs": [
+      "cg"
+     ]
+    },
+    {
+     "text": "Turtles, octopus, rays, nudibranchs",
+     "refs": [
+      "otr"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-mdu6m8",
+   "name": "Kisima Mungu (Nomads)",
+   "sources": {
+    "otr": {
+     "url": "https://oceantribe.co/scuba-diving-trips/diani-dive-sites/",
+     "publisher": "Ocean Tribe",
+     "kind": "operator",
+     "quote": "Dive site 05 Kisima Mungu Approx. 14–28m Walls and drop-offs Possible current “God’s Well” rises from the deeper sand into a dramatic reef of walls, overhangs, sea fans and current-washed coral."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "otr"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "otr"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "otr"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Walls, overhangs and sea fans",
+     "refs": [
+      "otr"
+     ]
+    },
+    {
+     "text": "Trevally, barracuda, eagle rays",
+     "refs": [
+      "otr"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-1ghrli",
+   "name": "M.V. Alpha Funguo",
+   "sources": {
+    "dm": {
+     "url": "https://www.dianimarine.com/diving-locations/",
+     "publisher": "Diani Marine",
+     "kind": "operator",
+     "quote": "Alpha Funguo Wreck 5 min south A 48m fishing trawler, the first ever wreck to be purposefully sunk on the East African coast in 2002 by Diani Marine … This wreck sits in 28m of water and starts at 17m"
+    },
+    "yf": {
+     "url": "https://yellow-fins.com/daily-diving-trip/dive-sites/",
+     "publisher": "Yellow Fins Diving Kenya",
+     "kind": "operator",
+     "quote": "Alpha Funguo Wreck North of our Dive center, 15 min of navigation depending on the current . This wreck, a 48 m trawler, was the first to be sunk on the East African coast in the early 2000s. … The dive is between -17 m and -28 m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "dm",
+     "unit": "m",
+     "top": 17,
+     "bottom": 28
+    },
+    {
+     "ref": "yf",
+     "unit": "m",
+     "top": 17,
+     "bottom": 28
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "dm",
+     "yf"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "48 m trawler sunk 2002 as artificial reef",
+     "refs": [
+      "dm",
+      "yf"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 48 m fishing trawler deliberately sunk off Diani in 2002, the first purpose-sunk wreck on the East African coast. Its deck starts around 17 m and the sand lies near 28 m, and it has become an artificial reef with large fish.",
+    "refs": [
+     "dm",
+     "yf"
+    ]
+   }
+  },
+  {
+   "id": "odm-l6ih8k",
+   "name": "Kinondo",
+   "sources": {
+    "dm": {
+     "url": "https://www.dianimarine.com/diving-locations/",
+     "publisher": "Diani Marine",
+     "kind": "operator",
+     "quote": "Kinondo 40 minutes (south) Probably our best dive spot for daily departures. The top of the main reef starts at 10m, going down to 31m by way of both gentle slopes and steep walls"
+    },
+    "yf": {
+     "url": "https://yellow-fins.com/daily-diving-trip/dive-sites/",
+     "publisher": "Yellow Fins Diving Kenya",
+     "kind": "operator",
+     "quote": "Kinondo South of our Dive center, 30 min of navigation depending on the current. One of our favorite dive site. … it is populated by very large moray eels (-20 m)."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "dm",
+     "yf"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Very large moray eels on the southern reef",
+     "refs": [
+      "yf"
+     ]
+    },
+    {
+     "text": "Gentle slopes and steep walls",
+     "refs": [
+      "dm",
+      "yf"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-wi7r27",
+   "name": "Igloo",
+   "sources": {
+    "ci": {
+     "url": "https://www.divingthecrab.com/dive-sites/igloo/",
+     "publisher": "Diving the Crab",
+     "kind": "operator",
+     "quote": "IGLOO IGLOO Accessible from: Nomad Beach Resort Boat ride: 10 minutes Average depth: 12 metres Suitable for: Intermediate divers … Igloo reef is named after an aborted underwater habitat which was abandoned here."
+    },
+    "otr": {
+     "url": "https://oceantribe.co/scuba-diving-trips/diani-dive-sites/",
+     "publisher": "Ocean Tribe",
+     "kind": "operator",
+     "quote": "Dive site 03 Igloo Approx. 12–22m Coral bommies Swim-throughs Named for its rounded coral formations"
+    }
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "ci"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "ci",
+     "otr"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sweetlips, octopus, ghost pipefish",
+     "refs": [
+      "ci"
+     ]
+    },
+    {
+     "text": "Remains of an abandoned underwater habitat",
+     "refs": [
+      "ci",
+      "otr"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3p0s1i",
+   "name": "Mwanamochi",
+   "sources": {
+    "cm": {
+     "url": "https://www.divingthecrab.com/dive-sites/mwanamochi/",
+     "publisher": "Diving the Crab",
+     "kind": "operator",
+     "quote": "MWANAMOCHI MWANAMOCHI Accessible from: Nomad Beach Resort Boat ride: 20 minutes Average depth: 15 metres Suitable for: Intermediate & experienced … Mwanamochi is a long reef (1.5 kms) that is usually dived as a drift, if conditions allow."
+    }
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "cm"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "cm"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "drift"
+    ],
+    "refs": [
+     "cm"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral head with small reef fish; turtles",
+     "refs": [
+      "cm"
+     ]
+    }
+   ]
+  }
+ ]
+}

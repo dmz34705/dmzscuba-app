@@ -1,0 +1,31 @@
+{
+  "batch": "popular-fiji-4",
+  "researchedAt": "2026-10-08",
+  "skipped": [
+    {
+      "id": "odm-080d9c",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-v4hnnb",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-lqbby9",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-3fo19n",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-fusqb4",
+      "reason": "no usable non-banned source with site-specific facts"
+    },
+    {
+      "id": "odm-xhlaii",
+      "reason": "no usable non-banned source with site-specific facts"
+    }
+  ],
+  "sites": []
+}

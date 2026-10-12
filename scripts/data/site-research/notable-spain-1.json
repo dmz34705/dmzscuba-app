@@ -1,0 +1,23 @@
+{"batch":"notable-spain-1","researchedAt":"2026-10-08","sites":[
+{"id":"x-notable-1181","name":"Spanish submarine C-3",
+"sources":{"s1":{"url":"https://cursosdebuceo.com/en/blog/c-3/191","publisher":"Cursos de Buceo","kind":"operator","quote":"approximately 66–68 meters … declared a War Grave with special State protection … Unauthorised diving is illegal … accessible to experienced divers"},
+"s2":{"url":"https://www.tdisdi.com/tdi-diver-news/the-c3-wreck-history-and-diving-conditions/?lang=sk","publisher":"TDI SDI","kind":"press","quote":"It is located between 67 to 70 meters deep and there are areas full of ropes and nets, becoming a potentially deadly trap."}},
+"depth":[{"ref":"s1","unit":"m","bottom":66},{"ref":"s2","unit":"m","bottom":70}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"level":{"value":"technical","refs":["s2"]},
+"access":{"value":"War grave under State protection; unauthorised diving is illegal","refs":["s1"]},
+"hazards":[{"text":"Ropes and nets around the wreck","refs":["s2"]}]},
+{"id":"x-wikipedia-82","name":"SS Malakoff",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/SS_Malakoff","publisher":"Wikipedia","kind":"encyclopedia","quote":"The seabed is 38 to 40 metres (125 to 131 ft) below sea level … The wreck is suitable for advanced, experienced divers only"},
+"s2":{"url":"https://www.bonninsanso.com/discoverymenorca/?p=1467","publisher":"Bonnin Sanso Discovery Menorca","kind":"press","quote":"The wreck is found 820 metres from the southwest coast, between Es Talaier and Cala Turqueta, at a depth of 38 metres."}},
+"depth":[{"ref":"s1","unit":"m","top":30,"bottom":40},{"ref":"s2","unit":"m","bottom":38}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"entry":{"value":"boat","refs":["s2"]},
+"level":{"value":"advanced","refs":["s1"]},
+"highlights":[{"text":"Cement cargo forms an artificial reef full of fish","refs":["s1"]}]},
+{"id":"osm-n2629930892","name":"Camp Bay",
+"sources":{"s1":{"url":"https://gibraltar.com/en/travel/see-and-do/tours-and-activities/scuba-diving-in-gibraltar.php","publisher":"Gibraltar tourism","kind":"agency","quote":"Lying only 25m from the shore … Catering for every level of diver, for novices up to experts"}},
+"entry":{"value":"shore","refs":["s1"]},
+"level":{"value":"beginner","refs":["s1"]},
+"types":{"value":["wreck"],"refs":["s1"]}}
+]}

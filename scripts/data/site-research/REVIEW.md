@@ -196,3 +196,156 @@ Found by research batches; not fixed automatically. Resolve in the catalog (merg
 - U-1206: 86 m (Scottish Shipwrecks) vs ~70 m (uboat.net).
 - HMS Sword Dance: catalogue link may confuse two ships of the name.
 - Held: Tantivy, Exmouth, Lynx (Scottish Shipwrecks only). Duke of Albany 70 m single source.
+
+## notable-new-zealand-1 / solomon-islands-1 / palau-1
+- Hidden: Poor Knights Islands (area), Darra (hulk beached at Quail Island), Tulagi (area). Horoirangi kept.
+- Rena: catalog 22 m doubtful; pin seafloor 55–67 m, stern ~56 m.
+- Nettlebed Cave: a dry cave; diving is at the Pearse Resurgence. Derry Castle: sub-Antarctic reef, not a dive site.
+- Held: HMNZS Wellington, HMNZS Waikato, Mathesons Bay (one source each).
+
+## notable-mexico-1 / caribbean
+- Hidden as area: Socorro, Cozumel NP, Guadalupe, Lighthouse Reef, Utila. Kept: Banco Chinchorro, San Pedro Nolasco.
+- Not dive sites (unsourced): Cliff Villa Peninsula (land), Grote Knip / Jan Thiel (beach/bay), Choo-Ha (swim cenote), Dzibilchaltun (closed cenote), Cozumel (island), El Garrafon (snorkel park).
+- C-46 pin at Shroud Cay; the known C-46 wreck is at Norman's Cay.
+- divecuracao.info pages are templated (same 12–36 m for different sites) — not usable.
+
+## auto-wikipedia-fate (scripts/scan-wikipedia-fates.cjs)
+- 13 ships hidden from Wikipedia "fate" lines (scrapped / broken up, no wreck). Articles mentioning divers, wreckage or a sinking under tow are skipped (HMS Safari, Pedernales were false positives before the guard).
+
+## pins-1 (pin-fix pass)
+- Moved: HMS Amphion 17.6 km (Wikipedia), SMS König 1.8 km (HES + Scapa Flow Wrecks), SMS Dresden 2.4 km (Wikipedia).
+- Already correct (earlier leads were wrong): HMS Victory 1737, UB-116, Admiral Gardner, C-46 (pin is at Norman's Cay).
+- Unresolved: Hermes, Hollyhock (distances only), Stepas Darius (Wikipedia coords don't fit Round Island), H11 (one source), King Edward VII (identity "possibly"), Venetia, Nottingham (sources conflict).
+
+## notable-australia-1..4
+- Hidden: Innes NP, Great Southern Reef, Whyalla, Wardang Island, Broughton Island, Rottnest, Heron Island, Great Barrier Reef, Osprey Reef, Rum Jungle locality, Cocklebiddy (roadhouse) as areas; Hive (buried in surf sand); M24 midget sub (no-entry zone); Geffrard (never confirmed); SS Maheno (beached, access prohibited).
+- Pins: Port Hughes, Port Noarlunga, Rapid Bay pins sit on town centres, not the jetties. Booya pin modelled seafloor ~91 m vs wreck ~20 m. "Rockingham" pin may be the wrong site.
+- HMS J7 is inside Sandringham marina breakwater (3 m). Lake Illawarra lies under a shipping lane. SS Ayrfield is a mangrove hulk in Homebush Bay (no diving).
+- Held: Cheynes III (22 vs 30 m), Batavia (3–10 vs 4–6 m), Wolf Rock, Meigs, Peary, Ellengowan, Gothenburg, Flying Fish Cove (one source each).
+
+## notable-france-1/2, notable-canada-1/2
+- Hidden: Port-Miou (Calanques NP: reserved for scientific research and exploration, not open to visits — confirmed), U-415, Condé, HMS Hotham (scrapped/salvaged), Saint-Pierre wrecks (area), Scotiadoc (259 m), Shawinigan (never found), Porteau Cove PP (area).
+- Country labels: Charles S. Price and Sagamore are in US waters (listed Canada); HMS Blackwood is off Portland Bill (UK) and HMS Viper in Alderney waters (listed France).
+- Hamilton and Scourge: protected, no recreational diving — needs a source to hide. Niagara Scow sits in rapids above the falls. HMS Calypso is a burned hulk awash. Sunny South (Mayotte) burned wreck, no data.
+- Breadalbane: sources conflict (30 fathoms vs 100 m).
+
+## notable-germany-1..3
+- Depths: Friedberger Baggersee 12–15 m, Echtzer See 18 m, Heidesee Holdorf 13–15 m, MS Jan Heweliusz 27 m. Most German lake pins are entry points with no site-specific source; seen.de timed out.
+- Hidden: Schliersee, Schluchsee, Diemelsee, Twistesee (areas); HMS Seal (scuttled 1945, broken up — quote re-taken from Wikipedia); HMS Starfish, HMS Sunfish (unlocated; Sunfish pin off Sylt, sunk off Norway).
+- Not dive sites by name: Thumsee "Parkplatz Ost" (car park), Tegernsee "Hotel Guggemoos" and "Yachtclub" (businesses). Badesee Düren-Echtz duplicates Echtzer See.
+- U-8 scuttled in the Raeder Lock, Wilhelmshaven (not diveable?). HMS Ariel: catalog 101 m unsupported.
+
+## Quote rule (2026-10-08)
+- notDiveSite quotes now need ≥ 6 words (a lone "scuttled" had hidden HMS Seal). Short quotes expanded to the full Wikipedia sentence where found.
+- Still held for a weak quote (pins show): El Gouna, Tegernsee, Fleesensee, SMS Bremse, HMS Resistance; Rondo Island (its quote says it is popular with divers — correctly kept).
+- auto-wikipedia-fate quotes now read "<article title> … Fate: <fate line>".
+
+## notable-switzerland/austria/malta/south-africa + verified-depth-united-states-1x
+- Car Ferry No. 2 ("No. 2", Lake Michigan, Indiana): 42–45 ft accepted (Indiana DNR + 3DShipwrecks).
+- Jura wreck has two pins (x-wikipedia-92, osm-n663870428) — duplicate.
+- Swiss pins: 22 of 25 unsourced; many are bathing beaches or whole lakes (Lac de Géronde, Lac de Taney, Öschinensee, Trübsee, Schwarzsee, Lac de Joux, Türlersee) — candidates for removal.
+- Malta: Kujawiak pin ~5 km from maltadives.com coords (35.8883 N, 14.6434 E). Xlendi Tunnel pin sits over 62–113 m modelled seafloor (tunnel ≤ 10 m).
+- South Africa: 4 MPA pins hidden as areas; Marico Oog is a freshwater spring tagged ocean; HMS Thames matched to SATS General Botha by name only. Boesmansgat no usable depth claim.
+- Wikivoyage often the only depth source; maltadives.com and taucher.net classed press.
+
+## popular-united-states-1 / popular-egypt-1
+- Low yield: most popular reef sites are described only by banned directories. Molokini Crater and Turtle Pinnacle accepted; 10 others hold single-source depths.
+- Town/area names pinned as sites: Kona, Maui, Wailea, Keauhou Bay (no source fetched).
+
+## notable-norway/netherlands/greece/brazil/russia
+- Accepted: Invincible 54–55, Warrior 80–83, Blücher 90–92 (protected 2016, permit), Möwe/Oldenburg 75, U-711 50, Britannic 120–122 (technical), Perseus 52, Pedra da Risca do Meio 16–30, Admiral Nakhimov 46–47.
+- Hidden: Karlsruhe (490 m), Tanatside, Satyr, Sceptre, Searcher (scrapped), Rigel (demolished), U-64 (raised), Prince George (buried), Dimitrios (stranded on beach), Dragonet (scuttled in Chesapeake Bay 1961).
+- Country labels wrong: Jutland wrecks (Invincible, Warrior → Norway; Lützow, Ardent, Indefatigable, Defence, Shark, Wiesbaden → Russia) lie in the North Sea off Denmark.
+- Pins: Searcher pin sits at U-711's coordinates, U-711 pin ~9 km off; HMS Arethusa is on Cutler Sand off Felixstowe (51.975N 1.452E, Suffolk HER) but pinned off the Dutch coast (>100 km); HMS Perseus pin over 666 m seafloor, wreck off Skala, Kefalonia.
+- Not dive sites: Mediterranean Sky (capsized hulk, Eleusis Bay), The Big Blue (a film), Ponte JK (a bridge in Brasília).
+
+## popular-indonesia-1 / 2a
+- popular-indonesia-2 stopped after 3 of 25 sites; renamed to popular-indonesia-2a and the rest re-queued. Planner now re-queues batches covering < 80 % (with the new `skipped` list).
+- Many holds: operators give deeper maxima than the community map depth. USAT Liberty pin sits over ~95 m though the wreck is just off the beach.
+
+## notable-turkey/belgium/italy/spain/denmark/croatia
+- Accepted: Uluburun 44–52, Nemo 33, Nereo Cave, Christ of the Abyss 15, C-3 66–70 (war grave), Malakoff 30–40, Fu Shan Hai 60–69, Baron Gautsch 28–40 (permit), MT Haven 80 m bottom.
+- Hidden: Herald of Free Enterprise (refloated, scrapped), Vindictive (raised, broken up), Dannebroge (official diving ban; pin in Køge Bay vs Amager).
+- "Chiesa di San Giorgio" (osm-n12504275791, Portofino) is a church on land. Camp Bay is in Gibraltar, labelled Spain. Triumph: 55 m vs ~70 m.
+
+## notable FSM/Guam/India/HK/Sweden/Estonia/Poland/Colombia
+- Accepted: Kiyosumi 30, Heian Maru 12–33, Kitsugawa 18–43, Cormoran 24–37, Ekenabben 12, Kronan 26, Mars 75, Cassandra 60–100, Myrtle 35, Deepspot 45, Graf Zeppelin >80.
+- Hidden: MS Estonia (protected grave site, restricted); area pins with nearby sites (Chuuk Lagoon, Piti Bomb Holes, Hoi Ha Wan, Tap Mun, Chek Chau, Double Island, Hańcza...).
+- Pins: Toa Maru pin near Pohnpei, wreck off Gizo (Solomons). SMS M68 is off Hanko, Finland (~130 km away). Fujikawa evidence quotes don't tie to its depth — check.
+- Wicher (1928) raised 1939; Wicher (1958) scrapped, remains a breakwater at Hel — both should be hidden (need ≥ 6-word quote).
+
+## Area-pin rule loosened (2026-10-08)
+- An area pin is now hidden only when another listed site lies within 20 km, or when it sits in open water (shallowest nearby seafloor > 200 m, e.g. "Red Sea"). Lakes, steep islands (St Kilda, Socorro, Gorgona) and coasts without a seafloor model keep their only pin. 44 such pins kept. Al-Bad' (inland town) is the one known wrong keep.
+
+## popular-indonesia-2 / 3
+- ~14 + several depths accepted; 18 held where operator maxima (25–50 m) sit 20–50 % above the community map depth (18–28 m) — the map value looks like a typical dive depth, not the site's maximum.
+- Matches by alias: Mirko's Reef = Soraya Reef (divinedivers.com); Baung Penyu = Bali Aqua "Drop Off". Wai Nilu sources conflict (40 m vs 12 m).
+- Skipped: Gili Air Slope, Temple Coral, Jemeluk Secret Wall, APL, Scuba Republic House Reef (business), Underwater Cave (generic).
+
+## notable remainder (45 small batches, 72 sites) — notable tier complete
+- Accepted: MS Zenobia, HMS Manchester, USS Emmons, RMS Rhone, Bianca C., HMS Victoria (Lebanon), Molnár János Cave, Silfra (18 m park limit).
+- Hidden: Eduard Bohlen, Bom Jesus, Viola (gone); Dragon's Breath Cave, Sir Galahad, Ardent, Antelope, Coventry (Falklands war graves), Ilmarinen, Moskva (restricted); HMS Algerine (~340 m); areas Tung Ping Chau, San Andrés, Providencia, Mafia Island, Los Roques, Bay of Pigs, Petit Saint Vincent.
+- Pins: Cristóbal Colón pinned in Greenland (76.75, -19.93) — wreck is near Santiago de Cuba. Antonio López pinned at Ensenada Honda (grounding) vs wreck 520 m off Dorado. HMS Algerine and Moskva pins implausible.
+- Held (single source): Al Munassir 30, Snoopy Island 8, Admiral Graf Spee 11.
+
+## popular-mexico-1..3 (Cozumel, cenotes)
+- Name variants lose the site-name check: Cedar Pass = Paso del Cedral, Chunchacah = Chun Chacaab — add as catalog aliases.
+- Paraíso Reef (mx-cozumel-paraiso, 20.4167,-87.031) does not match the real Paradise Reef position. Casa Del Árabe (odm-gsyesm) is in Guerrero (16.83,-99.91), not Quintana Roo.
+
+## popular-honduras-1..3, mexico-4/5, indonesia-7, maldives-1
+- Bay Islands depths held (single source disagrees with map): White Hole, Mary's Place, Half Moon Wall, Black Hills, Raggedy Cay, Duppy Waters. Unconfirmed names: Jack Neil Point/Bight, Lighthouse Reef (Utila), The Pinnacle.
+- Catalog errors: Cenote Zapote and Cenote Maravillas listed boat/ocean (inland cenotes); Puri Jati listed boat (shore muck dive).
+- Catedrales (Mexico) cites an http-only operator page — https unreachable, kept unverified.
+
+## popular-cayman-islands-1..3, honduras-4
+- Little Cayman and Cayman Brac hidden as whole islands (sites nearby).
+- Pins: Joshua Swash and Cayos Cochinos Seamount only match a Utila source; Airplane Wreck (Honduras) pin over 77–96 m modelled seafloor vs 22 m catalog depth.
+- Verifier name match now ignores spacing/punctuation ("CJ's Dropoff" = "CJ's Drop Off").
+
+## popular-australia-1..3
+- Ex-HMAS Adelaide hidden (restricted): NSW Crown Lands closed it July 2024 — re-check if reopened.
+- Bare Island precinct closed for bridge restoration 24 Aug 2026 – ~late 2027 (access note).
+- "Hardy Reef | Great Keppel Island" (odm-zfsuh3) pinned at the Keppels; Hardy Reef is in the Whitsundays (~-19.75, 149.18).
+- Cairns outer-reef sites (Norman, Saxon, Hastings, Hardy): only reef-level pages — skipped.
+
+## popular-curacao-1..3, aruba-1, belize-1
+- Map depths look too deep vs sources: Car Pile (~15 vs 24 m), Saba (~5 vs 20 m), Airplane Wreck Santa Martha (~7 vs 21 m), Mexico Rocks (3–5 vs 12 m) — the community-map depth is not always a typical dive depth.
+- Mexico Rocks moved ~7 km to Wikipedia position (17.9892, -87.9058).
+- Hidden as areas: Aruba, Turneffe Atoll, Saint George's Caye, San Pedro (Belize). "Harbor Reef / Pilot Boat" may not be the tugboat its sources describe.
+- Name variant: Vaersenbaai = "Vaersen Bay" (skipped; add alias).
+
+## popular-fiji-1..4 (low yield: 12 of 81 sites)
+- Fiji sites are covered mostly by SSI/Scubago/directories; operator pages rarely name individual sites. Wheatfield: source 45 m near Vatu-i-Ra vs queue 24 m (skipped).
+
+## popular-caribbean-netherlands-1..4, south-africa-1..3
+- Bonaire/Saba/Statia: 61 sites accepted, almost all facts-only (STINAPA/operator facts, few matching depths).
+- South Africa inland sites listed as ocean boat dives: Miracle Waters, Bass Lake (Henley on Klip), Wondergat, Komati Springs — fresh/shore; map depths far too shallow (14/12/26/17 m vs sourced 33/22–23/58/53 m). Builder now accepts a sourced `water` fact (fresh/salt).
+- Name variant: Caster Rock = Castor Rock. Millers Point pinned on the Pyramid Rock area.
+
+## popular-grenada-1/2, france-1/2 (Guadeloupe, Réunion, Martinique)
+- Map depths far too shallow: Sea Venture 32 vs 49 m, Rocher du Diamant 21 vs 60 m, La Petite Sirène 19 vs 6–60 m, Deep Blue (Carriacou) 22 vs 35–40 m.
+- "Tyrrel Bay" (Grenada pin) is the MV Tyrrel Bay wreck off Grand Anse, not the Carriacou bay. Name variant: Kohanee = "Kahonee".
+
+## popular-new-zealand-1..3, french-polynesia-1/2, france-3/4
+- AUT Millennium Centre hidden (public pool). Name variant: Trevor's Rocks = "Trev's Rock"; L'âne rouge = "Red Donckey".
+- Catalog depths off ~2x vs guides: Bora Bora Aquarium (~5 vs 12 m), Papa Whisky, Tapu, Toopua, Anau.
+
+## popular-france-5/6, dominican-republic-1/2
+- Duplicate: odm-b8irph and odm-litzbk are both the Atlantic Princess wreck (~2.7 km apart).
+- Mayotte sites mislabelled "Grande-Terre". Catalina The Wall: map 20 m vs source 40 m.
+- Low yield: Mayotte, Réunion leftovers and Saint-Martin had mostly directory-only sources.
+
+## popular-brazil-1..4, solomon-islands-1, vanuatu-1
+- Map depths too shallow: SS President Coolidge 33 vs ~70 m, Million Dollar Point 25 vs 35–40 m.
+- "Barragem do Paranoá" is a freshwater lake in Brasília catalogued as ocean.
+
+## popular remainder (Pacific / S. America / Europe)
+- FIXED in places.js: sites with an incomplete listed-country outline (Maldives southern atolls) or no country (Malpelo) were assigned to Kiribati, whose overall box spans the dateline. Nearby-country search now uses per-ring boxes and keeps the listed country unless another is closer. Kiribati 25 → 0 sites; Maldives 156 → 159; Colombia +Malpelo.
+- Catalog water wrong: Laguna de Apoyo, Lago Ilopango are lakes (tagged ocean); Lago Ilopango hidden as area. Playa Chica (La Palma) is shore entry.
+- Peru, Chile, Venezuela, São Tomé: nothing usable (only directories).
+
+## popular-seychelles/mauritius/madagascar/mozambique/kenya — popular tier complete
+- 63 of 123 sites with facts; Seychelles sources mostly travel blogs.
+- Pins: "La grotte Sakatia" (odm-itjx3d) lon 48.70 vs Sakatia ~48.07 (and it is a sandy plateau, not a cave); Mozambique "Manta" (odm-9japkj) is at Zavora, not Tofo; Rosario and Banco Rosario 17 km apart.
+- Map depths too shallow: Tian Xiang 36 vs 45–46 m; Pinnacles Ponta Malongane and Atlantis 32 vs 45–50 m.
+- Name variants: Bambous = "Bamboo"; La Cathédrale = "Cathedral".

@@ -1,0 +1,25 @@
+{
+ "batch": "notable-netherlands-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-notable-1296",
+   "name": "HMS Prince George",
+   "sources": {
+    "s1": {
+     "url": "https://www.nhnieuws.nl/nieuws/147952/wrak-prince-george-verdwijnt-onder-het-zand-video",
+     "publisher": "NH Nieuws",
+     "kind": "press",
+     "quote": "Het wrak van de Prince George dat bij de Hondsbossche Zeewiering ligt, verdwijnt nu dan toch onder het zand."
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Wreck lies at the Hondsbossche sea wall and was buried under dredged sand in 2014",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

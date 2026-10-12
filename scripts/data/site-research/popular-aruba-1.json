@@ -1,0 +1,601 @@
+{
+ "batch": "popular-aruba-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "odm-mp98lo",
+   "name": "Antilla (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Dive Center Aruba",
+     "kind": "operator",
+     "quote": "Antilla Wreck: A German freighter sunk on purpose by its own captain on May 10, 1940 … lays at a max depth of 55ft/16.5m on a sandy bottom … Due to its age, we do not penetrate this wreck"
+    },
+    "s2": {
+     "url": "https://wheninaruba.com/blog/wrecks-of-aruba-a-dive-instructors-perspective/",
+     "publisher": "When in Aruba",
+     "kind": "press",
+     "quote": "Antilla … is nestled in a sandy bottom at a depth of about 55 feet … Her bow and stern are pretty much intact, boasting lots of coral and sponge growth … penetrating the wreck is not advisable"
+    },
+    "s3": {
+     "url": "https://www.visitaruba.com/things-to-do/attractions-and-sights/aruba-dive-sites/antilla",
+     "publisher": "VisitAruba (Aruba Tourism Authority)",
+     "kind": "agency",
+     "quote": "The Antilla Shipwreck is the largest wreck in the Caribbean … A great site for beginner and intermediate divers … Dive Depth 60 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16.5
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 55
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Largest shipwreck in the Caribbean",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Bow and stern intact with coral and sponge growth",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Old, unstable wreck; penetration not advised",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "German freighter scuttled by its own crew in 1940, resting on sand in about 17 m off Palm Beach. Bow and stern are fairly intact and covered in coral and sponges; the wreck is too fragile to enter.",
+    "refs": [
+     "s3",
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-qdluhw",
+   "name": "Airplanes (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Dive Center Aruba",
+     "kind": "operator",
+     "quote": "Renaissance Airplanes: Two airplanes sunk on purpose … both lay at a maximum depth of 85ft/26m … Due to the stability of both planes, penetration is permitted"
+    },
+    "s2": {
+     "url": "https://wheninaruba.com/blog/wrecks-of-aruba-a-dive-instructors-perspective/",
+     "publisher": "When in Aruba",
+     "kind": "press",
+     "quote": "Renaissance Airplanes … There are two planes: a YS-11 and a Convair 240 … at depths ranging from 50 to 80 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 85
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 80
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two sunken airliners: an intact YS-11 and a broken-up Convair",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Two airliners, a YS-11 and a Convair, deliberately sunk on sand south of Renaissance Island at roughly 15-26 m. The YS-11 is largely intact and the planes can be partly penetrated.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-20tsqf",
+   "name": "Aruba",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Aruba",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Aruba is home to about one-third of the total population of the Dutch Caribbean"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-i6vqpz",
+   "name": "Jane Sea (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Dive Center Aruba",
+     "kind": "operator",
+     "quote": "Jane Sea Wreck: Venezuelan cement cargo ship sunk as an artificial reef back in 1988 … The bow is at 60ft/18m, the top of the stern is at 45ft/15m and the propeller is at 90ft/28m … penetration is not permitted"
+    },
+    "s2": {
+     "url": "https://wheninaruba.com/blog/wrecks-of-aruba-a-dive-instructors-perspective/",
+     "publisher": "When in Aruba",
+     "kind": "press",
+     "quote": "Jane C (Jane Sea) … her depths ranging from 50 to 90 feet"
+    },
+    "s3": {
+     "url": "https://dreamwrecks.com/jane-sea-aruba-wreck",
+     "publisher": "Dream Wrecks",
+     "kind": "press",
+     "quote": "The Jane Sea … Sitting upright on a sandy bottom near Barcadera Reef, it lies in 100 feet of water … covered with gorgonians and orange cup coral"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 90
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gorgonians and orange cup coral cover the wreck",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Sits upright next to a coral reef",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Wreck is collapsing; one operator bars penetration",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Cement freighter sunk in 1988 as an artificial reef, upright on sand beside Barcadera Reef with the bow near 18 m and the propeller around 28 m. Covered in gorgonians and cup coral; boat access only.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-avli1i",
+   "name": "Hole in the Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitaruba.com/things-to-do/attractions-and-sights/aruba-dive-sites/hole-in-the-wall-mangel-halto",
+     "publisher": "VisitAruba (Aruba Tourism Authority)",
+     "kind": "agency",
+     "quote": "The Hole in the Wall is a very popular dive spot, since you can dive with the current past the steep and narrow reef wall … Diver Level Beginner Dive Depth 15-110 feet Site Highlight Easily accessible by shore"
+    },
+    "s2": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Dive Center Aruba",
+     "kind": "operator",
+     "quote": "Hole in the Wall … Sloping coral wall with lots of life. Reef goes down to a maximum depth of 90ft/30m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Steep, narrow reef wall with lots of life",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current carries divers along the wall to Mangel Halto",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shore-accessible drift along a steep, narrow reef wall at Mangel Halto, with the current carrying divers to a sandy channel and a shady beach. Rated suitable for beginners; the reef drops to about 30 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ba4s7o",
+   "name": "Sponge Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitaruba.com/things-to-do/attractions-and-sights/aruba-dive-sites/sponge-reef",
+     "publisher": "VisitAruba (Aruba Tourism Authority)",
+     "kind": "agency",
+     "quote": "Sponge Reef … Home to soft coral ranging from orange elephant ear sponges to purple and yellow tube sponges … Diver Level Beginner Dive Depth 15-80 feet Site Highlight Abundant soft sponge corals"
+    },
+    "s2": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Dive Center Aruba",
+     "kind": "operator",
+     "quote": "Sponge Reef: A reef filled with different types of colorful sponges … Reef slopes down to a maximum depth of 90ft/28m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 80
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Many colorful sponges: elephant ear, tube and vase",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Turtles often seen",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Sloping reef off Druif Beach crowded with colorful sponges, with turtles often passing. Depths run from the shallows down to about 25-28 m; rated beginner-friendly.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-y9ldif",
+   "name": "Harbor Reef / Pilot Boat",
+   "sources": {
+    "s1": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Dive Center Aruba",
+     "kind": "operator",
+     "quote": "Harbor Reef/Tugboat: A gentle sloping reef with a lot of soft corals with patches of hard corals and a sunken tugboat which was sunk in the 1980’s at a maximum depth of 90ft/30m"
+    },
+    "s2": {
+     "url": "https://wheninaruba.com/blog/wrecks-of-aruba-a-dive-instructors-perspective/",
+     "publisher": "When in Aruba",
+     "kind": "press",
+     "quote": "Harbor Tugboat … Located right off the cruise-ship port in about 80 feet of water is the Harbor Tugboat Wreck … Although small, she is surrounded by a nice reef"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 80
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken tugboat on a gently sloping soft-coral reef",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Small sunken tugboat off the cruise-ship port in roughly 25-30 m, set on a gently sloping reef with plenty of soft coral.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-s914zs",
+   "name": "Blue Reef / Debbie II (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://wheninaruba.com/blog/wrecks-of-aruba-a-dive-instructors-perspective/",
+     "publisher": "When in Aruba",
+     "kind": "press",
+     "quote": "The Debbie II, a 120-foot fuel barge, was sunk in 1992 to a depth of 70 feet off the coast of Malmok … divers can get the rest of their fill by exploring Blue Reef nearby"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-agvj1d",
+   "name": "Barcadera Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitaruba.com/things-to-do/attractions-and-sights/aruba-dive-sites/barcadera-reef",
+     "publisher": "VisitAruba (Aruba Tourism Authority)",
+     "kind": "agency",
+     "quote": "Barcadera Reef … Many brain corals and an abundance of huge sea fans in the shallows … Diver Level Beginner Intermediate Dive Depth 20-80 feet Site Highlight Variety of coral species"
+    },
+    "s2": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Dive Center Aruba",
+     "kind": "operator",
+     "quote": "Barcadera Reef: Nice hard coral reef area which has slopes going down to a maximum depth of 90ft/28m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 80
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Brain corals and huge sea fans in the shallows",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Variety of coral species",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Hard coral reef near the airport that thins at the entrance and gets denser and richer with depth, running from about 6 m to 25-28 m. Brain corals and big sea fans stand out.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ofy6zu",
+   "name": "Star Gerren",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitaruba.com/things-to-do/attractions-and-sights/aruba-dive-sites/star-gerren",
+     "publisher": "VisitAruba (Aruba Tourism Authority)",
+     "kind": "agency",
+     "quote": "Star Gerren … Holes have been made in the ship to allow easy entry and exit of the wreck … Diver Level Intermediate Dive Depth 60-70 feet Site Highlight Wreck dive, easily accessible by boat"
+    },
+    "s2": {
+     "url": "https://wheninaruba.com/blog/wrecks-of-aruba-a-dive-instructors-perspective/",
+     "publisher": "When in Aruba",
+     "kind": "press",
+     "quote": "The Star Gerren lies upside down in about 45 to 70 feet of water … holes were cut into the ship to allow divers to safely access the interior"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "German coaster sunk in 2000 off Palm Beach in roughly 14-21 m. Holes were cut in the hull so divers can enter and exit the wreck; reached by boat and rated intermediate.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

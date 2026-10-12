@@ -1,0 +1,107 @@
+{
+ "batch": "popular-madagascar-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-oe9rsk",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-ra4w85",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-te4txa",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-itjx3d",
+   "reason": "pin lon 48.7005 looks wrong (Sakatia is ~48.07); Grotte Sakatia pages describe a sandy plateau, not a cave"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-9tk1eh",
+   "name": "Mahavelona",
+   "sources": {
+    "dp": {
+     "url": "https://www.diveplanit.com/africa/madagascar-diving-classic",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Mahavelona: This wreck dive is best for expert divers, with changing currents and visibility. A thriving reef is also found at this site, with Moray eels and octopus sometimes seen. Maximum depth 26m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "dp",
+     "unit": "m",
+     "bottom": 26
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "dp"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "dp"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "dp"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wreck with a thriving reef; morays, octopus",
+     "refs": [
+      "dp"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-k3y8dx",
+   "name": "Les Arches de Sakatia",
+   "sources": {
+    "sn": {
+     "url": "https://scubanosybe.com/en/sites-de-plongee/",
+     "publisher": "Scuba Nosy Be",
+     "kind": "operator",
+     "quote": "The Sakatia Arches Rock lying at 23-24 metres, the top of the rock is at 19-20 metres. The spot is ideal for photographers. The rock has three small arches, allowing for three different entries"
+    }
+   },
+   "depth": [
+    {
+     "ref": "sn",
+     "unit": "m",
+     "bottom": 24,
+     "top": 19
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "sn"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock with three small arches",
+     "refs": [
+      "sn"
+     ]
+    }
+   ]
+  }
+ ]
+}

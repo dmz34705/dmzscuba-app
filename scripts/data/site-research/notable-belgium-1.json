@@ -1,0 +1,22 @@
+{"batch":"notable-belgium-1","researchedAt":"2026-10-08","sites":[
+{"id":"x-wikipedia-448","name":"Nemo 33",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Nemo_33","publisher":"Wikipedia","kind":"encyclopedia","quote":"The pool's maximum depth is 34.5 metres (113 ft). … holds several simulated underwater caves at the 10 metres (33 ft) depth level"},
+"s2":{"url":"https://www.guinnessworldrecords.com/news/2012/9/as-deep-as-it-gets-take-a-dip-in-the-worlds-deepest-swimming-pool-for-diving-video-45110","publisher":"Guinness World Records","kind":"press","quote":"a staggering depth of 33 meters (108 ft)"}},
+"depth":[{"ref":"s1","unit":"m","bottom":34.5},{"ref":"s2","unit":"m","bottom":33}],
+"entry":{"value":"shore","refs":["s1"]},
+"highlights":[{"text":"Simulated underwater caves at 10 m","refs":["s1"]}],
+"depthNote":"Indoor pool, 33-34.5 m deep"},
+{"id":"x-notable-949","name":"MS Herald of Free Enterprise",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/MS_Herald_of_Free_Enterprise","publisher":"Wikipedia","kind":"encyclopedia","quote":"It was taken to Taiwan on 22 March 1988 to be scrapped."}},
+"notDiveSite":{"kind":"gone","reason":"Refloated in 1987 and scrapped in Taiwan in 1988","refs":["s1"]}},
+{"id":"x-notable-945","name":"HMS Vindictive",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Vindictive_(1897)","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck was raised on 16 August 1920 and subsequently broken up."}},
+"notDiveSite":{"kind":"gone","reason":"Wreck raised in 1920 and broken up; only the bow is kept as a memorial","refs":["s1"]}},
+{"id":"x-notable-1115","name":"HMS Wakeful",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Wakeful_(H88)","publisher":"Wikipedia","kind":"encyclopedia","quote":"lying at a depth of 24 metres (79 ft) in busy waters along the approaches to Zeebrugge harbour … Permission is needed from Belgian Nautical Authority to dive on the site. … The wreck is a designated War Grave."}},
+"depth":[{"ref":"s1","unit":"m","bottom":24}],
+"entry":{"value":"boat","refs":["s1"]},
+"types":{"value":["wreck"],"refs":["s1"]},
+"access":{"value":"Permission from the Belgian Nautical Authority required; designated war grave","refs":["s1"]},
+"hazards":[{"text":"Busy shipping lane approaching Zeebrugge","refs":["s1"]}]}
+]}

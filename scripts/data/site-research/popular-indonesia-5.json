@@ -1,0 +1,437 @@
+{
+ "batch": "popular-indonesia-5",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-ov6hdg",
+   "reason": "Pinnacle 1: sources conflict on depth (50 m vs 15 m) and may be different pinnacles"
+  },
+  {
+   "id": "odm-r1mxqy",
+   "reason": "Pinnacle 2: no description found"
+  },
+  {
+   "id": "odm-0l7i8x",
+   "reason": "Ihana: named only, no description"
+  },
+  {
+   "id": "odm-69jr9o",
+   "reason": "M and M Unauna: named only, no description"
+  },
+  {
+   "id": "odm-ov3j6p",
+   "reason": "Little India: named only, no description"
+  },
+  {
+   "id": "odm-z3p7p1",
+   "reason": "Mandiri: named only, no description"
+  },
+  {
+   "id": "odm-sbygtm",
+   "reason": "Jam: ambiguous with wreck/house reef listing"
+  },
+  {
+   "id": "odm-xtenwf",
+   "reason": "Menara II: no description for this site"
+  },
+  {
+   "id": "odm-ol81b4",
+   "reason": "The Abyss: only logbook-style listings"
+  },
+  {
+   "id": "odm-sg342m",
+   "reason": "Mandarin Point: no page with facts found"
+  },
+  {
+   "id": "odm-elm111",
+   "reason": "putri menjangan 1: no page with facts found"
+  },
+  {
+   "id": "odm-9m41ck",
+   "reason": "Eddys Park: no page with facts found"
+  },
+  {
+   "id": "odm-3vwfmg",
+   "reason": "Putri Menjangan 2: no page with facts found"
+  },
+  {
+   "id": "odm-74ft5c",
+   "reason": "Blue Corner: no page with facts found"
+  },
+  {
+   "id": "odm-s3sj2b",
+   "reason": "Glashouse Pemuteran: no page with facts found"
+  },
+  {
+   "id": "odm-gi4c7t",
+   "reason": "Bali Reef: generic name, no source"
+  },
+  {
+   "id": "odm-j3wgq7",
+   "reason": "Jetty House Reef Naya Gawana: a business house reef"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-cb4gnm",
+   "name": "Menjangan - Eel Garden Joly",
+   "sources": {
+    "s1": {
+     "url": "https://menjanganislandtrip.com/menjangan-dive-site-conditions/",
+     "publisher": "Menjangan Island Trip",
+     "kind": "operator",
+     "quote": "Eel Garden … Eel Garden 10 to 40+ meters Moderate to strong Advanced"
+    },
+    "s2": {
+     "url": "https://www.easy-divers.eu/menjangan-island-dive-sites",
+     "publisher": "Easy Divers Bali",
+     "kind": "operator",
+     "quote": "Eel Garden … The wall is located on the westernmost edge of the island, and it drops down to approximately 40 meters. It ends with a sandy channel home to a large colony of dancing garden eels."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Garden eel colony in sandy channel",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Large schools of fish in the passing current",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Moderate to strong, tide-shifting current",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wall on Menjangan's western tip that drops to about 40 m into a sandy channel with garden eels. Passing current brings fish schools but makes it one of the trickier Menjangan dives, rated advanced.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-3ztzzl",
+   "name": "Black Forest (Candi City)",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "you enter Blackforest from it’s deeper part. … black tip reef sharks as well as stingrays. The dive site is accessible to all certified divers … Maximum depth: 20 meters"
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/una-una-a-hidden-paradise/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "Of all the sites in Una-Una, Black Forest is unique. It is all about the different shapes and colors of hard corals."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Unique hard coral formations",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Blacktip reef sharks and stingrays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A signature Una Una site known for strange hard-coral formations, starting over a shallow meadow of lettuce corals and reaching about 20 m. Blacktip reef sharks and stingrays patrol it, and any certified diver can do it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-pqyql0",
+   "name": "Hong Kong",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "Hong Kong is the favorite hangout for turtles around Una Una … With a maximum depth of 20 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Turtles and tube-sponge skyline",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-11x7oc",
+   "name": "Kingston Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "The Kingstonwall site offers you the opportunity to see bigger fish swimming around, like eagle rays, Napoleon wrasses or turtles. … Maximum depth: 30+ meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays, Napoleon wrasse, turtles",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Small caves and crevices in the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-1lmu41",
+   "name": "Apollo",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "Named after Una Una’s south cape ‘Apollo’, this is the spot were a school of hundreds (sometimes thousand plus) of barracuda live. … Maximum depth: 40 meters"
+    },
+    "s2": {
+     "url": "https://www.starfish.ch/dive/Togian-Banggai.html",
+     "publisher": "Starfish (Zubi) dive guide",
+     "kind": "press",
+     "quote": "Apollo: This is a reef which starts on about 22m depth and gently slopes down to 45m and more."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 22,
+     "bottom": 45
+    }
+   ],
+   "highlights": [
+    {
+     "text": "School of hundreds of barracuda",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep sloping reef off Una Una's south cape, starting around 22 m and running to 40-45 m. The draw is a huge school of barracuda, sometimes over a thousand, that circles curiously around divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-tvjcot",
+   "name": "Greta’s Place",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "Greta’s … This dive site is on the edge of the wall and the sloping bottom. A perfect spot for a confetti of colorful fish on plenty of intact soft corals. … Maximum depth: 30+ meters"
+    },
+    "s2": {
+     "url": "https://dan.org/alert-diver/article/una-una-a-hidden-paradise/",
+     "publisher": "Divers Alert Network",
+     "kind": "press",
+     "quote": "Greta Place was a nice, serene dive site with lots of large hard and soft corals."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Intact soft corals and colourful reef fish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A calm Una Una dive where the wall meets the sloping bottom, down to 30 m or more. Large hard and soft corals support plenty of colourful reef fish, and the neighbouring wall sometimes brings bigger visitors.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-gh34dj",
+   "name": "Artemis",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "Artemis … The furthest dive site is maybe the most colorful one. From a very deep drop (we never saw the end) … Maximum depth: 40 meters Partially wall, partially coral garden"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large coral formations; octopus, eagle ray",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-mlf81p",
+   "name": "Jungle",
+   "sources": {
+    "s1": {
+     "url": "https://www.pristine-paradise.com/divesites/",
+     "publisher": "Pristine Paradise Una Una",
+     "kind": "operator",
+     "quote": "Jungle … This unique positioning makes this dive site a must-see for beginning and experienced divers. Maximum depth: 30 meters, but mostly shallower than 18"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dense corals; wall running around north side",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+{"batch":"notable-croatia-1","researchedAt":"2026-10-08","sites":[
+{"id":"osm-n663869712","name":"Baron Gautsch",
+"sources":{"s1":{"url":"https://istra.hr/en/experience/sports-and-outdoor/diving/1383","publisher":"Istria Tourist Board","kind":"agency","quote":"Wrecks: Baron Gautsch (9) … Sea depth: 38-40 m … Greatest depth: 39 m … Smallest depth: 28 m … Diving is allowed only through diving centres that hold a special permit of the Croatian Ministry of Culture … entry to the ship is allowed only through the first two decks"}},
+"depth":[{"ref":"s1","unit":"m","top":28,"bottom":40}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"access":{"value":"Only via dive centres with a Croatian Ministry of Culture permit","refs":["s1"]},
+"penetration":{"value":"Entry allowed only through the first two decks","refs":["s1"]}},
+{"id":"x-notable-1073","name":"HMS Aldenham",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Aldenham","publisher":"Wikipedia","kind":"encyclopedia","quote":"It lies on the port side, at a depth of 86 metres (282 feet)"}},
+"depth":[{"ref":"s1","unit":"m","bottom":86}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"depthNote":"Bow at 86 m; stern about 700 m away at ~82 m"}
+]}

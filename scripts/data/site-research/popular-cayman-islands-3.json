@@ -1,0 +1,437 @@
+{
+ "batch": "popular-cayman-islands-3",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-hkrnig",
+   "reason": "only one source, depth conflicts"
+  },
+  {
+   "id": "odm-uldm0w",
+   "reason": "listed by name only"
+  },
+  {
+   "id": "odm-bgktj4",
+   "reason": "no usable source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-iql4qk",
+   "name": "Anchor Point",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/anchor-point-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 58 ft Max Depth 100 ft … The dive begins with a relatively easy yet thrilling swim-through leading directly onto the wall … the north wall is one of the best places on East End to spot turtles"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 58 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-through leading onto the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Hawksbill and green turtles on the north wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rgj8cc",
+   "name": "Old Issac’s",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/old-isaacs-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 29 ft Max Depth 60 ft … The site features a pronounced ledge starting at 25 feet and dropping dramatically to 50 feet, with a rubble-strewn bottom"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 29 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ledge from 25 to 50 ft with rubble bottom",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Yellow-headed jawfish and pike blennies",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Coral outplanting site at eastern edge",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-78265n",
+   "name": "Snapper Hole",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/snapper-hole-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 33 ft Max Depth 60 ft … It is a labyrinth of swim-throughs, tunnels, caverns, crevasses, and arches"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "cavern",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 33 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cavern with tarpon and jacks hunting herring (summer)",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Swim-throughs, tunnels and arches",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "1872 Spanish-style anchor",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-l33iy8",
+   "name": "Maggie’s Maze",
+   "sources": {
+    "s1": {
+     "url": "https://www.oceanfrontiers.com/maggies-maze-dive-site-in-grand-cayman",
+     "publisher": "Ocean Frontiers",
+     "kind": "operator",
+     "quote": "Mooring Pin 40 ft Max Depth 60 ft … Maggie's Maze is distinguished by a long winding canyon that begins in the shallows … Nurse sharks love this area"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring buoy; mooring pin at 40 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Winding canyon ending in a swim-through",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nurse sharks under the overhangs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Horse-eyed jacks around the arches",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-qdu257",
+   "name": "Easy Street",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Easy Street Ranging in depth from 65 to 100 feet (20-30m) deep, this site features a swim-through as well as turtles and schools of fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 100
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Swim-through",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles and schools of fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-n4hdea",
+   "name": "Orange Canyon",
+   "sources": {
+    "s1": {
+     "url": "https://diveredsailcayman.com/dive-sites/",
+     "publisher": "Red Sail Sports Cayman",
+     "kind": "operator",
+     "quote": "Orange Canyon - max depth 100 feet … named for the bright, beautiful and huge Elephant Ear sponges … As it is prone to current it cannot always be dived"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Orange Canyon At 60 feet (18m) deep, a large coral head on the wall roughly marks a split of two canyons filled with orange elephant ear sponges as well as gorgonians and sea fans"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two canyons lined with orange elephant-ear sponges",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Gorgonians and sea fans",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Prone to current; cannot always be dived",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A spectacular wall site toward Northwest Point named for its big orange elephant-ear sponges, with two canyons split by a large coral head at about 60 ft. Current often makes it undiveable, so it is only done when conditions allow.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1vyx35",
+   "name": "Bonnie's Arch",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grand-cayman-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Bonnie’s Arch There’s plenty to see at this site between 40 and 70 feet (12-21m) deep … a large (50 foot / 15m) coral bridge / archway"
+    },
+    "s2": {
+     "url": "https://www.yachtscaymans.com/blog/caves-arch-wreck-and-tunnels-diving-grand-caymans-west-side/",
+     "publisher": "Yachts Cayman",
+     "kind": "operator",
+     "quote": "Bonnie's Arch: Bonnie's Arch is a lovely dive site located right in front of the Northwest Point of Grand Cayman … The bottom of the arch is at a depth of 70 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large coral archway",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Horse-eye jacks, turtles, tarpon and seahorses",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A scenic reef off Northwest Point centred on a curving natural coral arch roughly 50 ft across, with the base of the arch near 70 ft. Ridges and valleys around it hold sponges, angelfish, tarpon, horse-eye jacks and turtles.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

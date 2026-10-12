@@ -1,0 +1,940 @@
+{
+ "batch": "popular-france-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-t3va5f",
+   "reason": "Pierre aux Platax: only a directory listing found"
+  },
+  {
+   "id": "odm-jhk6kb",
+   "reason": "Petites Gorgones: no source found"
+  },
+  {
+   "id": "odm-v878zh",
+   "reason": "Tour du Petit Ilet: no source found"
+  },
+  {
+   "id": "odm-6bgsuk",
+   "reason": "Kary's smiles: no source found"
+  },
+  {
+   "id": "odm-79vvcy",
+   "reason": "La Caye des Boucaniers: no usable source fetched"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-rrjx30",
+   "name": "Canyon",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Canyon (St Gilles) Niveau de plongée requis : 1 Profondeur du spot : 0 à 20 mètres"
+    },
+    "s2": {
+     "url": "https://www.tracedirecte.com/destinations/la-reunion/voyage/guides/plongee-ile-reunion/",
+     "publisher": "TraceDirecte",
+     "kind": "press",
+     "quote": "N’oublions pas le Canyon , un endroit magique où le corail est venu habiter d’anciennes coulées de lave"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral growing on old lava flows, colourful fish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef of old lava channels off Saint-Gilles-les-Bains, dived between the surface and about 20 m. Coral has colonised the lava flows, and the site is open to all certification levels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-r6t59f",
+   "name": "Cap la Houssaye",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Cap la houssaye (St Paul) Niveau de plongée requis : 1 Profondeur du spot : 2 à 17 mètres"
+    },
+    "s2": {
+     "url": "https://www.souslesetoiles974.re/activite/plongee-d-exploration-en-club-avec-un-guide-a-saint-gilles-la-reunion/",
+     "publisher": "Sous les Etoiles 974",
+     "kind": "press",
+     "quote": "Cap La Houssaye 4 à 18 m … Tous niveaux Un canon posé à 5 m environ, puis un herbier que des tortues fréquentent"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2,
+     "bottom": 17
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 4,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cannon at 5 m, turtle seagrass, caves with lobsters",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow marine-reserve site at the mouth of Saint-Paul bay, 2-18 m deep, with small caves, rock \"patates\" and a seagrass bed where turtles feed. Open to all levels and a popular first-dive and macro-life site.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-rtoxod",
+   "name": "Maharani",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Maharani (St Gilles) Niveau de plongée requis : 1 Profondeur du spot : 3 à 15 mètres"
+    },
+    "s2": {
+     "url": "https://www.souslesetoiles974.re/activite/plongee-d-exploration-en-club-avec-un-guide-a-saint-gilles-la-reunion/",
+     "publisher": "Sous les Etoiles 974",
+     "kind": "press",
+     "quote": "Maharani 3 à 15 m Côte ouest, proche du port · Tous niveaux Un plateau de corail à 6 m, des failles et des grottes"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral plateau at 6 m, faults and caves over white sand",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow site off Boucan Canot beach, 3-15 m deep, with a coral plateau at about 6 m and fissures and caves above white sand. Suitable for every level and for introductory dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-co1h25",
+   "name": "Passe de l’Ermitage",
+   "sources": {
+    "s1": {
+     "url": "https://www.tracedirecte.com/destinations/la-reunion/voyage/guides/plongee-ile-reunion/",
+     "publisher": "TraceDirecte",
+     "kind": "press",
+     "quote": "Pour les plongeurs de niveau 1, découvrez la Passe de l’Ermitage , à Saint-Gilles, où le lagon et le large se rencontrent. En nageant jusqu’à 25 mètres de profondeur"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Chance of rays and turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-bjj9wl",
+   "name": "Tour de Boucan",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Tour de boucan (St Gilles) Niveau de plongée requis : 1 Profondeur du spot : 6 à 22 mètres"
+    },
+    "s2": {
+     "url": "https://ultramarina.com/voyage-plongee-ocean-indien/reunion/saint-gilles-et-la-saline-les-bains",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "Les Tours de Boucan est un beau récif corallien situé entre 3 et 20 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 22
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyons, arches and faults with barracuda and turtles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-32gwfy",
+   "name": "Pierre au préfet",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Pierre du préfet (St Gilles) Niveau de plongée requis : 1 Profondeur du spot : 10 à 20 mètres"
+    },
+    "s2": {
+     "url": "https://ultramarina.com/voyage-plongee-ocean-indien/reunion/saint-gilles-et-la-saline-les-bains",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "La Pierre du Préfet est une grosse patate de corail située entre 14 et 22 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 14,
+     "bottom": 22
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large coral head with triggerfish, rays and barracuda",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-60n9za",
+   "name": "La Cheminée",
+   "sources": {
+    "s1": {
+     "url": "https://www.souslesetoiles974.re/activite/plongee-d-exploration-en-club-avec-un-guide-a-saint-gilles-la-reunion/",
+     "publisher": "Sous les Etoiles 974",
+     "kind": "press",
+     "quote": "La Cheminée ( Trois Grottes, Pierre au Siphon ) Non chiffrée sur la fiche Près de Saint-Gilles-les-Bains · Tous niveaux, expérience conseillée Une roche en forme de cheminée qui monte du fond. Les courants y sont parfois présents"
+    }
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Chimney-shaped rock rising from the seabed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Occasional currents; low tide advised",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ivpk0y",
+   "name": "Saliba",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Saliba (St Gilles) Niveau de plongée requis : 1 Profondeur du spot : 10 à 30 mètres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-y3h3sa",
+   "name": "Haï Siang, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://www.souslesetoiles974.re/activite/plongee-d-exploration-en-club-avec-un-guide-a-saint-gilles-la-reunion/",
+     "publisher": "Sous les Etoiles 974",
+     "kind": "press",
+     "quote": "Haï Siang ( épave ) 54 m Au large des Aigrettes ( 3 km ), en face du cap Homard · Niveau 3"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 54
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "49 m Taiwanese lobster boat scuttled in the 1980s",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Long vertical descent without a line, drift",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3qmw8k",
+   "name": "Vallée aux Mérous",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Vallée des mérous (St Gilles) Niveau de plongée requis : 3 Profondeur du spot : 35 à 46 mètres"
+    },
+    "s2": {
+     "url": "https://www.souslesetoiles974.re/activite/plongee-d-exploration-en-club-avec-un-guide-a-saint-gilles-la-reunion/",
+     "publisher": "Sous les Etoiles 974",
+     "kind": "press",
+     "quote": "La Vallée aux Mérous Repères sur 40 m, faille à 48 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 35,
+     "bottom": 46
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 40
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fault edged with gorgonians, groupers and snapper",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5idpdj",
+   "name": "Sea Venture",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Sea venture (St Paul) Niveau de plongée requis : 3 Profondeur du spot : 49 mètres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 40,
+     "bottom": 49
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two large propellers, lobsters, tuna and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-vypg4d",
+   "name": "Navarra",
+   "sources": {
+    "s1": {
+     "url": "https://www.souslesetoiles974.re/activite/plongee-d-exploration-en-club-avec-un-guide-a-saint-gilles-la-reunion/",
+     "publisher": "Sous les Etoiles 974",
+     "kind": "press",
+     "quote": "Navarra ( épave ) 40 à 53 m Devant le port de Saint-Gilles, plus au large · Niveau 3"
+    },
+    "s2": {
+     "url": "https://ultramarina.com/voyage-plongee-ocean-indien/reunion/saint-gilles-et-la-saline-les-bains",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "L’Epave du Navarra gît à 53 m, c’est un thonier de 35 m de long"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 40,
+     "bottom": 53
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 53
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fishing vessel sunk as an artificial reef in 1996",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-w97nby",
+   "name": "Roches Merveilleuses",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Roches merveilleuses (St Gilles) Niveau de plongée requis : 3 Profondeur du spot : 35 à 54 mètres … ce site offre une plongée dérivante où les courants peuvent être modérés à forts"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 35,
+     "bottom": 54
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Moderate to strong currents on a drift dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-l5ytrk",
+   "name": "Piège à Requins",
+   "sources": {
+    "s1": {
+     "url": "https://bleumarineplongee.re/nos-spots-de-plongee-a-la-reunion/",
+     "publisher": "Bleu Marine Plongée",
+     "kind": "operator",
+     "quote": "Piège à requin (3 Bassins) Niveau de plongée requis : 2 Profondeur du spot : 20 à 37 mètres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 20,
+     "bottom": 37
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-euklpv",
+   "name": "Rocher du Diamant",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "1. Le Rocher du Diamant Profondeur max : 6-60m Temps de plongée : 45-60mm Courant : Faible/Moyen Difficulté : Facile/Moyen"
+    },
+    "s2": {
+     "url": "https://www.espaceplongee-martinique.com/les-spots-de-plongee-en-martinique",
+     "publisher": "Espace Plongée Martinique",
+     "kind": "operator",
+     "quote": "Le Rocher du Diamant - 60 mètres … Niveau minimum : Niveau 1 / PE20"
+    },
+    "s3": {
+     "url": "https://www.martinique-tour.com/profiter/la-plongee-en-martinique/les-spots-de-plongee-du-sud/",
+     "publisher": "Martinique Tour",
+     "kind": "press",
+     "quote": "une douzaine de circuits entre 0 et 60 mètres de profondeur"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Submerged cliffs, caves and the 15 m-high Diamant fault",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The remains of a volcanic dome off Martinique's south coast, with drop-offs, caves and a swim-through fault, diveable from the surface down to about 60 m. Exposed to current, so it suits divers with some experience.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-lq2cgt",
+   "name": "La Crique Abricot",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "18. La Crique Abricot Profondeur max : 20m Temps de plongée : 45-60mm Courant : occasionnel Difficulté : facile"
+    },
+    "s2": {
+     "url": "https://www.espaceplongee-martinique.com/les-spots-de-plongee-en-martinique",
+     "publisher": "Espace Plongée Martinique",
+     "kind": "operator",
+     "quote": "La crique Abricot - 25 mètres … Niveau minimum : Niveau 0"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sergeant majors, parrotfish and turtles on seagrass",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered cove at Grande Anse d'Arlet, down to about 20-25 m, with rock heads, faults and seagrass beds. Calm and protected from current, it suits introductory dives and beginners and is rich in turtles and reef fish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-oo4t1k",
+   "name": "La Petite Sirène",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "23. La petite Sirène Profondeur max : 6-60m Temps de plongée : 45-60mm Courant : Faible Difficulté : Facile"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles, green morays and platax",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-1vehdj",
+   "name": "Pointe Lezarde",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "14 : La lézarde Prof. max. : 3m-30m Temps de plongée : 45-60 mn Courant : Faible Difficulté : Facile"
+    },
+    "s2": {
+     "url": "https://www.espaceplongee-martinique.com/les-spots-de-plongee-en-martinique",
+     "publisher": "Espace Plongée Martinique",
+     "kind": "operator",
+     "quote": "La pointe de la Lézarde- 30 mètres … Niveau minimum : Niveau 0"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall with lobsters, arrow crabs and seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-b3cq98",
+   "name": "La Grotte aux Couleurs",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "16. La grotte aux couleurs Profondeur max : 15m Temps de plongée : 45-60mm Courant : Faible Difficulté : facile"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Collapsed cave plateau with green and hawksbill turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-w6m7s2",
+   "name": "La Baleine",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "3 : La Baleine Prof. max. : 28m Temps de plongée : 45-60 mn Courant : aucun, occasionnel Difficulté : facile"
+    },
+    "s2": {
+     "url": "https://www.espaceplongee-martinique.com/les-spots-de-plongee-en-martinique",
+     "publisher": "Espace Plongée Martinique",
+     "kind": "operator",
+     "quote": "Pointe de la baleine - 0 à 25 mètres Niveau minimum : Niveau 0"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Morays, barracuda and schools of bécune",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

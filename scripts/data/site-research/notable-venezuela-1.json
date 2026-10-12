@@ -1,0 +1,5 @@
+{"batch":"notable-venezuela-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-1150","reason":"Wikipedia gives only coordinates; no depth or dive info"}],
+"sites":[{"id":"x-wikipedia-68","name":"Los Roques Archipelago National Park",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Los_Roques_Archipelago","publisher":"Wikipedia","kind":"encyclopedia","quote":"the Venezuelan government declared Los Roques a National Park in 1972."}},
+"notDiveSite":{"kind":"area","reason":"A whole archipelago and national park","refs":["s1"]}}]}

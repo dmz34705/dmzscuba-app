@@ -1,0 +1,126 @@
+{
+ "batch": "notable-poland-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "osm-n3487751756",
+   "reason": "Wicher (1928): wreck raised by Germans in 1939, remains status unclear"
+  },
+  {
+   "id": "osm-w284658684",
+   "reason": "ORP Wicher (1958): scrapped, remains used as a breakwater at Hel; no dive source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "x-wikipedia-389",
+   "name": "Deepspot",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Deepspot",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Deepspot is a 45-metre (148 ft) deep swimming pool and scuba diving training center, located near Warsaw in Mszczonów, Poland."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 45
+    }
+   ],
+   "depthNote": "Artificial diving pool, 45 m deep"
+  },
+  {
+   "id": "x-wikipedia-381",
+   "name": "Jezioro Białe (Gostynin County)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Jezioro_Bia%C5%82e_(Gostynin_County)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Jezioro Białe is a lake in Poland, Masovian Voivodeship, in Gostynin County"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole lake of 1.4 km2, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-392",
+   "name": "Głębokie Lake",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/G%C5%82%C4%99bokie_Lake",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Głębokie Lake is a lake in the Lubusz Voivodeship, in the Międzyrzecz County"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole lake, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-372",
+   "name": "Hańcza",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Ha%C5%84cza",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Lake Hańcza, situated in the Suwałki region of northeastern Poland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole lake, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-873",
+   "name": "German aircraft carrier Graf Zeppelin",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/German_aircraft_carrier_Graf_Zeppelin",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck rests at a depth of more than 80 m (260 ft) below the surface."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 80
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

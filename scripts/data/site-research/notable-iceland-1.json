@@ -1,0 +1,10 @@
+{"batch":"notable-iceland-1","researchedAt":"2026-10-08","skipped":[],
+"sites":[{"id":"osm-n1817672135","name":"Silfra Diving",
+"sources":{"s1":{"url":"https://www.thingvellir.is/en/things-to-do/diving/","publisher":"Thingvellir National Park","kind":"park","quote":"You can dive up to 18 meters max, diving deeper is prohibited. … cold water (2-4 on Celcius) … it is prohibited to enter caves or other overhead environments while diving."},
+"s2":{"url":"https://en.wikipedia.org/wiki/Silfra","publisher":"Wikipedia","kind":"encyclopedia","quote":"Silfra descends to a maximum depth of 63 metres (207 ft)."}},
+"depth":[{"ref":"s1","unit":"m","bottom":18}],
+"waterTemp":{"low":2,"high":4,"unit":"C","note":"glacial spring water, cold year-round","refs":["s1"]},
+"access":{"value":"National park rules: buddy required, dry suit certificate or 10 dry suit dives, no overhead entry","refs":["s1"]},
+"hazards":[{"text":"Very cold water; dry suit required","refs":["s1"]}],
+"depthNote":"Park limit 18 m; fissure itself reaches 63 m (technical only)",
+"summary":{"text":"A water-filled fissure between the North American and Eurasian plates in Thingvellir National Park, known for extremely clear 2-4 C water. Dives are capped at 18 m, need a dry suit and a buddy, and stay out of caves.","refs":["s1","s2"]}}]}

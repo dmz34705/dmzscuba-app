@@ -1,0 +1,219 @@
+{
+  "batch": "notable-germany-3",
+  "researchedAt": "2026-10-08",
+  "sites": [
+    {
+      "id": "x-wikipedia-75",
+      "name": "MS Jan Heweliusz",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/MS_Jan_Heweliusz",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "The wreck of the ship is located at a depth of 27 metres (89 feet). … frequently visited by divers"
+        },
+        "s2": {
+          "url": "https://www.video.teledynemarine.com/video/7934068/the-sunken-wreck-of-the-jan-heweliusz",
+          "publisher": "Teledyne Marine",
+          "kind": "press",
+          "quote": "The Ship lies on the bottom of the Baltic Sea under 27 meters of water."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 27
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 27
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-994",
+      "name": "HDMS Niels Juel",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HDMS_Niels_Juel_(1918)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "They removed everything above the sea bed, but its remains lie under 28 meters (92 ft) of water."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 28
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-904",
+      "name": "HMS Seal",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_Seal_(N37)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "On 3 May 1945, UB was scuttled in Heikendorf Bay (54°22′N 10°11′E), the wreck was later broken up."
+        }
+      },
+      "notDiveSite": {
+        "kind": "gone",
+        "reason": "Scuttled in Heikendorf Bay in 1945 and later broken up for scrap",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-939",
+      "name": "HMS Starfish",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_Starfish_(19S)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "In July 1940, a diving mission was sent to locate her wreck and secret documents, but the attempt was unsuccessful."
+        }
+      },
+      "notDiveSite": {
+        "kind": "unlocated",
+        "reason": "Wreck search in 1940 failed; no known wreck position",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "x-notable-942",
+      "name": "HMS Sunfish",
+      "sources": {
+        "s1": {
+          "url": "https://en.wikipedia.org/wiki/HMS_Sunfish_(81S)",
+          "publisher": "Wikipedia",
+          "kind": "encyclopedia",
+          "quote": "being bombed and sunk in error by an RAF Coastal Command Liberator off Norway"
+        }
+      },
+      "notDiveSite": {
+        "kind": "unlocated",
+        "reason": "Sunk off Norway in 1944, not at the pin; no known dive position",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "osm-n663870616",
+      "name": "Hohendeicher See",
+      "sources": {
+        "s1": {
+          "url": "https://de.wikipedia.org/wiki/Hohendeicher_See",
+          "publisher": "Wikipedia (de)",
+          "kind": "encyclopedia",
+          "quote": "Am Südufer des Sees befindet sich ein Badestrand, der Schwimmern und Tauchern als Zugang zum See dient. … Hier markieren im Wasser der Bucht drei Bojen eine Tauchglocke … Maximale Tiefe 19 m"
+        },
+        "s2": {
+          "url": "https://taucher.net/tauchplatz-hohendeicher_see__oortkatensee___hamburg-haz2461",
+          "publisher": "taucher.net",
+          "kind": "press",
+          "quote": "Offiziellen Angaben zufolge soll der See eine Tiefe von 19 Meter haben … Bei guten Verhältnissen herrschen Sichtweiten von 5 Meter an aufwärts! … Für Anfänger"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 19
+        },
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 19
+        }
+      ],
+      "entry": {
+        "value": "shore",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s2"
+        ]
+      },
+      "vis": {
+        "low": 5,
+        "high": 6,
+        "unit": "m",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Diving bell and training platform",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A Hamburg gravel-pit lake with shore entries from the club jetty and the south beach. Divers practise around a submerged diving bell and training platform; most dives stay far shallower than the nominal 19 m depth.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "osm-w70716878",
+      "name": "Fleesensee",
+      "sources": {
+        "s1": {
+          "url": "https://de.wikipedia.org/wiki/Fleesensee",
+          "publisher": "Wikipedia (de)",
+          "kind": "encyclopedia",
+          "quote": "durchschnittlichen Tiefe von 6,1 Metern"
+        }
+      },
+      "notDiveSite": {
+        "kind": "area",
+        "reason": "Whole lake, not a single dive site",
+        "refs": [
+          "s1"
+        ]
+      }
+    }
+  ]
+}

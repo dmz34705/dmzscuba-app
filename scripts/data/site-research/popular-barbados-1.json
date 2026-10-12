@@ -1,0 +1,197 @@
+{
+ "batch": "popular-barbados-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-v35gpo",
+   "name": "Pamir, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://barbados.org/divesite.htm",
+     "publisher": "Barbados.org (tourism)",
+     "kind": "agency",
+     "quote": "Pamir - this wreck, located to the north of the island is 165ft long and 60 ft deep and offers a relaxing dive - perfect for beginners!"
+    },
+    "s2": {
+     "url": "https://www.totallybarbados.com/articles/sports/scuba-diving/wreck/",
+     "publisher": "Totally Barbados",
+     "kind": "press",
+     "quote": "the Pamir remains intact at 40 to 50 ft depth. Host to a colony of black coral and sea fans, you can find schools of sergeant majors, white frogfish, squid, and large pelagic fish."
+    },
+    "s3": {
+     "url": "https://activecaribbeantravel.com/barbados-diving/barbados-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "operator",
+     "quote": "Pamir Shipwreck - This 165-foot wreck has holes to explore the interior and sits in just 30 to 60 feet (9-18m) of water making it great for all levels of diver."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 50
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Black coral, sea fans, frogfish and squid",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 165-170 ft freighter sunk as an artificial reef in 1985 off Barbados's west coast, resting upright in roughly 40-60 ft. Easy for all levels, with openings to peek inside and plenty of sponges, sea fans and fish.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-gagwk8",
+   "name": "Brightledge",
+   "sources": {
+    "s1": {
+     "url": "https://www.divehightide.com/dive-sites/",
+     "publisher": "Dive Hightide Barbados",
+     "kind": "operator",
+     "quote": "Brightledge is a popular reef for the endangered Hawksbill turtle. Excellent visibility and schools of tropicals make this one of the most popular dive sites in Barbados.(int.-adv.)"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/barbados-diving/barbados-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "operator",
+     "quote": "Bright Ledge - This popular dive site ranges from 65 to over 125 feet (20 to >38m) deep and features colourful corals and sponges along with schools of tropical fish and turtles"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 125
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hawksbill turtles, colourful sponges, excellent visibility",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A popular Barbados west-coast reef ranging from about 65 ft to beyond 125 ft, rated intermediate to advanced. Known for visibility, colourful corals and sponges and hawksbill turtles.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-yi71q1",
+   "name": "Cement Plant",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/barbados-diving/barbados-diving-west-coast-dive-sites/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "operator",
+     "quote": "Cement Plant - Great for beginner divers, this shallow site bottoms out around 30 feet (9m) deep. Along with plenty of fish, you may also spot seahorses and lobster! Good night dive location."
+    },
+    "s2": {
+     "url": "https://www.divehightide.com/dive-sites/",
+     "publisher": "Dive Hightide Barbados",
+     "kind": "operator",
+     "quote": "The pier of our cement factory at first may seem an unusual dive site, but lobsters, sea horses, frog fish, flying gurnards, arrow crabs, scorpion fish and more abound"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Seahorses, frogfish, lobster under the cement pier",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow dive around a working cement-factory pier on Barbados's west coast, bottoming out near 30 ft. Seahorses, frogfish and lobsters make it a good macro and night dive for beginners.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-fwoaz2",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

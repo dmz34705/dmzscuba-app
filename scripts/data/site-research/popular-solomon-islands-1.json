@@ -1,0 +1,10 @@
+{"batch":"popular-solomon-islands-1","researchedAt":"2026-10-09",
+"skipped":[{"id":"odm-yxom41","reason":"Dolphin wall not found on any page"},{"id":"odm-z39dkf","reason":"Grandma's Garden not found on any page"},{"id":"odm-tqg3b1","reason":"Shark Point not found as a separate site"},{"id":"odm-b366oq","reason":"Secret Spot generic name, not found"}],
+"sites":[
+{"id":"odm-z5ilc0","name":"Uepi Point",
+ "sources":{
+  "s1":{"url":"https://www.diveplanit.com/?p=2857","publisher":"Diveplanit","kind":"operator","quote":"large schools of trevally and barracuda, as well as rays and reef sharks … There are many giant triggerfish in the channel."},
+  "s2":{"url":"https://divernet.com/features/top-5-dive-site-of-uepi-island/","publisher":"Divernet","kind":"press","quote":"You'll encounter stunning soft corals, massive sea fans filtering the rich waters"}},
+ "highlights":[{"text":"Soft corals and sea fans","refs":["s2"]},{"text":"Reef sharks, trevally and barracuda schools","refs":["s1"]}],
+ "hazards":[{"text":"Giant triggerfish in the channel","refs":["s1"]}]}
+]}

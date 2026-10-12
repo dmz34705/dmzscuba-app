@@ -1,0 +1,1143 @@
+{
+ "batch": "popular-honduras-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-iybqi1",
+   "reason": "only banned directories (SSI) describe it"
+  },
+  {
+   "id": "odm-fj27us",
+   "reason": "no site-specific depth or facts, only a generic mention"
+  },
+  {
+   "id": "odm-ycm5tp",
+   "reason": "house reef of a resort, no source"
+  },
+  {
+   "id": "odm-2utb84",
+   "reason": "only a one-word drift mention, no facts"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-xhi90o",
+   "name": "Mandy’s Eel Garden",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 20
+    },
+    {
+     "ref": "s4",
+     "unit": "m",
+     "top": 6,
+     "bottom": 17
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Garden eels on the sand near the wall base",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Barracuda, rays, octopus and turtles",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A calm, shallow reef and sand slope just off West Bay that suits first-timers and students. Garden eels sway on the sand near the wall base, with moray eels, rays and turtles around the coral heads.",
+    "refs": [
+     "s2",
+     "s3",
+     "s1"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatan-octopusdiveschool.com/blog/roatan-diving-how-deep-are-the-dives-in-roatan/",
+     "publisher": "Octopus Dive School",
+     "kind": "operator",
+     "quote": "Mandy’s Eel Garden offers something for every level of diver … The reef begins at about 7m (21 feet) with the wall dropping down to about 20m (65 feet.)"
+    },
+    "s2": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "Like the name says there is a Garden of Eels down at about 65ft. … ideal for students on their first dive"
+    },
+    "s3": {
+     "url": "https://bluebahia.com/best-dive-sites-near-roatan-hotels/",
+     "publisher": "Blue Bahia Resort",
+     "kind": "operator",
+     "quote": "The dive is easily accessible, shallow and perfect for beginners. … a vast array of other sea life including barracudas, rays, octopi, turtles and more"
+    },
+    "s4": {
+     "url": "https://www.bluerides.com/dive-sites/mandys-eel-garden",
+     "publisher": "Blue Rides",
+     "kind": "operator",
+     "quote": "Depths at Mandy's Eel Garden typically range from 6 to 17 meters … Mandy's Eel Garden is ideal for beginners due to its sheltered location in a protected bay, resulting in minimal to no currents."
+    }
+   }
+  },
+  {
+   "id": "odm-ip9fzp",
+   "name": "El Aguila (Wreck)",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 33
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s3"
+    ]
+   },
+   "penetration": {
+    "value": "Wreck is in open sections; penetration possible",
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact mast, large groupers and green morays",
+     "refs": [
+      "s2",
+      "s5"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Storm-broken into three sections",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large cargo ship lying on sand at roughly 30-33 m beside the reef wall, split into three pieces by a hurricane. It is an advanced-level dive with an upright mast, open sections to explore and big groupers and moray eels.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatan-octopusdiveschool.com/blog/roatan-diving-how-deep-are-the-dives-in-roatan/",
+     "publisher": "Octopus Dive School",
+     "kind": "operator",
+     "quote": "The El Aguila is a 75m (230 feet) long shipwreck that was broken into 3 pieces by stormy conditions. … It sits at 33m (110 feet.)"
+    },
+    "s2": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "El Águila is the closest, and is beloved for its intact mast … The dive starts at 100’ or 30m"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/roatan-scuba-diving-travel-guide",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Some deeper profiles, including the El Aguila wreck at around 33 m (108 ft), are better suited to Advanced Open Water"
+    },
+    "s4": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "is perfect for penetration, as there are no obstacles to worry about"
+    },
+    "s5": {
+     "url": "https://scubadiverlife.com/the-best-dive-sites-in-roatan/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "El Aguila is one of the few sites on Roatan where you’ll find an abundance of large sea creatures"
+    }
+   }
+  },
+  {
+   "id": "odm-0nrk72",
+   "name": "West End Wall",
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays, groupers and turtles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Barracuda and the odd wahoo",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheer, healthy wall off the western tip of Roatán that is usually dived as a gentle drift toward Texas. Eagle rays, groupers, turtles and passing pelagics are the draw; operators recommend Advanced certification and nitrox.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Here you will see eagle rays, lots of groupers and who knows a hammerhead shark! … To really enjoy your dive you should dive on nitrox and be an Advanced Open Water Diver"
+    },
+    "s2": {
+     "url": "https://roatan-diving.com/dive-sites",
+     "publisher": "Roatan Diving (Caribbean Divemaster)",
+     "kind": "press",
+     "quote": "currents will gently drift you most likely towards TEXAS dive site … Turtles also are quite common."
+    },
+    "s3": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "WEST END WALL A shear wall, healthy coral, a lot of fish and good chances of seeing Eagle Rays. … usually with a nice current, so just drift along"
+    }
+   }
+  },
+  {
+   "id": "odm-y8mzcp",
+   "name": "Lighthouse",
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shallow sand patch beside the channel and wall",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Best Dive Sites in Roatan for Open Water Divers … Wall: Moonlight, Lighthouse, Half Moon Bay Wall and Dennis’ Dropoff (shallow)"
+    },
+    "s2": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "LIGHTHOUSE REEF Famous for it’s popularity with every single dive shop to take all open water students there because of it’s 20ft sand patch close to the channel and the wall."
+    }
+   }
+  },
+  {
+   "id": "odm-0y8sua",
+   "name": "Overheat Reef",
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Neck crabs and small critters",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://www.ikelite.com/blogs/features/an-insiders-guide-to-diving-roatan-bay-islands",
+     "publisher": "Ikelite",
+     "kind": "press",
+     "quote": "Overheat Reef features a nice wall drop off with an easy view of the area."
+    },
+    "s2": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "OVERHEAT REEF The usual wall and reef, good area for Neck Crabs and little critters."
+    }
+   }
+  },
+  {
+   "id": "odm-nee0ck",
+   "name": "Blue Channel",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 45
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-throughs and a shallow \"bowl of fish\"",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Silverside shoals mid-June to early August",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A popular, easy channel dive on the West End that runs from the inner reef out to the coral ridge, with swim-throughs, a sandy shallow bowl full of fish and canyons that fill with silversides in summer. Suits both divers and snorkelers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "BLUE CHANNEL Famous for its perfect profile for snorkelers and divers … starting at 10ft and then to 45ft at the top of the wall … in mid-June to early August shoals of Silversides fill the canyons"
+    },
+    "s2": {
+     "url": "https://roatan-diving.com/dive-sites",
+     "publisher": "Roatan Diving (Caribbean Divemaster)",
+     "kind": "press",
+     "quote": "The blue channel is a dive site located in the west end … It isn't particularly hard to dive."
+    },
+    "s3": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Blue Channel is one of Roatan’s most famous dive sites because of its diversity. … swimthroughs, reef, a shallow sandy “bowl of fish,” and if you’re lucky, you’ll get to see a bait ball!"
+    }
+   }
+  },
+  {
+   "id": "odm-z222sp",
+   "name": "Prince Albert, wreck",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 65
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 65
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays, southern stingrays and squid pass by",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An upright 140 ft vessel resting in about 65 ft of water on Roatán's south shore, a few fin kicks from the CoCo View resort. It is easy to reach from shore, popular for night dives, and heavily covered in coral growth.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://cocoviewresort.com/?p=500",
+     "publisher": "CoCo View Resort",
+     "kind": "operator",
+     "quote": "Wreck of the Prince Albert: CoCo View’s own wreck, sitting upright in 65 feet of water … our most popular shore dive and night dive … eagle rays, southern sting rays, and squid often pass alongside"
+    },
+    "s2": {
+     "url": "https://www.divenewswire.com/?p=4586",
+     "publisher": "Dive News Wire",
+     "kind": "press",
+     "quote": "South: Prince Albert -140ft tanker – sunk 1985: 65 ft"
+    }
+   }
+  },
+  {
+   "id": "odm-s0jhoy",
+   "name": "Butcher’s Bank",
+   "highlights": [
+    {
+     "text": "Pipefish, flounder, tube anemones on sand",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles and rays",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A relaxed sand-and-coral-platform dive on the West End that rewards slow, close-up looking. Expect pipefish, flounder and tube anemones on the sand, plus turtles and rays near the coral formations.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Butcher’s Bank If you love small stuff and sandy patch treasures, Butcher’s Bank is your paradise! … pipefish, flounder, soles, tube dwelling anemones … turtle sightings are likely"
+    },
+    "s2": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "Great afternoon dive in search of Turtles and Rays"
+    }
+   }
+  },
+  {
+   "id": "odm-ennl4r",
+   "name": "White Hole",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Round white sand patch at 35 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "WHITE HOLE So called because of the round patch of white sand that greets you at first in 35ft of water. … the wall where it drops off and down to the sand slope at 100 ft"
+    }
+   }
+  },
+  {
+   "id": "odm-zg902p",
+   "name": "Mary’s Place",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 120
+    }
+   ],
+   "depthNote": "Elbow-shaped plateau 30-60 ft; vertical walls to about 120 ft",
+   "highlights": [
+    {
+     "text": "Deep crevices and canyons cutting the plateau",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    },
+    {
+     "text": "Macro life in the coral canyons",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Often busy with several dive groups",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "One of Roatán's best-known dives, an elbow-shaped reef plateau on the south shore that is split by deep crevices and canyons and bordered by vertical walls. It is rich in macro life but popular, so groups can queue up.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://cocoviewresort.com/?p=500",
+     "publisher": "CoCo View Resort",
+     "kind": "operator",
+     "quote": "Mary’s Place is one of Roatan’s most famous dive sites … descends gradually from the buoy anchor at 30 ft, down to the southernmost point at 60 ft … go as deep as 120 ft"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/the-best-dive-sites-in-roatan/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Mary’s Place Many consider this the best dive on the island … a series of deep coral canyons, teeming with macro life … there’s a lineup of dive groups waiting to splash in"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/roatan-scuba-diving-travel-guide",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Mary’s Place Arguably Roatán’s signature dive, Mary’s Place is famous for its deep fissures, canyons and towering coral-covered walls."
+    }
+   }
+  },
+  {
+   "id": "odm-9qctkq",
+   "name": "Odyssey (Wreck)",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 110
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "penetration": {
+    "value": "Swim-through opportunities; going inside needs Wreck Specialty",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A large freighter, about 300 ft long and sunk deliberately in 2002, resting on sand at roughly 100-110 ft in Sandy Bay beside the reef wall. It is an advanced-level wreck dive with swim-through chances.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "The Odyssey is located in Sandy Bay … the Odyssey is located at around 100’ or 30m … for Advanced Open Water Divers … Shipwrecks: El Águila and Odyssey … provides a fun swim through opportunity"
+    },
+    "s2": {
+     "url": "https://www.divenewswire.com/?p=4586",
+     "publisher": "Dive News Wire",
+     "kind": "press",
+     "quote": "North Odyssey – 300ft freighter- sunk in 2002: 110 ft"
+    }
+   }
+  },
+  {
+   "id": "odm-432v0c",
+   "name": "Green Outhouse",
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Mooring attached to coral in about 20 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Green morays, soapfish and turtles",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "One of the largest gorgonians in West End",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "GREEN OUTHOUSE … The mooring is attached to coral in just 20ft. … then to the wall, an impressive drop-off indeed … A great place for Green Morays, Greater Soap Fish and Turtles."
+    }
+   }
+  },
+  {
+   "id": "odm-k3bpys",
+   "name": "Seaquest Shallow",
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Southern stingrays, pipefish and flounders on sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A gentle sandy flat dotted with coral heads, regarded as a good beginner and photography dive. Stingrays hide in the sand and small species such as pipefish and flounders can be found by going slowly.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "SEAQUEST A great dive site for beginners and photographers, a huge sandy area littered with coral heads. … it could be home to a hidden Southern Sting Ray"
+    },
+    "s2": {
+     "url": "https://roatan-diving.com/dive-sites",
+     "publisher": "Roatan Diving (Caribbean Divemaster)",
+     "kind": "press",
+     "quote": "Sea Quest (Shallow and Deep) … This is a dive that is not overly taxing but if you like sandy bottoms with coral outcrops then you will love this site."
+    }
+   }
+  },
+  {
+   "id": "odm-ww1kds",
+   "name": "Seaquest Deep",
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Roatan Marine Park coral nursery (coral trees)",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Sea Quest Deep is located between West End and West Bay … swimming through the Roatan Marine Park’s coral nursery … for Open Water Divers … Unique experience: Sea Quest Deep, where the coral trees are"
+    }
+   }
+  },
+  {
+   "id": "odm-vfgg0r",
+   "name": "Black Rock",
+   "mooring": {
+    "value": "Deep mooring, about 60 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lovely wall reached by a descent in clear blue water",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "BLACK ROCK A deep mooring (about 60feet), which makes an exciting and beautiful descent through clear blue water. Lovely wall."
+    }
+   }
+  },
+  {
+   "id": "odm-ukbbw2",
+   "name": "Mr. Bud Wreck",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Jawfish on surrounding sand flats",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small cargo vessel about 75 ft long resting at around 60 ft on sand, with its cabin roof near 45 ft and bow wedged in the reef. A relaxed wreck dive for most certification levels with jawfish in the sand around it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://cocoviewresort.com/?p=500",
+     "publisher": "CoCo View Resort",
+     "kind": "operator",
+     "quote": "Mr. Bud Wreck: The wreck of the Mr. Bud sits at a depth of approximately 60 feet surrounded by sand flats filled with jawfish. … the roof of its cabin reaches to a depth of 45 ft"
+    },
+    "s2": {
+     "url": "https://www.divenewswire.com/?p=4586",
+     "publisher": "Dive News Wire",
+     "kind": "press",
+     "quote": "Mr. Bud – 75ft cargo ship – sunk in 2004 – 60 ft"
+    }
+   }
+  },
+  {
+   "id": "odm-d9u2py",
+   "name": "Fish Den",
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "mooring": {
+    "value": "On a coral mound in a horseshoe canyon",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hundreds of fish on the shallow mound",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles feeding on sponges",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow West End site where most of the action sits in the top 20 ft, around a coral mound and horseshoe canyon with a sponge-covered wall beyond. Good for photographers and long bottom times.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "FISH DEN A wonderful mound of coral in the middle of a horseshoe canyon is where the mooring lies. … We begin in just 10ft of water where hundreds of fish gather."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/the-best-dive-sites-in-roatan/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Fish Den is a shallow dive; most of the best stuff is in the first 20 feet"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/roatan-scuba-diving-travel-guide",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Fish Den is a shallow site ideal for photographers and extended bottom times"
+    }
+   }
+  },
+  {
+   "id": "odm-3w81yh",
+   "name": "Canyon Reef",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Network of canyons and swim-throughs",
+     "refs": [
+      "s3",
+      "s2"
+     ]
+    },
+    {
+     "text": "Frogfish, channel crabs, lobster, morays, nurse shark",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Up-and-down profile; needs good buoyancy",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow web of reef fingers and canyons dropping to about 60 ft, ideal for practicing buoyancy. Swim-throughs shelter lobster, crabs, morays and frogfish, and open-water divers with decent control can manage it.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatan-diving.com/dive-sites",
+     "publisher": "Roatan Diving (Caribbean Divemaster)",
+     "kind": "press",
+     "quote": "This is a bunch of reef fingers slowly running into the deep (max depth 60 ft or 18m) … Tons of places to hide for frog fish"
+    },
+    "s2": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "CANYON REEF Yes! This dive is all about canyons … with the entrance of the first in 10ft … opens out and down to 60 ft"
+    },
+    "s3": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Canyon Reef is a vast network of swimthroughs … even Open Water divers with good buoyancy control can easily navigate … channel crabs, lobster, moray eels, and even the occasional sleeping nurse shark"
+    }
+   }
+  },
+  {
+   "id": "odm-bve2c8",
+   "name": "Hole In The Wall",
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wall",
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sand chute through the wall exiting at 100 ft",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Eagle rays, turtles and shallow swim-throughs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong pull down at the hole; keep buoyancy",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Dark silty cavern where divers can get lost",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Roatán classic: a sand chute from about 40 ft drops through a hole in the reef wall to around 100 ft, then the dive climbs the wall to shallow swim-throughs and caverns. Depth control matters; sport divers should stay above about 34 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "HOLE-IN-THE-WALL … We begin in 40ft. of water on a sand chute … opening out at 100ft … Look out for eagle rays and turtles … a dark and silty cavern at the end of this canyon"
+    },
+    "s2": {
+     "url": "https://roatan-diving.com/dive-sites",
+     "publisher": "Roatan Diving (Caribbean Divemaster)",
+     "kind": "press",
+     "quote": "The hole is almost a tunnel that exits the wall at 100ft. … For sport diving take it no more than 34m to be safe … make sure you have good buoyancy as you can get sucked down"
+    }
+   }
+  },
+  {
+   "id": "odm-1gh8ip",
+   "name": "Bear’s Den",
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "depthNote": "Cavern entrance at about 25 ft; swim-through begins near 50 ft",
+   "highlights": [
+    {
+     "text": "Large cavern with light beams and glassy sweepers",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Swim-throughs and canyons near the mooring",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "Interested in caverns? Then this is the dive for you. … the entrance to the huge beautiful cavern … in only 25feet … Glassy Sweepers swim back and forth"
+    },
+    "s2": {
+     "url": "https://roatandivers.com/blog/the-best-dive-sites-in-roatan",
+     "publisher": "Roatan Divers",
+     "kind": "operator",
+     "quote": "Best Dive Sites in Roatan for Open Water Divers … Swimthrough: Mandy’s Eel Garden, Blue Channel, Canyon Reef, Zack’s Patch, Green Pearl and Bears Den"
+    }
+   }
+  },
+  {
+   "id": "odm-pxbwwa",
+   "name": "Peters Place",
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Big groupers, creole wrasse and dog snapper",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Free-swimming morays and eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "sources": {
+    "s1": {
+     "url": "https://roatanet.com/diving-guide-to-roatans-west-endsandy-bay-marine-reserve/",
+     "publisher": "Roatanet",
+     "kind": "press",
+     "quote": "The place for BIG Groupers, a beautiful wall, teeming with Creole Wrasse … on the wall there are canyons and over hangs … Free swimming Moray Eel and Eagle Rays may be seen"
+    }
+   }
+  }
+ ]
+}

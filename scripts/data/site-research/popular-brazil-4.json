@@ -1,0 +1,126 @@
+{
+ "batch": "popular-brazil-4",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-4y5j59",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-et1gol",
+   "reason": "no usable source found for this exact site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-dpo4mj",
+   "name": "Gonçalo Coelho",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/goncalo-coelho/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Gonçalo coelho … Profundidade mínima: 16 metros Profundidade máxima: 34 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 34
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-nl5z98",
+   "name": "Ilha de Buzios - Costao dos Aquarios",
+   "sources": {
+    "s1": {
+     "url": "https://narwhalilhabela.com.br/cursos/mergulho-ilha-de-buzios/",
+     "publisher": "Narwhal Ilhabela",
+     "kind": "operator",
+     "quote": "Costão do Aquário Somente com mar muito calmo. Ponto afastado da costeira sujeito a correnteza. Parcel formado por grandes pedras, com muitas tocas e fendas, o nome já sugere a presença abundante de peixes, além de tartarugas, e no fundo arenoso as raias manteiga. Profundidade: 4 a 20 metros."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Abundant fish, turtles and butterfly rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current; only in very calm seas",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-icl6al",
+   "name": "Vapor Bahia",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/bahia/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Bahia … Profundidade mínima: 18 metros Profundidade máxima: 25 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

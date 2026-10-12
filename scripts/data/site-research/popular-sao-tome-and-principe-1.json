@@ -1,0 +1,15 @@
+{
+ "batch": "popular-sao-tome-and-principe-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-2d0cfu",
+   "reason": "operator depths conflict (Lagoa Azul 15-37 m) / no data for Ilheu das Cabras"
+  },
+  {
+   "id": "odm-dnfuhj",
+   "reason": "operator depths conflict (Lagoa Azul 15-37 m) / no data for Ilheu das Cabras"
+  }
+ ],
+ "sites": []
+}

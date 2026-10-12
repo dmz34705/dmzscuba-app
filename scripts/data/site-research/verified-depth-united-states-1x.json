@@ -1,0 +1,52 @@
+{
+ "batch": "verified-depth-united-states-1x",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-wikilist-706",
+   "name": "No. 2",
+   "sources": {
+    "s1": {
+     "url": "https://www.in.gov/dnr/lake-michigan-coastal-program/indiana-shipwrecks/listing/",
+     "publisher": "Indiana DNR Lake Michigan Coastal Program",
+     "kind": "agency",
+     "quote": "The Car Ferry No. 2 Vessel Type : Train Car Ferry Date Built : 1895 … Reason for Loss : Capsized during a storm Depth of Wreck : 45 feet"
+    },
+    "s2": {
+     "url": "https://3dshipwrecks.org/shipwreck-railroad-car-ferry-no-2/",
+     "publisher": "3DShipwrecks.org (Great Lakes Shipwreck Preservation Society)",
+     "kind": "press",
+     "quote": "Vessel Type Car Ferry Barge Year Built 1895 Year Sank 1906 … Lake Michigan State or Province Indiana Depth 42 ft GPS Coordinates 41° 44.965′ N 087° 26.939′ W"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 45
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 42
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Remains of a 310-foot wooden railroad car ferry barge that capsized in a storm in 1906 off the Indiana shore of Lake Michigan. Lying in roughly 42 to 45 feet of fresh water, it sank upside down and was later dynamited as a shipping hazard.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Agency lists 45 ft, wreck database 42 ft"
+  }
+ ]
+}

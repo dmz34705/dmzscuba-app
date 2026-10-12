@@ -1,0 +1,9 @@
+{"batch":"notable-british-virgin-islands-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-1091","reason":"Wikipedia: tourists rarely dive the wreck; no depth"}],
+"sites":[{"id":"odm-45ch04","name":"RMS Rhone (Wreck)",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/RMS_Rhone","publisher":"Wikipedia","kind":"encyclopedia","quote":"80 feet (24 m) of water, the stern in 30 feet (9 m) … 85 feet (26 m) of water … Her bow section is still relatively intact."},
+"s2":{"url":"https://bvidiving.com/blog/post/exploring-the-wreck-of-the-rms-rhone.html","publisher":"BVI Diving","kind":"operator","quote":"The stern sank in 35ft of water … settling at about 90ft … it is considered a fairly safe wreck dive suitable for intermediate to advanced scuba divers."}},
+"depth":[{"ref":"s1","unit":"ft","top":30,"bottom":85},{"ref":"s2","unit":"ft","top":35,"bottom":90}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"level":{"value":"intermediate","refs":["s2"]},
+"summary":{"text":"A Royal Mail steamer that broke in two off Salt Island in a hurricane; the stern lies in about 30-35 ft and the intact bow in 80-90 ft, with swim-throughs, making it a signature Caribbean wreck dive.","refs":["s1","s2"]}}]}

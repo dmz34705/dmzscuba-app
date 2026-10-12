@@ -1,0 +1,119 @@
+{ "batch": "notable-australia-3", "researchedAt": "2026-10-08", "sites": [
+ { "id": "x-wikipedia-440", "name": "Cocklebiddy, Western Australia",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Cocklebiddy,_Western_Australia", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Cocklebiddy is a small roadhouse community located on the Eyre Highway in Western Australia." } },
+  "notDiveSite": { "kind": "area", "reason": "A roadhouse community on the Eyre Highway, not a dive site (the cave is separate)", "refs": ["s1"] } },
+ { "id": "odm-pehu3s", "name": "Rottnest Island",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Rottnest_Island", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "is a 19-square-kilometre (7.3 sq mi) island off the coast" } },
+  "notDiveSite": { "kind": "area", "reason": "A whole 19 km2 island with dozens of separate dive sites", "refs": ["s1"] } },
+ { "id": "odm-fofl2t", "name": "Heron Island",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Heron_Island_(Queensland)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Heron Island is a coral cay located near the Tropic of Capricorn in the southern Great Barrier Reef." } },
+  "notDiveSite": { "kind": "area", "reason": "A whole coral cay with many named dive sites", "refs": ["s1"] } },
+ { "id": "x-notable-1029", "name": "SS Maheno",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/SS_Maheno", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "the now dangerous condition of the ship, access is prohibited" } },
+  "notDiveSite": { "kind": "restricted", "reason": "Rusting hulk beached on K'gari (Fraser Island); access prohibited as dangerous", "refs": ["s1"] } },
+ { "id": "x-notable-1155", "name": "Lady Elizabeth",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Lady_Elizabeth_(1869)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "discovered in 1969 in 7 metres of water on Porpoise Bay near Rottnest Island and Dyer Island" },
+   "s2": { "url": "https://50greatdives.com/auswreckx/entry/479/", "publisher": "50 Great Dives", "kind": "press", "quote": "Significant wreckage lies in seven metres (23’) of water with the bow wedged into the reef." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 7 }, { "ref": "s2", "unit": "m", "bottom": 7 } ],
+  "types": { "value": ["wreck"], "refs": ["s2"] },
+  "highlights": [ { "text": "Bow wedged into the reef", "refs": ["s2"] } ],
+  "summary": { "text": "A barque wrecked off Rottnest Island in 1878 and now lying in about 7 m, with significant wreckage and the bow jammed into the reef. It is a shallow wreck on the island's heritage trail, protected so nothing may be taken.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-notable-1067", "name": "Centaur",
+  "sources": { "s1": { "url": "https://exploreparks.dbca.wa.gov.au/node/4062", "publisher": "Parks and Wildlife Service WA (DBCA)", "kind": "park", "quote": "Dive down and explore the wrecked Centaur. … The Centaur’s remains lie scattered around the submerged reef, the weed-covered starboard ribs sticking out from its base." } },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "highlights": [ { "text": "Scattered remains on the reef, weed-covered ribs", "refs": ["s1"] } ]
+ },
+ { "id": "x-notable-983", "name": "Batavia",
+  "sources": {
+   "s1": { "url": "https://50greatdives.com/auswreckx/entry/492/", "publisher": "50 Great Dives", "kind": "press", "quote": "3 – 10 metres … Open Water … 20 – 40+ metres … April to June best … Boat only (Live aboard) … There are still cannons and other artifacts to be seen on the wreck site." },
+   "s2": { "url": "https://www.australiascoralcoast.com/products/batavia-shipwreck", "publisher": "Australia's Coral Coast", "kind": "operator", "quote": "The ship lies in four to six metres of clear Indian Ocean … an excellent dive spot for people of all diving abilities" },
+   "s3": { "url": "https://en.wikipedia.org/wiki/Batavia_(1628_ship)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck remains one of the premier diving sites on the Western Australian coast." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 3, "bottom": 10 }, { "ref": "s2", "unit": "m", "top": 4, "bottom": 6 } ],
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "beginner", "refs": ["s1", "s2"] },
+  "vis": { "low": 20, "high": 40, "unit": "m", "refs": ["s1"] },
+  "highlights": [ { "text": "Cannons and anchors still on site", "refs": ["s1"] }, { "text": "Coral gardens with abundant fish", "refs": ["s1"] } ],
+  "hazards": [ { "text": "Swell and waves often limit diving", "refs": ["s1", "s3"] } ],
+  "summary": { "text": "The 1629 Dutch East India ship wreck on Morning Reef in the Abrolhos Islands, in only a few metres of clear water. Cannons and other relics remain among coral gardens; it is reached by boat and swell can interrupt diving.", "refs": ["s1", "s2", "s3"] }
+ },
+ { "id": "odm-jkqahr", "name": "Julian Rocks - Needles",
+  "sources": {
+   "s1": { "url": "https://diveplanit.com/?p=8900", "publisher": "Dive Planit", "kind": "press", "quote": "Depths here range from 10 to 15 metres. … large bommies that come close to the surface … The current in this site often brings schools of large and small fish." },
+   "s2": { "url": "https://www.stokedfortravel.com/?p=9587", "publisher": "Stoked for Travel", "kind": "press", "quote": "The Needles at 5-15m" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 10, "bottom": 15 }, { "ref": "s2", "unit": "m", "top": 5, "bottom": 15 } ],
+  "types": { "value": ["pinnacle"], "refs": ["s1"] },
+  "highlights": [ { "text": "Big bommies with rays and leopard sharks", "refs": ["s1", "s2"] } ],
+  "summary": { "text": "Large bommies at the southern end of Julian Rocks off Byron Bay, in roughly 10-15 m. Currents bring schools of fish, and rays and leopard sharks are regular visitors.", "refs": ["s1", "s2"] }
+ },
+ { "id": "odm-s7tsqu", "name": "Julian Rocks - Hugos Trench",
+  "sources": {
+   "s1": { "url": "https://diveplanit.com/?p=8900", "publisher": "Dive Planit", "kind": "press", "quote": "At a depth of 12 to 18 metres … sheer walls on either side of the trench … conditions need to be perfect to attempt a swim through." },
+   "s2": { "url": "https://www.stokedfortravel.com/?p=9587", "publisher": "Stoked for Travel", "kind": "press", "quote": "15-18m, this is the section to head if you love macro life" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 12, "bottom": 18 }, { "ref": "s2", "unit": "m", "top": 15, "bottom": 18 } ],
+  "types": { "value": ["wall"], "refs": ["s1"] },
+  "highlights": [ { "text": "Macro life, wobbegongs and turtles", "refs": ["s1", "s2"] } ],
+  "hazards": [ { "text": "Trench swim-through only in perfect conditions", "refs": ["s1"] } ],
+  "summary": { "text": "A trench between sheer walls at Julian Rocks, about 12-18 m deep, good for macro life and wobbegongs. Swimming through it is only attempted when conditions are right.", "refs": ["s1", "s2"] }
+ },
+ { "id": "odm-y78g93", "name": "Julian Rocks - Nursery",
+  "sources": {
+   "s1": { "url": "https://diveplanit.com/?p=8900", "publisher": "Dive Planit", "kind": "press", "quote": "varying from 5 to 12 metres … the primary dive site for beginners … frequented by an abundance of reef fish" },
+   "s2": { "url": "https://www.stokedfortravel.com/?p=9587", "publisher": "Stoked for Travel", "kind": "press", "quote": "shallowest part of the are ranging between 5-12m but still packed with fish and turtles!" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 5, "bottom": 12 }, { "ref": "s2", "unit": "m", "top": 5, "bottom": 12 } ],
+  "level": { "value": "beginner", "refs": ["s1"] },
+  "highlights": [ { "text": "Abundant reef fish and turtles", "refs": ["s1", "s2"] } ],
+  "summary": { "text": "The shallow, sheltered western side of Julian Rocks, about 5-12 m, and the usual choice for beginners. Reef fish are abundant and turtles are often seen.", "refs": ["s1", "s2"] }
+ },
+ { "id": "odm-3sfhkc", "name": "Julian Rocks - Split Bommie",
+  "sources": {
+   "s1": { "url": "https://www.stokedfortravel.com/?p=9587", "publisher": "Stoked for Travel", "kind": "press", "quote": "a series of large bombies, this are is filled with Wobbegongs and Grey Nurse sharks cruising around" }
+  },
+  "types": { "value": ["pinnacle"], "refs": ["s1"] },
+  "highlights": [ { "text": "Wobbegongs and grey nurse sharks", "refs": ["s1"] } ]
+ },
+ { "id": "odm-vlqof5", "name": "Julian Rocks - Cod Hole",
+  "sources": {
+   "s1": { "url": "https://diveplanit.com/?p=8900", "publisher": "Dive Planit", "kind": "press", "quote": "opens at a depth of around 15 metres and slopes down to a depth of 21 metres … grey nurse sharks frequent it" },
+   "s2": { "url": "https://www.stokedfortravel.com/?p=9587", "publisher": "Stoked for Travel", "kind": "press", "quote": "this cave is the spot for experienced divers. Ranging from 15-21m it's Grey Nurse shark central!" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 15, "bottom": 21 }, { "ref": "s2", "unit": "m", "top": 15, "bottom": 21 } ],
+  "types": { "value": ["cave"], "refs": ["s1", "s2"] },
+  "level": { "value": "intermediate", "refs": ["s2"] },
+  "highlights": [ { "text": "Grey nurse sharks, moray eels, wobbegongs", "refs": ["s1", "s2"] } ],
+  "summary": { "text": "A swim-through cave at the northern end of Julian Rocks, sloping from about 15 to 21 m. It suits experienced divers and is known for grey nurse sharks.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-472", "name": "Wolf Rock (Queensland)",
+  "sources": {
+   "s1": { "url": "https://50greatdives.com/50gtdives/entry/22/", "publisher": "50 Great Dives", "kind": "press", "quote": "12 – 40 metres … Advanced (Supervised open water) … 5 – 30 metres … Wolf Rock is Queensland’s only grey nurse shark gestation site" },
+   "s2": { "url": "https://en.wikipedia.org/wiki/Wolf_Rock_(Queensland)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "a set of four volcanic pinnacles two kilometres north-northeast of Double Island Point" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 12, "bottom": 40 } ],
+  "types": { "value": ["pinnacle"], "refs": ["s2"] },
+  "level": { "value": "advanced", "refs": ["s1"] },
+  "vis": { "low": 5, "high": 30, "unit": "m", "refs": ["s1"] },
+  "highlights": [ { "text": "Grey nurse shark gestation site", "refs": ["s1"] } ],
+  "summary": { "text": "Volcanic pinnacles off Double Island Point near Rainbow Beach, an advanced dive reaching about 40 m. It is Queensland's key grey nurse shark site, with sharks, eagle rays and seasonal mantas.", "refs": ["s1", "s2"] }
+ },
+ { "id": "odm-nim8qh", "name": "Tangalooma Wrecks",
+  "sources": { "s1": { "url": "https://50greatdives.com/other-gt-snrkl-dives-index/entry/75/", "publisher": "50 Great Dives", "kind": "press", "quote": "Up to 12 metres … 5 – 30 metres … over 100 species of fish" } },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 12 } ],
+  "vis": { "low": 5, "high": 30, "unit": "m", "refs": ["s1"] },
+  "level": { "value": "beginner", "refs": ["s1"] }
+ },
+ { "id": "odm-kd48h0", "name": "Heron Island - Pams",
+  "sources": { "s1": { "url": "https://www.heronisland.com/experience/diving/Top10", "publisher": "Heron Island Resort", "kind": "operator", "quote": "A big field of staghorn coral will lead you to a bommie with healthy coral. … Going with the current you have a chance to see the majestic manta rays" } },
+  "highlights": [ { "text": "Staghorn coral field and bommie; manta rays", "refs": ["s1"] } ]
+ },
+ { "id": "odm-p8dpw8", "name": "Heron Island - North Bombie",
+  "sources": { "s1": { "url": "https://www.heronisland.com/experience/diving/Top10", "publisher": "Heron Island Resort", "kind": "operator", "quote": "North bommie is covered in glass and cardinal fish that are harassed all day by dozens of coral trout" } },
+  "highlights": [ { "text": "Bommie with glassfish, coral trout, cleaning station", "refs": ["s1"] } ]
+ }
+]}

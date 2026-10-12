@@ -1,0 +1,126 @@
+{
+ "batch": "popular-cook-islands-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-4fk8ql",
+   "reason": "no per-site source beyond directories"
+  },
+  {
+   "id": "odm-i0klmh",
+   "reason": "no per-site source beyond directories"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-rjht4x",
+   "sources": {
+    "s1": {
+     "url": "https://cookislandspocketguide.com/the-best-scuba-diving-in-rarotonga-top-25-places-to-scuba-dive",
+     "publisher": "Cook Islands Pocket Guide",
+     "kind": "press",
+     "quote": "See the anchor between two coral bommies along with all sorts of colourful reef fish. … Depth : 12-40m (13.1-43.7 yards)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 40
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Schooner anchor between two coral bommies",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "Edna’s Anchor"
+  },
+  {
+   "id": "odm-j7nwns",
+   "sources": {
+    "s1": {
+     "url": "https://cookislandspocketguide.com/the-best-scuba-diving-in-rarotonga-top-25-places-to-scuba-dive",
+     "publisher": "Cook Islands Pocket Guide",
+     "kind": "press",
+     "quote": "MV Mataora Wreck … Depth : 10-25 m (10.9-27.3 yards) … an accessible wreck dive for suitably qualified divers"
+    },
+    "s2": {
+     "url": "https://cookislandspocketguide.com/the-best-scuba-diving-in-rarotonga-top-25-places-to-scuba-dive",
+     "publisher": "Cook Islands Pocket Guide",
+     "kind": "press",
+     "quote": "Mataora with Dive Rarotonga , reaching 19.4 m (21.2 yards) on a 46-minute dive."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Anemonefish, groupers, Moorish idols on wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "M.V. Mataora"
+  },
+  {
+   "id": "odm-ofw87v",
+   "sources": {
+    "s1": {
+     "url": "https://cookislandspocketguide.com/the-best-scuba-diving-in-rarotonga-top-25-places-to-scuba-dive",
+     "publisher": "Cook Islands Pocket Guide",
+     "kind": "press",
+     "quote": "Ngatipa - North Coast, 10–28 m (10.9–30.6 yards)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 28
+    }
+   ],
+   "name": "Ngatipa Reef"
+  },
+  {
+   "id": "odm-v5ob0z",
+   "sources": {
+    "s1": {
+     "url": "https://cookislandspocketguide.com/the-best-scuba-diving-in-rarotonga-top-25-places-to-scuba-dive",
+     "publisher": "Cook Islands Pocket Guide",
+     "kind": "press",
+     "quote": "Panama - North Coast, 15–22 m (16.4–24.1 yards)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 22
+    }
+   ],
+   "name": "Panama"
+  }
+ ]
+}

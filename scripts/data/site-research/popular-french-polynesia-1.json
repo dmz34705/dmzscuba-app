@@ -1,0 +1,962 @@
+{
+ "batch": "popular-french-polynesia-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-eybnld",
+   "reason": "only one sourced fact (marine life); no depth or conditions"
+  },
+  {
+   "id": "odm-yibimz",
+   "reason": "no non-banned source found"
+  },
+  {
+   "id": "odm-vc5duq",
+   "reason": "no non-banned source found"
+  },
+  {
+   "id": "odm-e5qrgs",
+   "reason": "only one operator page; depth does not match community record"
+  },
+  {
+   "id": "odm-j0yhti",
+   "reason": "no non-banned source found"
+  },
+  {
+   "id": "odm-oeol3c",
+   "reason": "no page naming the site (only the English translation windmill)"
+  },
+  {
+   "id": "odm-ki63hs",
+   "reason": "pages place the Moorea aquarium at Cook Bay; no Papetoai-specific source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-q275ju",
+   "name": "La Vallée blanche, Tahiti",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/en/dive-site-in-tahiti/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "The Vallée Blanche dive site, known as the most famous in Tahiti … Exposed to currents, this site … Vallée Blanche is possible at 20 meters , making it ideal for intermediate divers"
+    },
+    "s2": {
+     "url": "https://islandtravelism.com/diving-in-tahiti/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "The white valley is one of the top dive spots in Tahiti famous for its diverse marine life – especially sharks. … The current here is just right for it."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Several shark species incl. blacktip, lemon",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Good drift dive along a white-sand strip",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Tahiti's best-known shark dive, just off the airport reef on the northwest coast. Currents carry divers past grey, blacktip, whitetip and lemon sharks, plus jacks and barracuda, over a pale sand channel. A drift dive best suited to divers with some experience.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Around 20 m typical; deeper (40 m) for experienced divers"
+  },
+  {
+   "id": "odm-rotsc5",
+   "name": "La Source, Tahiti",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/en/dive-site-in-tahiti/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "Suitable for all levels, The Source offers exceptional biodiversity … The coral reef extends from 0 to 10 meters and descends to 20 or 40 meters for experienced divers."
+    },
+    "s2": {
+     "url": "https://islandtravelism.com/diving-in-tahiti/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "The Spring also called La Source is a popular dive site known for its turtles and the freshwater spring gushing out under the water. … there’s no such current to worry about, so it’s great for beginners too."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Green and hawksbill turtles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Freshwater spring emerging at about 8 m",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A gentle west-coast reef dive off Puna'auia, popular for turtle sightings and a freshwater spring bubbling up from the seabed. Shallow, current-free and clear, so it suits newer divers, with deeper sections for experienced ones.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-0zw3ig",
+   "name": "La Faille d Arue",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/diving-in-tahiti/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "The Arue Fault in northern Tahiti invites divers to glide along a stunning coral wall. The wall begins at about 15 feet below the surface … the ocean here is usually calm and the current is minimal. This makes this site great for beginners and intermediate divers."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral wall with a cave/fault at about 80 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Wall starts about 15 ft; most diving 50-80 ft, cave near 80 ft"
+  },
+  {
+   "id": "odm-rcoq14",
+   "name": "L' Aquarium, Tahiti",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/en/dive-site-in-tahiti/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "Located in the lagoon of Faa’a , the Aquarium dive site is a natural reserve hosting a rich marine biodiversity. … spread across an area with a maximum depth of 13 meters ."
+    },
+    "s2": {
+     "url": "https://islandtravelism.com/diving-in-tahiti/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "Aquarium is the one to go for. It’s a wreck dive located on the west coast of Tahiti. This site is max 40 feet deep and usually has good visibility around 40-60 feet."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 13
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 12,
+    "high": 18,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cessna plane and two small boat wrecks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered lagoon dive off Faa'a built around a small plane wreck and two boats. Shallow and nearly current-free, it is a go-to spot for training dives and first-timers, with lionfish and plenty of reef fish around the wrecks.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-pw9xwu",
+   "name": "Hydravion et Goelett",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/site-de-plonge/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "un hydravion Catalyna , dont la pénétration est possible … une goélette d’environ 40 mètres repose à une profondeur de 8 à 22 mètres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 22
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "penetration": {
+    "value": "The Catalina seaplane can be entered",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Catalina seaplane wreck, schooner and a third boat",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-0p9s6f",
+   "name": "Les 3 Pitons",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/en/dive-site-in-tahiti/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "Located near The Source , the 3 Pitons dive site features an impressive underwater landscape , where three pinnacles rise from 40 meters to stop at depths of 10 and 5 meters . Each pinnacle is accompanied by a freshwater spring"
+    }
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Three pinnacles each with a freshwater spring",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles, surgeonfish, clownfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Pinnacles rise from 40 m to tops at 10 m and 5 m"
+  },
+  {
+   "id": "odm-99c94w",
+   "name": "Le Tombant Saint Étienne",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/site-de-plonge/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "le Tombant Saint-Étienne offre un superbe tombant où il est possible de croiser des tortues , des bancs de perches pagaie"
+    },
+    "s2": {
+     "url": "https://islandtravelism.com/diving-in-tahiti/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "St. Etienne Drop-Off … It’s actually a wall dive with vertical reef walls dropping down about 200 feet (60 meters). … There’s usually gentle current which allows drift diving. … better suited for divers with some experience."
+    }
+   },
+   "types": {
+    "value": [
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles and paddle perch along the wall",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steep reef wall just beyond the barrier reef on Tahiti's west coast, close to the Ta'apuna pass. Turtles and schools of reef fish cruise the upper wall, and gentle current often allows a drift. Better with some experience; wind can make it hard to dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Wall drops to about 60 m"
+  },
+  {
+   "id": "odm-cvk89a",
+   "name": "La Zélée, Tahiti",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/en/dive-site-in-tahiti/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "The Zélée was a French gunboat of the Surprise-class … Today, the wreck rests near Papeete , at a depth of 5 to 20 meters . … Accessible to divers of all levels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral-covered WWI gunboat wreck scuttled 1914",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-n9itut",
+   "name": "Papa Whisky, Tahiti",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/en/dive-site-in-tahiti/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "Papa Whiskey dive site gets its name from its proximity to the Papeete West (PW) aviation beacon … Shaped like an amphitheater … a steep drop-off at 50 meters and stunning sea fans at 40 meters"
+    },
+    "s2": {
+     "url": "https://islandtravelism.com/diving-in-tahiti/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "Papa Whisky is one of the amazing dive sites for pelagic observations. … It reaches max depths around 160 feet. At about 65 feet, you’ll find plenty of lively reefs and fish."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 160
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Whitetip, blacktip and grey reef sharks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Sea fans at 40 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An amphitheatre-shaped reef on the west coast away from any pass, known for pelagic sightings. Reef sharks and turtles patrol a small drop-off, with lively coral from around 20 m and a steeper wall deeper down for advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-gweonh",
+   "name": "Le piton aux gorgones",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/site-de-plonge/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "le Piton aux Gorgones est un site spectaculaire réservé aux plongeurs expérimentés. Ce sec vertigineux, couvert de magnifiques gorgones , remonte des abysses jusqu’à -42 mètres."
+    }
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gorgonian-covered pinnacle, whitetip sharks, turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Pinnacle rises from deep water to about 42 m (per operator)"
+  },
+  {
+   "id": "odm-cm41u2",
+   "name": "Fausse Passe de Paea",
+   "sources": {
+    "s1": {
+     "url": "https://diveandsea-tahiti.com/site-de-plonge/",
+     "publisher": "Dive and Sea Tahiti",
+     "kind": "operator",
+     "quote": "La passe du gouverneur (ou fausse passe de Paea PK18) est une plongée très originale avec un départ dans le lagon pour profiter d’un vol de raie léopard. Puis dérivante jusque dans l’océan. … Profondeur : de 5m à 35m"
+    },
+    "s2": {
+     "url": "https://www.plongee-loisir.com/site-de-plongee/1462-la-fausse-passe-de-paea",
+     "publisher": "Plongeur.com",
+     "kind": "press",
+     "quote": "La Fausse Passe de Paea Pronfondeur : de 12m à 32m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 35
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 32
+    }
+   ],
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Leopard rays, turtles, whitetip sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-9d4r5m",
+   "name": "Canyons - Moorea (Tahiti)",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/moorea-scuba-diving/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "The maximum depth the Canyons reaches is about 90 feet … occasional strong currents … a great dive spot for divers of all levels."
+    },
+    "s2": {
+     "url": "https://lostbetweenoceans.com/diving-in-moorea/",
+     "publisher": "Lost Between Oceans",
+     "kind": "press",
+     "quote": "The Canyons Depth, duration, and visibility Typical max depth : 14–27 meters (45–90 feet) … Visibility : Usually 20–30 meters (65–100 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 27
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip sharks, green turtles, anemones",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Occasional strong currents",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef dive on Moorea's north side near Opunohu Bay, where coral canyons shelter small fish and blacktip sharks cruise past. Mostly calm and open to all levels, but currents can pick up and catch newer divers out.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-84xhpw",
+   "name": "Eden Park",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/moorea-scuba-diving/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "Eden Park is an amazing dive site that goes down to 70 feet, and offers diving opportunities for divers of all levels."
+    },
+    "s2": {
+     "url": "https://lostbetweenoceans.com/diving-in-moorea/",
+     "publisher": "Lost Between Oceans",
+     "kind": "press",
+     "quote": "Eden Park Depth, duration, and visibility Typical dive depth : 15–21 meters (50–70 feet) … Visibility : Clear waters with visibility typically 20–30 meters (65–100 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 21
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip sharks, rare lemon shark, turtles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A relaxed reef dive just beyond the lagoon off Moorea's north coast, next to the Canyons. Healthy coral and anemones attract turtles, barracuda and blacktip sharks, with the odd shy lemon shark. Suitable for most certified divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-uk7l5s",
+   "name": "Mur de corail/Coral Wall",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/moorea-scuba-diving/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "True to its name, the Coral Wall site is packed with tons of coral reefs forming walls and beautiful canyons on the seafloor. It has a maximum depth of 90 feet (27 meters)"
+    },
+    "s2": {
+     "url": "https://lostbetweenoceans.com/diving-in-moorea/",
+     "publisher": "Lost Between Oceans",
+     "kind": "press",
+     "quote": "Coral Wall Depth, duration, and visibility Typical max depth : 14–27 meters (45–90 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip reef sharks and turtles along coral walls",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered coral-wall dive near Opunohu Bay, split into three sections so it can fill several tanks. Calm water and shallow-to-moderate depths make it comfortable for beginners, with reef sharks, turtles and morays along the walls.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-dp8jb4",
+   "name": "Taotoi",
+   "sources": {
+    "s1": {
+     "url": "https://islandtravelism.com/moorea-scuba-diving/",
+     "publisher": "Island Travelism",
+     "kind": "press",
+     "quote": "Taotoi is a well-liked Moorea dive site where you can witness vast sea life in a single area. The site isn’t too deep, only around 50 feet which is perfect for beginners. There can be light to moderate currents"
+    },
+    "s2": {
+     "url": "https://lostbetweenoceans.com/diving-in-moorea/",
+     "publisher": "Lost Between Oceans",
+     "kind": "press",
+     "quote": "Taotoi Depth, duration, and visibility Typical max depth : 15 meters (50 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip sharks, eagle rays, turtles, giant morays",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow outer-lagoon dive on Moorea's north shore, close to the Taotoi channel where fish stream between lagoon and ocean. Easy depths suit beginners, with blacktip sharks, eagle rays, turtles and large moray eels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-zp8hiu",
+   "name": "Mamaru",
+   "sources": {
+    "s1": {
+     "url": "https://diveotion.com/scuba-diving-in-moorea/",
+     "publisher": "Diveotion",
+     "kind": "press",
+     "quote": "The Mamaru dive site is another popular choice on Moorea, a great dive for beginner divers … But the real stars of the show are the reef sharks: both blacktop reef sharks (more common) and whitetip (less common)."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blacktip and whitetip reef sharks, turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ds731y",
+   "name": "Passe de Tiputa",
+   "sources": {
+    "s1": {
+     "url": "https://openwateratlas.com/en/spots/french-polynesia/rangiroa-tiputa-pass/",
+     "publisher": "Open Water Atlas",
+     "kind": "press",
+     "quote": "Tiputa Pass is one of French Polynesia's most dynamic drift dives … Difficulty Advanced Depth 12–40 m Visibility 30 m"
+    },
+    "s2": {
+     "url": "https://scubadivingrangiroa.com/sites/?lang=en",
+     "publisher": "Rangiroa Plongee",
+     "kind": "operator",
+     "quote": "Tiputa Pass (Incoming Current) The Sharks’ cavern : This dive is best done by experienced divers."
+    }
+   },
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 30,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey reef sharks, jacks, barracuda, rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong tidal current; drift technique needed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-geqk6i",
+   "name": "Motu Nuhi-Nuhi (l’aquarium)",
+   "sources": {
+    "s1": {
+     "url": "https://topdive.com/scuba-diving-rangiroa/",
+     "publisher": "TOPDIVE Rangiroa",
+     "kind": "operator",
+     "quote": "Motu Nuhi-Nuhi (aquarium) Lagoon The Motu Nuhi Nuhi is a little coral islet located in the lagoon along the axis of the Tiputa pass … This site, shallow and sheltered from currents, is ideal for novice divers"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral garden with many colourful fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

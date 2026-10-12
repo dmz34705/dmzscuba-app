@@ -1,0 +1,35 @@
+{
+ "batch": "popular-seychelles-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-73i7vy",
+   "reason": "only banned directories (SSI/PADI/Zentacle) or depths disagree with the pin"
+  },
+  {
+   "id": "odm-tbn97e",
+   "reason": "only banned directories (SSI/PADI/Zentacle) or depths disagree with the pin"
+  },
+  {
+   "id": "odm-fi7bh6",
+   "reason": "only banned directories (SSI/PADI/Zentacle) or depths disagree with the pin"
+  },
+  {
+   "id": "odm-oglzic",
+   "reason": "only banned directories (SSI/PADI/Zentacle) or depths disagree with the pin"
+  },
+  {
+   "id": "odm-gjs1en",
+   "reason": "only banned directories (SSI/PADI/Zentacle) or depths disagree with the pin"
+  },
+  {
+   "id": "odm-ij72am",
+   "reason": "only banned directories (SSI/PADI/Zentacle) or depths disagree with the pin"
+  },
+  {
+   "id": "odm-z89fcw",
+   "reason": "only banned directories (SSI/PADI/Zentacle) or depths disagree with the pin"
+  }
+ ],
+ "sites": []
+}

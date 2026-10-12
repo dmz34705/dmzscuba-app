@@ -1,0 +1,1467 @@
+{
+ "batch": "popular-indonesia-2",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-dkdhr3",
+   "reason": "Gili Air Slope: only a passing mention, no usable depth/current facts"
+  },
+  {
+   "id": "odm-kyg08x",
+   "reason": "Temple Coral: no source found by that name"
+  },
+  {
+   "id": "odm-t8razl",
+   "reason": "Jemeluk Secret Wall: no source for that exact site"
+  },
+  {
+   "id": "odm-jr4suw",
+   "reason": "APL: only a banned directory describes it"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-a333el",
+   "name": "Sidem",
+   "sources": {
+    "s1": {
+     "url": "https://baliaqua.com/bali-dive-sites/tulamben-diving/",
+     "publisher": "Bali Aqua",
+     "kind": "operator",
+     "quote": "Depth: 4–30+ meters … Current: Calm … Sidem is located south of Batu Niti, just near Batu Belah temple … great for slow-paced macro exploration"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish, nudibranchs, seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-dckzea",
+   "name": "Pengah Kecil",
+   "sources": {
+    "s1": {
+     "url": "https://dragondivekomodo.com/?p=12165",
+     "publisher": "Dragon Dive Komodo",
+     "kind": "operator",
+     "quote": "Level: intermediate — a perfect progression dive Highlight: dense reef life in a manageable current"
+    },
+    "s2": {
+     "url": "https://mantadivekomodo.com/komodo-dive-sites/",
+     "publisher": "Manta Dive Komodo",
+     "kind": "operator",
+     "quote": "Pengah Kecil A compact, high-energy site with coral gardens, schooling fish, sharks and fast-changing visibility. Excellent when conditions align. Plateau / drift Max 30m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral gardens and schooling fish",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Dense reef life",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small three-pinnacle rock island in Komodo with walls, plateaus and sloping reef. Currents are manageable, making it a good step-up dive for intermediate divers; whitetip sharks rest under table corals.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-wbxdda",
+   "name": "Sunset Reef",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/4-of-the-best-at-gili-trawangan/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "This reef gently slopes down to 24 metres but there is plenty to see at around 10 metres"
+    },
+    "s2": {
+     "url": "https://divinedivers.com/gili-islands-dive-sites-the-complete-guide-with-maps/",
+     "publisher": "Divine Divers",
+     "kind": "operator",
+     "quote": "Sunset Reef … Depth 5–30 metres … Beginner to Advanced … mild to a low medium"
+    },
+    "s3": {
+     "url": "https://www.trawangandive.com/dive-sites-gili-islands/",
+     "publisher": "Trawangan Dive",
+     "kind": "operator",
+     "quote": "This gradually sloping reef is suitable for all levels of diver"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 24
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hard and soft corals with snapper and sweetlips",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Turtles; occasional manta at the cleaning station",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A gently sloping reef off the south-west of Gili Trawangan, suitable for all levels. Most of the interest lies around 10 m, with turtles, snapper and sweetlips, and the odd manta stopping at the cleaning station.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-nx25iu",
+   "name": "Toyapakeh Wall",
+   "sources": {
+    "s1": {
+     "url": "https://ceningandivers.com/diving-nusa-penida/",
+     "publisher": "Ceningan Divers",
+     "kind": "operator",
+     "quote": "Toyapakeh Wall … Advanced … 5 – 30+ meters … Constant current, very deep towards the Toyapakeh Straight, the current runs along the wall"
+    },
+    "s2": {
+     "url": "https://divinglembongan.com/nusa-penida-dive-sites/",
+     "publisher": "Diving Lembongan",
+     "kind": "operator",
+     "quote": "Toyapakeh … Multilevel slops 5m to 40m … Advanced to expert"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall swept by current with abundant fish",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Mola mola possible",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Constant current along the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A current-swept wall on the Toyapakeh strait off Nusa Penida, rated advanced. The constant flow brings plenty of tropical fish, healthy hard and soft corals and, with luck, mola mola.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-8ak1je",
+   "name": "Menjangan - Eel Garden",
+   "sources": {
+    "s1": {
+     "url": "https://menjanganislandtrip.com/menjangan-dive-site-conditions/",
+     "publisher": "Menjangan Island Trip",
+     "kind": "operator",
+     "quote": "Eel Garden … 10 to 40+ meters … Moderate to strong … Advanced"
+    },
+    "s2": {
+     "url": "https://www.easy-divers.eu/menjangan-island-dive-sites",
+     "publisher": "Easy Divers Bali",
+     "kind": "operator",
+     "quote": "Eel Garden … 4 to 30 m … approximately 40 meters … a large colony of dancing garden eels"
+    },
+    "s3": {
+     "url": "https://balifundiving.com/bali-dive-sites/menjangan-island/",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "Garden Eels … 5 to 35 m … garden eels, usually seen between 14 and 20 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 4,
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 5,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Colony of garden eels on a sandy channel",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    },
+    {
+     "text": "Wall with schooling fish in the passing current",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "At the western end of Menjangan, a reef wall drops from a shallow top to well beyond recreational depth, ending in a sandy channel with a colony of garden eels. Current can be moderate to strong.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-lssxra",
+   "name": "Mirko's Reef",
+   "sources": {
+    "s1": {
+     "url": "https://divinedivers.com/gili-islands-dive-sites-the-complete-guide-with-maps/",
+     "publisher": "Divine Divers",
+     "kind": "operator",
+     "quote": "Soraya Reef (Hidden Reef / Secret Reef / Mirko's) Depth: 12–30 metres Level: Advanced … known for its healthy coral formations, strong currents, and excellent fish life"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Healthy coral, green turtles, schooling fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-399vs3",
+   "name": "Mioskun",
+   "sources": {
+    "s1": {
+     "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/mioskon/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "Max Depth: 25 meters … Typical Current: Mild … An easy dive site that still has amazing coral and fish"
+    },
+    "s2": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity Eco Resort",
+     "kind": "operator",
+     "quote": "Mioskun … 2m-25m … This site is well known as a likely opportunity to see Wobbegong Sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 2,
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wobbegong sharks on the reef",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Soft-coral bommies and a giant clam",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A forgiving Dampier Strait reef with a sloping ridge, bommies smothered in soft coral and a mild current. Wobbegong sharks are the signature sighting, plus pygmy seahorses and a giant clam in the shallows.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-j8kmck",
+   "name": "Sampalan (Nusa Penida, Bali)",
+   "sources": {
+    "s1": {
+     "url": "https://purediveresort.com/dive-sites/",
+     "publisher": "Pure Dive Resort",
+     "kind": "operator",
+     "quote": "Sampalan … 8 to 40 meters … probably, the richest corals in the area, schooling batfish, tuna, turtles"
+    },
+    "s2": {
+     "url": "https://ceningandivers.com/diving-nusa-penida/",
+     "publisher": "Ceningan Divers",
+     "kind": "operator",
+     "quote": "Sampalan … Open Water … 5 to 40+ m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 40
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rich corals, schooling batfish, tuna, turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-7gkt3m",
+   "name": "Manta Sandy",
+   "sources": {
+    "s1": {
+     "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/manta-sandy/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "Max Depth: 16 meters … Mild to Medium … best suited for beginners or experienced divers dependent on the day … Best For: Sit Back and Watch The Manta Show!"
+    },
+    "s2": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity Eco Resort",
+     "kind": "operator",
+     "quote": "Manta Sandy … 2m-18m … Between the months of October and April, great numbers of Manta Rays congregate in the shallow"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 2,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Manta cleaning station",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Turtles, blacktip sharks, Pegasus sea moth",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "season": {
+    "from": 10,
+    "to": 4,
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A shallow sandy-bottomed manta cleaning station near Mioskon in Raja Ampat. Black, reef and oceanic mantas queue up to be cleaned, most reliably October to April, in mild current.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ql33uq",
+   "name": "Seahorse Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.trawangandive.com/dive-sites-gili-islands/",
+     "publisher": "Trawangan Dive",
+     "kind": "operator",
+     "quote": "Seahorse Bay … All levels … Typically a north to south current making the site perfect for drift diving … an amazing site for muck diving"
+    },
+    "s2": {
+     "url": "https://next-level-scuba.com/dive-sites-gili-air/",
+     "publisher": "Next Level Scuba",
+     "kind": "operator",
+     "quote": "Seahorse Bay … Keep an eye out for hairy frogfish, flamboyant cuttlefish, seahorses … an excellent dive for photographers"
+    }
+   },
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Seahorses, hairy frogfish, flamboyant cuttlefish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Popular night dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A black-sand muck site on the Lombok side of the Gilis, good for macro photographers. Seahorses, hairy frogfish and flamboyant cuttlefish turn up, and it comes alive at dusk for night dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-0qx1yw",
+   "name": "Tatawa Kecil",
+   "sources": {
+    "s1": {
+     "url": "https://diveconcepts.com/tatawa-kecil-komodo",
+     "publisher": "Dive Concepts",
+     "kind": "operator",
+     "quote": "maximum depth of Tatawa Kecil is 30 meters … recommended only for experienced divers"
+    },
+    "s2": {
+     "url": "https://mantadivekomodo.com/komodo-dive-sites/",
+     "publisher": "Manta Dive Komodo",
+     "kind": "operator",
+     "quote": "Tatawa Kecil A more technical boulder-and-current site with valleys, swim-through potential and larger fish. Best reserved for divers comfortable with current management. Boulder / drift Max 30m"
+    },
+    "s3": {
+     "url": "https://dragondivekomodo.com/?p=12165",
+     "publisher": "Dragon Dive Komodo",
+     "kind": "operator",
+     "quote": "Level: very experienced divers only Current: strong to very strong — a specific tidal window is mandatory"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock formations, swim-throughs and boulders",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Eagle rays, giant trevally and sharks",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Very strong current; tidal window needed",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A rocky islet in the Linta Strait between Komodo and Rinca with swim-throughs, boulders and coral gardens. Current is strong to very strong, so it is for experienced divers timing the tide; sharks and rays patrol.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-t103n9",
+   "name": "Menjangan - Pos 2",
+   "sources": {
+    "s1": {
+     "url": "https://menjanganislandtrip.com/menjangan-dive-site-conditions/",
+     "publisher": "Menjangan Island Trip",
+     "kind": "operator",
+     "quote": "Pos II … 12 to 25 meters … Light to moderate … Intermediate"
+    },
+    "s2": {
+     "url": "https://indopacificimages.com/?p=8748",
+     "publisher": "Indo Pacific Images",
+     "kind": "operator",
+     "quote": "The wall starts at about 12m and extends down to 40m and then slopes off in to the blue"
+    },
+    "s3": {
+     "url": "https://balifundiving.com/bali-dive-sites/menjangan-island/",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "wall dives starting at 12 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gorgonian fans between 20 and 25 m",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Triggerfish, fusiliers, trevally",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Aggressive nesting triggerfish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A craggy wall on Menjangan starting at around 12 m and falling to about 40 m, with big gorgonian fans at 20-25 m. Light to moderate current; watch for territorial triggerfish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-60swpn",
+   "name": "Sardine Reef",
+   "sources": {
+    "s1": {
+     "url": "https://diveconcepts.com/sardine-reef-raja-ampat",
+     "publisher": "Dive Concepts",
+     "kind": "operator",
+     "quote": "The coral reef is not deep, sloping to around 30 meters … just 5 meters below the surface … Sometimes the current can be quite strong, which makes the site be dived regularly as a drift dive"
+    },
+    "s2": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity Eco Resort",
+     "kind": "operator",
+     "quote": "Sardines Reef … Intermediate – Advanced … 3m-30m … Mild-Strong"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dense schools of fusiliers, snappers, surgeonfish",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Sharks and pygmy seahorses in the fans",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A reef whose summit sits about 5 m down and slopes to roughly 30 m off Cape Kri, packed with fusiliers and snappers. Current can run strong, so it is often a drift; sharks and pygmy seahorses are regular.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-pjexlr",
+   "name": "Coral Garden, Menjangan",
+   "sources": {
+    "s1": {
+     "url": "https://menjanganislandtrip.com/menjangan-dive-site-conditions/",
+     "publisher": "Menjangan Island Trip",
+     "kind": "operator",
+     "quote": "Coral Garden … 5 to 20 meters … Light … Beginner"
+    },
+    "s2": {
+     "url": "https://www.easy-divers.eu/menjangan-island-dive-sites",
+     "publisher": "Easy Divers Bali",
+     "kind": "operator",
+     "quote": "Coral Garden … 3 to 25 m … full of reef fish, big coral fans"
+    },
+    "s3": {
+     "url": "https://balifundiving.com/bali-dive-sites/menjangan-island/",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "a shallow dive site (5 to 12 meters)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 25
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 5,
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hard and soft coral, big fans, reef fish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow, calm coral garden on Menjangan, suitable for beginners and snorkellers. Hard and soft coral colonies, big fans and plenty of reef fish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-qwqf0f",
+   "name": "Blue Magic",
+   "sources": {
+    "s1": {
+     "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/blue-magic/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "Max Depth: 30 meters Typical Current: Medium to Strong"
+    },
+    "s2": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity Eco Resort",
+     "kind": "operator",
+     "quote": "Blue Magic … Intermediate – Advanced … 9m-30m … Mild-Strong"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 9,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef and oceanic mantas at cleaning stations",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sharks, dog-toothed tuna, giant trevally",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong current may need reef hooking",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A pelagic hotspot off Mansuar: a reef top at 7-8 m sloping to 25-30 m. Mantas visit cleaning stations and sharks, tuna and trevally pass through. Current is medium to strong.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-wl4sju",
+   "name": "Citrus Ridge",
+   "sources": {
+    "s1": {
+     "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/citrus-ridge/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "depths ranging from 10 to 27meters … The currents here are moderate to strong … intermediate to advanced divers"
+    },
+    "s2": {
+     "url": "https://divernet.com/features/raja-ampat-dive-sites-citrus-ridge/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "This large pinnacle is found around 14m in-depth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle",
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Soft corals in orange and yellow hues",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Bumphead parrotfish, barracuda, wobbegong",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Intense current: do not swim into it",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A pinnacle and ridge in Raja Ampat plastered in soft coral, with schools of bumphead parrotfish, barracuda and fusiliers. Currents are moderate to strong and the dive direction follows the flow.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-5o09r4",
+   "name": "Seraya Tulamben",
+   "sources": {
+    "s1": {
+     "url": "https://baliaqua.com/bali-dive-sites/tulamben-diving/",
+     "publisher": "Bali Aqua",
+     "kind": "operator",
+     "quote": "Seraya Secret … Depth: 4–40 meters … Calm to mild current"
+    },
+    "s2": {
+     "url": "https://www.amedwhitesanddivers.com/fun-dives/dive-sites-tulamben/",
+     "publisher": "Amed White Sand Divers",
+     "kind": "operator",
+     "quote": "Seraya Secrets … 3–40 m … World famous macro dive site for photographers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Harlequin shrimp, frogfish, ghost pipefish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A world-famous black-sand macro slope on the Tulamben coast, with artificial structures in the shallows and sponge and coral further down. Calm to mild current; frogfish, harlequin shrimp and ghost pipefish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-j4aqc2",
+   "name": "Emerald",
+   "sources": {
+    "s1": {
+     "url": "https://baliaqua.com/bali-dive-sites/tulamben-diving/",
+     "publisher": "Bali Aqua",
+     "kind": "operator",
+     "quote": "Emerald … Depth: 5–30+ meters … Calm to moderate … The dive begins in a shallow bay with a sandy white bottom"
+    },
+    "s2": {
+     "url": "https://tulambenscuba.com/batu-emerald-dive-site/",
+     "publisher": "Tulamben Scuba",
+     "kind": "operator",
+     "quote": "At around 20-30m depth, the reef becomes richer with a large number of sponges"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sandy slope with artificial structures",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Gorgonian fans, eel gardens, reef sharks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A quiet Tulamben boat or jukung dive starting in a sandy bay with artificial structures, then a drop-off where sponges and gorgonian fans get richer from about 20-30 m. Reef sharks are a good sighting.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-21lc8i",
+   "name": "Simon’s Reef",
+   "sources": {
+    "s1": {
+     "url": "https://divinedivers.com/gili-islands-dive-sites-the-complete-guide-with-maps/",
+     "publisher": "Divine Divers",
+     "kind": "operator",
+     "quote": "Simon's Reef Depth: 14–25 metres Level: Advanced … Simon's Reef at a glance Maximum depth 30 meters Typical visibility 20-30 meters Current strength mild to strong"
+    },
+    "s2": {
+     "url": "https://next-level-scuba.com/dive-sites-gili-air/",
+     "publisher": "Next Level Scuba",
+     "kind": "operator",
+     "quote": "rises from a sandy bottom at a depth of 35m … The average depth for this dive site is around 25m"
+    },
+    "s3": {
+     "url": "https://manta-dive.com/diving-gili-trawangan/gili-dive-sites/",
+     "publisher": "Manta Dive",
+     "kind": "operator",
+     "quote": "the best deep dive sites for recreational divers (30m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 14,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyons and big coral bommies",
+     "refs": [
+      "s2",
+      null
+     ]
+    },
+    {
+     "text": "Reef sharks, turtles, schooling fish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep mid-channel site north of the Gilis with canyons and large bommies rising from sand. Channel currents funnel in schooling fish, reef sharks and turtles; suited to advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-wslbvx",
+   "name": "Air Wall",
+   "sources": {
+    "s1": {
+     "url": "https://divinedivers.com/gili-islands-dive-sites-the-complete-guide-with-maps/",
+     "publisher": "Divine Divers",
+     "kind": "operator",
+     "quote": "Air Wall … 5–25 metres … Beginner to Advanced … mild to strong"
+    },
+    "s2": {
+     "url": "https://next-level-scuba.com/dive-sites-gili-air/",
+     "publisher": "Next Level Scuba",
+     "kind": "operator",
+     "quote": "As the slope evens out at around 18 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall covered in corals and sponges",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles, cuttlefish, batfish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sloping reef off Gili Air that steepens into a wall around 18 m, covered in coral and sponges. Turtles are frequent and conditions are usually manageable.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-9edvy7",
+   "name": "Napoleon Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.easy-divers.eu/north-west-bali-dive-sites/pemuteran-dive-sites/",
+     "publisher": "Easy Divers Bali",
+     "kind": "operator",
+     "quote": "Napoleon Reef … 3 to 25 m … Discover the wonderful corals in its shallow area and a deep pinnacle adorned with gorgonian fans"
+    },
+    "s2": {
+     "url": "https://searovers.net/diving-nw-bali/pemuteran-bay-treasures/",
+     "publisher": "Sea Rovers Dive Center",
+     "kind": "operator",
+     "quote": "The deep end of Napoleon Reef offers the usual and unusual fish from Close Encounters, plus rays and cuttlefish are a regular sighting"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gorgonian-covered pinnacle and shallow corals",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Rays and cuttlefish on the deep end",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  }
+ ]
+}

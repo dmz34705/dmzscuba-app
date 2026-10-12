@@ -1,0 +1,112 @@
+{
+ "batch": "notable-sweden-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "osm-n1531089111",
+   "reason": "Trubaduren fyr: no dive information found"
+  },
+  {
+   "id": "x-notable-1126",
+   "reason": "Finnbirch: no depth/dive source"
+  },
+  {
+   "id": "x-notable-886",
+   "reason": "SS Westfalen: no depth/dive source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "x-wikipedia-128",
+   "name": "Ship cemetery at Ekenabben",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Ship_cemetery_at_Ekenabben",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Several of the wrecks in the ship cemetery are attractive dive sites for recreational divers \u2026 The ship cemetery lies at a depth of 12 m (39 ft) on a bottom of sand and stone."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-954",
+   "name": "Kronan",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Kronan_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The remains of Kronan lie at a depth of 26 m (85 ft), 6 km (3.7 mi) east of Hulterstad"
+    },
+    "s2": {
+     "url": "https://guide.kalmarlansmuseum.se/en/the-crown/the-wreck-site/",
+     "publisher": "Kalmar l\u00e4ns museum",
+     "kind": "agency",
+     "quote": "situated at a depth of 26 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 26
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 26
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1267",
+   "name": "Mars",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Swedish_warship_Mars",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck of Mars settled to the sea bed at a depth of 75 metres (246 ft)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 75
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

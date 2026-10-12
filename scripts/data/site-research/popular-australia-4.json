@@ -1,0 +1,645 @@
+{
+ "batch": "popular-australia-4",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-mviazx",
+   "reason": "no site-specific page for Little Tracy's found"
+  },
+  {
+   "id": "odm-igk7us",
+   "reason": "only a shared-sentence mention; no depth/entry source"
+  },
+  {
+   "id": "odm-cfbdiv",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-hwllzd",
+   "reason": "generic name, whole Great Barrier Reef"
+  },
+  {
+   "id": "odm-svzq9d",
+   "reason": "Wonderwall not on any non-banned page found"
+  },
+  {
+   "id": "odm-t9cord",
+   "reason": "only depth to 20 m on tourism page, conflicts with catalog"
+  },
+  {
+   "id": "odm-17rnml",
+   "reason": "Blue Pearl Bay depth outside tolerance, no second fact"
+  },
+  {
+   "id": "odm-6amnbc",
+   "reason": "no clear same-site source"
+  },
+  {
+   "id": "odm-csf2xr",
+   "reason": "only banned directories"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-myap9v",
+   "name": "Bushrangers Bay",
+   "sources": {
+    "s1": {
+     "url": "https://npansw.org.au/2018/06/01/feature-dive-bass-point/",
+     "publisher": "National Parks Association of NSW",
+     "kind": "press",
+     "quote": "Bushrangers Bay (-34.597151, 150.899772), at the end of the tourist road. It’s a fully-protected sanctuary zone … Marine life in the bay includes Grey Nurse sharks"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Fully protected sanctuary zone (no take)",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-sss193",
+   "name": "Gravel Loader",
+   "sources": {
+    "s1": {
+     "url": "https://npansw.org.au/2018/06/01/feature-dive-bass-point/",
+     "publisher": "National Parks Association of NSW",
+     "kind": "press",
+     "quote": "the Gravel Loader. You enter the water at the boat ramp … the highlight is the population of Grey Nurse sharks, which come and go from the end of the loader"
+    },
+    "s2": {
+     "url": "https://visitnsw.com/destinations/south-coast/shellharbour-area/diving-and-snorkelling",
+     "publisher": "Visit NSW",
+     "kind": "agency",
+     "quote": "The Gravel Loader (known for its giant cuttlefish and blue gropers)"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks at the loader end",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Giant cuttlefish and blue gropers",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shore dive from the boat ramp at Bass Point: a short surface swim to a disused loader jetty whose pylons shelter fish and invertebrates, with grey nurse sharks often passing and cuttlefish and gropers around.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-gt3nsj",
+   "name": "The Gutter",
+   "sources": {
+    "s1": {
+     "url": "https://npansw.org.au/2018/06/01/feature-dive-bass-point/",
+     "publisher": "National Parks Association of NSW",
+     "kind": "press",
+     "quote": "The dive site is accessed by walking down to the water’s edge … home to protected Weedy Seadragons, Pygmy Pipehorses and Blue Devilfish … at The Gutter due to the depth (20 m)"
+    },
+    "s2": {
+     "url": "https://visitnsw.com/destinations/south-coast/shellharbour-area/diving-and-snorkelling",
+     "publisher": "Visit NSW",
+     "kind": "agency",
+     "quote": "The Gutter (good for all experience levels)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Weedy seadragons, pygmy pipehorses, blue devilfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shore dive at Bass Point entered down a rocky gutter at the water edge, dropping to an underwater amphitheatre near 20 m. Rated suitable for a range of experience levels; watch swell at the exit and no-deco limits.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ubje8f",
+   "name": "Blue Devil Cave",
+   "sources": {
+    "s1": {
+     "url": "https://www.frasersproperty.com.au/nsw/shell-cove/news/2023/08/09/waves-of-discovery---scuba-dive-bass-point",
+     "publisher": "Fraser Property Shell Cove",
+     "kind": "press",
+     "quote": "the notorious Blue Devil Cave which is home to a tame Blue Devil Fish willing to be hand-fed"
+    },
+    "s2": {
+     "url": "https://visitnsw.com/destinations/south-coast/shellharbour-area/diving-and-snorkelling",
+     "publisher": "Visit NSW",
+     "kind": "agency",
+     "quote": "Blue Devil Cave (renowned for sightings of the Sydney pygmy pipehorse)"
+    }
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Tame blue devilfish",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sydney pygmy pipehorse",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A well-known Bass Point cave dive near The Gutter, famous for blue devilfish that are used to divers and for sightings of the tiny Sydney pygmy pipehorse.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-8tt5sf",
+   "name": "Hole in the Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.frasersproperty.com.au/nsw/shell-cove/news/2023/08/09/waves-of-discovery---scuba-dive-bass-point",
+     "publisher": "Fraser Property Shell Cove",
+     "kind": "press",
+     "quote": "Within this ‘Hole in the Wall’ expect to find Australian giant cuttlefish, boxfish, moray eels, and wobbegongs"
+    },
+    "s2": {
+     "url": "https://visitnsw.com/destinations/south-coast/shellharbour-area/diving-and-snorkelling",
+     "publisher": "Visit NSW",
+     "kind": "agency",
+     "quote": "The Arch and the Hole in the Wall (home to the blue kneed sea spider which is unique to the South Coast)"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Giant cuttlefish, boxfish, moray eels, wobbegongs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Blue-kneed sea spider (unique to South Coast)",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A hole in the reef on the southern side of Bass Point reserve with plenty of fish, cuttlefish, eels and wobbegongs, and a spider crab species found only on the NSW south coast.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-z3jift",
+   "name": "Fly Point",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/diving-nelson-bay-exploring-australias-east-coast-marine-wonderland/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Fly Point offers great parking (but do get there early for your dive) and easy access into the water via some steps with a handrail, so no rock hopping."
+    },
+    "s2": {
+     "url": "https://daveharasti.com/nelsonbay/divesites.htm",
+     "publisher": "Dave Harasti (marine scientist, Nelson Bay)",
+     "kind": "press",
+     "quote": "Fly Point is considered a very easy and safe dive site … This dive must be done on a SLACK tide as the currents here are VERY STRONG! … Out in the deeper water (17-22 metres) there are prolific sponge gardens"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sponge gardens in 17-22 m",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Pineapple fish, wobbegongs, nudibranchs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Easy Nelson Bay shore dive via steps and a handrail, popular for training. Ledges run along the shore with sponge gardens deeper out. Currents are strong so it is dived at slack tide.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-zvdo9d",
+   "name": "Little Beach - NSW",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/diving-nelson-bay-exploring-australias-east-coast-marine-wonderland/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Little Beach is another of my favourite dives … easy access with a short walk to the smaller beach and descend near the jetty … in about 12m is an upturned old barge that was sunk there"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken barge reef at about 12 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ye0ez9",
+   "name": "Halifax Point",
+   "sources": {
+    "s1": {
+     "url": "https://daveharasti.com/nelsonbay/divesites.htm",
+     "publisher": "Dave Harasti (marine scientist, Nelson Bay)",
+     "kind": "press",
+     "quote": "This dive must be done on a SLACK tide as the currents here are VERY STRONG! … Halifax is a great dive site and offers plenty for all … drops down a wall from about 18 metres to about 26 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 26
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Very strong currents - dive at slack tide only",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tiz29k",
+   "name": "Pipeline",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/diving-nelson-bay-exploring-australias-east-coast-marine-wonderland/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "My favourite night dive in Nelson Bay is The Pipeline … the entry point is over the rocks but there is a path cleared. The site is an old disused sewer pipe which goes out into the bay."
+    },
+    "s2": {
+     "url": "https://daveharasti.com/nelsonbay/divesites.htm",
+     "publisher": "Dave Harasti (marine scientist, Nelson Bay)",
+     "kind": "press",
+     "quote": "The pipeline is approximately 250 metres long"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Old sewer pipe with soft corals and sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Nelson Bay night-dive favourite at the marina end: a rock entry then a roughly 250 m disused pipe running out into the bay, covered in macro life.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-sahdzj",
+   "name": "SS Yongala Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Yongala",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The depth of water to the sea floor is about 30 metres (98 ft), with the upper parts of the wreck 16 metres (52 ft) below the surface."
+    },
+    "s2": {
+     "url": "https://museum.qld.gov.au/learn-and-discover/online-exhibitions/ss-yongala",
+     "publisher": "Queensland Museum",
+     "kind": "agency",
+     "quote": "Lying in 30m of water on a flat and sandy seafloor, it has attracted a myriad of colonising marine flora and fauna. Although the superstructure of the vessel has long since disappeared, the integrity of the hull remains"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The 1911 steamer Yongala lies on a sandy seabed about 30 m deep off Townsville, its upper hull near 16 m. The superstructure is gone but the hull is intact and heavily colonised by marine life.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-sp9o5y",
+   "name": "Fish Rock Cave",
+   "sources": {
+    "s1": {
+     "url": "https://daveharasti.com/articles/fishrock.htm",
+     "publisher": "Dave Harasti (Australasia Scuba Diver, 2007)",
+     "kind": "press",
+     "quote": "the cave runs from the deeper seaward entrance at 24 metres, 125 metres through the rock emerging into the blue, fish filled, silhouetted shallower entrance fringed by pink gorgonian fans at 12 metres … a torch is essential!"
+    },
+    "s2": {
+     "url": "https://fishrock.com.au/pages/diving-sites",
+     "publisher": "Fish Rock Dive Centre",
+     "kind": "operator",
+     "quote": "At 120 metres long, and well known as one of the largest ocean caverns in the southern hemisphere, Fish Rock Cave has attracted divers worldwide. Enter the deep end of the cave at a depth of 24 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 24
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Pitch-black shaft section; torch essential",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A roughly 120-125 m ocean cave through Fish Rock off South West Rocks, between a deep entrance near 24 m and a shallow one near 12 m, with grey nurse sharks and big schools of fish.",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-vibn90",
+   "name": "Milln Reef - The Whale",
+   "sources": {
+    "s1": {
+     "url": "https://prodivecairns.com/divesites",
+     "publisher": "Pro Dive Cairns",
+     "kind": "operator",
+     "quote": "Whale Bommie provides good diving with depths exceeding 20 metres. A great site to dive at night where you can expect to see sleeping turtles, reef crabs, painted lobsters, soft corals and gorgonian fans"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Night dive: sleeping turtles, painted lobsters, gorgonians",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-zti4ob",
+   "name": "Flynn Reef - Coral Gardens",
+   "sources": {
+    "s1": {
+     "url": "https://prodivecairns.com/divesites",
+     "publisher": "Pro Dive Cairns",
+     "kind": "operator",
+     "quote": "Tracy's Bommie, Gordon's Mooring, Tennis Court and Coral Gardens … Flynn Reef Rating: Novice - Intermediate Mild Currents Visibility - 15 to 20 metres"
+    }
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 20,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-c051rt",
+   "name": "Butterfly Bay “KEYHOLE“",
+   "sources": {
+    "s1": {
+     "url": "https://100magicmiles.com/whitsunday-dive-sites/",
+     "publisher": "100 Magic Miles",
+     "kind": "press",
+     "quote": "Hook Island (Butterfly Bay) Visibility: 2-10 metres Diving depth: 5-12 metres … Tidal currents can be a problem"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 12
+    }
+   ],
+   "vis": {
+    "low": 2,
+    "high": 10,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Tidal currents toward centre of bay",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-c75t0p",
+   "name": "Busselton Jetty",
+   "sources": {
+    "s1": {
+     "url": "https://exploreparks.dbca.wa.gov.au/site/busselton-jetty",
+     "publisher": "WA Dept of Biodiversity, Conservation and Attractions",
+     "kind": "park",
+     "quote": "Snorkel, or dive, and you will be surrounded by enormous schools of yellowtail, Australian herring and longfin pike … Admission fees apply"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Schools of yellowtail, herring and longfin pike",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "access": {
+    "value": "Jetty admission fees apply",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-2kqbro",
+   "name": "St Leonards Pier",
+   "sources": {
+    "s1": {
+     "url": "https://www.parks.vic.gov.au/places-to-see/sites/st-leonards-pier",
+     "publisher": "Parks Victoria",
+     "kind": "park",
+     "quote": "St Leonards Pier is a popular spot for fishing snorkelling and diving … No jumping or diving off piers or jetties … Shallow water Deep water Submerged obstacles Strong currents"
+    }
+   },
+   "access": {
+    "value": "No jumping or diving off the pier structures",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Shallow water and submerged obstacles",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Strong currents",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "batch": "popular-guadeloupe-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-qcjnla",
+   "name": "POINTE AUX FOUS",
+   "sources": {
+    "s1": {
+     "url": "https://www.tropicalsubdiving-plongeeguadeloupe.com/en/sitesdeplongee",
+     "publisher": "Tropicalsub Diving (Deshaies)",
+     "kind": "operator",
+     "quote": "Pointe aux Fous At the foot of the cliff stretches a strip of coral followed by a strip of sand ending in large masses of coral. Very rich in coral fauna. Depth from 3 to 16 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 16
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral strip below the cliff, very rich coral fauna",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ipgz98",
+   "name": "POINTE FERRY",
+   "sources": {
+    "s1": {
+     "url": "https://www.tropicalsubdiving-plongeeguadeloupe.com/en/sitesdeplongee",
+     "publisher": "Tropicalsub Diving (Deshaies)",
+     "kind": "operator",
+     "quote": "Point Ferry Band of coral advancing under the sea and forming a wall several meters high. Depth from 3 to 25 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral band forming a wall several metres high",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-kf1ih8",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-w3mb91",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-bfbn4d",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

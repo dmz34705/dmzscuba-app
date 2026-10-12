@@ -1,0 +1,1014 @@
+{
+ "batch": "popular-curacao-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-tmafyu",
+   "reason": "generic bay name; no site-specific page found"
+  },
+  {
+   "id": "odm-qqef1k",
+   "reason": "no usable non-banned source"
+  },
+  {
+   "id": "odm-4o4cih",
+   "reason": "only a dive-shop mention; no site facts"
+  },
+  {
+   "id": "odm-x3289y",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-pa6pbe",
+   "reason": "pages spell it Vaersen Bay/Kokomo, so the name check cannot confirm it"
+  },
+  {
+   "id": "odm-wrsb8f",
+   "reason": "ambiguous with Habitat/Porto Marie; no clear source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-99zpxm",
+   "name": "Director's Bay",
+   "sources": {
+    "s1": {
+     "url": "https://fundivingcuracao.com/en/dive-sites",
+     "publisher": "Fundiving Curacao",
+     "kind": "operator",
+     "quote": "Director’s Bay … The drop-off is located close to the shoreline at a depth of 6 metres, from where the reef immediately drops steeply to a depth of 45 metres … yellow pencil coral and giant anemones"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Directors Bay … you can dive to 40 metres here … a lot of coral and sponges on the fencing in the bay that was placed there to keep sharks away"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Perfectly suited for divers and snorkelers. This dive site landmark is an old decaying shark fence now covered in corals and sponges"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 45
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Old shark fence covered in coral and sponges",
+     "refs": [
+      "s3",
+      "s2"
+     ]
+    },
+    {
+     "text": "Yellow pencil coral and giant anemones at the drop-off",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Former Shell directors' beach on Curaçao's south coast. A narrow sandy shelf ends at a drop-off about 6 m down, then the reef falls steeply to roughly 40-45 m. The sponge- and coral-covered old shark fence is the landmark.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-7dhkfz",
+   "name": "Boca Sami",
+   "sources": {
+    "s1": {
+     "url": "https://www.divewederfoort.com/local-diving-sites/boca-sami",
+     "publisher": "Dive Wederfoort",
+     "kind": "operator",
+     "quote": "Boca Sami … Just enter the water from our dive school. After a little swim, you will find the drop-off that starts at about 6 meters and goes down to about 45 meters … sea turtles, eagle Ray’s, mini squids"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 45
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea turtles, eagle rays and mini squids",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-axlrus",
+   "name": "Marie Pampoen",
+   "sources": {
+    "s1": {
+     "url": "https://fundivingcuracao.com/en/dive-sites",
+     "publisher": "Fundiving Curacao",
+     "kind": "operator",
+     "quote": "Marie Pampoen … The dive site itself starts after exiting the bay, where you will quickly reach the drop-off … porcupinefish dancing around each other, tarpons checking you out from a distance and moray eels"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Porcupinefish, tarpon and moray eels around the car pile",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-kziqt1",
+   "name": "Playa Cas Abao",
+   "sources": {
+    "s1": {
+     "url": "https://www.divewederfoort.com/local-diving-sites/cas-abou",
+     "publisher": "Dive Wederfoort",
+     "kind": "operator",
+     "quote": "Cas Abou … You can enter the water right in front of the dive shop … a standard wall dive with a drop off that starts at about 6 meters … barracudas, sea cucumbers, and eagle rays"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Cas Abou … you can simply walk from the beach into the water and don’t need to climb anything or use a boat to get there"
+    },
+    "s3": {
+     "url": "https://flipflopwanderers.com/best-dive-spots-curacao/",
+     "publisher": "Flip Flop Wanderers",
+     "kind": "press",
+     "quote": "Cas Abou … It’s great for beginners because you can walk into the water from the beach … The entrance fee is 10 Nafl ($6) Mon-Sat"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2",
+     "s1",
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Beach entrance fee (about 10 Nafl, higher on Sundays)",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mushroom-like coral formations, barracuda and eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Walk-in shore dive from a pretty beach on the west coast: a sandy start leads to a drop-off around 6 m and a coral-covered wall. Easy navigation makes it a good beginner site.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-eeggd1",
+   "name": "Double Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Double Reef West of Santa Ana Bay, this double reef has its shallows covered with small brain corals and loads of sun anemones"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Double Reef … Here you can find two reefs (hence the name) in the middle a big sandy area … you’d need diving shoes as there is a rocky beach"
+    },
+    "s3": {
+     "url": "https://fundivingcuracao.com/en/dive-sites",
+     "publisher": "Fundiving Curacao",
+     "kind": "operator",
+     "quote": "Double Reef … The reef consists of fan coral, yellow pencil coral and many small, round brain coral formations"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Brain corals and sun anemones in the shallows",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Two reefs separated by a wide sandy area",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Rocky entry and surf; dive shoes needed",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Two parallel reefs separated by a big sandy area, west of Santa Ana Bay. Shallows carry small brain corals and sun anemones, with fan and pencil coral beyond. Entry over a rocky beach with some surf.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-t030bt",
+   "name": "Superior Producer (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Superior Producer … This cargo freighter sunk in December of 1977 and is now sitting upright at a depth of 100ft/30m"
+    },
+    "s2": {
+     "url": "https://fundivingcuracao.com/en/dive-sites",
+     "publisher": "Fundiving Curacao",
+     "kind": "operator",
+     "quote": "Superior Producer … currents that can be very strong makes this dive site a good place for the advanced divers … The depth of the sand floor here is 34 metres … on the superstructure is 17 metres"
+    },
+    "s3": {
+     "url": "https://www.colemanconcierge.com/scuba-diving-curacao/",
+     "publisher": "Coleman Concierge",
+     "kind": "press",
+     "quote": "Divers can only reach the Superior Producer when no cruise ships are in port"
+    },
+    "s4": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Superior Producer … without experience you can explore the wheelhouse and the cargo space"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 17,
+     "bottom": 34
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright cargo freighter; wheelhouse and holds to explore",
+     "refs": [
+      "s1",
+      "s4"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "No diving when a cruise ship is in port",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Depth and strong currents",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Cargo freighter sunk in 1977 that sits upright near the Willemstad main pier, from about 17 m on the superstructure to 34 m on the sand. Strong currents make it an advanced dive, and it is closed whenever a cruise ship is in port.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-mdiggk",
+   "name": "Snake Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.divewederfoort.com/local-diving-sites/snake-bay",
+     "publisher": "Dive Wederfoort",
+     "kind": "operator",
+     "quote": "Snake bay … The drop-off begins at about 9 meters and descends to about 40 meters … the steep slope to the bay can be very slippery … the large number of morays and eels"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Snake Bay … Huge Jacks chasing bait balls, Caribbean Chromies, Creole Wrasses, Southern Rays, and Turtles"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 9,
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Many moray eels",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Jacks chasing bait balls, creole wrasse, rays, turtles",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Steep, slippery slope at the entry by the pier",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Busy reef off a small pier on the west coast where the drop-off starts around 9 m and falls to about 40 m. Known for moray eels and heavy fish traffic including jacks, rays and turtles.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-rt2fk3",
+   "name": "Car Pile - Marie Pampoen (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://fundivingcuracao.com/en/dive-sites",
+     "publisher": "Fundiving Curacao",
+     "kind": "operator",
+     "quote": "Marie Pampoen … The carpile starts around 15 meters of depth and drops down to well below 40 meters, making this a perfect spot for your deep and/or Tec dive … many invasive lionfish are hiding between the metal scrap"
+    },
+    "s2": {
+     "url": "https://epsiloncuracao.com/divesites",
+     "publisher": "Epsilon Curacao",
+     "kind": "operator",
+     "quote": "Car Pile … This artificial reef, created from a collection of sunken cars, construction equipment, and other large debris"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lionfish hiding in the metal scrap",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Debris continues well below 40 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Artificial reef of sunken cars, beams and a small barge off Marie Pampoen. The debris starts around 15 m and keeps dropping well below 40 m, so it is a deep or technical dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-r0t2qz",
+   "name": "Blue Bay Garden",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Blue Bay Gardens A true underwater garden. Box crabs in the sand, octopus, and baby clusters of brain and star corals"
+    },
+    "s2": {
+     "url": "https://www.diveshopcuracao.com/guided-dives-house-reef",
+     "publisher": "Blue Bay Dive & Watersports",
+     "kind": "operator",
+     "quote": "The Garden & The Wall … Step straight into the beach at Blue Bay Beach … The Garden (left side): This vibrant coral slope begins at just 5 meters (15 feet) and gently drops to about 50 meters (165 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 50
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Box crabs, octopus and baby brain and star corals",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Gorgonians and cleaning stations on the slope",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shore dive from Blue Bay Beach over a coral slope that begins at about 5 m and drops gently to roughly 50 m. Known for small critters such as box crabs and octopus, plus cleaning stations.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-cpc2xy",
+   "name": "Blue Bay the Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.diveshopcuracao.com/guided-dives-house-reef",
+     "publisher": "Blue Bay Dive & Watersports",
+     "kind": "operator",
+     "quote": "Step straight into the beach at Blue Bay Beach … The Wall (right side): A dramatic drop-off starting at 3 meters (10 feet) and plunging to 55 meters (180 feet) … Famous for its colorful fan corals and elkhorn corals"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/dive-site-blue-bay-curacao/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Dive Site: Blue Bay, Curacao … This is a big wall dive … quite easy to accidentally go deeper than you anticipated"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 55
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fan corals and elkhorn coral",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Easy to drift deeper than planned on the wall",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Wall dive reached straight from Blue Bay Beach: the drop-off starts around 3 m and plunges past 50 m. Fan and elkhorn corals make it popular, but clear water makes it easy to go deeper than planned.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-2i2luq",
+   "name": "Ship Wreck Point",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Shipwreck Point … This is like diving inside an aquarium! Next to our dive shop, sits one of the healthiest reefs around Curacao"
+    },
+    "s2": {
+     "url": "https://www.colemanconcierge.com/scuba-diving-curacao/",
+     "publisher": "Coleman Concierge",
+     "kind": "press",
+     "quote": "facilitates many excellent short-trip boat dives like Car Piles, Cornelius Bay, Shipwreck Point, Saba Wreck, and Stella Maris Reef"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "One of the healthiest reefs around Curaçao, aquarium-like fish life",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Short boat dive off the Mambo Beach area on a reef described as one of the healthiest around Curaçao, with fish life like an aquarium.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1pp7rr",
+   "name": "Saba",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Saba The small tugboat that sits in the shallows is called Saba, and its only at 5 meters/15 ft"
+    },
+    "s2": {
+     "url": "https://www.colemanconcierge.com/scuba-diving-curacao/",
+     "publisher": "Coleman Concierge",
+     "kind": "press",
+     "quote": "The Saba wreck is a sunken tugboat surrounded by abundant sea life … short-trip boat dives like Car Piles, Cornelius Bay, Shipwreck Point, Saba Wreck"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 5
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small sunken tugboat with abundant sea life",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Small sunken tugboat lying in the shallows at only about 5 m, reached by a short boat ride from Mambo Beach. Less visited than the Tugboat Wreck and ringed by plenty of fish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-c21bhn",
+   "name": "Barracuda Point",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Barracuda Point A favorite Curacao dive, covered in dense coral formations, gorgonians and boulder corals. Turtles are spotted often on this dive site, as well as jacks and barracudas"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Dense coral formations, gorgonians and boulder corals",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Turtles, jacks and barracuda",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-zzveh1",
+   "name": "Beacon Point",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Beacon Point Currents make this site an intermediate to advanced dive. You will see the largest pillar coral formation in the Caribbean at this dive"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Beacon Point … a stunning drop-off … barracudas, groupers, nurse sharks and big Jacks … Keep the sometimes strong current in mind when you visit this boat diving site … Level: Experienced divers"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Largest pillar coral formation in the Caribbean",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Drop-off with barracuda, groupers, nurse sharks and jacks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Sometimes strong current",
+     "refs": [
+      "s2",
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Boat dive on Curaçao's south coast with a stunning drop-off, big pillar coral and predators such as barracuda and nurse sharks. Current can be strong, so it suits experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-45i94l",
+   "name": "Cornelius Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Cornelius Bay Elkhorn Coral can be spotted during this dive on the plateau. Seahorses are found around the many gorgonians along the wall"
+    },
+    "s2": {
+     "url": "https://www.colemanconcierge.com/scuba-diving-curacao/",
+     "publisher": "Coleman Concierge",
+     "kind": "press",
+     "quote": "short-trip boat dives like Car Piles, Cornelius Bay, Shipwreck Point"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Elkhorn coral on the plateau",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Seahorses among gorgonians along the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Short boat dive from Mambo Beach: a coral plateau with elkhorn coral that leads to a wall draped in gorgonians, where seahorses can be found.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-tfj1el",
+   "name": "Oswaldo’s Drop Off",
+   "sources": {
+    "s1": {
+     "url": "https://www.caribseasports.com/blog/p_21/",
+     "publisher": "Caribbean Sea Sports",
+     "kind": "operator",
+     "quote": "Oswaldo’s Drop Off … The drop off is only 100 yards from shore with the reef wall starting in 30 feet of water, gradually plunging to a depth of 130 feet … great snorkeling on a shallow terrace"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 130
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shallow terrace good for snorkeling",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-lk2abc",
+   "name": "Habitat",
+   "sources": {
+    "s1": {
+     "url": "https://villa-coralbay.com/en/rif-st-marie-habitat_en",
+     "publisher": "Villa Coral Bay",
+     "kind": "operator",
+     "quote": "Rif St. Marie Habitat … The reef starts just after the beach and drops to 40 meters … a second reef edge begins at a depth of 60 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "A second reef edge begins at about 60 m further out"
+  },
+  {
+   "id": "odm-e0jttg",
+   "name": "Playa Daaibooi",
+   "sources": {
+    "s1": {
+     "url": "https://divers-republic.com/en/diving-locations-curacao/",
+     "publisher": "Divers Republic",
+     "kind": "operator",
+     "quote": "Daaibooi Beach … vibrant coral reefs that begin just off the shore … easy water access and calm conditions … Daaibooi is known for its turtles, parrotfish, and occasionally even stingrays"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles, parrotfish and occasional stingrays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3k9v51",
+   "name": "Stella Maris / Ocean Encounters",
+   "sources": {
+    "s1": {
+     "url": "https://lionsdive.com/en/Curacao-Tips/Diving-in-Curacao",
+     "publisher": "LionsDive Beach Resort",
+     "kind": "operator",
+     "quote": "The Stella Maris: This is the house reef of LionsDive Beach Resort and Ocean Encounters Diving … the coral nurseries located at this site"
+    },
+    "s2": {
+     "url": "https://www.curacaoplaybook.com/blog/lionsdive-beach-resort-review",
+     "publisher": "Curacao Playbook",
+     "kind": "press",
+     "quote": "the Stella Maris house reef sits inside the Curacao Marine Park … Certified divers can walk in"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "House reef inside the Curaçao Marine Park (LionsDive / Ocean Encounters)",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral restoration nurseries on the shallow reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Fringing reef right off the LionsDive resort beach, inside the Curaçao Marine Park, so divers can simply walk in. Coral-restoration nurseries are rebuilding the shallow reef.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

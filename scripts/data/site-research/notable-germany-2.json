@@ -1,0 +1,346 @@
+{
+ "batch": "notable-germany-2",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "osm-n1374397322",
+   "name": "Echtzer See, Tauchereinstieg am DLRG-Haus",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Echtzer_See",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Der maximal 18 Meter tiefe See wird vom Dürener Unterwasserclub als Tauchgewässer genutzt."
+    },
+    "s2": {
+     "url": "https://taucher.net/tauchplatz-echtzer_see__dueren_echtz-haz3303",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Nur für Mitglieder des ansässigen Vereines und deren Gäste. … Die stark schwankenden Sichtweiten des Sees erreichen im Sommer mit ca. 4m ihren Höhepunkt. … Befestigter Einstieg mit Treppe und Rödelbänken"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 0,
+    "high": 4,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Local dive club members and their guests only",
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870547",
+   "name": "Bleibtreusee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Bleibtreusee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Die Tauchtiefe nördlich dieser Insel beträgt bis zu 12 m."
+    },
+    "s2": {
+     "url": "https://taucher.net/tauchplatz-bleibtreusee__bruehl-haz7206",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Max. Tiefe: 14 … Dort ist ein bequemer Einstieg möglich. … Zum Tauchen sollte man sich vorher anmelden."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 14
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Advance registration and day pass required",
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870891",
+   "name": "Hufeisensee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Hufeisensee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Die Tiefe beträgt circa 9 Meter und 28 Meter an der tiefsten Stelle. … Die Sichtweite im See erreicht bis zu 6 Meter."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 28
+    }
+   ],
+   "vis": {
+    "low": 0,
+    "high": 6,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-w4598684",
+   "name": "Sundhäuser See",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Sundh%C3%A4user_See",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "optimale Bedingungen zum Tauchen"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Underwater town Nordhusia and four wrecks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "osm-n663870559",
+   "name": "Tauchgasometer",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Tauchgasometer",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "ist 13 m tief, hat einen Durchmesser von 45 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 13
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-w4798818",
+   "name": "Wambachsee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Wambachsee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Der Wambachsee ist der einzige See der Sechs-Seen-Platte, in dem das Tauchen gestattet ist."
+    },
+    "s2": {
+     "url": "https://taucher.net/tauchplatz-wambachsee__duisburg-haz3394",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Sicht ist katastrophal, bis 5 m Tiefe beträgt die Sicht nicht mehr als 1 m."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Very poor visibility, often under 1 m",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "osm-n663870571",
+   "name": "Heidesee Holdorf",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Heidesee_(Holdorf)",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "ist ca. 10 Hektar groß und bis zu 15 Meter tief. … Der See wird aufgrund des klaren Wassers von Hobby- und Sporttauchern aufgesucht."
+    },
+    "s2": {
+     "url": "https://taucher.net/tauchplatz-heidesee_holdorf-haz8358",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Max. Tiefe: 13 m … Einstieg an allen Stellen in der Badebucht problemlos; einfach ins Wasser gehen"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 13
+    }
+   ]
+  },
+  {
+   "id": "osm-n663870556",
+   "name": "Wisseler See",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Wisseler_See",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Außerdem bietet das Strandbad eine Segel-, Surf- und Tauchschule"
+    },
+    "s2": {
+     "url": "https://taucher.net/tauchplatz-wisseler_see__wissel_bei_kalkar-haz6211",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Bojenpflicht, da der See auch für Segler und Surfer freigegeben ist! … 0,5m bis 1m"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 0.5,
+    "high": 1,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Dive buoy mandatory (lake shared with sailors and surfers)",
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663871030",
+   "name": "Stolzenhagener See",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Stolzenhagener_See",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Von Tauchsportlern wird die Sichtweite im See mit 0,5–1,5 m angegeben."
+    }
+   },
+   "vis": {
+    "low": 0.5,
+    "high": 1.5,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870583",
+   "name": "Diemelsee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Diemelsee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Der Stausee ist maximal 34 m tief, und seine Ufer sind insgesamt etwa 16 km lang."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole reservoir (max depth 34 m), not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870585",
+   "name": "Twistesee (Twistestausee)",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Twistesee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Der Stausee ist etwa 2,75 km lang, maximal rund 300 Meter breit und weist vor dem Damm eine Wassertiefe von 14 Meter auf."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole reservoir, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

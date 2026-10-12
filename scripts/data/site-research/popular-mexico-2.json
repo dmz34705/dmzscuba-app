@@ -1,0 +1,853 @@
+{
+ "batch": "popular-mexico-2",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "mx-cozumel-paraiso",
+   "reason": "pin (20.4167,-87.031) does not match Paraiso Reef; same name as odm-9ci018 elsewhere"
+  },
+  {
+   "id": "odm-s3xynm",
+   "reason": "no depth or facts found"
+  },
+  {
+   "id": "mx-cozumel-las-palmas",
+   "reason": "only source found 404"
+  },
+  {
+   "id": "odm-10d1b8",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-t9fan8",
+   "reason": "only a one-line description"
+  },
+  {
+   "id": "odm-rj3akt",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-4b4d5z",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-hjjkxf",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-iwtad9",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-yl08b9",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-wd5ppc",
+   "reason": "no source found"
+  },
+  {
+   "id": "mx-cozumel-chankanaab-bolones",
+   "reason": "only banned directories"
+  }
+ ],
+ "sites": [
+  {
+   "id": "mx-cozumel-francesa",
+   "name": "La Francesa Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Punta Francesa (15 mts / 50 ft)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-vj5eyn",
+   "name": "Tortugas Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Tortugas … gradual slop from 15 to 40m (50-130ft) … One of the most popular and exciting deep dive sites in this area"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/blog/playa-carmen-reefs-scuba-diving/",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Tortugas … 70 feet / 22 meters … The current at this reef in Playa Del Carmen is moderate to firm, so don't fight it … Hawksbill, Green, and Loggerhead turtles can all be spotted in one dive!"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hawksbill, green and loggerhead turtles",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A gently sloping reef off Playa del Carmen that is among the area's most popular boat dives. Turtles of three species are regularly seen, and a moderate current usually runs along the reef.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-q0vowe",
+   "name": "Cenote Chac Mool",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote Chac Mool … two cavern areas … partially collapsed ceiling that creates an air dome … sunken branches and tree trunks … Just south of Puerto Aventuras"
+    }
+   },
+   "types": {
+    "value": [
+     "cavern",
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Just south of Puerto Aventuras; cave-certified divers for the long cave system",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Air dome under a partly collapsed ceiling",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Sunken branches and trunks at the entrance",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hxdyvm",
+   "name": "San Francisco Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "San Francisco Reef … 40-60 ft … All levels … The current is typically gentle to moderate, visibility is consistently good … spotted eagle rays congregate here"
+    },
+    "s2": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "San Francisco … 30 - 90 ft … slopes gradually between 40 to 70ft and then drops off, vertically in an abyss"
+    },
+    "s3": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "San Francisco Wall (15 mts / 50 ft)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 90
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spotted eagle rays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Slope that drops off into deep blue",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A slope covered in coral between roughly 40 and 70 ft that then falls away as a vertical wall. Gentle to moderate current and good visibility make it workable for all levels, with eagle rays a regular sight.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-psp771",
+   "name": "Colombia Deep",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Columbia Reef (Deep & Shallows) … Deep: 70-80 ft … Nurse sharks are common, tucked under ledges at depth"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Columbia Deep … Strong currents can be present, so this Cozumel dive site should be on experienced divers itineraries … This wall dive is known for its stunning pinnacles and coral formations"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 70,
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pinnacles and coral formations",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Nurse sharks under ledges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents possible",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep wall at Cozumel's south end with pinnacles and rich coral. Nurse sharks rest under ledges, and currents can be strong, so it is best left to experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-sjk4dg",
+   "name": "Barracuda - Playa del Carmen",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Barracuda Reef … 20-50ft/ 6-14m … Can be pictured as a hand with five finger-like outcroppings"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/blog/playa-carmen-reefs-scuba-diving/",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Barracuda Reef … With a depth of 36-46 feet / 12-14 meters … Giant morays, lobsters, and crabs"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 14
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 14
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Giant morays, lobsters and crabs",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Five finger-like reef outcrops",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow Playa del Carmen reef shaped like a hand with five finger-like outcrops, close to Tortugas and often dived second. Look for large morays, lobsters and the barracuda it is named for.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-9ccgxl",
+   "name": "Colombia Shallows",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Columbia Reef (Deep & Shallows) … Shallows: 20-40 ft … Shallows: beginner … a seahorse will appear wrapped around a sea fan"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Colombia Shallow reef depth: 15'-35' (4-10m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 35
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Seahorses on sea fans",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-moy4h9",
+   "name": "Mama Viña (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Mama Viña Wreck … 60-90ft/ 18-30m … Medium to strong … Coral growth has proceeded rapidly on this artificial reef"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/blog/playa-carmen-reefs-scuba-diving/",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Mama Viña Wreck … This wreck has its deeper parts lying around 28m/100ft and the deck at around 15m/50ft … Mama Viña is located across the current … offers a medium level of difficulty for divers … groupers, barracudas, and turtles"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 28
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Groupers, barracuda and turtles",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Fast coral growth on the artificial reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A scuttled vessel off Playa del Carmen lying across the current, with its deck near 15 m and deepest parts near 28 m. Corals have grown quickly and groupers, barracuda and turtles visit.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Deck about 15 m, deepest parts about 28 m"
+  },
+  {
+   "id": "odm-vmu5il",
+   "name": "Punta Sur - Devil’s Throat",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Punta Sur & Devil's Throat … 60-130 ft … Advanced divers only … a coral cave that descends through an overhead environment"
+    },
+    "s2": {
+     "url": "https://experience.transat.com/the-best-dive-spots-in-cozumel",
+     "publisher": "Experience Transat",
+     "kind": "press",
+     "quote": "Punta Sur reef is regarded as one of the most beautiful dive sites in Cozumel, but only recommended for advanced divers. Like the Maracaibo Wall, its southern location results in strong underwater currents and topside surf. In the southern park, divers can explore the Cathedral Chamber"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 130
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "cave",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral cave descending through an overhead",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Cathedral chamber with marine life",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents and surf",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Overhead environment needs buoyancy skill",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Cozumel's southern tip site, where a coral cave drops through an overhead section. Currents and surface surf are strong, so it is advanced-only and needs sound buoyancy and gas management.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-0p83wz",
+   "name": "Moc Che Deep",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Moc-Che Deep … 70-100ft/ 20-30m … Changing, medium to strong … Advanced … Sheer wall stretching"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/blog/playa-carmen-reefs-scuba-diving/",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Moc-Che Deep … at a depth of 24-25 meters / 79-82 feet … Sea turtles, marlins, and giant barracudas are abundant here"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 20,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 24,
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea turtles and giant barracuda",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-wl9wtn",
+   "name": "Los Arcos - Playa del Carmen",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Los Arcos … 70-100ft/21-30m … Strong … Advanced … Named after its two arches"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 21,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two arches",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jdujxv",
+   "name": "Barracuda - Cozumel",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Barracuda Reef (North) … 40-60 ft … Advanced. Strong current, exposed location … Reef sharks are more commonly sighted here than anywhere else on the island"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Barracuda Reef … Barracuda Reef is a challenging site suitable for expert divers … heavily restricted due to the danger of its extreme and unpredictable currents … Reef sharks, eagle rays, barracudas, and even hammerhead sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef sharks, eagle rays, barracuda",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Extreme, unpredictable current; trips often restricted",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An exposed reef on Cozumel's northern tip with a strong, unpredictable current. Operators run it selectively; it rewards expert divers with reef sharks and eagle rays.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-y5ivxz",
+   "name": "Cenote Kukulcan",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote Kukulkan … A halocline around 35 feet … A great option for first-time cenote cavern divers … Very clear water that reflects like a mirror"
+    }
+   },
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Very clear water, white limestone walls",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Halocline near 35 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+{"batch":"notable-brunei-darussalam-1","researchedAt":"2026-10-08","skipped":[],
+"sites":[{"id":"x-notable-1188","name":"USS Salute",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/USS_Salute_(AM-294)","publisher":"Wikipedia","kind":"encyclopedia","quote":"in 30 meters of water, broken in two pieces, one lying across the other. … It is a popular and challenging dive site with a lot of munitions both on and nearby the wreck."}},
+"depth":[{"ref":"s1","unit":"m","bottom":30}],"types":{"value":["wreck"],"refs":["s1"]},
+"hazards":[{"text":"Munitions on and near the wreck","refs":["s1"]}]}]}

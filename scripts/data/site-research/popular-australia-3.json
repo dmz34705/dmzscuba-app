@@ -1,0 +1,1011 @@
+{
+ "batch": "popular-australia-3",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-zfsuh3",
+   "reason": "Pin is at Great Keppel Island but Hardy Reef is in the Whitsundays (about -19.75, 149.18); no matching source"
+  },
+  {
+   "id": "odm-s6gm40",
+   "reason": "no source found for Cottage By The Sea"
+  },
+  {
+   "id": "odm-7bw3m3",
+   "reason": "no non-banned source with depth for Portsea Pier"
+  },
+  {
+   "id": "odm-cbs7ag",
+   "reason": "only operator calendar depth (12-40m+) which conflicts with the catalogue; no description"
+  },
+  {
+   "id": "odm-ny3czp",
+   "reason": "no source found for Lucy's Wall"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-r2ga9f",
+   "name": "Nine Mile Reef",
+   "sources": {
+    "s1": {
+     "url": "https://experiencegoldcoast.com/places-to-go/southern-gold-coast/things-to-do/nine-mile-reef-dive-site-au0062419",
+     "publisher": "Experience Gold Coast",
+     "kind": "agency",
+     "quote": "Nine Mile Reef … grey nurse sharks in winter. … The top of the reef sits at about 10 metres deep, dropping to 30 metres"
+    },
+    "s2": {
+     "url": "https://divernet.com/world-dives/australia-oceania/diving-the-gold-coast-cook-island-nine-mile-reef/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Nine Mile Reef varies in depth from 12m to 30m … the reef often has strong currents, sometimes ripping by at three knots"
+    },
+    "s3": {
+     "url": "https://goldcoastdiveadventures.com.au/scuba-diving-sites-and-reefs-gold-coast-australia-2/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Nine Mile Reef is located off the Tweed Coast and an advanced dive. Due to the presence of current most of the time, the dive is often a drift dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks in winter, leopard sharks in summer",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Wobbegongs year-round; bull sharks drop in",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong current, up to about three knots",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Often a drift dive with blue-water safety stops",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An offshore reef off Tweed Heads with a rocky ridge, ledges and bommies from about 10 m to 30 m. It is a shark site, with grey nurse sharks in winter and wobbegongs all year, but strong current and the need for calm seas make it for experienced divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-o7j7wm",
+   "name": "Twin Peaks, Saxon Reef",
+   "sources": {
+    "s1": {
+     "url": "https://greatbarrierreeftours.com/great-barrier-reef/cairns-great-barrier-reef/saxon-reef/",
+     "publisher": "Great Barrier Reef Tours",
+     "kind": "operator",
+     "quote": "Navigating Twin Peaks can challenge some novice divers, so a Dive Guide is recommended. The Reef wall, just 15 metres southeast of the peaks, offers a beautiful sandy slope"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Two coral-covered peaks with a sandy reef wall nearby",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Navigation can challenge novices; guide recommended",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fpe9pz",
+   "name": "Turtle Bommie, Saxon Reef",
+   "sources": {
+    "s1": {
+     "url": "https://greatbarrierreeftours.com/great-barrier-reef/cairns-great-barrier-reef/saxon-reef/",
+     "publisher": "Great Barrier Reef Tours",
+     "kind": "operator",
+     "quote": "Turtle Bommie A large bommie structure surrounded by beautiful hard and soft corals … The white sandy bottom makes it easy to navigate … This site is a must for a night dive"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Turtles sleeping on reef shelves; good night dive",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Large bommie ringed by hard and soft corals",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-m0gqmq",
+   "name": "Alma Bay",
+   "sources": {
+    "s1": {
+     "url": "https://nquec.org.au/dive-sites-magnetic-island",
+     "publisher": "North Queensland Underwater Club",
+     "kind": "operator",
+     "quote": "Alma Bay … The bay has a rocky headland above each end of the beach, which deepens along a gentle gradient to about 5m to 6m at the mouth of the bay."
+    },
+    "s2": {
+     "url": "https://www.pleasuredivers.com.au/magnetic-island-dive-sites",
+     "publisher": "Pleasure Divers Magnetic Island",
+     "kind": "operator",
+     "quote": "With depths of just 5 to 8 meters, Alma Bay is perfect for beginners"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 6
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 8
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Granite boulders, corals, rays and nudibranchs",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Green turtles cruise through",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered, patrolled beach on Magnetic Island that slopes gently to about 5-8 m, used heavily for teaching new divers. Granite boulders, corals, rays, nudibranchs and the odd turtle make it a relaxed shore dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-o7jvu9",
+   "name": "Popes Eye",
+   "sources": {
+    "s1": {
+     "url": "https://www.parks.vic.gov.au/places-to-see/parks/port-phillip-heads-marine-national-park",
+     "publisher": "Parks Victoria",
+     "kind": "park",
+     "quote": "Popes Eye is a popular short-stay destination for pleasure craft and Licensed Tour Operators. There is good snorkelling within the structure, but more experience is necessary when diving on the outside of it."
+    },
+    "s2": {
+     "url": "https://secure.netbookings.com.au/tourism/2150/viewtours",
+     "publisher": "Scubabo Dive Victoria",
+     "kind": "operator",
+     "quote": "Popes Eye 0-12m … Pope's Eye is a man made basalt rock annulus … The inside of Pope's Eye provides a safe anchorage in 2 meters of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Port Phillip Heads Marine National Park; boat access",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Snorkel and shallow dive inside the ring",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Australasian gannet colony on the rock",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Outside wall needs more diving experience",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A man-made basalt ring in the Port Phillip Heads Marine National Park with a sheltered, 2 m deep centre and a wall dropping to about 12 m outside. The inside suits snorkellers and new divers, while the outside needs more experience.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-hjrv5g",
+   "name": "Portsea Hole",
+   "sources": {
+    "s1": {
+     "url": "https://www.parks.vic.gov.au/places-to-see/parks/port-phillip-heads-marine-national-park",
+     "publisher": "Parks Victoria",
+     "kind": "park",
+     "quote": "Portsea Hole is one of the most popular recreational dives sites for experienced divers, reaching depths of up to 30m. Experienced divers can explore the spectacular vertical reef"
+    },
+    "s2": {
+     "url": "https://secure.netbookings.com.au/tourism/2150/viewtours",
+     "publisher": "Scubabo Dive Victoria",
+     "kind": "operator",
+     "quote": "Portsea Hole 12-33m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 33
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Vertical reef with sponges, soft corals and invertebrates",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "access": {
+    "value": "Inside Port Phillip Heads Marine National Park",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-x1zrqp",
+   "name": "Boarfish Reef",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/victorias-underwater-wonderland-diving-into-the-great-southern-reefs-hidden-gem/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Boarfish Reef: Boarfish is an extension of Lonsdale Wall and ranges from 10m-25m depth, meandering over drop-offs through caves, overhangs and swim-throughs."
+    },
+    "s2": {
+     "url": "https://secure.netbookings.com.au/tourism/2150/viewtours",
+     "publisher": "Scubabo Dive Victoria",
+     "kind": "operator",
+     "quote": "Boarfish Reef 8-22m … The reef, which lies approximately halfway between Queenscliff and Point Lonsdale starts in approx. 10m of water and drops off to 22m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 10,
+     "bottom": 22
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Caves, overhangs and swim-throughs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Blue devilfish, crayfish and boarfish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A colourful reef between Queenscliff and Point Lonsdale, an extension of the Lonsdale Wall. It runs from about 10 m down to 22-25 m over drop-offs, caves and swim-throughs, with blue devilfish, crayfish and boarfish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-azg6ah",
+   "name": "The Grotto",
+   "sources": {
+    "s1": {
+     "url": "https://secure.netbookings.com.au/tourism/2150/viewtours",
+     "publisher": "Scubabo Dive Victoria",
+     "kind": "operator",
+     "quote": "The Grotto (12-22m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 22
+    }
+   ]
+  },
+  {
+   "id": "odm-z2atie",
+   "name": "Lonsdale Wall",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/victorias-underwater-wonderland-diving-into-the-great-southern-reefs-hidden-gem/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Lonsdale Wall: A picture perfect slack water site ranging from 12m-38m, Lonsdale Wall features huge overhangs, undercuts and ledges"
+    },
+    "s2": {
+     "url": "https://downtoscuba.com/diving-in-melbourne-port-phillip-bay-australia/",
+     "publisher": "Down To Scuba",
+     "kind": "press",
+     "quote": "Lonsdale Wall can refer to the entire wall system or a specific site (max 38m) on the wall."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 38
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 38
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Overhangs and ledges covered in zoanthids and sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Best at slack water or as a drift dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-u9tfdf",
+   "name": "J4 Submarine Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://downtoscuba.com/diving-in-melbourne-port-phillip-bay-australia/",
+     "publisher": "Down To Scuba",
+     "kind": "press",
+     "quote": "J4 Submarine (max 28m) – A WW1 submarine. Usually an easy dive, but can be susceptible to surge."
+    },
+    "s2": {
+     "url": "https://secure.netbookings.com.au/tourism/2150/viewtours",
+     "publisher": "Scubabo Dive Victoria",
+     "kind": "operator",
+     "quote": "J4 Sub (Wreck) 26m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 26
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Surge on the shallow site",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tzlbcm",
+   "name": "Lonsdale Bommies",
+   "sources": {
+    "s1": {
+     "url": "https://secure.netbookings.com.au/tourism/2150/viewtours",
+     "publisher": "Scubabo Dive Victoria",
+     "kind": "operator",
+     "quote": "Lonsdale Bommies 12-20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 20
+    }
+   ]
+  },
+  {
+   "id": "odm-kxx9fl",
+   "name": "Castle Rock",
+   "sources": {
+    "s1": {
+     "url": "https://downtoscuba.com/diving-in-melbourne-port-phillip-bay-australia/",
+     "publisher": "Down To Scuba",
+     "kind": "press",
+     "quote": "Castle Rock (max 20m) – An easy dive, a large bommie showcasing a temperate reef."
+    },
+    "s2": {
+     "url": "https://secure.netbookings.com.au/tourism/2150/viewtours",
+     "publisher": "Scubabo Dive Victoria",
+     "kind": "operator",
+     "quote": "Castle Rock 12-20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large bommie with temperate reef life",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ngl7iv",
+   "name": "Rye Pier",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/victorias-underwater-wonderland-diving-into-the-great-southern-reefs-hidden-gem/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Rye Pier: Recent reconstruction makes the long walk from the carpark to the purpose-built diver’s platform even smoother. Large stingrays and seahorses are commonly sighted"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large stingrays and seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "access": {
+    "value": "Long walk from car park to purpose-built diver platform",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-4kkcym",
+   "name": "Blairgowrie Pier",
+   "sources": {
+    "s1": {
+     "url": "https://downtoscuba.com/diving-in-melbourne-port-phillip-bay-australia/",
+     "publisher": "Down To Scuba",
+     "kind": "press",
+     "quote": "Blairegowrie Pier (max 7m) – An easy dive, great for night dives and macro life. A popular spot to see spider crab migrations. Blairegowrie Pier is an active boat pier, so divers need to be aware of No Go Zones."
+    },
+    "s2": {
+     "url": "https://divernet.com/scuba-diving/victorias-underwater-wonderland-diving-into-the-great-southern-reefs-hidden-gem/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Blairgowrie Pier: Blairgowrie’s purpose-built dive platform is the gateway to some of the state’s shallowest but richest artificial marine life environments."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 7
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro life and nudibranchs under the pier",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Spider crab aggregations",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Active boat pier with no-go zones",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A very shallow pier dive from a purpose-built platform, rich in macro life under the pylons. It can be dived day or night, and spider crabs gather at times. Stay out of the boat no-go zones.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-9tlgbr",
+   "name": "Swansea Bridge",
+   "sources": {
+    "s1": {
+     "url": "https://diveswansea.com.au/pages/local-shore-dives",
+     "publisher": "Dive Swansea",
+     "kind": "operator",
+     "quote": "You can only dive “comfortably” under the bridge on still water at high or low tide. … We set you up with the gear and jump in across the road at the boat ramp entry point."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong tidal flow; dive only on still water",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-p3mcx9",
+   "name": "Flagstaff",
+   "sources": {
+    "s1": {
+     "url": "https://diveswansea.com.au/pages/local-shore-dives",
+     "publisher": "Dive Swansea",
+     "kind": "operator",
+     "quote": "Flagstaff … You can enter from the sandy beach at the bay … It's a shallow dive ranging in depth from 5 metres to 8 metres, Flagstaff suits all ranges of diver skills."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 8
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks visit in winter",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Rays on sand, nudibranchs in weed gardens",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-xa9h42",
+   "name": "Catherine Hill Coal Loader",
+   "sources": {
+    "s1": {
+     "url": "https://diveswansea.com.au/pages/local-shore-dives",
+     "publisher": "Dive Swansea",
+     "kind": "operator",
+     "quote": "The old coal loader is the dominating feature of the bay, a shallow dive that goes to about 11m. … ship chains, cables and hardware including the remains of the SS Wallarah."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 11
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pylons grown into a reef with fish and nudibranchs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Ship chains and remains of the SS Wallarah",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-v3hat4",
+   "name": "Moon Island",
+   "sources": {
+    "s1": {
+     "url": "https://www.michaelmcfadyenscuba.info/viewpage.php?page_id=147",
+     "publisher": "Michael McFadyen's Scuba Diving Web Site",
+     "kind": "press",
+     "quote": "The Arch is south-east of the island … The depth just off these boulders is about 20 metres"
+    },
+    "s2": {
+     "url": "https://diveswansea.com.au/pages/local-shore-dives",
+     "publisher": "Dive Swansea",
+     "kind": "operator",
+     "quote": "between Flagstaff and Moon Island we are lucky enough to get visits from the Grey Nurse Sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Grey nurse shark visits in winter",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "The Arch: large boulders with an archway",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "The Arch off the south-east side: archway about 17 m, sand about 20 m"
+  },
+  {
+   "id": "odm-rccztl",
+   "name": "Bare Island East",
+   "sources": {
+    "s1": {
+     "url": "https://scubadownunder.com/dive-sites/bare-island",
+     "publisher": "ScubaDownUnder",
+     "kind": "press",
+     "quote": "Bare Island La Perouse, NSW … Depth 3–12m … Bare Island Left is the eastern side, entered off the eastern face of the South-Eastern Point. … Currents are generally weak"
+    },
+    "s2": {
+     "url": "https://www.diveplanit.com/dive-site/bare-island-botany-bay/",
+     "publisher": "Diveplanit",
+     "kind": "operator",
+     "quote": "Left Side … which is the best side, but a bit tricky in even a mild southerly swell … The max depth is about 12m"
+    },
+    "s3": {
+     "url": "https://scubadownunder.com/dive-sites/bare-island",
+     "publisher": "ScubaDownUnder",
+     "kind": "press",
+     "quote": "NSW National Parks and Wildlife Service has closed the whole Bare Island precinct … from 24 August 2026 while the 1887 bridge is restored. Reopening is expected in late 2027"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 12
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 5,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Bare Island precinct closed for bridge restoration from 24 Aug 2026; reopening expected late 2027",
+    "refs": [
+     "s3"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Surge around the point; tricky in southerly swell",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The eastern face of Bare Island in Botany Bay, entered from the south-east point and slippery to exit, so it suits divers who know the site. Max depth is about 12 m with soft corals and macro life; southerly swell makes it tricky. The precinct is currently closed.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ua255x",
+   "name": "Bare Island West",
+   "sources": {
+    "s1": {
+     "url": "https://scubadownunder.com/dive-sites/bare-island",
+     "publisher": "ScubaDownUnder",
+     "kind": "press",
+     "quote": "Bare Island Right is the western side. Divers enter at the Western Point in calm seas … That boat ramp is the standard exit for every dive on the western side … an easy entry for beginners."
+    },
+    "s2": {
+     "url": "https://www.diveplanit.com/dive-site/bare-island-botany-bay/",
+     "publisher": "Diveplanit",
+     "kind": "operator",
+     "quote": "Right Side, which is where you dive when there's a mild Southerly swell … The max depth is about 12m"
+    },
+    "s3": {
+     "url": "https://scubadownunder.com/dive-sites/bare-island",
+     "publisher": "ScubaDownUnder",
+     "kind": "press",
+     "quote": "NSW National Parks and Wildlife Service has closed the whole Bare Island precinct … from 24 August 2026 while the 1887 bridge is restored. Reopening is expected in late 2027"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Bare Island precinct closed for bridge restoration from 24 Aug 2026; reopening expected late 2027",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sheltered side, dived in southerly swell",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The western, sheltered side of Bare Island in Botany Bay, with an easy entry and a boat-ramp exit that suit beginners. Depths reach about 12 m, and it is the side to choose when southerly swell is running. The precinct is currently closed.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

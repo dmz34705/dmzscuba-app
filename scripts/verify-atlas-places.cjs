@@ -61,5 +61,7 @@ for (const [latitude, longitude, minimum] of [[23.6, -102.5, 100], [-10, -52, 10
   assert.equal(look.scope, 'place');
   assert.ok(look.placeSites >= minimum && look.animals.length && look.nearest, `${look.place?.name} quick look summarises its dive sites`);
 }
+assert.ok(P.sitesIn(P.placeById('country', 'KI') || { kind: 'country', id: 'KI' }).every(site => Math.abs(site.longitude) > 150), 'A country box spanning the dateline (Kiribati) does not capture Maldives or Malpelo sites.');
+assert.equal(P.placeById('country', 'AU').name, 'Australia', 'Dependencies sharing a code (Ashmore and Cartier Islands) do not rename their sovereign.');
 assert.ok(P.placeGuide(P.placeById('country', 'AU')).season.temps, 'Continent-sized guides still get a coastal temperature profile.');
 console.log(`Place checks passed: ${P.placeGuide(P.placeById('country', 'US')).children.length} US states/islands, islands before countries, territories, offshore membership, quick looks and all ${all.length} sites placed.`);

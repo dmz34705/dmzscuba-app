@@ -1,0 +1,11 @@
+{"batch":"notable-denmark-1","researchedAt":"2026-10-08","sites":[
+{"id":"x-notable-1010","name":"MV Fu Shan Hai",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/MV_Fu_Shan_Hai","publisher":"Wikipedia","kind":"encyclopedia","quote":"Later the same day Fu Shan Hai sank in 69 metres (226 ft) of water."},
+"s2":{"url":"https://ing.dk/artikel/dykkere-toemmer-sunket-skib-ved-bornholm-200-ton-olie","publisher":"Ingeniøren","kind":"press","quote":"på 60 meter dybde … ud for den bornholmske nordkyst"}},
+"depth":[{"ref":"s1","unit":"m","bottom":69},{"ref":"s2","unit":"m","bottom":60}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"level":{"value":"technical","refs":["s2"]}},
+{"id":"x-notable-1204","name":"Dannebroge",
+"sources":{"s1":{"url":"https://www.vikingeskibsmuseet.dk/en/news/diver-survey-of-dannebroge-1","publisher":"Viking Ship Museum, Roskilde","kind":"agency","quote":"The wreck of Dannebroge is the only shipwreck site in Denmark that is protected by an official ban on diving."}},
+"notDiveSite":{"kind":"restricted","reason":"1710 wreck in Køge Bay under an official ban on diving","refs":["s1"]}}
+]}

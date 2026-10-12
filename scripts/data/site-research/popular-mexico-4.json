@@ -1,0 +1,669 @@
+{
+ "batch": "popular-mexico-4",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-s5di0v",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-dn97mw",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-6nehjp",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-1he7gt",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-0o233o",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-ogh0o9",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-yj084b",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-ev16vq",
+   "reason": "only one source, no depth"
+  },
+  {
+   "id": "odm-fwskft",
+   "reason": "no depth source"
+  },
+  {
+   "id": "odm-14uwzb",
+   "reason": "whole national park, not a single site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-a2779p",
+   "name": "El Jardin",
+   "sources": {
+    "s1": {
+     "url": "https://www.visit-mexico.mx/guerrero/ecotourism-and-adventure-in-acapulco/",
+     "publisher": "visit-mexico.mx",
+     "kind": "press",
+     "quote": "El Jardín (The Garden) Depth: 8 mts – 15 mts. (24 ft – 45 ft). This site offers easy dives that start on shallow, sandy bottoms with gradual descents over hard and soft corals that are ideal for beginners and snorkeling. Here you will find eagle rays, surgeons, spotted moray eels, butterfly fish, turtles and balloon fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays, turtles, moray eels, butterfly fish",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Hard and soft corals on gentle slope",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-qbcmhl",
+   "name": "Palmitas",
+   "sources": {
+    "s1": {
+     "url": "https://www.visit-mexico.mx/guerrero/ecotourism-and-adventure-in-acapulco/",
+     "publisher": "visit-mexico.mx",
+     "kind": "press",
+     "quote": "Palmitas Depth: 8 mts – 12 mts. (25 ft – 40 ft). A great shallow dive or snorkel site with sandy bottoms and small formations of coral, eagle rays, mottled moray eels and butterfly fish, among others. It is ideal for beginners and usually done as a second dive for certified divers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays, mottled moray eels, butterfly fish",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Small coral formations on sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ytki35",
+   "name": "El Rincon - Acapulco",
+   "sources": {
+    "s1": {
+     "url": "https://www.visit-mexico.mx/guerrero/ecotourism-and-adventure-in-acapulco/",
+     "publisher": "visit-mexico.mx",
+     "kind": "press",
+     "quote": "El Rincón (The Corner) Depth: 5 mts – 15 mts. (15 ft – 45 ft). This is an exciting site with artificial reefs and a tunnel where a large number of fish live. Divers of all experience levels can enjoy this place"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Artificial reefs and a tunnel full of fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-v3ffqb",
+   "name": "Seven Octopuses",
+   "sources": {
+    "s1": {
+     "url": "https://www.visit-mexico.mx/guerrero/ecotourism-and-adventure-in-acapulco/",
+     "publisher": "visit-mexico.mx",
+     "kind": "press",
+     "quote": "Siete Pulpos (Seven Octopuses) Depth: 15 mts – 26 mts. (45 ft – 78 ft). … various nudibranchs and seahorses. Is a site for certified divers."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Canyons and rock formations",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nudibranchs and seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Page: 15-26 m; canyons and rocks reach about 20 m"
+  },
+  {
+   "id": "odm-s586n0",
+   "name": "El Canal - Acapulco",
+   "sources": {
+    "s1": {
+     "url": "https://www.visit-mexico.mx/guerrero/ecotourism-and-adventure-in-acapulco/",
+     "publisher": "visit-mexico.mx",
+     "kind": "press",
+     "quote": "El Canal (The Channel) Depth: 10 mts – 20 mts. (30 ft – 60 ft). It is located the channel between the coast and the Roqueta Island. Depending on the season the current can be strong and you can have a drift dive."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 20
+    }
+   ],
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of fish among rock formations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-dbci2j",
+   "name": "El Corsario",
+   "sources": {
+    "s1": {
+     "url": "https://www.visit-mexico.mx/guerrero/ecotourism-and-adventure-in-acapulco/",
+     "publisher": "visit-mexico.mx",
+     "kind": "press",
+     "quote": "Corsario(Privateer) Depth: 5 mts (15 ft.) – 15 mts. (45 ft.). This is of the most popular dive sites in Acapulco, where you can explore the wreck of a luxury yacht."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 15
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wreck of a luxury yacht lost in 1950",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Rock formations and plenty of fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8c46oc",
+   "name": "The Caves - Acapulco",
+   "sources": {
+    "s1": {
+     "url": "https://www.visit-mexico.mx/guerrero/ecotourism-and-adventure-in-acapulco/",
+     "publisher": "visit-mexico.mx",
+     "kind": "press",
+     "quote": "Las Cuevas (The Caves) Depth: 10 mts – 40 mts. (30 ft – 130 ft). This is a site only for Advanced Certified Divers with experience in drift and current dives with many swim through tunnels and caves where you can expect to see an array of marine creatures like eagle rays, stone fish, octopuses, mottled and green moray eels"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-through tunnels and caves",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Eagle rays, stonefish, octopuses, moray eels",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Page: 10-40 m",
+   "hazards": [
+    {
+     "text": "Strong current; best dived early in the morning",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-irng2g",
+   "name": "Puerto Morelos The Aquarium",
+   "sources": {
+    "s1": {
+     "url": "https://mexplor.co/diving-in-puerto-morelos/",
+     "publisher": "Mexplor",
+     "kind": "operator",
+     "quote": "Aquarium – Intermediate dive site of 47 feet maximum depth. Also know as Jardines or finger reef, this scuba diving Puerto Morelos site is expansive with many routs through its riches of life. Mini canons (fingers) of coral where you can drop down out of the current and be surrounded by healthy reef"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 47
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral fingers; schools of porkfish and grunts",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Eels, rays and occasional turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Good buoyancy control needed among coral fingers",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-i769u2",
+   "name": "Jardines",
+   "sources": {
+    "s1": {
+     "url": "https://mexplor.co/diving-in-puerto-morelos/",
+     "publisher": "Mexplor",
+     "kind": "operator",
+     "quote": "Aquarium – Intermediate dive site of 47 feet maximum depth. Also know as Jardines or finger reef, this scuba diving Puerto Morelos site is expansive with many routs through its riches of life. Mini canons (fingers) of coral where you can drop down out of the current and be surrounded by healthy reef"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 47
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral fingers; schools of porkfish and grunts",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3xa6x3",
+   "name": "Barco Hundido - Wreck Cadete Juan Escutia C-56",
+   "sources": {
+    "s1": {
+     "url": "https://www.kooxdiving.com/en/activities/diving-in-the-sea/puerto-morelos-reef-shipwreck-diving/",
+     "publisher": "Ko'ox Diving",
+     "kind": "operator",
+     "quote": "The depth varies between 25-30 meters, and the current is mild, so it's an advanced dive for experienced divers only. … a former minesweeper that belonged to the Mexican Army and was sunk on purpose to attract sea life and coral."
+    },
+    "s2": {
+     "url": "https://mexplor.co/diving-in-puerto-morelos/",
+     "publisher": "Mexplor",
+     "kind": "operator",
+     "quote": "Mineshipwreck Juan Escutia , probably the most interested and impressive dive site in Puerto Morelos. You will see and swimm through a large navy minesweeper, a site teaming with aquatic life. Scuttled in October of 2000"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 25,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Navy minesweeper scuttled in 2000, covered in coral",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Stingrays, eels and barracuda",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A decommissioned Mexican navy minesweeper put on the bottom in 2000 inside the Puerto Morelos reef park. It lies in roughly 25 to 30 m, is rated for experienced divers, and is now crusted in coral with rays, eels and barracuda around it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-brsvor",
+   "name": "Acuario",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/acuario-285233",
+     "publisher": "Scubago",
+     "kind": "press",
+     "quote": "Shallow easy reef dive site. Maximum depth 13m. Mixture of sandy areas and reef. Ideal for Basic Diver and Open Water courses"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 13
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Many rays including eagle rays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Good coral cover and abundant fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hx4fuu",
+   "name": "Simio Bipolar",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/simio-bipolar-409621",
+     "publisher": "Scubago",
+     "kind": "press",
+     "quote": "It is a group of coral islands on a flat sandy bottom. It is very appropriate for both very beginners and for Open Water divers as depth ranges from 9 meters/30 feet to 15 meters/50 feet. Visibility is usually more than 20 meters/65 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 9,
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 20,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spotted eagle rays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Coral islands on flat sand with many reef fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rxxjas",
+   "name": "Cenote Zapote (Hells Bells)",
+   "sources": {
+    "s1": {
+     "url": "https://jaguardivers.com/en/cenote-zapote/",
+     "publisher": "Jaguar Divers",
+     "kind": "operator",
+     "quote": "Scuba Diving in Cenote Zapote Home to the world famous Hells Bells … 30 m / 100 ft max depth … Descend into the hourglass shaped cenote and as you pass through the neck the first thing you will see is a massive 4500 year old tree protruding from a thick sulfide cloud."
+    },
+    "s2": {
+     "url": "https://www.apollodivers.com/diving/the-cenotes/zapote",
+     "publisher": "Apollo Divers",
+     "kind": "operator",
+     "quote": "the Zapote cenote, often referred to as \"Hell Bells\" , offers a mystifying diving experience … The cenote boasts crystal-clear waters, granting visibility up to 30 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "vis": {
+    "low": 30,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hells Bells bell-shaped formations",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Sulfide cloud and a 4500-year-old tree",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Halocline",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep sinkhole in the Ruta de los Cenotes known for its Hells Bells, bell-shaped formations hanging below a hydrogen sulfide cloud. Guided dives go to about 30 m through clear water with a halocline, so good buoyancy matters.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-cwd061",
+   "name": "Cenote Maravillas",
+   "sources": {
+    "s1": {
+     "url": "https://jaguardivers.com/en/cenote-maravilla/",
+     "publisher": "Jaguar Divers",
+     "kind": "operator",
+     "quote": "Scuba Diving in Cenote Maravilla … 30 m / 100 ft max depth … one enormous celestial light beam penetrates all the way to 30m/100ft where it strikes the thick sulfur cloud"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Light beam striking a sulfur cloud at 30 m",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Small hells bells at the cavern edge",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cclbhl",
+   "name": "Islas Marietas",
+   "sources": {
+    "s1": {
+     "url": "https://www.vallarta-adventures.com/en/tour/scuba-las-marietas-islands",
+     "publisher": "Vallarta Adventures",
+     "kind": "operator",
+     "quote": "Average visibility: 40 ft/12 m Depth: 25-60 ft/7.5-18 m Marieta Islands Private Scuba Diving Excursion"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7.5,
+     "bottom": 18
+    }
+   ],
+   "vis": {
+    "low": 12,
+    "high": 12,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,201 @@
+{
+ "batch": "popular-puerto-rico-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-fotccx",
+   "name": "Escambrón",
+   "sources": {
+    "s1": {
+     "url": "https://www.puertorico.com/dive-sites",
+     "publisher": "PuertoRico.com",
+     "kind": "press",
+     "quote": "Escambron is an easy learning spot for scuba diving with depths averaging 20 feet. There is an artificial reef built with columns and statues on the outer edge of the park. … The dive spot is accessible through Escambron Park"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Artificial reef of columns and statues",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-smqesc",
+   "name": "Shacks Beach",
+   "sources": {
+    "s1": {
+     "url": "https://www.puertorico.com/dive-sites",
+     "publisher": "PuertoRico.com",
+     "kind": "press",
+     "quote": "Shack’s Beach in Isabela is well known by wind sports enthusiasts. However, on calm days Shack’s Beach reveals its underwater cave and coral ecosystem."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Underwater cave and coral ecosystem",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Only diveable on calm days",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-32k2pn",
+   "name": "Desecheo Island",
+   "sources": {
+    "s1": {
+     "url": "https://www.puertorico.com/dive-sites",
+     "publisher": "PuertoRico.com",
+     "kind": "press",
+     "quote": "The island is uninhabited, and you should go with professional scuba divers. Large rock outcroppings, lobsters, pillar coral, and fresh fish make this a spectacular site. Winds blowing from the east or the south can create currents into the open ocean."
+    },
+    "s2": {
+     "url": "https://aquaticapr.com/scuba-diving-in-puerto-rico-exploring-the-best-dive-sites-on-the-west-coast/",
+     "publisher": "Aquatica Underwater Adventures",
+     "kind": "operator",
+     "quote": "take a boat ride to Desecheo Island , located about 13 miles off the coast of Rincón . This remote island is part of a marine reserve"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Marine reserve; boat access only, go with professionals",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock outcroppings, lobsters and pillar coral",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "East or south winds can create offshore currents",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-9fd2g8",
+   "name": "El Natural",
+   "sources": {
+    "s1": {
+     "url": "https://aquaticapr.com/scuba-diving-in-puerto-rico-exploring-the-best-dive-sites-on-the-west-coast/",
+     "publisher": "Aquatica Underwater Adventures",
+     "kind": "operator",
+     "quote": "El Natural (Aguadilla) – The Best Shore Dive in Puerto Rico … If you’re looking for a spectacular coral reef dive right from the shore, El Natural is a must-visit. … Since El Natural is an unmarked dive site , it’s best to go with a local dive guide"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Unmarked entry; go with a local guide",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-3sl1yl",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-5uaucu",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-vuaut3",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-ckj7a1",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-87a798",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-0y9j8m",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-za8q68",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-5xubxi",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-m2g36d",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-ty5ugq",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-4tept9",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-q4a6t1",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-8kbv0p",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

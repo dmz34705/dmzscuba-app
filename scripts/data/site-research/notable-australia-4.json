@@ -1,0 +1,77 @@
+{ "batch": "notable-australia-4", "researchedAt": "2026-10-08", "sites": [
+ { "id": "x-wikipedia-463", "name": "Great Barrier Reef",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Great_Barrier_Reef", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "composed of over 2,900 individual reefs and 900 islands stretching for over 2,300 kilometres" } },
+  "notDiveSite": { "kind": "area", "reason": "A 2,300 km reef system of 2,900 reefs, not one dive site", "refs": ["s1"] } },
+ { "id": "x-wikipedia-487", "name": "Osprey Reef",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Osprey_Reef", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "an isolated location some 60 kilometres (37 mi) from other reefs" } },
+  "notDiveSite": { "kind": "area", "reason": "A whole isolated Coral Sea atoll with several separate dive sites (North Horn etc.)", "refs": ["s1"] } },
+ { "id": "x-wikipedia-264", "name": "Rum Jungle, Northern Territory",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/Rum_Jungle,_Northern_Territory", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Rum Jungle or Unrungkoolpum is a locality in the Northern Territory of Australia" } },
+  "notDiveSite": { "kind": "area", "reason": "A locality, not a dive site (the flooded mine lake is separate)", "refs": ["s1"] } },
+ { "id": "x-wikipedia-81", "name": "SS Mauna Loa",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/SS_Mauna_Loa", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "at a depth of 60 feet (18 m). … The remains of her wreck and her cargo are a dive site in the harbor." },
+   "s2": { "url": "https://50greatdives.com/50gtdives/entry/65/", "publisher": "50 Great Dives", "kind": "press", "quote": "Scuba: Advanced (Due to tides & poor visibility) … Depth: 19 m … Seasonal: No, but Dry Season is best" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 18 }, { "ref": "s2", "unit": "m", "bottom": 19 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s2"] },
+  "vis": { "low": 5, "high": 15, "unit": "m", "refs": ["s2"] },
+  "highlights": [ { "text": "Motorbikes, trucks and Bren gun carriers in the cargo", "refs": ["s1", "s2"] } ],
+  "summary": { "text": "A US Army cargo ship sunk in the 1942 Darwin raid, lying about 18-19 m deep in Darwin Harbour. Its cargo of trucks and vehicles is still scattered about; tides and poor visibility make it an advanced dive.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-74", "name": "USAT Meigs",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/USAT_Meigs", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "It lies in 18 metres (59 ft) of water … only divable around neap tides." } },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 18 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "current": { "value": "strong", "refs": ["s1"] },
+  "hazards": [ { "text": "Strong tidal currents and poor visibility; neap tides only", "refs": ["s1"] } ]
+ },
+ { "id": "x-notable-968", "name": "USS Peary",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/USS_Peary", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "lies in 89 feet (27 m)" } },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 27 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-1065", "name": "Booya",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Booya_(ship)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "lying on her starboard side in about 20 metres of water … ensuring an exclusion zone over the wreck" },
+   "s2": { "url": "https://50greatdives.com/auswreckx/entry/192/", "publisher": "50 Great Dives", "kind": "press", "quote": "19 metres … Advanced Diver … 5 – 15 metres … Permission is needed to enter the wreck’s exclusion zone." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 20 }, { "ref": "s2", "unit": "m", "bottom": 19 } ],
+  "entry": { "value": "boat", "refs": ["s2"] },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s2"] },
+  "vis": { "low": 5, "high": 15, "unit": "m", "refs": ["s2"] },
+  "access": { "value": "Exclusion zone around the wreck; permit/permission required", "refs": ["s1", "s2"] },
+  "summary": { "text": "A vessel lost in Cyclone Tracy in 1974 and found by divers in 2003, lying on its side in about 19-20 m in Darwin Harbour. It is a heritage site with an exclusion zone, so a permit and a boat are needed.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-60", "name": "SS Ellengowan",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/SS_Ellengowan", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The shipwreck lies at a depth of approximately 14 metres (46 ft)." } },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 14 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-79", "name": "SS Gothenburg",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/SS_Gothenburg", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck lies in 9 to 16 metres (30 to 52 ft) of water on the western side of Old Reef … requires that divers have a permit to enter the 200m protected zone" } },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 9, "bottom": 16 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "access": { "value": "Permit required to enter the 200 m protected zone", "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-492", "name": "St. Crispin's Reef",
+  "sources": { "s1": { "url": "https://en.wikipedia.org/wiki/St._Crispin's_Reef", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "St. Crispin's Reef is a popular diving and snorkeling spot for expeditions from Port Douglas and Cairns." } },
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "types": { "value": ["reef"], "refs": ["s1"] },
+  "mooring": { "value": "Four moorings", "refs": ["s1"] }
+ },
+ { "id": "odm-5wzmsz", "name": "Flying Fish Cove (Jetty dive)",
+  "sources": {
+   "s1": { "url": "https://christmasislandnationalpark.gov.au/do/beaches/flying-fish-cove", "publisher": "Parks Australia (Christmas Island National Park)", "kind": "park", "quote": "Flying Fish Cove is a great spot for snorkelling and shore diving … wearing reef shoes to protect your feet from sharp coral and stonefish." },
+   "s2": { "url": "https://www.diveplanit.com/dive-site/flying-fish-cove", "publisher": "Dive Planit", "kind": "press", "quote": "Top: 2M Median: 9M Bottom: 25M … A very easy dive." }
+  },
+  "depth": [ { "ref": "s2", "unit": "m", "top": 2, "bottom": 25 } ],
+  "entry": { "value": "shore", "refs": ["s1", "s2"] },
+  "types": { "value": ["reef", "wall"], "refs": ["s2"] },
+  "level": { "value": "beginner", "refs": ["s2"] },
+  "hazards": [ { "text": "Sharp coral and stonefish", "refs": ["s1"] } ],
+  "summary": { "text": "A shore dive from the boat ramp in Flying Fish Cove on Christmas Island, descending a reef slope to a drop-off. It is an easy dive with rich fish and coral variety; wear reef shoes for the sharp coral and stonefish.", "refs": ["s1", "s2"] }
+ }
+]}

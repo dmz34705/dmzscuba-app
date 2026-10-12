@@ -1,0 +1,508 @@
+{
+ "batch": "popular-madagascar-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-u5b9ao",
+   "reason": "Tanikely pages give park-wide 5-23 m, not per site"
+  },
+  {
+   "id": "odm-6h8a7o",
+   "reason": "Tanikely pages give park-wide depth, not per site"
+  },
+  {
+   "id": "odm-mtqgbd",
+   "reason": "Tanikely pages give park-wide depth, not per site"
+  },
+  {
+   "id": "odm-97an5o",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-ybzrgm",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-rdu25o",
+   "reason": "page gives 18-50 m, conflicts with pin depth"
+  },
+  {
+   "id": "odm-5wzwld",
+   "reason": "page names only 'Rosario Bank'; Rosario (odm-elsamu) used instead"
+  },
+  {
+   "id": "odm-wccc8x",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-nh5n4z",
+   "reason": "only depth 25-40 m, conflicts with pin"
+  },
+  {
+   "id": "odm-gr25rb",
+   "reason": "only depth 20-50 m, conflicts with pin"
+  },
+  {
+   "id": "odm-ed54z5",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-9soad8",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-4x321n",
+   "reason": "no usable non-directory page found for this site"
+  },
+  {
+   "id": "odm-r9ue3w",
+   "reason": "no usable non-directory page found for this site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-fem74k",
+   "name": "Banc des Licornes",
+   "sources": {
+    "dp": {
+     "url": "https://www.diveplanit.com/africa/madagascar-diving-classic",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Banc des Licornes: This beginner-friendly location is a pristine coral reef, home to many stonefish, stingrays, and rhinopias. Eagle and manta rays also pass through regularly. Maximum depth 18m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "dp",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "dp"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "dp"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Many stonefish, stingrays and rhinopias",
+     "refs": [
+      "dp"
+     ]
+    },
+    {
+     "text": "Eagle and manta rays pass through",
+     "refs": [
+      "dp"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-qtgep7",
+   "name": "Banc des Fusiliers",
+   "sources": {
+    "dp": {
+     "url": "https://www.diveplanit.com/africa/madagascar-diving-classic",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Banc des Fusiliers: This spot is popular as a second dive location, about 10km behind Nosy Sakatia. Macro is the drawcard here, but large schools of fish are also often seen, including snapper, grouper, and barracuda. Maximum depth 20m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "dp",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Macro life plus snapper, grouper, barracuda schools",
+     "refs": [
+      "dp"
+     ]
+    }
+   ],
+   "access": {
+    "value": "About 10 km behind Nosy Sakatia; boat only",
+    "refs": [
+     "dp"
+    ]
+   }
+  },
+  {
+   "id": "odm-qm7gg2",
+   "name": "Banc 06",
+   "sources": {
+    "sn": {
+     "url": "https://scubanosybe.com/en/sites-de-plongee/",
+     "publisher": "Scuba Nosy Be",
+     "kind": "operator",
+     "quote": "Banc 06 This spot is generally teeming with fish – an incredible number of shoals of fish frequent this shallow plateau situated at 14-19 metres, although from time to time, to the disappointment of divers, they disappear. A huge moray eel can sometimes be seen"
+    }
+   },
+   "depth": [
+    {
+     "ref": "sn",
+     "unit": "m",
+     "bottom": 19,
+     "top": 14
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "sn"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shoals of fish over a shallow plateau",
+     "refs": [
+      "sn"
+     ]
+    },
+    {
+     "text": "Big moray; occasional manta or eagle ray",
+     "refs": [
+      "sn"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-elsamu",
+   "name": "Rosario",
+   "sources": {
+    "sn": {
+     "url": "https://scubanosybe.com/en/sites-de-plongee/",
+     "publisher": "Scuba Nosy Be",
+     "kind": "operator",
+     "quote": "Rosario A very pretty reef between 14-19 meters, with beautiful fan corals, scorpion leaf fish, stone fish, crocodile fish, nudibranchs, and large schools of fish. An easy diving sport (drift dive)"
+    },
+    "aq": {
+     "url": "https://www.aquamadagascar.com/en/diving-spot/",
+     "publisher": "Aqua Diving Nosy Be",
+     "kind": "operator",
+     "quote": "Rosario Bank Depth: 16-22 metres A sumptuous coral plateau, with a series of beautiful gorgonians and an infinite number of small coral sponges. … It is also one of the best places to see whale sharks between October and November."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sn",
+     "unit": "m",
+     "bottom": 19,
+     "top": 14
+    },
+    {
+     "ref": "aq",
+     "unit": "m",
+     "bottom": 22,
+     "top": 16
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "sn",
+     "aq"
+    ]
+   },
+   "season": {
+    "from": 10,
+    "to": 11,
+    "refs": [
+     "aq"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fan corals and gorgonians",
+     "refs": [
+      "sn",
+      "aq"
+     ]
+    },
+    {
+     "text": "Whale sharks in Oct-Nov",
+     "refs": [
+      "aq"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A coral plateau off Nosy Be at roughly 14-22 m covered in fan corals and gorgonians, with leaf fish, stonefish and nudibranchs. Often a gentle drift dive, and a good place for whale sharks in October and November.",
+    "refs": [
+     "sn",
+     "aq"
+    ]
+   }
+  },
+  {
+   "id": "odm-hcjsqv",
+   "name": "Mitsio Wreck",
+   "sources": {
+    "dp": {
+     "url": "https://www.diveplanit.com/africa/madagascar-diving-classic",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Mitsio Wreck: A shrimp trawler sunk in 2004 to create this wreck dive site. It’s a popular place to spot barracuda, snapper, scorpionfish, and stonefish. Maximum depth 27m."
+    },
+    "aq": {
+     "url": "https://www.aquamadagascar.com/en/diving-spot/",
+     "publisher": "Aqua Diving Nosy Be",
+     "kind": "operator",
+     "quote": "Mitsio Wreck Depth: 26-28 metres The wreck of this trawler, deliberately sunk to a sandy bottom, has created a phenomenal concentration of marine life in and around it."
+    }
+   },
+   "depth": [
+    {
+     "ref": "dp",
+     "unit": "m",
+     "bottom": 27
+    },
+    {
+     "ref": "aq",
+     "unit": "m",
+     "bottom": 28,
+     "top": 26
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "dp",
+     "aq"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Snapper and fusilier schools around the hull",
+     "refs": [
+      "aq"
+     ]
+    },
+    {
+     "text": "Scorpionfish and stonefish on the wreck",
+     "refs": [
+      "dp",
+      "aq"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shrimp trawler deliberately sunk in the mid-2000s on a sandy bottom near Nosy Be, resting around 26-28 m. Dense schools hide the hull, with scorpionfish, stonefish and barracuda around it.",
+    "refs": [
+     "dp",
+     "aq"
+    ]
+   }
+  },
+  {
+   "id": "odm-e6iml8",
+   "name": "Sakatia",
+   "sources": {
+    "dp": {
+     "url": "https://www.diveplanit.com/africa/madagascar-diving-classic",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Sakatia Reef: The resort’s namesake reef is just a ten-minute boat ride away and offers an easy dive for all abilities and lots of marine life. With a biodiverse seabed, it’s particularly popular for macro diving. Maximum depth 17m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "dp",
+     "unit": "m",
+     "bottom": 17
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "dp"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Popular for macro diving",
+     "refs": [
+      "dp"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ephvfj",
+   "name": "Banc des gorgones",
+   "sources": {
+    "aq": {
+     "url": "https://www.aquamadagascar.com/en/diving-spot/",
+     "publisher": "Aqua Diving Nosy Be",
+     "kind": "operator",
+     "quote": "Gorgonian Bank Depth: 13-19 metres Banc des Gorgones is a site full of macroscopic life. … One of the first dive sites discovered where an abundance of gorgonians remain close to the coast. You can observe gorgonians and have the chance to see ghost pipefish, nudibranchs, seahorses, lobsters and hawksbill turtles."
+    }
+   },
+   "depth": [
+    {
+     "ref": "aq",
+     "unit": "m",
+     "bottom": 19,
+     "top": 13
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Abundant gorgonians near the coast",
+     "refs": [
+      "aq"
+     ]
+    },
+    {
+     "text": "Ghost pipefish, seahorses, nudibranchs",
+     "refs": [
+      "aq"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-mxupd7",
+   "name": "Olaf Sakatia",
+   "sources": {
+    "aq": {
+     "url": "https://www.aquamadagascar.com/en/diving-spot/",
+     "publisher": "Aqua Diving Nosy Be",
+     "kind": "operator",
+     "quote": "Olaf Depth: 6-20 metres Situated between Nosy Sakatia and Nosy Be, Olaf is a rocky ascent particularly rich in “small” fish. Olaf is our favourite site for night dives but also for training dives."
+    }
+   },
+   "depth": [
+    {
+     "ref": "aq",
+     "unit": "m",
+     "bottom": 20,
+     "top": 6
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Small fish, leaf fish, nudibranchs",
+     "refs": [
+      "aq"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-r5zlib",
+   "name": "Boboss lalina",
+   "sources": {
+    "dp": {
+     "url": "https://www.diveplanit.com/africa/madagascar-diving-classic",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Boboss lalina: Positioned behind Nosy Sakatia, this dive site is best visited on a rising tide. It’s a good site for macro and crocodile fish, scorpionfish, and stonefish. Maximum depth 21m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "dp",
+     "unit": "m",
+     "bottom": 21
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Macro, crocodilefish, scorpionfish, stonefish",
+     "refs": [
+      "dp"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-viijgd",
+   "name": "Atnam",
+   "sources": {
+    "ul": {
+     "url": "https://www.ulyssexplorer.com/en/scuba-diving-nosy-be/",
+     "publisher": "Ulysse Explorer",
+     "kind": "operator",
+     "quote": "Atnam This dive is for experienced divers only. On the drop-off, there is a canyon completely covered in gorgonians with a good chance of seeing pelagics. The dive at Atnam goes down to 60 metres on a sandy bottom."
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "ul"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "ul"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyon covered in gorgonians",
+     "refs": [
+      "ul"
+     ]
+    },
+    {
+     "text": "Chance of pelagics, tuna, leopard sharks",
+     "refs": [
+      "ul"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2a5bqo",
+   "name": "Madrépore Manta Point",
+   "sources": {
+    "sn": {
+     "url": "https://scubanosybe.com/en/sites-de-plongee/",
+     "publisher": "Scuba Nosy Be",
+     "kind": "operator",
+     "quote": "Madrépore 2 spots in one. First, at 20-23 metres, a beautiful field of fan corals, followed by a coral reef and madrepora. You may well find small whitetip sharks, turtles, crocodile fish, nurse sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "sn",
+     "unit": "m",
+     "bottom": 23,
+     "top": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Fan coral field; whitetips, turtles, nurse sharks",
+     "refs": [
+      "sn"
+     ]
+    }
+   ]
+  }
+ ]
+}

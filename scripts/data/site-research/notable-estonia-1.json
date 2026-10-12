@@ -1,0 +1,160 @@
+{
+ "batch": "notable-estonia-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "x-notable-820",
+   "reason": "SMS M68: Wikipedia places the wreck off Hanko, Finland (~130 km west of the pin); no correct coordinates sourced - pin looks wrong"
+  }
+ ],
+ "sites": [
+  {
+   "id": "x-notable-821",
+   "name": "HMS Cassandra",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Cassandra_(1916)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "near Saaremaa in depths of 197 to 328 feet (60 to 100 m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 60,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-822",
+   "name": "HMS Myrtle",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Myrtle",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "wreck is at a depth of 35 meters. The wreck is upright on the keel, missing its bow section"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-848",
+   "name": "Kazanets",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Russian_destroyer_Kazanets",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Its at a depth of 44-46 meters, broken in half and partially buried in mud."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 44,
+     "bottom": 46
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-789",
+   "name": "SMS Schleswig-Holstein",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Schleswig-Holstein",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "beached for long-term use as a target in shallow water off the island of Osmussaar"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-988",
+   "name": "MS Estonia",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Sinking_of_MS_Estonia",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "declared sanctity over the site, prohibiting their citizens from even approaching the wreck"
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Protected grave site under the 1995 Estonia Agreement; approaching the wreck is prohibited",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-56",
+   "name": "Bungsberg",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Bungsberg_(ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "A mine sank her off the coast of Estonia in 1943. Her wreck is now a site for wreck diving."
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

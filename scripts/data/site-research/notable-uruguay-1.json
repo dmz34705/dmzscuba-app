@@ -1,0 +1,5 @@
+{"batch":"notable-uruguay-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-1146","reason":"no depth or dive info"}],
+"sites":[{"id":"x-notable-871","name":"Admiral Graf Spee",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/German_cruiser_Admiral_Graf_Spee","publisher":"Wikipedia","kind":"encyclopedia","quote":"lies at a depth of only 11 m (36 ft)"}},
+"depth":[{"ref":"s1","unit":"m","bottom":11}],"types":{"value":["wreck"],"refs":["s1"]}}]}

@@ -1,0 +1,611 @@
+{
+ "batch": "popular-france-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-o5z7zk",
+   "reason": "Anse Négresse: no depth/facts found"
+  },
+  {
+   "id": "odm-j9wyec",
+   "reason": "La Caye: no usable non-banned source"
+  },
+  {
+   "id": "odm-3p04lj",
+   "reason": "Machette: no source found"
+  },
+  {
+   "id": "odm-gotewy",
+   "reason": "Mambo: no source found"
+  },
+  {
+   "id": "odm-pdpweb",
+   "reason": "Pointe Morphy: only a list mention, no depth"
+  },
+  {
+   "id": "odm-rminxl",
+   "reason": "Anse Christophe: no source found"
+  },
+  {
+   "id": "odm-o8i6x1",
+   "reason": "Pigeon Island: generic area name"
+  },
+  {
+   "id": "odm-xngz0p",
+   "reason": "Rocroy: no depth source found"
+  },
+  {
+   "id": "odm-u0t9j2",
+   "reason": "Anse des Tortues: no source found"
+  },
+  {
+   "id": "odm-pxowcu",
+   "reason": "Anse Thomas: only a list mention"
+  },
+  {
+   "id": "odm-9z630w",
+   "reason": "Quecy: sources spell it Quesy; not matched"
+  },
+  {
+   "id": "odm-4s8pjx",
+   "reason": "Mademoiselle Rose: no source found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-sqi4hu",
+   "name": "La Piscine",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "La Piscine , secteur des ilets Pigeon, plongée de 0 à 25 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Jardin de corail 0-20m, la Piscine 0-25m, la Pointe Carangue 10-45m, la Pointe Barracuda 15-45m, l’Aquarium 0-20m"
+    },
+    "s3": {
+     "url": "https://vvanat.fr/blog/plongee-jardin-japonais-guadeloupe/",
+     "publisher": "VVA Natation",
+     "kind": "press",
+     "quote": "La Piscine : Idéal pour les Premières Bulles … La Piscine est un site parfait"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral valleys with moray eels in cavities",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered, shallow stretch between the two Pigeon islets in the Cousteau Reserve, reaching about 25 m at most. Calm and clear, it is a favourite for first dives and discovery sessions, with iron coral and moray eels.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-lbgwxc",
+   "name": "Le Jardin de Corail",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "Le Jardin de Corail , secteur des ilets Pigeon, plongée de 0 à 20 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Jardin de corail 0-20m, la Piscine 0-25m, la Pointe Carangue 10-45m, la Pointe Barracuda 15-45m, l’Aquarium 0-20m"
+    },
+    "s3": {
+     "url": "https://vvanat.fr/blog/plongee-reserve-cousteau/",
+     "publisher": "VVA Natation",
+     "kind": "press",
+     "quote": "Un buste en bronze du Commandant Cousteau repose à 12 mètres de profondeur sur le site de plongée \"Jardin de Corail\""
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Bronze bust of Commandant Cousteau at 12 m",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow coral massif on the east face of the Pigeon islets in the Cousteau Reserve, down to about 20 m. Home to dense tropical fish and the bronze Cousteau bust lying at 12 m.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-zbfpyu",
+   "name": "L’ Aquarium Ilet Pigeon",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "L’ Aquarium , secteur des ilets Pigeon, plongée de 0 à 20 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Jardin de corail 0-20m, la Piscine 0-25m, la Pointe Carangue 10-45m, la Pointe Barracuda 15-45m, l’Aquarium 0-20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 20
+    }
+   ]
+  },
+  {
+   "id": "odm-2etrly",
+   "name": "Epave Franjack, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "Le Franjack Ce cargo sablier danois de 50 m de long gît à 23 m de profondeur dans la réserve Cousteau"
+    },
+    "s2": {
+     "url": "https://vvanat.fr/blog/meilleurs-coin-pour-plongee-bouteilles-guadeloupe/",
+     "publisher": "VVA Natation",
+     "kind": "press",
+     "quote": "le Franjack, un ancien sablier de 50 mètres de long, repose à 23 mètres de profondeur"
+    },
+    "s3": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Franjack, 25m. Niveau 1, PE20, OpenWater Diver minimum"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 23
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 23
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": null,
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s3"
+    ]
+   },
+   "summary": {
+    "text": "A 50 m Danish cargo vessel scuttled in 1996 in the Cousteau Reserve and resting upright on its keel at about 23 m. Accessible to Open Water divers, it can be penetrated and has become an artificial reef.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-aatdln",
+   "name": "Pointe Malendure",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "La Pointe Malendure , le long de la côte, plongée de 0 à 18 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "La Pointe Malendure 0-18m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 18
+    }
+   ]
+  },
+  {
+   "id": "odm-yi4gvw",
+   "name": "Jardin Japonais",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "Le Jardin Japonais au nord de la Pointe Malendure, plongée de 0 à 25 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Jardin japonais 3-25m"
+    },
+    "s3": {
+     "url": "https://vvanat.fr/blog/plongee-jardin-japonais-guadeloupe/",
+     "publisher": "VVA Natation",
+     "kind": "press",
+     "quote": "Le Jardin Japonais : Un Sec Richissime et Coloré Parmi les sites emblématiques de la réserve, le Jardin Japonais se distingue par sa richesse et ses couleurs éclatantes. Il s'agit d'un petit sec descendant de 2 à 25 mètres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 25
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 2,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Natural arch and dense juvenile fish nursery",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small colourful sec just north of Pointe Malendure, dropping from the surface to about 25 m below volcanic cliffs. A natural arch and dense coral make it a fish nursery, suited to everyone from beginners to experienced divers.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-04bcxv",
+   "name": "Bouée Anticyclonique",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "La Bouée anticyclonique , secteur des ilets Pigeon, plongée de 6 à 50 m de profondeur"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 50
+    }
+   ]
+  },
+  {
+   "id": "odm-ocp3us",
+   "name": "Epave Augustin Fresnel (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "L’Augustin Fresnel II, 34m. PE40, Niveau 2, Advanced OpenWater Diver minimum"
+    },
+    "s2": {
+     "url": "https://vvanat.fr/blog/meilleurs-coin-pour-plongee-bouteilles-guadeloupe/",
+     "publisher": "VVA Natation",
+     "kind": "press",
+     "quote": "Un autre trésor historique est l’Augustin Fresnel … Posé entre 27 et 33 mètres de fond"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 34
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 27,
+     "bottom": 33
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A 53 m former lighthouse tender lying at roughly 27-33 m. Divers can swim along the hull and enter the wheelhouse and living spaces; Advanced Open Water level is required.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-8561nw",
+   "name": "Anse à La Barque",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "La Pointe d’Anse à la Barque , plongée jusqu’à 20 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "La Pointe de l’anse à la Barque 0-20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 20
+    }
+   ]
+  },
+  {
+   "id": "odm-dy14kw",
+   "name": "Pointe Lézarde",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "La Pointe Lézarde , plongée jusqu’à 40 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "La Pointe à Lézard 6-40m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 6,
+     "bottom": 40
+    }
+   ]
+  },
+  {
+   "id": "odm-m3nvfw",
+   "name": "Pointe Barracuda",
+   "sources": {
+    "s1": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "La Pointe Barracuda , secteur des ilets Pigeon, plongée de 15 à 45 m de profondeur"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Jardin de corail 0-20m, la Piscine 0-25m, la Pointe Carangue 10-45m, la Pointe Barracuda 15-45m, l’Aquarium 0-20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 45
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 45
+    }
+   ]
+  },
+  {
+   "id": "odm-v8mf1n",
+   "name": "Pointe Carangue",
+   "sources": {
+    "s1": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Jardin de corail 0-20m, la Piscine 0-25m, la Pointe Carangue 10-45m, la Pointe Barracuda 15-45m, l’Aquarium 0-20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 45
+    }
+   ]
+  },
+  {
+   "id": "odm-es5k8g",
+   "name": "Epave du Gustavia (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://vvanat.fr/blog/meilleurs-coin-pour-plongee-bouteilles-guadeloupe/",
+     "publisher": "VVA Natation",
+     "kind": "press",
+     "quote": "le Gustavia, un cargo de 48 mètres, gît à 40 mètres sous la surface depuis 1991"
+    },
+    "s2": {
+     "url": "https://spots-evasion.com/sejours/sejour-combine-plongee-guadeloupe/",
+     "publisher": "Spots d'Evasion",
+     "kind": "operator",
+     "quote": "Le Gustavia, 40m. PE40, Niveau 2, Advanced OpenWater Diver avec spécialité Deep minimum"
+    },
+    "s3": {
+     "url": "https://laterresurson31.fr/plongee-guadeloupe-conseils/",
+     "publisher": "La Terre sur son 31",
+     "kind": "press",
+     "quote": "Le Gustavia Ce cargo sablier de 48 m de long, a été coulé en 1991"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "summary": {
+    "text": "A 48 m cargo ship sunk in 1991 near the Pigeon islets, sitting upright at about 40 m. Reserved for Advanced divers with deep training; it is often visited by barracuda and counted among Guadeloupe's best dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

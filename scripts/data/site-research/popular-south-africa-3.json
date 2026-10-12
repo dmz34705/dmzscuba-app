@@ -1,0 +1,433 @@
+{
+ "batch": "popular-south-africa-3",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-6it3hy",
+   "reason": "Anchor: no source found for this Maputaland site"
+  },
+  {
+   "id": "odm-ozuu19",
+   "reason": "Crèche: no source found for this Maputaland site"
+  },
+  {
+   "id": "odm-qgu0t4",
+   "reason": "Blow Hole: no source found"
+  },
+  {
+   "id": "odm-4rirek",
+   "reason": "langebaan divers wall: no matching source (Mykonos Wall only vaguely described)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-xs9p8u",
+   "name": "Protea Banks",
+   "sources": {
+    "pb": {
+     "url": "https://africandiveadventures.com/protea-banks-dive-map/",
+     "publisher": "African Dive Adventures",
+     "kind": "operator",
+     "quote": "Protea Banks lies 7.5 km offshore from Shelly Beach. … Depth ranges from 27–38m , dropping beyond 50m in places. Protea Banks attracts migratory sharks … a high-energy, advanced dive site ideal for experienced divers."
+    },
+    "pb2": {
+     "url": "https://diveinadventuretours.com/shark-diving-protea-banks-south-africa/",
+     "publisher": "Dive In Adventure Tours",
+     "kind": "operator",
+     "quote": "Located in the powerful Agulhas Current, the reef is known for its deep water, strong currents and ever-changing ocean conditions … Most dives take place between 30 and 36 metres and are conducted as drift dives … divers should hold an Advanced Open Water certification (or equivalent) and have approximately 35 logged dives"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "pb",
+     "top": 27,
+     "bottom": 38
+    },
+    {
+     "unit": "m",
+     "ref": "pb2",
+     "top": 30,
+     "bottom": 36
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "pb",
+     "pb2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "pinnacle",
+     "drift"
+    ],
+    "refs": [
+     "pb"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "pb",
+     "pb2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "pb2"
+    ]
+   },
+   "access": {
+    "value": "Boat from Shelly Beach harbour; about 35 logged dives and Advanced Open Water expected",
+    "refs": [
+     "pb",
+     "pb2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hammerhead, bull, tiger and ragged-tooth sharks",
+     "refs": [
+      "pb2"
+     ]
+    },
+    {
+     "text": "Northern and Southern pinnacles with caves and drop-offs",
+     "refs": [
+      "pb"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong Agulhas Current; negative entry and blue-water ascent",
+     "refs": [
+      "pb2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Offshore reef system about 7.5 km from Shelly Beach, made of two pinnacles, sand channels and drop-offs in the Agulhas Current. It is a deep, fast drift dive for experienced divers, known for hammerheads and other sharks.",
+    "refs": [
+     "pb",
+     "pb2"
+    ]
+   }
+  },
+  {
+   "id": "odm-toe59b",
+   "name": "Komati Springs",
+   "sources": {
+    "bg": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_inland_in_South_Africa/Badgat",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth found to date in the mine system is about 186 m, and 53 m in open water. … 5 to 40 m is reported. … The cave system of the old mine has 8 interconnecting levels with depths from 9 m to 186 m. … This is a high altitude inland shore dive site."
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "bg",
+     "bottom": 53
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "bg"
+    ]
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "bg"
+    ]
+   },
+   "vis": {
+    "low": 5,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "bg"
+    ]
+   },
+   "access": {
+    "value": "Cave certification required for overhead areas; no permit needed",
+    "refs": [
+     "bg"
+    ]
+   },
+   "depthNote": "Open water to 53 m; flooded mine cave system to about 186 m"
+  },
+  {
+   "id": "odm-bf8jja",
+   "name": "7 Miles Reef",
+   "sources": {
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "7 Mile Reef (Northern Wall and Mushroom Rocks) … nestled between depths of 15m at the summit and 24m at the base. … Depth: 16-22m Qualification Required: Advanced Open Water"
+    },
+    "am": {
+     "url": "https://amoraydiving.com/sodwana-bay-reefs/",
+     "publisher": "Amoray Diving (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Seven Mile Reef Depth: 22-24m (ADV Dive) Often toted as the best dive site in Sodwana Bay … Mushroom Rocks … a favourite haunt of Ragged-tooth sharks and other large pelagic species"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "cd",
+     "top": 15,
+     "bottom": 24
+    },
+    {
+     "unit": "m",
+     "ref": "am",
+     "bottom": 24
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "cd",
+     "am"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Black-tipped reef sharks and pelagic schools",
+     "refs": [
+      "cd"
+     ]
+    },
+    {
+     "text": "Ragged-tooth sharks at Mushroom Rocks",
+     "refs": [
+      "am"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Sodwana's best-regarded advanced reef, with a drop-off from about 15 m at the summit to 24 m. Its high ledge, Mushroom Rocks bommies, reef sharks, big morays and turtles make for varied multi-level dives.",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   }
+  },
+  {
+   "id": "odm-k4xrg7",
+   "name": "Gotham, Sodwana Bay",
+   "sources": {
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Gotham … a breathtaking ledge that plunges divers into a thrilling 40m adventure … dives are capped at 40m … Depth: 35-40m (on ledge) Qualification Required: Deep Speciality"
+    },
+    "am": {
+     "url": "https://amoraydiving.com/sodwana-bay-reefs/",
+     "publisher": "Amoray Diving (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Gotham (named for the dark and eerie Gotham City in Batman) is the deepest of these and drops down to 40m towards the 5 Mile Canyon"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "cd",
+     "top": 35,
+     "bottom": 40
+    },
+    {
+     "unit": "m",
+     "ref": "am",
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "cd",
+     "am"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "cd"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Deep dive; narcosis risk at 35-40 m",
+     "refs": [
+      "cd"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The deepest of the Five Mile Reef sites, a ledge dropping to about 40 m toward the 5 Mile Canyon. Deep-specialty certification is needed, and dives are capped at 40 m.",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   }
+  },
+  {
+   "id": "odm-lyi1v1",
+   "name": "Partridge Point",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Partridge Point Reef dive. Boat access only. Maximum depth 26 m. … Very large granite boulders and outcrops, some extending above the surface by several metres."
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvE",
+     "bottom": 26
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "wvE"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Very large granite boulders and outcrops",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-4dbphk",
+   "name": "Wondergat",
+   "sources": {
+    "wg": {
+     "url": "https://wondergat.co.za/diving/",
+     "publisher": "Wondergat (site owner)",
+     "kind": "operator",
+     "quote": "Maximum depth is about 58m. … About 6m above 20m, and about 15m below 20m. … Wondergat is a collapsed cavern filled with water. … Water temperature will be between 14 and 21°C … This is a shore entry site."
+    },
+    "gw": {
+     "url": "https://www.getaway.co.za/travel/travel-ideas/wondergat-underwater-caves-north-west/",
+     "publisher": "Getaway magazine",
+     "kind": "press",
+     "quote": "the roughly oval opening measures about 75m by 100m and reaches around 58m at its deepest point … Water temperatures generally range between 14°C and 21°C … The site is used by advanced, technical and instructor-level divers"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wg",
+     "bottom": 58
+    },
+    {
+     "unit": "m",
+     "ref": "gw",
+     "bottom": 58
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "wg"
+    ]
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "wg",
+     "gw"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "gw"
+    ]
+   },
+   "vis": {
+    "low": 6,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "wg"
+    ]
+   },
+   "waterTemp": {
+    "low": 14,
+    "high": 21,
+    "unit": "C",
+    "note": "range through the year",
+    "refs": [
+     "wg",
+     "gw"
+    ]
+   },
+   "access": {
+    "value": "Entry fee payable; steps down to the water; no permit needed",
+    "refs": [
+     "wg"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Collapsed dolomite sinkhole with side caverns",
+     "refs": [
+      "wg",
+      "gw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Flooded dolomite sinkhole about 75 by 100 m across, with near-vertical walls and caverns off the bottom, to roughly 58 m. It is a freshwater shore dive mostly used by advanced and technical divers.",
+    "refs": [
+     "wg",
+     "gw"
+    ]
+   }
+  }
+ ]
+}

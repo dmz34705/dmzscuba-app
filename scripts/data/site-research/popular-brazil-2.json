@@ -1,0 +1,658 @@
+{
+ "batch": "popular-brazil-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-3wo53o",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-smbxiw",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-k06kiu",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-cjjdjt",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-dyci9t",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-eqjvem",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-6eb9od",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-mnwd8e",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-trwn7n",
+   "reason": "no usable source found for this exact site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-26fp0l",
+   "name": "Naufrágio Pinguino",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/pinguino/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Pinguino … Profundidade mínima: 07 metros Profundidade máxima: 20 metros"
+    },
+    "s2": {
+     "url": "https://esim.holafly.com/trip-planning/scuba-diving-angra-dos-reis/",
+     "publisher": "Holafly travel guide",
+     "kind": "press",
+     "quote": "The Pinguino is probably the most famous wreck in Angra dos Reis and across the entire Costa Verde"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-zvl5wq",
+   "name": "Rio de Janeiro (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/rio-de-janeiro/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Rio de Janeiro … Profundidade mínima: 08 metros Profundidade máxima: 12 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-ayl8j4",
+   "name": "Ilha das Cabras",
+   "sources": {
+    "s1": {
+     "url": "https://narwhalilhabela.com.br/cursos/mergulho-ilha-das-cabras/",
+     "publisher": "Narwhal Ilhabela",
+     "kind": "operator",
+     "quote": "MERGULHO NA ILHA DAS CABRAS Ideal para Iniciantes Local com muita vida marinha 20 minutinhos de navegação Profundidade de 6 a 10 mts Visibilidade varia de 2 a 10 mts"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 10
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 2,
+    "high": 10,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-1bgp8h",
+   "name": "Naufragio Blackadder",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/blackadder/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Blackadder … Profundidade mínima: 08 metros Profundidade máxima: 15 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 15
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-5o853w",
+   "name": "Naufragio Agenor Gordilho",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/agenor-gordilho/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Agenor Gordilho … Profundidade mínima: 16 metros Profundidade máxima: 34 metros"
+    },
+    "s2": {
+     "url": "https://agenciadenoticias.salvador.ba.gov.br/index.php/pt-br/releases-2/geral/29480-conheca-os-melhores-lugares-para-fazer-mergulho-nas-praias-de-salvador",
+     "publisher": "Prefeitura de Salvador",
+     "kind": "agency",
+     "quote": "o ferry-boat Agenor Gordilho, afundado em 2020 para servir de abrigo para espécies marinhas"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 34
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-w3bkbt",
+   "name": "Naufragio Germania",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/germania/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Germania … Profundidade mínima: 07 metros Profundidade máxima: 11 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 7,
+     "bottom": 11
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-s4p499",
+   "name": "Maraldi",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/maraldi/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Maraldi … Profundidade mínima: 04 metros Profundidade máxima: 12 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-wit26r",
+   "name": "Reliance",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/reliance/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Reliance … Profundidade mínima: 05 metros Profundidade máxima: 09 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 9
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-tgt8d9",
+   "name": "Taurus e Virgo",
+   "sources": {
+    "s1": {
+     "url": "https://feel.visitbrasil.com/en/mergulho-recreativo-em-recife-2/",
+     "publisher": "Visit Brasil (Embratur)",
+     "kind": "agency",
+     "quote": "The Virgo and Taurus are a bit further from the coast, but it’s possible to visit both on a single dive. These two shipwrecks are located at the same point, 20 meters apart, and both lie at a depth of 25 meters."
+    },
+    "s2": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/taurus/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Taurus … Profundidade mínima: 18 metros Profundidade máxima: 25 metros"
+    },
+    "s3": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/virgo/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Virgo … Profundidade mínima: 18 metros Profundidade máxima: 25 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Two tugs sunk on one reef site 20 m apart off Recife (Taurus in 2006, Virgo in 2017), both resting around 25 m. A popular pair that can be dived together on a single dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-h7j4hc",
+   "name": "Mercurius",
+   "sources": {
+    "s1": {
+     "url": "https://clickpetroleoegas.com.br/o-litoral-de-pernambuco-tem-mais-de-uma-dezena-de-navios-afundados-de-proposito-no-fundo-do-mar-e-o-que-comecou-como-ferro-velho-virou-um-dos-maiores-parques-de-mergulho-em-naufragios-mhbb01/",
+     "publisher": "CPG Click Petróleo e Gás",
+     "kind": "press",
+     "quote": "O rebocador Mercurius, afundado de propósito em 2006, repousa a 29 metros"
+    },
+    "s2": {
+     "url": "https://www.coraldefogo.com/post/2018/01/19/recife-naufr%C3%A1gios-em-viagens-de-mergulho",
+     "publisher": "Coral de Fogo",
+     "kind": "operator",
+     "quote": "Entre estes naufrágios artificiais mais conhecidos, estão os rebocadores Taurus, o Mercurius e o Saveiros. Os três, afundados em 2006, ficam entre os 18 e 30 metros de profundidade"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 29
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-5rhmz9",
+   "name": "Bellatrix",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/bellatrix/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Bellatrix … Profundidade mínima: 25 metros Profundidade máxima: 29 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 25,
+     "bottom": 29
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-tul5ss",
+   "name": "Saveiros",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/saveiros/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Saveiros … Profundidade mínima: 18 metros Profundidade máxima: 28 metros"
+    },
+    "s2": {
+     "url": "https://clickpetroleoegas.com.br/o-litoral-de-pernambuco-tem-mais-de-uma-dezena-de-navios-afundados-de-proposito-no-fundo-do-mar-e-o-que-comecou-como-ferro-velho-virou-um-dos-maiores-parques-de-mergulho-em-naufragios-mhbb01/",
+     "publisher": "CPG Click Petróleo e Gás",
+     "kind": "press",
+     "quote": "o Saveiros descansa também na casa dos 29 metros abaixo da superfície"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 29
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-uyr9tl",
+   "name": "Vapor de Baixo",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/vapor-de-baixo/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Profundidade mínima: 18 metros Profundidade máxima: 23 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 23
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-pfr17u",
+   "name": "Phoenix",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/phoenix/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Phoenix … Profundidade mínima: 25 metros Profundidade máxima: 29 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 25,
+     "bottom": 29
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-aowujt",
+   "name": "Servemar X",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/servemar-x/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Servemar X … Profundidade mínima: 20 metros Profundidade máxima: 25 metros"
+    },
+    "s2": {
+     "url": "https://feel.visitbrasil.com/en/mergulho-recreativo-em-recife-2/",
+     "publisher": "Visit Brasil (Embratur)",
+     "kind": "agency",
+     "quote": "The first ship intentionally sunk in Recife to create the Shipwreck Park was the Servemar X. It lies at a depth of 25 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 20,
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-hgbgaf",
+   "name": "Florida",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/florida/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Florida … Profundidade mínima: 30 metros Profundidade máxima: 33 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 30,
+     "bottom": 33
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,893 @@
+{
+ "batch": "popular-france-3",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-c0wpjc",
+   "reason": "no source gives a depth or conditions for Ti Mur"
+  },
+  {
+   "id": "odm-tiqvka",
+   "reason": "only listed by name"
+  },
+  {
+   "id": "odm-hbais5",
+   "reason": "generic name; no Martinique-specific page"
+  },
+  {
+   "id": "odm-p1015m",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-iomvif",
+   "reason": "only a mooring depth; no other sourced fact"
+  },
+  {
+   "id": "odm-o0rkj6",
+   "reason": "only listed by name (spelled Olbian)"
+  },
+  {
+   "id": "odm-d422jz",
+   "reason": "only one mention; other page is a different Deux Arches"
+  },
+  {
+   "id": "odm-p0vsee",
+   "reason": "only listed by name"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-bienpf",
+   "name": "Petites Jorasses, Anses-d'Arlet",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "Les petites Jorasses Profondeur max : 25m Temps de plongée : 45-60mm Courant : Faible Difficulté : Facile Type de plongée : bateau"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-pl77wq",
+   "name": "Le Nahoon",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "L’épave du Nahoon Prof. max. : 35m Temps de plongée : 20-60 mn Courant : moyen Difficulté : Moyen Type plongée : Bateau"
+    },
+    "s2": {
+     "url": "https://ultramarina.com/voyage-plongee-caraibes/martinique/les-sites-de-plongee-de-martinique",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "L’épave du Nahoon. Cette plongée est l’une des plus belles de Martinique. Ce trois-mâts de 35 m gît à 36 m de profondeur. … Il est possible de visiter le pont, les cales et les cabines."
+    },
+    "s3": {
+     "url": "https://www.jumbocar-martinique.com/blog-voyage/activites-decouvertes/plongee-martinique",
+     "publisher": "Jumbocar Martinique",
+     "kind": "press",
+     "quote": "Pour aller explorer le Nahoon, il faut avoir, au minimum le niveau 2."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 36
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "penetration": {
+    "value": "Deck, holds and cabins can be visited",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact three-masted ship sunk as an artificial reef",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deliberately sunk sailing ship standing upright on sand off Les Anses-d'Arlet, a flagship wreck dive for Martinique. Deck, holds and cabins are in good shape and covered in colourful growth; a certified deeper-diving level and some current are to be expected.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-fardja",
+   "name": "Pointe Borgnèse",
+   "sources": {
+    "s1": {
+     "url": "https://paradisplongee.com/sites-de-plongees/baie-de-sainte-luce",
+     "publisher": "Paradis Plongée Martinique",
+     "kind": "operator",
+     "quote": "POINTE BORGNÈSE Site privilégié, car il permet aux débutants d’être dans des conditions rassurantes grâce à sa faible profondeur et sa proximité avec la côte."
+    },
+    "s2": {
+     "url": "https://www.zotcar.com/blog/plongee-martinique/",
+     "publisher": "Zotcar",
+     "kind": "press",
+     "quote": "La Pointe Borgnese … Tout proche de la côte, sur deux tombants de 25 mètres, il offre une très bonne visibilité"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A reef-wall dive in Sainte-Luce Bay, close to shore and sheltered from wind and swell. The shallow, reassuring conditions make it a favourite for beginners, with clear water over two drop-offs down to roughly 25 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-pie5k2",
+   "name": "Cap Salomon",
+   "sources": {
+    "s1": {
+     "url": "https://www.zananas-martinique.com/loisirs/plongee.htm",
+     "publisher": "Zananas Martinique",
+     "kind": "press",
+     "quote": "Cap Salomon (0 à -35m) … Un tombant vous ménera jusqu'à -30m."
+    },
+    "s2": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "Cap Salomon Prof. max. : 10m-40m Temps de plongée : 45-60 mn Courant : Moyen Difficulté : Facile-Moyen Type plongée : Bateau ou dérivante"
+    },
+    "s3": {
+     "url": "https://www.jumbocar-martinique.com/blog-voyage/activites-decouvertes/plongee-martinique",
+     "publisher": "Jumbocar Martinique",
+     "kind": "press",
+     "quote": "Les conditions pour plonger au Cap Salomon sont idéales pour des débutants"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rocky blocks and coral heads; turtles, parrotfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Reef slopes to about 30-40 m per guides"
+  },
+  {
+   "id": "odm-wgguee",
+   "name": "Les Jardins de Salomon",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "Jardins de Salomon Prof. max. : 6m-25m Temps de plongée : 45-60 mn Courant : régulier Difficulté : Facile Type plongée : Bateau … Cette zone regorge de gorgones à plumes, d’éponges barriques"
+    },
+    "s2": {
+     "url": "https://www.jumbocar-martinique.com/blog-voyage/activites-decouvertes/plongee-martinique",
+     "publisher": "Jumbocar Martinique",
+     "kind": "press",
+     "quote": "Les Jardin de Salomon : Dans le même esprit que la piscine, cette plongée calme est très colorée au milieu des coraux"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Feather gorgonians and barrel sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Gentle coral gardens below Cap Salomon near Grande Anse d'Arlet, with feather gorgonians and barrel sponges colouring slopes that run to about 25 m. A calm, easy boat dive suited to newer divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-qyk5zh",
+   "name": "Grandes Jorasses",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "Les grandes Jorasses Profondeur max : 40-60m Temps de plongée : 45-60mm Courant : Régulier Difficulté : Moyen/ Difficile … réservé aux plongeurs les plus expérimentés"
+    },
+    "s2": {
+     "url": "https://www.martinique-tour.com/profiter/la-plongee-en-martinique/les-spots-de-plongee-des-anses-darlet/",
+     "publisher": "Martinique Tour",
+     "kind": "press",
+     "quote": "Les Jorasses Les Anses d’Arlet Explorez le prolongement du tombant de Burgos avec les petites et grandes Jorasses , une plongée réservée aux plongeurs aguerris"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Maximum 40-60 m per operator"
+  },
+  {
+   "id": "odm-xktu72",
+   "name": "Grande Caye de Sainte-Luce",
+   "sources": {
+    "s1": {
+     "url": "https://ultramarina.com/voyage-plongee-caraibes/martinique/les-sites-de-plongee-de-martinique",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "La Grande Caye. C’est un des plus beaux sites de Martinique. La variété des coraux est remarquable ainsi que la densité des espèces. Ce large plateau corallien est accessible à tous."
+    },
+    "s2": {
+     "url": "https://www.jumbocar-martinique.com/blog-voyage/activites-decouvertes/plongee-martinique",
+     "publisher": "Jumbocar Martinique",
+     "kind": "press",
+     "quote": "Grande Caye de Sainte-Luce C’est le spot pour les amoureux du Corail. Pas moins de 50 espèces de coraux vivent sur ce récif de 200 mètres de long."
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "About 50 coral species on a 200 m reef",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A broad coral plateau off Sainte-Luce prized for coral diversity, with some fifty species recorded on a reef about 200 m long. Open to all levels and a popular spot for introductory dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-e79xd7",
+   "name": "Le Trou du Souffleur",
+   "sources": {
+    "s1": {
+     "url": "https://divechamp.com/divesite/le-trou-du-souffleur",
+     "publisher": "Dive Champ",
+     "kind": "press",
+     "quote": "Le Trou du Souffleur Discover a mesmerizing dive site in the water named after a unique cave that lies at a depth of 3 meters. … Dive Site Overview for Le Trou du Souffleur Depth 15m Visibility 15m"
+    },
+    "s2": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "Trou du Souffleur Prof. max. : 6m-40m Temps de plongée : 45-60 mn Courant : Moyen Difficulté : Facile-Moyen Type plongée : Bateau ou dérivante"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-xfra0q",
+   "name": "L'arbre Mort",
+   "sources": {
+    "s1": {
+     "url": "https://deepturtleplongee.fr/le-centre/les-sites/",
+     "publisher": "Deep Turtle Plongée",
+     "kind": "operator",
+     "quote": "L’arbre du Paradis (L’arbre mort) Profondeur max : 15m Temps de plongée : 45-60mm Courant : régulier Difficulté : facile- moyen"
+    },
+    "s2": {
+     "url": "https://ultramarina.com/voyage-plongee-caraibes/martinique/les-sites-de-plongee-de-martinique",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "L’arbre mort. Cette belle plongée est très facile pour les débutants.C’est un beau plateau recouvert de spongiaires très colorés et riches en murènes."
+    },
+    "s3": {
+     "url": "https://www.martinique-tour.com/profiter/la-plongee-en-martinique/les-spots-de-plongee-des-anses-darlet/",
+     "publisher": "Martinique Tour",
+     "kind": "press",
+     "quote": "Le tombant de l’Arbre Mort Les Anses d’Arlet Explorez la splendeur sous-marine de L’Arbre Mort , un plateau enchanteur débordant de spongiaires aux couleurs vibrantes."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Colourful sponges with morays; macro subjects",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow plateau just before Cap Salomon, carpeted with brightly coloured sponges that hide morays and small macro life. Easy depths make it a good choice for beginners and underwater photographers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-eah2pm",
+   "name": "Anse 3 airs",
+   "sources": {
+    "s1": {
+     "url": "https://ultramarina.com/voyage-plongee-caraibes/martinique/les-sites-de-plongee-de-martinique",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "Anse 3 Aires. C’est le site le plus proche du centre de plongée. Il est facile avec une profondeur maximale de 12 m. On observe de beaux coraux et une petite épave colonisée par des poissons-chevaliers"
+    },
+    "s2": {
+     "url": "https://www.martinique-tour.com/profiter/la-plongee-en-martinique/les-spots-de-plongee-des-anses-darlet/",
+     "publisher": "Martinique Tour",
+     "kind": "press",
+     "quote": "Le site de plongée des 3 aires aux Anses d’Arlet … entre 0 et 12 mètres de profondeur."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 0,
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck",
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small cargo wreck among coral heads",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow, easy dive behind Pointe Dufour at Les Anses-d'Arlet, with coral and rocks above a small cargo wreck that hosts reef fish and cuttlefish. A good first site for new divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-zh3qg6",
+   "name": "La Piscine de Salomon",
+   "sources": {
+    "s1": {
+     "url": "https://ultramarina.com/voyage-plongee-caraibes/martinique/les-sites-de-plongee-de-martinique",
+     "publisher": "Ultramarina",
+     "kind": "operator",
+     "quote": "La Piscine de Salomon. Le site est réputé pour ses carangues aux gros yeux, poissons-perroquets et tortues. C’est une belle plongée colorée au milieu des éboulis rocheux."
+    },
+    "s2": {
+     "url": "https://www.jumbocar-martinique.com/blog-voyage/activites-decouvertes/plongee-martinique",
+     "publisher": "Jumbocar Martinique",
+     "kind": "press",
+     "quote": "La piscine vous immerge au milieu des coraux sur un circuit qui vous émerveillera. Il y a même une petite grotte dans laquelle vous pouvez entrer"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Bigeye jacks, parrotfish, turtles among rocky blocks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The northern circuit at Cap Salomon, a colourful and relaxed dive weaving through rocky blocks and coral. Bigeye jacks, parrotfish and turtles are the draw, and a small cave can be entered.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-qglmyr",
+   "name": "Le jardin des kiosques",
+   "sources": {
+    "s1": {
+     "url": "https://www.indian-ocean.com/les-sites-de-plongee-de-lile-de-la-reunion/",
+     "publisher": "Indian-Ocean.com",
+     "kind": "press",
+     "quote": "le jardin des Kiosques qui est une succession de failles, d’arches et de grottes qui s’étend entre 3 et 18 mètres de fond"
+    },
+    "s2": {
+     "url": "https://www.reunion-randonnees.com/spot-plongee-reunion/",
+     "publisher": "Réunion Randonnées",
+     "kind": "press",
+     "quote": "le jardin des kiosques permet aussi bien aux débutants qu'aux plongeurs plus aguerris de découvrir un magnifique spectacle. Vous y verrez notamment des poissons ange et des mérous."
+    },
+    "s3": {
+     "url": "https://www.plongeesalee.com/les-plus-beaux-spots-de-plongee-de-la-reunion/",
+     "publisher": "Plongée Salée",
+     "kind": "operator",
+     "quote": "Les Kiosques. Plongée accessible à tous les niveaux. Plateau corallien très riche abritant de nombreuses variétés. Il est fréquent d’y croiser des dauphins en navigation."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Angelfish and groupers; dolphins often pass",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A coral plateau off Saint-Leu cut by faults, arches and small caves between about 3 and 18 m. Suited to beginners and experienced divers alike, with angelfish and groupers on the reef and dolphins sometimes passing.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-57q7xw",
+   "name": "Sec Jaune",
+   "sources": {
+    "s1": {
+     "url": "https://www.reunion-randonnees.com/spot-plongee-reunion/",
+     "publisher": "Réunion Randonnées",
+     "kind": "press",
+     "quote": "Le sec jaune Il se trouve derrière la pointe au sel, face à Saint Leu. Sa profondeur va de 5 à 20 m."
+    },
+    "s2": {
+     "url": "https://www.plongeesalee.com/les-plus-beaux-spots-de-plongee-de-la-reunion/",
+     "publisher": "Plongée Salée",
+     "kind": "operator",
+     "quote": "Le Sec jaune, plongée située entre L’Etang-Salé et Saint-Leu. Accessible à tous les niveaux, belles grottes, arches et superbes patates de corail. Les raies aigles et tortues sont souvent présentes."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "cave"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays and turtles; arches and coral heads",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A yellow-coral rock off Saint-Leu, behind the Pointe au Sel, with caves, arches and coral heads on a shallow-to-moderate profile. Open to all levels, and eagle rays and turtles are often seen.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-oxxlfi",
+   "name": "Les Grottes du Portail",
+   "sources": {
+    "s1": {
+     "url": "https://www.plongeesalee.com/les-plus-beaux-spots-de-plongee-de-la-reunion/",
+     "publisher": "Plongée Salée",
+     "kind": "operator",
+     "quote": "Les Grottes du portail. Magnifique plongée avec surplombs et grottes et tunnels de lave façonnés dans la lave. Faune cavernicole."
+    },
+    "s2": {
+     "url": "https://www.indian-ocean.com/les-sites-de-plongee-de-lile-de-la-reunion/",
+     "publisher": "Indian-Ocean.com",
+     "kind": "press",
+     "quote": "les grottes du Portail où vous trouverez un long boyau d’environ 100 mètres"
+    }
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Overhangs and lava tunnels about 100 m long",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-twa17f",
+   "name": "Passe de 3 Bassins",
+   "sources": {
+    "s1": {
+     "url": "https://www.manawa.com/en/articles/best-spots-for-scuba-diving-in-reunion-island",
+     "publisher": "Manawa",
+     "kind": "press",
+     "quote": "For Level 1 divers, Passe de l'Ermitage and the turtle-heavy 3 Bassins are essential stops."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Many turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-twmydd",
+   "name": "Antonio Lorenzo",
+   "sources": {
+    "s1": {
+     "url": "https://www.plongeesalee.com/les-plus-beaux-spots-de-plongee-de-la-reunion/",
+     "publisher": "Plongée Salée",
+     "kind": "operator",
+     "quote": "L’épave l’Antonio Lorenzo est un crevettier, situé dans la baie de Saint-Leu. Elle est posée sur un fond de sable de 38m (Niveau 2 ou Avanced Deep)."
+    },
+    "s2": {
+     "url": "https://www.indian-ocean.com/les-sites-de-plongee-de-lile-de-la-reunion/",
+     "publisher": "Indian-Ocean.com",
+     "kind": "press",
+     "quote": "l’Antonio Lorenzo qui était un palangrier chilien qui pêchait illégalement près des îles Kerguele et coulé en 1999 par 38 mètres de fond"
+    },
+    "s3": {
+     "url": "https://www.ouest-lareunion.com/top-5-des-spots-de-plongee-a-la-reunion",
+     "publisher": "Ouest La Réunion",
+     "kind": "press",
+     "quote": "Accessible à partir du niveau 3 minimum"
+    },
+    "s4": {
+     "url": "https://www.la1.re/meilleurs-spots-plongee-reunion/",
+     "publisher": "La 1ère Réunion",
+     "kind": "press",
+     "quote": "Cap sur l’Antonio Lorenzo , cette épave immergée volontairement à 38 mètres de profondeur … explorer les entrailles du bateau pour y croiser une murène léopard ou une rascasse"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 38
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 38
+    },
+    {
+     "ref": "s4",
+     "unit": "m",
+     "bottom": 38
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "penetration": {
+    "value": "Hull interior can be explored",
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Leopard moray, scorpionfish; ex-longliner sunk 1999",
+     "refs": [
+      "s2",
+      "s4"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A former longline fishing vessel scuttled in 1999 on sand off Saint-Leu, resting around 38 m. A deep wreck for advanced divers, with morays and scorpionfish living in the hull and the chance to look inside.",
+    "refs": [
+     "s1",
+     "s2",
+     "s4"
+    ]
+   }
+  },
+  {
+   "id": "odm-ieffng",
+   "name": "La Pointe au Sel",
+   "sources": {
+    "s1": {
+     "url": "https://www.ouest-lareunion.com/top-5-des-spots-de-plongee-a-la-reunion",
+     "publisher": "Ouest La Réunion",
+     "kind": "press",
+     "quote": "Le Grand tombant de la Pointe au Sel Accessible à partir du niveau 1 Profondeur entre 15 et 70 mètres"
+    },
+    "s2": {
+     "url": "https://www.la1.re/meilleurs-spots-plongee-reunion/",
+     "publisher": "La 1ère Réunion",
+     "kind": "press",
+     "quote": "Pointe au Sel 15 – 70 m Carangues, thons à dents de chien, marlins"
+    },
+    "s3": {
+     "url": "https://www.manawa.com/en/articles/best-spots-for-scuba-diving-in-reunion-island",
+     "publisher": "Manawa",
+     "kind": "press",
+     "quote": "Advanced (Level 2) divers can tackle Pointe au Sel, widely considered the best deep dive on the island. It’s a breathtaking wall dropping to 71 meters"
+    },
+    "s4": {
+     "url": "https://www.reunion-randonnees.com/spot-plongee-reunion/",
+     "publisher": "Réunion Randonnées",
+     "kind": "press",
+     "quote": "Cette plongée est réservée aux amateurs de niveau intermédiaire ou aux experts. … en raison du fort courant"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s3",
+     "s4"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s4"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Jacks, dogtooth tuna, marlin on the big wall",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Réunion's big-wall dive off Saint-Leu: a platform near the island edge ends in a sheer drop beyond 70 m. Schools of jacks, dogtooth tuna and the occasional marlin pass by, and current means it suits experienced divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3",
+     "s4"
+    ]
+   }
+  }
+ ]
+}

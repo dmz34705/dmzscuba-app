@@ -1,0 +1,102 @@
+{
+ "batch": "notable-bahamas-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-notable-1273",
+   "name": "HMS Conqueror",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Conqueror_(1855)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "the wreck lies in 30 feet (9.1 m) of water off Rum Cay. … The wreck is preserved as an Underwater Museum of the Bahamas and is a popular dive site."
+    },
+    "s2": {
+     "url": "https://www.allatsea.net/spun-out-in-rum-cay/",
+     "publisher": "All At Sea",
+     "kind": "press",
+     "quote": "the wooden hull is gone, but equipment is scattered all over a small area in about 30 feet of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Remains of a Royal Navy ship of the line lost on Rum Cay in 1861, preserved as an underwater museum. The hull is gone but scattered ship fittings lie in shallow water, making it easy for divers and snorkelers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-234",
+   "name": "MS Logna",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/MS_Logna",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "rests on her port side at depth of 103 ft (31 m)"
+    },
+    "s2": {
+     "url": "https://www.bahamas.com/plan-your-trip/things-to-do/theo",
+     "publisher": "Bahamas Ministry of Tourism",
+     "kind": "agency",
+     "quote": "at a depth of about 101 feet … The waters around the wreck are subject to currents that vary according to the tides; use the buoys for safe resurfacing."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 103
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 101
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Known as Theo's Wreck, a cargo ship deliberately sunk off Grand Bahama in 1982 as the country's first wreck dive site. It lies on its side near 100 feet and is marked by buoys; tidal currents vary.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

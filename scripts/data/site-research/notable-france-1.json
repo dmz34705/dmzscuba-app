@@ -1,0 +1,73 @@
+{ "batch": "notable-france-1", "researchedAt": "2026-10-08", "sites": [
+ { "id": "osm-n663869697", "name": "Rubis",
+  "sources": {
+   "s1": { "url": "https://provence-alpes-cotedazur.com/decouvrir/espaces-naturels/patrimoine-naturel/le-rubis-ramatuelle-fr-3260772/", "publisher": "Provence-Alpes-Côte d'Azur regional tourism", "kind": "agency", "quote": "Il repose par 41m de fond sur un lit de sable blanc au pied du cap Camarat à Ramatuelle … Profondeur : entre 34 et 40 mètres … Niveau de difficulté : difficile … courant très fréquent et parfois violent." },
+   "s2": { "url": "https://vvanat.fr/blog/plongee-epave-le-rubis/", "publisher": "VVanat dive blog", "kind": "press", "quote": "se trouve à environ 1,4 mille nautique du rivage, au sud du cap Camarat … Elle repose à une profondeur maximale de 41 mètres … le courant peut être fort, parfois jusqu'à 3 nœuds" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 34, "bottom": 41 }, { "ref": "s2", "unit": "m", "top": 34, "bottom": 41 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1"] },
+  "current": { "value": "strong", "refs": ["s1", "s2"] },
+  "summary": { "text": "A French minelaying submarine lying upright on white sand off Cap Camarat near Ramatuelle. The deck sits around 34 m and the sand around 41 m, so it suits experienced divers, and currents and wind exposure are frequent.", "refs": ["s1", "s2"] }
+ },
+ { "id": "osm-n663869688", "name": "Le Liban",
+  "sources": {
+   "s1": { "url": "https://vvanat.fr/blog/plongee-epave-le-liban/", "publisher": "VVanat dive blog", "kind": "press", "quote": "repose aujourd'hui à une profondeur variant de 28 à 36 mètres. … La proue, encastrée dans les rochers, se trouve à 32 mètres de fond. … La poupe, au plus profond, repose à 36 mètres." },
+   "s2": { "url": "https://provence-alpes-cotedazur.com/offres/cap-croisette-marseille-fr-3261164/", "publisher": "Provence-Alpes-Côte d'Azur regional tourism", "kind": "agency", "quote": "le Liban, un paquebot posé derrière l'île Maîre à 30 mètres de profondeur." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 28, "bottom": 36 }, { "ref": "s2", "unit": "m", "bottom": 30 } ],
+  "types": { "value": ["wreck"], "refs": ["s1", "s2"] },
+  "entry": { "value": "boat", "refs": ["s1"] },
+  "summary": { "text": "A steam liner that sank in a collision in 1903 and now lies on its keel behind Île Maïre off Marseille. The bow is wedged in rocks near 32 m and the stern is at about 36 m; the front holds can be entered.", "refs": ["s1", "s2"] }
+ },
+ { "id": "osm-n2479149211", "name": "Exsurgence de Port-Miou",
+  "sources": {
+   "s1": { "url": "https://www.calanques-parcnational.fr/fr/source-souterraine-de-port-miou", "publisher": "Parc national des Calanques", "kind": "park", "quote": "Rivière souterraine, puits et barrage sont des lieux dédiés à la recherche scientifique et à l'exploration et ne sont pas ouverts à la visite." }
+  },
+  "notDiveSite": { "kind": "restricted", "reason": "Underground river reserved for scientific research and exploration, closed to visitors", "refs": ["s1"] }
+ },
+ { "id": "osm-n2366251593", "name": "Le France",
+  "sources": {
+   "s1": { "url": "https://www.annecy-ville.fr/2021/11/le-france-plus-50-ans-fond-lac", "publisher": "Ville d'Annecy", "kind": "agency", "quote": "Posé à 42 mètres de profondeur en face de l’Impérial Palace … il s’agit d’une plongée technique accessible avec un niveau 3." },
+   "s2": { "url": "https://ulysse.com/news/cette-epave-oubliee-au-fond-du-lac-dannecy-pourrait-bien-etre-le-plus-grand-secret-de-la-plongee-sous-marine", "publisher": "Ulysse", "kind": "press", "quote": "à 42 mètres de profondeur … un véritable terrain de jeu pour les plongeurs confirmés … De la timonerie aux salles des machines, sans oublier le célèbre salon de billard, tout est encore là." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 42 }, { "ref": "s2", "unit": "m", "bottom": 42 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1", "s2"] },
+  "highlights": [ { "text": "Wheelhouse, engine rooms and billiard room intact", "refs": ["s2"] } ],
+  "summary": { "text": "A lake steamer that sank in 1971 off the Impérial Palace in Annecy and lies at 42 m. Dived year-round with local clubs by experienced divers, it is well preserved, with wheelhouse, engine rooms and billiard salon.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-notable-1019", "name": "U-415",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/German_submarine_U-415", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "U-415 was raised on 21 July and put in Clemenceau dock … The hull was broken up in 1946." }
+  },
+  "notDiveSite": { "kind": "gone", "reason": "Raised in July 1944 and broken up in 1946", "refs": ["s1"] }
+ },
+ { "id": "x-notable-1077", "name": "French cruiser Condé",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/French_cruiser_Cond%C3%A9", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "her wreck was salvaged in 1954 and broken up for scrap" }
+  },
+  "notDiveSite": { "kind": "gone", "reason": "Wreck salvaged in 1954 and scrapped", "refs": ["s1"] }
+ },
+ { "id": "x-notable-1263", "name": "Wrecks of Saint-Pierre harbor",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Wrecks_of_Saint-Pierre_harbor", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck of the Diamant now lies 30 meters deep. … The wreck lies between 40 and 60 meters deep. … it is too deep for air diving." }
+  },
+  "notDiveSite": { "kind": "area", "reason": "Covers many separate wrecks in the bay (12 m to 85 m), not one site", "refs": ["s1"] }
+ },
+ { "id": "x-notable-1234", "name": "SS Ajax",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/SS_Ajax_(1889)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck sits 54 to 58 metres (177 to 190 ft) deep" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 54, "bottom": 58 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-1125", "name": "Kléber",
+  "sources": {
+   "s1": { "url": "https://divernet.com/scuba-diving/wreck-tours/wreck-tour-44-the-kleber/", "publisher": "Divernet", "kind": "press", "quote": "With a maximum depth of 44m, it really takes a good two dives to cover the wreckage. … This is an advanced air dive best suited to technical nitrox or normoxic trimix. … With typically good visibility" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 44 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1"] }
+ }
+]}

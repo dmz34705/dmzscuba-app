@@ -1,0 +1,913 @@
+{
+ "batch": "popular-australia-2",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-alwpzf",
+   "reason": "Old Woman Island depth (5-15 m / 3-18 m) does not match this pin; no side-specific source"
+  },
+  {
+   "id": "odm-tmbxqe",
+   "reason": "Shag Rock sub-site; no source names it"
+  },
+  {
+   "id": "odm-wxlsfj",
+   "reason": "Shag Rock sub-site; no source names it"
+  },
+  {
+   "id": "odm-ub5h82",
+   "reason": "Shag Rock sub-site; no source names it"
+  },
+  {
+   "id": "odm-pzeutj",
+   "reason": "Shag Rock sub-site (swim-through); only whole-site pages"
+  },
+  {
+   "id": "odm-qzovvk",
+   "reason": "only banned directories / depth conflicts with reachable pages"
+  },
+  {
+   "id": "odm-ffbx79",
+   "reason": "no source found for The Slide, Terrigal"
+  },
+  {
+   "id": "odm-spndoc",
+   "reason": "no site-level source for North Wall at Cook Island"
+  },
+  {
+   "id": "odm-qaw7mv",
+   "reason": "generic name (Gold Coast Offshore)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-k56p3v",
+   "name": "THE HOLE",
+   "sources": {
+    "s1": {
+     "url": "https://scubaworld.com.au/dive-sites/mooloolaba-reef-diving",
+     "publisher": "Scuba World Mooloolaba",
+     "kind": "operator",
+     "quote": "The Hole Depth: 15 – 21 metres Location: Outer Gneerings Certification Required: Open Water Average visibility: 10m (summer), 15m (winter) … The hole offers the only safe swim through on the Mooloolaba Coral Reefs."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 21
+    }
+   ],
+   "vis": {
+    "low": 10,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Only safe swim-through on the Mooloolaba reefs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Wobbegongs and groupers live in the bowl below",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-oq58xy",
+   "name": "MKVI",
+   "sources": {
+    "s1": {
+     "url": "https://scubaworld.com.au/dive-sites/mooloolaba-reef-diving",
+     "publisher": "Scuba World Mooloolaba",
+     "kind": "operator",
+     "quote": "MKVI Depth: 10 – 17 metres Location: Outer Gneerings Certification Required: Open Water Average visibility: 10m (summer), 15m (winter) … the ledge that runs in an East – West direction"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 17
+    }
+   ],
+   "vis": {
+    "low": 10,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ledge running east-west makes navigation easy",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Anemones, clownfish and Christmas tree worms",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Mini cave with wobbegongs and slipper lobsters",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jfh9x5",
+   "name": "Pinnacles",
+   "sources": {
+    "s1": {
+     "url": "https://scubaworld.com.au/dive-sites/mooloolaba-reef-diving",
+     "publisher": "Scuba World Mooloolaba",
+     "kind": "operator",
+     "quote": "Pinnacles Depth: 15 – 24 metres … There are 2 pinnacles that rise from the sand in 24 metres. The top of one pinnacle is 16 metres and the other rises to 14 metres."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 14,
+     "bottom": 24
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Massive blue anemone on one pinnacle",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Two pinnacles from 24 m sand; tops at 16 m and 14 m"
+  },
+  {
+   "id": "odm-utk73d",
+   "name": "Manta Bommie",
+   "sources": {
+    "s1": {
+     "url": "https://mantalodge.com.au/dive-sites/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "Manta Bommie Depth –5-15m Difficulty level –OW/ADV/SNO … migrating manta rays stop off to access the cleaning stations on several shallow bommies"
+    },
+    "s2": {
+     "url": "https://www.mantalodge.com.au/dive-sites-2-2/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "Manta Bommie … cleaning station for the migratory Manta Rays … (November – April). … Depth 5 to 16m Current Minimal to Medium Visibility 5 to 30m"
+    },
+    "s3": {
+     "url": "https://goldcoastdiveadventures.com.au/north-stradbroke-island-dive-sites/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Between November and April, with visibility at times exceeding 15 metres, Manta Bommie is home"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 15
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 16
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 5,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "season": {
+    "from": 11,
+    "to": 4,
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Manta ray cleaning station, November to April",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Leopard sharks and guitarfish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current and swell can make the dive challenging",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A group of rocky outcrops a short boat ride off Point Lookout where migrating manta rays visit shallow cleaning stations through the summer. Leopard sharks, rays and turtles also turn up. Depths are shallow, but current and swell can make it demanding.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-mg6pfp",
+   "name": "Flat Rock - Turtle Cave",
+   "sources": {
+    "s1": {
+     "url": "https://mantalodge.com.au/dive-sites/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "Turtle Cave Depth –10-30m Difficulty level –ADV Located on the NW side of Flat Rock … grey nurse sharks"
+    },
+    "s2": {
+     "url": "https://goldcoastdiveadventures.com.au/north-stradbroke-island-dive-sites/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Flat Rock – Turtle Caves Reaching depths between 12-30 metres, Turtle Caves … the grey nurse shark"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks in winter",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Batfish schools, barracuda and turtles",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Eagle ray fevers and humpback whales in winter",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8d9qd7",
+   "name": "Shag Rock - Coral Gardens",
+   "sources": {
+    "s1": {
+     "url": "https://goldcoastdiveadventures.com.au/north-stradbroke-island-dive-sites/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Shag Rock, with depths between 6 and 20 metres is complete of rocky reefs and coral gardens"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Rocky reefs and coral gardens",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ckf6xs",
+   "name": "Flat Rock - Shark Alley",
+   "sources": {
+    "s1": {
+     "url": "https://mantalodge.com.au/dive-sites/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "Shark Alley Depth –18-26m Difficulty level -ADV … large numbers of grey nurse sharks reside on the sand channel"
+    },
+    "s2": {
+     "url": "https://www.mantalodge.com.au/dive-sites-2-2/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "Shark Alley … grey nurse shark population that inhabit this site from June – October … Experience Level Advanced"
+    },
+    "s3": {
+     "url": "https://goldcoastdiveadventures.com.au/north-stradbroke-island-dive-sites/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Shark Alley is a more advanced dive than either Turtle Caves or Shag Rock"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 26
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "season": {
+    "from": 6,
+    "to": 10,
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks in two sand channels, June to October",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Rays, turtles and wobbegongs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The grey nurse shark hotspot on the eastern edge of Flat Rock, where sharks gather over two parallel sand channels in winter. It is rated an advanced dive because it starts deep and can carry current.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-9km2d5",
+   "name": "Flat Rock - Nursery",
+   "sources": {
+    "s1": {
+     "url": "https://mantalodge.com.au/dive-sites/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "The Nursery Depth –4-18m Difficulty level –OW/SNO A magic site … lots of juvenile fish and pretty plant and coral life"
+    },
+    "s2": {
+     "url": "https://goldcoastdiveadventures.com.au/north-stradbroke-island-dive-sites/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Flat Rock – The Nursery … The depth ranges between 4m and 20m"
+    },
+    "s3": {
+     "url": "https://www.mantalodge.com.au/dive-sites-2-2/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "The Nursery … the shallowest of Flat Rock’s dive sites … making it a perfect place for beginner divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 4,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Juvenile fish, coral and macro life",
+     "refs": [
+      "s1",
+      "s3"
+     ]
+    },
+    {
+     "text": "Occasional hammerhead passing through",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The shallowest of the Flat Rock dives, on its south-west corner, with coral gardens, juvenile fish and macro life rather than big pelagics. A little current is normal but easy to use, so it works well for beginners.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-pbc3nu",
+   "name": "Amity Point",
+   "sources": {
+    "s1": {
+     "url": "https://mantalodge.com.au/dive-sites/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "Amity Point Depth –5-15m Difficulty level –OW/SNO A shore dive option … Hazards include fishing lines, boat traffic, tidal movement, and a large population of stonefish"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Fishing lines and boat traffic",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Very tidal; dive about an hour before high tide",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Stonefish on the bottom",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Wobbegongs, schooling fish, occasional dolphin",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-aguq5p",
+   "name": "Flat Rock - Blue Corner",
+   "sources": {
+    "s1": {
+     "url": "https://mantalodge.com.au/dive-sites/",
+     "publisher": "Manta Lodge & Scuba Centre",
+     "kind": "operator",
+     "quote": "Blue Corner Depth –28-45m Difficulty level –Master Diver/XR … The top of the reef area is around 28m, dropping down to 40-45m on the sand. Large bull sharks frequent the area … can be prone to current"
+    }
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large bull sharks and varied reef life",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Prone to current; free ascent skills needed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Reef top about 28 m, dropping to 40-45 m on sand"
+  },
+  {
+   "id": "odm-kbvbu3",
+   "name": "Terrigal Haven",
+   "sources": {
+    "s1": {
+     "url": "https://scubadownunder.com/blog/terrigal-haven-central-coasts-calm-corner-for-all-level-divers",
+     "publisher": "ScubaDownUnder",
+     "kind": "press",
+     "quote": "Terrigal Haven Terrigal, NSW Water temp 15–20 °C Visibility Variable Depth 5-12 … With a maximum depth of around 12 metres … perfect for beginners"
+    },
+    "s2": {
+     "url": "https://terrigalunderwatergroup.com/dive-sites",
+     "publisher": "Terrigal Underwater Group",
+     "kind": "operator",
+     "quote": "Terrigal Haven (15m) - A popular shore dive and nursery for fish and other marine life."
+    },
+    "s3": {
+     "url": "https://scubadownunder.com/blog/terrigal-haven-central-coasts-calm-corner-for-all-level-divers",
+     "publisher": "ScubaDownUnder",
+     "kind": "press",
+     "quote": "Visibility at Terrigal Haven averages between 8 and 12 metres but can reach 15 metres on calm days … Tidal movement is minimal"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s3"
+    ]
+   },
+   "vis": {
+    "low": 8,
+    "high": 12,
+    "unit": "m",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Giant cuttlefish in winter, blue gropers",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Port Jackson sharks in breeding season",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered harbour dive beside the Terrigal boat ramp, shielded from southerly swell with minimal tide and a gentle sandy slope. Good for beginners, refreshers and macro photography, with cuttlefish, gropers and nudibranchs.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-6y7m68",
+   "name": "Adelaide (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.crownland.nsw.gov.au/about-us/crown-lands-explained/recreational-use/ex-hmas-adelaide-dive-site",
+     "publisher": "NSW Crown Lands",
+     "kind": "agency",
+     "quote": "The ex-HMAS Adelaide dive site was closed in July 2024 due to public safety concerns … The public should not attempt to dive at the site."
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "NSW Crown Lands closed the ex-HMAS Adelaide dive site in July 2024 for public safety; public told not to dive it",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-ly6st9",
+   "name": "Skillion Cave",
+   "sources": {
+    "s1": {
+     "url": "https://terrigalunderwatergroup.com/dive-sites",
+     "publisher": "Terrigal Underwater Group",
+     "kind": "operator",
+     "quote": "Skillion Cave (20m) - One of the best shore dives in NSW. You jump off the rock platform … enormous colony of Jewel Anemones"
+    },
+    "s2": {
+     "url": "https://www.michaelmcfadyenscuba.info/viewpage.php?page_id=745",
+     "publisher": "Michael McFadyen's Scuba Diving Web Site",
+     "kind": "press",
+     "quote": "Skillion Cave … The depth is now almost 20 metres … any sort of swell from the east or north-east crashes right into the entry and exit points"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Enormous colony of jewel anemones",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Blue gropers inside the crack",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "East or north-east swell breaks on entry and exit",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shore dive from the rock platform north of Terrigal Haven that follows a wall down to a crack in the reef with a boulder roof. It reaches about 20 m, and jewel anemones and gropers live inside. Swell from the east makes entry and exit unsafe.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-txbukm",
+   "name": "Wave Break Island",
+   "sources": {
+    "s1": {
+     "url": "https://goldcoastdiveadventures.com.au/scuba-diving-sites-and-reefs-gold-coast-australia-2/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Wave Break Island This man-made island … ideal for snorkelling and introductory diving. … The depth ranges from 0m at the beach to about 12m"
+    },
+    "s2": {
+     "url": "https://experiencegoldcoast.com/blog/where-to-scuba-dive--snorkel-on-the-gold-coast",
+     "publisher": "Experience Gold Coast",
+     "kind": "agency",
+     "quote": "Wave Break Island is where you’ll find scores of stunning colourful fish, coral, Wobbegongs and Grey Nurse Sharks."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small fish on the northern rock wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Wobbegongs and grey nurse sharks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Tidal; best dived on and after high tide",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A man-made breakwater island inside the Gold Coast Seaway that shelters divers from ocean swell. Shallow and protected, it is a standard site for introductory dives and snorkelling, with plenty of small fish, wobbegongs and sometimes grey nurse sharks.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-m2rc1k",
+   "name": "Gold Coast Seaway",
+   "sources": {
+    "s1": {
+     "url": "https://experiencegoldcoast.com/blog/where-to-scuba-dive--snorkel-on-the-gold-coast",
+     "publisher": "Experience Gold Coast",
+     "kind": "agency",
+     "quote": "As it’s an estuary entrance, the best time to dive is at the top of high tide when the current slows, and the water is clearest. … The North Wall offers most pelagic (open sea) fish activity"
+    },
+    "s2": {
+     "url": "https://goldcoastdiveadventures.com.au/scuba-diving-sites-and-reefs-gold-coast-australia-2/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "Gold Coast Seaway - The Spit Often referred to as the best dive site of any Australian city. … North Wall – schools of pelagic fish, wobbegong and whaler sharks"
+    },
+    "s3": {
+     "url": "https://divernet.com/world-dives/australia-oceania/diving-the-gold-coast-guide-part-1/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Gold Coast Seaway – Queensland’s Favourite Shore Dive"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "North Wall: pelagic fish, wobbegongs, whaler sharks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Tidal current; dive at high-tide slack",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An estuary-mouth shore dive at the end of The Spit, split into the South Wall, North Wall and pipes. Tide drives everything: go at high-tide slack for the clearest water, then expect wobbegongs, pelagics and rays along the walls.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-8qupvm",
+   "name": "Wonder Reef On The Gold Coast",
+   "sources": {
+    "s1": {
+     "url": "https://goldcoastdiveadventures.com.au/scuba-diving-sites-and-reefs-gold-coast-australia-2/",
+     "publisher": "Gold Coast Dive Adventures",
+     "kind": "operator",
+     "quote": "The reef varies in depth from 8 meters to 30 meters making it ideal for a range of diver levels."
+    },
+    "s2": {
+     "url": "https://divernet.com/world-dives/australia-oceania/diving-the-gold-coast-guide-part-1/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Nine huge spiral-shaped structural reefs float about 8m beneath the surface. They are held in place by huge chains that descend about 25m to the ocean floor"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 8,
+     "bottom": 25
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Nine buoyant spiral reefs floating above the seabed",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An artificial dive site off The Spit made of nine large spiral structures that float on chains above the seabed. They start around 8 m and the seabed lies at roughly 25-30 m, so there is something for most levels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

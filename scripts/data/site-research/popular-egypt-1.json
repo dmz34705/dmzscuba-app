@@ -1,0 +1,40 @@
+{"batch":"popular-egypt-1","researchedAt":"2026-10-08","sites":[
+{"id":"odm-in2iu5","name":"Elphinstone South",
+ "sources":{
+  "s1":{"url":"https://www.blueocean-eg.com/blog/elphinstone-reef","publisher":"Blue Ocean","kind":"operator","quote":"it can have a strong current pushing from the north to the south. … it is only suited to advanced divers because of the strength of the current."},
+  "s2":{"url":"https://www.dive-the-world.com/diving-sites-egypt-elphinstone.php","publisher":"Dive the World","kind":"operator","quote":"The northern and southern tips of Elphinstone have 100m wide plateaus between 20-40m deep … oceanic white tip sharks, seemingly always accompanied by pilot fish … Stay close to the reef to avoid being swept out to sea if the current is strong."}
+ },
+ "depth":[{"ref":"s2","unit":"m","top":20,"bottom":40}],
+ "types":{"value":["reef","wall"],"refs":["s2"]},
+ "level":{"value":"advanced","refs":["s1","s2"]},
+ "current":{"value":"strong","refs":["s1"]},
+ "highlights":[{"text":"Oceanic whitetip sharks with pilot fish","refs":["s2"]}],
+ "hazards":[{"text":"Strong current; risk of being swept off the reef","refs":["s1","s2"]}],
+ "summary":{"text":"An open-ocean reef off Marsa Alam whose southern plateau sits at roughly 20-40 m. Currents can run hard along the walls, so it is a drift dive for advanced divers, famed for oceanic whitetip sharks.","refs":["s1","s2"]}},
+{"id":"odm-ch533b","name":"Marsa Shagra House Reef",
+ "sources":{
+  "s1":{"url":"https://scubadiverlife.com/dive-destination-marsa-shagra-village-egypt/","publisher":"Scuba Diver Life","kind":"press","quote":"starting from 3 to 33 feet (1 to 10 m) … the outside walls at 131 to 164 feet (40 to 50 m)"},
+  "s2":{"url":"https://www.scubaverse.com/chilled-diving-red-sea/","publisher":"Scubaverse","kind":"press","quote":"you are free to dive on the house reef any time you like … one of the best preserved house reefs in Egypt"}
+ },
+ "depth":[{"ref":"s1","unit":"m","top":1,"bottom":50}],
+ "types":{"value":["reef","wall"],"refs":["s1"]},
+ "access":{"value":"Guests may dive the house reef any time without a guide","refs":["s2"]},
+ "summary":{"text":"A well-preserved house reef at Marsa Shagra village on Egypt's Red Sea coast. Coral starts in very shallow water and slopes gradually to outer walls at 40-50 m. Guests can dive it freely.","refs":["s1","s2"]}},
+{"id":"odm-hse7cc","name":"Abu Helal",
+ "sources":{
+  "s1":{"url":"https://www.circledivers.com/diving-in-dahab/dive-sites/abu-helal","publisher":"Circle Divers Dahab","kind":"operator","quote":"Depth: 40 - 60 M … Entering from the shore, divers encounter a shallow lagoon at about 7 – 12 metres with compact reefs on either side. … Difficulty: Intermediate … said to reach 30 – 40 metres."}
+ },
+ "depth":[{"ref":"s1","unit":"m","top":7,"bottom":60}],
+ "entry":{"value":"shore","refs":["s1"]},
+ "level":{"value":"intermediate","refs":["s1"]},
+ "vis":{"low":30,"high":40,"unit":"m","refs":["s1"]},
+ "highlights":[{"text":"Coral garden and canyon with swim-throughs","refs":["s1"]}],
+ "depthNote":"Lagoon 7-12 m; canyon 40-60 m is technical"},
+{"id":"odm-41t0ek","name":"Anemone City",
+ "sources":{
+  "s1":{"url":"https://www.circledivers.com/diving-in-dahab/dive-sites/anemone-city-ras-mohammed","publisher":"Circle Divers Dahab","kind":"operator","quote":"Depth: 0-30 M … Difficulty: Advanced … Hundreds of sea anemones"}
+ },
+ "depth":[{"ref":"s1","unit":"m","top":0,"bottom":30}],
+ "level":{"value":"advanced","refs":["s1"]},
+ "highlights":[{"text":"Hundreds of anemones with clownfish","refs":["s1"]}]}
+]}

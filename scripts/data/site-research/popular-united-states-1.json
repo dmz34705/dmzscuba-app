@@ -1,0 +1,78 @@
+{"batch":"popular-united-states-1","researchedAt":"2026-10-08","sites":[
+{"id":"odm-byg3l9","name":"Molokini Crater",
+ "sources":{
+  "s1":{"url":"https://en.wikipedia.org/wiki/Molokini","publisher":"Wikipedia","kind":"encyclopedia","quote":"The water depth is 20–50 feet (6–15 m) in the majority of the allowed dive spots. … regularly exceeds 50 feet (15 meters)"},
+  "s2":{"url":"https://dtmag.com/thelibrary/molokini-crater/","publisher":"Dive Training Magazine","kind":"press","quote":"On the outside of the crater along the wall, depths plunge to more than 300 feet (91 m). … 100 feet (30 m) in the cove."},
+  "s3":{"url":"https://www.thehikinghi.com/molokini-crater-diving-maui","publisher":"The Hiking HI","kind":"press","quote":"Some areas on the interior can get to depths of 60 feet, so it is possible to scuba dive. … For experienced divers, a drift dive along the crater's back wall is the way to go."}
+ },
+ "depth":[{"ref":"s1","unit":"ft","top":20,"bottom":50},{"ref":"s3","unit":"ft","bottom":60}],
+ "types":{"value":["reef","wall"],"refs":["s2"]},
+ "level":{"value":"advanced","refs":["s3"]},
+ "vis":{"low":15,"high":30,"unit":"m","refs":["s1","s2"]},
+ "highlights":[{"text":"Whitetip, blacktip and gray reef sharks","refs":["s2"]},{"text":"Sheer outer wall plunging past 300 ft","refs":["s2"]}],
+ "summary":{"text":"A crescent-shaped volcanic islet off Maui. Most boat dives are shallow and sheltered inside the crater, while experienced divers drift along the steep outer back wall. Water clarity is usually excellent.","refs":["s1","s2","s3"]},
+ "depthNote":"Interior mostly 20-50 ft; outer wall drops past 300 ft"},
+{"id":"odm-gnzd0g","name":"Garden Eel Cove",
+ "sources":{
+  "s1":{"url":"https://konahonudivers.com/manta-ray-night-dive-kona-128/","publisher":"Kona Honu Divers","kind":"operator","quote":"Sticking around 30–40 feet strikes the best balance between light and plankton density. … At a minimum, you’ll need an Open Water Diver certification."}
+ },
+ "depth":[{"ref":"s1","unit":"ft","top":30,"bottom":40}],
+ "level":{"value":"beginner","refs":["s1"]}},
+{"id":"odm-cksqf0","name":"First Cathedral",
+ "sources":{
+  "s1":{"url":"https://goscubadivemaui.com/lanai-cathedrals/","publisher":"Dive Maui","kind":"operator","quote":"Both First and Second Cathedrals lay at approximately 55 feet making them accessible for certified divers of all levels. … Visibility: 100 feet +."},
+  "s2":{"url":"https://www.thehikinghi.com/lanai-scuba-diving-first-cathedral","publisher":"The Hiking HI","kind":"press","quote":"large underwater lava tubes that form large swimmable caverns. … A two story lava tube beautifully illuminated from the sunlight beaming in through the open ceiling"}
+ },
+ "depth":[{"ref":"s1","unit":"ft","bottom":55}],
+ "types":{"value":["cavern"],"refs":["s2"]},
+ "level":{"value":"beginner","refs":["s1"]},
+ "vis":{"low":30,"high":30,"unit":"m","refs":["s1"]},
+ "highlights":[{"text":"Two-story lava tube cavern lit by skylights","refs":["s2"]}],
+ "summary":{"text":"A large lava-tube cavern off Lanai with an open ceiling that lets sunbeams flood the chamber. Multiple exits and good clarity make it approachable for certified divers of any level.","refs":["s1","s2"]}},
+{"id":"odm-656fp5","name":"Cathedral II",
+ "sources":{
+  "s1":{"url":"https://goscubadivemaui.com/lanai-cathedrals/","publisher":"Dive Maui","kind":"operator","quote":"Both First and Second Cathedrals lay at approximately 55 feet making them accessible for certified divers of all levels. … a rare black coral formation hangs like a chandelier from the ceiling above you."},
+  "s2":{"url":"https://cadivingnews.com/dive-spot/cathedrals-lanai-hawaii/","publisher":"California Diving News","kind":"press","quote":"Water depths are around 70 foot maximum but it does get deeper away from the island. … This is an intermediate dive with a divemaster because of the overhead environment and sometimes strong surge."}
+ },
+ "depth":[{"ref":"s1","unit":"ft","bottom":55},{"ref":"s2","unit":"ft","bottom":70}],
+ "types":{"value":["cavern"],"refs":["s1"]},
+ "level":{"value":"intermediate","refs":["s2"]},
+ "highlights":[{"text":"Black coral formation hanging from the ceiling","refs":["s1"]}],
+ "hazards":[{"text":"Sometimes strong surge in the overhead area","refs":["s2"]}],
+ "summary":{"text":"The second of Lanai's lava-tube cathedrals, a large chamber with a black coral formation hanging from its roof. It is an overhead environment with occasional surge, so a guided dive is advised.","refs":["s1","s2"]}},
+{"id":"odm-uvj8p9","name":"Mala Wharf",
+ "sources":{
+  "s1":{"url":"https://in2scubadivingmaui.com/mala-wharf-lahaina","publisher":"In2Scuba Diving Maui","kind":"operator","quote":"Mala Wharf is a beginner to intermediate scuba dive with depths to 35 feet on the outer reaches. … the entry is approximately a 5 min shallow wade. … Hawaiian Green Sea Turtles, White Tip Sharks, Frog Fish and tons more. … There will likely be a rip current that comes from all the water entering the bay."},
+  "s2":{"url":"https://goscubadivemaui.com/turtle-and-shark-dive/","publisher":"Dive Maui","kind":"operator","quote":"Dive Maui guarantees you’ll see turtles or you get a second dive free! … Turtles swim all around in organized chaos as you search for camouflaged frogfish"}
+ },
+ "depth":[{"ref":"s1","unit":"ft","bottom":35}],
+ "entry":{"value":"shore","refs":["s1"]},
+ "level":{"value":"intermediate","refs":["s1"]},
+ "highlights":[{"text":"Green sea turtles, whitetip sharks, frogfish","refs":["s1"]}],
+ "hazards":[{"text":"Rip current in the bay when surf is up","refs":["s1"]}],
+ "summary":{"text":"A shore dive around the collapsed remains of an old pier near Lahaina, Maui. Entry is a short wade over rough lava, and the pier remnants shelter turtles, frogfish and whitetip sharks.","refs":["s1","s2"]}},
+{"id":"odm-u77wua","name":"Makena Landing",
+ "sources":{
+  "s1":{"url":"https://new.in2scubadivingmaui.com/?p=7552","publisher":"In2Scuba Diving Maui","kind":"operator","quote":"with depths of 45 feet on the outer reaches. … This is a beginner to intermediate Scuba Dive Site. … Entrance to the dive is about a minute walk from the parking lot. … You can find caves, arches to swim through, Hawaiian Green Sea Turtles, White tip Sharks here."}
+ },
+ "depth":[{"ref":"s1","unit":"ft","bottom":45}],
+ "entry":{"value":"shore","refs":["s1"]},
+ "level":{"value":"intermediate","refs":["s1"]},
+ "highlights":[{"text":"Caves, arches, turtles and whitetip sharks","refs":["s1"]}]},
+{"id":"odm-agt8bu","name":"Turtle Pinnacle",
+ "sources":{
+  "s1":{"url":"https://www.liveaboard.com/diving/hawaii/turtle-pinnacle","publisher":"Liveaboard.com","kind":"operator","quote":"Turtle Pinnacle is not an overly deep dive, with an average depth of 12 meters and a maximum depth of 18 meters. … The current in this area is usually light. … located off the west coast of the Big Island, north of Kona."},
+  "s2":{"url":"https://konahonudivers.com/scuba-diving-big-island-hawaii-15/","publisher":"Kona Honu Divers","kind":"operator","quote":"The top of the pinnacle is shallow at around 35 feet … dropping to 60-70 feet. … a fantastic and easy dive for everyone."}
+ },
+ "depth":[{"ref":"s1","unit":"m","bottom":18},{"ref":"s2","unit":"ft","top":35,"bottom":60}],
+ "types":{"value":["pinnacle"],"refs":["s2"]},
+ "level":{"value":"beginner","refs":["s2"]},
+ "current":{"value":"light","refs":["s1"]},
+ "highlights":[{"text":"Green turtle cleaning station","refs":["s1","s2"]}],
+ "summary":{"text":"A lava pinnacle rising from the seafloor off the Big Island's west coast, north of Kona. Mild current and moderate depths make it an easy dive where turtles gather to be cleaned.","refs":["s1","s2"]}},
+{"id":"odm-y7437t","name":"Golden Arches",
+ "sources":{
+  "s1":{"url":"https://konahonudivers.com/scuba-diving-big-island-hawaii-15/","publisher":"Kona Honu Divers","kind":"operator","quote":"two magnificent lava arches that are big enough to swim through safely and easily"}
+ },
+ "highlights":[{"text":"Two lava arches big enough to swim through","refs":["s1"]}]}
+]}

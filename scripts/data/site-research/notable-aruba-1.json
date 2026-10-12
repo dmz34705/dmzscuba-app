@@ -1,0 +1,147 @@
+{
+ "batch": "notable-aruba-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-wikipedia-76",
+   "name": "SS Pedernales",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Pedernales",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "rest in 25 feet (7.6 m) of water … a popular scuba diving attraction"
+    },
+    "s2": {
+     "url": "https://arubaunleashed.com/wreck-diving-in-aruba/",
+     "publisher": "Aruba Unleashed",
+     "kind": "press",
+     "quote": "a wreckage site spread across the sea floor at a shallow depth of around 25 feet (7.5 meters). … excellent training site for beginner divers due to its shallow depth and calm conditions."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Scattered sections of a torpedoed WWII tanker lying in about 25 feet off Aruba's north coast. Shallow and calm, it is used daily by local operators and suits beginners and training dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-t3bvru",
+   "name": "Arashi (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitaruba.com/things-to-do/attractions-and-sights/aruba-dive-sites/arashi-reef",
+     "publisher": "Aruba Tourism Authority",
+     "kind": "agency",
+     "quote": "perfect dive site for beginner divers with a depth of approximately 35 feet. … airplane wreckage consisting of plenty coral formations"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 35
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Airplane wreckage covered in coral",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A beginner-friendly Aruba site where airplane wreckage lies around 35 feet down, overgrown with coral formations.",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-8jfcj0",
+   "name": "Mangel Halto Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.aruba.com/us/explore/mangel-halto",
+     "publisher": "Aruba Tourism Authority",
+     "kind": "agency",
+     "quote": "Mangel Halto Beach also serves as an excellent shore diving site in Aruba. … The reef plunges to depths of 110’"
+    },
+    "s2": {
+     "url": "https://jadsaruba.com/scuba/dive-sites/",
+     "publisher": "JADS Aruba",
+     "kind": "operator",
+     "quote": "Inner reef is 55ft/17.5m deep. … a maximum depth of 90ft/30m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 110
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 90
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A south-coast Aruba shore dive where you can walk out to the reef edge, with an inner reef near 55 feet and an outer reef dropping to around 90 feet or deeper.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{"batch":"notable-tunisia-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-933","reason":"Wikipedia only says shallow water, no depth figures"},{"id":"x-notable-1036","reason":"no depth or dive info found; archaeological site"},{"id":"x-notable-1001","reason":"no depth or dive info found"},{"id":"x-notable-1094","reason":"no depth or dive info found"}],
+"sites":[{"id":"x-notable-1117","name":"HMS Manchester",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Manchester_(15)","publisher":"Wikipedia","kind":"encyclopedia","quote":"A diving expedition visited the wreck at a depth of about 80 m (260 ft) in 2002."},
+"s2":{"url":"https://divernet.com/scuba-diving/general-wrecks/sleeping-giant/","publisher":"Divernet","kind":"press","quote":"HMS Manchester lies off Tunisia in 85m of water … our nine-man dive team planned to use close-circuit rebreathers"}},
+"depth":[{"ref":"s1","unit":"m","bottom":80},{"ref":"s2","unit":"m","bottom":85}],
+"entry":{"value":"boat","refs":["s2"]},"types":{"value":["wreck"],"refs":["s1"]},
+"level":{"value":"technical","refs":["s2"]},
+"summary":{"text":"A largely intact British light cruiser scuttled off Kelibia in 1942 and found by divers in 2002. It rests at roughly 80-85 m, so it is a rebreather-level technical expedition dive rather than a recreational one.","refs":["s1","s2"]}}]}

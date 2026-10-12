@@ -1,0 +1,467 @@
+{
+ "batch": "popular-australia-6",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-ta44bo",
+   "reason": "depth sources conflict with catalog; no second fact"
+  },
+  {
+   "id": "odm-ugqxpz",
+   "reason": "only banned directories and a non-dive wiki stub"
+  },
+  {
+   "id": "odm-og2m4g",
+   "reason": "only one itinerary mention"
+  },
+  {
+   "id": "odm-xf2sno",
+   "reason": "no non-banned page found"
+  },
+  {
+   "id": "odm-45vxq5",
+   "reason": "no non-banned page found"
+  },
+  {
+   "id": "odm-tf6v72",
+   "reason": "no non-banned page found"
+  },
+  {
+   "id": "odm-gy2pom",
+   "reason": "only a passing mention, no depth"
+  },
+  {
+   "id": "odm-og9rp6",
+   "reason": "island with many separate dive sites; no site-level page"
+  },
+  {
+   "id": "odm-hzv4xc",
+   "reason": "no non-banned page found"
+  },
+  {
+   "id": "odm-zkpfpa",
+   "reason": "only conflicting operator depths, no usable page"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-o2hcyp",
+   "name": "Cod Hole - Ribbon No 10 Reef - GBR",
+   "sources": {
+    "s1": {
+     "url": "https://www.coralcoe.org.au/ribbon-reefs-cod-hole-diving.html",
+     "publisher": "Coral CoE (reef travel guide)",
+     "kind": "press",
+     "quote": "Cod Hole, located on Ribbon Reef Number 10 near the northern end of the chain … The dive site itself is a coral garden at 16 to 18 metres, with sandy channels between the formations"
+    },
+    "s2": {
+     "url": "https://www.coralcoe.org.au/ribbon-reefs-cod-hole-diving.html",
+     "publisher": "Coral CoE (reef travel guide)",
+     "kind": "press",
+     "quote": "Potato cod at Cod Hole reach 1.5 to 2 metres in length … The Ribbon Reefs are accessible only by liveaboard from Cairns."
+    },
+    "s3": {
+     "url": "https://www.dive-the-world.com/diving-sites-australia-great-barrier-reef-ribbon-reefs.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "Cod Hole, as the name suggests, is a dive site famous for cod; giant Queensland grouper to be exact."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 18
+    }
+   ],
+   "access": {
+    "value": "Liveaboard access only from Cairns",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Habituated giant potato cod (up to 2 m)",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Ribbon Reef 10 coral garden at about 16-18 m, famous for the giant potato cod that approach divers. Reached only by multi-day liveaboard from Cairns.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-443stb",
+   "name": "Steve’s Bommie - Ribbon No 3 Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.coralcoe.org.au/ribbon-reefs-cod-hole-diving.html",
+     "publisher": "Coral CoE (reef travel guide)",
+     "kind": "press",
+     "quote": "Steve’s Bommie on Ribbon Reef 3 is a pinnacle rising from 30 metres to within a few metres of the surface, encrusted with soft corals and surrounded by schooling fish"
+    },
+    "s2": {
+     "url": "https://www.dive-the-world.com/diving-sites-australia-great-barrier-reef-ribbon-reefs.php",
+     "publisher": "Dive the World",
+     "kind": "operator",
+     "quote": "A memorial plaque can be seen at 25m where most scuba divers start on this site … Steve's Bommie features a wealth of schooling action, big fish and macro life. Cruising barracudas, whitetip reef sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Liveaboard access only from Cairns",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schooling fish, barracuda, whitetip reef sharks",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Soft corals on the pinnacle",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A pinnacle on Ribbon Reef 3 rising from around 30 m to just below the surface, with divers often starting near 25 m. Known for schooling fish, big predators and macro life.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-t94fn0",
+   "name": "Broughton Island The Looking Glass",
+   "sources": {
+    "s1": {
+     "url": "https://www.diveplanit.com/dive-site/looking-glass-broughton-island/",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Depth: Top: 8M Median: 13M Bottom: 18M … It is a crack / arch in the rock in an inverted V shape … swimming through it with grey nurse sharks is one of the best dives in the NSW North patch"
+    },
+    "s2": {
+     "url": "https://www.greynurse.com.au/broughton-island",
+     "publisher": "Grey Nurse Charters",
+     "kind": "operator",
+     "quote": "The maximum depth in the trench varies from 16 metres on the western side to 21 on the east. Grey nurse sharks often congregate in the Looking Glass"
+    },
+    "s3": {
+     "url": "https://www.greynurse.com.au/broughton-island",
+     "publisher": "Grey Nurse Charters",
+     "kind": "operator",
+     "quote": "Looking Glass is affected by even moderate seas and can easily become extremely surgey and undiveable."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 21
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Swim-through gap with grey nurse sharks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Surge; undiveable in even moderate seas",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A trench or arch cutting through the rock at Broughton Island, shallowest inside the gap, where grey nurse sharks gather. Dives only when seas are calm as surge builds quickly.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-5r5sae",
+   "name": "Ricketts Point",
+   "sources": {
+    "s1": {
+     "url": "https://marinecare.org.au/want-to-learn-more-after-safe-snorkeling/",
+     "publisher": "Marine Care Ricketts Point",
+     "kind": "press",
+     "quote": "You can snorkel at various locations in the Sanctuary. Most of the area is shallow water of less than five metres, providing an easily accessible recreational area for snorkeling"
+    },
+    "s2": {
+     "url": "https://marinecare.org.au/want-to-learn-more-after-safe-snorkeling/",
+     "publisher": "Marine Care Ricketts Point",
+     "kind": "press",
+     "quote": "Fifty-one species of fish have been identified, the most common being rays, southern hulafish, zebra fish, dusky morwongs, moonlighters and Australian sweep."
+    },
+    "s3": {
+     "url": "https://www.parks.vic.gov.au/places-to-see/sites/ricketts-point-marine-sanctuary",
+     "publisher": "Parks Victoria",
+     "kind": "park",
+     "quote": "Ricketts Point is a great location for visitors to snorkel and scuba dive to experience the diverse marine life in Port Phillip Bay."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 5
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Rays, southern hulafish, zebra fish, morwongs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow marine sanctuary in Port Phillip Bay, mostly under 5 m, suited to snorkelling and scuba with rockpools close to shore and about fifty fish species recorded.",
+    "refs": [
+     "s3",
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-kzhn0d",
+   "name": "tinderbox",
+   "sources": {
+    "s1": {
+     "url": "https://parks.tas.gov.au/things-to-do/snorkelling",
+     "publisher": "Tasmania Parks and Wildlife Service",
+     "kind": "park",
+     "quote": "Tinderbox Marine Nature Reserve is the perfect place for adults and children who are learning to snorkel or scuba dive … divers frequently find themselves amongst bigbelly seahorses, rock lobsters and wrasse"
+    },
+    "s2": {
+     "url": "https://tsdc.org.au/2024/05/24/tinderbox-marine-reserve/",
+     "publisher": "Tasmanian Scuba Diving Club",
+     "kind": "press",
+     "quote": "Ideal for divers of all levels, the reserve offers clear waters and calm conditions, making it a perfect spot for both exploration and underwater photography."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bigbelly seahorses, rock lobsters, weedy seadragons",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "South of Hobart marine reserve with rocky reef, kelp and sand, suited to beginners and photographers, with calm clear water and seahorses and seadragons.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-5hw6pn",
+   "name": "Merimbula Wharf",
+   "sources": {
+    "s1": {
+     "url": "https://www.diveplanit.com/dive-destination/merimbula-wharf/",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "the wharf is best saved for the end of a dive. The main feature of this site is a rocky reef that quickly drops to the sand line at 16m."
+    },
+    "s2": {
+     "url": "https://www.diveplanit.com/dive-destination/merimbula-wharf/",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Merimbula Wharf is a great spot to dive at any time of the year, with the visibility generally 8m to 12m, but over 15m at times. Entry and exits can be a little tricky over the rocks"
+    },
+    "s3": {
+     "url": "https://www.diveplanit.com/dive-destination/merimbula-wharf/",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "the main stars are the large blue groper wrasse that follow divers around until they are fed a sea urchin"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "vis": {
+    "low": 8,
+    "high": 12,
+    "unit": "m",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blue gropers that follow divers",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Tricky rock entry; avoid in southerly swell",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-it1675",
+   "name": "Barwon Banks",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitsunshinecoast.com/attraction/599cc3edb44fd918663fcda2/barwon-banks-dive-site",
+     "publisher": "Visit Sunshine Coast",
+     "kind": "agency",
+     "quote": "Located 22 nautical miles offshore, conditions have to be perfect to visit this rocky reef that rises from 50 metres to 22 metres. A dive for experienced divers only"
+    },
+    "s2": {
+     "url": "https://www.visitsunshinecoast.com/attraction/599cc3edb44fd918663fcda2/barwon-banks-dive-site",
+     "publisher": "Visit Sunshine Coast",
+     "kind": "agency",
+     "quote": "Schooling pelagic fish gather at Barwon Banks, with masses of barracuda, trevally, rainbow runners and batfish swarming around divers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 22,
+     "bottom": 50
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barracuda, trevally and batfish schools",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-i6b1f2",
+   "name": "Ashos Gap (Shark Cleaning Station)",
+   "sources": {
+    "s1": {
+     "url": "https://aussiemarineadventures.com.au/the-scuba-dive-series-part-5-coral-bay/",
+     "publisher": "Aussie Marine Adventures",
+     "kind": "operator",
+     "quote": "Asho’s Gap (12 meters max) where there is a reef shark cleaning station frequented by Grey Reef Sharks that line up to have their teeth cleaned by cleaner wrasse"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Grey reef shark cleaning station",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-e6rh8b",
+   "name": "Cabbage Patch Cocos Keeling",
+   "sources": {
+    "s1": {
+     "url": "https://cocoskeelingislands.com.au/things-to-do/see-do/activities/scuba-diving/",
+     "publisher": "Cocos (Keeling) Islands tourism",
+     "kind": "agency",
+     "quote": "Cabbage Patch 6-27 m | -12.0946, 96.8422 Enter a world of beautiful green and gold cabbage shaped coral … Look out for curious and shy spotted garden eels here too, and sleeping white tip reef sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 27
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Cabbage-shaped coral, garden eels, whitetips",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

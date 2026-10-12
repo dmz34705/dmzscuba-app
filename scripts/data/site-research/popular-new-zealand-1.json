@@ -1,0 +1,532 @@
+{
+ "batch": "popular-new-zealand-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-z2e543",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-jnep4w",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-gjxcgt",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-233jm8",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-t7z3xh",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-asc8ew",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-j0jpyd",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-2nu434",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-69p8du",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-kxjszw",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-v2634b",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-pqxhta",
+   "reason": "no usable non-banned source found for this site"
+  },
+  {
+   "id": "odm-633nas",
+   "reason": "no usable non-banned source found for this site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-4cedqj",
+   "name": "Northern Arch",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/the-legendary-poor-knights-islands/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Northern Arch, located at the northern end of Puketuaho Island … it is susceptible to current … At 40m in the middle, the bouldery bottom tumbles away to beyond 50m at either end."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/scuba-diving-poor-knights-islands/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "The bottom of the arch is at 125 feet (38 m)"
+    },
+    "s3": {
+     "url": "https://divehq.co.nz/blog/the-poor-knights-islands/",
+     "publisher": "Dive HQ",
+     "kind": "operator",
+     "quote": "Northern Arch: If you enjoy deep diving and big fish, then this is the dive site for you."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 125
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Huge snapper and kingfish in the current",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Stingray gatherings in summer",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A short, narrow archway at the northern tip of the Poor Knights whose boulder floor drops to about 40 m and beyond. Current pours through and feeds sponge-covered walls, big schools of maomao, snapper, kingfish and seasonal stingrays.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-sgrfif",
+   "name": "Middle Arch",
+   "sources": {
+    "s1": {
+     "url": "https://divehq.co.nz/blog/the-poor-knights-islands/",
+     "publisher": "Dive HQ",
+     "kind": "operator",
+     "quote": "Middle Arch is another impressive dive site, suitable to all experience level. The bottom of the arch sits at around 16m, however the bay out from the arch, drops to an insane 80m!"
+    },
+    "s2": {
+     "url": "https://divernet.com/world-dives/the-legendary-poor-knights-islands/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Middle Arch … normally with less current that Northern Arch. Blue Maomao and Two Spot Demoiselles usually dominate the site"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Blue maomao and demoiselle schools",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Air-pocket cave (Bernie's Cave)",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Bay beside the arch drops to about 80 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-s019h6",
+   "name": "Magic Wall",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/the-legendary-poor-knights-islands/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Keen on Macro photography , then Magic Wall is a great hangout for you. … Loads of Nudibranch species, both big and small, can be found along the wall and keep your eyes peeled for Moray Eels"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro life: many nudibranch species",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Moray eels draped over sponges and kelp",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-a38ofd",
+   "name": "The Gardens",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/the-legendary-poor-knights-islands/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Often chosen as a dive site for beginner divers The Gardens shouldn’t be underestimated. The Gardens is home to a number of juvenile fish. Close to the cliffs the depths range from 5m to 10m"
+    },
+    "s2": {
+     "url": "https://divehq.co.nz/blog/the-poor-knights-islands/",
+     "publisher": "Dive HQ",
+     "kind": "operator",
+     "quote": "The Cream Gardens, this dive site isn’t one of the most well-known sites but is equally impressive."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Juvenile fish, snapper, angelfish, eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-el1850",
+   "name": "Blue MaoMao Arch",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/the-legendary-poor-knights-islands/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Blue Maomao Arch is probably one of the most popular and photographed dive sites at the Poor Knights.  Ideal for snorkelers and divers, situated in the Labrid Channel"
+    },
+    "s2": {
+     "url": "https://divenow.co.nz/the-poor-knights-a-land-of-arches-caves-and-swim-thrus/",
+     "publisher": "Dive Now",
+     "kind": "operator",
+     "quote": "Blue Maomao Arch , probably the most famous and popular of the arches is a shallow arch with a window that allows a light beam in at certain points of the day."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Shafts of sunlight through the arch",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Thousands of blue maomao",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The most photographed arch at the Poor Knights: a shallow, low-lying arch where light beams stream in through gaps in the rock above dense schools of blue maomao. Suits snorkellers and relaxed dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-3mawy6",
+   "name": "Maomao Arch",
+   "sources": {
+    "s1": {
+     "url": "https://divenow.co.nz/the-poor-knights-a-land-of-arches-caves-and-swim-thrus/",
+     "publisher": "Dive Now",
+     "kind": "operator",
+     "quote": "Maomao Arch cuts through Tawhiti Rahi, allowing snorkelers and divers to cross through when the sea conditions allow."
+    },
+    "s2": {
+     "url": "https://divehq.co.nz/blog/the-poor-knights-islands/",
+     "publisher": "Dive HQ",
+     "kind": "operator",
+     "quote": "Blue Maomao arch and have a relaxing shallow cave dive"
+    }
+   },
+   "access": {
+    "value": "Passage through the arch depends on sea conditions",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Relaxing shallow cave dive",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2aujtr",
+   "name": "Riko Riko cave",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/world-dives/the-legendary-poor-knights-islands/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "Rikoriko Cave is the largest sea cave (by volume) in the southern hemisphere. Most dive charters will take boats into the cave"
+    },
+    "s2": {
+     "url": "https://www.seafriends.org.nz/issues/res/pk/msquart.htm",
+     "publisher": "Seafriends",
+     "kind": "press",
+     "quote": "Rikoriko Cave is the flagship of the Poor Knights, reputedly the largest sea cave in the world … it would be unwise to surface in mid water."
+    }
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Largest sea cave by volume in the southern hemisphere",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Boat traffic - do not surface in mid water",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-xts2gt",
+   "name": "Trevor’s Rocks",
+   "sources": {
+    "s1": {
+     "url": "https://www.seafriends.org.nz/issues/res/pk/msquart.htm",
+     "publisher": "Seafriends",
+     "kind": "press",
+     "quote": "Trev's Rock joins a wall beginning at 20m depth and reaching the sand at 30m … Trev's Rock is a boating hazard and must be approached with care, particularly at low spring tide."
+    }
+   },
+   "types": {
+    "value": [
+     "pinnacle",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Boating hazard at low spring tide",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Shallow side ~10 m; wall 20-30 m (Trev's Rock)"
+  },
+  {
+   "id": "odm-jvnoo8",
+   "name": "Nursery Cove & The Labyrinth",
+   "sources": {
+    "s1": {
+     "url": "https://www.seafriends.org.nz/issues/res/pk/msquart.htm",
+     "publisher": "Seafriends",
+     "kind": "press",
+     "quote": "It is not uncommon to find 3-11 large stingrays there … The Labyrinth is an underwater ridge descending from the surface down to the sand at 25m"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Stingrays in sheltered Nursery Cove",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Labyrinth ridge: night diving, cracks and tears",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ne42tn",
+   "name": "Goat Island",
+   "sources": {
+    "s1": {
+     "url": "https://globaldive.net/leigh-goat-island",
+     "publisher": "Global Dive",
+     "kind": "press",
+     "quote": "This is a popular site for all dive levels … You will do a shore entry from the beach … You will not find much more than 4m depth for about the first 300m off the beach."
+    },
+    "s2": {
+     "url": "https://www.doc.govt.nz/parks-and-recreation/places-to-go/auckland/places/cape-rodney-okakari-point-marine-reserve-goat-island/",
+     "publisher": "Department of Conservation",
+     "kind": "agency",
+     "quote": "The marine reserve offers some of the best snorkelling and scuba diving opportunities close to Auckland."
+    },
+    "s3": {
+     "url": "https://www.seafriends.org.nz/issues/res/gi",
+     "publisher": "Seafriends",
+     "kind": "press",
+     "quote": "Goat Island Channel is not deep (between 2 and 5 m)"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Marine reserve - no fishing or taking marine life",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Unsafe in E/NE winds over 20 kn or swells over 1 m",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-aan42n",
+   "name": "Shag Rock",
+   "sources": {
+    "s1": {
+     "url": "https://globaldive.net/leigh-goat-island",
+     "publisher": "Global Dive",
+     "kind": "press",
+     "quote": "As you get past Shag Rock (this is the out crop of rock that is just covered at high tide, off the corner of the island) you will slowly start to gain depth."
+    },
+    "s2": {
+     "url": "https://www.seafriends.org.nz/issues/res/gi/gidive.htm",
+     "publisher": "Seafriends",
+     "kind": "press",
+     "quote": "Shag Rock breaks the monotony of the area, offering hiding places for fish and crayfish"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hiding places for fish and crayfish",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Rock is awash and covered at high tide",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-vfuigd",
+   "name": "Mcgregor’s Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/mcgregors-bay-366405",
+     "publisher": "Dive Now (via Scubago)",
+     "kind": "operator",
+     "quote": "30 minutes from Dive Now, Whangarei is this fantastic shore dive. Average depth of 5m with a max of 12m at the mouth of the bay. Fingers of encrusted reef run along the edge of the bay … Leather jackets, Blennies, Red Moki, Goat fish and baby snapper are common to see during the day."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Leatherjackets, red moki, goatfish, baby snapper",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,70 @@
+{
+ "batch": "notable-austria-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "osm-n663870470",
+   "name": "Plansee - Zone 1 (Schotterparkplatz Kaiserbrunnen)",
+   "sources": {
+    "s1": {
+     "url": "https://taucher.net/tauchplatz-plansee_allgemein-bericht-hlz13291",
+     "publisher": "Taucher.Net (club report)",
+     "kind": "press",
+     "quote": "Sichtweiten im Durchschnitt 8 bis 12 m Maximale Sichtweiten 25 m … Tauchgenehmigung erforderlich Tauchen nur in Tauchzonen erlaubt Tauchzone 1 (Kaiserbrunnen) Tauchzone 2 (Hotel Forelle)"
+    }
+   },
+   "vis": {
+    "low": 8,
+    "high": 12,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Permit required; diving only in the marked dive zones",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870469",
+   "name": "Plansee - Zone 2 (Hotel Forelle)",
+   "sources": {
+    "s1": {
+     "url": "https://taucher.net/tauchplatz-plansee_allgemein-bericht-hlz13291",
+     "publisher": "Taucher.Net (club report)",
+     "kind": "press",
+     "quote": "Sichtweiten im Durchschnitt 8 bis 12 m Maximale Sichtweiten 25 m … Tauchgenehmigung erforderlich Tauchen nur in Tauchzonen erlaubt Tauchzone 1 (Kaiserbrunnen) Tauchzone 2 (Hotel Forelle)"
+    }
+   },
+   "vis": {
+    "low": 8,
+    "high": 12,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Permit required; diving only in the marked dive zones",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

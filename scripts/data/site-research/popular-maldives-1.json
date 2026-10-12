@@ -1,0 +1,81 @@
+{
+ "batch": "popular-maldives-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "odm-c6dm2z",
+   "name": "Vilingili Kandu",
+   "sources": {
+    "s1": {
+     "url": "https://divechamp.com/divesite/vilingili-kandu",
+     "publisher": "DiveChamp",
+     "kind": "press",
+     "quote": "With excellent visibility of 23 meters and a maximum depth of 31 meters, this advanced-level dive site near Villingili, Gaafu Alif, 16030, Maldives"
+    },
+    "s2": {
+     "url": "https://www.emperordivers.com/liveaboard-itinerary/deep-south/",
+     "publisher": "Emperor Divers",
+     "kind": "operator",
+     "quote": "Villingili Kandu - This channel south of the Island Villingili offers with an incoming current a spectacular dive. Large quantities of grey reef sharks can be observed patrolling back and forth in front of the channel. … the middle of the roughly 200m wide channel bottom at 30+ meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 31
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 23,
+    "high": 23,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large numbers of grey reef sharks in the channel",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Silvertip sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A channel (kandu) south of Villingili island in the Maldives, best on an incoming current when grey reef sharks patrol the mouth in numbers. The channel floor is at about 30 m and divers are generally expected to be advanced.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

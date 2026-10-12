@@ -1,0 +1,940 @@
+{
+ "batch": "popular-indonesia-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "odm-oydkpv",
+   "name": "USAT Liberty Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://balifundiving.com/?p=396",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "lies at depths ranging from approximately 5 metres at the shallowest to around 30 metres at the deepest sections … beach entry directly from the black volcanic shore"
+    },
+    "s2": {
+     "url": "https://www.baliocean.com/dive-sites/tulamben/",
+     "publisher": "Bali Ocean",
+     "kind": "operator",
+     "quote": "The top sits in just 5 meters and the rest drops away to around 30 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Cargo ship wrecked off Tulamben, lying a short swim from the black-sand beach with its top about 5 m down and the stern reaching roughly 30 m. Easy shore entry and plenty of fish life make it Bali's classic wreck dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1heita",
+   "name": "Liberty Coral Garden",
+   "sources": {
+    "s1": {
+     "url": "https://balifundiving.com/?p=12203",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "This shallow dive site, with depths ranging from 4 to 10 meters, … perfect for beginner divers and snorkelers because of its shallow depth"
+    },
+    "s2": {
+     "url": "https://www.baliocean.com/dive-sites/tulamben/",
+     "publisher": "Bali Ocean",
+     "kind": "operator",
+     "quote": "Most of this dive site is quite shallow with the best and brightest of the corals and macro activity at around 5 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 10
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A shallow reef beside the Liberty wreck at Tulamben where the brightest coral and most macro life sit around 5 m, with the site only reaching about 10 m. Suited to beginners and snorkelers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-u4vj7h",
+   "name": "Tulamben Drop-Off",
+   "sources": {
+    "s1": {
+     "url": "https://balifundiving.com/?p=12203",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "The wall starts at a depth of 3 meters and plunges down to 70 meters"
+    },
+    "s2": {
+     "url": "https://www.baliocean.com/dive-sites/tulamben/",
+     "publisher": "Bali Ocean",
+     "kind": "operator",
+     "quote": "The dive is shore entry and a short swim to a wall that eventually drops down to more than 70 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A wall just a short swim from the Tulamben shore, beginning at about 3 m and dropping past 70 m. Divers usually stay on the shallower sponge- and gorgonian-covered upper face.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-k6duzw",
+   "name": "Shark Point, Gili Trawangan",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/4-of-the-best-at-gili-trawangan/",
+     "publisher": "DIVER",
+     "kind": "press",
+     "quote": "Shark point is probably the most popular dive in the Gili Islands … It slopes off into the Lombok Strait to over 50 metres. … At 5 metres there are always sea turtles feasting on the seagrass."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/best-scuba-diving-gili-islands/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "One of the steeper walls around the islands, Shark Point suits divers of any level. … advanced divers can reach depths of 100 feet (30 m) and more."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Turtles feeding on seagrass at about 5 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Popular slope off the northwest of Gili Trawangan, falling toward the Lombok Strait. Turtles graze the shallows and reef sharks are common, while experienced divers can drop to about 30 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ygd1bh",
+   "name": "Halik, Gili Trawangan",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/4-of-the-best-at-gili-trawangan/",
+     "publisher": "DIVER",
+     "kind": "press",
+     "quote": "Any level of diver can dive at Halik as the reef starts at just around 6 metres. … The gentle current here is ideal for drift diving. … For more advanced divers, the site drops to around 40 metres"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/best-scuba-diving-gili-islands/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Starting with beautifully formed corals in shallow water, this reef eventually turns into coral canyons as divers proceed deeper."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 40
+    }
+   ],
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Gorgonian fans and massive barrel sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Drift-friendly reef off Gili Trawangan that begins around 6 m with healthy coral and turns into canyons and ridges toward 40 m. A gentle current suits divers of most levels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-jkprqh",
+   "name": "Bounty Wreck, Gili Tarawang",
+   "sources": {
+    "s1": {
+     "url": "https://scubadiverlife.com/best-scuba-diving-gili-islands/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "The wreckage now sits at an angle on the slope below and stretches from 32 to 66 feet (10 to 20 m). … there's often some current pushing divers along as well. … It offers plenty of hiding places for groupers and sweetlips"
+    },
+    "s2": {
+     "url": "https://www.gilidivers.com/fun-dives/dive-sites",
+     "publisher": "Gili Divers",
+     "kind": "operator",
+     "quote": "Bounty Wreck … the perfect site for all levels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 32,
+     "bottom": 66
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Groupers and sweetlips among the wreckage",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ai4341",
+   "name": "Turtle Heaven Gili",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/4-of-the-best-at-gili-trawangan/",
+     "publisher": "DIVER",
+     "kind": "press",
+     "quote": "An abundance of hard and soft corals cover a pinnacle that drops from around 10 metres to 30 metres."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/best-scuba-diving-gili-islands/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Snorkelers can observe turtles swimming and feeding from the surface"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles swimming and feeding near the surface",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-74t4ss",
+   "name": "Turtle Heaven",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-diving/4-of-the-best-at-gili-trawangan/",
+     "publisher": "DIVER",
+     "kind": "press",
+     "quote": "An abundance of hard and soft corals cover a pinnacle that drops from around 10 metres to 30 metres."
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/best-scuba-diving-gili-islands/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "Snorkelers can observe turtles swimming and feeding from the surface"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles swimming and feeding near the surface",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-t4wh2d",
+   "name": "Sental",
+   "sources": {
+    "s1": {
+     "url": "https://www.baliocean.com/dive-sites/nusa-penida/",
+     "publisher": "Bali Ocean",
+     "kind": "operator",
+     "quote": "drops away to where some of the best corals and marine life are to be found at 15-20 meters. … Huge puffer fish, turtles and reef sharks are found here."
+    },
+    "s2": {
+     "url": "https://nusapenida.org/best-dive-sites-nusa-penida/",
+     "publisher": "Nusa Penida guide",
+     "kind": "press",
+     "quote": "Sental Beginner to intermediate Gentle to moderate drift Turtles, relaxed reef cruising Year-round 20 min 20 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Big puffer fish, turtles and reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Drift dive along Nusa Penida's north coast where the reef falls away to its richest coral and fish zone at 15-20 m. Turtles, reef sharks and large pufferfish are regular sightings.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-o0cx8v",
+   "name": "Pura Ped",
+   "sources": {
+    "s1": {
+     "url": "https://nusapenida.org/best-dive-sites-nusa-penida/",
+     "publisher": "Nusa Penida guide",
+     "kind": "press",
+     "quote": "Ped Intermediate to advanced Moderate to strong drift Big stuff in the blue, turtles Year-round 15 min 20 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles and big fish in the blue",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-xy6xen",
+   "name": "SD Point",
+   "sources": {
+    "s1": {
+     "url": "https://nusapenida.org/best-dive-sites-nusa-penida/",
+     "publisher": "Nusa Penida guide",
+     "kind": "press",
+     "quote": "SD Point Beginner to advanced Moderate, can reverse Coral, schooling fish, turtles Year-round 15 min 20 m"
+    },
+    "s2": {
+     "url": "https://balifundiving.com/experience-diving-in-nusa-penida/",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "In the depth of 5 meters you can already see the beauty of the coral reefs."
+    },
+    "s3": {
+     "url": "https://www.baliocean.com/dive-sites/nusa-penida/",
+     "publisher": "Bali Ocean",
+     "kind": "operator",
+     "quote": "The currents here can take scuba divers along at exhilarating pace or at a very gentle speed."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5
+    },
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral, schooling fish and turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Drift dive along a sloping shelf on Nusa Penida's north coast, with coral starting about 5 m and the main reef near 20 m. Current ranges from gentle to brisk and can reverse.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-3uiy9m",
+   "name": "Mangrove Point Lembongan",
+   "sources": {
+    "s1": {
+     "url": "https://nusapenida.org/best-dive-sites-nusa-penida/",
+     "publisher": "Nusa Penida guide",
+     "kind": "press",
+     "quote": "Mangrove Beginner to intermediate Gentle drift Reef fish, turtles, relaxed drift Year-round 15 min 18 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef fish and turtles on a relaxed drift",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-wkqen6",
+   "name": "Manta Point, Sekar Kuning",
+   "sources": {
+    "s1": {
+     "url": "https://www.baliocean.com/dive-sites/nusa-penida/",
+     "publisher": "Bali Ocean",
+     "kind": "operator",
+     "quote": "Manta Point … 5-15m … Strong … Some of the mantas here have wingspans of more than three meters"
+    },
+    "s2": {
+     "url": "https://balifundiving.com/experience-diving-in-nusa-penida/",
+     "publisher": "Bali Fun Diving",
+     "kind": "operator",
+     "quote": "Manta Point has strong waves because of the Indian Ocean and Indonesian Through-Flow that continuously beat the coast"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 15
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mantas with wingspans over three metres",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong surge and waves on this exposed coast",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-7qsc43",
+   "name": "Jemeluk Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.amedjepundivers.com/dive-sites/amed/jemeluk-bay",
+     "publisher": "Amed Jepun Divers",
+     "kind": "operator",
+     "quote": "Max. 18m | Avg. 8m … All levels … Easily accessible from shore … Jemeluk Bay delights divers with its mix of macro critters and mid-size marine life."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro critters and mid-size marine life",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-xdhned",
+   "name": "Pyramid Point",
+   "sources": {
+    "s1": {
+     "url": "https://www.amedjepundivers.com/dive-sites/amed/pyramids",
+     "publisher": "Amed Jepun Divers",
+     "kind": "operator",
+     "quote": "depths varying from 10 meters to 25 meters … often mild currents turning it into a drift dive … Just off the beach"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-x5v3je",
+   "name": "Batu Bolong Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://www.komodoresort.com/komodo-diving/batu-bolong/",
+     "publisher": "Komodo Resort",
+     "kind": "operator",
+     "quote": "The pinnacle starts at about 5 meters below the surface and drops steeply to beyond 40 meters. … Level Intermediate to Advanced Current Variable, can be strong Visibility 10 – 30 meters Best Time April – November Water Temp 24 – 29°C Highlights Soft corals, reef sharks, Napoleon wrasse"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Soft corals, reef sharks and Napoleon wrasse",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Currents can change quickly",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tfxcq1",
+   "name": "Manta Point , Makassar Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.diveplanit.com/dive-site/makassar-reef",
+     "publisher": "DivePlanit",
+     "kind": "press",
+     "quote": "Top: 5M Median: 22M Bottom: 28M … a ripping current … well known as a site where you're likely to encounter Mantas"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 28
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Likely manta encounters at bommie cleaning stations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-6ugu35",
+   "name": "Mawan Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://www.lagaligoliveaboard.com/diving/komodo/dive-site/mawan/",
+     "publisher": "La Galigo Liveaboard",
+     "kind": "operator",
+     "quote": "it is possible to go down to about 30m … Typical Current: Medium … Mantas and a complete experience of Macro to big stuff"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Manta rays plus macro life",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-qxwl7v",
+   "name": "Tatawa Besar",
+   "sources": {
+    "s1": {
+     "url": "https://www.komodoresort.com/komodo-diving/tatawa-besar/",
+     "publisher": "Komodo Resort",
+     "kind": "operator",
+     "quote": "5 – 25 meters … All Levels … Drift, usually moderate … Soft corals, turtles, swim-throughs"
+    },
+    "s2": {
+     "url": "https://www.scubajunkiekomodo.com/tatawa-besar-dive-site-komodo/",
+     "publisher": "Scuba Junkie Komodo",
+     "kind": "operator",
+     "quote": "Currents are a key feature of Tatawa Besar and can range from mild to strong."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 25
+    }
+   ],
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Soft corals, turtles and swim-throughs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-o3yqxj",
+   "name": "Sebayur Kecil Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://divetribekomodo.com/komodo-dive-sites/sebayur-kecil",
+     "publisher": "Dive Tribe Komodo",
+     "kind": "operator",
+     "quote": "Mild — gentle, suitable for all levels … Bumphead parrotfish schools"
+    }
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bumphead parrotfish schools",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-l76far",
+   "name": "Frogfish Point",
+   "sources": {
+    "s1": {
+     "url": "https://scubadiverlife.com/best-scuba-diving-gili-islands/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "this is a good spot for ornate ghost pipefish, leaf scorpionfish, skeleton shrimp and many different nudibranch species"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Ghost pipefish, leaf scorpionfish and nudibranchs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-huqic9",
+   "name": "Hans Reef",
+   "sources": {
+    "s1": {
+     "url": "https://next-level-scuba.com/dive-sites-gili-air/",
+     "publisher": "Next Level Scuba",
+     "kind": "operator",
+     "quote": "The maximum depth is 24m with an average depth of 14m; this dive site is suitable for all certification levels."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 24
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-obyfwn",
+   "name": "Meno Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.gilidivers.com/fun-dives/dive-sites",
+     "publisher": "Gili Divers",
+     "kind": "operator",
+     "quote": "Meno Wall … 10-13m and 14m-24m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 24
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

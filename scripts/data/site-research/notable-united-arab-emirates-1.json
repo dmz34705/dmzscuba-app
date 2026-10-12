@@ -1,0 +1,14 @@
+{"batch":"notable-united-arab-emirates-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-1062","reason":"Wikipedia gives no depth, only 'popular site for scuba divers'"}],
+"sites":[
+{"id":"x-wikipedia-353","name":"Deep Dive Dubai",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Deep_Dive_Dubai","publisher":"Wikipedia","kind":"encyclopedia","quote":"Deep Dive Dubai is a 60-metre (200 ft) deep diving pool in Dubai."},
+"s2":{"url":"https://www.guinnessworldrecords.de/world-records/deepest-swimming-pool-for-diving","publisher":"Guinness World Records","kind":"press","quote":"The deepest swimming pool for diving is 60.02m"}},
+"depth":[{"ref":"s1","unit":"m","bottom":60},{"ref":"s2","unit":"m","bottom":60.02}],
+"summary":{"text":"A purpose-built freshwater diving pool in Dubai, certified as the deepest in the world at about 60 m, used for scuba and freediving training and exploring a sunken-city set.","refs":["s1","s2"]}},
+{"id":"osm-n9865811800","name":"Snoopy Island",
+"sources":{"s1":{"url":"https://uaeinform.com/fujairah/snoopy-island","publisher":"UAE Inform","kind":"press","quote":"As you reach the island, the depth drops to 3-8 metres on most sides. … Visibility is generally 5-15 metres; it improves through the cooler months … From Sandy Beach Hotel & Resort it is a 5-10 minute swim out to the island. … Snoopy itself is the easiest entry-level shore dive in the country."}},
+"depth":[{"ref":"s1","unit":"m","top":3,"bottom":8}],
+"entry":{"value":"shore","refs":["s1"]},"types":{"value":["reef"],"refs":["s1"]},
+"level":{"value":"beginner","refs":["s1"]},
+"vis":{"low":5,"high":15,"unit":"m","refs":["s1"]}}]}

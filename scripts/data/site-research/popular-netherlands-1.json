@@ -1,0 +1,226 @@
+{
+ "batch": "popular-netherlands-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-gvom1j",
+   "reason": "no per-site source beyond directories"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-xiq2d9",
+   "sources": {
+    "s1": {
+     "url": "https://www.goldenrockdive.com/dive-sites",
+     "publisher": "Golden Rock Dive Center",
+     "kind": "operator",
+     "quote": "Chien Tong Max Depth: 27M/90ft, Top of Wreck 15M/30ft Boat Ride: 5 minutes Experienced Level: Advanced cert recommended due to depth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 27
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "Chien Tong, wreck"
+  },
+  {
+   "id": "odm-jdlpl9",
+   "sources": {
+    "s1": {
+     "url": "https://www.goldenrockdive.com/dive-sites",
+     "publisher": "Golden Rock Dive Center",
+     "kind": "operator",
+     "quote": "Charles L. Brown Depth: 30M/100ft Boat Ride: 10-12 minutes Experience Level: Advanced/Experienced"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "Charles L. Brown, wreck"
+  },
+  {
+   "id": "odm-cwki9d",
+   "sources": {
+    "s1": {
+     "url": "https://www.goldenrockdive.com/dive-sites",
+     "publisher": "Golden Rock Dive Center",
+     "kind": "operator",
+     "quote": "Double Wreck Archeological Site Dive Level: Beginner Depth: 18M/60ft Boat ride: 2 minutes Experience Level: Beginner"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "Double Wreck"
+  },
+  {
+   "id": "odm-gk0do9",
+   "sources": {
+    "s1": {
+     "url": "https://www.goldenrockdive.com/dive-sites",
+     "publisher": "Golden Rock Dive Center",
+     "kind": "operator",
+     "quote": "Hangover Reef Coral Encrusted Lava Flow Depth: 10-15M/ 30-45ft Boat Ride 7-10 minutes Experience Level: Beginner"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "Hangover"
+  },
+  {
+   "id": "odm-yswlwd",
+   "sources": {
+    "s1": {
+     "url": "https://sabapark.org/saba-national-marine-park/dive-sites-dive-operators/",
+     "publisher": "Saba Conservation Foundation (Saba National Marine Park)",
+     "kind": "park",
+     "quote": "Man ‘O War Shoals and Diamond Rock appear to be submerged and semi-submerged extensions of Torrens Point headland. They do not exceed depths of 25m (80ft)"
+    },
+    "s2": {
+     "url": "https://www.seasaba.com/saba-7-man-owar-shoals",
+     "publisher": "Sea Saba",
+     "kind": "operator",
+     "quote": "Diamond Rock and Man O’ War Shoals Healthy coral reefs with excellent fish life Green turtles, reef sharks, stingrays, and lobster"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Green turtles, reef sharks, stingrays, lobster",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "name": "Man O War Shoal"
+  },
+  {
+   "id": "odm-w9tby5",
+   "sources": {
+    "s1": {
+     "url": "https://sabapark.org/saba-national-marine-park/dive-sites-dive-operators/",
+     "publisher": "Saba Conservation Foundation (Saba National Marine Park)",
+     "kind": "park",
+     "quote": "Man ‘O War Shoals and Diamond Rock appear to be submerged and semi-submerged extensions of Torrens Point headland. They do not exceed depths of 25m (80ft) … Be cautious while diving around Diamond Rock because of strong currents."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents around Diamond Rock",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "Diamond Rock"
+  }
+ ]
+}

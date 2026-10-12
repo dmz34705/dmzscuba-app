@@ -1,0 +1,122 @@
+{
+ "batch": "notable-switzerland-2",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-wikipedia-92",
+   "name": "Jura (1854 ship)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Jura_(1854_ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "at a depth of about 39 metres … best known freshwater wreck in Europe"
+    },
+    "s2": {
+     "url": "https://pro-taucher.com/?p=927",
+     "publisher": "Pro-Taucher.com",
+     "kind": "press",
+     "quote": "it must be approached by boat … Minimum depth: 34 meters Maximum depth: 39 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 39
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 34,
+     "bottom": 39
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Nineteenth-century paddle steamer rammed and sunk in Lake Constance in 1864, found again off Bottighofen in 1953. It sits nearly upright at 34 to 39 m, reached by boat, and is a well-known cold-water wreck for experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870428",
+   "name": "Die Jura (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Jura_(1854_ship)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "at a depth of about 39 metres … best known freshwater wreck in Europe"
+    },
+    "s2": {
+     "url": "https://pro-taucher.com/?p=927",
+     "publisher": "Pro-Taucher.com",
+     "kind": "press",
+     "quote": "it must be approached by boat … Minimum depth: 34 meters Maximum depth: 39 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 39
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 34,
+     "bottom": 39
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "Nineteenth-century paddle steamer rammed and sunk in Lake Constance in 1864, found again off Bottighofen in 1953. It sits nearly upright at 34 to 39 m, reached by boat, and is a well-known cold-water wreck for experienced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

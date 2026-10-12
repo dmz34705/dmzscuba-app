@@ -1,0 +1,214 @@
+{
+ "batch": "notable-greece-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-wikipedia-393",
+   "name": "HMHS Britannic",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMHS_Britannic",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in about 400 feet (122 m) of water"
+    },
+    "s2": {
+     "url": "https://keadivers.com/scuba-diving.html",
+     "publisher": "Kea Divers",
+     "kind": "operator",
+     "quote": "lies the wreck of the world famous HMS Britannic, sister ship to the Titanic. The wreck rests at a depth of 120 meters, making it accessible for technical divers only."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 122
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 120
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "The largest intact liner on the seabed lies about 1.5 nautical miles off Kea's northwest tip at roughly 120 m. Only experienced technical divers working through a local operator and the authorities reach it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-403",
+   "name": "HMS Perseus (N36)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Perseus_(N36)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck, at 52 metres (171 ft) below the surface, was discovered and surveyed in 1997"
+    },
+    "s2": {
+     "url": "https://grafasdiving.gr/en/shipwrecks/hms-perseus-n-36",
+     "publisher": "Grafas Diving",
+     "kind": "operator",
+     "quote": "crashed into a mine at the coasts of Kefalonia (at Scala) and sank in a depth of 52 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 52
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 52
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A British submarine mined in 1941 off Kefalonia's Skala coast, found by Greek divers in the late 1990s. She rests at about 52 m on the seabed with a starboard list, a technical-range dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1071",
+   "name": "Dimitrios shipwreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Dimitrios_(shipwreck)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Dimitrios has been stranded on the beach at Valtaki"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Hulk is stranded on the beach at Valtaki, a shore sightseeing wreck",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1213",
+   "name": "HMS Hurworth",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Hurworth_(L28)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Hurworth lies in 102 metres (335 ft) of water at 36.59N 27.06E in Greek territorial waters; she is a War Grave."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 102
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1271",
+   "name": "HMS Chamois",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Chamois_(1896)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "She sank by the stern in 30 fathoms (55 m) of water about 2 nautical miles"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 55
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1015",
+   "name": "Antikythera wreck",
+   "sources": {
+    "s1": {
+     "url": "https://divernet.com/scuba-news/divers-return-to-antikythera-wreck/",
+     "publisher": "Divernet",
+     "kind": "press",
+     "quote": "the 50m-plus depth of the wreck for a long time made systematic investigations difficult"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/Antikythera_wreck",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "It was discovered by sponge divers off Point Glyphadia on the Greek island of Antikythera in 1900."
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 50
+    }
+   ]
+  }
+ ]
+}

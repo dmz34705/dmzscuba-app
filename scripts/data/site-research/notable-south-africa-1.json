@@ -1,0 +1,638 @@
+{
+ "batch": "notable-south-africa-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-notable-1175",
+   "name": "SS Lusitania",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Lusitania_(1906)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "at 33 to 40 metres, it is deeper than recommended for the average recreational diver"
+    },
+    "s2": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SS_Lusitania",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "The depth is 35 to 40 m on the wreck, with a few parts rising as high as 27 m … A permit is required"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 33,
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 27,
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Table Mountain National Park MPA; permit required",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Currents and breakers over Bellows Rock reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Portuguese liner that struck Bellows Rock off Cape Point in 1911 and slid into deep water east of the rock. The broken wreck lies at roughly 33 to 40 m inside a marine park, so it needs a permit and advanced experience.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-219",
+   "name": "HMS Pelorus (J291)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Pelorus_(J291)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Pietermaritzburg was scuttled on 12 November 1994 … settled upright on the sand at a maximum depth of 22 metres"
+    },
+    "s2": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SAS_Pietermaritzburg",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is 22 m on the sand to the stern … The deck at the bow is at about 17 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 22
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 17,
+     "bottom": 22
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Former navy minesweeper scuttled as an artificial reef at Miller's Point near Simon's Town in 1994. It rests upright on sand at about 22 m, with the bow deck near 17 m, and is breaking up so the interior is less accessible than before.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-y79c9b",
+   "name": "SAS Pietermaritzburg, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Pelorus_(J291)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Pietermaritzburg was scuttled on 12 November 1994 … settled upright on the sand at a maximum depth of 22 metres"
+    },
+    "s2": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SAS_Pietermaritzburg",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is 22 m on the sand to the stern … The deck at the bow is at about 17 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 22
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 17,
+     "bottom": 22
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Former navy minesweeper scuttled as an artificial reef at Miller's Point near Simon's Town in 1994. It rests upright on sand at about 22 m, with the bow deck near 17 m, and is breaking up so the interior is less accessible than before.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-955",
+   "name": "MTS Oceanos",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/MTS_Oceanos",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The Oceanos wreck lies at a depth of between 92 m (302 ft) and 97 m (318 ft) … strong currents make the dive difficult"
+    },
+    "s2": {
+     "url": "https://dune-world.com/en/epaves/oceanos-ms",
+     "publisher": "Dune World",
+     "kind": "operator",
+     "quote": "Profondeur 97 m Niveau Expert"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 92
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 97
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents and extreme depth",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Wikipedia 92-97 m, operator guide 97 m"
+  },
+  {
+   "id": "x-notable-896",
+   "name": "HMS Birkenhead",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Birkenhead_(1845)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "shallow depth of the wreck at 30 metres (98 ft) … despite its being a war grave"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "War grave",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-254",
+   "name": "SAS Good Hope",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SAS_Good_Hope",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is about 36 m on the sand, main deck was about 25 m"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SAS_Good_Hope",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Scuttled , 12 December 1978"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 36
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Former navy Loch-class frigate scuttled in Smitswinkel Bay, False Bay, in December 1978 as an artificial reef. It lies on sand at about 36 m, and the structure has been collapsing, lowering its high points.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-uib62u",
+   "name": "SAS Transvaal (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SAS_Transvaal",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is about 34 m on the sand, main deck about 29 m"
+    },
+    "s2": {
+     "url": "https://en.wikipedia.org/wiki/SAS_Transvaal",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Scuttled , 3 August 1978"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 29,
+     "bottom": 34
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Former navy Loch-class frigate scuttled in Smitswinkel Bay in August 1978 to form an artificial reef. The wreck sits on sand at about 34 m with its main deck near 29 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-i5iil3",
+   "name": "SS Oratava, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/MFV_Orotava",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Sand bottom is at about 32 m near the stern … Highest point on the wreck about 23 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 23,
+     "bottom": 32
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-yx2tp0",
+   "name": "SS Clan Stuart (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SS_Clan_Stuart",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is about 9 m, average about 7 m … The ship’s engine block still breaks the surface"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 9
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-20x15p",
+   "name": "Duiker Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/Duiker_Island",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "The site is shallow, at about 6 m depth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 6
+    }
+   ]
+  },
+  {
+   "id": "x-notable-1177",
+   "name": "SS Thomas T. Tucker",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SS_Thomas_T_Tucker",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is probably less than 10 m … A permit is required"
+    }
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Table Mountain National Park MPA; permit required",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1303",
+   "name": "HMS Thames",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SATS_General_Botha",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is 54 m on the sand, the top of the hull is at about 47 m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 47,
+     "bottom": 54
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-339",
+   "name": "Aliwal Shoal",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Aliwal_Shoal",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "The crown varies in depth from about 6 m (around the Northern Pinnacles) to around 30 m on the seaward side"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-335",
+   "name": "Boesmansgat",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Boesmansgat",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Depth 283 m (928 ft)"
+    },
+    "s2": {
+     "url": "https://www.guinnessworldrecords.com/world-records/67817-deepest-scuba-dive-in-a-fresh-water-cave",
+     "publisher": "Guinness World Records",
+     "kind": "press",
+     "quote": "scuba-dived to a depth of 282.6 m (927 ft 2 in) at the Boesmansgat Cave"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 283
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 282.6
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "technical",
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-349",
+   "name": "Table Mountain National Park Marine Protected Area",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Table_Mountain_National_Park_Marine_Protected_Area",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Marine conservation area around the Cape Peninsula in South Africa"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole marine protected area, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-351",
+   "name": "Tsitsikamma Marine Protected Area",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Tsitsikamma_Marine_Protected_Area",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is a marine protected area on the south coast of South Africa , in both the Western Cape and Eastern Cape"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole marine protected area, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-350",
+   "name": "Aliwal Shoal Marine Protected Area",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Aliwal_Shoal_Marine_Protected_Area",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Marine conservation area at Aliwal Shoal off the coast of KwaZulu-Natal, South Africa"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole marine protected area, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-352",
+   "name": "ISimangaliso Marine Protected Area",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/ISimangaliso_Marine_Protected_Area",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Marine conservation area in northern kwaZulu-Natal in South Africa"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A whole marine protected area, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

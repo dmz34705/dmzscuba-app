@@ -1,0 +1,231 @@
+{
+ "batch": "notable-canada-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "osm-n663869535",
+   "name": "Sweepstakes (schooner)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Sweepstakes_(schooner)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "remains in the water at a depth of 6.1 metres (20 ft) … often visited by tour boat passengers, divers, and snorkelers … in the Fathom Five National Marine Park"
+    },
+    "s2": {
+     "url": "https://shotlinediving.com/wreck/sweepstakes-1856/",
+     "publisher": "Shotline Diving",
+     "kind": "operator",
+     "quote": "The wreck now rests at a shallow depth of 20 feet, making it easily accessible to divers and snorkelers. … ideal for divers of all skill levels."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 20
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A schooner wreck lying in only about 6 m of water at Big Tub Harbour, inside Fathom Five National Marine Park near Tobermory. Shallow and easy, it is visited by divers, snorkelers and glass-bottom tour boats.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-528",
+   "name": "SS Scotiadoc",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Scotiadoc",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "At a depth of 850 feet (259 m), it is the deepest shipwreck in the Great Lakes."
+    }
+   },
+   "notDiveSite": {
+    "kind": "too-deep",
+    "reason": "Lies at about 259 m in Lake Superior, far beyond diver depth",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1030",
+   "name": "HMCS Shawinigan",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMCS_Shawinigan_(K136)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "its final resting place was never found"
+    }
+   },
+   "notDiveSite": {
+    "kind": "unlocated",
+    "reason": "Lost in 1944; the wreck has never been found",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1294",
+   "name": "HMS Phoenix",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Phoenix_(1879)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "less than 30 feet (9.1 m) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-551",
+   "name": "SS Charles S. Price",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Charles_S._Price",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "resting upside-down at a depth of 28.6 m (94 ft)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 28.6
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-544",
+   "name": "SS Wexford",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Wexford",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "sitting intact and upright in 75 feet (23 m) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 75
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-557",
+   "name": "SS Manasoo",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Manasoo",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "rests intact in 210 feet (64.0 m) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 210
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-83",
+   "name": "Sagamore (barge)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Sagamore_(barge)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "in 45 to 65 feet (14 to 20 m) of water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 65
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

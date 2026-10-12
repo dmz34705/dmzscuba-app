@@ -1,0 +1,1169 @@
+{
+ "batch": "popular-mexico-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-occm27",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-eb74j2",
+   "reason": "only a one-line description on one operator page"
+  },
+  {
+   "id": "odm-fjfab7",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-f519t7",
+   "reason": "generic name (Playa del Carmen), cannot pin down"
+  },
+  {
+   "id": "odm-j742xx",
+   "reason": "no depth or facts found"
+  },
+  {
+   "id": "odm-mxhr9b",
+   "reason": "only source found describes a shallow reef, not confirmed same site"
+  },
+  {
+   "id": "odm-oilfak",
+   "reason": "no depth or facts found (Palancar Bricks)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "mx-cozumel-yucab",
+   "name": "Yucab Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Yucab … 40-55 ft … Intermediate … Yucab moves at a gentler pace … Fish density is high with schooling blue chromis, queen angelfish, rock beauties"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Yucab Reef (15-18 mts / 50-60 ft)"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Yucab Reef … Another shallow site appropriate for all diver experience levels … The site has a mixed topography of sandy bottom, coral reef, and overhangs"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 55
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dense schools of blue chromis and queen angelfish",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sand, coral and overhang terrain",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A mid-depth reef off Cozumel's west coast with sand, coral heads and small overhangs. Fish numbers are high and the current is usually gentle, so it suits divers with a little experience.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "mx-cozumel-palancar-gardens",
+   "name": "Palancar Gardens",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Palancar Reef (Gardens, Caves & Horseshoe) … 40-70 ft (Gardens) to 100+ ft (Caves/Horseshoe) … Gardens: beginner"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Palancar Gardens (8-18 mts / 26-60 ft)"
+    },
+    "s3": {
+     "url": "https://experience.transat.com/the-best-dive-spots-in-cozumel",
+     "publisher": "Experience Transat",
+     "kind": "press",
+     "quote": "Palancar Gardens … they offer some of the clearest visibility you can get … you can see angelfish, damselfish and even octopus"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 26,
+     "bottom": 60
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Very clear water",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Angelfish, damselfish and octopus",
+     "refs": [
+      "s3"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-9ci018",
+   "name": "Paradise Reef - Cozumel",
+   "sources": {
+    "s1": {
+     "url": "https://joescuba.com/2023/05/popular-cozumel-dive-sites/",
+     "publisher": "Joe Scuba",
+     "kind": "operator",
+     "quote": "Paradise Reef … depth ranges from 30 to 60 feet"
+    },
+    "s2": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Paradise Reef (and Night Diving) … 20-50 ft … Beginner by day … the current is typically gentle … Octopuses emerge from hiding and hunt openly across the reef"
+    },
+    "s3": {
+     "url": "https://www.ccrrp.mx/post/cozumel-s-underwater-wonders-a-deep-dive-into-reef-diversity",
+     "publisher": "CCRRP Cozumel",
+     "kind": "operator",
+     "quote": "Paradise Reef … Relatively shallow, ranging from 20 to 50 feet (6 to 15 meters) … Beginner-friendly with calm waters and excellent visibility"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 60
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 50
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 50
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Octopus and lobster on night dives",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Turtles and reef fish",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow, calm reef just south of Cozumel town that is popular for first dives and as the island's favourite night-dive site. Visibility is good and the current gentle.",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "mx-cozumel-palancar-caves",
+   "name": "Palancar Caves",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Palancar Reef (Gardens, Caves & Horseshoe) … 40-70 ft (Gardens) to 100+ ft (Caves/Horseshoe) … Caves/Horseshoe: intermediate … require solid buoyancy before you enter them"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Palancar Reefs … The varied topography at Palancar Reefs includes walls, slopes, and swim-throughs"
+    },
+    "s3": {
+     "url": "https://www.ccrrp.mx/post/cozumel-s-underwater-wonders-a-deep-dive-into-reef-diversity",
+     "publisher": "CCRRP Cozumel",
+     "kind": "operator",
+     "quote": "Palancar Reef … Ranges from 30 to 100+ feet (9 to 30+ meters)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 100
+    },
+    {
+     "ref": "s3",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 100
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Walls, slopes and swim-throughs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Caves need solid buoyancy control",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jcs2rn",
+   "name": "Cedar Pass",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Paso del Cedral … 50-70 ft … Intermediate … The current is typically moderate, enough to drift comfortably … Cedral is where Cozumel earns its reputation for nurse sharks"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Paso del Cedral (22-24 mts / 72-79 ft)"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Paseo de Cedral … Moderate-to-strong current is typically present … is adorned with vibrant corals and healthy sponges"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 22,
+     "bottom": 24
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Nurse sharks",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Vibrant corals and sponges",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Paso del Cedral is a reef drift on Cozumel's southwest side, known for nurse sharks and healthy sponges. A moderate current carries divers along, so some experience helps.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "mx-cozumel-dalila",
+   "name": "Dalila Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Punta Dalila (17 mts / 56 ft)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 17
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-c0ojlf",
+   "name": "Cedral Wall",
+   "sources": {
+    "s1": {
+     "url": "https://joescuba.com/2023/05/popular-cozumel-dive-sites/",
+     "publisher": "Joe Scuba",
+     "kind": "operator",
+     "quote": "Cedral Wall … it has a depth range of 50-70 feet … suitable for intermediate to advanced divers due to the sometimes-strong currents … including angelfish, triggerfish, and jacks"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Cedral Wall (22-24 mts / 72-79 ft)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 22,
+     "bottom": 24
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea fans, sponges, angelfish, jacks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-334ze5",
+   "name": "Jardines",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Jardines … 20-45ft/ 6-13m … Little to none, direction might change rapidly … Novice … Garden-like vegetation, most colorful in the middle of the reef, small overhangs"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/blog/playa-carmen-reefs-scuba-diving/",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Jardines Reef … At only 12 meters/40 feet from the surface … With its calm waters and little to no current … a small wall of coral and sponges that is 2 meters tall"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 13
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small coral and sponge wall with morays and trunkfish",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Garden-like growth and small overhangs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow, sheltered reef off Playa del Carmen with almost no current, a low coral-and-sponge wall and small overhangs. An easy choice for novices and relaxed photography.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-lrma5s",
+   "name": "Chankanaab",
+   "sources": {
+    "s1": {
+     "url": "https://joescuba.com/2023/05/popular-cozumel-dive-sites/",
+     "publisher": "Joe Scuba",
+     "kind": "operator",
+     "quote": "Chankanaab Reef … depth ranges from 30 to 60 feet … nurse sharks"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Chankanaab Reef … its calm, predictable conditions make it suitable for all experience levels … This shallow dive site is home to stingrays, snappers, moray eels, lionfish"
+    },
+    "s3": {
+     "url": "https://experience.transat.com/the-best-dive-spots-in-cozumel",
+     "publisher": "Experience Transat",
+     "kind": "press",
+     "quote": "Chankanaab Reef … this reef reaches a depth of 12 meters … another great reef for beginner, intermediate and expert divers alike"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 60
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Stingrays, snappers, morays, lionfish",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Night dives with octopus in the south",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow, sheltered reef off Chankanaab park with calm, predictable conditions. It suits every level and is good for stingrays, morays and night-time octopus.",
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "mx-cozumel-punta-tunich",
+   "name": "Punta Tunich Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Punta Tunich (15-36 mts / 50-120 ft)"
+    },
+    "s2": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Punta Tunich … well known for its strong and turbulent Currents"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 36
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong, turbulent currents",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-pkrjya",
+   "name": "Santa Rosa Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Santa Rosa Wall (22-25 mts / 72-82 ft)"
+    },
+    "s2": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Santa Rosa Wall … 18-25m/ 59-82ft … unpredictable, medium to strong … Intermediate … Classic Cozumel wall, Popular first tank dive"
+    },
+    "s3": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Santa Rosa Wall … Intermediate to advanced … The current at Santa Rosa runs more reliably and more strongly than at most Cozumel sites … spotted eagle rays are a regular presence here"
+    },
+    "s4": {
+     "url": "https://experience.transat.com/the-best-dive-spots-in-cozumel",
+     "publisher": "Experience Transat",
+     "kind": "press",
+     "quote": "Santa Rosa Wall … With the potential for strong currents, this is one of the more intermediate dive sites in Cozumel … Eagle rays, barracudas and giant sponges can be found here"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 22,
+     "bottom": 25
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 25
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spotted eagle rays",
+     "refs": [
+      "s3"
+     ]
+    },
+    {
+     "text": "Barracudas, turtles and giant sponges",
+     "refs": [
+      "s4"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong, unpredictable drift current",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Cozumel's classic wall drift, dropping well past recreational depths. Eagle rays, barracuda and big sponges are the draw, and the steady current calls for solid buoyancy and air management.",
+    "refs": [
+     "s3",
+     "s4"
+    ]
+   }
+  },
+  {
+   "id": "mx-cozumel-palancar-horseshoe",
+   "name": "Palancar Horseshoe",
+   "sources": {
+    "s1": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Palancar Horsehoe (22-24 mts / 72-79 ft)"
+    },
+    "s2": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Palancar Reef (Gardens, Caves & Horseshoe) … Caves/Horseshoe: intermediate"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 22,
+     "bottom": 24
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "mx-cozumel-c53",
+   "name": "C-53 Felipe Xicoténcatl Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Wreck of the C-53 \"Felipe Xicotencatl\" … 40-50 ft to superstructure; 80 ft to sand bottom … Intermediate … Its sheltered position has minimal current and visibility that usually holds at 80-100 feet"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "C-53 Wreck … Divers with appropriate training can penetrate the wreck to explore the engine room … home to plenty of interesting critters such as nudibranchs, shrimps, crabs, octopus, and moray eels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 80,
+    "high": 100,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Nudibranchs, shrimps, octopus and morays",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Engine room can be penetrated with training",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Interior penetration needs wreck training and a light",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A Mexican navy minesweeper sunk as an artificial reef, sheltered with little current and good visibility. The upper decks suit intermediate divers; entering the engine room requires wreck training.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Superstructure at 40-50 ft, sand at 80 ft"
+  },
+  {
+   "id": "mx-cozumel-tormentos",
+   "name": "Tormentos Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Tormentos … 40-55 ft … Intermediate … The current here moves more quickly than at most central reef sites … Spotted moray eels are practically everywhere"
+    },
+    "s2": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Tormento Reef (15-18 mts / 50-60 ft)"
+    },
+    "s3": {
+     "url": "https://www.bluewaterdivetravel.com/top-dive-sites-cozumel",
+     "publisher": "Bluewater Dive Travel",
+     "kind": "operator",
+     "quote": "Tormentos Reef … often has some strong current present and is suitable for intermediate to advanced divers … Expect tunnels, overhangs, and loads of corals and sea fans"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 55
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spotted moray eels",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Tunnels, overhangs and sea fans",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A mid-depth reef north of the main reef line with tunnels, overhangs and plenty of morays. Current runs faster than at most central reefs, so it suits intermediate divers.",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "mx-cozumel-colombia",
+   "name": "Colombia Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.dresseldivers.com/?p=125542",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Colombia Reef diving depth: 50'-90' (15-27m) … beginner to advanced … Barrel sponges, sea fans, black corals, pinnacles, caves, and tunnels"
+    },
+    "s2": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Columbia Reef (Deep & Shallows) … Deep: 70-80 ft … Deep: intermediate … Nurse sharks are common, tucked under ledges at depth"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 27
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barrel sponges, black coral, pinnacles",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nurse sharks under ledges",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep reef of pinnacles, tunnels and big sponges on Cozumel's south end. Nurse sharks shelter under ledges at depth, and conditions suit intermediate divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-587ocx",
+   "name": "Tikila Beach",
+   "sources": {
+    "s1": {
+     "url": "https://www.islandlifemexico.com/cozumel-scuba-diving-guide",
+     "publisher": "Island Life Mexico",
+     "kind": "press",
+     "quote": "Shore Diving: Villa Blanca, Blue Angel and Tikila … Tikila sits a bit further south and is less trafficked, which usually translates to calmer marine life behavior"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Less crowded than other shore sites",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jky5kb",
+   "name": "Chun Zumbul",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Chun-Zumbul … 20-45ft/ 6-13m … Little to none … Novice … one of the longest and shallowest dives in this area"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 13
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-z65dqt",
+   "name": "Shangri La - Playa del Carmen",
+   "sources": {
+    "s1": {
+     "url": "https://www.dresseldivers.com/blog/playa-carmen-reefs-scuba-diving/",
+     "publisher": "Dressel Divers",
+     "kind": "operator",
+     "quote": "Shangri-La … one of the shallowest reefs in the Playa del Carmen area … What makes Shangrila, even more special, is the lack of current … a must-visit for both photographers and beginner divers"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Occasional turtle, seahorses and nudibranchs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

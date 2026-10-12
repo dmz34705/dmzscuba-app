@@ -1,0 +1,5 @@
+{"batch":"notable-tanzania-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-1116","reason":"wreck broken up for scrap in 1955; no depth or dive info"}],
+"sites":[{"id":"x-wikipedia-326","name":"Mafia Island",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Mafia_Island","publisher":"Wikipedia","kind":"encyclopedia","quote":"Mafia Island or Chole Shamba (Kisiwa cha Mafia, in Swahili) is an island of the Mafia Archipelago"}},
+"notDiveSite":{"kind":"area","reason":"A whole island and marine park, not one site","refs":["s1"]}}]}

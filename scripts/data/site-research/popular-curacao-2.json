@@ -1,0 +1,934 @@
+{
+ "batch": "popular-curacao-2",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-1dqc9b",
+   "reason": "no usable non-banned source"
+  },
+  {
+   "id": "odm-wzqy1z",
+   "reason": "only banned directories / unreachable pages"
+  },
+  {
+   "id": "odm-g321q2",
+   "reason": "only aggregator listing"
+  },
+  {
+   "id": "odm-tstjau",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-gga8yn",
+   "reason": "generic name; no source"
+  },
+  {
+   "id": "odm-f909rv",
+   "reason": "only a passing mention; no site facts"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-kzu4s9",
+   "name": "Small Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Small Wall The name says it all, it is a wall and it is small. Overhangs and little nooks house schools of soldierfish, grunts, and damsels"
+    },
+    "s2": {
+     "url": "https://www.colemanconcierge.com/scuba-diving-curacao/",
+     "publisher": "Coleman Concierge",
+     "kind": "press",
+     "quote": "Little Wall, aka Small Wall, is the next dive site past Director’s Bay towards the open ocean … Both sites are relatively shallow and filled with vibrant sea life"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Overhangs sheltering soldierfish, grunts and damselfish",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Shallow, lively reef next to Director's Bay",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small wall just past Director's Bay toward the open sea, relatively shallow, with overhangs and nooks that shelter schools of soldierfish, grunts and damselfish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-y56i2l",
+   "name": "Fuikbaai / Newport",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Newport This beautiful and pristine Curacao dive site is only accessed by Ocean Encounters. A beautiful slope with great star coral, brain coral, and soft gorgonians"
+    }
+   },
+   "access": {
+    "value": "Newport is only dived with Ocean Encounters",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Slope with star coral, brain coral and soft gorgonians",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Described as pristine",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-dpfuw6",
+   "name": "Booby trap",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Booby Trap Perfect place to work on some sponge identification: all types of sponges cover the slope"
+    },
+    "s2": {
+     "url": "https://www.colemanconcierge.com/scuba-diving-curacao/",
+     "publisher": "Coleman Concierge",
+     "kind": "press",
+     "quote": "Eel Valley and Booby Trap are coral reefs on the western edge of the bay’s break wall … The water around the bay is part of the Marine Park"
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Inside the Curaçao Marine Park, west edge of the Fuik Bay breakwater",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Slope covered in all types of sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Coral reef on the western end of the Fuik Bay breakwater inside the Marine Park; its slope is blanketed in sponges of many kinds, a good spot for sponge identification.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-fu2sk5",
+   "name": "Eel Valley",
+   "sources": {
+    "s1": {
+     "url": "https://www.colemanconcierge.com/scuba-diving-curacao/",
+     "publisher": "Coleman Concierge",
+     "kind": "press",
+     "quote": "Eel Valley and Booby Trap are coral reefs on the western edge of the bay’s break wall … The water around the bay is part of the Marine Park"
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Inside the Curaçao Marine Park, west edge of the Fuik Bay breakwater",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-73y97h",
+   "name": "Lost Anchor",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Lost Anchor A favorite Curacao Dive Site, bright and colorful. A beautiful lush wall covered with gorgonians and sea fans. Dense coral growth hides an anchor chain"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Lost Anchor … it’s recommended that you go on a boat diving trip as it’s not great to reach from shore … a long anchor of at least 90 meters long, which is nowadays grown with coral and sponges"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lush wall of gorgonians and sea fans",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Very long anchor chain overgrown with coral and sponges",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Colorful wall covered in gorgonians and sea fans, best dived by boat. It is named for an anchor chain at least 90 m long that is now overgrown with coral and sponges.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-fd73c0",
+   "name": "Sandy’s Plateau",
+   "sources": {
+    "s1": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Plateau Gorgonians and hard corals, and everything in between. An excellent dive site to spot lobsters under the overhangs and crabs hiding in the large barrel sponges"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "which is a shallow plateau that continues into a coral-covered wall … can be reached both by boat or you can swim there from Jan Thielbaai"
+    }
+   },
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lobsters under overhangs, crabs in barrel sponges",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Gorgonians and hard corals on a wall below a shallow plateau",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shallow plateau north of Jan Thiel that drops into a coral-covered wall rich in gorgonians, hard coral and barrel sponges, with lobsters and crabs. Reached by boat or by a swim from Jan Thiel Bay.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-v2y1or",
+   "name": "Divers Leap",
+   "sources": {
+    "s1": {
+     "url": "https://fundivingcuracao.com/en/dive-sites",
+     "publisher": "Fundiving Curacao",
+     "kind": "operator",
+     "quote": "Diver's Leap is suitable for all levels of divers … Divers can enter and exit the water from the small beach … the drop-off is located at a depth of around 10 meters"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Divers Leap At this dive site, you may have the possibility to do a great drift dive, flying while enjoying the reef scene in front of you"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Possible drift dive along the reef",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "House reef in front of Jan Thiel Beach with easy entry from a small beach; a short shallow stretch leads to a drop-off at about 10 m, and conditions sometimes allow a drift dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Most sea life at 8-15 m along the wall edge"
+  },
+  {
+   "id": "odm-8svmu9",
+   "name": "Playa Largu",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Playa Largu … You do need to pay an entry fee at the country house of San Juan … these beaches do not have any amenities … beautiful healthy coral reefs"
+    },
+    "s2": {
+     "url": "https://divers-republic.com/en/diving-locations-curacao/",
+     "publisher": "Divers Republic",
+     "kind": "operator",
+     "quote": "three secluded beaches: Playa Shon Mosa, Playa Manzalina, and Playa Largu … The reefs are teeming with vibrant corals, tropical fish, and occasionally even seahorses"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Entry fee paid at the San Juan country house; no amenities",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Healthy coral reefs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Occasional seahorses",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Quiet shore dive at a secluded west-coast beach in the San Juan area. Entry fee at the country house, no facilities, but healthy coral reefs with plenty of fish and the odd seahorse.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-set79c",
+   "name": "Playa Manzaliña",
+   "sources": {
+    "s1": {
+     "url": "https://divers-republic.com/en/diving-locations-curacao/",
+     "publisher": "Divers Republic",
+     "kind": "operator",
+     "quote": "three secluded beaches: Playa Shon Mosa, Playa Manzalina, and Playa Largu … The tranquility and untouched nature of San Juan … The reefs are teeming with vibrant corals, tropical fish, and occasionally even seahorses"
+    }
+   },
+   "access": {
+    "value": "Secluded, quiet San Juan beach",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Vibrant corals, tropical fish and occasional seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fytywz",
+   "name": "Playa Shon Mosa",
+   "sources": {
+    "s1": {
+     "url": "https://divers-republic.com/en/diving-locations-curacao/",
+     "publisher": "Divers Republic",
+     "kind": "operator",
+     "quote": "three secluded beaches: Playa Shon Mosa, Playa Manzalina, and Playa Largu … The tranquility and untouched nature of San Juan … The reefs are teeming with vibrant corals, tropical fish, and occasionally even seahorses"
+    }
+   },
+   "access": {
+    "value": "Secluded, quiet San Juan beach",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Vibrant corals, tropical fish and occasional seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-uvkrvv",
+   "name": "Car Wrecks (Kokomo Beach)",
+   "sources": {
+    "s1": {
+     "url": "https://www.divewederfoort.com/local-diving-sites/kokomo-beach",
+     "publisher": "Dive Wederfoort",
+     "kind": "operator",
+     "quote": "Kokomo Beach (Vaersen Bay) … You could also go to the car pile which is about 390 meters to the left and lie at about 35 meters"
+    },
+    "s2": {
+     "url": "https://villa-coralbay.com/en/kokomo-beach-und-car-pile_en",
+     "publisher": "Villa Coral Bay",
+     "kind": "operator",
+     "quote": "Kokomo Beach … There are many old car wrecks at a depth of about 30-50 meters … Plan enough air for the return trip on this dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 35
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 30,
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Field of old car wrecks, with a small wreck just beyond at 45 m",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Deep and far out; plan enough air for the return",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Car pile off Kokomo Beach: many old car wrecks lying roughly 30-50 m deep, with a small wreck just beyond. A long surface swim and depth mean you must plan air carefully.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-7mrj9i",
+   "name": "Playa Kalki / Alice in Wonderland",
+   "sources": {
+    "s1": {
+     "url": "https://scubacao.com/places/alice-in-wonderland/",
+     "publisher": "Scubacao",
+     "kind": "operator",
+     "quote": "Good for: dive, snorkel, Beach, Shore Diving … Alice in Wonderland starts with a sandy bottom followed by the first drop-off at 8 meters … The reef, mainly consisting of fan-, leaf-, star- and brain coral"
+    },
+    "s2": {
+     "url": "https://techdivetravels.com/top-destinations/dive-sites-latin-america/dive-sites-in-curacao-playa-kalki/",
+     "publisher": "Tech Dive Travels",
+     "kind": "press",
+     "quote": "Alice in Wonderland, also known as Playa Kalki Reef, is a spectacular reef dive site starting at 5 meters and dropping down to over 30 meters"
+    },
+    "s3": {
+     "url": "https://flipflopwanderers.com/best-dive-spots-curacao/",
+     "publisher": "Flip Flop Wanderers",
+     "kind": "press",
+     "quote": "Playa Kalki (Alice in Wonderland) … Big corals are along a big wall for a true Curaçao dive experience"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fan, leaf, star and brain corals",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Big corals along a wall",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Westpunt shore dive from the beach: a sandy start, first drop-off at about 8 m, then a coral wall sloping beyond 30 m. Fan, leaf, star and brain corals are the main draw.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-1c0768",
+   "name": "Playa Grandi / Playa Piscado",
+   "sources": {
+    "s1": {
+     "url": "https://divers-republic.com/en/diving-locations-curacao/",
+     "publisher": "Divers Republic",
+     "kind": "operator",
+     "quote": "Playa Piscado, also known as Playa Grandi … famous for its friendly sea turtles swimming close to the shore"
+    },
+    "s2": {
+     "url": "https://www.gowestdiving.com/diving-curacao/dive-sites/",
+     "publisher": "Go West Diving",
+     "kind": "operator",
+     "quote": "Playa Piskado - Neptunes Reef … this easily accessible dive site offers a nice steep wall and a big opportunity to see turtles"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea turtles near the fishermen's pier",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Fishermen's beach on the west coast where turtles gather near shore. Easily accessible shore dive with a steep wall and good chances of turtles.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-xwscgp",
+   "name": "Playa Jeremi",
+   "sources": {
+    "s1": {
+     "url": "https://divers-republic.com/en/diving-locations-curacao/",
+     "publisher": "Divers Republic",
+     "kind": "operator",
+     "quote": "Playa Jeremi is a lesser-known beach with pristine coral reefs and minimal crowds, offering a serene diving experience"
+    }
+   },
+   "access": {
+    "value": "Lesser-known, uncrowded beach",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pristine coral reefs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-uvjxgi",
+   "name": "Playa Forti",
+   "sources": {
+    "s1": {
+     "url": "https://scubacao.com/places/alice-in-wonderland/",
+     "publisher": "Scubacao",
+     "kind": "operator",
+     "quote": "Shore Guided Dive to West Curaçao (2 tanks) … We will take you diving to the West side of Curaçao: Playa Piskado, Alice in Wonderland, Playa Forti, Lagun or Jeremy"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "areas where you can find quite a lot of car tires (Playa Forti) or fishing materials such as nets, fishing lines"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Car tires and fishing line debris on the seabed",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-26x896",
+   "name": "Watamula",
+   "sources": {
+    "s1": {
+     "url": "https://www.gowestdiving.com/diving-curacao/dive-sites/",
+     "publisher": "Go West Diving",
+     "kind": "operator",
+     "quote": "Watamula … Its pristine hard coral formations make this one of the top dive sites of the island … Occasionally strong currents make for a great drift dive"
+    },
+    "s2": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Watamula is one of the best dive boat locations in Curaçao, but also one that you should only visit with the help of a guide … There are three different currents here … Level: Experienced divers with a guide"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pristine hard coral field with barrel sponges",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Cleaning stations",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Several currents; dive with a guide",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Boat drift dive at the northwest tip of the island with pristine hard coral and big barrel sponges. Several meeting currents make it a site for experienced divers, ideally with a guide.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-xq4p9e",
+   "name": "Mushroom Forest & Blue Room",
+   "sources": {
+    "s1": {
+     "url": "https://www.gowestdiving.com/diving-curacao/dive-sites/",
+     "publisher": "Go West Diving",
+     "kind": "operator",
+     "quote": "Mushroom Forest … Most life is found around the 40ft/12m to 50ft/14m mark where gigantic mountainous star coral formations are still evident and attract giant moray eels, porcupine fish, barracuda and lobster"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Mushroom Forest One of the most famous dive sites in Curacao. Over time hard coral formations have grown in such a way that they resemble mushrooms"
+    },
+    "s3": {
+     "url": "https://flipflopwanderers.com/best-dive-spots-curacao/",
+     "publisher": "Flip Flop Wanderers",
+     "kind": "press",
+     "quote": "Mushroom Forest … The location is only reachable by boat … Often this boat dive is combined with a visit to the blue room … You can snorkel into this cave"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "cave"
+    ],
+    "refs": [
+     "s3",
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mushroom-shaped hard coral formations",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Giant moray eels, porcupinefish, barracuda and lobster",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Famous west-coast boat dive over mushroom-shaped hard corals, with most life at 12-14 m among large star corals. Often combined with the nearby Blue Room cave.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Most life at 12-14 m (40-50 ft) in Mushroom Forest"
+  },
+  {
+   "id": "odm-hx8xos",
+   "name": "Airplane Wreck (Santa Martha)",
+   "sources": {
+    "s1": {
+     "url": "https://scubacao.com/places/santa-martha-bay/",
+     "publisher": "Scubacao",
+     "kind": "operator",
+     "quote": "Santa Martha Bay (Sunset Waters) … It is easy to enter the water from the beach, passing between the two breakwaters … at depth of 7 meters are the remains of a light aircraft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 7
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Remains of a light aircraft at about 7 m"
+  },
+  {
+   "id": "odm-pzxov9",
+   "name": "Klein Curaçao",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitingthedutchcountryside.com/dutch-caribbean/curacao-diving/",
+     "publisher": "Visiting The Dutch Countryside",
+     "kind": "press",
+     "quote": "Klein Curaçao … The coral reef at Klein Curaçao is stunning and in fantastic shape … Some areas can have a pretty strong current, so it’s recommended to dive only when the weather is calm … Level: Experienced divers"
+    },
+    "s2": {
+     "url": "https://www.bluewaterdivetravel.com/resort/scuba-lodge-ocean-suites-curacao",
+     "publisher": "Bluewater Dive Travel (Scuba Lodge & Ocean Suites)",
+     "kind": "operator",
+     "quote": "Klein Curacao A very special trip for divers only … They say that in Klein Curacao underwater everything is bigger and there is more of it"
+    },
+    "s3": {
+     "url": "https://flipflopwanderers.com/best-dive-spots-curacao/",
+     "publisher": "Flip Flop Wanderers",
+     "kind": "press",
+     "quote": "Klein Curaçao … It’s also beautiful for diving and there is a big chance of spotting turtles here"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Stunning, healthy coral reef",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Good chance of turtles",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong current in places; dive in calm weather",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Uninhabited island about 10 km off the south coast, reached by boat day trip. The reef is in excellent condition with turtles, but some areas have strong current, so it suits experienced divers in calm weather.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  }
+ ]
+}

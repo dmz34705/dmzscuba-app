@@ -54,15 +54,50 @@ function found(text, quote) {
   });
 }
 
+// Is the quote about this site? True when the site's name (a distinctive word of it) is in the page's own URL, or
+// appears on the page shortly before or after the quoted words. Guards area guides and wreck lists, where one
+// site's numbers sit next to another's.
+const GENERIC = new Set(['the', 'and', 'of', 'de', 'la', 'le', 'el', 'del', 'di', 'wreck', 'reef', 'point', 'dive', 'site', 'island', 'bay',
+  'beach', 'house', 'wall', 'rock', 'rocks', 'garden', 'north', 'south', 'east', 'west', 'big', 'little', 'small', 'old', 'new',
+  'pulau', 'ss', 'hms', 'uss', 'mv', 'sms', 'usat', 'hmas', 'no', 'cave', 'lake', 'see', 'shoal', 'bank', 'slope', 'corner', 'pinnacle']);
+const keyWords = name => norm(String(name).replace(/\([^)]*\)/g, ' ')).replace(/[^a-z0-9\s]/g, ' ').split(/\s+/)
+  .filter(w => (w.length >= 3 || /\d/.test(w)) && !GENERIC.has(w));
+function locate(text, quote) {
+  const spots = [];
+  for (const snippet of String(quote).split(/\s*(?:…|\.\.\.)\s*/)) {
+    const q = norm(snippet); if (!q) continue;
+    const i = text.indexOf(q); if (i >= 0) { spots.push(i); continue; }
+    const n = (q.match(/\d+(?:\.\d+)?/) || [])[0];
+    if (n) for (const m of text.matchAll(new RegExp(`(?:^|[^0-9.])(${n.replace('.', '\\.')})(?![0-9])`, 'g'))) spots.push(m.index);
+    else { const w = q.split(' ').find(x => x.length > 4); if (w) { const j = text.indexOf(w); if (j >= 0) spots.push(j); } }
+  }
+  return spots;
+}
+function namedNear(text, url, name, quote) {
+  const keys = keyWords(name);
+  if (!keys.length) return true;
+  const slug = norm(decodeURIComponent(url).replace(/[\/_\-.?=&]/g, ' '));
+  if (keys.some(k => slug.split(' ').includes(k))) return true;
+  // Spacing and punctuation vary ("CJ's Dropoff" / "CJ's Drop Off"): also compare with them squeezed out.
+  const squeeze = t => t.replace(/[^a-z0-9]/g, '');
+  const whole = squeeze(norm(String(name).replace(/\([^)]*\)/g, ' ')));
+  const hit = (from, to) => { const part = ` ${text.slice(Math.max(0, from), to)} `;
+    return keys.some(k => part.includes(` ${k} `) || part.includes(` ${k}'`)) || (whole.length >= 6 && squeeze(part).includes(whole)); };
+  return locate(text, quote).some(i => hit(i - 1500, i + 400));
+}
+
 (async () => {
   const verified = fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : {};
-  const sources = new Map();
+  const sources = new Map(), quoteSites = new Map();
   for (const dir of dirs) for (const f of fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'verified.json' && f !== 'queue.json') : []) {
     if (only.size && !only.has(f.replace(/\.json$/, ''))) continue;
     const batch = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
     for (const site of batch.sites || []) {
       for (const c of site.claims || []) if (c.url && c.quote) (sources.get(c.url) || sources.set(c.url, new Set()).get(c.url)).add(c.quote);
-      for (const s of Object.values(site.sources || {})) if (s?.url && s.quote) (sources.get(s.url) || sources.set(s.url, new Set()).get(s.url)).add(s.quote);
+      for (const s of Object.values(site.sources || {})) if (s?.url && s.quote) {
+        (sources.get(s.url) || sources.set(s.url, new Set()).get(s.url)).add(s.quote);
+        (quoteSites.get(s.url) || quoteSites.set(s.url, []).get(s.url)).push([s.quote, site.name || '']);
+      }
     }
   }
   const counts = { ok: 0, missing: 0, unreachable: 0 };
@@ -72,7 +107,9 @@ function found(text, quote) {
     // Per quote: a page listing many sites can confirm one claim and not another.
     const missing = text && text.length >= 200 ? [...quotes].filter(q => !found(text, q)) : [];
     const status = !text || text.length < 200 ? 'unreachable' : missing.length ? 'missing' : 'ok';
-    verified[url] = { status, checkedAt: new Date().toISOString().slice(0, 10), ...(missing.length ? { missing } : {}) };
+    // Quotes found on the page but not near the site's name (the build drops them when the page serves several sites).
+    const unnamed = status === 'unreachable' ? [] : [...new Set((quoteSites.get(url) || []).filter(([q, name]) => !missing.includes(q) && !namedNear(text, url, name, q)).map(([q]) => q))];
+    verified[url] = { status, checkedAt: new Date().toISOString().slice(0, 10), ...(missing.length ? { missing } : {}), ...(unnamed.length ? { unnamed } : {}) };
     counts[status]++;
     if (status === 'missing') console.log(`  quote not found: ${url}`);
   }

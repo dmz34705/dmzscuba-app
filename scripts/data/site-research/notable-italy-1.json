@@ -1,0 +1,17 @@
+{"batch":"notable-italy-1","researchedAt":"2026-10-08","sites":[
+{"id":"x-wikipedia-414","name":"Nereo Cave",
+"sources":{"s1":{"url":"https://www.sardegnaturismo.it/it/esplora/grotta-di-nereo","publisher":"Sardegna Turismo (Regione Sardegna)","kind":"agency","quote":"tra i 15 e i 30 metri di profondità … La grotta di Nereo ha tre ingressi principali, uno a punta dell’Asino, dal quale si accede nell’avangrotta … con una galleria principale di 300 metri"}},
+"depth":[{"ref":"s1","unit":"m","top":15,"bottom":30}],
+"types":{"value":["cave"],"refs":["s1"]},
+"highlights":[{"text":"Main gallery about 300 m long","refs":["s1"]}]},
+{"id":"osm-n1930214216","name":"Christ of the Abyss",
+"sources":{"s1":{"url":"https://fondoambiente.it/luoghi/cristo-degli-abissi","publisher":"FAI - Fondo per l'Ambiente Italiano","kind":"agency","quote":"sul fondale della baia di San Fruttuoso, tra Camogli e Portofino, a 15 metri di profondità."}},
+"depth":[{"ref":"s1","unit":"m","bottom":15}]},
+{"id":"x-notable-998","name":"MT Haven",
+"sources":{"s1":{"url":"https://fuorigenova.cittametropolitana.genova.it/node/4764","publisher":"Città Metropolitana di Genova","kind":"agency","quote":"su un fondale fangoso a 80 metri di profondità … E’ consigliato comunque affidarsi all’esperienza dei centri diving"}},
+"depth":[{"ref":"s1","unit":"m","bottom":80}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"entry":{"value":"boat","refs":["s1"]},
+"level":{"value":"technical","refs":["s1"]},
+"depthNote":"Seabed at 80 m; upper parts shallower"}
+]}

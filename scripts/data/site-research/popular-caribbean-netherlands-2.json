@@ -1,0 +1,622 @@
+{
+ "batch": "popular-caribbean-netherlands-2",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-dovvwl",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-in944c",
+   "reason": "only page found describes a different mainland pier site"
+  },
+  {
+   "id": "odm-lx6ki4",
+   "reason": "only page found places it on the south coast, pin is north coast"
+  },
+  {
+   "id": "odm-vajt56",
+   "reason": "only page found places it on the south coast, pin is on Klein Bonaire"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-ngwi2f",
+   "name": "Small Wall (25)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/small-wall/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore … Depth 5-35 meters … Current Limited"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-bwt28z",
+   "name": "Margate Bay (55)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/margate-bay-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore dive via yellow stone markers … Depth 0-37 meters, suitable for all levels … Current Limited to moderate, calm conditions … Visibility 10-30 meters (average 25 meters) … Marine life Black margates (namesake), eagle rays, reef sharks"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Black margates (namesake)",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Eagle rays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-9275ov",
+   "name": "Jeff Davis Memorial (18)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/jeff-davis-memorial/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore diving, rocky entrance … Maximum depth 40 meters … Special feature Active cleaning stations between 8-28 meters"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Active cleaning stations between 8-28 meters",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-wszcz6",
+   "name": "Vista Blue (58)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/vista-blue/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore … Depth 3-30 meters … Current Limited, variable"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-n6yiw8",
+   "name": "Mi Dushi (T)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/mi-dushi/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Location Klein Bonaire, 20 minutes by boat … Special feature Seahorses spotted at this location"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Seahorses spotted at this location",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-x2zqxf",
+   "name": "Aquarius (46)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/aquarius-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "The first reef lies at just 8 meters depth, while the second reef extends to a maximum of 43 meters. The combination of easy shore access, gradual depth progression and rich biodiversity"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Double reef system",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jaksrn",
+   "name": "La Machaca (27)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/la-machaca/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Depth 14-45 meters … Special Tarpons, 3-meter moray eel, seahorse"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Tarpons",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "3-meter moray eel",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Seahorse",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-4p2m3i",
+   "name": "Rock Pile (I)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/rock-pile/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Location Klein Bonaire (boat access only) … Maximum depth 30 meters … Visibility 20-40 meters (average 30 meters)"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-9lrpt2",
+   "name": "Joanne’s Sunchi (J)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/joannes-sunchi/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Location Klein Bonaire (boat access only) … Depth 5-40 meters … Visibility 20-40 meters (average 30 meters) … Special features Terraced reef wall, suitable for night diving"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Terraced reef wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Suitable for night diving",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cfft5n",
+   "name": "Knife (Y)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/knife/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat + 15 minutes sailing from Kralendijk … Depth 3-40 meters (dual reef system)"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-br373g",
+   "name": "Front Porche (31)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/front-porch/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Type Shore dive and boat dive … Depth 3-40 meters … Special feature Tugboat wreck New York at 28 meters"
+    }
+   },
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Tugboat wreck New York at 28 meters",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-crm3pt",
+   "name": "Salt City (50)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/salt-city/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore … Depth 3-40 meters … Current Limited to moderate"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-mrh0xr",
+   "name": "Carl’s Hill (V)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/carls-hill/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat access only (10 minutes sailing) … Depth 9-40+ meters … Difficulty Experienced divers (strong currents possible) … Specialty Coral wall, seahorses, underwater photography"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Seahorses",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Underwater photography",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tryuql",
+   "name": "Leonora’s Reef (X)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/leonoras-reef/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Boat ride 15 minutes from main island Bonaire … Depth 8-40 meters, ideal for all levels … Visibility Average 30 meters, range 20-40 meters … Special Double reef system with tunnels through coral formations"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Double reef system with tunnels through coral formations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-datc3g",
+   "name": "Kalli’s Reef (19)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/kallis-reef/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore diving with rocky entry … Depth 9-18 meters"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 9,
+     "bottom": 18
+    }
+   ]
+  },
+  {
+   "id": "odm-ru9kx4",
+   "name": "White Slave",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/white-slave/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore … Depth 3-30 meters … Current Moderate to strong"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Moderate to strong current",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5odxuc",
+   "name": "Sharon’s Serenity (R)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/sharons-serenity/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat only (15 minutes sailing) … Depth 6-35 meters … Current Limited … Visibility 20-40 meters (average 30m)"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-r5rwdd",
+   "name": "Sampler (Z)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/sampler/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat only (15-20 minutes boat ride) … Depth 2-40 meters"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-24auur",
+   "name": "Harbor Village Bonaire",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/harbour-village-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore … Depth 3-30 meters … Current Weak"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-qdvg8n",
+   "name": "Petrie’s Pillar (24)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/petries-pillar/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Boat time 8-12 minutes from Kralendijk … Depth 8-35 meters … Visibility 20-40 meters (average 30m)"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-ogngss",
+   "name": "Red Beryl",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/red-beryl/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore diving from sandy beach … Maximum depth 50 meters"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

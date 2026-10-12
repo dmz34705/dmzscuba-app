@@ -1,0 +1,483 @@
+{
+ "batch": "popular-tanzania-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-hqcrzk",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-tw75sc",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-ve5ash",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-i5f07d",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-l2y4zx",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-05q39y",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-lxbp5b",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-c4yjrq",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-84um8h",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-nuadpk",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-kno3ol",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-rf0xf2",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-dr6cvq",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-h84e9e",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-8vdefc",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-ljdhqe",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-ucnfnf",
+   "name": "Kichwani",
+   "sources": {
+    "zm1": {
+     "url": "https://www.africanmeccasafaris.com/travel-guide/tanzania/towns-city/zanzibar-island/tours-activities/diving/mnemba-atoll",
+     "publisher": "AfricanMecca Safaris",
+     "kind": "operator",
+     "quote": "The Kichwani diving and snorkeling site comprises of a gentle slope that begins at 4 meters and extends up to 35 meters."
+    },
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Mnemba – Kichwani (6-40m): A wall of corals home to a vast array of marine life. Schooling fish feed in the shallow waters while larger predatory fish can be seen out in the blue."
+    },
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Dropping from 2 to 30 metres, Kichwani is an almost vertical wall that is a great drift, wall, and reef dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "zm1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 35
+    },
+    {
+     "ref": "zw",
+     "unit": "m",
+     "top": 6,
+     "bottom": 40
+    },
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 2,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "tgi"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schooling reef fish in the shallows, predators in the blue",
+     "refs": [
+      "zw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steep coral bank on the Mnemba side, dived as a drift along the wall. Reef fish shoal in the shallow upper slope while bigger predators patrol the open water beyond the drop.",
+    "refs": [
+     "zw",
+     "tgi"
+    ]
+   }
+  },
+  {
+   "id": "odm-eu8wd8",
+   "name": "Wattabomi",
+   "sources": {
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Mnemba – Wattabommi (6-30m): Sandy slope with fringing plate coral, white tips, green turtles, large groupers."
+    },
+    "tgi": {
+     "url": "https://www.tgidiving.com/en/indian-ocean/zanzibar-nungwi/dive-sites/",
+     "publisher": "TGI Diving",
+     "kind": "operator",
+     "quote": "Wattabomi is a sensational underwater landscape that slopes gently from 6 to 30 metres."
+    },
+    "zm1": {
+     "url": "https://www.africanmeccasafaris.com/travel-guide/tanzania/towns-city/zanzibar-island/tours-activities/diving/mnemba-atoll",
+     "publisher": "AfricanMecca Safaris",
+     "kind": "operator",
+     "quote": "Wattabomi also called Eel City is also suitable for all levels of divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "zw",
+     "unit": "m",
+     "top": 6,
+     "bottom": 30
+    },
+    {
+     "ref": "tgi",
+     "unit": "m",
+     "top": 6,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "zm1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "White-tip sharks, green turtles, large groupers",
+     "refs": [
+      "zw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Gentle sandy slope studded with plate coral and coral blocks, easy enough for every certification level. Turtles and white-tip reef sharks are regular visitors, with groupers sitting among the formations.",
+    "refs": [
+     "zw",
+     "tgi"
+    ]
+   }
+  },
+  {
+   "id": "odm-eo6dba",
+   "name": "Aquarium",
+   "sources": {
+    "tt1": {
+     "url": "https://www.tanzaniatourism.com/destination/mnemba-island-conservation-area",
+     "publisher": "Tanzania Tourism",
+     "kind": "press",
+     "quote": "Aquarium Site : The Aquarium’s depth is 20 meters. There is usually a slight current at this site. Patches of sandy bottom occur quite close to the reef with Surgeonfishes, Moorish Idols, Parrotfish, Groupers, large Hawksbill and Green Turtles along with White Tip reef sharks."
+    },
+    "zm1": {
+     "url": "https://www.africanmeccasafaris.com/travel-guide/tanzania/towns-city/zanzibar-island/tours-activities/diving/mnemba-atoll",
+     "publisher": "AfricanMecca Safaris",
+     "kind": "operator",
+     "quote": "Considered as one of the most scenic sites in the Mnemba Atoll, the Aquarium has mild to strong currents."
+    }
+   },
+   "depth": [
+    {
+     "ref": "tt1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "current": {
+    "value": "variable",
+    "refs": [
+     "zm1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hawksbill and green turtles, white-tip reef sharks",
+     "refs": [
+      "tt1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A scenic Mnemba reef with sand patches close to the coral, where turtles, groupers and white-tip sharks are commonly seen. Current runs from slight to quite strong depending on the tide, so it is usually dived as a drift.",
+    "refs": [
+     "tt1",
+     "zm1"
+    ]
+   }
+  },
+  {
+   "id": "odm-bptxts",
+   "name": "Leon’s Wall",
+   "sources": {
+    "zw": {
+     "url": "https://zanzibarwatersports.com/dive-sites/",
+     "publisher": "Zanzibar Watersports",
+     "kind": "operator",
+     "quote": "Leons Wall (12-40m): The edge of the inner reef. Leon’s Wall is a vertical drop covered in a plethora of soft corals and encrusting sponges. Lionfish, schools of snappers, and the elusive leaf fish can all be seen along the wall."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "zw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Soft corals and sponges, lionfish, snapper schools, leaf fish",
+     "refs": [
+      "zw"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-1ugfhr",
+   "name": "West Gardens",
+   "sources": {
+    "tt1": {
+     "url": "https://www.tanzaniatourism.com/destination/mnemba-island-conservation-area",
+     "publisher": "Tanzania Tourism",
+     "kind": "press",
+     "quote": "West Gardens Site : Lies at a depth of 12 meters, and is a good spot for snorkels and novice divers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "tt1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "tt1"
+    ]
+   }
+  },
+  {
+   "id": "odm-fil9uf",
+   "name": "Kinasi Pass",
+   "sources": {
+    "ma": {
+     "url": "https://mafiaisland.com/diving/",
+     "publisher": "Mafia Island Diving",
+     "kind": "operator",
+     "quote": "Kinasi Pass After completing a tour of the Pinnacle the diver heads south-west to the side of the channel, the Kinasi Pass dive, rightfully famous as a stunning drift dive. The Pass has two walls, commencing with a deep 20-26 m shelving reef, then a shallower one at 6-15 m."
+    },
+    "tm": {
+     "url": "https://www.tanzaniatourism.com/safari/scuba-diving-in-mafia-island",
+     "publisher": "Tanzania Tourism",
+     "kind": "press",
+     "quote": "Kinasi Pass – The Kinasi Pass dive, rightfully famous as a stunning drift dive. The Pass has two walls, commencing with a deep 20-26 m shelving reef, then a shallower one at 6-15 m."
+    },
+    "dw": {
+     "url": "https://www.diveworldwide.com/locations/mafia-island",
+     "publisher": "Dive Worldwide",
+     "kind": "operator",
+     "quote": "Kinasi Pass is one of the most famous dive sites in Chole Bay, delivering the best diving for experienced divers. The pass is known for its strong currents, which attract schools of barracuda, reef fish, and the occasional turtle."
+    }
+   },
+   "depth": [
+    {
+     "ref": "ma",
+     "unit": "m",
+     "top": 6,
+     "bottom": 26
+    },
+    {
+     "ref": "tm",
+     "unit": "m",
+     "top": 6,
+     "bottom": 26
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "dw"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "dw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barracuda, reef fish shoals, occasional turtles",
+     "refs": [
+      "dw"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A famous drift through a channel with two walls, a deeper shelf and a shallower wall. Strong tidal flow draws barracuda and reef fish past the divers, so it suits experienced divers.",
+    "refs": [
+     "ma",
+     "dw"
+    ]
+   }
+  },
+  {
+   "id": "odm-mt5owc",
+   "name": "Kinasi Wall",
+   "sources": {
+    "ma": {
+     "url": "https://mafiaisland.com/diving/",
+     "publisher": "Mafia Island Diving",
+     "kind": "operator",
+     "quote": "Kinasi Wall : This is a sheltered bank reef, moderately deep and steeply sloping from 8 to 21 metres."
+    },
+    "tm": {
+     "url": "https://www.tanzaniatourism.com/safari/scuba-diving-in-mafia-island",
+     "publisher": "Tanzania Tourism",
+     "kind": "press",
+     "quote": "Kinasi Wall : This is a sheltered bank reef, moderately deep and steeply sloping from 8 to 21 metres. It runs south-east: north-west for approximately 800 m and is an excellent dive on a slack tide or with a slight incoming current."
+    },
+    "dw": {
+     "url": "https://www.diveworldwide.com/locations/mafia-island",
+     "publisher": "Dive Worldwide",
+     "kind": "operator",
+     "quote": "Kinasi Wall is a complex coral reef that supports a stunning variety of marine life."
+    }
+   },
+   "depth": [
+    {
+     "ref": "ma",
+     "unit": "m",
+     "top": 8,
+     "bottom": 21
+    },
+    {
+     "ref": "tm",
+     "unit": "m",
+     "top": 8,
+     "bottom": 21
+    }
+   ],
+   "current": {
+    "value": "light",
+    "refs": [
+     "tm"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Giant clams, large groupers, Napoleon wrasse, hawksbill turtles",
+     "refs": [
+      "ma"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered bank reef about 800 m long that slopes steeply rather than dropping sheer. Best at slack water or a gentle incoming tide, with groupers, giant clams and hawksbill turtles among the corals.",
+    "refs": [
+     "ma",
+     "tm"
+    ]
+   }
+  },
+  {
+   "id": "odm-pc39s3",
+   "name": "Coral Gardens",
+   "sources": {
+    "ma": {
+     "url": "https://mafiaisland.com/diving/",
+     "publisher": "Mafia Island Diving",
+     "kind": "operator",
+     "quote": "Coral Garden: A very large area of beautiful coral outcrops or “bommies”, lying in a wedge behind the Kinasi and Chole walls."
+    },
+    "tm": {
+     "url": "https://www.tanzaniatourism.com/safari/scuba-diving-in-mafia-island",
+     "publisher": "Tanzania Tourism",
+     "kind": "press",
+     "quote": "This is an excellent site for photography with a very high diversity of fish, colourful corals and anemones and the shallow water makes visibility excellent."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Dense coral bommies, high fish diversity, good for photography",
+     "refs": [
+      "ma",
+      "tm"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A broad area of coral outcrops behind the Kinasi and Chole walls, shallow enough for bright light and clear water. It is a favourite for photography and is often used as the easy final stage of a wall dive.",
+    "refs": [
+     "ma",
+     "tm"
+    ]
+   }
+  },
+  {
+   "id": "odm-z02qmy",
+   "name": "Mikadini",
+   "sources": {
+    "dw": {
+     "url": "https://www.diveworldwide.com/locations/mafia-island",
+     "publisher": "Dive Worldwide",
+     "kind": "operator",
+     "quote": "Mikadini is a gently sloping fringing reef that's perfect for divers looking for a relaxed yet fascinating dive."
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "dw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mid-size groupers, blue-spotted trevally",
+     "refs": [
+      "dw"
+     ]
+    }
+   ]
+  }
+ ]
+}

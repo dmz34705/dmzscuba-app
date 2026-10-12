@@ -1,0 +1,769 @@
+{
+ "batch": "popular-mauritius-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-nez5sq",
+   "reason": "page spells it Cathedral; verifier cannot tie name"
+  },
+  {
+   "id": "odm-ouinss",
+   "reason": "only banned/ambiguous directories; no usable page"
+  },
+  {
+   "id": "odm-1lc0p9",
+   "reason": "no non-banned page for this site"
+  },
+  {
+   "id": "odm-odgu7t",
+   "reason": "no non-banned page for this site"
+  },
+  {
+   "id": "odm-8ezw5f",
+   "reason": "no non-banned page for this site"
+  },
+  {
+   "id": "odm-arfwco",
+   "reason": "no non-banned page for this site"
+  },
+  {
+   "id": "odm-ldb238",
+   "reason": "no page found matching this name"
+  },
+  {
+   "id": "odm-eowqru",
+   "reason": "no page found matching this name"
+  },
+  {
+   "id": "odm-xshnp3",
+   "reason": "no page found matching this name"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-irb7xj",
+   "name": "Aquarium",
+   "sources": {
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "L'AQUARIUM MAX DEPTH: 20 MTS / AVERAGE DEPTH 10-15 MTS / DIVING LEVEL REQUIRED : AS FROM BEGINNERS A diving site for all level of divers, Aquarium honors its name due to its large variety of reef fishes. Many different types of moray eels as well as the tremendous opportunity to observe eagle rays very closely."
+    },
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "Aquarium: Between 5 to 20 meters, ideal for beginners due to a multitude of colorful reef fish living there."
+    },
+    "od": {
+     "url": "https://oceandiversmauritius.com/dive-spots/",
+     "publisher": "Ocean Divers Mauritius",
+     "kind": "operator",
+     "quote": "Diving for beginners Start out at the aquarium at a depth of 12-18 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "od",
+     "unit": "m",
+     "bottom": 18,
+     "top": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Many reef fish and moray eels",
+     "refs": [
+      "su"
+     ]
+    },
+    {
+     "text": "Eagle rays seen up close",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A gentle reef off Flic en Flac that operators use as the starting dive for newer divers and mixed-ability groups, packed with reef fish and morays, with eagle rays often passing close by.",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   }
+  },
+  {
+   "id": "odm-tbkm6n",
+   "name": "Big Rock, Mauritius",
+   "sources": {
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "Big Rock: Beautiful drift drive, easily accessible for any qualified diver offering an architecture for a deeper dive (26m max) or a shallower dive (20m Max). If the conditions are good and a smooth current is present, Big Rock is one of the diving spots where you might have the opportunity to see eagle rays drifting."
+    },
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "BIG ROCK MAX DEPTH: 30 MTS / AVERAGE DEPTH 20 MTS / DIVING LEVEL REQUIRED : AS FROM OPEN WATER DIVER Big Rock is an unique place! It can be the best diving in Mauritius…. if there is a slight current running north-south"
+    }
+   },
+   "depth": [
+    {
+     "ref": "sea",
+     "unit": "m",
+     "bottom": 26,
+     "top": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "su"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "su"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eagle rays when a current runs",
+     "refs": [
+      "sea",
+      "su"
+     ]
+    },
+    {
+     "text": "Resident turtle shelters here",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A drift-style dive along a steep wall that open water divers can handle. Its quality depends on a slight current, when eagle rays and other fish gather along the edge; without current it is only an average dive.",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   }
+  },
+  {
+   "id": "odm-407ju8",
+   "name": "Swiss Drop",
+   "sources": {
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "Swiss Drop: is the Drop Off area situated around the Cathedral, having a more accessible passage and a shallower depth of max. 23m. The Swiss drop is also convenient for the less experienced diver."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sea",
+     "unit": "m",
+     "bottom": 23
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "sea"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Drop-off with an accessible passage near Cathedral",
+     "refs": [
+      "sea"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-170szf",
+   "name": "L’Eveillé",
+   "sources": {
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "L'EVEILLÉ MAX DEPTH: 30 MTS / AVERAGE DEPTH 25 MTS / DIVING LEVEL REQUIRED : ADVANCED Situated almost in front of the dive school, l’Eveillé is the most t southern dive site on the drop-off that follows the coast of Flic en Flac. Facing its very pretty small arch and chimney, you will find on the reef, a great variation of fish, nudibranches , morays and if you are lucky sometimes a shark."
+    },
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "L`Eveillé: proposes a very pleasant diving experience alongside a Drop-Off including a small arch at 25m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "su",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "su"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "su",
+     "sea"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small arch and chimney on the drop-off",
+     "refs": [
+      "su",
+      "sea"
+     ]
+    },
+    {
+     "text": "Nudibranchs, morays, occasional shark",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The southern end of the Flic en Flac drop-off, a wall dive with a small arch and chimney at about 25 m. Expect varied reef fish, nudibranchs and morays; operators rate it advanced.",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   }
+  },
+  {
+   "id": "odm-izlgyt",
+   "name": "Canon",
+   "sources": {
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "REMPART CANON MAX DEPTH: 20 MTS / AVERAGE DEPTH 15 MTS / DIVING LEVEL REQUIRED : OPEN WATER DIVER Rempart canon is located north of Flic en Flac, facing the cliff of Médine sugar estate."
+    },
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "Canon: An ideal spot for beginners with a small steep slope and beautiful sandbank, ideal for improvement of buoyancy."
+    }
+   },
+   "depth": [
+    {
+     "ref": "su",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Old cannon from the 1615 Banda wreck",
+     "refs": [
+      "su"
+     ]
+    },
+    {
+     "text": "Macro life on sandbank and slope",
+     "refs": [
+      "sea"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow north Flic en Flac reef with a small slope and sandbank, popular for buoyancy practice and macro photography. A cannon from a 1615 Dutch ship lies on the rempart.",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   }
+  },
+  {
+   "id": "odm-c1ur1a",
+   "name": "Sweet Lips",
+   "sources": {
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "Sweet Lips: Reef with little relief, simple access, proposing a relaxed dive with a max depth of 19m. Sweet Lips also offers a diverse fauna which is ideal for photographers."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sea",
+     "unit": "m",
+     "bottom": 19
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "sea"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Diverse fauna, good for photographers",
+     "refs": [
+      "sea"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-59edyq",
+   "name": "Bambous",
+   "sources": {
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "Colin Bambous: A combination of a fantastic Drop-Off, reef section, and Cave. Due to his depth of about 34m, this diving site is suitable for advanced divers who are specialized in “Deep Dive” or possessed at least a CMAS Level 2 accreditation."
+    },
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "BAMBOO MAX DEPTH: 30-35 MTS / AVERAGE DEPTH 20 MTS / DIVING LEVEL REQUIRED : ADVANCED OPEN WATER DIVER Bamboo is located between l’Eveille and Cathedral, on the same wall following the coastline of Flic en Flac. It is renown for its incredible underwater architecture, including 2 arches, a small one at 35 meters and a huge one at 28 mts."
+    }
+   },
+   "depth": [
+    {
+     "ref": "sea",
+     "unit": "m",
+     "bottom": 34
+    },
+    {
+     "ref": "su",
+     "unit": "m",
+     "bottom": 35
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "sea",
+     "su"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "sea",
+     "su"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two arches at 28 m and 35 m",
+     "refs": [
+      "su"
+     ]
+    },
+    {
+     "text": "Anemones and clownfish on a large rock",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Visibility drops first here in small swell",
+     "refs": [
+      "su"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-l1c8eu",
+   "name": "KeiSei 113, Wreck",
+   "sources": {
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "Kei Sei 113 was sunk the 11 October 1987 on a bottom of 36 meters. It was an old restaurant boat that has sunk already twice in the harbor. … the structured has cracked and has become very fragile, making it risky for wreck penetrations."
+    },
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "KEI SEI 113: Is often combined with Parc situated at 36m depth. Kei Sei is an old Japanese fishing boat that was immersed over 30 years ago as an artificial reef."
+    }
+   },
+   "depth": [
+    {
+     "ref": "su",
+     "unit": "m",
+     "bottom": 36
+    },
+    {
+     "ref": "sea",
+     "unit": "m",
+     "bottom": 36
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "su",
+     "sea"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "su"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Cracked, fragile hull; risky to penetrate",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "penetration": {
+    "value": "Not recommended - hull fragile",
+    "refs": [
+     "su"
+    ]
+   },
+   "summary": {
+    "text": "An old boat sunk in 1987 as an artificial reef off Flic en Flac, lying on a 36 m bottom and usually dived together with the rich reef at Park. Deep-diver level; the concrete-coated hull is fragile.",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   }
+  },
+  {
+   "id": "odm-0f596l",
+   "name": "Tian Xiang (Wreck)",
+   "sources": {
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "TIAN XIANG MAX DEPTH: 46 MTS / AVERAGE DEPTH 35-40 MTS / DIVING LEVEL REQUIRED : SPEC ``DEEP DIVER`` OR CMAS **DIVER MINIMUM. The Tian Xiang 137 was a 44 m Chinese longliner operated by IBL Fishing. It was bequeathed in 2014 to the Mauritius Marine Conservation Society for creating an artificial reef."
+    }
+   },
+   "depth": [
+    {
+     "ref": "su",
+     "unit": "m",
+     "bottom": 46
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "su"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "su"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "44 m longliner sunk 2014 as artificial reef",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "depthNote": "Community depth 36 m is too shallow; operators give 45-46 m"
+  },
+  {
+   "id": "odm-fh70c9",
+   "name": "Tug 2, Wreck",
+   "sources": {
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "TUG 2 MAX DEPTH: 20 MTS / AVERAGE DEPTH 20 MTS / DIVING LEVEL REQUIRED : OPEN WATER DIVER Tug 2 is a small small laying on a sandy bottom, at 20 meters. Close to Snake Reef, the wreck shelters loads of Lion fish and is ideal for newly qualified Open water divers"
+    },
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "TUG II: 18m depth; ideal for beginners and photographers, a small shipwreck without any interior access that has been barely affected by the sea condition."
+    }
+   },
+   "depth": [
+    {
+     "ref": "su",
+     "unit": "m",
+     "bottom": 20
+    },
+    {
+     "ref": "sea",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "su",
+     "sea"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   },
+   "penetration": {
+    "value": "None - no interior access",
+    "refs": [
+     "sea"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lionfish and leaf fish on the wreck",
+     "refs": [
+      "su"
+     ]
+    },
+    {
+     "text": "Garden eels on surrounding sand",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small tug on a sandy bottom close to Snake Reef, about 18-20 m down. It has no interior access, shelters lionfish and leaf fish, and is a popular first wreck for newly qualified divers.",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   }
+  },
+  {
+   "id": "odm-sc9zmm",
+   "name": "Snake Reef, Mauritius",
+   "sources": {
+    "su": {
+     "url": "https://www.sundiversmauritius.com/home/gallery/",
+     "publisher": "Sundivers Mauritius",
+     "kind": "operator",
+     "quote": "Snake reef Max depth: 26 mts / Average depth 25 mts / Diving level required : Advanced Snake reef is the northern dive site of Flic en Flac, facing the coastal cliffs of Médine Sugar estate. It is mainly composed of boulders not higher than 2 meters, laying on a sandy bottom. … Best dived on Nitrox and without current."
+    },
+    "sea": {
+     "url": "https://www.diveseaurchin.com/pf/mauritius-and-its-dive-sites/",
+     "publisher": "SeaUrchin Diving Center",
+     "kind": "operator",
+     "quote": "Snake Reef: Fish and photographers paradise. Situated at 25 m, a reef section gathering a huge variety of fish concentration."
+    },
+    "mn": {
+     "url": "https://mauritiusnow.com/blog/things-to-do/scuba-diving-in-mauritius/",
+     "publisher": "Mauritius Now",
+     "kind": "press",
+     "quote": "A flat reef located in the middle of a snake-shaped sandbank with a maximum depth of 25 metres, Snake Reef"
+    }
+   },
+   "depth": [
+    {
+     "ref": "su",
+     "unit": "m",
+     "bottom": 26
+    },
+    {
+     "ref": "sea",
+     "unit": "m",
+     "bottom": 25
+    },
+    {
+     "ref": "mn",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "su"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "su"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "su"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Scorpionfish, morays, lionfish and stonefish",
+     "refs": [
+      "sea"
+     ]
+    },
+    {
+     "text": "Prime macro photography site",
+     "refs": [
+      "su"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A boulder reef on sand at the north end of Flic en Flac, around 25 m. Famed for scorpionfish, morays and other critters, so it is a photographers' favourite; operators prefer Nitrox and little current.",
+    "refs": [
+     "su",
+     "sea"
+    ]
+   }
+  },
+  {
+   "id": "odm-od7t8z",
+   "name": "KT Mawar",
+   "sources": {
+    "mb": {
+     "url": "https://mybasedivingmauritius.com/explore-the-underworld/",
+     "publisher": "My Base Diving Mauritius",
+     "kind": "operator",
+     "quote": "11. KT Mawar Wreck – Trou aux Biches The KT Mawar wreck, which was intentionally sunk in 2018, is a hidden gem for both divers and freedivers. Lying on its side on the sandy bottom, some parts of this wreck remain relatively unexplored. It features a massive propeller and is home to giant frogfish, vibrant soft pink corals … With depths ranging from 12 to 24 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "mb",
+     "unit": "m",
+     "bottom": 24,
+     "top": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "mb"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "mb"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Massive propeller; giant frogfish",
+     "refs": [
+      "mb"
+     ]
+    },
+    {
+     "text": "Soft pink corals on the wreck",
+     "refs": [
+      "mb"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-bzqvk5",
+   "name": "Seafan Valley",
+   "sources": {
+    "mb": {
+     "url": "https://mybasedivingmauritius.com/explore-the-underworld/",
+     "publisher": "My Base Diving Mauritius",
+     "kind": "operator",
+     "quote": "18. Seafan Valley - Belle Mare If drifting above a valley of giant gorgonians intrigues you, Sea Fan Valley is a must-visit dive site. Starting at 20 meters (52 feet), you’ll explore this vibrant underwater landscape to depths of up to 28 meters (100 feet). Expect to see a variety of tropical fish, kingfish, rays"
+    }
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "mb"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Valley of giant gorgonians",
+     "refs": [
+      "mb"
+     ]
+    },
+    {
+     "text": "Kingfish, rays, tropical fish",
+     "refs": [
+      "mb"
+     ]
+    }
+   ]
+  }
+ ]
+}

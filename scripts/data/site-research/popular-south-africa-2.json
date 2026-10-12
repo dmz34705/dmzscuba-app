@@ -1,0 +1,917 @@
+{
+ "batch": "popular-south-africa-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-0408ts",
+   "reason": "Caster Rock: page spells it Castor Rock; name not verifiable"
+  },
+  {
+   "id": "odm-jynm8t",
+   "reason": "Gordon’s Drop: no usable page found"
+  },
+  {
+   "id": "odm-kwt3v7",
+   "reason": "Millers Point: only a shoreline description, no depth; pin sits at Pyramid Rock"
+  },
+  {
+   "id": "odm-w7jipe",
+   "reason": "Two Oceans I & J Ocean Exhibit: aquarium exhibit, no page found"
+  },
+  {
+   "id": "odm-1ymwp0",
+   "reason": "Ark Rock: no depth matching the site"
+  },
+  {
+   "id": "odm-z9eyi1",
+   "reason": "Langebaan Training Area: no usable page reachable"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-3xaadg",
+   "name": "Long Beach Simons Town",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Long Beach … Wreck dive. Underwater navigation route. Shore access. Maximum depth about 9 m. … Long beach has easy shore access and is very sheltered, and is popular for training and night dives"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvE",
+     "bottom": 9
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small wrecks on a compass navigation route",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-071n8b",
+   "name": "Windmill Beach",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Windmill Beach … Reef dive. Shore access. Maximum depth about 8 m. Shore dive with very sheltered beach entry and exit areas. Sand bottom with large granite outcrops and boulders … Popular training site"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvE",
+     "bottom": 8
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "wvE"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large granite outcrops and boulders",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-yapw3y",
+   "name": "A-frame Cape Town",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "A-Frame (Oatlands Point) … Reef dive. Shore access. Maximum depth about 10 m … a huge granite outcrop which extends several metres above the water … big boulders, some breaking the surface, and a couple of swimthroughs"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "wvE"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Granite outcrops with a couple of swim-throughs",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Within a marine sanctuary boundary",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-44d4xv",
+   "name": "Castle Rock Cape Town",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Castle Rocks and Parson’s Nose : Reef dives. Shore access, boat access possible. Maximum depth about 18 m"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvE",
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "wvE"
+    ]
+   }
+  },
+  {
+   "id": "odm-fjxuoq",
+   "name": "Shark Alley",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Pyramid Rock reef and Shark Alley Reef dive. Shore or boat access. Maximum depth about 12 m … Shark Alley … Named for the Cowsharks often seen at the site. Big granite boulders and outcrops with sand patches"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvE",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "wvE"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cowsharks often seen",
+     "refs": [
+      "wvE"
+     ]
+    },
+    {
+     "text": "Big granite boulders with sand patches",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-6zoqbj",
+   "name": "Pyramid Rock",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Pyramid Rock reef and Shark Alley Reef dive. Shore or boat access. Maximum depth about 12 m. Named for the pointed rock that marks the site … Several small tunnels, caves and overhangs. Lots of fish."
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvE",
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "wvE"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "pinnacle"
+    ],
+    "refs": [
+     "wvE"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small tunnels, caves and overhangs",
+     "refs": [
+      "wvE"
+     ]
+    },
+    {
+     "text": "Plenty of fish among granite boulders",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-gls0jd",
+   "name": "Roman Rock",
+   "sources": {
+    "wvE": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_east_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Roman Rock … marked by the lighthouse of the same name off Simon’s Town Harbour. A large granite reef with a depth range from 20 m at the east end to the surface around the lighthouse rocks"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvE",
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "wvE"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large granite reef around a lighthouse",
+     "refs": [
+      "wvE"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-y48zm9",
+   "name": "Sandy Cove",
+   "sources": {
+    "wvW": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_west_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Sandy Cove … Reef dive. Confined waters. Shore access. Maximum depth 4 m A shallow sheltered cove at Oudekraal, suitable for open water training exercises"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvW",
+     "bottom": 4
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "wvW"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "wvW"
+    ]
+   },
+   "access": {
+    "value": "Within Table Mountain National Park marine protected area; permit required",
+    "refs": [
+     "wvW"
+    ]
+   }
+  },
+  {
+   "id": "odm-roej1n",
+   "name": "SS Maori, wreck",
+   "sources": {
+    "wvM": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_the_Cape_Peninsula_and_False_Bay/SS_Maori",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth at the wreckage is 21 m on the reef near the bow. Average depth during a dive is about 13 m, and the top of the engine is about 6 m deep … The site can only be accessed by boat … Cold water. Strong surge. Ragged wreckage. Entrapment in small spaces."
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvM",
+     "top": 6,
+     "bottom": 21
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "wvM"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "wvM"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong surge and ragged wreckage",
+     "refs": [
+      "wvM"
+     ]
+    },
+    {
+     "text": "Cold water",
+     "refs": [
+      "wvM"
+     ]
+    }
+   ],
+   "depthNote": "Top of engine about 6 m; deepest wreckage 21 m near the bow"
+  },
+  {
+   "id": "odm-1d0xn5",
+   "name": "Stonehenge",
+   "sources": {
+    "wvW": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_west_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Stonehenge : S34°02.838’ E018°18.316’ Reef dive. Boat access only. Maximum depth about 22 m. The area is named for a group of tall rocks which break the surface"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvW",
+     "bottom": 22
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "wvW"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "wvW"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-throughs, holes and overhangs in deeper areas",
+     "refs": [
+      "wvW"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-7cq365",
+   "name": "MV Antipolis, wreck",
+   "sources": {
+    "wvW": {
+     "url": "https://en.wikivoyage.org/wiki/Dive_sites_of_the_Cape_Peninsula_west_coast",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Antipolis : S33°59.06’ E018°21.37’ (Bow section) Wreck and reef dive. Shore or boat access. Maximum depth about 10 m"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvW",
+     "bottom": 10
+    }
+   ],
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "wvW"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "wvW"
+    ]
+   }
+  },
+  {
+   "id": "odm-2m4geb",
+   "name": "Miracle Waters",
+   "sources": {
+    "mw": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_inland_in_South_Africa/Miracle_Waters",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is 33m. … Visibility is moderate, from 10 metres down to 5 or less … Shore access dive. … 98 seater bus at 14 metres and a 2nd bus at 30 meters. Cessna Aeroplane at 23 metres and a Falcon Jet at 14meters. Puma Helicopter at 30 meters."
+    },
+    "mwo": {
+     "url": "https://miraclewatersdiving.co.za/index.php/about",
+     "publisher": "Miracle Waters Diving",
+     "kind": "operator",
+     "quote": "The depth of our lake is 33m and the viz, which can reach 10m, is good … perfect place for instruction to beginners as well as for recreational dives at all levels … Entry is via paved paths for an easy plunge"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "mw",
+     "bottom": 33
+    },
+    {
+     "unit": "m",
+     "ref": "mwo",
+     "bottom": 33
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "mw",
+     "mwo"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "mwo"
+    ]
+   },
+   "vis": {
+    "low": 5,
+    "high": 10,
+    "unit": "m",
+    "refs": [
+     "mw",
+     "mwo"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken buses, aeroplane and helicopter",
+     "refs": [
+      "mw"
+     ]
+    },
+    {
+     "text": "Training platforms at several depths",
+     "refs": [
+      "mwo"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Freshwater quarry lake near Brits used for training and recreational dives, about 33 m deep. Sunken buses, an aircraft and a helicopter sit at 14-30 m, with visibility of roughly 5-10 m.",
+    "refs": [
+     "mw",
+     "mwo"
+    ]
+   }
+  },
+  {
+   "id": "odm-qzpqfh",
+   "name": "Henley on Klip - Bass Lake",
+   "sources": {
+    "bl": {
+     "url": "https://basslake.co.za/",
+     "publisher": "Bass Lake Adventures",
+     "kind": "operator",
+     "quote": "Considered by the top certifying agencies (PADI, NAUI, SSI, CMAS, IANTD, RAID) to be the best Scuba Training venue in South Africa. Depths vary from a walk-in slope to 23m at the deepest point."
+    },
+    "bw": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_inland_in_South_Africa/Bass_Lake",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Maximum depth is 22m. … Visibility is poor, from 6 metres down to 2 or less … Shore access dive. … VW Golf at 12 metres Bathtub at 9 metres Bus at 12 metres … the site is suitable for entry level diver training."
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "bl",
+     "bottom": 23
+    },
+    {
+     "unit": "m",
+     "ref": "bw",
+     "bottom": 22
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "bw"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "bl",
+     "bw"
+    ]
+   },
+   "vis": {
+    "low": 2,
+    "high": 6,
+    "unit": "m",
+    "refs": [
+     "bw"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken car, bus and helicopter",
+     "refs": [
+      "bw"
+     ]
+    },
+    {
+     "text": "Spring-fed training lake",
+     "refs": [
+      "bl"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Spring-fed flooded mine lake south of Johannesburg, shelving from a walk-in slope to about 22-23 m. It is a mainstay training venue with sunken vehicles to visit, though visibility is often only a few metres.",
+    "refs": [
+     "bl",
+     "bw"
+    ]
+   }
+  },
+  {
+   "id": "odm-vcvvke",
+   "name": "Manta Point Aliwal",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "Manta Point Max. Depth: 10m-24m The first over 20m dive, Manta Point has a maximum depth of 24m and is riddled with rocks and cave formations that raggies just love to hang out in! There is a really awesome swim-through and a number of gullies to explore"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "sc"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-through, gullies and rock caves",
+     "refs": [
+      "sc"
+     ]
+    },
+    {
+     "text": "Leather coral; occasional manta rays",
+     "refs": [
+      "sc"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cws0o1",
+   "name": "Inside Edge - Aliwal Shoal",
+   "sources": {
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "Inside Edge Depth: 15-23 meters Look for: Sharks, raggies, scorpionfish, and false stonefish Inside Edge is a wall stretching three to six meters high, with ledges, caves, and overhangs"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "bs",
+     "bottom": 23
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "bs"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wall with ledges, caves and overhangs",
+     "refs": [
+      "bs"
+     ]
+    },
+    {
+     "text": "Ragged-tooth sharks, scorpionfish, false stonefish",
+     "refs": [
+      "bs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fhcq1i",
+   "name": "MV Produce, wreck",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "MV Produce (1974) … Resting on her starboard side at a depth of 32m … her bow and stern remain largely intact, and it is possible to swim between the bow and the stern"
+    },
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "The Produce Wreck Depth: 24-32 meters"
+    },
+    "ag": {
+     "url": "https://agulhashouse.com/umkomaas-aliwal-shoal-dive-sites/",
+     "publisher": "Agulhas House and Diving",
+     "kind": "operator",
+     "quote": "The Produce Maximum depth 32m. It was a Norwegian bulk carrier that sank on 11 August 1974 … The wreck has started to break up in the last few years and penetration dives are not advised."
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 32
+    },
+    {
+     "unit": "m",
+     "ref": "bs",
+     "top": 24,
+     "bottom": 32
+    },
+    {
+     "unit": "m",
+     "ref": "ag",
+     "bottom": 32
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "sc",
+     "ag"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Brindle bass and harlequin goldies",
+     "refs": [
+      "ag",
+      "bs"
+     ]
+    },
+    {
+     "text": "Bow and stern largely intact",
+     "refs": [
+      "sc"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Wreck breaking up; penetration not advised",
+     "refs": [
+      "ag"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Norwegian molasses carrier that hit the Northern Pinnacles in 1974 and lies on her starboard side at about 32 m. The bow and stern are still recognisable, resident brindle bass and goldies shelter on her, but the midship has collapsed and penetration is discouraged.",
+    "refs": [
+     "sc",
+     "bs",
+     "ag"
+    ]
+   }
+  },
+  {
+   "id": "odm-807lyv",
+   "name": "Outside Edge, Aliwal Shoal",
+   "sources": {
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "Outside Edge Depth: 16-26 meters Look for: Pelagic gamefish, rays, sharks The Outside Edge runs from the north to the southern part of the shoal with the wall on the seaside of the shoal."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "bs"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pelagic gamefish, rays and sharks",
+     "refs": [
+      "bs"
+     ]
+    },
+    {
+     "text": "Hard and soft coral wall with turtles",
+     "refs": [
+      "bs"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fihm2r",
+   "name": "Nebo Wreck, Aliwal Shoal",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "SS Nebo (1884) … Lying upside down in the sand, the SS Nebo can be found at a depth of 27m, and, while the hull of the ship has decayed … her stern is still clearly identifiable, and her propeller and boiler make for some incredible photo-opportunities"
+    },
+    "ag": {
+     "url": "https://agulhashouse.com/umkomaas-aliwal-shoal-dive-sites/",
+     "publisher": "Agulhas House and Diving",
+     "kind": "operator",
+     "quote": "The Nebo Maximum depth 27m. … This wooden wreck is fairly intact and is an interesting dive especially the swim through at the propeller."
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 27
+    },
+    {
+     "unit": "m",
+     "ref": "ag",
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "sc",
+     "ag"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Stern, propeller and boiler remain",
+     "refs": [
+      "sc"
+     ]
+    },
+    {
+     "text": "Swim-through at the propeller",
+     "refs": [
+      "ag"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A steamship that capsized in 1884 and now rests upside down on sand near 27 m. The stern, propeller and boiler are the recognisable parts, and the area teems with small fish such as kingfish and goldies.",
+    "refs": [
+     "sc",
+     "ag"
+    ]
+   }
+  },
+  {
+   "id": "odm-j145r3",
+   "name": "Dial Rock",
+   "sources": {
+    "ld": {
+     "url": "https://langebaandivers.co.za/dive-sites/",
+     "publisher": "Langebaan Divers",
+     "kind": "operator",
+     "quote": "Dial Rock is a rock pinnacle situated is Saldanha bay where we conduct one of our shore entries. There is low surge making this a calm entry, after which we do a surface swim of about 150m. mostly used for entry level dives"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "ld"
+    ]
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "ld"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "ld"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Calm shore entry with a 150 m surface swim",
+     "refs": [
+      "ld"
+     ]
+    }
+   ]
+  }
+ ]
+}

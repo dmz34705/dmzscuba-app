@@ -1,0 +1,778 @@
+{
+ "batch": "popular-australia-5",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-l8w0k9",
+   "reason": "depth only on one tourism page, no second sourced fact"
+  },
+  {
+   "id": "odm-cei4de",
+   "reason": "no non-banned page with Coral Gardens facts"
+  },
+  {
+   "id": "odm-l082qy",
+   "reason": "ambiguous site (Hillarys marina wall); sources conflict"
+  },
+  {
+   "id": "odm-r9d7a2",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-kyawqt",
+   "reason": "whole reef group; no usable page"
+  },
+  {
+   "id": "odm-9w8xw8",
+   "reason": "only banned directories; reef location unclear"
+  },
+  {
+   "id": "odm-3ozqc0",
+   "reason": "only banned directories"
+  },
+  {
+   "id": "odm-8n8vbp",
+   "reason": "only banned directories"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-o24h8d",
+   "name": "The Ozone Shipwreck",
+   "sources": {
+    "s1": {
+     "url": "https://scubadivingmelbourne.com/wreck-dives/victoria/ozone-wreck",
+     "publisher": "Scuba Diving Melbourne",
+     "kind": "press",
+     "quote": "The Ozone sits in 3-4M of water, the paddles stick out of the water and it suits snorkeling or scuba diving."
+    },
+    "s2": {
+     "url": "https://beautifulaltona.com.au/shipwrecks-in-port-phillip-bay/",
+     "publisher": "Beautiful Altona",
+     "kind": "press",
+     "quote": "Ozone was withdrawn from service in 1918. In 1925, she was sold for scrap, dismantled and sunk 50m offshore at Indented Head to form a breakwater for small craft. Its wreckage remains visible and is an easy shallow dive."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 4
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Paddle wheels break the surface",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Wreck of a 1886 paddle steamer scuttled as a breakwater off Indented Head in 1925, lying in about 3-4 m so the paddles show. An easy shallow dive or snorkel close to shore.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-k0t74c",
+   "name": "Flinders Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.nigelmarshphotography.com/blog-posts/moreton-island-scuba-diver-mag",
+     "publisher": "Nigel Marsh Photography (Scuba Diver magazine article)",
+     "kind": "press",
+     "quote": "Flinders Reef is the most popular, all weather, dive site on the outer side of Moreton Island … numerous moorings have been placed here to protect the delicate hard corals … the turtles are the main feature at Flinders Reef"
+    }
+   },
+   "mooring": {
+    "value": "Numerous moorings protect the coral",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hawksbill and green turtles; cleaning station",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-y5w6mz",
+   "name": "Cherubs Cave",
+   "sources": {
+    "s1": {
+     "url": "https://www.nigelmarshphotography.com/blog-posts/moreton-island-scuba-diver-mag",
+     "publisher": "Nigel Marsh Photography (Scuba Diver magazine article)",
+     "kind": "press",
+     "quote": "Henderson Rock and Cherub’s Cave are all similar dive sites … These sites vary in depth from 12m to 30m … it is the grey nurse sharks that make these sites special"
+    },
+    "s2": {
+     "url": "https://www.nigelmarshphotography.com/blog-posts/moreton-island-scuba-diver-mag",
+     "publisher": "Nigel Marsh Photography (Scuba Diver magazine article)",
+     "kind": "press",
+     "quote": "off the exposed eastern side of Moreton Island and are generally only dived over the winter months when conditions are calm and grey nurse sharks are in residence"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 30
+    }
+   ],
+   "season": {
+    "from": 6,
+    "to": 8,
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks in winter",
+     "refs": [
+      "s2",
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-77lr8h",
+   "name": "Curtin Artificial Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.nigelmarshphotography.com/blog-posts/moreton-island-scuba-diver-mag",
+     "publisher": "Nigel Marsh Photography (Scuba Diver magazine article)",
+     "kind": "press",
+     "quote": "The artificial reef is spread over 400m, in depths from 12m to 30m … the highlight of any dive at Curtin is a close encounter with a giant Queensland groper"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 30
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Giant Queensland groper",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-wfrwm9",
+   "name": "Lighthouse Bommie - Lady Elliot Island",
+   "sources": {
+    "s1": {
+     "url": "https://www.diveplanit.com/dive-site/lighthouse-bommie",
+     "publisher": "Dive Planit",
+     "kind": "operator",
+     "quote": "Lighthouse Bommie, Lady Elliot Island … Manta Cleaning station, Scenic Reef and mega fauna Depth: Top: 5M Median: 11M Bottom: 16M … Also in the vicinity of the Lighthouse Bommie mooring is a turtle cleaning station"
+    },
+    "s2": {
+     "url": "https://www.bundabergregion.org/operator/lighthouse-bommies-dive-site/",
+     "publisher": "Bundaberg Region (tourism)",
+     "kind": "agency",
+     "quote": "Just off the western side of Lady Elliot Island is a group of small coral outcrops known as Lighthouse Bommies. Descend down the mooring line and drift onto the bommies"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 16
+    }
+   ],
+   "mooring": {
+    "value": "Mooring line; descend and drift onto the bommies",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Manta cleaning station",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Turtle cleaning station nearby",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A group of small bommies off the west side of Lady Elliot Island, reached by a mooring line, famed for manta rays being cleaned by wrasse, with turtles also cleaned nearby.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ca71qn",
+   "name": "Severence Wreck - Lady Elliot Island",
+   "sources": {
+    "s1": {
+     "url": "https://www.bundabergregion.org/operator/severance-shipwreck-dive-site/",
+     "publisher": "Bundaberg Region (tourism)",
+     "kind": "agency",
+     "quote": "only one of these can be dived, that is the Severance. This fully intact yacht sank in 1998 … Sitting on a sandy sea floor, 21 metres deep"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 21
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact yacht with soft corals on the rigging",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-h53xft",
+   "name": "Manta Bommie",
+   "sources": {
+    "s1": {
+     "url": "https://www.bundabergregion.org/operator/manta-ray-bommie-dive-site/",
+     "publisher": "Bundaberg Region (tourism)",
+     "kind": "agency",
+     "quote": "Manta Ray Bommie is not just one coral head, but a collection of bommies off the western side of Lady Musgrave Island … in depths from 12 to 20 metres … the main attraction is the manta rays"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 20
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Manta rays cleaned atop the bommies",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-o2327j",
+   "name": "Crystal Palace, Rottnest Island",
+   "sources": {
+    "s1": {
+     "url": "https://samphirerottnest.com.au/scuba-diving-rottnest/",
+     "publisher": "Samphire Rottnest",
+     "kind": "operator",
+     "quote": "Crystal Palace Skill level: Beginner to intermediate … It’s a reasonably shallow dive, ranging from eight to 18 metres in depth."
+    },
+    "s2": {
+     "url": "https://www.bucketlistdiver.com/dive-sites/",
+     "publisher": "Bucket List Diver",
+     "kind": "operator",
+     "quote": "Crystal Palace Site Certification Level Located at the southwest end of Rottnest Island, this is a great dive for all levels with a maximum depth of 18m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Caverns, swim-throughs and nudibranchs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow limestone cave and swim-through site off the south of Rottnest Island, suitable for most divers, with nudibranchs and plenty of fish in the caverns.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-4tco6y",
+   "name": "Roe Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.bucketlistdiver.com/dive-sites/",
+     "publisher": "Bucket List Diver",
+     "kind": "operator",
+     "quote": "Roe Reef is popular due to its easy location, not far from Thompson Bay, and is great for all levels. Swim-throughs at 10–15m; the site is no deeper than 17m."
+    },
+    "s2": {
+     "url": "https://samphirerottnest.com.au/scuba-diving-rottnest/",
+     "publisher": "Samphire Rottnest",
+     "kind": "operator",
+     "quote": "Roe Reef Skill level: All levels … The reef itself is a series of small caves around 14m in depth, where you’ll find tight swim-throughs and a giant limestone arch"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 17
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-throughs and a limestone arch",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An easy Rottnest Island reef of small caves around 14 m with tight swim-throughs and a large limestone arch, good for all levels when swell is low.",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-vjo3ba",
+   "name": "Opera House",
+   "sources": {
+    "s1": {
+     "url": "https://samphirerottnest.com.au/scuba-diving-rottnest/",
+     "publisher": "Samphire Rottnest",
+     "kind": "operator",
+     "quote": "Opera House itself is a rock inside the larger cave system, up to 31 metres in depth. Rays of light illuminate the caverns"
+    },
+    "s2": {
+     "url": "https://soperth.com.au/rottnest-island-diving-53102",
+     "publisher": "So Perth",
+     "kind": "press",
+     "quote": "Opera House is a grand diving spot, a spectacular concourse of caves galore. The deep dive (30 metres) offers the most impressive light show underwater"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 31
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Caverns lit by shafts of light",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep cave system on a limestone slope off Rottnest, with light shafts through the caverns, overhangs and occasional grey nurse sharks, reaching around 30 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-rmjtbf",
+   "name": "Nurses Quarters",
+   "sources": {
+    "s1": {
+     "url": "https://samphirerottnest.com.au/scuba-diving-rottnest/",
+     "publisher": "Samphire Rottnest",
+     "kind": "operator",
+     "quote": "Shark Cave (Cathedral Rocks) Skill level: Advanced … descending to 26 metres at the back of the cave … the strong surface currents can be a challenge"
+    },
+    "s2": {
+     "url": "https://soperth.com.au/rottnest-island-diving-53102",
+     "publisher": "So Perth",
+     "kind": "press",
+     "quote": "Shark Cave – also known as Nurse’s Quarters – is a haven for endangered grey nurse sharks … Please note: Shark Cave is suited to advanced divers only."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 26
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks resting in the cave",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong surface currents; exposed site",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-xeq5a9",
+   "name": "Ammo Jetty",
+   "sources": {
+    "s1": {
+     "url": "https://www.howiesscuba.com/ammo-jetty.php",
+     "publisher": "Howies Scuba",
+     "kind": "operator",
+     "quote": "Shore Dive: Jetty Dive. Depth: Max 9 meters. Dive-able jetty length: Approx. 100 meters. The Vis...... perfect day 5 - 6 meters (rare)....... poor day 1 - 2 meters...... average 3 - 4 day"
+    },
+    "s2": {
+     "url": "https://scubadiverlife.com/top-five-shore-dives-perth/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "A 35-minute drive southwest from Perth is Ammo Jetty … the maximum depth is usually between 23 to 30 feet (7 to 9 m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 9
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 9
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 3,
+    "high": 4,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-2zfnd1",
+   "name": "Cod Hole",
+   "sources": {
+    "s1": {
+     "url": "https://www.mudgeediveandtravel.com/crowdy-head---port-macquarie.php",
+     "publisher": "Mudgee Dive and Travel (Scuba Haven info)",
+     "kind": "operator",
+     "quote": "The Cod Hole This dive site consists of two bommies submersed in 18m of water, joined together by a natural arch. One bommie rises up to 10m, the other to 6m."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 18
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Twin bommies with a natural arch, wobbegongs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-v4blus",
+   "name": "Bird Rock",
+   "sources": {
+    "s1": {
+     "url": "https://www.mudgeediveandtravel.com/crowdy-head---port-macquarie.php",
+     "publisher": "Mudgee Dive and Travel (Scuba Haven info)",
+     "kind": "operator",
+     "quote": "Bird Rock A great easy dive. Maximum depth of 13m with the rock above the surface, a nice circle around the rock with plenty to look at."
+    },
+    "s2": {
+     "url": "https://www.mudgeediveandtravel.com/crowdy-head---port-macquarie.php",
+     "publisher": "Mudgee Dive and Travel (Scuba Haven info)",
+     "kind": "operator",
+     "quote": "there is a great fly over if there is not too much surge. Marine life is abundant."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 13
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Surge on the fly-over",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hof2ng",
+   "name": "HMAS Swan (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://50greatdives.com/50gtdives/entry/56",
+     "publisher": "50 Great Dives",
+     "kind": "press",
+     "quote": "EX-HMAS SWAN Dunsborough, Western Australia Type of dive: Scuttled warship … Scuba: Advanced (Supervised Open Water) Access: Boat only (20 minutes) Depth: 9 – 30 metres"
+    },
+    "s2": {
+     "url": "https://www.westernaustralia.com/uk/attraction/hmas-swan-dive-wreck/56b267327b935fbe730e679b",
+     "publisher": "Tourism Western Australia",
+     "kind": "agency",
+     "quote": "HMAS Swan Dive Wreck is about a 15-minute boat ride out to sea from Meelup Beach … dive the Swan from a private boat by obtaining an access permit from the Dunsborough Visitor Centre"
+    },
+    "s3": {
+     "url": "https://50greatdives.com/50gtdives/entry/56",
+     "publisher": "50 Great Dives",
+     "kind": "press",
+     "quote": "Ex-HMAS Swan now sits upright on her keel in 30 metres (100’) of water … Large schools of bullseyes inhabit the inner spaces"
+    },
+    "s4": {
+     "url": "https://www.westernaustralia.com/uk/attraction/hmas-swan-dive-wreck/56b267327b935fbe730e679b",
+     "publisher": "Tourism Western Australia",
+     "kind": "agency",
+     "quote": "The 113-metre-long decommissioned naval destroyer was scuttled in Geographe Bay off Dunsborough in 1997 … Sitting in 35 metres of water and with a slight list"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 9,
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Boat only; private boats need a permit from Dunsborough Visitor Centre",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of bullseyes inside the hull",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Former navy destroyer scuttled in 1997 off Dunsborough, upright in roughly 30-35 m with parts of the superstructure intact and bullseyes filling the rooms.",
+    "refs": [
+     "s1",
+     "s4"
+    ]
+   }
+  },
+  {
+   "id": "odm-uubagz",
+   "name": "Exmouth Navy Pier",
+   "sources": {
+    "s1": {
+     "url": "https://50greatdives.com/50gtdives/entry/61/",
+     "publisher": "50 Great Dives",
+     "kind": "press",
+     "quote": "EXMOUTH NAVY PIER Exmouth, North West Cape, Western Australia Type of dive: Jetty … Scuba: Open Water Access: Shore, via bus only Depth: 12 – 14 metres (40 -45’) Visibility: 5 – 10 metres"
+    },
+    "s2": {
+     "url": "https://50greatdives.com/50gtdives/entry/61/",
+     "publisher": "50 Great Dives",
+     "kind": "press",
+     "quote": "for security reasons diving can only be accessed by a local licensed operator for divers with positive identification such as a passport or Australian driving licence"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 14
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 5,
+    "high": 10,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Licensed local operator only; photo ID required; guided",
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-b5uqxq",
+   "name": "Museum of Underwater Art, Coral Greenhouse",
+   "sources": {
+    "s1": {
+     "url": "https://www.moua.com.au/coral-greenhouse",
+     "publisher": "Museum of Underwater Art",
+     "kind": "operator",
+     "quote": "Coral Greenhouse Scuba dive, free-dive or snorkel into a world of wonder … sitting at a depth of 16 meters and just a short swim from the Ocean Sentinels installation at John Brewer Reef"
+    },
+    "s2": {
+     "url": "https://www.moua.com.au/coral-greenhouse",
+     "publisher": "Museum of Underwater Art",
+     "kind": "operator",
+     "quote": "With its impressive 12-meter height and weight of 58 tons"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "highlights": [
+    {
+     "text": "12 m-high, 58-tonne sculpture structure",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  }
+ ]
+}

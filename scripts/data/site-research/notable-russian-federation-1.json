@@ -1,0 +1,124 @@
+{
+ "batch": "notable-russian-federation-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-notable-889",
+   "name": "SS Admiral Nakhimov",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Admiral_Nakhimov",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck of Admiral Nakhimov lies on its starboard side in 150 feet (46 m) of water in Tsemes Bay off Novorossiysk."
+    },
+    "s2": {
+     "url": "https://en.usm.media/?p=39391",
+     "publisher": "USM Media",
+     "kind": "press",
+     "quote": "located exactly at the point where the Admiral Nakhimov passenger vessel sank at a depth of 47 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 46
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 47
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The Soviet liner that sank after a 1986 collision lies on her starboard side at about 46-47 m in Tsemes Bay off Novorossiysk. It is a deep wreck and a memorial to the 423 people who died.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1038",
+   "name": "Agnes Blaikie",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Agnes_Blaikie",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The wreck of the Agnes Blaikie was discovered lying in 84 metres (276 ft) of water in September 2003"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 84
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1046",
+   "name": "HMS Vittoria",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Vittoria_(1917)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Russian divers rediscovered the wreck at a depth of 30 meters (98 feet)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1123",
+   "name": "USS Dragonet",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Dragonet",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Scuttled in the Chesapeake Bay after tests, 17 September 1961"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Submarine survived 1944 grounding and was scuttled in Chesapeake Bay in 1961, not off the Kurils",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,555 @@
+{
+ "batch": "popular-france-4",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-sr46m1",
+   "reason": "single mention with a depth that disagrees with community record"
+  },
+  {
+   "id": "odm-6ak5nf",
+   "reason": "only listed by name"
+  },
+  {
+   "id": "odm-6o1vga",
+   "reason": "depth in directory (13 m) does not match; no other source"
+  },
+  {
+   "id": "odm-fv7uyr",
+   "reason": "only directory depth (1-6 m), which conflicts with record"
+  },
+  {
+   "id": "odm-iovtiy",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-97y4i6",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-7rpqeg",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-cu58t3",
+   "reason": "listed by name only, no depth"
+  },
+  {
+   "id": "odm-ofn2ej",
+   "reason": "guides cover Pain de Sucre as a group of sites, not this sub-site"
+  },
+  {
+   "id": "odm-3hmkwq",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-3otzjf",
+   "reason": "only source spells it Red Donckey; name not matched on page"
+  },
+  {
+   "id": "odm-3j88nb",
+   "reason": "guides cover Pain de Sucre as a group of sites, not this sub-site"
+  },
+  {
+   "id": "odm-wzsynz",
+   "reason": "guides cover Pain de Sucre as a group of sites, not this sub-site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-j6a3by",
+   "name": "Bossy’s Canyon",
+   "sources": {
+    "s1": {
+     "url": "https://www.indian-ocean.com/les-sites-de-plongee-de-lile-de-la-reunion/",
+     "publisher": "Indian-Ocean.com",
+     "kind": "press",
+     "quote": "le Bosy’s canyon qui est une faille qui va jusqu’à 70 mètres de fond"
+    },
+    "s2": {
+     "url": "https://www.manawa.com/en/articles/best-spots-for-scuba-diving-in-reunion-island",
+     "publisher": "Manawa",
+     "kind": "press",
+     "quote": "Boxy's Canyon offers a wall that starts at 6 meters before plunging into a deep 60-meter abyss."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 6,
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "summary": {
+    "text": "A deep fault and wall off Saint-Leu on Réunion's west coast. The drop starts shallow, around 6 m, and falls away into a 60-70 m abyss, giving a dramatic wall dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-drnzhu",
+   "name": "Avion Cessna 188",
+   "sources": {
+    "s1": {
+     "url": "https://seacretdive.com/plongee-a-port-louis-en-guadeloupe/",
+     "publisher": "SeacretDive",
+     "kind": "operator",
+     "quote": "Posé sur un fond de 24 mètres, ce Cessna 188 servait aux épandages de pesticides sur les bananeraies de Guadeloupe."
+    },
+    "s2": {
+     "url": "https://www.edenplongee.fr/Sur-le-site-de-plongee-de-l-Avion-un-Cessna-Agwagon-188_a60.html",
+     "publisher": "Eden Plongée",
+     "kind": "operator",
+     "quote": "Un Cessna 188 immergé en 2000 sur un fond de 23 mètres."
+    },
+    "s3": {
+     "url": "https://seacretdive.com/en/ou-plonger-en-guadeloupe/",
+     "publisher": "SeacretDive",
+     "kind": "operator",
+     "quote": "Immergé à 23 mètres, il est idéal pour tous les niveaux."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 24
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 23
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sponge- and coral-covered plane; lobsters under wings",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A decommissioned crop-spraying Cessna sunk in 2000 off Port-Louis in Grande-Terre, lying on sand at 23-24 m. Now covered in sponges and coral, with angelfish, jacks and lobsters; best for divers qualified to about 40 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-e9bjkx",
+   "name": "Oeil",
+   "sources": {
+    "s1": {
+     "url": "https://www.plongee-loisir.com/ville/134503-port-louis",
+     "publisher": "Plongeur.com",
+     "kind": "press",
+     "quote": "L oeil 1,3,6,8,12,13,17,19,20,22,23,27, 10m - 20m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 10,
+     "bottom": 20
+    }
+   ]
+  },
+  {
+   "id": "odm-4e4zwv",
+   "name": "La Plage du Souffleur",
+   "sources": {
+    "s1": {
+     "url": "https://seacretdive.com/plongee-a-port-louis-en-guadeloupe/",
+     "publisher": "SeacretDive",
+     "kind": "operator",
+     "quote": "La Plage du Souffleur, à Port-Louis, est à seulement 100 mètres du centre de plongée. … elle est parfaitement adaptée aux débutants en plongée sous-marine. Profitez ainsi d’une mise à l’eau progressive"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-n34qxb",
+   "name": "La Cathedrale",
+   "sources": {
+    "s1": {
+     "url": "https://www.plongee-loisir.com/ville/134503-port-louis",
+     "publisher": "Plongeur.com",
+     "kind": "press",
+     "quote": "La cathedrale 6,8,9,17,19,24,27, 11m - 21m"
+    },
+    "s2": {
+     "url": "https://seacretdive.com/plongee-a-port-louis-en-guadeloupe/",
+     "publisher": "SeacretDive",
+     "kind": "operator",
+     "quote": "La Cathédrale , le Souffleur , les Ancres , la Caye percée , l’ Œil , Pointe Claude ou encore Pointe Plate . Ce sont plus de 10 spots caractéristiques de ces immenses voûtes offrant des paysages sous-marins superbes"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 11,
+     "bottom": 21
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large arches sheltering lobsters and spider crabs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2ulqus",
+   "name": "Sec Delgrès",
+   "sources": {
+    "s1": {
+     "url": "https://www.infiniplongee.com/plongee-vieux-fort-guadeloupe.html",
+     "publisher": "Infini Plongée",
+     "kind": "operator",
+     "quote": "Sec Delgrès Sur ce tombant, en contrebas du Fort Delgres de Basse terre, vous évoluerez entre éponges, coraux multicolores et gorgones. Vous serez vite rattrapés par des bancs de gorettes ou bien par quelques tortues curieuses"
+    },
+    "s2": {
+     "url": "https://seacretdive.com/en/ou-plonger-en-guadeloupe/",
+     "publisher": "SeacretDive",
+     "kind": "operator",
+     "quote": "Le Sec Delgrès propose également une ambiance particulière , avec un tombant descendant au-delà de 60 mètres"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sponges, gorgonians, grunts, turtles, barracuda",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A wall below Fort Delgrès off Basse-Terre, dropping beyond 60 m but easily enjoyed in the upper part by Open Water divers. Sponges, gorgonians and schools of grunts decorate the slope, with turtles, resting rays and curious barracuda.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Wall continues below 60 m; upper section dived"
+  },
+  {
+   "id": "odm-wr9t9s",
+   "name": "Mazarin",
+   "sources": {
+    "s1": {
+     "url": "https://www.infiniplongee.com/plongee-vieux-fort-guadeloupe.html",
+     "publisher": "Infini Plongée",
+     "kind": "operator",
+     "quote": "Mazarin Véritable petit jardin japonais riches en faune et en flore. Il comblera les photographes et les passionnés de macro ! Niveau minimum PE12 / scuba diver"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small coral garden good for macro photography",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-23dnf7",
+   "name": "Sec Pate",
+   "sources": {
+    "s1": {
+     "url": "https://www.lesilesdeguadeloupe.com/en/experiences/diving-in-guadeloupe/diving-spots-in-guadeloupe/",
+     "publisher": "Guadeloupe Islands (tourist board)",
+     "kind": "agency",
+     "quote": "Sec Pate: a legendary dive site Sec Pate, between Terre-de-Haut and Dominica Ranked among the most beautiful dive sites in the world , this submerged volcanic pinnacle rises to -15 meters, with a base dropping to -200 meters. Accessible only to experienced divers ( Advanced Open Water required )"
+    },
+    "s2": {
+     "url": "https://seacretdive.com/en/ou-plonger-en-guadeloupe/",
+     "publisher": "SeacretDive",
+     "kind": "operator",
+     "quote": "le Sec Pâté est le site de plongée le plus mythique de Guadeloupe, avec un sec commençant à -15 mètres en plein milieu du canal des Saintes. Cette plongée est toutefois accessible à partir du Niveau 2 uniquement."
+    }
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Queen angelfish, triggerfish, morays, turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Summit about 15 m; base drops to about 200 m"
+  },
+  {
+   "id": "odm-igz53k",
+   "name": "Les trois Pointes",
+   "sources": {
+    "s1": {
+     "url": "https://www.plongee-loisir.com/site-de-plongee/6733-les-trois-pointes",
+     "publisher": "Plongeur.com",
+     "kind": "press",
+     "quote": "Les Trois Pointes Pronfondeur : de 0m à 20m Difficulté : Niveaux minimum : Plongeur débutant (0-25 plongées - 20 m)"
+    },
+    "s2": {
+     "url": "https://www.infiniplongee.com/plongee-vieux-fort-guadeloupe.html",
+     "publisher": "Infini Plongée",
+     "kind": "operator",
+     "quote": "Les trois pointes A côté du phare de Vieux Fort, ce site est idéal pour les baptêmes."
+    },
+    "s3": {
+     "url": "https://seacretdive.com/en/ou-plonger-en-guadeloupe/",
+     "publisher": "SeacretDive",
+     "kind": "operator",
+     "quote": "Plongez ensuite aux Trois-Pointes et sa coulée de lave typique, où se promènent barracudas et de nombreuses autres espèces."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lava flow with barracuda and many reef fish",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An easy dive beside the Vieux-Fort lighthouse in southern Basse-Terre, where volcanic rock mixes with pale sand. Shallow enough for introductory dives, with a lava flow that attracts barracuda and plenty of reef fish.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-0k86ko",
+   "name": "Jardin Japonais",
+   "sources": {
+    "s1": {
+     "url": "https://divechamp.com/divesite/jardin-japonais",
+     "publisher": "Dive Champ",
+     "kind": "press",
+     "quote": "Located just 15 minutes away from St François, the Japanese Garden … With a visibility of 16 meters and a maximum depth of 16 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "vis": {
+    "low": 16,
+    "high": 16,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Butterflyfish, barracuda, lionfish, lobsters",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-z8raaj",
+   "name": "Aquarium Gros Ilets",
+   "sources": {
+    "s1": {
+     "url": "https://ouanalaodive.com/en/our-spots/",
+     "publisher": "Ouanalao Dive",
+     "kind": "operator",
+     "quote": "GROS ILETS : 0 to 15m Only 5 mins away from Gustavia harbor, it is the perfect place for beginners (shallow water, calm sea) ! We call it “Aquarium”"
+    },
+    "s2": {
+     "url": "https://apprendreaplonger.fr/destinations/caraibes/saint-barthelemy",
+     "publisher": "Apprendre à plonger",
+     "kind": "press",
+     "quote": "Les Gros Îlets et le Pain de Sucre, au large de Gustavia, sont les sites les plus réputés : eau claire, courants minimes et profondeurs modérées en font des plongées idéales pour le baptême"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 0,
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Thousands of fish and lobsters",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered dive a few minutes' boat ride from Gustavia, nicknamed the Aquarium for its dense fish and lobsters. Shallow, clear and nearly current-free, it is a classic first dive on Saint-Barthélemy.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ec1vun",
+   "name": "rocher creole",
+   "sources": {
+    "s1": {
+     "url": "https://www.st-martin.org/us/for-a-truly-friendly-experience/diving-at-creole-rock/",
+     "publisher": "St. Martin Tourist Office",
+     "kind": "agency",
+     "quote": "If you want to go scuba diving in St. Martin, Creole Rock is one of the best places for both beginners and experienced divers. The waters here are shallow, accessible and well protected."
+    },
+    "s2": {
+     "url": "https://www.oovatu.com/voyages/caraibes/saint-martin/guide/plongee-snorkeling",
+     "publisher": "Oovatu",
+     "kind": "press",
+     "quote": "Le Rocher Créole est l’une des plus belles plongées de Saint-Martin . Situé au nord-ouest de l’île, au large de la baie de Grand-Case, ce rocher émergeant fait partie de la réserve naturelle de Saint-Martin. Ce spot de 10 mètres de profondeur permet aux plongeurs de tous niveaux"
+    }
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Inside the Saint-Martin nature reserve; boats under 50 ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "About 10 m per guide"
+  }
+ ]
+}

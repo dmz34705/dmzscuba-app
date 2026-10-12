@@ -1,0 +1,384 @@
+{
+ "batch": "popular-indonesia-7",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-kvxn7j",
+   "reason": "only one source (top at 7 m); pin location unclear"
+  },
+  {
+   "id": "odm-b5zf06",
+   "reason": "single source, depth disagrees"
+  },
+  {
+   "id": "odm-ueyhgn",
+   "reason": "depth source 35 m disagrees with catalog 23 m"
+  },
+  {
+   "id": "odm-xiltu0",
+   "reason": "no usable dive source"
+  },
+  {
+   "id": "odm-u8kind",
+   "reason": "snorkeling bay per resort; no dive source"
+  },
+  {
+   "id": "odm-5jfngq",
+   "reason": "area/island with many sites; no site-specific source"
+  },
+  {
+   "id": "odm-hgvfnx",
+   "reason": "generic/unclear name; not found"
+  },
+  {
+   "id": "odm-6bhg29",
+   "reason": "generic name; not found"
+  },
+  {
+   "id": "odm-yyothl",
+   "reason": "single source, no depth"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-ghgjjv",
+   "name": "Cannibal Rock Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/cannibal-rock-komodo-109392",
+     "publisher": "Scubago",
+     "kind": "press",
+     "quote": "This dive site is the Heart of the Nusa Kode, or Jurassic, as locals like to call the south of Rinca. You will see frogfish, pygmy seahorses, zebra crabs, coleman shrimp on fire sea urchins, nurse sharks, nudibranchs, sea apples, giant trevallies"
+    },
+    "s2": {
+     "url": "https://www.komodoresort.com/komodo-diving/cannibal-rock/",
+     "publisher": "Komodo Resort",
+     "kind": "operator",
+     "quote": "Quick Facts Depth Range 5 to 30 meters Level All Levels Location Horseshoe Bay, south Komodo National Park Water Conditions Protected bay, generally calm"
+    }
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish, pygmy seahorses, nudibranchs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Giant trevallies and nurse sharks",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Encrusting sponges and macro life",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "depthNote": "Operator range 5-30 m",
+   "summary": {
+    "text": "A sheltered bay in the south of Komodo National Park near Rinca, loved for dense sponge-covered reef with both macro subjects such as frogfish and pygmy seahorses and larger visitors like giant trevally. Conditions are usually calm and suit a wide range of divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-wnxq3o",
+   "name": "Yellow Wall Komodo",
+   "sources": {
+    "s1": {
+     "url": "https://divehappy.com/yellow-wall-komodo/",
+     "publisher": "Dive Happy",
+     "kind": "press",
+     "quote": "The wall starts at 5 metres and drops all the way to 30 metres but staying shallow is probably the most rewarding."
+    },
+    "s2": {
+     "url": "https://diveconcepts.com/yellow-wall-komodo",
+     "publisher": "Dive Concepts",
+     "kind": "operator",
+     "quote": "This beautiful wall starts at 5 meters and goes down for more than 30 meters, but there is no need to go that deep … The site has a mild current. … Be ready to encounter sleeping turtles, cat sharks, coral trout"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sleeping turtles and cat sharks",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Featherstars and sea cucumbers on the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Wall from 5 m down past 30 m; best life is shallow",
+   "summary": {
+    "text": "A bright wall and shallow top reef in Komodo that starts at about 5 m and falls past 30 m, though the richest life is in the upper levels. Current is usually mild; look for turtles, catsharks and plenty of featherstars.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-bvz6dt",
+   "name": "Eagle Nest",
+   "sources": {
+    "s1": {
+     "url": "https://konjocruisingindonesia.com/itineraires/magic-misool-10-nights/",
+     "publisher": "Konjo Cruising Indonesia",
+     "kind": "operator",
+     "quote": "Magic Mountain and Eagle Nest brings together all the best you can expect to see in Raja Ampat. Big eyes schooling jacks, bluefin and Giant trevallies, huge napoleon wrasse, giant grouper, barracuda, and all species of reef sharks."
+    },
+    "s2": {
+     "url": "https://www.ayorajaampatdivers.com/destinations/raja-ampat-liveaboard-misool-10-days/shadow-reef-eagles-nest-pinnacle",
+     "publisher": "Ayo Raja Ampat Divers",
+     "kind": "operator",
+     "quote": "Eagles Nest Pinnacle, will be our second and third dive of the day, located on the eastern part of Pulau Warakaraket. Both of these dive sites boast the potential for pelagic life, and are abundant with schooling fish life and healthy reefs."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Schooling jacks, trevallies and barracuda",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Reef sharks and napoleon wrasse",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Oceanic manta rays visit",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A pinnacle off the eastern end of Pulau Warakaraket in Misool, Raja Ampat, dived mainly from liveaboards. It is known for pelagic action: schooling jacks and trevally, reef sharks, napoleon wrasse and sometimes oceanic mantas over healthy reef.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-c6etup",
+   "name": "Yulliet Kecil",
+   "sources": {
+    "s1": {
+     "url": "https://meanderingwild.com/dive-sites-in-misool/",
+     "publisher": "Meandering Wild",
+     "kind": "press",
+     "quote": "Yilliet Kecil Depth: 10-30 metres Dive Type: Wall dive with swim-throughs What to Look For: Sharks, barracuda, and vibrant soft corals Yilliet Kecil is a dramatic wall dive featuring swim-throughs and overhangs"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-throughs and overhangs with soft corals",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Reef sharks and barracuda along the wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Source range 10-30 m"
+  },
+  {
+   "id": "odm-lae2rt",
+   "name": "Starship",
+   "sources": {
+    "s1": {
+     "url": "https://www.thediveglobe.com/app/en/dive/starship-wakatobi",
+     "publisher": "theDiveGlobe",
+     "kind": "press",
+     "quote": "Difficulty Beginner Max Depth 30 m Average depth 18 m … Starship is an exciting drift dive at Wakatobi that takes divers along a beautiful, healthy reef. The gentle current allows divers to 'fly' over the reef"
+    },
+    "s2": {
+     "url": "https://www.wakatobi.com/scuba-diving/marine-life/wakatobis-dive-sites/",
+     "publisher": "Wakatobi Dive Resort",
+     "kind": "operator",
+     "quote": "23 Starship Type Skill Snorkel Tech Dive Depth Ridges and walls Beginner *** ***** 0-60m Description: Starship: This one is named after the visiting research vessel Starship"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of fusiliers, turtles and eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Operator range 0-60 m; guide max 30 m",
+   "summary": {
+    "text": "A drift dive along a ridge and wall at Wakatobi's Tomia area, rated beginner. A gentle current carries divers over healthy reef with fusilier schools, turtles and the odd eagle ray.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-32bf60",
+   "name": "Puri Jati",
+   "sources": {
+    "s1": {
+     "url": "https://www.underwatertribe.com/bali-scuba-diving-puri-jati/",
+     "publisher": "Underwater Tribe",
+     "kind": "operator",
+     "quote": "PJs is an easy shore entry site with a simple walk along black sand onto a very gentle slope. … Ghost pipefish and sea moths are commonly found in the first 3 metres. The average depth of this site rarely exceeds 12 metres"
+    },
+    "s2": {
+     "url": "https://diveconcepts.com/bali/spot-puri-jati-macro.php",
+     "publisher": "Dive Concepts",
+     "kind": "operator",
+     "quote": "Puri Jati is mainly sand, with a few soft corals. It is the kingdom of the muck dive. … Plateau of 200 meters wide between 5 and 7 meters depth, then a slope up to a good 20 meters depth."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ghost pipefish, sea moths, nudibranchs",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Cup corals scattered over black sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Plateau 5-7 m, slope to about 20 m; average rarely over 12 m",
+   "summary": {
+    "text": "A black-sand muck site off a beach on Bali's north coast, entered from shore. The bottom is a gentle sandy slope, mostly shallow, with ghost pipefish, sea moths and nudibranchs within the first few metres, so dives can run long.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-nve7tv",
+   "name": "Tomajiko, Hiri Island",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/tomajiko-hiri-island-247383",
+     "publisher": "Scubago",
+     "kind": "press",
+     "quote": "A dive site for wall lovers, can be reached in 5 minutes from Sulamadaha Beach, Ternate. The topography of this site is a wall with a maximum recommended depth of 25m, along the wall there are colorful soft corals with schools of fish."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea fans and soft corals along the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Moray eels, nudibranchs, turtles, napoleon wrasse",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

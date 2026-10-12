@@ -1,0 +1,699 @@
+{
+ "batch": "popular-brazil-3",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-h30anu",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-u2sr5h",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-v0wl5c",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-5n9usn",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-f4dpgd",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-zu3voc",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-zq9l3q",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-n1jy3h",
+   "reason": "no usable source found for this exact site"
+  },
+  {
+   "id": "odm-o1kwbn",
+   "reason": "no usable source found for this exact site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-d3smwc",
+   "name": "Lupus",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/lupus/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Lupus … Profundidade mínima: 30 metros Profundidade máxima: 36 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 30,
+     "bottom": 36
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-yxvryg",
+   "name": "Sao Jose",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/sao-jose/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: São José … Profundidade mínima: 25 metros Profundidade máxima: 29 metros"
+    },
+    "s2": {
+     "url": "https://clickpetroleoegas.com.br/o-litoral-de-pernambuco-tem-mais-de-uma-dezena-de-navios-afundados-de-proposito-no-fundo-do-mar-e-o-que-comecou-como-ferro-velho-virou-um-dos-maiores-parques-de-mergulho-em-naufragios-mhbb01/",
+     "publisher": "CPG Click Petróleo e Gás",
+     "kind": "press",
+     "quote": "O São José, por exemplo, fica a 30 metros, um dos pontos mais profundos do roteiro"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 25,
+     "bottom": 29
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-4rt89t",
+   "name": "Ilha Escalvada",
+   "sources": {
+    "s1": {
+     "url": "https://www.pitbullaventura.com.br/2013/04/mergulho-em-guarapari-es-ilha-escalvada.html",
+     "publisher": "PitBull Aventura",
+     "kind": "operator",
+     "quote": "Local 1º mergulho: Ilha Escalvada Profundidade máxima: 16 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 16
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-y4dwdf",
+   "name": "Naufragio Victory 8B",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/victory-8b/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Victory 8B … Profundidade mínima: 18 metros Profundidade máxima: 34 metros"
+    },
+    "s2": {
+     "url": "https://www.atlantes.com.br/pontos-de-mergulho/victory-8b/",
+     "publisher": "Atlantes",
+     "kind": "operator",
+     "quote": "Victory 8B … 21 a 36 metros … Saída embarcada exclusiva para mergulhadores com certificação Advanced Open Water ou Open Water + Deep Diver."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 34
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 21,
+     "bottom": 36
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-wvdvt8",
+   "name": "Laje de Santos - Portinho",
+   "sources": {
+    "s1": {
+     "url": "https://www.jornadasub.com.br/post/conheca-os-pontos-de-mergulho-da-laje-de-santos",
+     "publisher": "Jornada Sub",
+     "kind": "operator",
+     "quote": "Portinho Face norte e parte mais acessível da Laje, grau de dificuldade baixo. … Prof. Máxima: 18 m."
+    },
+    "s2": {
+     "url": "https://www.nautiluslajedesantos.com.br/pontos-de-mergulhos/",
+     "publisher": "Sea Nautilus Laje de Santos",
+     "kind": "operator",
+     "quote": "Portinho Profundidade máxima: 22m Nível: Básico Parte mais abrigada da Laje onde é muito comum avistar tartarugas marinhas."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 22
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea turtles; sheltered side",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-xzhwjt",
+   "name": "Laje de Santos - Piscinas",
+   "sources": {
+    "s1": {
+     "url": "https://www.jornadasub.com.br/post/conheca-os-pontos-de-mergulho-da-laje-de-santos",
+     "publisher": "Jornada Sub",
+     "kind": "operator",
+     "quote": "Piscinas Um dos pontos mais destacados pela presença de muitos cardumes e tartarugas. Localizando-se na \"virada\" da Laje de oeste para sudoeste, é comum a presença de correntes."
+    },
+    "s2": {
+     "url": "https://www.nautiluslajedesantos.com.br/pontos-de-mergulhos/",
+     "publisher": "Sea Nautilus Laje de Santos",
+     "kind": "operator",
+     "quote": "Piscinas Profundidade máxima: 19m Nível: Avançado Um dos pontos mais destacados pela presença de muitos cardumes e tartarugas"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 19
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fish schools and turtles",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Frequent currents at the west-southwest turn",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-z8q0lz",
+   "name": "Laje de Santos - Boca da Baleia",
+   "sources": {
+    "s2": {
+     "url": "https://www.nautiluslajedesantos.com.br/pontos-de-mergulhos/",
+     "publisher": "Sea Nautilus Laje de Santos",
+     "kind": "operator",
+     "quote": "Boca da Baleia Profundidade máxima: 18M Nível: Avançado É um espetáculo de formação rochosa com muitos peixes e tartarugas. É possível realizar um belo mergulho quando o mar está calmo."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock formation with fish and turtles",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-qzlnah",
+   "name": "Calhaus",
+   "sources": {
+    "s1": {
+     "url": "https://www.jornadasub.com.br/post/conheca-os-pontos-de-mergulho-da-laje-de-santos",
+     "publisher": "Jornada Sub",
+     "kind": "operator",
+     "quote": "Calhaus Cerca de 2 milhas a sudeste da Laje, formação rochosa que possui um túnel em forma de \"U\", com um arco no centro. Profundidade máxima no túnel de 18m."
+    },
+    "s2": {
+     "url": "https://www.nautiluslajedesantos.com.br/pontos-de-mergulhos/",
+     "publisher": "Sea Nautilus Laje de Santos",
+     "kind": "operator",
+     "quote": "Calhaus Profundidade máxima: 30m Nível: Avançado Possui um túnel em forma de “U”, com um arco no centro"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "U-shaped tunnel with an arch",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Current and surge at the tunnel entrance",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ei5cjf",
+   "name": "Parcel das Ancoras - Laje de Santos",
+   "sources": {
+    "s1": {
+     "url": "https://www.jornadasub.com.br/post/conheca-os-pontos-de-mergulho-da-laje-de-santos",
+     "publisher": "Jornada Sub",
+     "kind": "operator",
+     "quote": "Parcel das Âncoras Formação rochosa que parte do lado oeste da Laje. Muitas âncoras de pesqueiros perdidas entre as rochas. … Prof. Máxima: 40 m."
+    },
+    "s2": {
+     "url": "https://www.nautiluslajedesantos.com.br/pontos-de-mergulhos/",
+     "publisher": "Sea Nautilus Laje de Santos",
+     "kind": "operator",
+     "quote": "Parcel das Âncoras Profundidade máxima: 40m Nível: Avançado É possível ver muitas âncoras de pesqueiros perdidas entre as rochas."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 40
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 40
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lost fishing anchors among the rocks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Depth and possible current",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ro47x8",
+   "name": "Naufrágio Buenos Aires (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/buenos-aires/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Buenos Aires … Profundidade mínima: 12 metros Profundidade máxima: 42 metros"
+    },
+    "s2": {
+     "url": "https://www.coraldefogo.com/post/2018/01/24/mergulhos-imperd%C3%ADveis-no-rio-de-janeiro",
+     "publisher": "Coral de Fogo",
+     "kind": "operator",
+     "quote": "No seu lado de fora encontramos o naufrágio Buenos Aires, um cargueiro alemão que colidiu com a ilha em 1890. Com o choque, o navio afundou imediatamente e os destroços estão espalhados dos 12 aos 42 metros de profundidade"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 42
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 42
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-w14n3t",
+   "name": "Ilhas Maricas - Naufragio do Moreno",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/moreno/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Moreno … Profundidade mínima: 05 metros Profundidade máxima: 12 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-2v9c1r",
+   "name": "Arvoredo - Saco do Engenho",
+   "sources": {
+    "s1": {
+     "url": "https://netdive.com.br/blog/mergulho-ilha-do-arvoredo-pontos-reserva",
+     "publisher": "Netdive",
+     "kind": "operator",
+     "quote": "4. Engenho — 6 a 18 m Nível: iniciante a avançado. Um dos pontos mais versáteis: dá para ficar raso em volta dos matacões ou descer para 18 m em fendas e canyons no costão."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-se6468",
+   "name": "Saco do Capim",
+   "sources": {
+    "s1": {
+     "url": "https://netdive.com.br/blog/mergulho-ilha-do-arvoredo-pontos-reserva",
+     "publisher": "Netdive",
+     "kind": "operator",
+     "quote": "1. Saco do Capim — 8 a 15 m Nível: iniciante / intermediário."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 15
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-8vm2n8",
+   "name": "Recanto do Capim",
+   "sources": {
+    "s1": {
+     "url": "https://netdive.com.br/blog/mergulho-ilha-do-arvoredo-pontos-reserva",
+     "publisher": "Netdive",
+     "kind": "operator",
+     "quote": "2. Recanto do Capim — 8 a 12 m Nível: iniciante."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 12
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-mloya6",
+   "name": "Naufragio Guadiana",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/guadiana/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Guadiana … Profundidade mínima: 15 metros Profundidade máxima: 18 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 18
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-cgwcv8",
+   "name": "Rebocador Marte",
+   "sources": {
+    "s1": {
+     "url": "https://www.naufragiosdobrasil.com.br/naufragio/marte/",
+     "publisher": "Naufrágios do Brasil",
+     "kind": "press",
+     "quote": "Nome do navio: Marte … Profundidade mínima: 16 metros Profundidade máxima: 33 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 33
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

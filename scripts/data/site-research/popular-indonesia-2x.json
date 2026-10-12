@@ -1,0 +1,1024 @@
+{
+ "batch": "popular-indonesia-2x",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-rsja4a",
+   "reason": "Gili Asahan slope: no page found describing it"
+  },
+  {
+   "id": "odm-k2suqz",
+   "reason": "Gili anyaran - Sunken Island: only a brief unclear listing, no dive facts"
+  },
+  {
+   "id": "odm-0ssycr",
+   "reason": "Rolling Hills: only a location blurb, no depth or features sourced"
+  },
+  {
+   "id": "odm-k00o1p",
+   "reason": "Soul Scuba Reef: a dive centre house reef, no source found"
+  },
+  {
+   "id": "odm-tb4w8i",
+   "reason": "Ikan Party (My Reef): no source found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-vodl0q",
+   "name": "Lean",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Lean is about 5 km south of Jemeluk Bay in Lean village. The dive site entrance is at the river mouth on the north end of the bay. Starting with a sandy slope, heading south for about 100 meters while staying shallow (20m), you’ll reach a series of beautiful walls descending to depths of over 40 meters."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Sandy slope at ~20 m, walls drop below 40 m",
+   "highlights": [
+    {
+     "text": "Series of walls south of the river mouth",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-t2pp2u",
+   "name": "Coral Basket",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/gili-islands-9752460",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Coral Basket is perfect for beginners and advanced divers. With a small wall full of life in the shallows and some beautiful coral ridges in the deeper parts of the divesite."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small shallow wall, deeper coral ridges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-89ojqs",
+   "name": "Deep Turbo",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/gili-islands-9752460",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "A great deep dive just off the east side of Gili Trawangan with spectacular topography. At 30 m this site has a sandy bottom between large sea mounds. These sea mounds range in size and have an interesting variety of overhangs and outcrops, the largest of which go up to about 18 m deep."
+    },
+    "s2": {
+     "url": "https://manta-dive.com/diving-gili-trawangan/gili-dive-sites/",
+     "publisher": "Manta Dive Gili",
+     "kind": "operator",
+     "quote": "Deep Turbo Advanced Divers Drop into the blue and ascend into pristine pinnacles rising from the sandy ocean bottom. … Strong currents attract pelagic species, making it an exciting dive site for experienced divers."
+    },
+    "s3": {
+     "url": "https://www.bluemarlindive.com/gili_dive_sites/",
+     "publisher": "Blue Marlin Dive",
+     "kind": "operator",
+     "quote": "Deep Turbo has always been a favourite where exploring the reef and its marine life gives you a truly fascinating dive. AVG DEPTH: 22M Avg. Depth: 22m; Max Depth: 32m"
+    },
+    "s4": {
+     "url": "https://divinedivers.com/gili-islands-dive-sites-the-complete-guide-with-maps/",
+     "publisher": "Divine Divers",
+     "kind": "operator",
+     "quote": "Deep Turbo Depth: 18–35 metres"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 18,
+     "bottom": 30
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 32
+    },
+    {
+     "ref": "s4",
+     "unit": "m",
+     "top": 18,
+     "bottom": 35
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea mounds with overhangs on a sandy floor",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Spotted eagle rays and reef sharks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents; depth to ~30 m",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Advanced dive off Gili Trawangan's east side: large sea mounds rise from a sandy floor near 30 m, with overhangs and outcrops. Current draws pelagics such as eagle rays and reef sharks, but it needs depth and drift experience.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  },
+  {
+   "id": "odm-8y8n4w",
+   "name": "Biorocks",
+   "sources": {
+    "s1": {
+     "url": "https://manta-dive.com/diving-gili-trawangan/gili-dive-sites/",
+     "publisher": "Manta Dive Gili",
+     "kind": "operator",
+     "quote": "Biorocks Suitable for all levels … Beautiful reef now covers this artificial structure going down to about 18 meters with most of the dense coral in the shallows. Located on the East coast of Gili Trawangan"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/gili-islands-9752460",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "A gentle slope just off the east end of Gili Trawangan … A good muck dive, this is a house reef and was the recent location of a Bio Rock project. A total of 8 artificial reefs were installed that have attracted a variety of marine life."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "muck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Biorock artificial reefs with dense shallow coral",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Gentle slope off Gili Trawangan's east coast where electrified biorock frames have grown into a reef reaching about 18 m, richest in the shallows. Easy for all levels and good for small marine life.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-e3dm1p",
+   "name": "Paradiso / Air Harbour",
+   "sources": {
+    "s1": {
+     "url": "https://manta-dive.com/diving-gili-trawangan/gili-dive-sites/",
+     "publisher": "Manta Dive Gili",
+     "kind": "operator",
+     "quote": "Air Harbour Suitable for all levels Located on the southern tip of Gili Air, the harbor is a great place for muck diving and exploration. You'll see schools of sweet lips, hawks-bill turtle, octopus, pipe fish and more. This is a relatively shallow dive site"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/gili-islands-9752460",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The harbour of Gili Air is home to much of the smaller marine life around the islands. As well as having frogfish, pipefish, seahorses, and other macro life, it is also the home for the famous mandarin fish, seen either on dawn- or dusk dives."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish, pipefish, seahorses, mandarin fish",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Hawksbill turtles and sweetlips",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shallow muck dive in the harbour at the southern end of Gili Air, suitable for all levels. Macro life dominates, with frogfish, pipefish and seahorses, and mandarin fish at dawn or dusk.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-k7oyid",
+   "name": "Meno Slope",
+   "sources": {
+    "s1": {
+     "url": "https://www.almarik-lombok.com/news/10-amazing-dive-sites-around-gili-trawangan-you-need-to-see/",
+     "publisher": "Almarik Lombok",
+     "kind": "operator",
+     "quote": "Meno Slope This slope runs from the west side of Gili Meno towards Gili Trawangan. It runs from 5 to 28 metres and is very sandy. The shallow part of the slope is ideal for beginners"
+    },
+    "s2": {
+     "url": "https://terumbudivers.com/fun-dives-2/dive-sites-gili-islands-lombok/",
+     "publisher": "Terumbu Divers",
+     "kind": "operator",
+     "quote": "Meno slope All level Gili Meno Gentle slope starting from 5 meters to 30 meters. Sandy slope with coral blocks. Usually both green turtles and hawksbill turtles can be seen easily."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 28
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Green and hawksbill turtles",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Sandy slope with coral blocks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Sandy slope off Gili Meno's west side, running from about 5 m to 28-30 m with scattered coral blocks. The shallow part suits beginners, and green and hawksbill turtles are regularly seen.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-z4uvld",
+   "name": "Jammin",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/gili-islands-9752460",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Located on the soutweastern corner of Gili Trawangan, this site features a rubbly slope between 5 and 16 meters, turning into sandy bottom at deeper depths."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 16
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-dlu0jg",
+   "name": "Gili Meno Harbour",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/gili-islands-9752460",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The harbour at Gili Meno is located on a gentle slope with corals and marine life spread out on the dive site. Sea turtles, moray eels, and schools of fusiliers are among some of the marine animals that can be seen along the site. This site is suitable for entry-level scuba divers."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea turtles, moray eels, fusilier schools",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-j73rxj",
+   "name": "Magic Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/gili-islands-9752460",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Magic Reef can be found where the current comes in on the northern side of Gili Meno. This is a great dive site for those looking to drift along the reef. The site is best suited for beginner level divers."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-6za37q",
+   "name": "Batu Putih - Gili Rengit",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/west-nusa-tenggara-9752478",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Ten minutes from Lombok Eco Dive Resort. Topography gently slope with white sands as a bottom. Mostly calm water and mild current and salt water."
+    }
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-ayhy88",
+   "name": "Gili Layar Corner",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/west-nusa-tenggara-9752478",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Gili Layar Corner … Ten minutes from Lombok Eco Dive Resort. Mini wall start from 5m to 20m. White sandy bottom and soft corals. Mild current sometimes can be present on this site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-8csf77",
+   "name": "Gili Gede Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/west-nusa-tenggara-9752478",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Five minutes from Lombok Eco Dive Resort. Nice wall to dive for recreational diver with many things to see. Maximum depth 25m with white sandy bottom."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 25
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-cq5mwh",
+   "name": "Gili Gede Slope",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/west-nusa-tenggara-9752478",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Seven minutes from Lombok Eco Dive Resort. Gentle slope combined with big boomies and healthy soft corals and table corals. Mild current sometimes can be present."
+    }
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Big bommies, soft and table corals",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fcnrsd",
+   "name": "Tapor Tamiyam, Cape Kri, Raja Ampat",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Cape Kri Level : intermediate – Advanced Depth : 3m-40m Current : Mild-Strong … record-breaking 283 species (and growing) recorded in a single 90min dive! The steep slope has absolutely everything on display"
+    },
+    "s2": {
+     "url": "https://www.komodoluxury.com/raja-ampat-dive-sites/",
+     "publisher": "Komodo Luxury",
+     "kind": "operator",
+     "quote": "The reef slopes from the shallows down past recreational limits, stacked with big predatory fish over a wide base of hard and soft coral."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 40
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Record fish counts on a single dive",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sharks, tuna, trevally, bumphead parrotfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Mild to strong current; reef drops past 40 m",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Raja Ampat's best-known reef: a steep slope from the shallows into very deep water, thick with hard and soft coral and big predators. Famous for fish counts; current ranges from mild to strong, so it suits intermediate to advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-sky7x5",
+   "name": "Sauwandarek",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Sawandarek Jetty Snorkelling Friendly Level : All levels Depth : 4m – 20m Current : None to Mild … You start your dive at the jetty making your way down to 14m. One the way down you will encounter beautiful soft and hard corals surrounding metal Manta ray structures"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Sauwandarek … This is one of the main jetties to visit in the Raja Ampat area. You will spend a long time around the jetty. Once you swim away from the jetty, you will be surrounded by schools of fusiliers and amazing reefs."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 4,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Metal manta structures covered in coral",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Fusilier schools beyond the jetty",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Easy jetty dive in Raja Ampat with little or no current, descending past coral-covered metal manta sculptures to about 14 m. Beyond the pilings, fusilier schools and healthy reef reward a long, slow dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-0u40l8",
+   "name": "Melissa’s Garden",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Melissa Garden Snorkelling Friendly Level : All Levels Depth : 5m-30m Current : Mild-Strong"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "One of the more stunning dives sites in raja ampat. The color of the coral garden will blow your mind. Near piaynemo island you will enjoy the marvelous view point."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Vividly coloured coral garden",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Coral garden near Piaynemo, rated one of Raja Ampat's most colourful dives. Rated for all levels, with depth from about 5 to 30 m and current that can range from mild to strong.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-m9s484",
+   "name": "West Mansuar",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "West Mansuar Level : intermediate – Advanced Depth : 5m-35m Current : Mild-Strong"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Start in the sandy and rocky area where you can see nice macro and have some bigger animals passing by in the blue. Then you finish at the tip where the current is strong and bring a lot of fishes. The top coral garden is amazing and you can sometimes see mantas or schools of mobulas passing by."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 35
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro on sand, mantas and mobulas in the blue",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Coral garden on top of the reef",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong current at the tip",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Varied Mansuar dive: sand and rock macro at the start, then a drift to a point where strong current brings fish, with a coral garden on top. Mantas or mobulas sometimes pass; best for intermediate and advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-flfloo",
+   "name": "Biodiversity House Reef",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Biodiversity House reef Diving & Snorkelling Level : All Levels Depth : 3m-35m Current : None – Mild … It’s a gentle sloping fringe reef system and provides wonderful snorkelling and great dives."
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The reef in front of Biodiversity Jetty and continous all the way to Batu Lima starts at 2m dropping down to 20m. The reef has many hidden areas for species to hide"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 2,
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Table corals in the shallows, night-dive critters",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Gentle fringe house reef off the Biodiversity jetty, sloping from about 2 m to 20 m with little current. Soft and table corals fill the shallows, and it is popular for night dives and snorkelling.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-vl1b69",
+   "name": "Yenkoranu",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Yenkoranu … Only 5 minutes far from Soul Scuba divers. This is drift dive during the day, that can bring you toward Cape Kri or bring you up to Soul Scuba’s jetty. Look at the nice coral but also in the blue, where sharks can pass by. This is also a favorite place for night dive!"
+    }
+   },
+   "types": {
+    "value": [
+     "drift",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Passing sharks; popular night dive",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-4r1mjd",
+   "name": "Chicken reef",
+   "sources": {
+    "s1": {
+     "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+     "publisher": "Raja Ampat Biodiversity",
+     "kind": "operator",
+     "quote": "Chicken Reef Level : intermediate – Advanced Depth : 3m-30m Current : Mild-Strong … keep a look out for pipefish, pigmy seahorses, nudibranches, flatworms"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/raja-ampat-9752454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Chicken reef … Large seamount with depth from 3-30m. Amazing coral coverage and very rich for marine life as well. Often strong current which brings a lot of fish and action."
+    },
+    "s3": {
+     "url": "https://papua-diving.com/pioneering-raja-ampat-dive-sites/",
+     "publisher": "Papua Diving",
+     "kind": "operator",
+     "quote": "Chicken Reef is one of the larger reefs in Raja Ampat that can be divided into four smaller dives: chicken reef, chicken bay, sleeping barracuda and surgeonfish slope."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 3,
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s2",
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pipefish, pygmy seahorses, nudibranchs",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Strong current brings fish action",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Large Dampier Strait reef that splits into four separate dives. Dense coral and rich fish life, with macro such as pygmy seahorses on the quieter parts; current is often strong and brings extra action.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   }
+  }
+ ]
+}

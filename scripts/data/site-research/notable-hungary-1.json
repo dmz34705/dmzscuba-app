@@ -1,0 +1,10 @@
+{"batch":"notable-hungary-1","researchedAt":"2026-10-08","skipped":[],
+"sites":[{"id":"x-wikipedia-412","name":"Molnár János Cave",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Moln%C3%A1r_J%C3%A1nos_Cave","publisher":"Wikipedia","kind":"encyclopedia","quote":"The deepest sections reach 100 metres (330 ft)."},
+"s2":{"url":"https://divernet.com/scuba-diving/depths-of-the-city/","publisher":"Divernet","kind":"press","quote":"The deepest sections reach 98 metres (320 ft) … Each diver must be guided to minimise the risk of taking a wrong turn … dive-slots must be reserved, often months in advance"},
+"s3":{"url":"https://mjcave.hu/en/diving/","publisher":"Molnár János Cave dive centre","kind":"operator","quote":"the water is warm (20-28 Celsius degrees) all year round"}},
+"depth":[{"ref":"s1","unit":"m","bottom":100},{"ref":"s2","unit":"m","bottom":98}],
+"types":{"value":["cave"],"refs":["s1"]},
+"waterTemp":{"low":20,"high":28,"unit":"C","note":"thermal-spring water, warm all year","refs":["s3"]},
+"access":{"value":"Guided dives only; slots booked months ahead","refs":["s2"]},
+"summary":{"text":"A flooded thermal-spring cave beneath Budapest, fed by warm water and reaching about 100 m in its deepest sections. Dives are guided and must be booked well ahead.","refs":["s1","s2","s3"]}}]}

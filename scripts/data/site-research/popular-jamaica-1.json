@@ -1,0 +1,26 @@
+{
+ "batch": "popular-jamaica-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-w7om7q",
+   "name": "Montego Bay",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Montego_Bay",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "is the capital of the parish of St. James in Jamaica"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A city and bay, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ],
+ "skipped": []
+}

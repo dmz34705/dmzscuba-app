@@ -1,0 +1,342 @@
+{
+  "batch": "popular-france-5",
+  "researchedAt": "2026-10-09",
+  "skipped": [
+    {
+      "id": "odm-q6mylk",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-paspan",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-4b0jng",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-r3uytc",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-bib1nr",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-5sj261",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-lc3o65",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-fzoxhx",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-nakcjv",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-r5ja8x",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-a5bxds",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-i6u0yu",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-ox9atz",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-gyew5h",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-dsxp0w",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-39vkdt",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-39xs4b",
+      "reason": "no usable page found with site-specific facts"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-520ng2",
+      "sources": {
+        "s1": {
+          "url": "https://www.lagon-travel.com/blog-voyage/caraibes/saint-martin/le-top-des-spots-de-plongee-a-saint-martin",
+          "publisher": "Lagon Travel",
+          "kind": "press",
+          "quote": "une épave d’un remorqueur de 18 mètres de long qui se trouve à 15 mètres sous l’eau"
+        },
+        "s2": {
+          "url": "https://www.im-caraibes.com/ou-plonger-a-saint-martin/",
+          "publisher": "I'm Caraïbes",
+          "kind": "press",
+          "quote": "Tintamarre ajoute une épave de remorqueur entre 15 et 25 mètres selon le mouillage du jour."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 15
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 15,
+          "bottom": 25
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "summary": {
+        "text": "Tugboat wreck about 18 m long off the Tintamarre islet near Saint-Martin, sitting around 15 m and a little deeper depending on the mooring used that day. A boat dive with a step up in difficulty from the easy reef sites.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "Le Remorqueur"
+    },
+    {
+      "id": "odm-v2dtgx",
+      "sources": {
+        "s1": {
+          "url": "https://ouanalaodive.com/en/our-spots/",
+          "publisher": "Ouanalao Dive",
+          "kind": "operator",
+          "quote": "FOURCHUE ISLAND – 0 to 20m"
+        },
+        "s2": {
+          "url": "https://www.bucketlistvilla.com/blog/?p=10306",
+          "publisher": "Bucket List Villa",
+          "kind": "press",
+          "quote": "Fourchue presents an exciting dive where you can swim with rays, barracudas, turtles"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 0,
+          "bottom": 20
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Rays, barracudas and turtles",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Boat dive around Île Fourchue, a rocky islet northwest of St Barts, shelving to roughly 20 m and known for rays, barracudas and turtles.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "ÎLe Fourchue"
+    },
+    {
+      "id": "odm-6bbhpg",
+      "sources": {
+        "s1": {
+          "url": "https://ouanalaodive.com/en/our-spots/",
+          "publisher": "Ouanalao Dive",
+          "kind": "operator",
+          "quote": "COLOMBIER WALL : 0 to 25m … Sometimes there is a little courant on this site"
+        },
+        "s2": {
+          "url": "https://www.tropicalement-votre.com/articles/a-la-decouverte-de-la-reserve-naturelle-de-saint-barthelemy-8643.php",
+          "publisher": "Tropicalement Vôtre",
+          "kind": "press",
+          "quote": "la Pointe du Colombier, son tombant de 25 mètres et sa population abondante de barracudas"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 0,
+          "bottom": 25
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 25
+        }
+      ],
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "s2"
+        ]
+      },
+      "current": {
+        "value": "light",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Abundant barracudas",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Wall dive off Pointe du Colombier on the northwest tip of St Barts, dropping to about 25 m, with a light current at times and plenty of barracudas.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "Le tombant de colombier"
+    },
+    {
+      "id": "odm-yg3vx2",
+      "sources": {
+        "s1": {
+          "url": "https://ouanalaodive.com/en/our-spots/",
+          "publisher": "Ouanalao Dive",
+          "kind": "operator",
+          "quote": "ROCHE ROUBE: 0 to 35 m"
+        },
+        "s2": {
+          "url": "https://www.tropicalement-votre.com/articles/a-la-decouverte-de-la-reserve-naturelle-de-saint-barthelemy-8643.php",
+          "publisher": "Tropicalement Vôtre",
+          "kind": "press",
+          "quote": "depuis lesquels il est souvent possible de croiser des requins, tortues et baleines"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 0,
+          "bottom": 35
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Sharks, turtles and whales are often seen",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "name": "Roche Roube"
+    },
+    {
+      "id": "odm-hyp3nf",
+      "sources": {
+        "s1": {
+          "url": "https://ouanalaodive.com/en/our-spots/",
+          "publisher": "Ouanalao Dive",
+          "kind": "operator",
+          "quote": "KAYALI SHIPWRECK: 25m to 30m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 25,
+          "bottom": 30
+        }
+      ],
+      "types": {
+        "value": [
+          "wreck"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "name": "Kayali (Wreck)"
+    },
+    {
+      "id": "odm-8267g0",
+      "sources": {
+        "s1": {
+          "url": "https://www.plongee-loisir.com/site-de-plongee/2164-passe-saziley-nord-et-cheminee",
+          "publisher": "Plongeur.com",
+          "kind": "press",
+          "quote": "Passe Saziley Nord et cheminée … de 11m à 25m"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 11,
+          "bottom": 25
+        }
+      ],
+      "name": "Passe Saziley"
+    },
+    {
+      "id": "odm-a5e7yk",
+      "sources": {
+        "s1": {
+          "url": "https://www.mayotte-tourisme.com/explorez/le-lagon-un-terrain-de-jeu-unique/profiter-du-lagon/10-plus-beaux-spots-de-plongee-a-mayotte/",
+          "publisher": "Mayotte Tourisme",
+          "kind": "agency",
+          "quote": "La Passe aux Bateaux Nord est plutôt accessible à tous, et descend jusque 40 mètres de profondeur."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 40
+        }
+      ],
+      "name": "Passe bateau nord"
+    },
+    {
+      "id": "odm-8b3zcx",
+      "sources": {
+        "s1": {
+          "url": "https://www.mayotte-tourisme.com/explorez/le-lagon-un-terrain-de-jeu-unique/profiter-du-lagon/10-plus-beaux-spots-de-plongee-a-mayotte/",
+          "publisher": "Mayotte Tourisme",
+          "kind": "agency",
+          "quote": "La Passe aux Bateaux Nord est plutôt accessible à tous, et descend jusque 40 mètres de profondeur. … Au Sud, il vous faut obligatoirement le N2 minimum pour plonger."
+        }
+      },
+      "level": {
+        "value": "intermediate",
+        "refs": [
+          "s1"
+        ]
+      },
+      "name": "Passe bateau sud"
+    }
+  ]
+}

@@ -1,0 +1,531 @@
+{
+ "batch": "popular-caribbean-netherlands-3",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-8qoi28",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-53h9mk",
+   "reason": "only page found places it near Willemstoren, pin is mid-island"
+  },
+  {
+   "id": "odm-ke0zzy",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-cwfac0",
+   "reason": "no consistent source found"
+  },
+  {
+   "id": "odm-3tgjmh",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-o5irnk",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-vj6x8d",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-vxuesa",
+   "reason": "resort house reef name, no source"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-5nnrvv",
+   "name": "Country Garden (14)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/country-garden/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Dive type Boat dive (no shore diving possible) … Depth 7-40 meters … Special feature Unique underwater limestone formations"
+    },
+    "s2": {
+     "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+     "publisher": "Dive Friends Bonaire",
+     "kind": "operator",
+     "quote": "Country Garden (Boat Dive) – Massive coral boulders that you can swim between"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Massive coral boulders to swim between",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Limestone formations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-f7vzss",
+   "name": "South Bay",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/south-bay-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Location South side Klein Bonaire, boat access only … Depth 6 to 25 meters … Current Mild to no current"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-0pf18y",
+   "name": "Bon Bini na Kas (15)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/bon-bini-na-kas/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat only … Depth Maximum 35 meters … Visibility 20-40 meters, average 30 meters"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-rxj6pm",
+   "name": "Corporal Meiss (37)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/corporal-meiss/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Maximum depth 40 meters … Suitable for Experienced divers (rocky access) … Visibility 15-30 meters, average 20 meters … Special feature Natural amphitheater at 25 meter depth"
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Natural amphitheater at 25 meter depth",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-qg50vw",
+   "name": "Bonaventura (G)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/bonaventure/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat … Depth 6-30 meters … Level Intermediate … Current Mild"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-nm62sc",
+   "name": "Hands Off (M)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/hands-off/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Depth 3-40 meters … Current Limited to moderate"
+    },
+    "s2": {
+     "url": "https://bonaire.com/en/dive-sites/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Hands Off Dive Site - Klein Bonaire … Perfect boat dive with drop-off to 37m, cleaning stations and beautiful coral formations"
+    }
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cleaning stations",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Drop-off with coral formations",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5vpg6z",
+   "name": "Rappel (11)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/rappel-dive/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore diving and boat diving possible … Depth 3-50+ meters … Features Steep wall, underwater cave, excellent for photography"
+    }
+   },
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Steep wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Underwater cave",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Excellent for photography",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-x8vvbj",
+   "name": "Monte’s Divi Tree (H)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/montes-divi/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat only … Depth 15-100 feet (5-30 meters) … Visibility 20-40 meters, average 30 meters"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-j3td93",
+   "name": "Punt Vierkant (41)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/punt-vierkant/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Type Shore dive with double reef … Depth Maximum 30 meters"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-4wxeyr",
+   "name": "La Dania’s Leap (10)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/la-danias-leap/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Depth 8-60+ meters"
+    }
+   }
+  },
+  {
+   "id": "odm-3pwpeo",
+   "name": "Sweet Dreams (59)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/sweet-dreams/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore dive from sandy beach … Depth 3-40 meters (suitable for all levels) … Special Sea turtle protected nesting area"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea turtle protected nesting area",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-se3mg9",
+   "name": "Forest (N)",
+   "sources": {
+    "s1": {
+     "url": "https://www.divefriendsbonaire.com/blogs/dive-friends-bonaire-staff-picks-the-best-dive-sites-in-bonaire",
+     "publisher": "Dive Friends Bonaire",
+     "kind": "operator",
+     "quote": "Forest A Lush Underwater Wonderland Boat Dive (Klein Bonaire) | Depth: 25-100 ft | Intermediate … nurse sharks have been spotted … Famous for its stunning black coral formations"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Black coral formations",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nurse sharks near cave at 30 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8hjyet",
+   "name": "Munk’s Haven",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/munks-haven/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat only … Maximum depth 38 meters … Visibility 20-40 meters (average 30m)"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-td0a93",
+   "name": "Ebo’s Reef (B)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/ebos-reef/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Location Klein Bonaire, boat access only … Depth Maximum 25 meters, sandy bottom … Visibility 20-40 meters, average 30 meters"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-dp2jes",
+   "name": "Bloodlet (12)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/bloodlet/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Boat dive only … Depth 5-45 meters … Current Moderate to strong … Visibility 20-40 meters average"
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 40,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Moderate to strong current",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-pbye7p",
+   "name": "Nukove (7)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/nukove/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Access Shore dive from a small sandy beach, stones at the waterline, dive boots recommended … Depth About 5-30 meters (15-100 feet), sloping reef … Difficulty Experienced divers, Advanced Open Water or equivalent recommended"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-nds21b",
+   "name": "Jeannies Glory (48)",
+   "sources": {
+    "s1": {
+     "url": "https://bonaire.com/en/dive-sites/jeannies-glory/",
+     "publisher": "Bonaire.com",
+     "kind": "press",
+     "quote": "Depth 3-30 meters, average 15 meters … Special feature Central sand plateau surrounded by double reef system"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Central sand plateau surrounded by double reef system",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

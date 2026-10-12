@@ -1,0 +1,25 @@
+{
+ "batch": "notable-honduras-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-wikipedia-263",
+   "name": "Utila",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Utila",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "More than eighty diving sites are located around the island."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island with 80+ dive sites",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

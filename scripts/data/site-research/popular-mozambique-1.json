@@ -1,0 +1,1212 @@
+{
+ "batch": "popular-mozambique-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-omy6c4",
+   "reason": "no dedicated non-directory page found"
+  },
+  {
+   "id": "odm-9japkj",
+   "reason": "pin is at Zavora, 40 km south of Tofo's Manta Reef; ambiguous name"
+  },
+  {
+   "id": "odm-szypac",
+   "reason": "no page for the Ponta Fingers"
+  },
+  {
+   "id": "odm-zbd0xk",
+   "reason": "no source found for this name"
+  },
+  {
+   "id": "odm-9ttim4",
+   "reason": "no source found for this name"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-kt4ja2",
+   "name": "Giants Castle",
+   "sources": {
+    "t_giants": {
+     "url": "https://www.tofoscuba.com/giants",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Giants Castle … Depth: 26 - 30+ m Qualification: Advanced + , Nitrox recommended"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "GIANT'S CASTLE Depth: 25 - 30m Distance/Travel Time: 3 km / 5 - 10 min Highlights: This is the site where ANYTHING can happen! Certification Level: Advanced"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_giants",
+     "unit": "m",
+     "bottom": 30,
+     "top": 26
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 30,
+     "top": 25
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "t_giants",
+     "ld"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "t_giants"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "t_giants"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Potato groupers, manta cleaning stations",
+     "refs": [
+      "t_giants",
+      "ld"
+     ]
+    },
+    {
+     "text": "Tornado schools of giant trevally",
+     "refs": [
+      "t_giants",
+      "ld"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Tofo's closest deep site: a long ridge and wall just outside the bay, dived as a drift along the current. Several manta cleaning stations, big groupers and trevally schools make it a favourite, and it is the fallback when currents run strong.",
+    "refs": [
+     "t_giants",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-c6u8bx",
+   "name": "Salon",
+   "sources": {
+    "t_salon": {
+     "url": "https://www.tofoscuba.com/salon",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Salon … Depth: 11 - 16 m Qualification: Open Water"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "SALON Depth: 12 - 16 m Distance/Travel Time: 2 km / 5 min Highlights: Rays / Cleaner Shrimp - hence the name! Certification Level: Open Water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_salon",
+     "unit": "m",
+     "bottom": 16,
+     "top": 11
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 16,
+     "top": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "t_salon",
+     "ld"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "t_salon"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cleaner shrimp, rays, resident green turtles",
+     "refs": [
+      "t_salon",
+      "ld"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small coral outcrop near Tofo beach, used for training, refreshers and night dives. Cleaner shrimp, several ray species, turtles, octopus and lots of macro life sit among its small caves.",
+    "refs": [
+     "t_salon",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-qr1ved",
+   "name": "Fingers",
+   "sources": {
+    "t_fingers": {
+     "url": "https://www.tofoscuba.com/fingers",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Fingers | Tofo Scuba … Depth: 14 - 16 m Qualification: Open water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_fingers",
+     "unit": "m",
+     "bottom": 16,
+     "top": 14
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "t_fingers"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "t_fingers"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Boxer shrimp, leaf fish, nudibranchs, frogfish",
+     "refs": [
+      "t_fingers"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-4xm5xl",
+   "name": "Clownfish",
+   "sources": {
+    "t_clownfish": {
+     "url": "https://www.tofoscuba.com/clownfish",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Clownfish Reef … Depth: 9 - 11 meters Qualification: Discover Scuba … very gentle with no current and surge"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_clownfish",
+     "unit": "m",
+     "bottom": 11,
+     "top": 9
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "t_clownfish"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "t_clownfish"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "t_clownfish"
+    ]
+   }
+  },
+  {
+   "id": "odm-dxw4u7",
+   "name": "Reggies",
+   "sources": {
+    "t_reggies": {
+     "url": "https://www.tofoscuba.com/reggies",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Reggies … Depth: 21 - 27 m Qualification: Advanced"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "REGGIES Depth: 25 - 30m Distance/Travel Time: 15 km / 25 - 35 min Highlights: Leopard Sharks, Pelagic Rays Certification Level: Advanced"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_reggies",
+     "unit": "m",
+     "bottom": 27,
+     "top": 21
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 30,
+     "top": 25
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "t_reggies",
+     "ld"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Leopard sharks in the cave",
+     "refs": [
+      "ld"
+     ]
+    },
+    {
+     "text": "Cleaning stations for mantas and rays",
+     "refs": [
+      "t_reggies"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A northern Tofo reef named for its big cave, usually guarded by a sleeping leopard shark. Green tree corals, cleaning stations and patrolling reef sharks and eagle rays make it a rewarding advanced dive.",
+    "refs": [
+     "t_reggies",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-9rvcv3",
+   "name": "Mikes Cupboard",
+   "sources": {
+    "t_mikes": {
+     "url": "https://www.tofoscuba.com/mikes",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Mike Cupboard … Depth: 14 - 16 m Qualification: Open water"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "MIKE'S CUPBOARD Depth: 14 - 17m Distance/Travel Time: 3.5 km / 10 - 12 min Highlights: Moray Eels & Octopus Certification Level: Open Water"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_mikes",
+     "unit": "m",
+     "bottom": 16,
+     "top": 14
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 17,
+     "top": 14
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "t_mikes",
+     "ld"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "ld"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Moray eels, octopus, nudibranchs",
+     "refs": [
+      "ld"
+     ]
+    },
+    {
+     "text": "Flutefish, crocodilefish, leaf fish",
+     "refs": [
+      "t_mikes"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow, low-profile reef with three large bowls near Tofo, good for beginners and photographers. Morays, rays, batfish and macro life hide in its caves and gullies.",
+    "refs": [
+     "t_mikes",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-ro3ng5",
+   "name": "Hogwarts / Outback",
+   "sources": {
+    "t_hogwarts": {
+     "url": "https://www.tofoscuba.com/hogwarts",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Hogwarts … Depth: 24 - 30+ m Qualification: Advanced"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "HOGWARTS Depth: 23 - 30m Distance/Travel Time: 18 km / 35 - 40 min Highlights: Enormous Green Turtle! Certification Level: Advanced"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_hogwarts",
+     "unit": "m",
+     "bottom": 30,
+     "top": 24
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 30,
+     "top": 23
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "t_hogwarts",
+     "ld"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "t_hogwarts"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "ld"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Very large resident green turtle",
+     "refs": [
+      "ld"
+     ]
+    },
+    {
+     "text": "Frogfish, leaf fish, nudibranchs",
+     "refs": [
+      "ld"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Odd currents; negative entry needed",
+     "refs": [
+      "ld"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A northern wall dive that starts on a pinnacle, with swim-throughs, overhangs and two cleaning stations for mantas. Currents can be tricky, so a negative entry is used.",
+    "refs": [
+     "t_hogwarts",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-fkpgl2",
+   "name": "Sherwood",
+   "sources": {
+    "t_sherwood": {
+     "url": "https://www.tofoscuba.com/sherwood",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Sherwood Forest … Depth: 23 - 30+ m Qualification: Advanced"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "SHERWOOD FOREST Depth: 25 - 30m Distance/Travel Time: 4 km / 10 - 15 min Highlights: Huge Cleaning Station Certification Level: Advanced"
+    },
+    "peri": {
+     "url": "https://www.peri-peridivers.com/category/dive-site/",
+     "publisher": "Peri-Peri Divers",
+     "kind": "operator",
+     "quote": "Sherwood Forest Location: Difficulty: Max-Depth Bottom Time: Feature: Tofo Beach “MILD / HOT” 33m 20 mins"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_sherwood",
+     "unit": "m",
+     "bottom": 30,
+     "top": 23
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 30,
+     "top": 25
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "t_sherwood",
+     "ld"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "ld"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large cleaning station with mantas and rays",
+     "refs": [
+      "t_sherwood",
+      "ld"
+     ]
+    },
+    {
+     "text": "Green tree coral and snapper schools",
+     "refs": [
+      "t_sherwood"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small deep site on the north side of Tofo Bay, built around a cleaning station on top of a rock dome covered in green tree corals. Mantas, rays and tight snapper schools visit; it can only be dived in mild current.",
+    "refs": [
+     "t_sherwood",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-l0o08p",
+   "name": "Marble Arch",
+   "sources": {
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "MARBLE ARCH Depth: 14 - 19 m Distance/Travel Time: 7 km / 15 - 20 min Highlights: Swim-throughs Certification Level: Open Water … named after 3 inter-connected arched swim-throughs"
+    },
+    "peri": {
+     "url": "https://www.peri-peridivers.com/category/dive-site/",
+     "publisher": "Peri-Peri Divers",
+     "kind": "operator",
+     "quote": "Marble Arch Location: Difficulty: Max-Depth Bottom Time: Feature: Tofo Beach “LEMON & HERB” 15m 45 mins"
+    }
+   },
+   "depth": [
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 19,
+     "top": 14
+    },
+    {
+     "ref": "peri",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "ld"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "ld"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Three connected arch swim-throughs",
+     "refs": [
+      "ld"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ge2y4k",
+   "name": "Table Top",
+   "sources": {
+    "t_table-top": {
+     "url": "https://www.tofoscuba.com/table-top",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Table Top | Tofo Scuba … Depth: 24 - 30+ m Qualification: Advanced"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "TABLE TOP Depth: 26 - 34m Distance/Travel Time: 4 km / 5 - 10 min Highlights: Cleaning Station Certification Level: Advanced This deep site is only possible in mild current conditions"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_table-top",
+     "unit": "m",
+     "bottom": 30,
+     "top": 24
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "t_table-top",
+     "ld"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "ld"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cleaning stations; large groupers",
+     "refs": [
+      "t_table-top",
+      "ld"
+     ]
+    },
+    {
+     "text": "Stingrays and honeycomb whiprays on sand",
+     "refs": [
+      "t_table-top"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-3oac87",
+   "name": "Amazon",
+   "sources": {
+    "t_amazon": {
+     "url": "https://www.tofoscuba.com/amazon",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Amazon … Depth: 22 - 28 m Qualification: Advanced"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "AMAZON Depth: 26 - 30 m Distance/Travel Time: 20km / 35 - 45 min Highlights: Sharks, Humpback Whales, Barracuda Certification Level: Advanced"
+    },
+    "peri": {
+     "url": "https://www.peri-peridivers.com/category/dive-site/",
+     "publisher": "Peri-Peri Divers",
+     "kind": "operator",
+     "quote": "Amazon Location: Difficulty: Max-Depth Bottom Time: Feature: Tofo Beach “HOT” 30m 28 mins Manta cleaning station"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_amazon",
+     "unit": "m",
+     "bottom": 28,
+     "top": 22
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 30,
+     "top": 26
+    },
+    {
+     "ref": "peri",
+     "unit": "m",
+     "bottom": 30
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "t_amazon",
+     "ld"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "t_amazon"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Leopard, whitetip and grey reef sharks",
+     "refs": [
+      "t_amazon",
+      "ld"
+     ]
+    },
+    {
+     "text": "Hammerheads at times; whale song in season",
+     "refs": [
+      "ld"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Difficult drift; descend quickly",
+     "refs": [
+      "t_amazon"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Tofo's furthest and most demanding reef, an L-shaped ridge with craters and swim-throughs about 20 km offshore. Good visibility and plenty of sharks, rays and pelagics; the drift can be difficult, so it is for experienced divers.",
+    "refs": [
+     "t_amazon",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-clc1w7",
+   "name": "Simons Town / Chimney",
+   "sources": {
+    "t_simons-town": {
+     "url": "https://www.tofoscuba.com/simons-town",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Simons Town … Depth: 13 - 18 m Qualification: Open Water"
+    },
+    "moz": {
+     "url": "https://www.mozambique.co.za/Dive_Destinations-travel/dive-sites-zavora-tofo-barra.html",
+     "publisher": "Mozambique.co.za",
+     "kind": "press",
+     "quote": "Simons Town is an interesting reef with large chimneys of rock and lots of holes and gullies. … Visibility can go as far as 30 metres (98 feet) and the depth is up to 18 metres (59 feet)."
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_simons-town",
+     "unit": "m",
+     "bottom": 18,
+     "top": 13
+    },
+    {
+     "ref": "moz",
+     "unit": "m",
+     "bottom": 18
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "t_simons-town",
+     "moz"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "moz"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock chimneys with holes and gullies",
+     "refs": [
+      "t_simons-town",
+      "moz"
+     ]
+    },
+    {
+     "text": "Whale sharks sometimes seen",
+     "refs": [
+      "t_simons-town"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shallow reef of large rock chimneys riddled with holes and gullies, suitable for beginners and long relaxed dives. Game fish shoal overhead and whale sharks are occasionally spotted.",
+    "refs": [
+     "t_simons-town",
+     "moz"
+    ]
+   }
+  },
+  {
+   "id": "odm-nbavyc",
+   "name": "EN1",
+   "sources": {
+    "t_en1": {
+     "url": "https://www.tofoscuba.com/en1",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "EN1 | Tofo Scuba … Qualification: Open water + … the only reef in Tofo where its current is strongly effected by tide, and so can only be visited on a slack high tide"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "t_en1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "t_en1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Honeycomb whiprays; crocodilefish, stonefish",
+     "refs": [
+      "t_en1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong tidal current; slack high tide only",
+     "refs": [
+      "t_en1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-299gud",
+   "name": "Office",
+   "sources": {
+    "t_office": {
+     "url": "https://www.tofoscuba.com/office",
+     "publisher": "Tofo Scuba",
+     "kind": "operator",
+     "quote": "Tofo Scuba Office … Depth: 19 - 24 m Qualification: Advanced"
+    },
+    "ld": {
+     "url": "https://www.liquiddiveadventures.com/dive-sites-tofo",
+     "publisher": "Liquid Dive Adventures",
+     "kind": "operator",
+     "quote": "THE OFFICE Depth: 21 - 26m Distance/Travel Time: 15 km / 25 - 35 min Highlights: Slightly shallower profile with good shark chances Certification Level: Advanced"
+    }
+   },
+   "depth": [
+    {
+     "ref": "t_office",
+     "unit": "m",
+     "bottom": 24,
+     "top": 19
+    },
+    {
+     "ref": "ld",
+     "unit": "m",
+     "bottom": 26,
+     "top": 21
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "t_office",
+     "ld"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "t_office"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Leopard and whitetip sharks, potato bass",
+     "refs": [
+      "t_office",
+      "ld"
+     ]
+    },
+    {
+     "text": "Manta cleaning stations on the ledges",
+     "refs": [
+      "t_office"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A classic northern reef of ledges and sandy channels about 15 km offshore, with manta cleaning stations and regular leopard and whitetip sharks. Visibility is often good; current can make it harder.",
+    "refs": [
+     "t_office",
+     "ld"
+    ]
+   }
+  },
+  {
+   "id": "odm-ik6p0u",
+   "name": "Checkers",
+   "sources": {
+    "smoz": {
+     "url": "https://www.mozambique.co.za/Dive_Destinations-travel/southern-mozambique-dive-sites.html",
+     "publisher": "Mozambique.co.za",
+     "kind": "press",
+     "quote": "Checkers in Ponta Bay is a big horseshoe shaped ridge with a depth of 18 metres (59 feet) that would suit Open Water divers."
+    },
+    "phx": {
+     "url": "https://phoenixdivers.co.za/pages/ponta-do-ouro",
+     "publisher": "Phoenix Divers",
+     "kind": "operator",
+     "quote": "10. Checkers Level of dive: Open Water Depth: 15 - 18m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "smoz",
+     "unit": "m",
+     "bottom": 18
+    },
+    {
+     "ref": "phx",
+     "unit": "m",
+     "bottom": 18,
+     "top": 15
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "smoz",
+     "phx"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "smoz"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Potato bass, frogfish, snapper clouds",
+     "refs": [
+      "phx"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A horseshoe-shaped ridge in Ponta Bay at 15-18 m, easy enough for open water divers. Clouds of snappers and fusiliers hang over it, with potato bass, morays, turtles and the odd frogfish.",
+    "refs": [
+     "smoz",
+     "phx"
+    ]
+   }
+  },
+  {
+   "id": "odm-208u5q",
+   "name": "Steves Ledge",
+   "sources": {
+    "phx": {
+     "url": "https://phoenixdivers.co.za/pages/ponta-do-ouro",
+     "publisher": "Phoenix Divers",
+     "kind": "operator",
+     "quote": "11. Steve's Ledge Level of dive: Open Water Depth: 13 - 19m Part of steps reef this area has some lovely Plate Coral with ledges and gullies hiding lots of life, Anemones and their Clownfish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "phx",
+     "unit": "m",
+     "bottom": 19,
+     "top": 13
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "phx"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "phx"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Plate coral, clownfish, rays, grouper",
+     "refs": [
+      "phx"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-7k7vzx",
+   "name": "Kevs Ledge",
+   "sources": {
+    "phx": {
+     "url": "https://phoenixdivers.co.za/pages/ponta-do-ouro",
+     "publisher": "Phoenix Divers",
+     "kind": "operator",
+     "quote": "5. Kev's Ledge Level of dive: Advanced Depth: 19 - 25m The only Wall dive in the Ponta area"
+    },
+    "mal": {
+     "url": "https://www.malongane.com/activities/scuba-diving/advanced-reefs/",
+     "publisher": "Ponta Malongane resort",
+     "kind": "operator",
+     "quote": "Kev’s Ledge 24m"
+    },
+    "smoz": {
+     "url": "https://www.mozambique.co.za/Dive_Destinations-travel/southern-mozambique-dive-sites.html",
+     "publisher": "Mozambique.co.za",
+     "kind": "press",
+     "quote": "Kevs Ledge is only for advanced divers with good drift experience. … Average depth is 24 metres (78 feet). There is a cleaning station and plenty of marine life."
+    }
+   },
+   "depth": [
+    {
+     "ref": "phx",
+     "unit": "m",
+     "bottom": 25,
+     "top": 19
+    },
+    {
+     "ref": "mal",
+     "unit": "m",
+     "bottom": 24
+    },
+    {
+     "ref": "smoz",
+     "unit": "m",
+     "bottom": 24
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "phx",
+     "smoz"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "phx"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "smoz"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hawksbill turtle under the overhang",
+     "refs": [
+      "phx"
+     ]
+    },
+    {
+     "text": "Nudibranchs along the wall; cleaning station",
+     "refs": [
+      "phx",
+      "smoz"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A ridge and wall dive in the Ponta area with a big overhang where hawksbill turtles nap. Divers drift across several levels at about 24 m, so drift experience and advanced certification are expected.",
+    "refs": [
+     "phx",
+     "smoz"
+    ]
+   }
+  },
+  {
+   "id": "odm-gj4ixy",
+   "name": "Pinnicles Ponta Malongane",
+   "sources": {
+    "mal": {
+     "url": "https://www.malongane.com/activities/scuba-diving/advanced-reefs/",
+     "publisher": "Ponta Malongane resort",
+     "kind": "operator",
+     "quote": "Pinnacles 48m Atlantis / Lego 50m"
+    },
+    "phx": {
+     "url": "https://phoenixdivers.co.za/pages/ponta-do-ouro",
+     "publisher": "Phoenix Divers",
+     "kind": "operator",
+     "quote": "14. Pinnacle Level of dive: Advanced (confident diver) Depth: 28 - 45"
+    }
+   },
+   "depth": [
+    {
+     "ref": "mal",
+     "unit": "m",
+     "bottom": 48
+    },
+    {
+     "ref": "phx",
+     "unit": "m",
+     "bottom": 45,
+     "top": 28
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "phx"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Bull, hammerhead and dusky sharks in season",
+     "refs": [
+      "phx"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-j9hupi",
+   "name": "Atlantis",
+   "sources": {
+    "phx": {
+     "url": "https://phoenixdivers.co.za/pages/ponta-do-ouro",
+     "publisher": "Phoenix Divers",
+     "kind": "operator",
+     "quote": "16. Atlantis Level of dive: Advanced (experienced) Depth: 38 - 47m"
+    },
+    "mal": {
+     "url": "https://www.malongane.com/activities/scuba-diving/advanced-reefs/",
+     "publisher": "Ponta Malongane resort",
+     "kind": "operator",
+     "quote": "Atlantis / Lego 50m It’s one of the deeper reefs with a reef structure that reminds us of a sunken, under water city"
+    }
+   },
+   "depth": [
+    {
+     "ref": "phx",
+     "unit": "m",
+     "bottom": 47,
+     "top": 38
+    },
+    {
+     "ref": "mal",
+     "unit": "m",
+     "bottom": 50
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "phx",
+     "mal"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "phx"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Square boulders like a sunken city",
+     "refs": [
+      "mal"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Very unpredictable current; far offshore",
+     "refs": [
+      "phx"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8mwoh6",
+   "name": "Riana’s Arch",
+   "sources": {
+    "mal": {
+     "url": "https://www.malongane.com/activities/scuba-diving/advanced-reefs/",
+     "publisher": "Ponta Malongane resort",
+     "kind": "operator",
+     "quote": "Rianna’s Arch 25m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "mal",
+     "unit": "m",
+     "bottom": 25
+    }
+   ]
+  }
+ ]
+}

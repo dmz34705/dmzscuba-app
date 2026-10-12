@@ -1,0 +1,130 @@
+{
+ "batch": "notable-brazil-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "x-notable-996",
+   "name": "Príncipe de Asturias",
+   "sources": {
+    "s1": {
+     "url": "https://canaltech.com.br/ciencia/conheca-os-maiores-naufragios-no-litoral-de-sao-paulo/",
+     "publisher": "Canaltech",
+     "kind": "press",
+     "quote": "a visibilidade média é de 1,5 metro. … A maior parte do navio está desmantelada , espalhada entre 15 e 35 metros de profundidade."
+    },
+    "s2": {
+     "url": "https://canaltech.com.br/ciencia/conheca-os-maiores-naufragios-no-litoral-de-sao-paulo/",
+     "publisher": "Canaltech",
+     "kind": "press",
+     "quote": "Com fortes correntes marítimas deixando o local agitado mesmo em dias calmos, o mergulho nesse naufrágio é considerado um dos mais difíceis do Brasil"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 15,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 1,
+    "high": 2,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents, twisted wreckage",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "x-wikipedia-461",
+   "name": "Pedra da Risca do Meio Marine State Park",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Pedra_da_Risca_do_Meio_Marine_State_Park",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Depths are 16 to 30 metres (52 to 98 ft) and includes the wreckage of a Bandeirante airplane … Visibility is usually from 15 to 30 metres (49 to 98 ft)."
+    },
+    "s2": {
+     "url": "https://diariodonordeste.verdesmares.com.br/metro/pesquisas-apontam-pelo-menos-200-especies-em-parque-marinho-1.2126725",
+     "publisher": "Diário do Nordeste",
+     "kind": "press",
+     "quote": "em uma profundidade que varia entre 17 e 30 metros"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 16,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 17,
+     "bottom": 30
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 15,
+    "high": 30,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A marine state park of linear rock ridges and sandy bottom about 18 km off Fortaleza, reached by a roughly 50 minute boat ride. Depths run 16 to 30 m with good visibility, and a Bandeirante aircraft wreck acts as an artificial reef.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

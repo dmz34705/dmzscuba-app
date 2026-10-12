@@ -1,0 +1,16 @@
+{"batch":"notable-cyprus-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-1262","reason":"stranded on a reef at surface; planned dive-site scuttling abandoned; no dive facts"}],
+"sites":[
+{"id":"x-wikipedia-100","name":"MS Zenobia",
+"sources":{"s1":{"url":"https://larnakaregion.com/things-do/diving","publisher":"Larnaka Tourism Board","kind":"agency","quote":"Depth: 17 – 42 metres … Visibility: 30 metres … Qualification Required: Advance Open Water (AOW) … She now lies on her port side on a flat bed of sand and rocks."},
+"s2":{"url":"https://wrecksandreefs.com/zen_repo.htm","publisher":"Wrecks and Reefs","kind":"operator","quote":"Due to its size and variations of depths (150ft to 50ft side to side) … the visibility is usually between 50+ to 100+ ft. … with some lorries scattered at the bottom where they came to rest"}},
+"depth":[{"ref":"s1","unit":"m","top":17,"bottom":42},{"ref":"s2","unit":"ft","top":50,"bottom":150}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"level":{"value":"intermediate","refs":["s1"]},
+"vis":{"low":30,"high":30,"unit":"m","refs":["s1"]},
+"highlights":[{"text":"Lorries scattered on the seabed","refs":["s2"]},{"text":"Wreck lying on its port side","refs":["s1"]}],
+"summary":{"text":"A large ro-ro ferry that capsized off Larnaca and rests on her port side on sand. The upper side starts around 17 m and the lowest decks reach about 42 m, with penetration options; a classic Mediterranean wreck dive.","refs":["s1","s2"]}},
+{"id":"x-wikipedia-235","name":"Constandis (wreck)",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Constandis_(wreck)","publisher":"Wikipedia","kind":"encyclopedia","quote":"sits in approximately 24.3 metres (80 ft) of water … a vessel is required to complete the transit to the site"}},
+"depth":[{"ref":"s1","unit":"m","bottom":24.3}],
+"entry":{"value":"boat","refs":["s1"]},"types":{"value":["wreck"],"refs":["s1"]}}]}

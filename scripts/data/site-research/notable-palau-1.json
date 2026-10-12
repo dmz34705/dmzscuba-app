@@ -1,0 +1,12 @@
+{"batch":"notable-palau-1","researchedAt":"2026-10-08","sites":[
+{"id":"x-wikipedia-388","name":"German Channel",
+ "sources":{
+  "s1":{"url":"https://www.mustseespots.com/palau/articles/diving-the-german-channel-palaus-premier-dive-site-guide/","publisher":"Must See Spots","kind":"press","quote":"at depths ranging from 10 to 20 meters (30-65 feet) … Currents are a defining feature of the German Channel. … consistently excellent, often exceeding 20-30 meters (65-100 feet)."},
+  "s2":{"url":"https://www.liveaboard.com/diving/micronesia/german-channel","publisher":"Liveaboard.com","kind":"press","quote":"Diving typically ranges from about 40 to 60 ft (12–18 m) around the cleaning station and channel mouth, … Currents through the channel can be moderate to strong,"}},
+ "depth":[{"ref":"s1","unit":"m","top":10,"bottom":20},{"ref":"s2","unit":"ft","top":40,"bottom":60}],
+ "entry":{"value":"boat","refs":["s1"]},
+ "types":{"value":["reef","drift"],"refs":["s1"]},
+ "current":{"value":"strong","refs":["s2"]},
+ "highlights":[{"text":"Manta ray cleaning stations","refs":["s1","s2"]}],
+ "summary":{"text":"A narrow man-made cut linking Palau's Rock Island lagoons to the open Pacific, dived as a drift or from moorings. Manta rays visiting the cleaning stations are the main draw. Tidal current can be strong, so timing matters.","refs":["s1","s2"]}}
+]}

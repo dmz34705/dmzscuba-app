@@ -1,0 +1,11 @@
+{"batch":"notable-japan-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-868","reason":"target ship sunk in Inland Sea, no depth or dive info"}],
+"sites":[{"id":"x-wikipedia-53","name":"USS Emmons",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/USS_Emmons","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck of Emmons lies in 147 feet (45 m) of water off Okinawa's Kouri Island."},
+"s2":{"url":"https://scubadiverlife.com/diving-uss-emmons/","publisher":"Scuba Diver Life","kind":"press","quote":"sits at 138 feet at the bow and 150 feet at the stern on the seafloor"},
+"s3":{"url":"https://www.ussemmons.org/emmons-found","publisher":"USS Emmons Association","kind":"operator","quote":"Diving at this depth should be accomplished by divers with some technical background … Live and unexploded ammunition is present, use caution when diving on the Emmons."}},
+"depth":[{"ref":"s1","unit":"ft","bottom":147},{"ref":"s2","unit":"ft","bottom":150}],
+"types":{"value":["wreck"],"refs":["s1"]},
+"level":{"value":"advanced","refs":["s3"]},
+"hazards":[{"text":"Live, unexploded ammunition aboard","refs":["s3"]}],
+"summary":{"text":"A WWII destroyer-minesweeper lost to kamikaze attacks, resting at roughly 140-150 ft off Kouri Island, Okinawa. A deep boat dive for advanced or technical-trained divers, with live ordnance still aboard.","refs":["s1","s2","s3"]}}]}

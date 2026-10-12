@@ -1,0 +1,72 @@
+{ "batch": "notable-canada-2", "researchedAt": "2026-10-08", "sites": [
+ { "id": "x-notable-782", "name": "RMS Empress of Ireland",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/RMS_Empress_of_Ireland", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck of Empress of Ireland lies in 22 fathoms (40 m; 132 ft) of water, making it accessible to advanced divers." },
+   "s2": { "url": "https://www.shipwreckworld.com/maps/rms-empress-of-ireland", "publisher": "Shipwreck World", "kind": "press", "quote": "130 ft (39.6 m) … Advanced … This combined with a strong current makes it a difficult diving site." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 40 }, { "ref": "s2", "unit": "m", "bottom": 39.6 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1", "s2"] },
+  "current": { "value": "strong", "refs": ["s2"] },
+  "hazards": [ { "text": "Cold water, strong current, limited visibility", "refs": ["s1"] } ],
+  "summary": { "text": "A liner that sank in the St. Lawrence off Pointe-au-Père in 1914 and lies near 40 m. It is within reach of experienced recreational divers, but cold water, strong currents and poor visibility have made it a dangerous dive.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-wikipedia-242", "name": "HMCS Cape Breton (ARE 100)",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMCS_Cape_Breton_(ARE_100)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Cape Breton sank upright to a depth of 145 feet (44 m)." },
+   "s2": { "url": "https://advanceddivermagazine.com/articles/breton/breton.html", "publisher": "Advanced Diver Magazine", "kind": "press", "quote": "coming to rest as planned in 140 FSW in the waters off of Nanaimo, BC, near Snake Island … the vessel is now extremely popular for penetration dives." }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 145 }, { "ref": "s2", "unit": "ft", "bottom": 140 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "summary": { "text": "A large supply ship sunk as an artificial reef in 2001 near Snake Island off Nanaimo. She sits upright at roughly 43 m, and holes cut before sinking make her popular for penetration dives.", "refs": ["s1", "s2"] }
+ },
+ { "id": "x-notable-1085", "name": "HMCS Annapolis",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMCS_Annapolis_(DDH_265)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck lies upright on the sea floor at a depth of 32 metres (105 ft)." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 32 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-72", "name": "HMCS Nipigon (DDH 266)",
+  "sources": {
+   "s1": { "url": "https://shotlinediving.com/hmcs-nipigon-and-the-creation-of-quebecs-first-artificial-reef/", "publisher": "Shotline Diving", "kind": "operator", "quote": "The wreck rests at a depth of approximately 40 metres (≈131 feet) … making it reachable by advanced recreational and technical divers" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 40 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "advanced", "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-94", "name": "Gunilda",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Gunilda", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Her wreck rests on an even keel in 270 feet (82 m) of water to the lake bottom" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "bottom": 270 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "technical", "refs": ["s1"] }
+ },
+ { "id": "x-wikipedia-67", "name": "115 (barge)",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/115_(barge)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "at a depth of between 40 and 80 feet (12.2 and 24.4 m) of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "ft", "top": 40, "bottom": 80 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-806", "name": "Breadalbane",
+  "sources": {
+   "s1": { "url": "https://www.pc.gc.ca/apps/dfhd/page_nhs_eng.aspx?id=11250", "publisher": "Parks Canada", "kind": "agency", "quote": "is located off Beechey Island, Nunavut well above the Arctic Circle and is the most northerly known shipwreck." }
+  },
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "depthNote": "Sources conflict (30 fathoms vs 100 m)"
+ },
+ { "id": "x-wikipedia-452", "name": "Bowie Seamount",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Bowie_Seamount", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "to 24 m (79 ft) below sea level" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "top": 24 } ]
+ },
+ { "id": "x-wikipedia-439", "name": "Porteau Cove Provincial Park",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/Porteau_Cove_Provincial_Park", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "Porteau Cove is a very popular area for scuba diving, with a series of artificial reefs including two sunken vessels." }
+  },
+  "notDiveSite": { "kind": "area", "reason": "A whole provincial park with several artificial reefs and wrecks, not one site", "refs": ["s1"] }
+ }
+]}

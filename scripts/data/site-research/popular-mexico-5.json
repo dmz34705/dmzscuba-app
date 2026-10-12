@@ -1,0 +1,421 @@
+{
+ "batch": "popular-mexico-5",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-5d2n07",
+   "reason": "single source, no depth"
+  },
+  {
+   "id": "odm-ut449m",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-whv74j",
+   "reason": "depth source 40 m disagrees with catalog 23 m; one source"
+  },
+  {
+   "id": "odm-v2bzeh",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-2njzj1",
+   "reason": "no usable source found"
+  },
+  {
+   "id": "odm-uhi8g7",
+   "reason": "generic name; no site-specific source"
+  },
+  {
+   "id": "odm-r88bz8",
+   "reason": "depth source disagrees; single source"
+  },
+  {
+   "id": "odm-335fho",
+   "reason": "lagoon cenote; depth sources disagree with catalog"
+  },
+  {
+   "id": "odm-lclrfk",
+   "reason": "max depth 14.9 m disagrees with catalog 11 m; cave system"
+  },
+  {
+   "id": "odm-do8dhr",
+   "reason": "no dive source found"
+  },
+  {
+   "id": "odm-lyrgli",
+   "reason": "no source found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-fc03rs",
+   "name": "San Benedicto Canyon",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/san-benedicto-canyon-20383",
+     "publisher": "Scubago",
+     "kind": "press",
+     "quote": "’El Canyon’ is located on the south end of San Benedicto Island within the famed Revillagigedo Islands. … This is an advanced to expert level dive and can only be reached via liveaboard. Expect to see a lot of large pelagics like the giant Pacific manta ray, schooling hammerheads, Galapagos sharks, silky sharks, and dolphins."
+    },
+    "s2": {
+     "url": "https://nautilusliveaboards.com/2025/05/05/the-best-dive-sites-in-socorro/",
+     "publisher": "Nautilus Liveaboards",
+     "kind": "operator",
+     "quote": "The Canyon is Socorro’s premier shark dive, where divers regularly encounter silvertip, Galapagos, silky, tiger, and large schools of scalloped hammerhead sharks."
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Liveaboard access only",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schooling scalloped hammerheads",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Giant Pacific manta rays, silky and Galapagos sharks",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An exposed open-ocean site off the south end of San Benedicto in the Revillagigedo archipelago, reachable only by liveaboard. It is rated advanced to expert and is among the best shark dives in the archipelago, with hammerhead schools, mantas and several shark species.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ny3tvx",
+   "name": "Roca Partida",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/roca-partida-242896",
+     "publisher": "Scubago",
+     "kind": "press",
+     "quote": "Accessible only by liveaboard, this is an advanced dive on a pinnacle that rises from hundreds of feet of water. This site is a magnet for giant Pacific manta rays, schooling hammerhead sharks, humpback whales, whale sharks, dolphins, whitetips"
+    },
+    "s2": {
+     "url": "https://www.divephotoguide.com/underwater-photography-travel/article/iconic-dive-site-roca-partida-socorro-revillagigedo-mexico/",
+     "publisher": "Dive Photo Guide",
+     "kind": "press",
+     "quote": "As you can imagine, currents here can be very strong, but the shape of the island means that one side is normally well protected."
+    }
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Liveaboard access only",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Giant Pacific mantas and schooling hammerheads",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Whitetip reef sharks on the wall",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong currents and surge around the pinnacle",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A remote guano-covered pinnacle in the Revillagigedo archipelago that drops into very deep water and is only dived from liveaboards. Currents can be strong, with one side usually sheltered; expect mantas, hammerheads, whale sharks and whitetips on the ledges.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-jyu5ko",
+   "name": "Catedrales",
+   "sources": {
+    "s1": {
+     "url": "https://www.veracruzadventures.com/diving-sites/",
+     "publisher": "Veracruz Adventures",
+     "kind": "operator",
+     "quote": "Las Catedrales 60 ft 40 ft Coral and Sand Reef Dive Coral Formations. Isla Verde. Ideal for all levels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral formations off Isla Verde",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-6ra4qp",
+   "name": "C-50 Rivapalacios (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/c-50-rivapalacios-wreck-144527",
+     "publisher": "Scubago",
+     "kind": "press",
+     "quote": "The C-50 Rivapalacios is a decommissioned Naval ship from WWII sitting off the coast of Isla Verde and was sunk in 2000 as an artificial reef. Today the 180-foot wreck sits upright in about 90 feet of water and is recommended for advanced divers only."
+    },
+    "s2": {
+     "url": "https://divingaway.com/en/wreck-429/c-50-vicente-riva-palacio",
+     "publisher": "Divingaway",
+     "kind": "press",
+     "quote": "Colonized by corals and sponges, the wreck lies straight on its keel in 27 m depth."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 90
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Upright wartime navy ship sunk in 2000",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Corals and sponges; longnose batfish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A decommissioned wartime navy vessel scuttled in 2000 as an artificial reef off Isla Verde in the Veracruz reef park. It sits upright on its keel at about 27 m, now covered in coral and sponge, and is recommended for advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-btquek",
+   "name": "Caleta de Chon",
+   "sources": {
+    "s1": {
+     "url": "https://divebuddies4life.com/mexico-scuba-fiesta-in-zihuatanejo/",
+     "publisher": "Dive Buddies 4 Life",
+     "kind": "press",
+     "quote": "Caleta de Chon Caleta de Chon is a shallow cove big for macro photography. … Caleta reaches a maximum depth of 14 meters (46 feet) and generally speaking has calm conditions. Due to its shallow and gentle nature, Caleta is an excellent site option for beginners and night diving."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 14
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "none",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Macro life over boulders and small coral patches",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8pob9n",
+   "name": "El Chato",
+   "sources": {
+    "s1": {
+     "url": "https://divebuddies4life.com/mexico-scuba-fiesta-in-zihuatanejo/",
+     "publisher": "Dive Buddies 4 Life",
+     "kind": "press",
+     "quote": "Morros de Chato … what makes this site genuinely eye-catching is the shoals of fish swimming amid the marine life. Like Solitary rock, Morros de Chato is slightly exposed to the open ocean and is a place that can have powerful and unpredictable currents."
+    }
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shoals of fish around large rocks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Powerful, unpredictable currents",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-kl72f8",
+   "name": "La Poza, Xcalak",
+   "sources": {
+    "s1": {
+     "url": "https://stingynomads.com/dive-xcalak/",
+     "publisher": "Stingy Nomads",
+     "kind": "press",
+     "quote": "La Poza Max Depth: 22m Avg Depth: 11m Temp: 25C Viz: 20m La Poza is the most famous dive site in Xcalak known for encounters with schools of tarpon, manatees are also often seen here."
+    },
+    "s2": {
+     "url": "https://xtcdivecenter.com/recreational-diving/",
+     "publisher": "XTC Dive Center",
+     "kind": "operator",
+     "quote": "LA POSA 30-80 FSW A short boat trip from our dock to a mooring just inside Xcalak’s protected reef takes you to “La Poza,” a dive site perfect for beginners and advanced divers alike."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 22
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 80
+    }
+   ],
+   "vis": {
+    "low": 20,
+    "high": 20,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of tarpon sheltering in the reef gaps",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Eagle rays, groupers and barracuda",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A trench-like formation just inside Xcalak's barrier reef, famous for resident tarpon that shelter there from currents offshore. The dive suits a range of levels, with depths from about 9 to 24 m and a chance of eagle rays, groupers and manatees.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

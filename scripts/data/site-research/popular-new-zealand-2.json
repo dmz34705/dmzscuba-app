@@ -1,0 +1,447 @@
+{
+ "batch": "popular-new-zealand-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-jvd6lx",
+   "reason": "business, not a dive site"
+  },
+  {
+   "id": "odm-j2ckmb",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-epvijh",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-cmm4kk",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-424aho",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-1vp9ox",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-cl01bo",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-u0odra",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-hdvrat",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-97j5w9",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-x6ho7l",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-q2zb3g",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-fqpfv7",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-e6fifx",
+   "reason": "no usable non-banned source with site-specific facts"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-mfzns3",
+   "name": "HMNZS Canterbury (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://divenow.co.nz/canterbury-wreck/",
+     "publisher": "Dive Now",
+     "kind": "operator",
+     "quote": "Sitting on the sand at 32m at the bow and 36m at the stern, the upper deck sits between 22m and 27m, and the top of the super structure at 12m … most divers qualified with Advanced Open Water"
+    },
+    "s2": {
+     "url": "https://www.nzonline.org.nz/places/northland-dive-bay-of-islands/",
+     "publisher": "NZ Online Travel (Northland Dive)",
+     "kind": "operator",
+     "quote": "The HMNZS Canterbury lies in Maunganui Bay resting upright at a maximum depth of 38 metres. The upper structure begins at around 14 metres … Multiple openings allow experienced wreck divers to safely explore its interior decks."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 36
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 14,
+     "bottom": 38
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "Former navy frigate scuttled in 2007 as an artificial reef near Cape Brett. She sits upright with the superstructure at roughly 12-14 m and the bow and stern on sand at 32-38 m, so most divers explore the upper decks; interior access is for experienced wreck divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-m4t4qn",
+   "name": "White Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/hmnzs-canterbury-wreck-183982",
+     "publisher": "Scubago (Global Dive / Paihia Dive listings)",
+     "kind": "operator",
+     "quote": "White Reef (★4.6) A wonderful dive site for beginner divers and snorkelers. Named for the white rock it is made of, White Reef has made a substantial recovery within the protection of the Rahui"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Within a rahui (no-take area) protecting the reef",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-or7svt",
+   "name": "Putahataha Island",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/hmnzs-canterbury-wreck-183982",
+     "publisher": "Scubago (Global Dive / Paihia Dive listings)",
+     "kind": "operator",
+     "quote": "Putahataha Island (★4.6) Rocky kelpy reef in 10m of water on the inward side of the island leads out to 18-25m towards the seawards side as one circumnavigates the island. An underwater cavern is a main feature of this dive, approximately 5m wide at the entrance."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Underwater cavern about 5 m wide at entrance",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Kelpy rocky reef circumnavigation",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jnr43p",
+   "name": "Key Hole",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/hmnzs-canterbury-wreck-183982",
+     "publisher": "Scubago (Global Dive / Paihia Dive listings)",
+     "kind": "operator",
+     "quote": "Key Hole (★4.4) Key Hole is named for the shape of the rock seen above the dive site, which is shaped as though a key could slot into it. The dive site is covered by colourful boulders and walls, which sit in 5-20m of water."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Colourful boulders and walls",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-nkmbbp",
+   "name": "The Pump House",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/aut-millennium-centre-255201",
+     "publisher": "Scubago (Global Dive listing)",
+     "kind": "operator",
+     "quote": "The Pump House (★3.4) Lake Pupuke is a lake on the North Shore. It provides consistent and reliable dive conditions year-round. The Pump House has a rock pad that is around 8m - 10m and provides an opportunity for dive training. Off the pad, the depth drops quickly to 40m+"
+    }
+   },
+   "water": {
+    "value": "fresh",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Rock pad at 8-10 m used for training",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Drops to 40 m+ off the pad",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Rock pad 8-10 m, drops to 40 m+ (Lake Pupuke)"
+  },
+  {
+   "id": "odm-6c6793",
+   "name": "Lake Rotoma",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/wharewaka-point-351828",
+     "publisher": "Scubago (NZ Dive School / Dive Whakatane listings)",
+     "kind": "operator",
+     "quote": "Lake Rotoma (★4.2) Great training site and suitable to dive year round. A sunken dingy at 11m is a good objective for the dive. Lake Rotoma was formed within the Rotoma caldera"
+    }
+   },
+   "water": {
+    "value": "fresh",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sunken dinghy at 11 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "season": {
+    "from": 1,
+    "to": 12,
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-mez7ia",
+   "name": "Baxter’s Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/south-bay-kaikoura-144076",
+     "publisher": "Scubago (Daves' Diving Kaikoura listings)",
+     "kind": "operator",
+     "quote": "Baxters Reef is an easy beautiful shore dive, great for training and beginner level divers. The inside of the reef is often protected from swell and wind. The outer is more exposed but offers deeper water (8-16m) and more fish life."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Outer reef is more exposed to swell and wind",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-61xhk9",
+   "name": "Old Wharf",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/south-bay-kaikoura-144076",
+     "publisher": "Scubago (Daves' Diving Kaikoura listings)",
+     "kind": "operator",
+     "quote": "Old Wharf (★4.2) 8 minute drive from Daves Diving Kaikoura behind the Fyffe House. Entry/Exit point is located at the old boat ramp that is deused. Note that Boats launch from the beach do take care."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Boats launch from the beach - take care",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "access": {
+    "value": "Entry via the disused old boat ramp behind Fyffe House",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-6sz587",
+   "name": "South Bay Kaikoura",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/south-bay-kaikoura-144076",
+     "publisher": "Scubago (Daves' Diving Kaikoura listings)",
+     "kind": "operator",
+     "quote": "Great bay to spend the afternoon on the south side of the Kaikoura Peninsula! That whole sheltered area is a great place to spear fish and explore. Depths extend to 14m in high tide in some areas. Plenty of Kaikoura/Aotearoa Native costal fish live in this kelp bay."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Butterfish and native reef fish in kelp bay",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Stingrays rest among the rocks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ooe1lv",
+   "name": "SAIL ROCK - GMI",
+   "sources": {
+    "s1": {
+     "url": "https://www.divepacific.co.nz/post/dive-destination-mercury-bay-and-surrounding-area",
+     "publisher": "Dive Pacific",
+     "kind": "press",
+     "quote": "Sail Rock Top of Great Mercury Island, 0 -16m. Good flat country with weed covered boulders for crayfish. … A beginners dive but can be exposed to swells and strong winds."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Exposed to swell and strong winds",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Weed-covered boulders with crayfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-04yvg4",
+   "name": "Acacia Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/wharewaka-point-351828",
+     "publisher": "Scubago (NZ Dive School / Dive Whakatane listings)",
+     "kind": "operator",
+     "quote": "Acacia Bay (★3.9) Great site for training, has some great cliff faces and a circular rock structure made by divers as a reference point. Bottom topography can be silted if disturbed, good buoyancy is a must at this site."
+    }
+   },
+   "highlights": [
+    {
+     "text": "Cliff faces and a diver-made reference ring",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Silts up easily - good buoyancy needed",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

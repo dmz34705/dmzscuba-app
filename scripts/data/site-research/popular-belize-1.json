@@ -1,0 +1,543 @@
+{
+ "batch": "popular-belize-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-13bh3x",
+   "reason": "generic area name; no site-specific source"
+  },
+  {
+   "id": "odm-7fkls6",
+   "reason": "only a blog with implausible depths and banned directories"
+  },
+  {
+   "id": "odm-q0t6g5",
+   "reason": "only directories (scubago/lonelyplanet blocked)"
+  },
+  {
+   "id": "odm-f8t83k",
+   "reason": "only directories; not the same as Cypress Tunnels"
+  },
+  {
+   "id": "odm-223iuz",
+   "reason": "only one directory"
+  },
+  {
+   "id": "odm-58zhir",
+   "reason": "no page describing the reserve boundaries"
+  },
+  {
+   "id": "odm-1dyplj",
+   "reason": "no usable source for Long Caye Wall"
+  },
+  {
+   "id": "odm-tcqk4e",
+   "reason": "no usable source for Long Caye Ridge"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-v7lae4",
+   "name": "Esmeralda Canyon",
+   "sources": {
+    "s1": {
+     "url": "https://www.sandypointresorts.com/blog/roundup-best-scuba-diving-sites-belize/",
+     "publisher": "Sandy Point Resorts",
+     "kind": "operator",
+     "quote": "Esmerelda The Shark and Ray Alley for divers, this has been a feeding site for over 30 years … so divers can see the nurse sharks in all their glory"
+    },
+    "s2": {
+     "url": "https://www.backpackerswanderlust.com/diving-in-ambergris-caye-belize/",
+     "publisher": "Backpackers Wanderlust",
+     "kind": "press",
+     "quote": "Esmeralda Canyons … a dive site for more experienced divers, as it involves navigating through deep canyons and swim-throughs in the reef … large groupers, snappers, barracudas, moray eels, nurse sharks"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Nurse sharks at a long-running feeding site",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Groupers, snappers, barracuda and moray eels in deep canyons",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Deep canyons and swim-throughs suit experienced divers",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Canyon dive off Ambergris Caye near the Shark Ray Alley area, with deep cuts and swim-throughs best for experienced divers. Nurse sharks, groupers, snappers and morays are the main sights.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-kdbd4e",
+   "name": "Tackle Box",
+   "sources": {
+    "s1": {
+     "url": "https://www.sandypointresorts.com/blog/roundup-best-scuba-diving-sites-belize/",
+     "publisher": "Sandy Point Resorts",
+     "kind": "operator",
+     "quote": "Tackle Box … The maximum depth on this dive can reach 100 feet … Caribbean Reef Sharks are common, as well as Nurse Sharks, Spotted Eagle Rays"
+    },
+    "s2": {
+     "url": "https://paradisemanagement.group/things-to-do/diving/",
+     "publisher": "Paradise Management Group",
+     "kind": "operator",
+     "quote": "Tackle Box Canyons … a spectacular intermediate site of steep grooves, deep narrow canyons with vertical walls, caverns and tunnels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "cavern"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyons, caverns and tunnels",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Caribbean reef sharks, nurse sharks and eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Canyon-and-groove reef about a mile off San Pedro with vertical walls, caverns and tunnels, dropping to around 30 m. Reef and nurse sharks and eagle rays are regularly seen; rated intermediate.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-pplaug",
+   "name": "Tres Cocos Canyons",
+   "sources": {
+    "s1": {
+     "url": "https://www.sandypointresorts.com/blog/roundup-best-scuba-diving-sites-belize/",
+     "publisher": "Sandy Point Resorts",
+     "kind": "operator",
+     "quote": "Tres Cocos … Tres Cocos is a spur-and-groove reef with deep and locally narrow canyons running perpendicular to the reef line … This is the spot where the sea turtles can be seen during the mating season"
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sea turtles during mating season",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Deep, narrow canyons cutting across the reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8yhnxr",
+   "name": "Mexico Rocks",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Mexico_Rocks",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Mexico Rocks is a shallow patch reef complex located off the far northern tip of Ambergris Caye … about 2.5 to 5 metres (8 to 16 ft) deep … 17.9892°N 87.9058°W"
+    },
+    "s2": {
+     "url": "https://www.sandypointresorts.com/blog/roundup-best-scuba-diving-sites-belize/",
+     "publisher": "Sandy Point Resorts",
+     "kind": "operator",
+     "quote": "Mexico Rocks … The water is on average 10-12 feet deep with excellent visibility inside the reef … over 100 clusters of massive boulder corals"
+    },
+    "s3": {
+     "url": "https://www.portofinobelize.com/ambergris-caye-belize-diving-tours",
+     "publisher": "Portofino Beach Resort Belize",
+     "kind": "operator",
+     "quote": "Mexico Rocks, located right in front of Portofino Beach Resort Belize, is basically a cluster of coral heads … The shallow conditions and favorable light are perfect for underwater photography"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 2.5,
+     "bottom": 5
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Boulder coral heads in shallow water",
+     "refs": [
+      "s2",
+      "s3"
+     ]
+    },
+    {
+     "text": "Good light for underwater photography",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shallow patch-reef complex off the northern tip of Ambergris Caye, a marine protected area of about 100 boulder-coral clusters in only a few metres of water. Good visibility and light make it popular for photography and snorkeling.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "position": {
+    "at": [
+     17.9892,
+     -87.9058
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-dpdvib",
+   "name": "Turneffe Atoll",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Turneffe_Atoll",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Turneffe Atoll is located southeast of Ambergris Caye and Caye Caulker … It is approximately 30 miles (48 kilometres) long and 10 miles (16 kilometres) wide, making it the largest coral atoll in Belize"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole atoll about 48 km long, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-mg39b5",
+   "name": "Saint George’s Caye",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Saint_George%27s_Caye",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "St. George's Caye … is an island in the Caribbean Sea, eight miles east of Belize City"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "An island, not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-lfhela",
+   "name": "San Pedro - Belize",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/San_Pedro_Town",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "San Pedro is a town on the southern part of the island of Ambergris Caye in the Belize District of the nation of Belize"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "A town on Ambergris Caye, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-48g2vj",
+   "name": "Half Moon Caye Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.sandypointresorts.com/blog/roundup-best-scuba-diving-sites-belize/",
+     "publisher": "Sandy Point Resorts",
+     "kind": "operator",
+     "quote": "Half Moon Caye Wall Enjoy a drift dive along this spectacular wall to find Caribbean reef sharks, nurse sharks and a variety of rays"
+    },
+    "s2": {
+     "url": "https://paradisemanagement.group/things-to-do/diving/",
+     "publisher": "Paradise Management Group",
+     "kind": "operator",
+     "quote": "Half Moon Caye … The most colorful wall dive in the world … hidden tunnels of neon sponges"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Caribbean reef sharks, nurse sharks and rays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Tunnels of neon sponges and canyons",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Drift dive along the celebrated wall of Half Moon Caye on Lighthouse Reef, known for vivid sponges, canyons and tunnels plus reef sharks, nurse sharks and rays.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-u5ic8m",
+   "name": "Long Caye Aquarium",
+   "sources": {
+    "s1": {
+     "url": "https://www.sandypointresorts.com/blog/roundup-best-scuba-diving-sites-belize/",
+     "publisher": "Sandy Point Resorts",
+     "kind": "operator",
+     "quote": "The Aquarium at Long Caye … Highlight species include sea feathers and lace coral"
+    },
+    "s2": {
+     "url": "https://paradisemanagement.group/things-to-do/diving/",
+     "publisher": "Paradise Management Group",
+     "kind": "operator",
+     "quote": "the Aquarium lies on Long Caye just in front of Lighthouse Reef. Known for its table-top formation and steep 90-degree wall drop, this is an easy shallow drift dive with high visibility"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Table-top formation and steep wall",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Sea feathers and lace coral",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Wall at Long Caye on Lighthouse Reef with a table-top top and steep drop. An easy drift dive with high visibility, usually the third stop of a Blue Hole day trip.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-3h1iv3",
+   "name": "Great Blue Hole",
+   "sources": {
+    "s1": {
+     "url": "https://www.sandypointresorts.com/blog/roundup-best-scuba-diving-sites-belize/",
+     "publisher": "Sandy Point Resorts",
+     "kind": "operator",
+     "quote": "The Great Blue Hole … as you descend to 130 feet in this sunken cave … stalagmites and stalactites up to 30 feet in length"
+    },
+    "s2": {
+     "url": "https://paradisemanagement.group/things-to-do/diving/",
+     "publisher": "Paradise Management Group",
+     "kind": "operator",
+     "quote": "this deep dive requires experience and a PADI advanced divers’ certification"
+    },
+    "s3": {
+     "url": "https://en.wikipedia.org/wiki/Great_Blue_Hole",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Great Blue Hole is a large marine sinkhole off the coast of Belize … 124 m (407 ft) deep"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "bottom": 130
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large stalactites and stalagmites in the sinkhole",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Circular marine sinkhole on Lighthouse Reef, 124 m deep. Advanced divers descend to about 40 m (130 ft) to see big stalactites, with very limited bottom time.",
+    "refs": [
+     "s1",
+     "s3",
+     "s2"
+    ]
+   },
+   "depthNote": "Sinkhole is 124 m deep; recreational dives go to about 40 m (130 ft)"
+  },
+  {
+   "id": "odm-udeaxd",
+   "name": "Mermaid’s Lair",
+   "sources": {
+    "s1": {
+     "url": "https://www.backpackerswanderlust.com/diving-in-ambergris-caye-belize/",
+     "publisher": "Backpackers Wanderlust",
+     "kind": "press",
+     "quote": "Mermaids Lair Mermaid’s Lair is named after a large cavern … the depth ranges from 6 to 18 meters … The visibility is usually good, around 18 to 24 meters … green moray eels, lionfish, nurse sharks"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 18
+    }
+   ],
+   "vis": {
+    "low": 18,
+    "high": 24,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Green moray eels, lionfish and nurse sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jx25hx",
+   "name": "Mayan Princess House Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.backpackerswanderlust.com/diving-in-ambergris-caye-belize/",
+     "publisher": "Backpackers Wanderlust",
+     "kind": "press",
+     "quote": "Mayan Princess Dive Site … a coral reef that drops off into a wall, where divers can see large sponges, sea fans, gorgonians … We had a nurse shark follow us the entire time on this dive"
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large sponges, sea fans and gorgonians on the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nurse sharks and reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

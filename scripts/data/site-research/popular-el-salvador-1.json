@@ -1,0 +1,26 @@
+{
+ "batch": "popular-el-salvador-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "odm-p70eoy",
+   "sources": {
+    "s1": {
+     "url": "https://es.wikipedia.org/wiki/Lago_de_Ilopango",
+     "publisher": "Wikipedia (es)",
+     "kind": "encyclopedia",
+     "quote": "El lago de Ilopango es un lago de origen volcánico en El Salvador"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole volcanic lake (72 km2, ~230 m deep), not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "Lago Llopango"
+  }
+ ]
+}

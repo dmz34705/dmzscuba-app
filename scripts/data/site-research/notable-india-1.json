@@ -1,0 +1,164 @@
+{
+ "batch": "notable-india-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "x-notable-1032",
+   "reason": "INS Khukri: only one source gives depth (~80 m, technical) and sources conflict on location (40 vs 100 nm off Diu)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "x-wikipedia-398",
+   "name": "Viringili (Maliku Atoll)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Viringili_(Maliku_Atoll)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Villingili is an uninhabited islet in Lakshadweep, India."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Uninhabited islet, not a dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-420",
+   "name": "Bangaram Atoll",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Bangaram_Atoll",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Bangaram is an atoll in the Union Territory of Lakshadweep, India."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole atoll, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-413",
+   "name": "Kadmat Island",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Kadmat_Island",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Kadmat Island, also known as Cardamom Island, is a coral island belonging to the Amindivi subgroup"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole island, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-405",
+   "name": "Bassas de Pedro",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Bassas_de_Pedro",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "There are no emergent cays or islands. The general depth ranges from 46 to 50 meters"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "130 km long submerged bank, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-406",
+   "name": "Sesostris Bank",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Sesostris_Bank",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Sesostris Bank is about 22 km in diameter."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "22 km submerged bank, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-407",
+   "name": "Cora Divh",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Cora_Divh",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Cora Divh is 42 km long southwest"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "42 km submerged bank, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-411",
+   "name": "Angria Bank",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Angria_Bank",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "its dimensions are 40 kilometres (25 mi) from north to south and 15 kilometres (9 mi) from east to west"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "40 x 15 km bank, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-wikipedia-395",
+   "name": "Gulf of Kutch",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/Gulf_of_Kutch",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "The Gulf of Kutch Marine National Park and Sanctuary (MNPS) was established in 1980"
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole gulf / marine park, not a single site",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

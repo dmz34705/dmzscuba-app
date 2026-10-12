@@ -1,0 +1,560 @@
+{
+ "batch": "popular-united-states-virgin-islands-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-6470gn",
+   "reason": "name only as Three Amigos on pier page; no separate facts"
+  },
+  {
+   "id": "odm-315q8w",
+   "reason": "no usable non-banned source"
+  },
+  {
+   "id": "odm-xew58s",
+   "reason": "no usable non-banned source"
+  },
+  {
+   "id": "odm-8kiid3",
+   "reason": "no usable non-banned source"
+  },
+  {
+   "id": "odm-65brg8",
+   "reason": "no usable non-banned source"
+  },
+  {
+   "id": "odm-hdecpo",
+   "reason": "only unnamed barges on operator page"
+  },
+  {
+   "id": "odm-9b4mmt",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-505cgx",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-cn0brj",
+   "reason": "no usable non-banned source"
+  },
+  {
+   "id": "odm-lr2s5i",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-64hvwp",
+   "reason": "no usable source beyond Cartanza"
+  },
+  {
+   "id": "odm-wr4u0a",
+   "reason": "no usable source"
+  },
+  {
+   "id": "odm-ep3f0a",
+   "reason": "no depth stated"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-33ctmu",
+   "name": "Frederiksted Pier",
+   "sources": {
+    "s1": {
+     "url": "https://www.gotostcroix.com/discover/dive-sites/frederiksted-pier/",
+     "publisher": "GoToStCroix (USVI tourism)",
+     "kind": "agency",
+     "quote": "Frederiksted Pier is an easy dive for all levels of divers, even those taking a Discover Scuba course. … Starting from shore (sea level) up to 90 feet deep at the far end of the Pier, averaging 25 feet"
+    },
+    "s1b": {
+     "url": "https://www.gotostcroix.com/discover/dive-sites/frederiksted-pier/",
+     "publisher": "GoToStCroix (USVI tourism)",
+     "kind": "agency",
+     "quote": "Conditions are typically calm with great visibility up to about 80 feet! … you cannot dive the pier when a cruise ship is in port."
+    },
+    "s2": {
+     "url": "https://stcroixtourism.com/scuba/st_croix_dive_sites.htm",
+     "publisher": "St. Croix Tourism",
+     "kind": "press",
+     "quote": "The Fredericksted Pier: The old Frederiksted pier is one of the best macro dives in the world and is easily"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 90
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 0,
+    "high": 80,
+    "unit": "ft",
+    "refs": [
+     "s1b"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "World-class macro life on sponge-covered pilings",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Closed to diving when a cruise ship is in port",
+     "refs": [
+      "s1b"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Old pier pilings on St. Croix's west coast, dived from the pier or the shore. Mostly shallow, deepening toward the far end, it is encrusted with sponges and coral and suited to every level, including night dives.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-17xl14",
+   "name": "Cane Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.gotostcroix.com/discover/dive-sites/cane-bay-wall/",
+     "publisher": "GoToStCroix (USVI tourism)",
+     "kind": "agency",
+     "quote": "the Cane Bay Wall (also known as … has something for every level of diver. … Visibility ranges from about 20 feet to 60 feet"
+    },
+    "s1b": {
+     "url": "https://www.gotostcroix.com/discover/dive-sites/cane-bay-wall/",
+     "publisher": "GoToStCroix (USVI tourism)",
+     "kind": "agency",
+     "quote": "This dive site can be accessed by dive boat or by shore."
+    },
+    "s2": {
+     "url": "https://stcroixtourism.com/scuba/st_croix_dive_sites.htm",
+     "publisher": "St. Croix Tourism",
+     "kind": "press",
+     "quote": "Cane Bay: This by far the most popular shore dive as well as one of the most popular boat dives."
+    }
+   },
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s1b",
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 20,
+    "high": 60,
+    "unit": "ft",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sand chutes through coral gardens to a wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "depthNote": "Wall begins near 26-40 ft and drops past 3,000 ft",
+   "summary": {
+    "text": "A wall off Cane Bay Beach on St. Croix's north shore, reached from the beach or by boat. Coral gardens and sand chutes lead to a sheer drop-off that suits divers of all levels.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-24x4mh",
+   "name": "North Star",
+   "sources": {
+    "s1": {
+     "url": "https://stcroixtourism.com/scuba/st_croix_dive_sites.htm",
+     "publisher": "St. Croix Tourism",
+     "kind": "press",
+     "quote": "North star: Located just off shore from the site of the old sugar plantation of the same name. You will find an almost vertical drop off that starts in about 25 feet of water"
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Danish anchor embedded in the wall at about 60 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-fz3c5w",
+   "name": "Shallow Wrecks at Butler Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.gotostcroix.com/discover/dive-sites/shallow-wrecks-at-butler-bay/",
+     "publisher": "GoToStCroix (USVI tourism)",
+     "kind": "agency",
+     "quote": "The deepest point of these wrecks is the Virgin Islander , which sits in a bout 70 feet of water. Suffolk Maid sits at a depth of 60 feet, and Northwind is located at an average depth of 55 feet."
+    },
+    "s1b": {
+     "url": "https://www.gotostcroix.com/discover/dive-sites/shallow-wrecks-at-butler-bay/",
+     "publisher": "GoToStCroix (USVI tourism)",
+     "kind": "agency",
+     "quote": "This dive site is best accessed by boat. … Fairly calm and sheltered from the northerly swells, but a slight current is to be expected."
+    },
+    "s2": {
+     "url": "https://stcroixtourism.com/scuba/st_croix_dive_sites.htm",
+     "publisher": "St. Croix Tourism",
+     "kind": "press",
+     "quote": "The wrecks of the Agiers Habitat, Suffolk Maid, Northwind and Virgin Islander are in water 40-65 feet deep."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 55,
+     "bottom": 70
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1b"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1b"
+    ]
+   },
+   "vis": {
+    "low": 100,
+    "high": 200,
+    "unit": "ft",
+    "refs": [
+     "s1b"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral-encrusted wrecks with schooling reef fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Three wrecks (trawler Suffolk Maid, tug Northwind, oil barge Virgin Islander) lying close together in Butler Bay at about 55-70 ft. Best by boat; slight current, good visibility and heavy coral growth.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ld7hfa",
+   "name": "Armageddon",
+   "sources": {
+    "s1": {
+     "url": "https://stcroixtourism.com/scuba/st_croix_dive_sites.htm",
+     "publisher": "St. Croix Tourism",
+     "kind": "press",
+     "quote": "Armageddon sunk in 100 feet of water just south of the others in Butler Bay."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 100,
+     "bottom": 100
+    }
+   ]
+  },
+  {
+   "id": "odm-t0ka4w",
+   "name": "Cow Rock",
+   "sources": {
+    "s1": {
+     "url": "https://www.aadivers.com/scubadivesites.php",
+     "publisher": "Admiralty Dive Center (AA Divers)",
+     "kind": "operator",
+     "quote": "Cow Rock has a series of swim-through structures with any number of cool critters residing in the crevices and a maximum depth of 45 feet."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 45
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Swim-throughs with lobsters and spotted drum",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-4ndkfq",
+   "name": "Calf Rock",
+   "sources": {
+    "s1": {
+     "url": "https://www.aadivers.com/scubadivesites.php",
+     "publisher": "Admiralty Dive Center (AA Divers)",
+     "kind": "operator",
+     "quote": "Calf Rock is right next to Cow Rock but it is a totally different dive site. Calf has lots of ledges to look under and crevices to peek into"
+    },
+    "s2": {
+     "url": "https://reefsmartguides.com/?p=20055",
+     "publisher": "Reef Smart Guides",
+     "kind": "press",
+     "quote": "Calf Rock is a popular dive and snorkel site off the southeast coast of St. Thomas in the USVI. … With a maximum depth of less than 50 feet, this sites is suitable for all divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 50
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ledges and crevices with green moray and lobster",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A rock formation off St. Thomas's southeast coast, paired with neighbouring Cow Rock. Undercut ledges and crevices hold morays and lobsters; shallow enough for all divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-jqxl2g",
+   "name": "Stragglers' Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.aadivers.com/scubadivesites.php",
+     "publisher": "Admiralty Dive Center (AA Divers)",
+     "kind": "operator",
+     "quote": "Stragglers is an assortment of rocks that straggle off of Greater St. James. This 40' dive consists of canyons that weave through out the rocks."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 40
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Canyons with eels, octopus, lobster, eagle rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-o96x2j",
+   "name": "Packet Rock (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.aadivers.com/scubadivesites.php",
+     "publisher": "Admiralty Dive Center (AA Divers)",
+     "kind": "operator",
+     "quote": "Packet rock is out in the middle of the cut between St. Thomas and Buck Island, right out in front of Bolongo Bay. The rocks come within a few feet of the surface and go down to about 50 feet."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 3,
+     "bottom": 50
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Many barracuda around the rocks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-y74gl7",
+   "name": "Wye Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.aadivers.com/scubadivesites.php",
+     "publisher": "Admiralty Dive Center (AA Divers)",
+     "kind": "operator",
+     "quote": "Right off of Buck Island Cove is Wye Reef. Such named, because the wreck of the sister ship to the RMS Rhone sank on that reef. There's no wreckage left, but the reef is fantastic."
+    }
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Reef beside Buck Island Cove; no wreckage remains",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-qsdguq",
+   "name": "Coral Bowl",
+   "sources": {
+    "s1": {
+     "url": "https://www.aadivers.com/scubadivesites.php",
+     "publisher": "Admiralty Dive Center (AA Divers)",
+     "kind": "operator",
+     "quote": "Coral Bowl or as we locally call it \"Joe's Jam\" is a cathedral of coral. Our max depth here is 80 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 80
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Amphitheater of coral with sea fans at 20 ft",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5nxka7",
+   "name": "Cartanza Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://www.aadivers.com/scubadivesites.php",
+     "publisher": "Admiralty Dive Center (AA Divers)",
+     "kind": "operator",
+     "quote": "The Cartanza Sr. is split into 3 pieces all throughout Buck Island Cove. We adventure into 40 feet to snorkel and dive this old shipping vessel where you can even see the engines still intact!"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 0,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wreck in three pieces with engines intact",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

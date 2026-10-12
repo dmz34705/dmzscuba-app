@@ -1,0 +1,231 @@
+{
+ "batch": "popular-honduras-4",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-2zdd8r",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-6s8z0u",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-7m6ylo",
+   "reason": "generic name, no source"
+  },
+  {
+   "id": "odm-qh2iio",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-cqrbsz",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-babk6s",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-l8hret",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-s6o86k",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-98ipek",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-r0cvu5",
+   "reason": "no usable non-directory source"
+  },
+  {
+   "id": "odm-sommmx",
+   "reason": "no source found; pin seafloor 77-96 m looks wrong"
+  },
+  {
+   "id": "odm-worjj6",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-2vefev",
+   "reason": "pin at Cochinos, source names a Utila site; no match"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-x73gpg",
+   "name": "Don Quickset",
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Don Quickset The top of the reef is at 10-15 ft and the wall then drops down to 50 ft with a canyon-like channel that bottoms out in a large sandy area at 70 ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyon-like channel through the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nurse sharks, southern stingrays, tarpon, turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-h44ua4",
+   "name": "CJ’s Dropoff",
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "CJ's Drop Off The site is known for its impressively steep wall drop-off down to below 140 ft+ … The top of the reef ranges from 20 ft to 45 ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 140
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Steep wall dropping below 140 ft",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Eagle rays, barracuda, morays and turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-a3hbbh",
+   "name": "Blackish Point",
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "Blackish Point The site is typically a one-way \"drift dive\" with mild current. The top of the reef is at 35 ft … has a very interesting topography with lots of crevices, overhangs and caves … slopes to 90 ft"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 90
+    }
+   ],
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Crevices, overhangs and caves along the wall",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Large midnight parrotfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-bcp74p",
+   "name": "Diamond Cay",
+   "sources": {
+    "s1": {
+     "url": "https://www.wediveutila.com/utila-dive-sites",
+     "publisher": "We-Dive Utila",
+     "kind": "operator",
+     "quote": "The top of the reef is around 20 ft and after crossing a large sandy area at 30 ft the wall then drops down to around 100 ft+ … Diamond Cay is known for the diversity of the corals"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Diverse corals; critters in sand and shallows",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

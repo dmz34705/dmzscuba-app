@@ -1,0 +1,19 @@
+{
+ "batch": "popular-mozambique-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-h649gt",
+   "reason": "no source found for this site name near the pin"
+  },
+  {
+   "id": "odm-0sq1wx",
+   "reason": "no source found for this site name near the pin"
+  },
+  {
+   "id": "odm-mx4qyn",
+   "reason": "no source found for this site name near the pin"
+  }
+ ],
+ "sites": []
+}

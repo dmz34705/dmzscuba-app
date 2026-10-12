@@ -1,0 +1,23 @@
+{
+ "batch": "popular-chile-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-bo4hox",
+   "reason": "only banned directories (divessi) found"
+  },
+  {
+   "id": "odm-8la6my",
+   "reason": "only banned directories (divessi) found"
+  },
+  {
+   "id": "odm-uuhm1v",
+   "reason": "only banned directories (divessi) found"
+  },
+  {
+   "id": "odm-xgtghx",
+   "reason": "only banned directories (divessi) found"
+  }
+ ],
+ "sites": []
+}

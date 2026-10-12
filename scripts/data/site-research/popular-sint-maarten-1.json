@@ -1,0 +1,245 @@
+{
+ "batch": "popular-sint-maarten-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-u6kq63",
+   "name": "Carib Cargo (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitstmaarten.com/divers-delight/",
+     "publisher": "Visit St. Maarten (tourist office)",
+     "kind": "agency",
+     "quote": "Carib Cargo , a popular dive site, is an old interisland trader that sits upright in about 70 feet of water."
+    },
+    "s2": {
+     "url": "https://thescubashopsxm.com/dive-sites-of-st-maarten/",
+     "publisher": "The Scuba Shop SXM",
+     "kind": "operator",
+     "quote": "It lays upright at 65 feet (19.8m) in sand surrounded by seagrass. Over time the wreck has started to crumble and penetration is not advised."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 65,
+     "bottom": 65
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Stingrays, turtles and reef sharks around the wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Wreck is crumbling; penetration not advised",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An upright inter-island cargo ship on sand at the edge of the Man of War Shoal Marine Park off Great Bay, in roughly 65-70 ft. Rays, turtles and reef sharks visit; the hull is deteriorating, so stay outside.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-vuifmn",
+   "name": "HMS Proselyte",
+   "sources": {
+    "s1": {
+     "url": "https://www.visitstmaarten.com/divers-delight/",
+     "publisher": "Visit St. Maarten (tourist office)",
+     "kind": "agency",
+     "quote": "HMS Proselyte , a stunning wreck that was once a 32-gun Royal Navy frigate. … this stunning vessel came to rest on her starboard side about 50 feet down."
+    },
+    "s2": {
+     "url": "https://divezone.net/diving/saint-martin",
+     "publisher": "Divezone",
+     "kind": "press",
+     "quote": "Today the wreck is scatter and sits on its starboard side in 20 to 55 feet of water. … Depending on the sea conditions this site may be subject to surges."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 55
+    },
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 50
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cannons, anchors and ballast bars under coral growth",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Surge depending on sea conditions",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The scattered remains of a 1801 Royal Navy frigate on the Man of War Shoal just off Philipsburg. Cannons, anchors and ballast bars lie under heavy coral in about 20-55 ft; surge can be felt.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-m7fvrx",
+   "name": "Fish Bowl",
+   "sources": {
+    "s1": {
+     "url": "https://divezone.net/diving/saint-martin",
+     "publisher": "Divezone",
+     "kind": "press",
+     "quote": "The Fish Bowl gets its name from the variety of fish that are found on the reef. … The depth ranges from 40 feet to 60 feet. There is a large arch that you can swim through"
+    },
+    "s2": {
+     "url": "https://www.visitstmaarten.com/divers-delight/",
+     "publisher": "Visit St. Maarten (tourist office)",
+     "kind": "agency",
+     "quote": "Just off Great Bay , we have several options, including Carib Cargo, Teigland, Fish Bowl, and Mike’s Maze."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 60
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Swim-through arch with barracuda; reef sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Can become dangerous in rough seas",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A fish-rich reef in 40-60 ft near the harbour entrance off Great Bay, reached by boat. A swim-through arch often holds barracuda and reef sharks are common; suitable for all levels but rough seas make it hazardous.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-8whine",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-npr8ef",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-7tjfbu",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-cd34vk",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-a64zul",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-qxt2mp",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-i6eu9o",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-49f193",
+   "reason": "no usable non-banned source found"
+  },
+  {
+   "id": "odm-kiuwiu",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

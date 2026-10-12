@@ -1,0 +1,375 @@
+{
+ "batch": "popular-british-virgin-islands-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-ubujmh",
+   "name": "Chimney",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=4395",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "The Chimney (Great Dog) – 30-45 ft Novice … Bring a light to best appreciate the incredible colors!"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 45
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Unusual chimney-like underwater structure",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-x5aveo",
+   "name": "Ginger Steps",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=4395",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "Ginger Steps – 30-90 ft Novice / Intermediate … With many “steps” to explore, divers of all experience levels can enjoy this site."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 90
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Step-like ledges with some of the healthiest BVI corals",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-i60nt5",
+   "name": "Coral Gardens, Great Dog, BVI",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=4395",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "Coral Gardens / Sharkplaneo (Great Dog) – 30-50 ft Novice"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 50
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-9ajsvb",
+   "name": "Cistern Point",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=4395",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "Cistern Point – 20-40 ft Beginner … A great place to look for eels, nurse sharks and tarpon."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 40
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eels, nurse sharks and tarpon in cistern-like holes",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-imm1om",
+   "name": "Diamond Reef",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=4395",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "Diamond Reef (Great Camanoe) – 20-40 ft Novice … The reef itself is a small “wall”some 200 yards long."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 40
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Small 200-yard reef wall, ideal for all levels",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-caaifg",
+   "name": "Alice in Wonderland, BVI",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=4395",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "Alice In Wonderland – 40-70 ft Novice / Intermediate … A healthy spur and groove coral reef runs below the dive boat"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 70
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Healthy spur-and-groove reef off Ginger Island",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-2sgkx3",
+   "name": "Dry Rocks East",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=4395",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "Dry Rocks East – 30-80 ft Intermediate / Advanced"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 80
+    }
+   ]
+  },
+  {
+   "id": "odm-2jdpqo",
+   "name": "Willy T (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/?p=7302",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "The Willy T now sits just off of Key Bay at Peter Island. The wreck lies in 65 ft of water with the crow’s nest at 35 ft."
+    },
+    "s2": {
+     "url": "https://reefsmartguides.com/willy-t/",
+     "publisher": "Reef Smart Guides",
+     "kind": "press",
+     "quote": "The wreck of the Willy T lies on a sandy seabed at a maximum depth of around 67 feet (20.5 meters), while her masts extend upwards to a depth of approximately 38 feet (11.5 meters)."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 65
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 38,
+     "bottom": 67
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Replica pirates and cannons; on-deck bar to visit",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A former floating bar sunk in 2019 off Peter Island as an artificial reef. Its masts reach roughly 35-38 ft, the hull rests on sand near 65 ft, and divers can enter the decorated wreck.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "depthNote": "Moved from Norman Island; now in Key Bay, Peter Island"
+  },
+  {
+   "id": "odm-97tgks",
+   "name": "Kodiak Queen (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://divebvi.com/the-kodiak-queen/",
+     "publisher": "Dive BVI",
+     "kind": "operator",
+     "quote": "The beautiful Kodiak Queen sits in a maximum depth of 57ft off the shore of Virgin Gorda"
+    },
+    "s2": {
+     "url": "https://dtmag.com/bvi-releases-kraken/",
+     "publisher": "Dive Training Magazine",
+     "kind": "press",
+     "quote": "The top of the wire Kraken lies 20-feet (6.1 m) below the surface and the ship sits on the sandy seabed at 55-feet (16.8 m)."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 57
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 55
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Wire Kraken sculpture on a former Pearl Harbor survivor",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "The former Navy fuel barge Kodiak Queen was sunk in 2017 off Virgin Gorda as an art reef topped by a wire Kraken sculpture. It rests in about 55-57 ft, with open-water divers exploring the outside and penetration left to advanced divers.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-54ai21",
+   "reason": "only 80 ft depth on a single page; disagrees with map"
+  },
+  {
+   "id": "odm-u3fke9",
+   "reason": "not found on non-banned guides"
+  },
+  {
+   "id": "odm-ml7yln",
+   "reason": "not found on non-banned guides"
+  }
+ ]
+}

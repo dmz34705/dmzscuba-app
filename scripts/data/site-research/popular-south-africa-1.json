@@ -1,0 +1,1180 @@
+{
+ "batch": "popular-south-africa-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-3dpkuy",
+   "reason": "Castle: pin is ~3 km from the shoal sites; no matching source"
+  },
+  {
+   "id": "odm-khb14u",
+   "reason": "Landers: no source found"
+  },
+  {
+   "id": "odm-okcvx7",
+   "reason": "Canyons: no source found"
+  },
+  {
+   "id": "odm-slprdo",
+   "reason": "Amphitheatre: no separate source found"
+  },
+  {
+   "id": "odm-5b8hv6",
+   "reason": "2 Mile Reef Pinnacles: pin position/depth does not match Pinnacles (10-12 m)"
+  },
+  {
+   "id": "odm-jej6lc",
+   "reason": "Simons Caves and Overhangs: sources disagree on which site is meant"
+  },
+  {
+   "id": "odm-9ntoj4",
+   "reason": "3 Mile Reef Hotspots: not matched to a source site"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-d9mqn4",
+   "name": "Raggies Cave",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "Raggies Cave Max. Depth: 14m-18m … Raggies Cave consists of, you guessed it, caves, gullies, swim-through, and overhangs, and the site is home to a variety of hard coral species as well as juvenile fish, false stonefish, scorpionfish and without a doubt Raggies in the winter months"
+    },
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "Raggie's Cave Depth: 12-19 meters Look for: Ragged-tooth sharks … T&C: No one may dive into the cave when sharks are residing"
+    },
+    "ag": {
+     "url": "https://agulhashouse.com/umkomaas-aliwal-shoal-dive-sites/",
+     "publisher": "Agulhas House and Diving",
+     "kind": "operator",
+     "quote": "Raggie Cave Maximum depth 17m. Best for Ragged- Tooth Sharks (during season)"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 18
+    },
+    {
+     "unit": "m",
+     "ref": "ag",
+     "bottom": 17
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "sc"
+    ]
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "sc",
+     "bs"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ragged-tooth sharks in winter",
+     "refs": [
+      "sc",
+      "bs"
+     ]
+    },
+    {
+     "text": "Gullies, overhangs and swim-throughs",
+     "refs": [
+      "sc"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Cave off limits while sharks are resting inside",
+     "refs": [
+      "bs"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Cave, gully and overhang system on the seaward side of Aliwal Shoal, famed as the winter gathering spot of ragged-tooth sharks. Dives reach roughly 18 m and the rock is dotted with hard corals, juvenile fish and well-camouflaged scorpionfish.",
+    "refs": [
+     "sc",
+     "bs"
+    ]
+   }
+  },
+  {
+   "id": "odm-savpub",
+   "name": "North Sands",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "North Sands Max. Depth: 12m-18m Another dive with a 17m maximum depth … This dive site is home to a ridiculous amount of round ribbontail rays … North Sands is also home to guitar sharks during the summer months"
+    },
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "North Sands Depth: 15-17 meters Look for: Round ribbon-tail rays, guitar sharks, sole, shark’s teeth"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 17
+    },
+    {
+     "unit": "m",
+     "ref": "bs",
+     "bottom": 17
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Round ribbontail rays on the sand patch",
+     "refs": [
+      "sc",
+      "bs"
+     ]
+    },
+    {
+     "text": "Guitar sharks in summer",
+     "refs": [
+      "sc",
+      "bs"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A large sand patch on the northern part of Aliwal Shoal ringed by reef. Reaching about 17 m, it is a place to look for ribbontail rays buried in the sand, summer guitar sharks, and old shark teeth lying among the shells.",
+    "refs": [
+     "sc",
+     "bs"
+    ]
+   }
+  },
+  {
+   "id": "odm-9364mm",
+   "name": "South Sands",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "South Sands Max. Depth: 14m-18m South Sands is another big sand patch dive spot with some reef which is home to box fish, puffer fish, crayfish, leather coral"
+    },
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "South Sands Depth: 12-18 meters Look for: Like North Sands, this site is home to rays, skates, sand sharks and guitar sharks. The average depth is 15m with a maximum of 18m"
+    },
+    "ag": {
+     "url": "https://agulhashouse.com/umkomaas-aliwal-shoal-dive-sites/",
+     "publisher": "Agulhas House and Diving",
+     "kind": "operator",
+     "quote": "South Sands Maximum depth 17m. Best for spotting large groups of rays, including sandsharks and pods of dolphins"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 18
+    },
+    {
+     "unit": "m",
+     "ref": "bs",
+     "bottom": 18
+    },
+    {
+     "unit": "m",
+     "ref": "ag",
+     "bottom": 17
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Groups of rays, sand sharks and guitar sharks",
+     "refs": [
+      "bs",
+      "ag"
+     ]
+    },
+    {
+     "text": "Boxfish, pufferfish and leather coral on the reef",
+     "refs": [
+      "sc"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Another sandy clearing on Aliwal Shoal with patches of reef around it, about 17-18 m deep. Rays, sand sharks and guitar sharks are the draw, with boxfish, crayfish and leather coral on the rock edges.",
+    "refs": [
+     "sc",
+     "bs",
+     "ag"
+    ]
+   }
+  },
+  {
+   "id": "odm-pj2jcz",
+   "name": "Cathedral",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "Cathedral Max. Depth: 18m-27m The deepest dive, Cathedral is a 27m max depth dive spot featuring a cave surrounded by crater-like rock formations. With all the ragged-tooth sharks patrolling the area"
+    },
+    "ag": {
+     "url": "https://agulhashouse.com/umkomaas-aliwal-shoal-dive-sites/",
+     "publisher": "Agulhas House and Diving",
+     "kind": "operator",
+     "quote": "Cathedral Maximum depth 27m. Best for Ragged-Tooth Shark (during season) … Large amphitheatre structure with entrance either via large front archway, through the roof or through the swim through slightly to the side of the front archway"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 27
+    },
+    {
+     "unit": "m",
+     "ref": "ag",
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "sc"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "sc"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ragged-tooth sharks in season",
+     "refs": [
+      "sc",
+      "ag"
+     ]
+    },
+    {
+     "text": "Crater-like amphitheatre with archway and swim-through",
+     "refs": [
+      "sc",
+      "ag"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Amphitheatre-shaped rock formation on the outer shoal, reached by a front archway, a roof opening or a side swim-through. It sits near 27 m, so it suits experienced divers, and ragged-tooth sharks often patrol it.",
+    "refs": [
+     "sc",
+     "ag"
+    ]
+   }
+  },
+  {
+   "id": "odm-v6ro3m",
+   "name": "Chunnel",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "Chunnel Max. Depth: 10m-14m The Chunnel dive spot, also with a max diving depth of 17m, is the known waterway where the sharks are constantly on the move"
+    },
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "Chunnel Depth: 12-17 meters Look for: Cave, turtles, sand sharks, ribbon-tail rays … Chunnel, which is near Raggies’ Cave, was named as such because it is a waterway where sharks constantly move"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 17
+    },
+    {
+     "unit": "m",
+     "ref": "bs",
+     "bottom": 17
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Ragged-tooth sharks patrolling the channel",
+     "refs": [
+      "sc",
+      "bs"
+     ]
+    },
+    {
+     "text": "Turtles, sand sharks and ribbontail rays",
+     "refs": [
+      "sc",
+      "bs"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A shark-traffic channel close to Raggies Cave on Aliwal Shoal, about 17 m at most. Ragged-tooth sharks pass through constantly, with turtles, sand sharks and rays on the neighbouring sand; coral is sparse because of current.",
+    "refs": [
+     "sc",
+     "bs"
+    ]
+   }
+  },
+  {
+   "id": "odm-zs9b2s",
+   "name": "Pinnacles",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "Northern Pinnacles Max. Depth: 6m-17m … Reaching amazing heights of only 6m from the surface, this dive, with a maximum depth of 17m, has gullies, overhangs, caves and swim-throughs"
+    },
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "Pinnacles Depth: 11-17 meters Look for: The potholes, manta rays, potato bass"
+    },
+    "ag": {
+     "url": "https://agulhashouse.com/umkomaas-aliwal-shoal-dive-sites/",
+     "publisher": "Agulhas House and Diving",
+     "kind": "operator",
+     "quote": "Northern Pinnacles Maximum depth 18m … Top spot for Manta’s during the season"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 17
+    },
+    {
+     "unit": "m",
+     "ref": "bs",
+     "bottom": 17
+    },
+    {
+     "unit": "m",
+     "ref": "ag",
+     "bottom": 18
+    }
+   ],
+   "types": {
+    "value": [
+     "pinnacle"
+    ],
+    "refs": [
+     "sc",
+     "ag"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "sc"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Potholes, gullies and swim-throughs",
+     "refs": [
+      "sc",
+      "bs"
+     ]
+    },
+    {
+     "text": "Manta rays in season",
+     "refs": [
+      "ag",
+      "bs"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A spine of rock formations rising to about 6 m below the surface at the north end of Aliwal Shoal, cut by gullies, potholes and swim-throughs. Mantas, rays and potato bass are regular sightings and the depth tops out near 17-18 m.",
+    "refs": [
+     "sc",
+     "bs",
+     "ag"
+    ]
+   }
+  },
+  {
+   "id": "odm-37cjg5",
+   "name": "Eelskins",
+   "sources": {
+    "sc": {
+     "url": "https://scubaco.co.za/diving/",
+     "publisher": "ScubaCo Diving & Travel (Umkomaas)",
+     "kind": "operator",
+     "quote": "Eel Skin Max. Depth: 16m-22m … Eel Skin is home to starfish in every shape and size imaginable; as well as boasting peacock mantis shrimp, puffer fish, box fish, green fern coral and nudibranchs"
+    },
+    "bs": {
+     "url": "https://buddyscuba.co.za/dive-sites/",
+     "publisher": "Buddy Scuba (Umkomaas)",
+     "kind": "operator",
+     "quote": "Eelskins Depth: 18 meters Look for: Sharks, rays, mantas (summer), whale sharks (summer), dolphins(sometimes), reef fish, macro … Ocean erosion has shaped with part of the reef in gullies and overhangs and swim-throughs"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "bs",
+     "bottom": 18
+    },
+    {
+     "unit": "m",
+     "ref": "sc",
+     "bottom": 22
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "sc"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Starfish, mantis shrimp and nudibranchs",
+     "refs": [
+      "sc"
+     ]
+    },
+    {
+     "text": "Gullies, overhangs and swim-throughs",
+     "refs": [
+      "bs"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Eroded sandstone reef on Aliwal Shoal with gullies, overhangs and swim-throughs, down to roughly 18-22 m. Photographers like it for starfish, nudibranchs and peacock mantis shrimp, and ragged-tooth sharks drift in during winter.",
+    "refs": [
+     "sc",
+     "bs"
+    ]
+   }
+  },
+  {
+   "id": "odm-d3a5lc",
+   "name": "Antons",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "2 mile Antons (16 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Antons … Depth: 13-16m Qualification Required: Open Water"
+    },
+    "am": {
+     "url": "https://amoraydiving.com/sodwana-bay-reefs/",
+     "publisher": "Amoray Diving (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Anton’s Cave Depth: 16-17m (OW Dive) … First discovered by early dive operator Anton Buchel, it has a high profile, and large shoals of Humpback, Bluebanded and Yellow snappers are always present"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 16
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 16
+    },
+    {
+     "unit": "m",
+     "ref": "am",
+     "bottom": 17
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Big shoals of snappers",
+     "refs": [
+      "am",
+      "cd"
+     ]
+    },
+    {
+     "text": "Giant moray and turtles",
+     "refs": [
+      "cd"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "High-profile ridge at the southern tip of Two Mile Reef that fills with snapper schools, fed by nutrient-rich north-south currents. About 16 m deep and open to Open Water divers, with morays, turtles and frogfish among the rocks.",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   }
+  },
+  {
+   "id": "odm-pdjwy0",
+   "name": "Four Buoy, Sodwana Bay",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "2 mile 4-Buoy (14 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "4 Buoy … A significant overhang doubles as a bustling cleaning station and a cosy habitat for the intriguing Honeycomb moray eel … Depth: 9-12m Qualification Required: Open Water"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 14
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 12
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "cd"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Overhang cleaning station with honeycomb morays",
+     "refs": [
+      "cd"
+     ]
+    },
+    {
+     "text": "Swim-throughs around a sand patch",
+     "refs": [
+      "cd"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-wzzymt",
+   "name": "Bikini",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Bikini (22 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Bikini … Depth: 18-22m Qualification Required: Advanced Open Water … Divers are treated to exquisite sightings of Ghost and Scribbled Pipefish, alongside the serpentine sway of Garden eels"
+    },
+    "am": {
+     "url": "https://amoraydiving.com/sodwana-bay-reefs/",
+     "publisher": "Amoray Diving (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Bikini Depth: 20-22m (ADV Dive) … The drop for this dive site is onto ‘Bikini Ledge’, where you are likely to see a large school of Schooling coachman and a small cave"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 22
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 22
+    },
+    {
+     "unit": "m",
+     "ref": "am",
+     "bottom": 22
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pipefish and garden eels",
+     "refs": [
+      "cd"
+     ]
+    },
+    {
+     "text": "Coachman school and small cave on Bikini Ledge",
+     "refs": [
+      "am"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Macro-friendly 2 Mile Reef dive that drops onto a ledge near 20-22 m. Expect schools of coachman, a small cave, garden eels and pipefish, and it is rated for Advanced Open Water divers.",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   }
+  },
+  {
+   "id": "odm-12846y",
+   "name": "2 Mile Stringer",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "2 Stringer (14 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Stringer … Depth: 10-13m Qualification Required: Open Water"
+    },
+    "am": {
+     "url": "https://amoraydiving.com/sodwana-bay-reefs/",
+     "publisher": "Amoray Diving (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Stringer Depth: 09-13m (OW Dive) … Stringer, the southernmost dive site on 2 Mile, features twin rocky outcrops teeming with life. Best dived with minimal current and no surge"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 14
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 13
+    },
+    {
+     "unit": "m",
+     "ref": "am",
+     "bottom": 13
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "am"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish, paperfish and ghost pipefish",
+     "refs": [
+      "am"
+     ]
+    },
+    {
+     "text": "Honeycomb morays hunting; turtles feeding",
+     "refs": [
+      "am"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Best only with little current and no surge",
+     "refs": [
+      "am"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Twin rocky outcrops at the south end of Two Mile Reef, shallow at about 9-13 m. Good for Open Water divers on calm days, with frogfish, rays and morays on the rocks.",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   }
+  },
+  {
+   "id": "odm-zikl9d",
+   "name": "Ribbon Reef - 5 Mile",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "5 mile Ribbon (19 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Ribbon … Depth: 16-19m Qualification Required: Advanced Open Water … named after the rare Ribbon eel often spotted around its periphery"
+    },
+    "am": {
+     "url": "https://amoraydiving.com/sodwana-bay-reefs/",
+     "publisher": "Amoray Diving (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Ribbon Reef is a slightly larger and deeper version of Stringer, with a depth of 16m. Also comprised of two rocky outcrops, it is a firm favourite with macro photographers"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 19
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 19
+    },
+    {
+     "unit": "m",
+     "ref": "am",
+     "bottom": 16
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "cd"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ribbon eels and macro life",
+     "refs": [
+      "cd",
+      "am"
+     ]
+    },
+    {
+     "text": "Blacktip reef sharks and turtles",
+     "refs": [
+      "cd"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Two small rocky outcrops on Five Mile Reef, similar to Stringer but larger and deeper at 16-19 m. A favourite with macro photographers for ribbon eels, scorpionfish and anemones, with blacktip sharks and turtles often around.",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   }
+  },
+  {
+   "id": "odm-n3gs21",
+   "name": "Mellow Yellow, Sodwana Bay",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Mellow Yellow south (18 m}"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Mellow Yellow … Nestled at the southern tip of Bikini, this site features a captivating narrow reef sprinkled with gullies, overhangs, and ledges … Depth: 16-18m Qualification Required: Open Water"
+    },
+    "am": {
+     "url": "https://amoraydiving.com/sodwana-bay-reefs/",
+     "publisher": "Amoray Diving (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Mellow Yellow Depth: 18-20m (OW Dive) … Named for the large schools of yellow fish species seen here, this southern end of Bikini is a flat ribbon of reef with great ‘macro’ photography opportunities"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 18
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 18
+    },
+    {
+     "unit": "m",
+     "ref": "am",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Shoals of yellow fish",
+     "refs": [
+      "cd",
+      "am"
+     ]
+    },
+    {
+     "text": "Shrimps, nudibranchs and paperfish",
+     "refs": [
+      "cd",
+      "am"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Narrow reef strip at the southern end of Bikini, about 16-20 m deep and open to Open Water divers. Named for its yellow-fish schools, it also offers gullies, overhangs and plenty of shrimp and nudibranch macro subjects.",
+    "refs": [
+     "cd",
+     "am"
+    ]
+   }
+  },
+  {
+   "id": "odm-25k7wh",
+   "name": "Hopscotch",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "Hopscotch north (26 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Hopscotch mesmerises divers with its unique topography of scattered ledges and homey crannies for elusive Ribbon Eels and camouflaged Frogfish … Depth: 22-25m Qualification Required: Advanced Open Water"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 26
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "cd"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Ribbon eels and frogfish in ledges",
+     "refs": [
+      "cd"
+     ]
+    },
+    {
+     "text": "Schooling coachman and goldies",
+     "refs": [
+      "cd"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-khsln4",
+   "name": "Roonies",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "2 Roonies (30 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Roonies is a diver’s delight, stationed off the coast of 2 Mile … including the territorial Long Nose Hawkfish and the resident Seahorse … Depth: 27-32m Qualification Required: Advanced Open Water"
+    },
+    "sd": {
+     "url": "https://sodwanadiving.co.za/reefs/",
+     "publisher": "Sodwana Bay Lodge Scuba Centre",
+     "kind": "operator",
+     "quote": "a Seahorse on Roonies"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 30
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 32
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "cd"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Resident seahorse and longnose hawkfish",
+     "refs": [
+      "cd",
+      "sd"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Compact deeper site off Two Mile Reef at roughly 27-32 m, requiring Advanced Open Water. Small and busy, it is known for a resident seahorse and longnose hawkfish.",
+    "refs": [
+     "cd",
+     "sd"
+    ]
+   }
+  },
+  {
+   "id": "odm-jm764d",
+   "name": "Waynes World",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "2 mile Wayne's World (14 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "World, a standout amongst Sodwana Bay reefs, offers a slightly deeper adventure with its flat terrain, making it perfect for those interested in drift dives … A special highlight is the enchanting turtle cave … Depth: 14-16 m Qualification Required: Open Water"
+    },
+    "sd": {
+     "url": "https://sodwanadiving.co.za/reefs/",
+     "publisher": "Sodwana Bay Lodge Scuba Centre",
+     "kind": "operator",
+     "quote": "the gullies at Wayne’s World (filled with Raggies in summer)"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 14
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 16
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "cd"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtle cave",
+     "refs": [
+      "cd"
+     ]
+    },
+    {
+     "text": "Raggies in the gullies in summer",
+     "refs": [
+      "sd"
+     ]
+    },
+    {
+     "text": "Colourful soft corals",
+     "refs": [
+      "cd"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Flat, slightly deeper section of Two Mile Reef (14-16 m) that suits drift dives. Soft corals and a turtle cave are the highlights, and ragged-tooth sharks gather in its gullies in summer.",
+    "refs": [
+     "cd",
+     "sd"
+    ]
+   }
+  },
+  {
+   "id": "odm-9zpkd4",
+   "name": "Coral Gardens",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "2 mile Coral Gardens (14 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Coral Gardens is renowned for its rich tapestry of hard and soft corals, presenting a flat topography that makes it ideal for drift dives, especially in stronger currents … Depth: 10-13m Qualification Required: Open Water"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 14
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 13
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "cd"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Hard and soft coral cover",
+     "refs": [
+      "cd"
+     ]
+    },
+    {
+     "text": "Many nudibranchs",
+     "refs": [
+      "cd"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-gb9px6",
+   "name": "Deep Sponge - 2 Mile Reef",
+   "sources": {
+    "wvS": {
+     "url": "https://en.wikivoyage.org/wiki/Diving_Sodwana_Bay",
+     "publisher": "Wikivoyage",
+     "kind": "encyclopedia",
+     "quote": "2 outside Deep Sponge / Tombstone (30 m)"
+    },
+    "cd": {
+     "url": "https://coraldivers.co.za/scuba-diving/dive-sites/",
+     "publisher": "Coral Divers (Sodwana Bay)",
+     "kind": "operator",
+     "quote": "Deep Sponge offers a rare spectacle, nestled parallel to 2 Mile Reef, about 500m off the coast. It’s distinguished by its magnificent, vase-shaped sponges … Depth: 28-32m Qualification Required: Advanced Open Water"
+    }
+   },
+   "depth": [
+    {
+     "unit": "m",
+     "ref": "wvS",
+     "bottom": 30
+    },
+    {
+     "unit": "m",
+     "ref": "cd",
+     "bottom": 32
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "cd"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Vase-shaped sponges",
+     "refs": [
+      "cd"
+     ]
+    },
+    {
+     "text": "Frequent game fish sightings",
+     "refs": [
+      "cd"
+     ]
+    }
+   ]
+  }
+ ]
+}

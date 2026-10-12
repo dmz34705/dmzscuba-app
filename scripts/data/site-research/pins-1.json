@@ -1,0 +1,5 @@
+{"batch":"pins-1","researchedAt":"2026-10-08","sites":[
+{"id":"x-notable-1003","name":"HMS Amphion","sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Amphion_(1911)","publisher":"Wikipedia","kind":"encyclopedia","quote":"52°07′N 2°22′E"}},"position":{"at":[52.1167,2.3667],"refs":["s1"]}},
+{"id":"osm-n663869622","name":"SMS König","sources":{"s1":{"url":"https://portal.historicenvironment.scot/designation/SM9298","publisher":"Historic Environment Scotland","kind":"agency","quote":"58 degrees 53'.198 N, 003 degrees 09'.181 W"},"s2":{"url":"https://scapaflowwrecks.com/wrecks/konig/diving.php","publisher":"Scapa Flow Wrecks","kind":"operator","quote":"58°53.13N; 3°09.07W"}},"position":{"at":[58.8866,-3.153],"refs":["s1","s2"]}},
+{"id":"x-wikipedia-187","name":"SMS Dresden (1917)","sources":{"s1":{"url":"https://en.wikipedia.org/wiki/SMS_Dresden_(1917)","publisher":"Wikipedia","kind":"encyclopedia","quote":"58°52′52″N 3°08′34″W"}},"position":{"at":[58.8811,-3.1429],"refs":["s1"]}}
+]}

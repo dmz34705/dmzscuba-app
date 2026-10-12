@@ -1,0 +1,10 @@
+{"batch":"notable-namibia-1","researchedAt":"2026-10-08","skipped":[],
+"sites":[{"id":"x-notable-986","name":"Eduard Bohlen",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Eduard_Bohlen","publisher":"Wikipedia","kind":"encyclopedia","quote":"The wreck currently lies in the sand 400 m (1,300 ft) from the shoreline."}},
+"notDiveSite":{"kind":"gone","reason":"Hull lies stranded in desert sand about 400 m inland","refs":["s1"]}},
+{"id":"x-notable-992","name":"Bom Jesus",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Bom_Jesus_(ship)","publisher":"Wikipedia","kind":"encyclopedia","quote":"when its remains were discovered during diamond mining operations on the coast of Namibia, near Oranjemund"}},
+"notDiveSite":{"kind":"gone","reason":"Remains excavated in a diamond-mining area onshore","refs":["s1"]}},
+{"id":"x-wikipedia-65","name":"Dragon's Breath Cave",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Dragon's_Breath_Cave","publisher":"Wikipedia","kind":"encyclopedia","quote":"private land, not accessible to the general public"}},
+"notDiveSite":{"kind":"restricted","reason":"Private land closed to the public","refs":["s1"]}}]}

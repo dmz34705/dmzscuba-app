@@ -1,0 +1,176 @@
+{
+ "batch": "notable-germany-1",
+ "researchedAt": "2026-10-08",
+ "sites": [
+  {
+   "id": "osm-n663870678",
+   "name": "Walchensee - Walchenseebucht",
+   "sources": {
+    "s1": {
+     "url": "https://taucher.net/tauchplatz-walchensee-haz2623",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Tiefe: 15m … Eignet sich für Anfänger und als Nachtauchplatz."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870680",
+   "name": "Walchensee - Bootssteg Urfeld",
+   "sources": {
+    "s1": {
+     "url": "https://taucher.net/tauchplatz-walchensee-haz2623",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Tiefe: bis 36m … Direkt am Cafe Seestübl geht es unter dem Anlegeponton der Boote"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 36
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-r168896",
+   "name": "Schliersee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Schliersee_(See)",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Der See hat eine mittlere Tiefe von 23,9 Metern und eine maximale von 40,5 Metern."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole lake (max depth 40.5 m), not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870698",
+   "name": "Tegernsee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Tegernsee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Dieser Artikel beschreibt den See."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole lake (about 72 m deep), not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-n663870129",
+   "name": "Schluchsee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Schluchsee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Im Bahnhofsgebäude Seebrugg befindet sich eine Tauchbasis für das Tauchen im Schluchsee."
+    }
+   },
+   "notDiveSite": {
+    "kind": "area",
+    "reason": "Whole reservoir (max depth about 61 m), not a single dive site",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "osm-w24661321",
+   "name": "Friedberger Baggersee",
+   "sources": {
+    "s1": {
+     "url": "https://de.wikipedia.org/wiki/Friedberger_Baggersee",
+     "publisher": "Wikipedia (de)",
+     "kind": "encyclopedia",
+     "quote": "Für Taucher ist der See ein oft besuchtes Ziel … eine ungewöhnlich gute Sichtweite von über zehn Metern … Die Unterwasserlandschaft des Sees ist von Klippen und Verwerfungen gezeichnet. … ca. 15 m"
+    },
+    "s2": {
+     "url": "https://taucher.net/tauchplatz-friedberger_see-haz2949",
+     "publisher": "taucher.net",
+     "kind": "press",
+     "quote": "Das Tauchen im See Genehmigungspflichtig. … Ihr könnt hier verschiedene Tiefen bis 12/13 Meter betauchen."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 12
+    },
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s2"
+    ]
+   },
+   "access": {
+    "value": "Dive permit required, sold locally",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Underwater cliffs and faults",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A gravel-pit lake near Augsburg popular with divers, with rocky underwater relief and unusually good clarity for a quarry lake. Depths reach roughly 12-15 m, and a paid permit is required.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  }
+ ]
+}

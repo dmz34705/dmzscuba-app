@@ -1,0 +1,503 @@
+{
+ "batch": "popular-mexico-3",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-b7087d",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-dcey5e",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-synw7c",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-1crxzk",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-k32oxu",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-95yc3s",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-1jhbi4",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-53ditf",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-vv18kc",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-sk7243",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-9b7x2x",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-uhl2da",
+   "reason": "not covered by any allowed source found"
+  },
+  {
+   "id": "odm-hpb1t5",
+   "reason": "not covered by any allowed source found"
+  },
+  {
+   "id": "odm-0t25pt",
+   "reason": "no source found"
+  },
+  {
+   "id": "odm-gsyesm",
+   "reason": "pin is in Guerrero (16.83,-99.91), not Quintana Roo; no source found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "mx-cozumel-maracaibo",
+   "name": "Maracaibo Reef",
+   "sources": {
+    "s1": {
+     "url": "https://experience.transat.com/the-best-dive-spots-in-cozumel",
+     "publisher": "Experience Transat",
+     "kind": "press",
+     "quote": "Maracaibo Wall … for advanced divers only, since it is one of the deepest sites on the island, with the wall starting from 27m … is exposed to extreme currents, big swells and topside surfing … spotted eagle rays, turtles and schools of hammerhead sharks"
+    },
+    "s2": {
+     "url": "https://www.ccrrp.mx/post/cozumel-s-underwater-wonders-a-deep-dive-into-reef-diversity",
+     "publisher": "CCRRP Cozumel",
+     "kind": "operator",
+     "quote": "Maracaibo Reef … Reaches depths of 80+ feet (24+ meters) … Known for its strong currents and challenging conditions … Advanced divers only"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 27
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wall",
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spotted eagle rays and turtles",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Sharks and eagle rays",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Extreme currents, big swells and surf",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "One of Cozumel's deepest, most exposed sites at the island's south end, with a wall starting near 27 m. Strong currents and swell make it advanced-only; eagle rays, turtles and sharks reward the effort.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-nsa91e",
+   "name": "Chunchacah",
+   "sources": {
+    "s1": {
+     "url": "https://www.prodiveinternational.com/fr/dive-site/",
+     "publisher": "Pro Dive International",
+     "kind": "operator",
+     "quote": "Chun Chacaab … 30 - 80 ft … unpredictable"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 80
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-xw4fcy",
+   "name": "Cenote Dos Ojos",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Dos Ojos is perfect for cenote diving from Tulum. … This section is shallow with huge rooms, has no current, and is ideal for all levels of certified divers. … This area requires great buoyancy control because of the sediment on the bottom."
+    }
+   },
+   "types": {
+    "value": [
+     "cavern",
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Stalactites, fossils and sunlit openings",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Silty bottom in Baticueva needs buoyancy control",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-n3yn07",
+   "name": "Cenote El Pit",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote El Pit is just that – a big, deep hole. Divers will descend down the pit and pass thousands of years old dead trees and eventually find a spooky cloud of hydrogen sulfate around 30 meters."
+    }
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Descent past ancient dead trees",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Hydrogen sulfide cloud near 30 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-prcp5b",
+   "name": "Cenote Chikin Ha",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote Chikin Ha This is a popular area for snorkelers, cavern divers, and students working on their full cave certification. Here there are two separate cavern lines for divers … This cenote also has a halocline that divers will pass through."
+    }
+   },
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Two cavern lines past rock formations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Halocline on the cavern lines",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-q7no2l",
+   "name": "Jardin del Eden Cenote (Ponderosa)",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote El Jardin del Eden is south of Playa del Carmen and has a large, open pool that leads to the cavern. The pool is popular for snorkeling and swimming. … a variety of marine life, including Mayan Gobies."
+    }
+   },
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Large open pool south of Playa del Carmen, shared with snorkelers",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mayan gobies and tunnel-like cavern",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-uev7fe",
+   "name": "Cenote Car Wash (Aktun Ha)",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote Car Wash is located on the road from Tulum to Coba. It has a large, beautiful, open area that often has lily pads floating on it. … Cenote Car Wash is a popular cave with local divers who enter a cave called the Room of Tears."
+    }
+   },
+   "types": {
+    "value": [
+     "cavern",
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Open lily-pad basin",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Room of Tears cave",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-q54ks6",
+   "name": "Cenote Dream Gate",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Dreamgate is located deep down a dirt road in the jungle and is a great cavern for rock formations. There are lots of incredible stalactites and rock formations and divers must have great buoyancy to navigate in tight spaces"
+    }
+   },
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Reached by a dirt road through the jungle",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Stalactites and tree roots to the water",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Tight spaces demand good buoyancy",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-suuch3",
+   "name": "Cenote Nicte Ha",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote Nicte-Ha … The dive is shallow, with the maximum depth being around 8 meters, but this dive is only for divers with experience in cenotes because there is some current and tight maneuvering around formations."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 8
+    }
+   ],
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Lily pad garden at the surface",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Some current and tight maneuvering",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-x8ny5r",
+   "name": "Cenote Taak Bi Ha",
+   "sources": {
+    "s1": {
+     "url": "https://letstraveltomexico.com/mexico-caves-diving/",
+     "publisher": "Lets Travel to Mexico",
+     "kind": "press",
+     "quote": "Cenote Taak-Bi Ha This cenote is part of the Sac Actun system and is newly opened for cavern diving. This dive is for advanced divers only because of the fragile stalactites and stalagmites in the area. Divers here will descend down a narrow staircase into a dry cenote, where the tanks will be lowered down."
+    }
+   },
+   "types": {
+    "value": [
+     "cavern"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "Narrow staircase into a dry cenote; tanks lowered",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Dense rock formations, good for photography",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Fragile formations easily damaged",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

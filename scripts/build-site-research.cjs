@@ -89,6 +89,7 @@ function copiedRun(summary, quotes) {
   return null;
 }
 
+const mapCorroborated = new Set();
 // Depth from claims [{ url, publisher, kind, unit, top, bottom, quote }] — shared by both evidence formats.
 function acceptDepth(id, claims) {
   const list = claims.map(c => ({ ...c, host: host(c.url), top: metres(c.top, c.unit), bottom: metres(c.bottom, c.unit) }))
@@ -100,8 +101,13 @@ function acceptDepth(id, claims) {
   else {
     const groups = list.map(c => list.filter(o => o.bottom >= c.bottom && agree(o.bottom, c.bottom)));
     const best = groups.map(g => [...new Map(g.map(c => [c.host, c])).values()]).sort((a, b) => b.length - a.length)[0];
-    if (best.length < 2) return { reason: `depth needs a second independent source (have: ${list.map(c => `${c.host} ${c.bottom} m`).join(', ')})` };
-    chosen = best;
+    // One published page is enough when the depth the map already carries for this pin (the OpenDiveMap /
+    // OpenStreetMap record, before any of our research) agrees with it: two independent records, one cited.
+    const site = sites.get(id), mapDepth = site && !site.depthIsWholeLake ? site.maxDepthMeters : null;
+    const corroborated = best.length < 2 && Number.isFinite(mapDepth) && best.filter(c => agree(c.bottom, mapDepth));
+    if (corroborated?.length) { chosen = corroborated; mapCorroborated.add(id); }
+    else if (best.length < 2) return { reason: `depth needs a second independent source (have: ${list.map(c => `${c.host} ${c.bottom} m`).join(', ')}${Number.isFinite(mapDepth) ? `; map ${mapDepth} m` : ''})` };
+    else chosen = best;
   }
   const bottom = Math.max(...chosen.map(c => c.bottom));
   const tops = chosen.map(c => c.top).filter(Number.isFinite);
@@ -134,7 +140,7 @@ for (const file of files(depthDir)) {
     const site = known(file, entry, reject); if (!site) continue;
     const result = acceptDepth(entry.id, entry.claims || []);
     if (!result.depth) { reject(result.reason); continue; }
-    out[entry.id] = { name: site.name, status: 'dive', basis: 'depth', depth: result.depth,
+    out[entry.id] = { name: site.name, status: 'dive', basis: 'depth', depth: result.depth, ...(mapCorroborated.has(entry.id) ? { depthCheck: 'map' } : {}),
       ...(entry.note ? { depthNote: String(entry.note).slice(0, 200) } : {}), ...positionFrom(site, entry.position),
       sources: sourceRefs(result.sources).slice(0, 3), confidence: 'sourced', checked: batch.researchedAt || null };
   }
@@ -142,6 +148,23 @@ for (const file of files(depthDir)) {
 
 // 2. Full site research (overrides depth-only results for the same site).
 const stats = { sites: 0, full: 0, depth: 0, vis: 0, current: 0, entry: 0, level: 0, temp: 0, highlights: 0, hazards: 0 };
+// A page cited for several sites (an area guide, a wreck list) only counts for a site when the quote names it:
+// otherwise one site's depth could be credited to its neighbour and the number check would still pass.
+const GENERIC_WORDS = new Set(['the', 'and', 'of', 'de', 'la', 'le', 'el', 'del', 'di', 'wreck', 'reef', 'point', 'dive', 'site', 'island', 'bay',
+  'beach', 'house', 'wall', 'rock', 'rocks', 'garden', 'north', 'south', 'east', 'west', 'big', 'little', 'small', 'old', 'new',
+  'pulau', 'ss', 'hms', 'uss', 'mv', 'sms', 'usat', 'hmas', 'no', 'cave', 'lake', 'see', 'shoal', 'bank', 'slope', 'corner', 'pinnacle']);
+const fold = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const keyWords = name => words(fold(name).replace(/\([^)]*\)/g, ' ')).filter(w => (w.length >= 3 || /\d/.test(w)) && !GENERIC_WORDS.has(w));
+const names = site => [site.name, ...(site.aliases || [])];
+const mentions = (site, quote) => {
+  const q = new Set(words(fold(quote)));
+  return names(site).some(n => { const k = keyWords(n); return k.length ? k.some(w => q.has(w)) : words(fold(n)).every(w => q.has(w)); });
+};
+const citedBy = new Map();
+for (const file of files(siteDir)) for (const entry of JSON.parse(fs.readFileSync(path.join(siteDir, file), 'utf8')).sites || [])
+  for (const src of Object.values(entry.sources || {})) if (src?.url) (citedBy.get(src.url) || citedBy.set(src.url, new Set()).get(src.url)).add(entry.id);
+const unnamed = [];
+
 for (const file of files(siteDir)) {
   const batch = JSON.parse(fs.readFileSync(path.join(siteDir, file), 'utf8'));
   for (const entry of batch.sites || []) {
@@ -149,19 +172,28 @@ for (const file of files(siteDir)) {
     const reject = reason => held.push(`site-research/${file} · ${entry.name || entry.id}: ${reason}`);
     const site = known(file, entry, reject); if (!site) continue;
     stats.sites++;
-    const sources = Object.fromEntries(Object.entries(entry.sources || {}).filter(([, s]) => usable(s)));
+    const sources = Object.fromEntries(Object.entries(entry.sources || {}).filter(([, s]) => {
+      if (!usable(s)) return false;
+      // Name check: the verifier records quotes whose page doesn't name the site near them; unreachable pages fall
+      // back to the quote itself naming the site.
+      const page = verified[s.url];
+      if ((citedBy.get(s.url)?.size || 0) < 2 || mentions(site, s.quote)) return true;
+      if (page && page.status !== 'unreachable' && !(page.unnamed || []).includes(s.quote)) return true;
+      unnamed.push(`${file} · ${site.name}: ${s.url}`); return false;
+    }));
     const cited = refs => (Array.isArray(refs) ? refs.filter(r => sources[r]).map(r => sources[r]) : []);
     const field = (f, ok) => { if (!f) return null; const c = cited(f.refs); if (!c.length) { notes.push(`${ok}: no allowed source`); return null; } return c; };
     const row = { name: site.name, status: 'dive', basis: 'depth', researchBatch: file.replace(/\.json$/, ''), checked: batch.researchedAt || null };
     // Not a dive site (raised or buried, never found, closed/restricted, a whole lake or park, ROV-only depth):
     // with a cited source and a reason, the pin is hidden from the map.
     if (entry.notDiveSite) {
-      const c = cited(entry.notDiveSite.refs), status = { gone: 'ashore', unlocated: 'unlocated', restricted: 'restricted', area: 'area', 'too-deep': 'too-deep' }[entry.notDiveSite.kind];
+      // Hiding a pin needs a real statement, not a lone word that happens to be on the page.
+      const c = cited(entry.notDiveSite.refs).filter(s => s.quote.trim().split(/\s+/).length >= 6), status = { gone: 'ashore', unlocated: 'unlocated', restricted: 'restricted', area: 'area', 'too-deep': 'too-deep' }[entry.notDiveSite.kind];
       if (c.length && status && typeof entry.notDiveSite.reason === 'string' && entry.notDiveSite.reason.trim()) {
         out[entry.id] = { name: site.name, status, basis: 'depth', researchBatch: row.researchBatch, checked: row.checked,
           reason: entry.notDiveSite.reason.trim().slice(0, 160), sources: sourceRefs(c).slice(0, 3), confidence: 'sourced' };
         stats.hidden = (stats.hidden || 0) + 1;
-      } else reject('notDiveSite needs a kind (gone|unlocated|restricted|area|too-deep), a reason and a cited source');
+      } else reject('notDiveSite needs a kind (gone|unlocated|restricted|area|too-deep), a reason and a cited source quoting at least 6 words');
       continue;
     }
     const used = new Map();
@@ -169,14 +201,14 @@ for (const file of files(siteDir)) {
     // Depth.
     const depthClaims = (entry.depth || []).map(d => ({ ...sources[d.ref], unit: d.unit, top: d.top, bottom: d.bottom })).filter(c => c.url);
     const result = depthClaims.length ? acceptDepth(entry.id, depthClaims) : null;
-    if (result?.depth) { row.depth = result.depth; use(result.sources); stats.depth++; }
+    if (result?.depth) { row.depth = result.depth; if (mapCorroborated.has(entry.id)) { row.depthCheck = 'map'; stats.mapChecked = (stats.mapChecked || 0) + 1; } use(result.sources); stats.depth++; }
     else if (result) notes.push(result.reason);
     // A depth already verified from depth-only evidence stays when this batch adds none (or only unconfirmed ones).
     if (!row.depth && out[entry.id]?.depth) { row.depth = out[entry.id].depth; if (out[entry.id].depthNote) row.depthNote = out[entry.id].depthNote; (out[entry.id].sources || []).forEach(([, url, publisher]) => used.set(url, { url, publisher })); }
     if (entry.depthNote) row.depthNote = String(entry.depthNote).slice(0, 200);
     // Simple facts: one allowed source each.
     const pickFact = (key, allowed, target = key) => { const f = entry[key]; const c = field(f, key); if (c && allowed.includes(f.value)) { row[target] = f.value; use(c); stats[key] = (stats[key] || 0) + 1; } };
-    pickFact('entry', ENTRIES); pickFact('level', LEVELS); pickFact('current', CURRENTS);
+    pickFact('entry', ENTRIES); pickFact('level', LEVELS); pickFact('current', CURRENTS); pickFact('water', ['fresh', 'salt']);
     if (entry.types) { const c = field(entry.types, 'types'); const v = (entry.types.value || []).filter(t => TYPES.includes(t)); if (c && v.length) { row.types = v; use(c); } }
     if (entry.vis) { const c = field(entry.vis, 'vis'); const lo = metres(entry.vis.low, entry.vis.unit || 'm'), hi = metres(entry.vis.high, entry.vis.unit || 'm');
       if (c && Number.isFinite(hi) && hi > 0 && hi <= 80 && (lo == null || lo <= hi)) { row.vis = [lo, hi]; use(c); stats.vis++; } }
@@ -197,24 +229,48 @@ for (const file of files(siteDir)) {
       else if (entry.summary.text.length > 320) notes.push('summary too long');
       else { row.summary = entry.summary.text.trim(); row.basis = 'research'; row.water = row.water || (site.environment === 'fresh' ? 'fresh' : undefined); use(c); stats.full++; }
     }
-    Object.assign(row, positionFrom(site, entry.position));
-    if (!row.summary && !row.depth) { reject(`nothing accepted${notes.length ? ` (${notes.join('; ')})` : ''}`); continue; }
+    // A corrected pin: published coordinates for the wreck or site itself, from an agency, park or encyclopedia page
+    // (or two publishers agreeing). Moves over 100 km suggest a different site of the same name and are held.
+    if (entry.position) {
+      const c = cited(entry.position.refs), at = entry.position.at;
+      const ok = Array.isArray(at) && at.length === 2 && at.every(Number.isFinite) && Math.abs(at[0]) <= 90 && Math.abs(at[1]) <= 180;
+      const moved = ok ? distanceKm(site.latitude, site.longitude, at[0], at[1]) : null;
+      if (!ok || !c.length) notes.push('position needs [lat, lon] and a cited source');
+      else if (!(c.some(s => OFFICIAL.has(s.kind) || s.kind === 'encyclopedia') || new Set(c.map(s => host(s.url))).size >= 2)) notes.push('position needs an agency, park or encyclopedia source, or two publishers');
+      else if (moved > 100) notes.push(`position moves the pin ${Math.round(moved)} km — check it is the same site`);
+      else if (moved > 0.15) { row.position = { at, quality: 'sourced', movedKm: Math.round(moved * 10) / 10 }; use(c); stats.moved = (stats.moved || 0) + 1; }
+    }
+    // Facts need one cited source each (only depth and summary need two): a site with at least two sourced facts
+    // (level, current, entry, highlights…) is kept even without an accepted depth or summary.
+    const FACT_KEYS = ['entry', 'level', 'current', 'types', 'vis', 'waterTempC', 'season', 'mooring', 'access', 'penetration', 'highlights', 'hazards'];
+    const facts = FACT_KEYS.filter(k => row[k] != null).length;
+    if (!row.summary && !row.depth && !row.position && facts >= 2) { stats.factsOnly = (stats.factsOnly || 0) + 1; }
+    else if (!row.summary && !row.depth && !row.position) { reject(`nothing accepted${notes.length ? ` (${notes.join('; ')})` : ''}`); continue; }
     if (notes.length && verbose) held.push(`site-research/${file} · ${entry.name}: partial — ${notes.join('; ')}`);
     if (!row.water) delete row.water;
     row.sources = sourceRefs([...used.values()]).slice(0, 5);
     row.confidence = 'sourced';
+    // A position-only entry (e.g. a pin-fix batch) adds to what earlier research found instead of replacing it.
+    const earlier = out[entry.id];
+    if (earlier && earlier.status === 'dive' && !entry.summary && !(entry.depth || []).length) {
+      earlier.position = row.position;
+      earlier.sources = [...new Map([...(earlier.sources || []), ...row.sources].map(r => [r[1], r])).values()].slice(0, 6);
+      continue;
+    }
     out[entry.id] = row;
   }
 }
 
-// A coastal town, island or park pin (diveable water within reach) stays on the map when it is the only marker
-// within 20 km: hiding it would leave a known dive destination with no pin at all. Whole seas and inland towns go.
+// A town, island, lake or park pin stays on the map when it is the only marker within 20 km: hiding it would leave a
+// known dive destination with no pin at all.
 const hiddenNow = id => ['ashore', 'unlocated', 'restricted', 'area', 'too-deep'].includes((out[id] || data.sites[id])?.status);
 for (const [id, row] of Object.entries(out)) {
   if (row.status !== 'area') continue;
   const at = sites.get(id);
+  // Only open water (a whole sea, a bank far offshore) goes regardless: lakes, steep islands and coasts without a
+  // seafloor model keep their only pin.
   const floor = bathymetry[id] || seafloor[id];
-  if (!(floor && Number.isFinite(floor[1]) && floor[1] <= 40)) continue;
+  if (floor && Number.isFinite(floor[1]) && floor[1] > 200) continue;
   const neighbour = [...sites.values()].some(s => s.id !== id && !hiddenNow(s.id) && distanceKm(at.latitude, at.longitude, s.latitude, s.longitude) < 20);
   if (!neighbour) { delete out[id]; stats.hidden--; held.push(`site-research/${row.researchBatch}.json · ${row.name}: area pin kept — no other site within 20 km`); }
 }
@@ -225,6 +281,8 @@ Object.assign(data.sites, out);
 data.sites = Object.fromEntries(Object.entries(data.sites).sort(([a], [b]) => a.localeCompare(b)));
 data.updatedAt = new Date().toISOString().slice(0, 10);
 for (const line of held) console.log(`  held: ${line}`);
+if (verbose) for (const line of unnamed) console.log(`  unnamed: ${line}`);
+if (unnamed.length) console.log(`${unnamed.length} citations dropped: a page cited for several sites whose quote does not name this one.`);
 const full = Object.values(out).filter(r => r.basis === 'research').length;
 console.log(`${Object.keys(out).length} automated entries (${full} full profiles, ${Object.keys(out).length - full} depth-only; ${before} before), ${held.length} held, from ${files(depthDir).length} depth + ${files(siteDir).length} site evidence files.`);
 console.log(`site research: ${JSON.stringify(stats)}`);

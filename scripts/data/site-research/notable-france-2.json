@@ -1,0 +1,53 @@
+{ "batch": "notable-france-2", "researchedAt": "2026-10-08", "sites": [
+ { "id": "x-notable-1290", "name": "HMS Lawford",
+  "sources": {
+   "s1": { "url": "https://uboat.net/allies/warships/ship/5668.html", "publisher": "uboat.net", "kind": "press", "quote": "The wreck lies in 21 meter of water in position 49º25'43\"N, 00º23'47\"W." },
+   "s2": { "url": "https://dune-world.com/en/wrecks/lawford-hms", "publisher": "DUNE Marseille dive wreck guide", "kind": "operator", "quote": "resting at 21.00 m in the waters of Normandy" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 21 }, { "ref": "s2", "unit": "m", "bottom": 21 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-969", "name": "HMS Durban",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Durban", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "The wreck currently lies in 11 metres (36 ft) of water." }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 11 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-1013", "name": "HMS Charybdis",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Charybdis_(88)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "lying in 83 m (272 ft) of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 83 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] },
+  "level": { "value": "technical", "refs": ["s1"] }
+ },
+ { "id": "x-notable-1119", "name": "HMS Hermes",
+  "sources": {
+   "s1": { "url": "https://www.dive125.co.uk/diving/dover/wrecks-and-sites/", "publisher": "Dive 125 (Dover)", "kind": "operator", "quote": "She lies on her port side in 33m and is best explored using a Nitrox mix due to her size and overall interest." },
+   "s2": { "url": "https://en.wikipedia.org/wiki/HMS_Hermes_(1898)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "lies upside down in approximately 30 metres (98 ft) of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 33 }, { "ref": "s2", "unit": "m", "bottom": 30 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-1223", "name": "HMS Wessex",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Wessex_(D43)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "quickly sank in 115 feet (35 meters) of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 35 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-917", "name": "HMS Blackwood",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Blackwood_(K313)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "60 metres (200 ft) of water" }
+  },
+  "depth": [ { "ref": "s1", "unit": "m", "bottom": 60 } ],
+  "types": { "value": ["wreck"], "refs": ["s1"] }
+ },
+ { "id": "x-notable-1208", "name": "HMS Hotham",
+  "sources": {
+   "s1": { "url": "https://en.wikipedia.org/wiki/HMS_Hotham_(K583)", "publisher": "Wikipedia", "kind": "encyclopedia", "quote": "she was sold for scrapping in the Netherlands on 1 November 1956." }
+  },
+  "notDiveSite": { "kind": "gone", "reason": "Survived the war and was scrapped in 1956; not a wreck", "refs": ["s1"] }
+ }
+]}

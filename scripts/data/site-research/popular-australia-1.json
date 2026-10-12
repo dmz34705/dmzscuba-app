@@ -1,0 +1,332 @@
+{
+ "batch": "popular-australia-1",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-0ahcgw",
+   "reason": "no site-level depth or conditions on reachable non-banned pages (only reef-level)"
+  },
+  {
+   "id": "odm-5hpann",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-rcsbtv",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-olb78g",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-hqqh5t",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-657k39",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-ec6wr5",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-gg18xc",
+   "reason": "generic name; no source"
+  },
+  {
+   "id": "odm-odnof7",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-19vhgy",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-m15y04",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-rnklpo",
+   "reason": "only reef-level or unreachable pages"
+  },
+  {
+   "id": "odm-fyhdc0",
+   "reason": "no site-level facts on reachable non-banned pages"
+  },
+  {
+   "id": "odm-l5gab1",
+   "reason": "pontoon site; no source reachable"
+  },
+  {
+   "id": "odm-a1k74r",
+   "reason": "generic name; no source"
+  },
+  {
+   "id": "odm-up8det",
+   "reason": "only reef-level facts, no site depth"
+  },
+  {
+   "id": "odm-ridrr3",
+   "reason": "no source with depth; only template page"
+  },
+  {
+   "id": "odm-utzkoc",
+   "reason": "no source with depth"
+  },
+  {
+   "id": "odm-6enadt",
+   "reason": "generic name (Caves); no unambiguous source"
+  },
+  {
+   "id": "odm-1scw1q",
+   "reason": "no source with depth"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-h5uvxg",
+   "name": "Wonderland",
+   "sources": {
+    "s1": {
+     "url": "https://scubaworld.com.au/dive-sites/mooloolaba-reef-diving",
+     "publisher": "Scuba World Mooloolaba",
+     "kind": "operator",
+     "quote": "Wonderland Depth: 9 – 16 metres Location: Outer Gneerings Certification Required: Open Water Average visibility: 10m (summer), 15m (winter) … The anchor sits in approx 10m of water, which makes it a perfect site for new divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 9,
+     "bottom": 16
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "mooring": {
+    "value": "Anchor sits in about 10 m of water",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Healthy hard and soft corals",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-dvvli4",
+   "name": "Hanging Rock",
+   "sources": {
+    "s1": {
+     "url": "https://scubaworld.com.au/dive-sites/mooloolaba-reef-diving",
+     "publisher": "Scuba World Mooloolaba",
+     "kind": "operator",
+     "quote": "Hanging Rock Depth: 13 – 19 metres Certification Required: Open Water Location: Outer Gneerings Average visibility: 10m (summer), 15m (winter) … beautiful sun corals feeding"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 13,
+     "bottom": 19
+    }
+   ],
+   "vis": {
+    "low": 10,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sun corals under a large rocky overhang",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Small moray eels in the crevices",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hs4okz",
+   "name": "Clown Reef",
+   "sources": {
+    "s1": {
+     "url": "https://scubaworld.com.au/dive-sites/mooloolaba-reef-diving",
+     "publisher": "Scuba World Mooloolaba",
+     "kind": "operator",
+     "quote": "Clown Reef Depth: 12 – 18 metres Location: Outer Gneerings Certification Required: Open Water Average visibility: 10m (summer), 15m (winter) … If you want to find nemo"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 18
+    }
+   ],
+   "vis": {
+    "low": 10,
+    "high": 15,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Clownfish and anemones",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Tiny sexy shrimp for macro hunters",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-grm8yk",
+   "name": "Nurse Rock",
+   "sources": {
+    "s1": {
+     "url": "https://www.sunreef.com.au/dive-sunshine-coast/sunshine-coast-reef-dives/",
+     "publisher": "Sunreef Mooloolaba",
+     "kind": "operator",
+     "quote": "nurse Rock serves as a transitionary home for Grey Nurse Sharks from July to October"
+    }
+   },
+   "season": {
+    "from": 7,
+    "to": 10,
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey nurse sharks, July to October",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-mxbx4d",
+   "name": "HMAS Brisbane (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMAS_Brisbane_(D_41)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "Brisbane was sunk approximately 2.8 nautical miles (5.2 km; 3.2 mi) off the coast of Mudjimba , Sunshine Coast, Queensland , on 31 July 2005 in 27 metres (89 ft) of water."
+    },
+    "s2": {
+     "url": "https://scubaworld.com.au/dive-sites/hmas-brisbane-dive",
+     "publisher": "Scuba World Mooloolaba",
+     "kind": "operator",
+     "quote": "Wreck certification is not a requirement to dive this site Depth ranges from 6 – 28 metres"
+    },
+    "s3": {
+     "url": "https://www.sunshinecoastpoint.com.au/attractions/ex-hmas-brisbane/",
+     "publisher": "Sunshine Coast Point",
+     "kind": "press",
+     "quote": "The wreck lies in about 28m of water, with upper sections around 15-16m deep. … Divers, snorkellers and vessels need a Queensland Parks permit or written authority"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 27
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 28
+    },
+    {
+     "ref": "s3",
+     "unit": "m",
+     "bottom": 28
+    }
+   ],
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s3"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "access": {
+    "value": "Queensland Parks permit or written authority required (booked through licensed operators)",
+    "refs": [
+     "s3"
+    ]
+   },
+   "penetration": {
+    "value": "Large openings cut in the hull; interior only for suitably trained divers",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eight-storey ex-navy destroyer",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A former navy destroyer deliberately sunk in 2005 off Mudjimba to serve as an artificial reef. The upper decks sit around 15 m with the seabed near 28 m, so exterior sections suit certified divers while the interior needs wreck training. A park permit is required.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Upper decks about 15-16 m; seabed about 28 m"
+  }
+ ]
+}

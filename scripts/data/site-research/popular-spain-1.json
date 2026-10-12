@@ -1,0 +1,110 @@
+{
+ "batch": "popular-spain-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-umzr73",
+   "reason": "no per-site source found"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-hoajyl",
+   "sources": {
+    "s1": {
+     "url": "https://www.grancanaria.com/turismo/es/nautica/submarinismo/guia-de-inmersiones/baja-de-pasito-blanco/",
+     "publisher": "Gran Canaria Tourism (Cabildo)",
+     "kind": "agency",
+     "quote": "Baja de Pasito Blanco … Profundidad med. 15 m Profundidad máx. 19 m Dificultad Baja Corriente Media"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 19
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "Pasito Blanco"
+  },
+  {
+   "id": "odm-zr1clx",
+   "sources": {
+    "s1": {
+     "url": "https://scubadivingtenerife.com/en/south-tenerife/el-balito-diving/",
+     "publisher": "Scuba Diving Tenerife",
+     "kind": "operator",
+     "quote": "El Balito Diving at El Balito is suitable for beginner to intermediate level divers, as the maximum depth of the dive site is 25 meters. … reaching 20 meters on clear days"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 6,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "vis": {
+    "low": 10,
+    "high": 20,
+    "unit": "m",
+    "refs": [
+     "s1"
+    ]
+   },
+   "name": "El Balito"
+  },
+  {
+   "id": "odm-buzjsy",
+   "sources": {
+    "s1": {
+     "url": "https://tuylapalma.com/inmersiones/buceo-en-puerto-naos/",
+     "publisher": "Tuylapalma",
+     "kind": "operator",
+     "quote": "Inmersión en Playa Chica En el lado norte de la playa de Puerto Naos existe una pequeña cala … una gran pared , en caída casi vertical que va entre los 18 y los 50 metros de profundidad … a unos 35 metros de profundidad, también aparecen las gorgonias rojas"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Wall drops from 18 to 50 m; red gorgonians near 35 m",
+   "highlights": [
+    {
+     "text": "Near-vertical wall with red gorgonians at 35 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "name": "Puerto Naos - Playa Chica"
+  }
+ ]
+}

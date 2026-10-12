@@ -1,0 +1,74 @@
+{
+ "batch": "popular-tonga-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [],
+ "sites": [
+  {
+   "id": "odm-y1w1cy",
+   "sources": {
+    "s1": {
+     "url": "https://tongapocketguide.com/10-best-dive-sites-in-vavau",
+     "publisher": "Tonga Pocket Guide",
+     "kind": "press",
+     "quote": "Today, the wreck sits upright at an accessible depth of just 30 m (98 ft) where a wide variety of marine life can be admired, from stonefish to colourful reef fish."
+    },
+    "s2": {
+     "url": "https://book.tongapocketguide.com/ax-factor-dive/clan-mcwilliam-historic-wreck-dive",
+     "publisher": "Tonga Pocket Guide (Ax Factor Dive)",
+     "kind": "operator",
+     "quote": "most divers start at 28m … The wreck is deep, sheltered and current-free … Ideal for experienced divers"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 20,
+     "bottom": 28
+    }
+   ],
+   "current": {
+    "value": "none",
+    "refs": [
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Jaws swim-through, hawksbill turtle, coral growth",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sheltered, upright wreck in Neiafu harbour, a short boat ride out. Calm, current-free and deep enough that most dives start near 28 m, it suits experienced divers and shows masts, winches, coral growth and a resident turtle.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "name": "Historic Dive Wreck Clan Mc William"
+  }
+ ]
+}

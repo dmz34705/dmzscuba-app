@@ -1,0 +1,37 @@
+{ "batch": "notable-federated-states-of-micronesia-1", "researchedAt": "2026-10-08",
+  "skipped": [
+    {"id":"x-wikipedia-97","reason":"Toa Maru wreck is off Gizo, Solomon Islands; pin is wrong (open ocean near Pohnpei) and no correct coordinates sourced"}
+  ],
+  "sites": [
+  {"id":"osm-n4031617721","name":"Fujikawa Maru",
+   "sources":{
+    "s1":{"url":"https://www.liveaboard.com/diving/micronesia/fujikawa-maru","publisher":"Liveaboard.com","kind":"operator","quote":"the deck lies at 18m (60ft)"},
+    "s2":{"url":"https://en.wikipedia.org/wiki/Fujikawa_Maru","publisher":"Wikipedia","kind":"encyclopedia","quote":"at least nine disassembled Mitsubishi fighter aircraft in one of the forward holds"}
+   },
+   "types":{"value":["wreck"],"refs":["s2"]},
+   "highlights":[{"text":"Disassembled Zero fighters in forward hold","refs":["s2"]},{"text":"Bow gun on the foredeck","refs":["s2"]}],
+   "summary":{"text":"A Japanese cargo ship sunk in Operation Hailstone in 1944 and now among the most popular wreck dives in Chuuk Lagoon, with aircraft stowed in its forward hold and a gun on the bow.","refs":["s1","s2"]}
+  },
+  {"id":"osm-n4031617724","name":"Kiyosumi Maru",
+   "sources":{"s1":{"url":"https://dive3d.eu/models/chuuk-lagoon-truk/kiyosumi-maru/","publisher":"Dive3D","kind":"operator","quote":"The wreck lies at a depth of 30 meters (100 fsw), within Truk Lagoon"}},
+   "depth":[{"ref":"s1","unit":"m","bottom":30}],
+   "types":{"value":["wreck"],"refs":["s1"]}
+  },
+  {"id":"osm-n4031617725","name":"Rio de janeiro Maru",
+   "sources":{"s1":{"url":"https://masterliveaboards.com/rio-de-janeiro-maru-wreck-truk/","publisher":"Master Liveaboards","kind":"operator","quote":"All levels of divers – nitrox recommended"}},
+   "types":{"value":["wreck"],"refs":["s1"]}
+  },
+  {"id":"x-wikipedia-91","name":"Heian Maru (1930)",
+   "sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Heian_Maru_(1930)","publisher":"Wikipedia","kind":"encyclopedia","quote":"Its depth of about 33 metres or 108 feet (12 metres or 39 feet on upper/starboard side)"}},
+   "depth":[{"ref":"s1","unit":"m","top":12,"bottom":33}],
+   "types":{"value":["wreck"],"refs":["s1"]}
+  },
+  {"id":"x-wikipedia-59","name":"Japanese destroyer Fumizuki (1926)",
+   "sources":{"s1":{"url":"https://pacificwrecks.com/ship/ijn/fumizuki.html","publisher":"Pacific Wrecks","kind":"press","quote":"sank near Udot Island in Truk Lagoon at roughly Lat 7° 24' N, Long 151° 44' E"}},
+   "types":{"value":["wreck"],"refs":["s1"]}
+  },
+  {"id":"x-wikipedia-51","name":"Chuuk Lagoon",
+   "sources":{"s1":{"url":"https://en.wikipedia.org/wiki/Chuuk_Lagoon","publisher":"Wikipedia","kind":"encyclopedia","quote":"Truk lagoon the biggest graveyard of ships in the world"}},
+   "notDiveSite":{"kind":"area","reason":"Whole lagoon containing dozens of separate wreck sites","refs":["s1"]}
+  }
+]}

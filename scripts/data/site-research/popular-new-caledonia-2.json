@@ -1,0 +1,197 @@
+{
+ "batch": "popular-new-caledonia-2",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-tshfby",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-8egmpf",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-9kr3ny",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-z8brtv",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-dptx6m",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-vofe9d",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-8lgzbb",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-ak9ro7",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  },
+  {
+   "id": "odm-wwfbhe",
+   "reason": "no usable sourced facts found (only banned directories, depth mismatches or no page covering this site)"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-svqqic",
+   "name": "l’arche",
+   "sources": {
+    "pl22": {
+     "url": "https://www.plongee-loisir.com/ville/134529-poindimie",
+     "publisher": "Plongeur.com",
+     "kind": "press",
+     "quote": "L'arche 1,3,8,9,13,17,20, 11m - 21m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "pl22",
+     "unit": "m",
+     "top": 11,
+     "bottom": 21
+    }
+   ]
+  },
+  {
+   "id": "odm-cwugcx",
+   "name": "Fausse passe de Uitoé",
+   "sources": {
+    "pl20": {
+     "url": "https://www.plongee-loisir.com/ville/134518-noumea",
+     "publisher": "Plongeur.com",
+     "kind": "press",
+     "quote": "Fausse passe Uitoe 1,4,8,19,22, 15m - 25m"
+    }
+   },
+   "depth": [
+    {
+     "ref": "pl20",
+     "unit": "m",
+     "top": 15,
+     "bottom": 25
+    }
+   ]
+  },
+  {
+   "id": "odm-et0xpe",
+   "name": "épave du Umbolt",
+   "sources": {
+    "pl20": {
+     "url": "https://www.plongee-loisir.com/ville/134518-noumea",
+     "publisher": "Plongeur.com",
+     "kind": "press",
+     "quote": "EPAVE DU HUMBOLT 8,9,10,27, 11m - 21m"
+    },
+    "lp": {
+     "url": "https://www.lonelyplanet.fr/article/la-plongee-en-nouvelle-caledonie",
+     "publisher": "Lonely Planet France",
+     "kind": "press",
+     "quote": "Cette épave d’un ancien palangrier long de 45 m repose par -22 m sur le flanc tribord. On peut visiter la timonerie et les cales."
+    }
+   },
+   "depth": [
+    {
+     "ref": "pl20",
+     "unit": "m",
+     "top": 11,
+     "bottom": 21
+    },
+    {
+     "ref": "lp",
+     "unit": "m",
+     "bottom": 22
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "lp"
+    ]
+   }
+  },
+  {
+   "id": "odm-z0qxa0",
+   "name": "Faille de Poe",
+   "sources": {
+    "st25": {
+     "url": "https://www.sudtourisme.nc/en/plan-your-trip/what-to-do-in-the-southern-province/culture-and-heritage/shark-fault-bourail-en-2771864/",
+     "publisher": "Sud Tourisme (Province Sud)",
+     "kind": "agency",
+     "quote": "A former river bed about 20 metres deep, the Shark Fault—also known as the Poé Fault—connects the lagoon to the reef. The site is home to an exceptional biodiversity. Experienced divers will be able to spot turtles and different species of sharks, rays and fish."
+    },
+    "lp": {
+     "url": "https://www.lonelyplanet.fr/article/la-plongee-en-nouvelle-caledonie",
+     "publisher": "Lonely Planet France",
+     "kind": "press",
+     "quote": "La Faille de Poé/Faille de l’îlot Shark – Les plongeurs s’immergent dans un étroit chenal taillé dans le récif, qui s’étend perpendiculairement à la côte. Il s’agit de l’ancien lit d’une rivière"
+    }
+   },
+   "depth": [
+    {
+     "ref": "st25",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "st25"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles, several shark species, rays",
+     "refs": [
+      "st25"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A narrow channel cut through the reef at Poé, formerly a river bed, running about 20 m deep and linking lagoon to ocean. Experienced divers meet turtles, sharks and rays here.",
+    "refs": [
+     "st25",
+     "lp"
+    ]
+   }
+  },
+  {
+   "id": "odm-bq878v",
+   "name": "Grand coude de Kele",
+   "sources": {
+    "lp": {
+     "url": "https://www.lonelyplanet.fr/article/la-plongee-en-nouvelle-caledonie",
+     "publisher": "Lonely Planet France",
+     "kind": "press",
+     "quote": "Le grand coude de Kélé – Fait référence à une petite passe dans le récif, riche en faune. Vous aurez de grandes chances de voir des requins gris, des carangues, des bécunes, des loches et des raies-aigles. Le tombant débute à -18 m et plonge vers les abysses."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "lp"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Grey sharks, jacks, barracuda, groupers, eagle rays",
+     "refs": [
+      "lp"
+     ]
+    }
+   ]
+  }
+ ]
+}

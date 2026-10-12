@@ -1,0 +1,87 @@
+{
+ "batch": "popular-saint-lucia-1",
+ "researchedAt": "2026-10-09",
+ "sites": [
+  {
+   "id": "odm-chxq1l",
+   "name": "Lesleen M and Vicky B Wrecks",
+   "sources": {
+    "s1": {
+     "url": "https://smmainc.com/dive-sites/",
+     "publisher": "Soufrière Marine Management Association",
+     "kind": "agency",
+     "quote": "The Lesleen M sits on an even keel on the sandy bottom at 65 feet with its top deck at 30 feet in depth. Trained wreck divers do explore inside in various compartments including the engine room but it is not recommended for novices."
+    },
+    "s2": {
+     "url": "https://scubastlucia.com/diving/",
+     "publisher": "Scuba St. Lucia",
+     "kind": "operator",
+     "quote": "The 165 foot freighter was sunk in October 1986 as part of a project by the Department of Fisheries to provide artificial reefs. … It is 30 feet to the deck and 65 feet at the deepest point. This site is an ideal introduction to wreck diving for the newly certified diver."
+    },
+    "s3": {
+     "url": "https://stlucia.org/en_uk/things-to-do/diving/",
+     "publisher": "Saint Lucia Tourism Authority",
+     "kind": "agency",
+     "quote": "The wreck of Vicky B sits in about 80 feet on the bed of Anse Cochon. … The 200ft Vicky B was sunk in 2018."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 65
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s2"
+    ]
+   },
+   "penetration": {
+    "value": "Lesleen M interior possible for trained wreck divers",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Coral-covered wreck with juvenile angelfish, hawksbill turtles",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Two artificial-reef wrecks in Anse Cochon bay: the 165 ft freighter Lesleen M (sunk 1986) sits upright on sand with its deck near 30 ft and bottom near 65 ft, while the 200 ft Vicky B (sunk 2018) lies deeper, near 80 ft.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3"
+    ]
+   },
+   "depthNote": "Lesleen M deck 30 ft, sand 65 ft; Vicky B about 80 ft"
+  }
+ ],
+ "skipped": [
+  {
+   "id": "odm-cjr08o",
+   "reason": "no usable non-banned source found"
+  }
+ ]
+}

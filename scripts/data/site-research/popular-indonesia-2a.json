@@ -1,0 +1,156 @@
+{
+  "batch": "popular-indonesia-2a",
+  "researchedAt": "2026-10-08",
+  "sites": [
+    {
+      "id": "odm-azkp6t",
+      "name": "Arborek Jetty",
+      "sources": {
+        "s1": {
+          "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/arborek-jetty/",
+          "publisher": "La Galigo Liveaboard",
+          "kind": "operator",
+          "quote": "The maximum depth at Arborek Jetty is around 18 meters (59 feet). … Mild to Strong (Very Variable) … suitable for all levels of divers, from beginners to advanced … Visibility typically ranges from 10 to 25 meters"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 18
+        }
+      ],
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "vis": {
+        "low": 10,
+        "high": 25,
+        "unit": "m",
+        "refs": [
+          "s1"
+        ]
+      }
+    },
+    {
+      "id": "odm-hl3i9n",
+      "name": "Yenbuba Jetty",
+      "sources": {
+        "s1": {
+          "url": "https://divernet.com/features/local-guide-to-raja-ampat-dive-sites-yenbuba-jetty/",
+          "publisher": "DIVER",
+          "kind": "press",
+          "quote": "Depth: Ranges from 4 meters to 30 meters. … thriving marine life, including schools of batfish and sweetlips … divers should exercise caution when navigating underneath the jetty, as boat traffic can pose a potential hazard."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 4,
+          "bottom": 30
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Schools of batfish and sweetlips",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Boat traffic around the jetty",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-wf0g5p",
+      "name": "The Cauldron",
+      "sources": {
+        "s1": {
+          "url": "https://www.lagaligoliveaboard.com/diving/komodo/dive-site/the-cauldron/",
+          "publisher": "La Galigo Liveaboard",
+          "kind": "operator",
+          "quote": "We drop down into the bowl of the Cauldron to hit a maximum depth of 23m. … This site has strong currents so it's not suitable for beginner divers … We quite often see everyone's favourite, Manta Rays at this site."
+        },
+        "s2": {
+          "url": "https://www.diveplanit.com/?p=8988",
+          "publisher": "DivePlanit",
+          "kind": "press",
+          "quote": "Top: 5M Median: 20M Bottom: 25M"
+        },
+        "s3": {
+          "url": "https://divetribekomodo.com/komodo-dive-sites/cauldron",
+          "publisher": "Dive Tribe Komodo",
+          "kind": "operator",
+          "quote": "Extreme currents run through the Shotgun channel at up to five knots."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 23
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 5,
+          "bottom": 25
+        }
+      ],
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1",
+          "s3"
+        ]
+      },
+      "current": {
+        "value": "strong",
+        "refs": [
+          "s1",
+          "s3"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Manta rays often seen",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Shotgun channel current up to five knots",
+          "refs": [
+            "s3"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Komodo's tidal drift through a rocky channel into a coral bowl, finishing over a coral garden. Currents are fierce and tide-dependent, so it is for experienced divers; reef sharks and mantas are the draw.",
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,456 @@
+{
+ "batch": "popular-new-zealand-3",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-dds2l9",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-jwtunf",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-l6opgd",
+   "reason": "no usable non-banned source with site-specific facts"
+  },
+  {
+   "id": "odm-30is33",
+   "reason": "no usable non-banned source with site-specific facts"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-05fscu",
+   "name": "MV Mikhail Lermontov, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/MS_Mikhail_Lermontov",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "MS Mikhail Lermontov rests where it sank, lying on its starboard side in depths reaching up to a maximum of about 38 metres … The dives range from an easy 12 metres (39 ft) depth at the top of the wreck, through to deep penetration and decompression dives to depths of 36 metres (118 ft). It is possible to enter the wreck"
+    },
+    "s2": {
+     "url": "https://globaldive.net/marlborough-sounds-mikhail-lermontov",
+     "publisher": "Global Dive",
+     "kind": "operator",
+     "quote": "the 176m cruise liner lies in 36m of water with the shallowest point at just 12m … the bay where she lies has a silt bottom and is not known for its great visibility"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 12,
+     "bottom": 38
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 12,
+     "bottom": 36
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Silt bottom, limited visibility",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A 176 m Soviet cruise liner that sank in 1986 in Port Gore and still lies largely intact on her side. The top is an easy dive near 12 m, while the hull, penetration and decompression dives reach about 36-38 m; visibility is often modest.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-1urrp8",
+   "name": "Rainbow Warrior",
+   "sources": {
+    "s1": {
+     "url": "https://scubadiverlife.com/scuba-dive-rainbow-warrior/",
+     "publisher": "Scuba Diver Life",
+     "kind": "press",
+     "quote": "The Rainbow Warrior , 130 feet (40 m) long, lies in 88 feet (27 m) of water at the deepest point. … Although the top of the wreck sits at around 50 feet (15 m), the main structure descends hits 88 feet (27 m). … requires at least an advanced qualification."
+    },
+    "s2": {
+     "url": "https://matauribayholidaypark.co.nz/rainbow-warrior-div/",
+     "publisher": "Matauri Bay Holiday Park",
+     "kind": "operator",
+     "quote": "The Rainbow Warrior wreck sits 18-27m deep."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 88
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 18,
+     "bottom": 27
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "The former Greenpeace flagship, bombed in 1985 and sunk off the Cavalli Islands as a dive wreck. She rests upright with the top around 15-18 m and the seabed near 27 m, and is covered in jewel anemones; the depth calls for advanced training.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-jyr761",
+   "name": "Double Cove Marine Reserve",
+   "sources": {
+    "s1": {
+     "url": "https://marlboroughmarinas.co.nz/marinas/diving-in-the-marlborough-sounds/",
+     "publisher": "Marlborough Marinas",
+     "kind": "agency",
+     "quote": "Known as one of the Marlborough Sounds’ highlights, Double Cove is a great spot for divers of all experience levels. The shallow waters (under 8m) and vibrant marine life make it a memorable dive."
+    },
+    "s2": {
+     "url": "https://cruiseguide.co.nz/queen-charlotte-sound/double-cove",
+     "publisher": "Marlborough Sounds Cruise Guide",
+     "kind": "agency",
+     "quote": "The whole of the Double Cove is a prohibited fishing area. There are tame fish, fed regularly, in the cove between the two main arms. … The Koi wreck is a popular diving location that lies within the no fish area."
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "access": {
+    "value": "No-fishing area (prohibited fishing in the whole cove)",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Tame fish between the two arms",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Koi wreck inside the no-fish area",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "West arm exposed in southerly winds",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-6jq9c1",
+   "name": "Lee Breakwater",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/lee-breakwater-288751",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Lee Breakwater in Port Taranaki offers lots of variety of fish and diving opportunities and is easily accessible from the port boat ramp car park. This is a shore dive. … Sea life includes seahorses, nudibranch, john dory, korehu, Cod, damsel, and kingfish"
+    },
+    "s2": {
+     "url": "https://www.porttaranaki.co.nz/news/summer-sun-fun-and-harbour-safety/",
+     "publisher": "Port Taranaki",
+     "kind": "agency",
+     "quote": "at least 50 metres away from the sides and stern"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Seahorses, nudibranchs, john dory, kingfish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Busy commercial harbour - keep clear of ships",
+     "refs": [
+      "s2"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-nfdhek",
+   "name": "Promenade Point",
+   "sources": {
+    "s1": {
+     "url": "https://divenow.co.nz/dive-site-kai-iwi-lakes-promenade-point/",
+     "publisher": "Dive Now",
+     "kind": "operator",
+     "quote": "Lake Taharoa as a training and fun dive site when sea conditions are not favourable. … fantastic point for student divers and snorkelers. The lake steps down to over 8m here and then slops down to over 20m. … The lake is used by boaties, waterskiers, paddle boarders and kayakers so do use a dive flag"
+    }
+   },
+   "water": {
+    "value": "fresh",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Boat and waterski traffic - use a dive flag",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tbcncs",
+   "name": "Taharoa Domain (Kai Iwi Lakes)",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/taharoa-domain-kai-iwi-lakes-269454",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The dive site at the Eastern end of the lake has a shallow (0.5m) entrance, then quickly drops to 10m and eventually slopes down to 30+. The bottom composition starts as fine white sand and gradually becomes siltier at depth. Taharoa Lake has koura (fresh water crayfish), brown trout, rainbow trout and perch."
+    }
+   },
+   "water": {
+    "value": "fresh",
+    "refs": [
+     "s1"
+    ]
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Freshwater crayfish (koura) and trout",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-tyk29j",
+   "name": "Penguin Cove",
+   "sources": {
+    "s1": {
+     "url": "https://www.uwphotographyguide.com/diving-milford-sound",
+     "publisher": "Underwater Photography Guide",
+     "kind": "press",
+     "quote": "Our first dive was at Penguin Cove, which is more of a beginner site and can be a little silty. Still, there was a good amount of marine life and plenty of black coral."
+    },
+    "s2": {
+     "url": "https://www.divephotoguide.com/underwater-photography-travel/article/milford-sound-new-zealand-unique-dive-destination/",
+     "publisher": "Dive Photo Guide",
+     "kind": "press",
+     "quote": "With its sloping sandy bottom and plentiful life, Penguin Cove is an easy way to start the day. Huge crayfish spill out of every crack and crevice … The delicate white branches of black coral trees reach up high"
+    }
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Can be a little silty",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Black coral trees",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Huge crayfish in the cracks",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An easy Milford Sound starter dive over a sloping sandy bottom, regarded as a beginner site. Black coral grows unusually shallow here, and large crayfish crowd the crevices, though silt can reduce visibility.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-zin08z",
+   "name": "Urquharts Bay",
+   "sources": {
+    "s1": {
+     "url": "https://divenow.co.nz/dive-site-urquharts-bay/",
+     "publisher": "Dive Now",
+     "kind": "operator",
+     "quote": "Urquharts Bay at the entrance of Whangarei Harbour is a very popular spot for collecting scallops both as a shore dive and as a boat dive. … Diver Level  Open Water Depths  3m to 8m Great for all, just be mindful of potential low visibility … There is a channel that runs quite close to shore where the boats are moored"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 3,
+     "bottom": 8
+    }
+   ],
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Possible low visibility",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Boat channel and moorings close to shore",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Scallops, octopus",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-q8en5g",
+   "name": "Five Mile Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/wharewaka-point-351828",
+     "publisher": "Scubago (NZ Dive School / Dive Whakatane listings)",
+     "kind": "operator",
+     "quote": "Five Mile Bay (★4.4) Good parking, onsite toilets, grass area to set up. Easy shore entry on sand extending for 50mtr off shore leading to a gentle slope extending down to 27mtr+. Water clarity generally good on sand area, some silt on drop off."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Some silt on the drop-off",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "water": {
+    "value": "fresh",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-p5qkpt",
+   "name": "AUT Millennium Centre",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/divesite/aut-millennium-centre-255201",
+     "publisher": "Scubago (Global Dive listing)",
+     "kind": "operator",
+     "quote": "This is a public pool that is used for confined water sessions."
+    }
+   },
+   "notDiveSite": {
+    "kind": "restricted",
+    "reason": "Public swimming pool used for confined-water training sessions",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

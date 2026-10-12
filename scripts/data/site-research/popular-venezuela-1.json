@@ -1,0 +1,15 @@
+{
+ "batch": "popular-venezuela-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-wdc3gf",
+   "reason": "no usable per-site source reachable"
+  },
+  {
+   "id": "odm-u73s1e",
+   "reason": "no usable per-site source reachable"
+  }
+ ],
+ "sites": []
+}

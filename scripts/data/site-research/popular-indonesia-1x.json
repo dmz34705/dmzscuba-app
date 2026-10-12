@@ -1,0 +1,967 @@
+{
+ "batch": "popular-indonesia-1x",
+ "researchedAt": "2026-10-08",
+ "skipped": [
+  {
+   "id": "odm-0jjgie",
+   "reason": "Baong Penyu / Turtle Neck: pin is at Sanur (-8.7055,115.261), ~35 km from the Padang Bai site it names"
+  },
+  {
+   "id": "odm-099yhc",
+   "reason": "Project Laut Restoration Patch: only a business/project listing, no dive facts"
+  },
+  {
+   "id": "odm-tw4pph",
+   "reason": "Palung Palung: only one directory-style line (entry/boat), no depth or features"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-noomi2",
+   "name": "Jemeluk Wall",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Jemeluk Wall … From the topography of the slope that meets the wall with a variety of soft and hard corals that adorn, such as barrel sponges, huge seafan, table coral"
+    },
+    "s2": {
+     "url": "https://www.balitouristic.com/amed-diving/",
+     "publisher": "Bali Touristic",
+     "kind": "operator",
+     "quote": "Jemeluk Bay sits right in the center of Amed diving activity. A colorful wall drops from the shore down to about 20 meters, covered in soft coral and sea fans. Because the entry is calm and shallow, beginners often start here."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barrel sponges, big sea fans, table coral",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Nudibranchs along the wall",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A coral-covered wall that starts a short swim from the Jemeluk shoreline at Amed, reaching about 20 m. Calm, easy entry makes it a gentle first wall dive, with sponges, fans and table corals along the slope-to-wall transition.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-iuizje",
+   "name": "Toyapakeh",
+   "sources": {
+    "s1": {
+     "url": "https://divinglembongan.com/nusa-penida-dive-sites/",
+     "publisher": "Diving Lembongan",
+     "kind": "operator",
+     "quote": "Toyapakeh Topography: Multilevel slops 5m to 40m Difficulty: Advanced to expert Max depth: 40+ Max … Current: Low to strong"
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Toyapakeh often has strong and sometimes unpredictable currents. … Large open bays with coral that begins growing in the shallows."
+    },
+    "s3": {
+     "url": "https://www.sirendivinglembongan.com/dive-sites/",
+     "publisher": "Siren Diving Lembongan",
+     "kind": "operator",
+     "quote": "On the South end of Toyapakeh we find a magnificent wall dive. From 5-15 metres we find a coral plateau and then the site drops off into a very deep wall … Generally the current runs North along the dive site, making for an excellent drift dive."
+    },
+    "s4": {
+     "url": "https://twofishdivers.com/diving/nusa-penida/",
+     "publisher": "Two Fish Divers",
+     "kind": "operator",
+     "quote": "Toyapakeh means salt water in Balinese and is the richest site in Penida. It is a divers’ favourite as you often find yourself swimming through school after school of colourful fish"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 5,
+     "bottom": 40
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall",
+     "drift"
+    ],
+    "refs": [
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of triggerfish, batfish and trevally",
+     "refs": [
+      "s4"
+     ]
+    },
+    {
+     "text": "Coral plateau 5-15 m, drop-off to deep wall",
+     "refs": [
+      "s3"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong, unpredictable currents",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Penida's most praised site, in a bay on the Toyapakeh strait: a shallow coral plateau, terraces and a wall to the south. Fish life is dense, but current can be strong and changeable, so the deeper drift suits experienced divers.",
+    "refs": [
+     "s1",
+     "s2",
+     "s3",
+     "s4"
+    ]
+   }
+  },
+  {
+   "id": "odm-eveds9",
+   "name": "Pura Mas Gading",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Located between the dive sites Buyuk and Sental, PMG is marked with a small temple in the shallows and is a common place to see mola mola cleaning (at the right time of year). Usually a gentle drift, this site is a gentle slope with plenty of soft corals"
+    },
+    "s2": {
+     "url": "https://twofishdivers.com/diving/nusa-penida/",
+     "publisher": "Two Fish Divers",
+     "kind": "operator",
+     "quote": "Pura Ped, Pura Mas Gading & Buyuk (Nusa Penida) These three sites are found side by side on Nusa Penida and share similar sloping reef topography. … big, randomly placed barrel sponges and coral bommies"
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "drift"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Barrel sponges and coral bommies",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Mola mola cleaning in season",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sloping reef on the north coast of Nusa Penida, found by a small temple in the shallows. Usually an easy drift over soft corals, barrel sponges and bommies, with a chance of sunfish cleaning in season.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-leiaze",
+   "name": "Blue Lagoon",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "This is a white sandy bay with clear water that has healthy corals at its edge, followed by a rubble area. … the sandy bottom begins to decline towards to more than 20 meters deep where you can find several cleaning stations."
+    },
+    "s2": {
+     "url": "https://www.starfish.ch/dive/Bali-east.html",
+     "publisher": "Starfish (Zubi)",
+     "kind": "press",
+     "quote": "Blue Lagoon (No. 4) (Tanjung Sari) You start the dive on a sandy slope the dive on a large wall and on several large coral blocks. It is a very good place for small animals like nudibranchs and flatworms, but we also always found at least one frogfish as well as ribbon eels"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Frogfish, ribbon eels, nudibranchs",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Cleaning stations below 20 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Padang Bai's classic macro site: a sandy bay with coral at its edge, then a slope with coral blocks and a wall. Expect frogfish, ribbon eels and nudibranchs, and cleaning stations deeper than about 20 m.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-0ijygj",
+   "name": "Tanjung Sari",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Tanjung Sari … This site starts where the blue lagoon slope ends on the left hand side. The reef top lies at 8 meters and starts to slope down to 18-20 meters and stays relatively flat quite far out. … canyon like rock formations."
+    },
+    "s2": {
+     "url": "https://www.starfish.ch/dive/Bali-east.html",
+     "publisher": "Starfish (Zubi)",
+     "kind": "press",
+     "quote": "Blue Lagoon (No. 4) (Tanjung Sari) You start the dive on a sandy slope the dive on a large wall and on several large coral blocks."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8,
+     "bottom": 20
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Canyon-like rock formations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Reef next to Padang Bai's Blue Lagoon (the same area is also listed under this name): a reef top near 8 m sloping to roughly 18-20 m, with canyon-like rock formations toward the channel.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-xsxatd",
+   "name": "Tanjung Jepun, Padang Bai, Bali",
+   "sources": {
+    "s1": {
+     "url": "https://www.theungasan.com/blog/unveiling-the-wonders-of-bali-diving/",
+     "publisher": "The Ungasan",
+     "kind": "operator",
+     "quote": "To spot blue-spotted stingrays, Tanjung Jepun should be top on your list. Featuring an artificial reef and a small wreck at approximately 17 metres deep, this site is heralded as being great for underwater macro photography with frogfish, cuttlefish, porcupine fish and nudibranchs."
+    },
+    "s2": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "This is the best place in Padang for snorkeling and dive training for open water diver courses. A sandy and rubble area starts at a depth of 5 meters followed by a sloping bottom"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 17
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Blue-spotted stingrays, frogfish, cuttlefish",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Artificial reef and small wreck at ~17 m",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Gentle Padang Bai site used for open-water training: sand and rubble from about 5 m, then a slope down to an artificial reef and small wreck near 17 m. A good macro dive for stingrays, frogfish and cuttlefish.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-fvwors",
+   "name": "Kubu Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Great and easy dive site. Access from beach. Beautiful corals and contrast with black sand on the bottom. Perfect dive after Boga Wreck. Good for all levels."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Corals against black sand",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hvwfti",
+   "name": "Bicycle Slope, Kubu",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Bicycle Slope, Kubu … Between Kubu reef and Boga wreck. The site is build by artificial structures such as motorbike, iron and concrete structures on a sandy slope. the dive site goes on a depth of 15 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 15
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Artificial structures incl. motorbikes on sand slope",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-jtxrfl",
+   "name": "Segara",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "This shallow shore entry dive has much to offer. There you can find artificial reef structures placed around 9 meters deep, established in 2008 Now overgrown with corals this is one of the preferred muck dive sites"
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Artificial reef structures at about 9 m",
+   "highlights": [
+    {
+     "text": "Coral-covered artificial reef (2008)",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-294jum",
+   "name": "Deep Blue",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "One of the best drift dives in Amed area. More Southern dive site, Deep Blue is a boat dive that brings you to a wild colourful marine life. Deep dive, good for challenges."
+    }
+   },
+   "entry": {
+    "value": "boat",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "drift"
+    ],
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "odm-pcm5sm",
+   "name": "Srikandi Speedboat (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "This is a new wreck of a Speedboat with maybe 20 seats inside that sunk and is now around 25 to 35m deep. You can see the full boat; it looks perfect still. Access is from the beach, in front of Srikandi restaurant."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 25,
+     "bottom": 35
+    }
+   ],
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact speedboat wreck",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-xhqo3p",
+   "name": "Lipah Bay, Bali",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Entry from a sandy beach shore line, you will swim toward a slope where you will start your dive. … follow the ledge to come across a few coral blocks with lots of colorful fish. Continue along the right side to find turtles eating on the ocean floor."
+    },
+    "s2": {
+     "url": "https://www.amedjepundivers.com/dive-sites/amed",
+     "publisher": "Amed Jepun Divers",
+     "kind": "operator",
+     "quote": "Colorful, calm, and teeming with life, Lipah Bay is a diver's favorite for both reef exploration and critter hunting."
+    }
+   },
+   "entry": {
+    "value": "shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Turtles, coral blocks with colorful fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Calm shore dive at Amed: walk in from a sandy beach, swim to a slope and follow a ledge past coral blocks. Good for relaxed reef exploration and critter hunting, with turtles grazing along the bottom.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-kjk9bq",
+   "name": "Dan’s Reef",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Dan’s Reef is the house reef situated just in front on Nomads Diving, Nusa Penida. It is accessible by shore entry, or boat entry. It is a beautiful, relatively untouched dive site that can be prone to strong currents during tidal changes. Shallow steps followed by a deep sloping area"
+    }
+   },
+   "entry": {
+    "value": "boat-shore",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "variable",
+    "refs": [
+     "s1"
+    ]
+   },
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "hazards": [
+    {
+     "text": "Strong currents during tidal changes",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5vz65b",
+   "name": "Padang Bai Coral Restoration Area",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "this is the site for the Livingseas coral reef restoration project. located in the the baong penyu / turtle neck site, just off the coast of padang bai"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Livingseas coral restoration project",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-ei213w",
+   "name": "Baung Penyu Conservation Site / Goa",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "This conservation site was originally created by Livingseas in mid-2019, and is an ongoing project. The old reef was destroyed many years ago, and all that is left is the coral rubble. By creating a metal structure and attaching corals to them, the reef has started to grow again"
+    }
+   },
+   "highlights": [
+    {
+     "text": "Metal-frame coral restoration since 2019",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-nyv6fe",
+   "name": "Sanur Beach",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The location is in Sanur Bay, Banjar Semawang. Shallow area max depth 12m. Combination of sand and coral patch."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Sand with coral patches",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-5sp3br",
+   "name": "Gamat Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "A small bay in the west of Nusa Penida that has healthy coral in flat shallow area, followed by a slope that reaches more than 40 meters. One of the best places to spot Mola mola, or Oceanic sunfish, during the right season."
+    },
+    "s2": {
+     "url": "https://www.sirendivinglembongan.com/dive-sites/",
+     "publisher": "Siren Diving Lembongan",
+     "kind": "operator",
+     "quote": "Gamat Bay is perhaps the smallest dive site around the islands. … Here in the bay we find a sandy bottom and a profusion of beautiful soft corals, gorgonians and table coral. … During the season, Gamat provides a good opportunity to see Mola Mola at depth."
+    },
+    "s3": {
+     "url": "https://balidivingcenterscuba.com/how-deep-are-the-dive-sites-in-nusa-penida/",
+     "publisher": "Bali Diving Center Scuba",
+     "kind": "operator",
+     "quote": "Gamat Bay … Depths here range from 10 to 35 meters."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s3",
+     "unit": "m",
+     "top": 10,
+     "bottom": 35
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Mola mola in season",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Soft corals, gorgonians, table coral in the bay",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Small, sheltered bay on Penida's west coast with sandy bottom and rich soft coral shallows, opening onto a steep slope with bommies and stronger water. One of the better places to look for sunfish in season.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-tlviy1",
+   "name": "Manta Bay",
+   "sources": {
+    "s1": {
+     "url": "https://www.sirendivinglembongan.com/dive-sites/",
+     "publisher": "Siren Diving Lembongan",
+     "kind": "operator",
+     "quote": "Manta Bay is a actually a series of bays along the coast. Diving conditions are generally easy at this site, although we can experience some surge. … The dive site is a shallow bay with a mixture of sandy and coral bottom and generally a maximum depth of 12m."
+    },
+    "s2": {
+     "url": "https://twofishdivers.com/diving/nusa-penida/",
+     "publisher": "Two Fish Divers",
+     "kind": "operator",
+     "quote": "Manta Bay is a shallow bay with a stunning backdrop. Being rich in plankton it attracts manta rays all year round. The dive has a maximum depth of 12m and the coral bottom, with its gullies and swim-throughs"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "bottom": 12
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "bottom": 12
+    }
+   ],
+   "types": {
+    "value": [
+     "reef"
+    ],
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Manta rays year-round",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Gullies and swim-throughs",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Surge near the cliffs",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Shallow coral and sand bay on Penida's south coast, closer and more sheltered than Manta Point. Smaller manta rays feed overhead through the year, and the bottom has gullies and swim-throughs; surge is the main nuisance.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-4qxxfk",
+   "name": "Karang Sari",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Karang Sari is a bay on the east coast of Nusa Penida and is a large dive site that can be dived in a number of ways. The reef plateau at around 10-12m hosts a number of large bommies and the deeper wall features large sea fans and overhangs."
+    }
+   },
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "depthNote": "Reef plateau at 10-12 m, deeper wall below",
+   "highlights": [
+    {
+     "text": "Large bommies on plateau; sea fans and overhangs on wall",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-o6nrem",
+   "name": "Batumulapan",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "Batumulapan is a sloping wall dive with amazing reef structure in the shallows above 14m. Soft fan corals and giant sponges can be seen as well as the usual hard corals."
+    }
+   },
+   "types": {
+    "value": [
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fan corals and giant sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-q7bpxl",
+   "name": "Bat Cave",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "This cave has a horizontal length of about 200 meters where, at the end of the cave, is a large open space inhabited by bats. The mouth of the cave is at a depth of 8 meters below sea level."
+    }
+   },
+   "types": {
+    "value": [
+     "cave"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": 8
+    }
+   ],
+   "highlights": [
+    {
+     "text": "200 m cave ending in open chamber with bats",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-8twofe",
+   "name": "Jetty, Tanah Ampo",
+   "sources": {
+    "s1": {
+     "url": "https://www.scubago.com/en/explore/destination/bali-9752464",
+     "publisher": "Scubago",
+     "kind": "operator",
+     "quote": "The dive site is located under an abandoned dock that was built in 2006. The pillars of the pier are already covered in large sea fans which beautify the dive site. The sandy bottom also has some items dumped there like car tires, cans, and shoes"
+    }
+   },
+   "types": {
+    "value": [
+     "muck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Pier pillars covered in sea fans",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Critters living in dumped debris",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}

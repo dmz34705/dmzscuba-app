@@ -1,0 +1,111 @@
+{
+  "batch": "popular-france-6",
+  "researchedAt": "2026-10-09",
+  "skipped": [
+    {
+      "id": "odm-2llajw",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-e8cwna",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-ytlken",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-uikc48",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-55z1ya",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-j4ilkc",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-w65r1u",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-oh1nw8",
+      "reason": "no usable page found with site-specific facts"
+    },
+    {
+      "id": "odm-5ty1b6",
+      "reason": "no usable page found with site-specific facts"
+    }
+  ],
+  "sites": [
+    {
+      "id": "odm-pkm2w1",
+      "sources": {
+        "s1": {
+          "url": "https://ultramarina.com/voyage-plongee-ocean-indien/mayotte/la-passe-en-s-et-la-passe-brandele",
+          "publisher": "Ultramarina",
+          "kind": "operator",
+          "quote": "Le site de l’Arche, réputé pour sa grande arche, offre une belle architecture sous-marine."
+        }
+      },
+      "highlights": [
+        {
+          "text": "Large natural arch",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "name": "L’arche de Bandrelé"
+    },
+    {
+      "id": "odm-tp5tww",
+      "sources": {
+        "s1": {
+          "url": "https://histoiredair.fr/sites-de-plongee/canyons-de-babodie/",
+          "publisher": "Histoire d'Air",
+          "kind": "operator",
+          "quote": "des canyons gigantesques, qui vont de quinze mètres à plus de soixante … De gros spécimens de pélagiques. … Des raies, de plusieurs espèces."
+        },
+        "s2": {
+          "url": "https://www.martinique-tour.com/decouvrir-la-martinique/paysages-de-martinique/la-plongee-en-martinique/les-spots-de-plongee-du-nord/",
+          "publisher": "Martinique Tour",
+          "kind": "press",
+          "quote": "Plongez dans des canyons impressionnants s'étendant de 12 à 60 mètres de profondeur."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 15,
+          "bottom": 60
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 12,
+          "bottom": 60
+        }
+      ],
+      "highlights": [
+        {
+          "text": "Large pelagics and several species of rays",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Giant canyons on the north Caribbean coast of Martinique near Saint-Pierre, running from about 12-15 m down past 60 m. The upper canyons suit newer divers while the floor is for deep-certified divers.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "name": "les canyons de babodi"
+    }
+  ]
+}

@@ -1,0 +1,254 @@
+{
+ "batch": "auto-wikipedia-fate",
+ "researchedAt": "2026-10-08",
+ "generatedBy": "scripts/scan-wikipedia-fates.cjs",
+ "sites": [
+  {
+   "id": "x-wikipedia-567",
+   "name": "HMS Wolfe (1813)",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Wolfe_(1813)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Wolfe (1813) … Fate: Ordered broken up, then ordered sold, in 1831"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Ordered broken up, then ordered sold, in 1831",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-839",
+   "name": "HMS Cleveland",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Cleveland_(L46)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Cleveland (L46) … Fate: Scrapped in December 1959"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Scrapped in December 1959",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-919",
+   "name": "HMS Eridge",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Eridge_(L68)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Eridge (L68) … Fate: Sold for scrap, 1946"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Sold for scrap, 1946",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-941",
+   "name": "HMS Stygian",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Stygian",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Stygian … Fate: Sold for scrapping 28 October 1949"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Sold for scrapping 28 October 1949",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-957",
+   "name": "SS Orsova",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SS_Orsova_(1908)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "SS Orsova (1908) … Fate: Scrapped 1936"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Scrapped 1936",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-970",
+   "name": "SMS Emden",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/SMS_Emden_(1916)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "SMS Emden (1916) … Fate: Ceded to France, scrapped in 1926"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Ceded to France, scrapped in 1926",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1056",
+   "name": "HMS A10",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_A10",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS A10 … Fate: Sold for scrap, 1 April 1919 to Ardrossan Drydock Co., Ardrossan, Scotland"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Sold for scrap, 1 April 1919 to Ardrossan Drydock Co., Ardrossan, Scotland",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1074",
+   "name": "HMS Wivern",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Wivern_(D66)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Wivern (D66) … Fate: Sold for scrapping 18 February 1947"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Sold for scrapping 18 February 1947",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1096",
+   "name": "HMS Avon Vale",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Avon_Vale",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Avon Vale … Fate: Scrapped in 1958"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Scrapped in 1958",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1137",
+   "name": "HMS Strongbow",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Strongbow_(P235)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Strongbow (P235) … Fate: Broken up April 1946"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Broken up April 1946",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1152",
+   "name": "USS Rock",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Rock",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "USS Rock … Fate: Sold for scrap, 17 August 1972"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Sold for scrap, 17 August 1972",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1186",
+   "name": "USS Pollack",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/USS_Pollack_(SS-180)",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "USS Pollack (SS-180) … Fate: Sold for breaking up, 2 February 1947"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Sold for breaking up, 2 February 1947",
+    "refs": [
+     "s1"
+    ]
+   }
+  },
+  {
+   "id": "x-notable-1291",
+   "name": "HMS Loch Fada",
+   "sources": {
+    "s1": {
+     "url": "https://en.wikipedia.org/wiki/HMS_Loch_Fada",
+     "publisher": "Wikipedia",
+     "kind": "encyclopedia",
+     "quote": "HMS Loch Fada … Fate: Sold for scrapping, 1970"
+    }
+   },
+   "notDiveSite": {
+    "kind": "gone",
+    "reason": "Not a wreck: Sold for scrapping, 1970",
+    "refs": [
+     "s1"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,1086 @@
+{
+  "batch": "popular-indonesia-4a",
+  "researchedAt": "2026-10-08",
+  "skipped": [],
+  "sites": [
+    {
+      "id": "odm-cz2cbv",
+      "name": "Manta Alley",
+      "sources": {
+        "s1": {
+          "url": "https://divehappy.com/manta-alley-komodo/",
+          "publisher": "Dive Happy",
+          "kind": "operator",
+          "quote": "four circling the deeper cleaning station at 22 metres … there can be a lot of current here … you can always be out of the current on either side of the alley"
+        },
+        "s2": {
+          "url": "https://samaraliveaboard.com/top-dive-site/",
+          "publisher": "Samara Liveaboard",
+          "kind": "operator",
+          "quote": "As the name suggests, Manta Alley is a gathering spot for majestic manta rays."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 22
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "strong",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Manta rays at cleaning stations",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Lots of current; boats need calm weather and right tide",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A channel at the southern end of Komodo where manta rays gather at cleaning stations. Divers can shelter from the flow on either side of the alley, but sea state and tide must suit the boats to get here.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-5pfpmp",
+      "name": "Golden Passage Komodo",
+      "sources": {
+        "s1": {
+          "url": "https://diveplanit.com/?p=8987",
+          "publisher": "DivePlanit",
+          "kind": "operator",
+          "quote": "Top: 5M Median: 15M Bottom: 20M … It’s best done as a drift dive in rising tide when the current pushes from east to west"
+        },
+        "s2": {
+          "url": "https://samaraliveaboard.com/top-dive-site/",
+          "publisher": "Samara Liveaboard",
+          "kind": "operator",
+          "quote": "Embark on a dive through the Golden Passage, a narrow channel teeming with life."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 5,
+          "bottom": 20
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "drift"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Coral garden along the drift",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Turtles and reef sharks",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A narrow channel north of Komodo island dived as a drift from a shallow eastern bay, best on a rising tide. It offers a coral garden, a sandy bottom with garden eels and regular turtles and reef sharks.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-tn1a3u",
+      "name": "Manta Ridge",
+      "sources": {
+        "s1": {
+          "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/manta-ridge/",
+          "publisher": "Lagaligo Liveaboard",
+          "kind": "operator",
+          "quote": "The maximum depth at Manta Ridge reaches around 40 meters … most of the Manta show is anywhere between 6 meters to 17 meters"
+        },
+        "s2": {
+          "url": "https://diveconcepts.com/manta-ridge-raja-ampat",
+          "publisher": "Dive Concepts",
+          "kind": "operator",
+          "quote": "drops below than 40 meters"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 6,
+          "bottom": 40
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 40
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Reef and oceanic mantas at cleaning stations",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A Raja Ampat ridge where reef and oceanic manta rays are cleaned and feed, mostly in 6-17 m. Strong, shifting currents mean divers hook on or hold position, so good buoyancy control matters.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-3ynr20",
+      "name": "Cape Mansuar",
+      "sources": {
+        "s1": {
+          "url": "https://www.soulscubadivers.com/our-dive-sites",
+          "publisher": "Soul Scuba Divers",
+          "kind": "operator",
+          "quote": "Max depth: 35m … The currents can vary, and time to time we have a nice drift dive along the mansuar island."
+        },
+        "s2": {
+          "url": "https://papua-diving.com/raja-ampat-dive-sites/",
+          "publisher": "Papua Diving",
+          "kind": "operator",
+          "quote": "divers then drift onto the steep reef slope"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 35
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "intermediate",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Fusilier schools and reef sharks",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A point on the western tip of Mansuar island where a coral garden, wall and sloping reef meet the Dampier Strait. Currents vary, sometimes giving a drift along the island, and dives suit intermediate divers.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-nsm535",
+      "name": "Batu Lima",
+      "sources": {
+        "s1": {
+          "url": "https://diveconcepts.com/batu-lima-raja-ampat",
+          "publisher": "Dive Concepts",
+          "kind": "operator",
+          "quote": "The diving depth of the site reaches a maximum of about 24 meters."
+        },
+        "s2": {
+          "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/batu-lima/",
+          "publisher": "Lagaligo Liveaboard",
+          "kind": "operator",
+          "quote": "The shallow waters at roughly three to five metres provide an amazing display as darkness sets."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 24
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Black and white tip reef sharks",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Epaulette (walking) sharks on night dives",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "Five adjacent rocks near Gam where reef sharks patrol and the reef is rich in fish and macro. Currents run from mild to strong, and the shallows come alive with walking sharks and invertebrates on night dives.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-bqfj0q",
+      "name": "Ransiwor",
+      "sources": {
+        "s1": {
+          "url": "https://www.soulscubadivers.com/our-dive-sites",
+          "publisher": "Soul Scuba Divers",
+          "kind": "operator",
+          "quote": "Max depth: 25m … Experience level: Easy"
+        },
+        "s2": {
+          "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+          "publisher": "Raja Ampat Biodiversity Eco Resort",
+          "kind": "operator",
+          "quote": "It has a sloping reef with several big cleaning stations"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 25
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Sloping reef with big cleaning stations",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "An easy sloping reef off Gam with calm conditions, reaching around 25 m. Several large cleaning stations draw plenty of fish, especially around rising tide.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-alhrfc",
+      "name": "Nudi Rock Raja Ampat",
+      "sources": {
+        "s1": {
+          "url": "https://www.misool.info/blog/2022/1/28/what-is-it-lke-to-dive-nudi-rock-in-raja-ampat",
+          "publisher": "Misool Eco Resort",
+          "kind": "operator",
+          "quote": "Max Depth: 28m … A mix of wall, sloping reef and small pinnacles."
+        },
+        "s2": {
+          "url": "https://www.lagaligoliveaboard.com/diving/raja-ampat/dive-site/nudi-rock/",
+          "publisher": "Lagaligo Liveaboard",
+          "kind": "operator",
+          "quote": "The dive starts with a descent to a depth of up to 28 metres."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 28
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 28
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "pinnacle",
+          "wall"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "moderate",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Barracuda, giant trevally, grey reef sharks",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "text": "Pygmy seahorses",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A Misool rock with walls, slopes and small pinnacles dropping to about 28 m. Currents run moderate to strong, so a reef hook helps; barracuda, trevally and grey reef sharks patrol and the finish is a shallow soft coral garden.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-kdut5i",
+      "name": "Saporken Dive Site",
+      "sources": {
+        "s1": {
+          "url": "https://rajaampatbiodiversity.com/raja-ampat-dive-sites/",
+          "publisher": "Raja Ampat Biodiversity Eco Resort",
+          "kind": "operator",
+          "quote": "This is one for the best muck dives in the area"
+        },
+        "s2": {
+          "url": "https://remoteandafloat.com/best-dive-sites-in-raja-ampat/",
+          "publisher": "Remote and Afloat",
+          "kind": "press",
+          "quote": "your typical sandy bottom muck dive site"
+        }
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "muck"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Seahorses, pipefish, cuttlefish",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A sandy-slope muck dive off Waigeo, with the best action around 12-20 m under a jetty. It is a calm macro site with seahorses and cuttlefish and is also popular for night dives.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-vr1zwk",
+      "name": "Buyuk",
+      "sources": {
+        "s1": {
+          "url": "https://nusapenidadive.com/dive-sites-in-nusa-penida/",
+          "publisher": "Nusa Penida Dive",
+          "kind": "operator",
+          "quote": "Sandy slopes dotted with coral bommies and sponges, great for turtles, pufferfish, and macro life between the patches."
+        },
+        "s2": {
+          "url": "https://www.emperordivers.com/day-diving-location-subpage/lembongan-diving/",
+          "publisher": "Emperor Divers",
+          "kind": "operator",
+          "quote": "The strong currents at Buyuk contribute to the spectacular marine life."
+        }
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Turtles, pufferfish and macro on sandy slope",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Napoleon wrasse and barracuda in current",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A sloping, sandy coral reef on Nusa Penida's north coast, dotted with bommies and sponges. Usually gentle enough for easier dives, though stronger current brings big visitors such as Napoleon wrasse and barracuda.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-4igq4v",
+      "name": "suana",
+      "sources": {
+        "s1": {
+          "url": "https://nusapenidadive.com/dive-sites-in-nusa-penida/",
+          "publisher": "Nusa Penida Dive",
+          "kind": "operator",
+          "quote": "Advanced · Drift · Sloping Coral Reef … Usually a comfortable drift, but conditions can become stronger around full & new moons."
+        },
+        "s2": {
+          "url": "https://www.emperordivers.com/day-diving-location-subpage/lembongan-diving/",
+          "publisher": "Emperor Divers",
+          "kind": "operator",
+          "quote": "a wall dive experience where the reef plunges into the depths below"
+        }
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wall",
+          "drift"
+        ],
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "variable",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Turtles and blue-water eagle and manta rays",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A shallow sloping reef on Nusa Penida's east coast with a wall dropping away below. Currents are usually a comfortable drift but strengthen around full and new moons; turtles and passing rays are the draw.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-95g47k",
+      "name": "Ceningan wall, Nusa Lembongan, Bali, Indonesia",
+      "sources": {
+        "s1": {
+          "url": "https://nusapenida.org/bali-nusa-penida-diving-guide/20-best-dive-sites-bali-nusa-penida/diving-ceningan-wall-nusa-ceningan/",
+          "publisher": "Nusa Penida Diving Guide",
+          "kind": "operator",
+          "quote": "Ceningan Wall is not a site for beginners."
+        },
+        "s2": {
+          "url": "https://www.emperordivers.com/day-diving-location-subpage/lembongan-diving/",
+          "publisher": "Emperor Divers",
+          "kind": "operator",
+          "quote": "The site often features strong currents."
+        }
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wall",
+          "drift"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "advanced",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "current": {
+        "value": "strong",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Soft corals, sponges and nudibranchs on the wall",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Mola mola in season",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Strong, sometimes downward, unpredictable currents",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Exit often in open blue water; SMB needed",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A near-vertical wall in the channel by Nusa Ceningan, covered in soft corals and sponges. Strong, sometimes downward currents make it a site for experienced divers with good buoyancy and SMB skills.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-bqv60e",
+      "name": "Malibu Point",
+      "sources": {
+        "s1": {
+          "url": "https://nusapenida.org/bali-nusa-penida-diving-guide/20-best-dive-sites-bali-nusa-penida/diving-malibu-nusa-penida/",
+          "publisher": "Nusa Penida Diving Guide",
+          "kind": "operator",
+          "quote": "drop steeper into the blue"
+        },
+        "s2": {
+          "url": "https://www.aquamarinediving.com/bali-diving/dive-sites/nusa-penida-lembongan/",
+          "publisher": "Aqua Marine Diving",
+          "kind": "operator",
+          "quote": "Malibu Point can experience extremely strong currents"
+        }
+      },
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "wall"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "strong",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Turtles, frogfish, ribbon eels in the creek",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Schooling fusiliers and possible mola mola",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "hazards": [
+        {
+          "text": "Unpredictable currents, even in the creek",
+          "refs": [
+            "s1"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A sheltered bay on Nusa Penida's east side that opens to walls dropping into the blue. The bay suits easier dives, but the outer walls are exposed to very strong currents and are for experienced divers.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-np813v",
+      "name": "Batu Kelebit",
+      "sources": {
+        "s1": {
+          "url": "https://www.amedwhitesanddivers.com/fun-dives/dive-sites-tulamben/",
+          "publisher": "Amed White Sand Divers",
+          "kind": "operator",
+          "quote": "A coral pinnacle and 5 shoulders of coral patches reach down into the deep water. … Sightings of big pelagics are frequent."
+        },
+        "s2": {
+          "url": "https://tulambenscuba.com/dive-spot-batu-kelebit/",
+          "publisher": "Tulamben Scuba",
+          "kind": "operator",
+          "quote": "The site drops to over 60 meters with an average depth of 25 meters. … Little current in general and visibility of 10 to 30 meters."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "m",
+          "bottom": 60
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "types": {
+        "value": [
+          "pinnacle",
+          "reef"
+        ],
+        "refs": [
+          "s1"
+        ]
+      },
+      "vis": {
+        "low": 10,
+        "high": 30,
+        "unit": "m",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Big pelagics, groupers and sharks",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "text": "Bumphead parrotfish in the morning",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A coral pinnacle with patch-reef shoulders off Tulamben that falls past 60 m, with most diving around 25 m. Currents are usually small, though when it runs groupers, sharks and other big fish turn up.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-mk24wj",
+      "name": "Batu Ringit",
+      "sources": {
+        "s1": {
+          "url": "https://baliaqua.com/bali-dive-sites/tulamben-diving/",
+          "publisher": "Bali Aqua",
+          "kind": "operator",
+          "quote": "5–25 meters … Rubble slope, rare macro critters"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 5,
+          "bottom": 25
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Rubble slope with rare macro critters",
+          "refs": [
+            "s1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "odm-vv12jt",
+      "name": "Gerombong",
+      "sources": {
+        "s1": {
+          "url": "https://www.amedwhitesanddivers.com/fun-dives/dive-sites-tulamben/",
+          "publisher": "Amed White Sand Divers",
+          "kind": "operator",
+          "quote": "Wonderful coral slope but do not forget to bring a torch to enjoy a superb decorated small cavern at a depth of 13m."
+        },
+        "s2": {
+          "url": "https://baliaqua.com/bali-dive-sites/tulamben-diving/",
+          "publisher": "Bali Aqua",
+          "kind": "operator",
+          "quote": "4–30 meters … Critter-rich rubble, seasonal macro, peaceful setting"
+        }
+      },
+      "depth": [
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 4,
+          "bottom": 30
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s2"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Small decorated cavern at 13 m",
+          "refs": [
+            "s1"
+          ]
+        },
+        {
+          "text": "Critter-rich rubble and macro",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A gentle coral slope near Tulamben with a small decorated cavern around 13 m (bring a torch) and a rubble area rich in critters. Calm, with little current.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-si7jbj",
+      "name": "Batu niti",
+      "sources": {
+        "s1": {
+          "url": "https://www.amedjepundivers.com/dive-sites/tulamben/batu-niti",
+          "publisher": "Amed Jepun Divers",
+          "kind": "operator",
+          "quote": "Max. 30m | Avg. 15m … Frogfish, ornate ghost pipefish, snake eels, and flamboyant cuttlefish are regular visitors here."
+        },
+        "s2": {
+          "url": "https://baliaqua.com/bali-dive-sites/tulamben-diving/",
+          "publisher": "Bali Aqua",
+          "kind": "operator",
+          "quote": "4–35 meters … frogfish, nudibranchs, shrimps, light reef to muck transition"
+        },
+        "s3": {
+          "url": "https://www.amedwhitesanddivers.com/fun-dives/dive-sites-tulamben/",
+          "publisher": "Amed White Sand Divers",
+          "kind": "operator",
+          "quote": "Wonderful coral slope with elephant ear sponges and huge seafans."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "bottom": 30
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 4,
+          "bottom": 35
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Frogfish, ghost pipefish, flamboyant cuttlefish",
+          "refs": [
+            "s1",
+            "s2"
+          ]
+        },
+        {
+          "text": "Seafans and elephant ear sponges",
+          "refs": [
+            "s3"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A coral slope off Tulamben that blends into muck, producing frogfish, ghost pipefish, nudibranchs and cuttlefish. Most of the diving is in the 15-30 m range with small to variable current.",
+        "refs": [
+          "s1",
+          "s2",
+          "s3"
+        ]
+      }
+    },
+    {
+      "id": "odm-nya70b",
+      "name": "Sandy Slope",
+      "sources": {
+        "s1": {
+          "url": "https://menjanganislandtrip.com/menjangan-dive-site-conditions/",
+          "publisher": "Menjangan Island Trip",
+          "kind": "operator",
+          "quote": "4 to 30 meters … a wide, flat sandy area at shallow depth"
+        },
+        "s2": {
+          "url": "https://talilandsmanart.com/2023/01/30/dive-sites-around-menjangan-island-marine-park-bali-indonesia/",
+          "publisher": "Tali Lands Manart",
+          "kind": "press",
+          "quote": "Depth: 5 to 25 meters … Required level: Beginner … Amazing soft coral."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 4,
+          "bottom": 30
+        },
+        {
+          "ref": "s2",
+          "unit": "m",
+          "top": 5,
+          "bottom": 25
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s2"
+        ]
+      },
+      "current": {
+        "value": "none",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Soft corals",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A wide shallow sandy flat at Menjangan Island that slopes away into deeper water with soft corals. Currents are minimal and the site suits beginners and buoyancy practice.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    },
+    {
+      "id": "odm-5mq2cn",
+      "name": "Pos 1",
+      "sources": {
+        "s1": {
+          "url": "https://menjanganislandtrip.com/menjangan-dive-site-conditions/",
+          "publisher": "Menjangan Island Trip",
+          "kind": "operator",
+          "quote": "5 to 18 meters … sandy bottom and gentle coral slope"
+        },
+        "s2": {
+          "url": "https://talilandsmanart.com/2023/01/30/dive-sites-around-menjangan-island-marine-park-bali-indonesia/",
+          "publisher": "Tali Lands Manart",
+          "kind": "press",
+          "quote": "Covered by live coral on the top of the site and then underwater lime stone pinnacles covered in coral."
+        }
+      },
+      "depth": [
+        {
+          "ref": "s1",
+          "unit": "m",
+          "top": 5,
+          "bottom": 18
+        }
+      ],
+      "entry": {
+        "value": "boat",
+        "refs": [
+          "s1"
+        ]
+      },
+      "level": {
+        "value": "beginner",
+        "refs": [
+          "s1"
+        ]
+      },
+      "current": {
+        "value": "none",
+        "refs": [
+          "s1"
+        ]
+      },
+      "highlights": [
+        {
+          "text": "Live coral top over coral-covered limestone pinnacles",
+          "refs": [
+            "s2"
+          ]
+        }
+      ],
+      "summary": {
+        "text": "A popular first dive at Menjangan Island with a sandy bottom and gentle coral slope. Live coral covers the top and limestone pinnacles lie below; current is minimal and beginners are comfortable here.",
+        "refs": [
+          "s1",
+          "s2"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{"batch":"notable-bermuda-1","researchedAt":"2026-10-08",
+"skipped":[{"id":"x-notable-1235","reason":"Wikipedia has no depth or dive info"}],
+"sites":[{"id":"x-notable-1306","name":"HMS Vixen",
+"sources":{"s1":{"url":"https://en.wikipedia.org/wiki/HMS_Vixen_(1865)","publisher":"Wikipedia","kind":"encyclopedia","quote":"10 m (33 ft) of water about 0.2 nmi (0.37 km) offshore from Daniel's Head"}},
+"depth":[{"ref":"s1","unit":"m","bottom":10}],"types":{"value":["wreck"],"refs":["s1"]}}]}

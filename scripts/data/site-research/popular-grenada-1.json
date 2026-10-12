@@ -1,0 +1,985 @@
+{
+ "batch": "popular-grenada-1",
+ "researchedAt": "2026-10-09",
+ "skipped": [
+  {
+   "id": "odm-2qtd43",
+   "reason": "no usable non-banned source found for this site name"
+  },
+  {
+   "id": "odm-v785np",
+   "reason": "no usable non-banned source found for this site name"
+  },
+  {
+   "id": "odm-sqhdrv",
+   "reason": "no usable non-banned source found for this site name"
+  },
+  {
+   "id": "odm-hknplh",
+   "reason": "no usable non-banned source found for this site name"
+  }
+ ],
+ "sites": [
+  {
+   "id": "odm-2m5kya",
+   "name": "Veronica L Wreck",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Veronica L Shipwreck The 120-foot barge rests in 50 feet (15m) of water and is now home to corals, sponges and a wide variety … site for beginners and underwater photography. Also, a good spot for a night dive."
+    },
+    "s2": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "Veronica L Shipwreck The Veronica measures 40 meters as a relatively small-sized freighter that packs a big impression. Covered in beautiful coral, sponges, and … diving novice, with gentle currents and depths reaching a maximum of about 15 meters"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 50
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": null,
+     "bottom": 15
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Corals, sponges, shrimp, crabs and eels on the barge",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A small freighter or barge wreck resting upright in about 15 m in St George's Harbour, softly colonised by coral and sponge. Gentle currents and shallow depth make it a popular novice and night dive.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-yj6xzo",
+   "name": "Valleys - Grenada",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Valleys This dive site ranges in depth from 25 to 70 feet (8-21m) and features a sandy channel with a coral finger reef that … eels as well as a variety of fish. A good dive site for beginners."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 70
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sandy channel with coral finger reef",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-cpclvf",
+   "name": "Purple Rain",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-southwest-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Purple Rain Reef This dive site ranges in depth from 25 to 80 feet (7-25m) and features large schools of purple coloured creole wrasse, hence the name of the site."
+    },
+    "s2": {
+     "url": "https://www.justgottadive.com/dive_resources/travel_articles/reef-diving-adventures-grenada-red-buoy-purple-rain",
+     "publisher": "Just Gotta Dive",
+     "kind": "press",
+     "quote": "Purple Rain Named for the swathes of beautiful purple Creole wrasse that fill the water here, Purple Rain is a fantastic reef that extends from 6 to 25 meters beneath the surface"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 80
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 6,
+     "bottom": 25
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Schools of purple creole wrasse",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    },
+    {
+     "text": "Barrel sponges, turtles and stingrays",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A sloping south-west Grenada reef named for the clouds of purple creole wrasse that fill the water, with big barrel sponges, soft coral, turtles and rays. Best as a drift dive for divers with some experience.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-8r7gjo",
+   "name": "Shark Reef - Grenada",
+   "sources": {
+    "s1": {
+     "url": "https://www.justgottadive.com/dive_resources/travel_articles/reef-diving-adventures-grenada-red-buoy-purple-rain",
+     "publisher": "Just Gotta Dive",
+     "kind": "press",
+     "quote": "Shark Reef Named for the nurse sharks that can usually be seen here, Shark Reef is located along the Atlantic side of Grenada, a … rugged rocks covered in soft coral and sponges, and maximum depth at 18 meters"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-of-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Shark Reef This dive site ranges in depth from 35 to 70 feet (11-20m) and features large coral structures with crustaceans as well as … due to the strong currents, this dive site is recommended for advanced divers only."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 18
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 35,
+     "bottom": 70
+    }
+   ],
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s2"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Nurse sharks, turtles, stingrays",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Brain and pillar coral formations",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Strong, sweeping Atlantic-side currents",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "An Atlantic-facing reef south of Glover's Island known for nurse sharks, turtles and rays among rugged coral formations. Strong sweeping currents restrict it to experienced divers, often as a drift.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-v321kx",
+   "name": "1 / 4 Wreck (Stern Courier)",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Quarter Wreck / ¼ Wreck Shipwreck Parts of a cargo vessel can be found amongst a coral bed in water ranging from 20 to … features lobsters, eels and rays. A good dive site for beginners and underwater photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Cargo vessel sections on a coral bed with lobsters, eels, rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-wagsf8",
+   "name": "Sculpture Park",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-ronde-island/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Underwater Sculpture Park Found in 15 to 30 feet (4-10m) of Caribbean Sea, the park has many displays creating an artificial reef system that is now home to corals, sponges and fish. A great dive site for beginners."
+    },
+    "s2": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "The installation is 15’–30’/4m–10m in-depth … real fish and coral have attached themselves to the underwater museum"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 30
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 4,
+     "bottom": 10
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sculptures acting as an artificial reef with corals and fish",
+     "refs": [
+      "s1",
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "Molinere Bay's underwater sculpture garden lies in shallow water of roughly 4-10 m. The figures now serve as an artificial reef, colonised by corals, sponges and fish, making an easy dive for beginners.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-drtn1l",
+   "name": "Tyrrel Bay",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Tyrell Bay Shipwreck The retired Coast Guard ship can be explored in 50 to 70 feet (15-20m) of water. Featuring swim-throughs for more experienced divers, the site can also be enjoyed by beginners."
+    },
+    "s2": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "MV Tyrrel Bay Depth: 50 – 70 feet History: The MV Tyrrel is a retired Coast Guard vessel"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 70
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 70
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "summary": {
+    "text": "A former Coast Guard patrol boat deliberately sunk as a dive wreck off Grand Anse, resting in roughly 15-20 m. Swim-throughs suit more experienced divers but beginners can also enjoy it.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-rpgzxj",
+   "name": "Glovers Island",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-of-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Glovers Island This dive site ranges in depth from 20 to 45 feet (5-15m) and features a variety of marine life."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 45
+    }
+   ],
+   "highlights": [
+    {
+     "text": "Variety of marine life",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rwk52x",
+   "name": "Dr. Grooms Garden",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-southwest-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Dr. Grooms This dive site ranges in depth from 30 to 60 feet (10-20m) and features corals, gorgonians and sea fans with a variety … as eels, fish and sharks. A good dive site for beginners and underwear photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 60
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Corals, gorgonians, eels and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-hvmqjf",
+   "name": "Black Forest - Grenada",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-southwest-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Black Forest This dive site ranges in depth from 40 to 90 feet (12-30m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 90
+    }
+   ]
+  },
+  {
+   "id": "odm-36i3cl",
+   "name": "Northern Exposure",
+   "sources": {
+    "s1": {
+     "url": "https://www.justgottadive.com/dive_resources/travel_articles/reef-diving-adventures-grenada-red-buoy-purple-rain",
+     "publisher": "Just Gotta Dive",
+     "kind": "press",
+     "quote": "Northern Exposure An excellent site for all divers, Northern Exposure begins along a shallow patch of sand where crustaceans, including huge conch, are abundant. … move along the reef, which slopes gently to meet the seabed at 23 meters"
+    },
+    "s2": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Northern Exposure Reef This dive site ranges in depth from 25 to 70 feet (6-22m) and features a variety of large coral structures, sponges … along with the occasional turtle. A great dive site for beginners and underwater photography."
+    },
+    "s3": {
+     "url": "https://www.underwaterphotography.com/dive-sites/Country.aspx?ID=256",
+     "publisher": "Underwater Photography",
+     "kind": "press",
+     "quote": "northern exposure, Grenada Pretty garden reef very little current"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "m",
+     "top": null,
+     "bottom": 23
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 70
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s2",
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "light",
+    "refs": [
+     "s3"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Eel garden and azure vase sponges",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Large coral structures, crustaceans and turtles",
+     "refs": [
+      "s2"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A gently sloping reef off St George's that starts on a sandy patch with conch and an eel garden, then drops to about 22 m. Little current and plenty of fish and sponges make it good for all levels and photography.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-ech2jp",
+   "name": "Flamingo Bay Wall",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-ronde-island/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Flamingo Bay This excellent dive site ranges in depth from 15 to 85 feet (5-25m) and features a large fringing reef and wall with … snails as well as seahorses. A great dive site for beginners and underwater photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 85
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Fringing reef and wall with whip corals and sea fans",
+     "refs": [
+      "s1"
+     ]
+    },
+    {
+     "text": "Seahorses and flamingo tongue snails",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-a71c3t",
+   "name": "Flamingo Bay",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-ronde-island/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Flamingo Bay This excellent dive site ranges in depth from 15 to 85 feet (5-25m) and features a large fringing reef and wall with … snails as well as seahorses. A great dive site for beginners and underwater photography."
+    },
+    "s2": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "Between 20-90 feet deep Getting There: Located on the Northern tip of the island’s protected area, it is very common to book a tour with the Sculpture Museum Underwater and then hop over to Flamingo Bay"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 15,
+     "bottom": 85
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 20,
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Whip corals, sponges, sea fans and seahorses",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-27qf4h",
+   "name": "Quarantine Point",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-southwest-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Quarantine Reef This dive site ranges in depth between 40 to 70 feet (13-21m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 40,
+     "bottom": 70
+    }
+   ]
+  },
+  {
+   "id": "odm-3tbzqa",
+   "name": "MV Shakem, wreck",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-southwest-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Shakem Shipwreck The 180-foot freighter can be explored in 50 to 100 feet (15-30m) of water and features swim-throughs of an unstripped/intact ship covered … the depth and strong currents, this dive site is recommended for advanced divers only."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 50,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "advanced",
+    "refs": [
+     "s1"
+    ]
+   },
+   "current": {
+    "value": "strong",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Intact freighter with swim-throughs, black coral and gorgonians",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "hazards": [
+    {
+     "text": "Depth and strong currents",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-q3z86d",
+   "name": "Lighthouse Reef - Grenada",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-south-of-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Lighthouse Reef A good dive site for experienced divers to see large fish, rays and sharks."
+    }
+   },
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Large fish, rays and sharks",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-thwrq9",
+   "name": "Whibbles Reef",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Whibbles Reef The large dive site ranges in depth from 60 to 160 feet (15-45m) and features a drop-off, with brain coral, schools of … turtles, rays and the occasional shark. A great drift dive site for experienced divers."
+    },
+    "s2": {
+     "url": "https://www.justgottadive.com/dive_resources/travel_articles/reef-diving-adventures-grenada-red-buoy-purple-rain",
+     "publisher": "Just Gotta Dive",
+     "kind": "press",
+     "quote": "Whibbles Also known as Whibble Reef, this site features depths between 15 and 26 meters. Washed by currents much of the time"
+    },
+    "s3": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "Whibbles Reef Depth: 50-100 feet Highlights: This reef is described as an intermediate dive"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 60,
+     "bottom": 160
+    },
+    {
+     "ref": "s2",
+     "unit": "m",
+     "top": 15,
+     "bottom": 26
+    }
+   ],
+   "level": {
+    "value": "intermediate",
+    "refs": [
+     "s1",
+     "s3"
+    ]
+   },
+   "current": {
+    "value": "moderate",
+    "refs": [
+     "s2"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Spotted eagle rays and schools of horse-eye jacks",
+     "refs": [
+      "s2"
+     ]
+    },
+    {
+     "text": "Drop-off with brain coral, turtles and rays",
+     "refs": [
+      "s1"
+     ]
+    }
+   ],
+   "summary": {
+    "text": "A deep offshore reef south of St George's with a sloping sand wall and a drop-off, washed by current much of the time. Rated intermediate, it suits drift diving among eagle rays, jacks, barracuda and turtles.",
+    "refs": [
+     "s1",
+     "s2"
+    ]
+   }
+  },
+  {
+   "id": "odm-4xef3m",
+   "name": "Kohanee",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-southwest-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Kahonee Reef This dive site ranges in depth from 30 to 45 feet (10-13m) and features a colourful garden of hard & soft corals, … the occasional turtle and shark. A great dive site for beginners and underwater photography."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 30,
+     "bottom": 45
+    }
+   ],
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Garden of hard and soft corals, gorgonians, sponges",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-rbc6lv",
+   "name": "Dragon Bay",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-ronde-island/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Dragon Bay Reef / Wall The reef can be found in 10 to 80 feet (3-25m) of water and features sand channels, coral fingers, … of fish as well as lobsters and eels. A great dive site for beginners."
+    },
+    "s2": {
+     "url": "https://caribbeanauthority.com/18-unmissable-dive-sites-in-grenada-videos-included/",
+     "publisher": "Caribbean Authority",
+     "kind": "press",
+     "quote": "Dragon Bay tends to be less crowded … Depth: 25-90 feet"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 10,
+     "bottom": 80
+    },
+    {
+     "ref": "s2",
+     "unit": "ft",
+     "top": 25,
+     "bottom": 90
+    }
+   ],
+   "types": {
+    "value": [
+     "reef",
+     "wall"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "level": {
+    "value": "beginner",
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Sand channels, coral fingers, sponges, lobsters and eels",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "odm-1ta2ul",
+   "name": "Spotters Reef",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-southwest-grenada/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Spotter’s Reef This dive site ranges in depth from 45 to 170 feet (14-50m)"
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": 45,
+     "bottom": 170
+    }
+   ]
+  },
+  {
+   "id": "odm-lu2f3k",
+   "name": "Anina (Wreck)",
+   "sources": {
+    "s1": {
+     "url": "https://activecaribbeantravel.com/grenada-diving/grenada-diving-st-georges-harbour-and-grand-anse-marine-protected-area/",
+     "publisher": "Active Caribbean Travel",
+     "kind": "press",
+     "quote": "Anina Shipwreck This freighter rests in 100 feet (30m) of sea and features orange coral and tropical fish."
+    }
+   },
+   "depth": [
+    {
+     "ref": "s1",
+     "unit": "ft",
+     "top": null,
+     "bottom": 100
+    }
+   ],
+   "types": {
+    "value": [
+     "wreck"
+    ],
+    "refs": [
+     "s1"
+    ]
+   },
+   "highlights": [
+    {
+     "text": "Freighter with orange coral and tropical fish",
+     "refs": [
+      "s1"
+     ]
+    }
+   ]
+  }
+ ]
+}
