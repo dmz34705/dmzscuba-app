@@ -32,6 +32,30 @@ Start with `git status` and `git diff --stat`. Do not discard another agent's wo
    Visual check: `PLAYWRIGHT_MODULE=<path to playwright-core> CHROME=<chrome binary> node scripts/preview-atlas-site-card.cjs "Site A|Site B" /tmp/out`
    writes peek/expanded/tab screenshots using the real native data.
 
+## 2026-10-12 checkpoint — stable and live; research paused
+
+The completed Claude research snapshot is committed, packaged, and live at
+`https://www.dmzscuba.com/assets/atlas/v1/manifest.json`. Production release `978e49f62e14` contains 25 verified
+datasets; the app downloads it on launch or foreground return. The development and live website repositories and the
+app repository were clean and synchronized at this checkpoint. The current whole-catalog audit is:
+
+- 7,062 visible sites; 219 researched invalid/closed/area/too-deep records are hidden.
+- 4,297 sites (60.8%) have a published site depth, so 2,765 still lack one.
+- 4,603 (65.2%) have an entry method, 6,995 (99.1%) have a water environment, and 3,018 (42.7%) have a site
+  type/topology. Only 1,469 have all four confirmed core facts; 1,961 are planning-ready when estimates are included.
+- 1,708 visible sites have a researched profile: 949 full profiles and 759 depth-only profiles. The generated profile
+  file retains 1,927 total records, including hidden records kept for provenance.
+
+Operationally the Atlas is in a good state: update delivery, checksum validation, rollback behavior, native catalog
+activation, and the card/runtime tests pass. Content coverage is substantially improved but is not comprehensive.
+Research is paused while the user works on other features.
+
+Before another large research wave, prioritize a **catalog-hygiene pass**: detect test/dummy names, businesses, towns
+and area pins presented as sites, duplicate pins, impossible offshore coordinates/depths, spelling aliases, and country
+fallback errors. The OpenDiveMap record `odm-c2fj0s` (`test`, 3 m, open Atlantic) was removed in commit `ed70714` and
+has a regression assertion; use it as the model for durable exclusions. Then resume the evidence-backed depth/profile
+queue without weakening the existing source rules.
+
 ## 2026-10-08 checkpoint — Claude owns research batches
 
 The user assigned all further internet research to Claude. Codex may build, verify, audit and publish the evidence,
