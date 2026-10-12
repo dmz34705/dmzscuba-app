@@ -10315,6 +10315,22 @@
    ],
    "confidence": "sourced"
   },
+  "odm-c2fj0s": {
+   "name": "test",
+   "status": "area",
+   "basis": "research",
+   "checked": "2026-10-11",
+   "reason": "OpenDiveMap test artifact, not a named dive site",
+   "summary": "Removed from the Atlas because the source record is explicitly a test entry and contains no evidence of a real dive site.",
+   "sources": [
+    [
+     "web",
+     "https://api.opendivemap.com/v1/sites/c2fj0s",
+     "OpenDiveMap contributors"
+    ]
+   ],
+   "confidence": "sourced"
+  },
   "odm-c6dm2z": {
    "name": "Vilingili Kandu",
    "status": "dive",

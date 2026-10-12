@@ -31,6 +31,10 @@ for (const [id, row] of Object.entries(data.sites)) {
     continue;
   }
   assert.ok(row.summary.length >= 30 && row.summary.length <= 400, `${row.name}: a one- or two-sentence summary`);
+  if (P.HIDDEN_STATUSES.includes(row.status)) {
+    assert.ok(!listed.has(id), `${row.name}: manually excluded record is hidden from the map`);
+    continue;
+  }
   if (row.researchBatch) {
     // Automated full profiles (scripts/build-site-research.cjs): web sources; other fields only when sourced.
     assert.ok(row.sources.every(([key, url, publisher]) => key === 'web' && /^https:\/\//.test(url) && publisher), `${row.name}: sourced profile`);
@@ -52,18 +56,15 @@ for (const [id, row] of Object.entries(data.sites)) {
     assert.ok(P.profileRegion(data, lat, lon), `${row.name}: corrected position stays in its region`);
     assert.ok(row.position.movedKm > 0.15 && row.position.movedKm < 50, `${row.name}: corrections are real but bounded`);
   }
-  const hidden = P.HIDDEN_STATUSES.includes(row.status);
-  assert.equal(listed.has(id), !hidden, `${row.name}: ${hidden ? 'gone or never found — no pin' : 'still on the map'}`);
-  if (!hidden) {
-    const site = listed.get(id);
-    if (row.position?.at) assert.deepEqual([site.latitude, site.longitude], row.position.at, `${row.name}: pin moved to the confirmed position`);
-    if (row.depth?.[1]) assert.equal(site.maxDepthMeters, row.depth[1], `${row.name}: researched depth is the site's depth`);
-    const guide = buildSiteGuide({ id, latitude: site.latitude, longitude: site.longitude, key: id }, {});
-    assert.equal(guide.profile?.summary, row.summary, `${row.name}: the card receives the profile`);
-    assert.equal(guide.profile?.depthCheck, row.depthCheck === 'map' ? 'map' : null, `${row.name}: depth corroboration reaches the card`);
-    if (row.basis !== 'depth' && !row.researchBatch) assert.ok(guide.profile.region?.name === 'Lake Michigan' && guide.profile.region.tempDeepC, `${row.name}: regional conditions attached`);
-    assert.ok(guide.profile.sources.every(source => source.name && (source.url === null || /^https:\/\//.test(source.url))), `${row.name}: source links`);
-  }
+  assert.ok(listed.has(id), `${row.name}: still on the map`);
+  const site = listed.get(id);
+  if (row.position?.at) assert.deepEqual([site.latitude, site.longitude], row.position.at, `${row.name}: pin moved to the confirmed position`);
+  if (row.depth?.[1]) assert.equal(site.maxDepthMeters, row.depth[1], `${row.name}: researched depth is the site's depth`);
+  const guide = buildSiteGuide({ id, latitude: site.latitude, longitude: site.longitude, key: id }, {});
+  assert.equal(guide.profile?.summary, row.summary, `${row.name}: the card receives the profile`);
+  assert.equal(guide.profile?.depthCheck, row.depthCheck === 'map' ? 'map' : null, `${row.name}: depth corroboration reaches the card`);
+  if (row.basis !== 'depth' && !row.researchBatch) assert.ok(guide.profile.region?.name === 'Lake Michigan' && guide.profile.region.tempDeepC, `${row.name}: regional conditions attached`);
+  assert.ok(guide.profile.sources.every(source => source.name && (source.url === null || /^https:\/\//.test(source.url))), `${row.name}: source links`);
 }
 const communitySite = C.catalogSites().find(site => site.communityVisibilityMeters);
 assert.ok(communitySite, 'OpenDiveMap community visibility reaches the native catalog');
@@ -80,4 +81,5 @@ assert.deepEqual(corrections, P.siteCorrections(data), 'The map receives the cor
 const niagara = listed.get('x-wikipedia-78');
 assert.ok(Math.abs(niagara.latitude - 43.4885) < 0.001, 'The Niagara pin sits at the archaeological position off Harrington Beach, not 28 km south');
 assert.ok(!listed.has('x-wikipedia-512') && !listed.has('x-wikidata-579'), 'The Alvin Clark (destroyed) and Lottie Cooper (ashore) are not offered as dives');
+assert.ok(!listed.has('odm-c2fj0s'), 'The OpenDiveMap test artifact is not offered as a dive');
 console.log(`Site profile checks passed: ${Object.values(data.sites).filter(r => r.basis !== 'depth').length} researched sites, ${Object.values(data.sites).filter(r => r.depth?.[1] > 0).length} sourced depths, ${Object.values(data.sites).filter(r => r.basis === 'depth' && !r.depth && !P.HIDDEN_STATUSES.includes(r.status)).length} facts-only sites, ${Object.values(data.sites).filter(r => r.position?.at).length} corrected pins, ${Object.values(data.sites).filter(r => P.HIDDEN_STATUSES.includes(r.status)).length} removed, sources and regional conditions.`);
