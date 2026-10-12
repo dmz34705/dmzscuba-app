@@ -47,6 +47,19 @@ const inline = G.buildAtlasGearSuggestion(state, prefs, { mode: 'technical', tem
 assert.equal(inline.mode, 'technical');
 assert.equal(inline.setup.name, 'Doubles');
 assert.ok(inline.setup.items.some(entry => entry.name === 'dry'), 'The inline Atlas match lists actual Gear Locker items.');
+assert.deepEqual(inline.setup.exposureItems.map(entry => entry.id), ['dry', 'arctic'], 'Exposure protection and its selected layers are separated and shown first.');
+assert.deepEqual(inline.setup.coreItems.map(entry => entry.id), ['reg'], 'The selected dive system keeps its core equipment.');
+const organized = G.organizeAtlasGear([
+  { id: 'mask', name: 'Mask', category: 'Mask' },
+  { id: 'suit', name: '5 mm suit', category: 'Exposure suit' },
+  { id: 'dsmb', name: 'DSMB + spool', category: 'Surface safety' },
+  { id: 'light', name: 'Primary torch', category: 'Lights' },
+], { site: { entry: 'boat', topologies: ['wreck'] } });
+assert.deepEqual(organized.exposureItems.map(entry => entry.id), ['suit']);
+assert.deepEqual(organized.coreItems.map(entry => entry.id), ['mask']);
+assert.deepEqual(organized.siteItems.map(entry => entry.id), ['dsmb', 'light']);
+assert.match(organized.siteItems[0].reason, /surface-marker procedure/i);
+assert.match(organized.siteItems[1].reason, /wreck exterior/i);
 const warmDiver = A.recommendDiveGear(state, { ...prefs, thermalTendency: 'warm' }, { temperatureC: 17 });
 const coldDiver = A.recommendDiveGear(state, { ...prefs, thermalTendency: 'cold' }, { temperatureC: 17 });
 assert.equal(warmDiver.advice.dry, false);

@@ -43,6 +43,10 @@ export function siteProfile(data, id, latitude, longitude) {
   return {
     status: text(row.status, 20) || 'dive',
     depth: range(row.depth),
+    // The publisher remains the cited source. `map` means its depth also
+    // agreed with the site's pre-research community map depth within the
+    // research tolerance; it is supporting corroboration, not a second source.
+    depthCheck: row.depthCheck === 'map' ? 'map' : null,
     depthNote: text(row.depthNote, 200),
     water: pick(row.water, ['fresh', 'salt']),
     entry: pick(row.entry, ENTRIES),

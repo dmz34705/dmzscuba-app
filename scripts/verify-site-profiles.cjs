@@ -60,6 +60,7 @@ for (const [id, row] of Object.entries(data.sites)) {
     if (row.depth?.[1]) assert.equal(site.maxDepthMeters, row.depth[1], `${row.name}: researched depth is the site's depth`);
     const guide = buildSiteGuide({ id, latitude: site.latitude, longitude: site.longitude, key: id }, {});
     assert.equal(guide.profile?.summary, row.summary, `${row.name}: the card receives the profile`);
+    assert.equal(guide.profile?.depthCheck, row.depthCheck === 'map' ? 'map' : null, `${row.name}: depth corroboration reaches the card`);
     if (row.basis !== 'depth' && !row.researchBatch) assert.ok(guide.profile.region?.name === 'Lake Michigan' && guide.profile.region.tempDeepC, `${row.name}: regional conditions attached`);
     assert.ok(guide.profile.sources.every(source => source.name && (source.url === null || /^https:\/\//.test(source.url))), `${row.name}: source links`);
   }

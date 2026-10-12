@@ -167,7 +167,7 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     const site = typeof request.id === 'string' ? catalogSite(request.id.slice(0, 80)) : null;
     const point = site || { latitude: request.latitude, longitude: request.longitude, topologies: [] };
     return buildAtlasGearSuggestion(gearState.current, advicePrefs.current, {
-      mode, site: point, inland: guidePayload?.guide?.inland || null, temperatureC: guidePayload?.wear?.[month]?.temperatureC ?? null,
+      mode, site: point, profile: guidePayload?.profile || null, inland: guidePayload?.guide?.inland || null, temperatureC: guidePayload?.wear?.[month]?.temperatureC ?? null,
     });
   }, []);
 
