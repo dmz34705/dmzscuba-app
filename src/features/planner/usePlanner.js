@@ -8,8 +8,7 @@ import { loadGearState, saveGearState } from '../gearChecklist/storage';
 import { loadInsuranceState } from '../insurance/storage';
 import { normalizePlan, normalizePlannerState, packPlan, planAlerts } from './model';
 
-// Plans live on this device (and in the development backups). Account sync can carry them once
-// the sync service accepts a `plan` record kind.
+// Plans live on this device, in development backups, and sync as account `plan` records.
 export const PLANNER_STORAGE_KEY = '@dmz-scuba/planner/v1';
 
 export async function loadPlannerState(storage = AsyncStorage) {
