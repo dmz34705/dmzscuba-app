@@ -43,6 +43,7 @@ assert.ok(misplaced.length <= 5, `${misplaced.length} catalog records sit far in
 assert.equal(assigned.size + misplaced.length, all.length, `${all.length - assigned.size - misplaced.length} sites without a country`);
 assert.equal(P.sitesIn(P.placeById('country', 'TD')).length, 0, 'A mislocated marine record does not become a Chad dive site.');
 assert.deepEqual(P.placesForSite('mx-cozumel-paraiso').map(p => p.kind), ['island', 'country']);
+assert.deepEqual(P.placeLabelsForSites(['mx-cozumel-paraiso'])[0], ['mx-cozumel-paraiso', P.placesForSite('mx-cozumel-paraiso').map(place => place.name)], 'The directory can resolve compact place labels in batches.');
 
 const { OCEAN_REGIONS } = loadSourceModule(path.join(root, 'features/oceanAtlas/oceanRegions.js'), root);
 for (const region of OCEAN_REGIONS.filter(r => r.id !== 'arctic')) assert.ok(P.regionGuide('province', region.id).season.animals.length >= 5, `${region.name} guide has marine life`);

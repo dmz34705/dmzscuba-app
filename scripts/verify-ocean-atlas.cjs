@@ -140,6 +140,16 @@ for (const [name, svg] of Object.entries(diagramProfiles)) {
 }
 const runtimeRaw = `const DIAGRAM_PROFILES=${JSON.stringify(diagramProfiles)};\n`
   + ['model.js', 'rendering.js', 'diveDayAdvice.js', 'atlasRuntime.js'].map(name => fs.readFileSync(path.join(runtimeRoot, name), 'utf8').replace(/^export /gm, '')).join('\n');
+assert.match(runtimeRaw, /wearCard\(nativeGuide\.wear, nativeGuide\.gear\)/, 'The at-a-glance wear card must receive the same personal Gear Locker match as the detailed plan.');
+assert.match(runtimeRaw, /matches your saved temperature preference/, 'Atlas labels a personal exposure match instead of presenting it as generic guidance.');
+assert.match(runtimeRaw, /id="browse-toggle"[^>]*>[\s\S]*?<span>Index<\/span>/, 'Atlas exposes its directory as a primary control rather than hiding it behind the map.');
+assert.match(runtimeRaw, /Browse the Atlas your way\./, 'Atlas includes a map-optional directory landing page.');
+for (const category of ['wreck', 'reef', 'overhead', 'fresh', 'shore']) assert.match(runtimeRaw, new RegExp(`data-index-category="${category}"`), `Atlas exposes the ${category} directory.`);
+assert.match(runtimeRaw, /data-index-marine/, 'Atlas exposes an alphabetical marine-life directory.');
+assert.match(runtimeRaw, /s\.siteType \|\| ''[\s\S]*s\.environment \|\| ''/, 'Free-text Atlas search includes site type and water environment metadata.');
+assert.match(runtimeRaw, /Entry not listed/, 'Index rows explicitly identify missing access metadata.');
+assert.match(runtimeRaw, /Depth not published/, 'Index rows explicitly identify missing depth metadata.');
+assert.match(runtimeRaw, /coordinateLabel/, 'Index rows retain a useful coordinate fallback when no place label is available.');
 assert.equal(runtimeSourceHash, require('node:crypto').createHash('sha1').update(runtimeRaw).digest('hex'), 'Regenerate the browser runtime after changes (npm run bundle:ocean-atlas).');
 assert.equal((html.match(/<script>/g) || []).length, 2);
 assert.ok(!html.includes('<script src='), 'No third-party JavaScript can read personal pins.');

@@ -2,6 +2,7 @@ import { packedItems, serviceStatusForAssembly, serviceStatusForSet, isCylinderS
 import { DEFAULT_DRYSUIT_BELOW_C, exposureAdvice } from '../oceanAtlas/exposure';
 
 export const DIVE_USES = ['Open water', 'Technical', 'Overhead', 'Freedive'];
+export const ADVICE_PREFERENCES_KEY = '@dmz-scuba/gear-advice/v1';
 export const ADVICE_DEFAULTS = { drysuitBelowC: DEFAULT_DRYSUIT_BELOW_C, thermalTendency: 'typical', motionSensitive: false, suits: {}, setups: {}, combinations: [] };
 // An opt-in comfort template, not general exposure guidance. Item selection remains the diver's.
 export const coldDiverTemplate = () => ({ ...ADVICE_DEFAULTS, drysuitBelowC: (78 - 32) * 5 / 9, combinations: [
@@ -22,6 +23,12 @@ export function normalizeAdvicePreferences(value = {}) {
   return { drysuitBelowC: number(value.drysuitBelowC) ?? DEFAULT_DRYSUIT_BELOW_C, thermalTendency: ['cold', 'typical', 'warm'].includes(value.thermalTendency) ? value.thermalTendency : value.runsCold === true ? 'cold' : 'typical', motionSensitive: value.motionSensitive === true, suits: range,
     combinations: (Array.isArray(value.combinations) ? value.combinations : []).filter(entry => entry && typeof entry.id === 'string').map(entry => ({ id: entry.id, name: String(entry.name || 'Exposure combination'), minC: number(entry.minC), maxC: number(entry.maxC), itemIds: Array.isArray(entry.itemIds) ? [...new Set(entry.itemIds.filter(id => typeof id === 'string'))] : [] })),
     setups: Object.fromEntries(Object.entries(value.setups || {}).map(([id, uses]) => [id, Array.isArray(uses) ? uses.filter(use => DIVE_USES.includes(use)) : []])) };
+}
+export function hasTemperatureGearPreferences(value = {}) {
+  const preferences = normalizeAdvicePreferences(value);
+  const complete = entry => entry.minC != null && entry.maxC != null;
+  return Object.values(preferences.suits).some(complete)
+    || preferences.combinations.some(entry => complete(entry) && entry.itemIds.length > 0);
 }
 export function advicePreferenceError(preferences) {
   if (preferences.drysuitBelowC < 0 || preferences.drysuitBelowC > 30) return 'Choose a drysuit threshold between 32°F / 0°C and 86°F / 30°C.';

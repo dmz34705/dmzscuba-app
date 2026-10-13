@@ -85,7 +85,7 @@ const countryName = code => places().byId.get(`country:${code}`)?.name || AIRPOR
 
 // Where each catalog site belongs: country (listed, unless it clearly sits in a
 // territory elsewhere), US state and island.
-let membership = null;
+let membership = null, placesBySite = null;
 function sitesByPlace() {
   if (membership) return membership;
   const { countries, states, islands } = places();
@@ -156,11 +156,29 @@ export function parentsOf(place) {
 
 // The place(s) a single site belongs to, for the breadcrumb on its card.
 export function placesForSite(siteId) {
-  const found = [];
-  for (const kind of ['island', 'state', 'country']) {
-    for (const [id, list] of sitesByPlace()[kind]) if (list.some(site => site.id === siteId)) { const place = placeById(kind, id); if (place) found.push({ kind, id, name: place.name }); break; }
+  if (!placesBySite) {
+    placesBySite = new Map();
+    for (const kind of ['island', 'state', 'country']) {
+      for (const [id, list] of sitesByPlace()[kind]) {
+        const place = placeById(kind, id);
+        if (!place) continue;
+        for (const site of list) {
+          const found = placesBySite.get(site.id) || [];
+          if (!found.some(entry => entry.kind === kind)) found.push({ kind, id, name: place.name });
+          placesBySite.set(site.id, found);
+        }
+      }
+    }
   }
-  return found;
+  return placesBySite.get(siteId) || [];
+}
+
+// Directory rows ask for location labels in small batches. Keeping this native
+// avoids bloating the map bootstrap while still giving community records a
+// useful island/state/country even when their source omitted one.
+export function placeLabelsForSites(siteIds) {
+  return [...new Set(Array.isArray(siteIds) ? siteIds : [])].slice(0, 120)
+    .map(id => [id, placesForSite(id).map(place => place.name)]);
 }
 
 const TOPOLOGY_WORDS = { reef: 'reefs', wall: 'walls', wreck: 'wrecks', pinnacle: 'pinnacles', cave: 'caves', cavern: 'caverns', muck: 'muck diving', drift: 'drifts', shore: 'shore dives' };
@@ -288,4 +306,4 @@ export function siteSeason(guide) {
   return { temps: guide.temps, highlights: guide.highlights, animals: guide.animals, hasObservations: guide.hasObservations };
 }
 
-onAtlasDataChange(() => { index = null; membership = null; });
+onAtlasDataChange(() => { index = null; membership = null; placesBySite = null; });

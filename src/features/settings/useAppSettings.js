@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { APP_SETTINGS_STORAGE_KEY, DEFAULT_APP_SETTINGS, mergeAccountSettings, sanitizeAppSettings } from '../../lib/appSettings';
+import { APP_SETTINGS_STORAGE_KEY, DEFAULT_APP_SETTINGS, hydrateAppSettings, mergeAccountSettings, sanitizeAppSettings } from '../../lib/appSettings';
 
 export default function useAppSettings() {
   const [settings, setSettingsState] = useState(DEFAULT_APP_SETTINGS);
@@ -11,7 +11,7 @@ export default function useAppSettings() {
     let active = true;
     AsyncStorage.getItem(APP_SETTINGS_STORAGE_KEY)
       .then((stored) => {
-        if (active && stored) setSettingsState(sanitizeAppSettings(JSON.parse(stored)));
+        if (active && stored) setSettingsState(hydrateAppSettings(JSON.parse(stored)));
       })
       .catch(() => {})
       .finally(() => {

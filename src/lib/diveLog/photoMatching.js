@@ -83,6 +83,18 @@ export function depthAtPhotoTime(capturedAt, diveStartTime, samples) {
   return { offsetSeconds, depthMeters: last.depth };
 }
 
+// Pins for the dive profile: each linked photo with a capture time, as an
+// offset in the profile's own seconds. `index` is its place in dive.photos so
+// the chart can open the same photo in the viewer. Photos without a time, or
+// taken before or after the dive, get no pin.
+export function photoProfileMarkers(photos, diveStartTime, samples) {
+  if (!Array.isArray(photos)) return [];
+  return photos.map((photo, index) => {
+    const placed = depthAtPhotoTime(photo?.capturedAt, diveStartTime, samples);
+    return placed && photo?.uri ? { id: photo.id || photo.uri, uri: photo.uri, index, t: placed.offsetSeconds } : null;
+  }).filter(Boolean);
+}
+
 // Turn reviewed picker items ({ asset, capturedAt, match }) into the per-dive
 // photo batches `attachPhotosToDive` expects. Items with no match are dropped.
 export function buildPhotoImportPlan(items, linkedAtIso = null) {

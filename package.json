@@ -1,6 +1,6 @@
 {
   "name": "dmz-scuba-app",
-  "version": "0.0.112",
+  "version": "0.0.120",
   "main": "index.js",
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.2.0",
@@ -19,6 +19,7 @@
     "expo-linking": "~57.0.10",
     "expo-location": "~57.0.19",
     "expo-media-library": "~57.0.5",
+    "expo-print": "~57.0.2",
     "expo-screen-orientation": "~57.0.2",
     "expo-secure-store": "~57.0.4",
     "expo-sensors": "~57.0.3",
@@ -50,6 +51,7 @@
     "test:architecture": "node scripts/verify-app-architecture.cjs",
     "test:auth": "node scripts/verify-account-sync.cjs",
     "test:settings": "node scripts/verify-app-settings.cjs",
+    "test:onboarding": "node scripts/verify-onboarding.cjs",
     "test:keyboard": "node scripts/verify-number-keyboard.cjs",
     "test:calculator": "node scripts/verify-dive-calculator.cjs",
     "test:integration": "node scripts/verify-demo-integration.cjs",
@@ -63,6 +65,7 @@
     "test:dive-computer-workspace": "node scripts/verify-dive-computer-workspace.cjs",
     "test:dive-computer": "node scripts/verify-dive-computer.cjs",
     "test:dive-log": "node scripts/verify-dive-log.cjs",
+    "test:dive-intelligence": "node scripts/verify-dive-intelligence.cjs",
     "test:dev-backup": "node scripts/verify-dev-backup.cjs",
     "test:portable-backup": "node scripts/verify-portable-backup.cjs",
     "build:dive-sites": "node scripts/build-offline-dive-site-catalog.cjs",

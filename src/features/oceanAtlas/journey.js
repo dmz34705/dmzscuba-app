@@ -9,6 +9,7 @@
 import { onAtlasDataChange, airports as AIRPORT_DATA, diveOperators as OPERATORS } from './datasets';
 import { DIVE_REGIONS, REMOTE_DIVE_AREAS } from './diveRegions';
 import { destinationProfile } from './destinationProfiles';
+import { recommendedOperators } from './operatorRecommendations';
 import { approxDistance } from './units';
 
 const AREAS = [...DIVE_REGIONS.flatMap(region => region.areas), ...REMOTE_DIVE_AREAS];
@@ -181,8 +182,9 @@ export function journeyLegs(destination, option, { origin = '', originPoint = nu
   return legs;
 }
 
-// Layer 4: who can take you diving, and where to stay. OpenStreetMap operators are listed purely by
-// distance from the site (no ranking or promotion); hand-sourced profile entries follow, de-duplicated.
+// Layer 4: who can take you diving, and where to stay. Explicit DMZ Scuba
+// recommendations lead, followed by OpenStreetMap operators in pure distance
+// order and then hand-sourced profile entries. Every layer is de-duplicated.
 const OPERATOR_KM = 30, OPERATOR_WIDE_KM = 80, OPERATOR_LIMIT = 8;
 const sameName = (a, b) => { const n = s => s.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); const x = n(a), y = n(b); return x === y || x.includes(y) || y.includes(x); };
 export function nearbyOperators(site, stays = false) {
@@ -200,8 +202,11 @@ export function nearbyOperators(site, stays = false) {
 export function diveBase(destination) {
   const { profile, place, site } = destination;
   const merge = (osm, curated) => [...osm, ...curated.filter(item => !osm.some(entry => sameName(entry.name, item.name))).map(item => ({ ...item, source: 'curated' }))];
+  const listed = merge(nearbyOperators(site, false), profile?.operators || []);
+  const recommended = recommendedOperators(site);
   return {
-    operators: merge(nearbyOperators(site, false), profile?.operators || []), stays: merge(nearbyOperators(site, true), profile?.stays || []),
+    operators: [...recommended, ...listed.filter(item => !recommended.some(entry => sameName(entry.name, item.name)))],
+    stays: merge(nearbyOperators(site, true), profile?.stays || []),
     searches: [
       { kind: 'operators', title: 'Dive operators on the map', detail: `Dive centers around ${place}, with reviews and locations.`, url: mapsSearch(`dive center near ${place}`) },
       { kind: 'stays', title: 'Stay & dive packages', detail: `Dive resorts and hotels that bundle diving in ${place}.`, url: journeySearch(`dive resort stay and dive package ${place}`) },

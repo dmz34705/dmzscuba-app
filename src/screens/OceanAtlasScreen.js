@@ -13,12 +13,13 @@ import { loadAll } from '../lib/diveLog/storage';
 import { loadMySites, removeMySite } from '../features/mySites/storage';
 import DiveLogScreen from './DiveLogScreen';
 import JourneySheet from '../features/oceanAtlas/JourneySheet';
-import GearAdviceSheet, { ADVICE_PREFERENCES_KEY } from '../features/gearChecklist/GearAdviceSheet';
+import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
+import { ADVICE_PREFERENCES_KEY } from '../features/gearChecklist/diveAdvice';
 import { normalizeAdvicePreferences } from '../features/gearChecklist/diveAdvice';
 import { GEAR_STORAGE_KEY } from '../features/gearChecklist/storage';
 import { normalizeGearState } from '../features/gearChecklist/model';
 import { ATLAS_DIVE_MODE_KEY, atlasDiveUse, buildAtlasGearSuggestion, normalizeAtlasDiveMode } from '../features/oceanAtlas/atlasGear';
-import { placeAt, placeById, placeGuide, quickLook, regionGuide } from '../features/oceanAtlas/places';
+import { placeAt, placeById, placeGuide, placeLabelsForSites, quickLook, regionGuide } from '../features/oceanAtlas/places';
 import { seasonGuide } from '../features/oceanAtlas/seasons';
 import { discoverSpecies, speciesGuide, speciesIndex } from '../features/oceanAtlas/species';
 import { catalogSite } from '../features/oceanAtlas/catalog';
@@ -249,6 +250,10 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
       let species = [];
       try { species = speciesIndex(); } catch (error) { console.warn('[Ocean Atlas] Species index failed:', error?.message); }
       send({ type: 'speciesIndex', species });
+    } else if (message.type === 'siteIndexPlaces' && Array.isArray(message.ids)) {
+      let places = [];
+      try { places = placeLabelsForSites(message.ids.filter(id => typeof id === 'string')); } catch { places = []; }
+      send({ type: 'siteIndexPlaces', places });
     } else if (message.type === 'speciesGuide' && typeof message.key === 'string') {
       const key = message.key.slice(0, 120);
       let guide = null;

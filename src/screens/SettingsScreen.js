@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 import MenuPage from '../components/MenuPage';
 import { SETTINGS_SECTIONS } from '../application/navigation';
@@ -16,6 +16,7 @@ import { colors, spacing } from '../theme';
 import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
 import { restoreJsonBackup } from '../lib/diveLog/storage';
 import { shareLogbookExport } from '../features/diveLog/shareLogbookExport';
+import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
 import { backupNow, devBackupStatus, devBackupsAvailable, listDevBackups, reloadApp, restoreDevBackup } from '../lib/devBackup';
 import {
   choosePortableBackup,
@@ -314,7 +315,8 @@ function LocationLoggingCard({ enabled, onChange }) {
   );
 }
 
-export default function SettingsScreen({ accountEmail = '', authStatus = 'signedOut', settings, onChange, syncStatus = 'local', onBack, section = null, onOpenSection }) {
+export default function SettingsScreen({ accountEmail = '', authStatus = 'signedOut', settings, onChange, syncStatus = 'local', onBack, section = null, onOpenSection, onRunFirstTimeSetup }) {
+  const [temperaturePreferencesOpen, setTemperaturePreferencesOpen] = useState(false);
   const update = (key, value) => onChange({ ...settings, [key]: value });
   const signedIn = authStatus === 'signedIn';
   const syncCopy = syncStatus === 'saving'
@@ -328,9 +330,11 @@ export default function SettingsScreen({ accountEmail = '', authStatus = 'signed
     <MenuPage title={SETTINGS_SECTIONS[section] || 'Settings'} onBack={onBack} backLabel={section ? 'Settings' : 'More'}>
       {!section ? <>
         <GroupedSection title="Preferences">
+          <NavigationRow title="Run personal setup" body={settings.firstTimeSetup?.status === 'skipped' ? 'Skipped previously · configure personalization' : 'Units, dive preferences, baseline and optional features'} onPress={onRunFirstTimeSetup} />
+          <NavigationRow title="Temperature & gear preferences" body="Tell Atlas what you actually wear in each water-temperature range" onPress={() => setTemperaturePreferencesOpen(true)} />
           <NavigationRow title="Units" body={`Depth: ${settings.depthUnit} · Pressure: ${settings.pressureUnit} · Volume: ${settings.gasVolumeUnit} · Temperature: °${settings.temperatureUnit}`} onPress={() => onOpenSection('units')} />
           <NavigationRow title="Calculator preferences" body={settings.trimixMode ? 'Trimix enabled' : 'Recreational nitrox'} onPress={() => onOpenSection('calculator')} />
-          <NavigationRow title="Dive profile graph" body="Line colors and weight" onPress={() => onOpenSection('graph')} last />
+          <NavigationRow title="Dive profile graph" body="Line colors, weight, and photo pins" onPress={() => onOpenSection('graph')} last />
         </GroupedSection>
         <GroupedSection title="Logbook & privacy">
           <NavigationRow title="Export & backup" body="Save or restore the complete app and logbook" onPress={() => onOpenSection('backup')} />
@@ -388,7 +392,8 @@ export default function SettingsScreen({ accountEmail = '', authStatus = 'signed
           <ColorChoices label="ppO₂" value={settings.profileColors?.oxygen || DEFAULT_PROFILE_COLORS.oxygen} onChange={(value) => update('profileColors', { ...settings.profileColors, oxygen: value })} choices={['#70E2A3', '#70DDF6', '#FFB36A', '#FFFFFF']} />
           <ColorChoices label="Setpoint" value={settings.profileColors?.setpoint || DEFAULT_PROFILE_COLORS.setpoint} onChange={(value) => update('profileColors', { ...settings.profileColors, setpoint: value })} choices={['#70E2A3', '#D98CFF', '#70DDF6', '#FFFFFF']} />
           <ColorChoices label="Grid" value={settings.profileColors?.grid || DEFAULT_PROFILE_COLORS.grid} onChange={(value) => update('profileColors', { ...settings.profileColors, grid: value })} choices={['#6F8DA2', '#A7C4D8', '#3C6A85', '#FFFFFF']} />
-          <SettingChoices label="Line weight" body="Applies to depth, temperature, pressure, and oxygen traces." value={settings.profileLineWidth || 2.75} onChange={(value) => update('profileLineWidth', value)} choices={[{ key: 1.5, label: 'Thin' }, { key: 2.75, label: 'Standard' }, { key: 4, label: 'Bold' }]} last />
+          <SettingChoices label="Line weight" body="Applies to depth, temperature, pressure, and oxygen traces." value={settings.profileLineWidth || 2.75} onChange={(value) => update('profileLineWidth', value)} choices={[{ key: 1.5, label: 'Thin' }, { key: 2.75, label: 'Standard' }, { key: 4, label: 'Bold' }]} />
+          <SettingChoices label="Photos" body="Pins mark where each photo was taken; previews pop up a thumbnail as you drag past one." value={settings.profilePhotoMode || 'previews'} onChange={(value) => update('profilePhotoMode', value)} choices={[{ key: 'off', label: 'Off' }, { key: 'pins', label: 'Pins' }, { key: 'previews', label: 'Previews' }]} last />
         </View>
         </GroupedSection> : null}
 
@@ -403,6 +408,9 @@ export default function SettingsScreen({ accountEmail = '', authStatus = 'signed
         </GroupedSection> : null}
 
         {section === 'units' || section === 'calculator' ? <Text style={styles.footer}>Changing a default affects newly opened calculators. Values already entered on an open screen are not overwritten.</Text> : null}
+        <Modal visible={temperaturePreferencesOpen} animationType="slide" onRequestClose={() => setTemperaturePreferencesOpen(false)}>
+          {temperaturePreferencesOpen ? <GearAdviceSheet preferencesOnly appSettings={settings} onClose={() => setTemperaturePreferencesOpen(false)} /> : null}
+        </Modal>
     </MenuPage>
   );
 }

@@ -3,7 +3,7 @@
     "name": "DMZ Scuba",
     "slug": "dmz-scuba-app",
     "scheme": "dmzscuba",
-    "version": "0.0.112",
+    "version": "0.0.120",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -65,6 +65,7 @@
       ],
       "./plugins/withLibDiveComputer",
       "./plugins/withDevelopmentTeam",
+      "./plugins/withSceneLifecycle",
       [
         "react-native-ble-plx",
         {

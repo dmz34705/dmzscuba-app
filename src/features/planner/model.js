@@ -11,6 +11,7 @@ export const STATUS_LABELS = Object.freeze({ idea: 'Idea', planned: 'Planning', 
 
 export const SEGMENT_TYPES = Object.freeze({
   flight: { label: 'Flight', from: 'From (airport)', to: 'To (airport)', provider: 'Airline & flight', ends: true },
+  drive: { label: 'Drive', from: 'From', to: 'To', provider: 'Driver or parking', ends: true },
   transfer: { label: 'Transfer', from: 'Pick-up', to: 'Drop-off', provider: 'Company', ends: true },
   ferry: { label: 'Ferry', from: 'Departs', to: 'Arrives', provider: 'Operator', ends: true },
   stay: { label: 'Stay', from: 'Address', to: '', provider: 'Hotel or resort', ends: true, overnight: true },
@@ -116,7 +117,7 @@ export function normalizeSegment(value = {}) {
   return {
     id: clean(value.id, 80) || createSegmentId(), type, title: clean(value.title, 160),
     startDate, startTime: validTime(value.startTime), endDate, endTime: validTime(value.endTime),
-    from: clean(value.from, 160), to: clean(value.to, 160), provider: clean(value.provider, 160), reference: clean(value.reference, 80),
+    from: clean(value.from, 160), to: clean(value.to, 160), provider: clean(value.provider, 160), reference: clean(value.reference, 80), phone: clean(value.phone, 60),
     dives: Math.max(0, Math.min(12, Number.parseInt(value.dives, 10) || 0)), notes: clean(value.notes, 2000),
     // Flights bought together (one confirmation: outbound connections and the return) share a booking id.
     booking: type === 'flight' ? clean(value.booking, 80) : '',
@@ -192,6 +193,11 @@ export function normalizePlan(value = {}, now = new Date()) {
   const operator = value.operator || {};
   const destination = value.destination || {};
   const lat = Number(destination.latitude), lon = Number(destination.longitude);
+  const profile = value.diveProfile || {};
+  const optionalPositive = (entry, max) => {
+    const parsed = Number(entry);
+    return Number.isFinite(parsed) && parsed > 0 ? Math.min(max, parsed) : null;
+  };
   return {
     id: clean(value.id, 80) || createPlanId(), kind, status: PLAN_STATUSES.includes(value.status) ? value.status : 'planned',
     title: clean(value.title, 120), startDate, endDate, startTime: kind === 'day' ? validTime(value.startTime) : '',
@@ -202,6 +208,15 @@ export function normalizePlan(value = {}, now = new Date()) {
     operator: { name: clean(operator.name, 160), phone: clean(operator.phone, 60), email: clean(operator.email, 160), website: clean(operator.website, 300),
       meetingPoint: clean(operator.meetingPoint, 200), confirmation: clean(operator.confirmation, 80) },
     dives: Math.max(0, Math.min(12, Number.parseInt(value.dives, 10) || 0)),
+    // Optional planning assumptions. Stored in SI so personal gas estimates
+    // remain stable when the diver changes display units.
+    diveProfile: {
+      targetDepthMeters: optionalPositive(profile.targetDepthMeters, 200),
+      bottomTimeMinutes: optionalPositive(profile.bottomTimeMinutes, 1440),
+      startPressureBar: optionalPositive(profile.startPressureBar, 500),
+      reservePressureBar: optionalPositive(profile.reservePressureBar, 500),
+      cylinderVolumeLiters: optionalPositive(profile.cylinderVolumeLiters, 100),
+    },
     setupId: clean(value.setupId, 80),
     // This plan's own packing ticks (Gear Locker checklist keys) — two trips on one setup pack separately.
     packedIds: [...new Set((Array.isArray(value.packedIds) ? value.packedIds : []).map((key) => clean(key, 200)).filter(Boolean))].slice(0, 1000),
@@ -310,6 +325,42 @@ export function dayEntries(starts, ends, continuing) {
       // Stable: at the same minute, endings still come first.
       .sort((a, b) => a.key - b.key || (a.variant === 'end' ? -1 : 0) - (b.variant === 'end' ? -1 : 0)),
   ].map(({ leg, variant }) => ({ leg, variant }));
+}
+
+// The active trip day, with the item underway now and the next scheduled item.
+// Itinerary dates and times are intentionally interpreted as local trip-wall
+// time; they are not converted through UTC or a guessed destination timezone.
+export function currentTripDay(plan, now = new Date()) {
+  if (plan?.kind !== 'trip') return null;
+  const today = todayString(now);
+  const day = planTimeline(plan).days.find((entry) => entry.date === today);
+  if (!day) return null;
+  const nowMoment = moment(today, `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`, null);
+  const entryMoment = ({ leg, variant }) => variant === 'continuing' ? null
+    : moment(variant === 'end' ? leg.endDate : leg.startDate, variant === 'end' ? leg.endTime : leg.startTime, null);
+  const current = day.entries.find(({ leg, variant }) => {
+    if (variant !== 'start' || !leg.startTime || !leg.endTime) return false;
+    const starts = moment(leg.startDate, leg.startTime, null);
+    const ends = moment(leg.endDate || leg.startDate, leg.endTime, null);
+    return starts != null && ends != null && starts <= nowMoment && nowMoment < ends;
+  }) || null;
+  const next = day.entries.find((entry) => {
+    const when = entryMoment(entry);
+    return when != null && when >= nowMoment;
+  }) || day.entries.find((entry) => entry.variant === 'start' && !entry.leg.startTime) || null;
+  const types = new Set(day.entries.map((entry) => entry.leg.type));
+  const diving = types.has('diving') || types.has('liveaboard');
+  const travel = ['flight', 'drive', 'transfer', 'ferry', 'car'].some((type) => types.has(type));
+  const label = diving && travel ? 'Dive + travel day' : diving ? 'Dive day' : travel ? 'Travel day' : 'Trip day';
+  return { ...day, current, next, label };
+}
+
+// Seed the general editor on an empty first day; flights remain an explicit
+// shortcut. Middle days lean toward diving and a later final day toward travel.
+export function suggestedSegmentType(day, lastDay) {
+  if (day?.index === 1 && !day.starts?.length) return 'other';
+  if (day?.date === lastDay && day?.index > 1) return 'flight';
+  return 'diving';
 }
 
 // --- readiness --------------------------------------------------------------

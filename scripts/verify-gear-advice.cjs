@@ -41,6 +41,8 @@ assert.equal(A.normalizeAdvicePreferences({}).drysuitBelowC, E.DEFAULT_DRYSUIT_B
 assert.equal(A.advicePreferenceError(A.normalizeAdvicePreferences(A.coldDiverTemplate())), '');
 assert.equal(A.normalizeAdvicePreferences({ runsCold: true }).thermalTendency, 'cold', 'Preserve earlier cold preference on migration.');
 assert.equal(A.normalizeAdvicePreferences({ motionSensitive: true }).motionSensitive, true, 'Boat motion sensitivity remains an explicit opt-in preference.');
+assert.equal(A.hasTemperatureGearPreferences({ suits: { seven: { minC: 20, maxC: 30 } } }), true);
+assert.equal(A.hasTemperatureGearPreferences({ combinations: [{ id: 'empty', minC: 20, maxC: 30, itemIds: [] }] }), false, 'A range without selected gear is not yet an actionable preference.');
 assert.equal(G.normalizeAtlasDiveMode('unknown'), 'recreational');
 assert.equal(G.atlasDiveUse('freedive'), 'Freedive');
 const inline = G.buildAtlasGearSuggestion(state, prefs, { mode: 'technical', temperatureC: 12.8, site: { maxDepthMeters: 45, topologies: ['wreck'] } });
@@ -49,6 +51,21 @@ assert.equal(inline.setup.name, 'Doubles');
 assert.ok(inline.setup.items.some(entry => entry.name === 'dry'), 'The inline Atlas match lists actual Gear Locker items.');
 assert.deepEqual(inline.setup.exposureItems.map(entry => entry.id), ['dry', 'arctic'], 'Exposure protection and its selected layers are separated and shown first.');
 assert.deepEqual(inline.setup.coreItems.map(entry => entry.id), ['reg'], 'The selected dive system keeps its core equipment.');
+const personalState = M.normalizeGearState({
+  items: [item('thin', 'Exposure suit', { name: '3 mm suit', configuration: 'Wetsuit', thickness: '3 mm' }), item('seven', 'Exposure suit', { name: 'My 7 mm suit', configuration: 'Wetsuit', thickness: '7 mm' })],
+  setups: [],
+});
+const fahrenheit = value => (value - 32) * 5 / 9;
+const personalInline = G.buildAtlasGearSuggestion(personalState, { suits: { seven: { minC: fahrenheit(78), maxC: fahrenheit(89), coverage: 'Full' } } }, { temperatureC: fahrenheit(83) });
+assert.equal(personalInline.exposureLabel, 'My 7 mm suit', 'Atlas must replace the generic warm-water label with the diver’s matching saved range.');
+assert.equal(personalInline.personalizedExposure, true);
+assert.deepEqual(personalInline.exposureItems.map(entry => entry.id), ['seven'], 'A personal exposure match is visible even before it belongs to a saved setup.');
+const combinationInline = G.buildAtlasGearSuggestion(personalState, { combinations: [{ id: 'warm-seven', name: 'My warm-water 7 mm', minC: fahrenheit(78), maxC: fahrenheit(89), itemIds: ['seven'] }] }, { temperatureC: fahrenheit(83) });
+assert.equal(combinationInline.exposureLabel, 'My warm-water 7 mm', 'A complete personal combination does not require a saved setup to replace generic guidance.');
+assert.deepEqual(combinationInline.exposureItems.map(entry => entry.id), ['seven']);
+const defaultInline = G.buildAtlasGearSuggestion(personalState, {}, { temperatureC: fahrenheit(83) });
+assert.equal(defaultInline.exposureLabel, E.exposureFor(fahrenheit(83)), 'Generic guidance remains the fallback when no personal range is set.');
+assert.equal(defaultInline.personalizedExposure, false);
 const organized = G.organizeAtlasGear([
   { id: 'mask', name: 'Mask', category: 'Mask' },
   { id: 'suit', name: '5 mm suit', category: 'Exposure suit' },

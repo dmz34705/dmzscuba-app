@@ -8,10 +8,9 @@ import NumberKeyboardAccessory from '../../components/NumberKeyboardAccessory';
 import { colors, spacing, radii } from '../../theme';
 import { GEAR_STORAGE_KEY } from './storage';
 import { normalizeGearState } from './model';
-import { ADVICE_DEFAULTS, DIVE_USES, advicePreferenceError, coldDiverTemplate, normalizeAdvicePreferences, orderedTemperatureRange, recommendDiveGear } from './diveAdvice';
+import { ADVICE_DEFAULTS, ADVICE_PREFERENCES_KEY, DIVE_USES, advicePreferenceError, coldDiverTemplate, normalizeAdvicePreferences, orderedTemperatureRange, recommendDiveGear } from './diveAdvice';
 import { buildDiveDayAdvice } from '../oceanAtlas/diveDayAdvice';
 
-export const ADVICE_PREFERENCES_KEY = '@dmz-scuba/gear-advice/v1';
 const KEY = ADVICE_PREFERENCES_KEY;
 const FormField = props => <AccountFormField {...props} inputAccessoryViewID={NUMBER_KEYBOARD_ACCESSORY_ID} />;
 const numeric = text => text.trim() !== '' && Number.isFinite(Number(text)) ? Number(text) : null;

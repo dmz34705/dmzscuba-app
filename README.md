@@ -1,6 +1,6 @@
 # DMZ Scuba
 
-> **Pre-alpha 0.0.112** — active development. Data models, workflows and visual
+> **Pre-alpha 0.0.120** — active development. Data models, workflows and visual
 > design can still change before the first public alpha.
 
 DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion for divers who
@@ -39,7 +39,33 @@ workflows are implemented and covered by focused regression scripts, but the app
 still needs broader physical-device testing, accessibility work, content review,
 production service hardening and public-alpha migration guarantees. Pre-alpha
 builds are numbered `0.0.x` and the number only goes up; the current release is
-`0.0.112` (`version` in `package.json` and `app.json`).
+`0.0.120` (`version` in `package.json` and `app.json`).
+
+**New in 0.0.120:** A substantial pre-alpha update, jumping several build
+numbers.
+
+- **iOS 27:** the app now adopts the UIScene life cycle, which iOS 27 requires
+  at launch. The full-screen dive profile no longer aborts when it opens.
+- **Logbook profiles:** the timestamp-only event markers that Suunto computers
+  log no longer draw spikes to the surface, and cumulative descent stays accurate.
+  The interactive profile has one live readout for time, depth, temperature,
+  ppO₂ and every tank. A display panel switches each line on or off and
+  changes line weight, curve style, depth fill and grid. Photos appear as pins
+  at the moment they were taken, with optional pop-up previews. Opening a dive
+  from a gallery photo starts the cursor on that photo.
+- **Logbook search:** search understands dates such as `may 19 2024`, `5/19/24`
+  or `2024`, and the search box keeps the spaces you type.
+- **Automatic trips and Dive Intelligence:** dives are grouped into trips by
+  date. Planner briefs and trip debriefs compare plans with your own logged
+  evidence.
+- **First-time personal setup:** a guided setup sets units, dive preferences,
+  temperature ranges and an optional starting baseline. You can rerun it from
+  Settings.
+- **Planner sharing:** itineraries can be shared as a phone-optimized PDF or a
+  Letter document for email and print. Phone, email and maps links work in
+  iOS, and booking phone numbers and confirmation codes are shown at a glance.
+- **Ocean Atlas:** DMZ Scuba operator recommendations, plus journey, gear and
+  places refinements.
 
 **New in 0.0.112:** Logbook statistics now include cumulative descent—the total
 of every increase in depth across recorded dive profiles, including re-descents.
@@ -137,6 +163,15 @@ A new user can explore every lesson and calculator, run the compass lab, and
 enter dives by hand with **no account and no network**. On a compatible full iOS
 build they can also connect a physical dive computer over Bluetooth and download
 its history.
+
+On a fresh installation, a one-time personal setup offers account sign-in before
+asking for units, temperature/exposure preferences, technical-tool visibility,
+optional Dive Intelligence starting values and optional location-assisted site
+matching. Completing or explicitly skipping it prevents automatic presentation
+on future launches and app updates. It can be deliberately rerun at any time from
+**More → Settings → Preferences → Run personal setup**. See
+[`docs/FIRST_TIME_SETUP.md`](docs/FIRST_TIME_SETUP.md) for the exact lifecycle and
+debugging checks.
 
 Each physical download is preserved as a *computer log*. The app then works out
 whether two logs from different computers describe the same real dive. If they
@@ -385,6 +420,10 @@ the device at `@dmz-scuba/planner/v1`.
   service due before or during the plan, certification cards, logbook minimums,
   paperwork, DAN flying-after-diving intervals, connections, nights without a
   stay, passport validity, insurance, gear and packing, and to-dos.
+- **Personal Dive Brief** — prior same-site dives (or the diver's wider history)
+  provide an evidence-counted baseline for depth, duration, temperature and gas
+  use. Optional depth/time/pressure assumptions produce a transparent personal
+  gas estimate with explicit confidence and method labels.
 - **Packing per plan** — each plan keeps its own packing ticks on its setup's
   gear, plus **extra gear** from the locker for that plan only; the setup itself
   is never changed. The Gear Locker packs a setup for its next upcoming plan; with
@@ -465,6 +504,9 @@ Far more than a list of dives:
   setpoint overlays where data exists
 - Full-screen chart scrubbing with per-sample readouts
 - Search, multi-criteria filtering, stable sorting, and multi-select bulk editing
+- Automatic date-derived trip history with per-trip statistics and dive lists
+- Automatic trip debriefs comparing the trip with earlier site/personal
+  baselines and matching it back to a saved plan for plan-versus-actual counts
 - Aggregate totals, site / year summaries, gas usage, SAC / RMV, safety, ascent,
   and depth trend lines
 - Soft deletion, purge tools, diagnostics, integrity checking, repair, and

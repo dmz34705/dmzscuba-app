@@ -88,6 +88,8 @@ const {
   safetyScore,
   computeLogAnalytics,
   computeDiveTrends,
+  deriveDiveTrips,
+  formatTripDateRange,
   // matcher
   resampleDepth,
   alignmentScore,
@@ -151,6 +153,26 @@ const {
   exportDivesToCsv,
   exportDivesToUddf,
 } = diveLog;
+
+// Automatic trip history: rest days stay together, a long dry gap starts a
+// new trip, and the derived rows remain suitable for the existing stats code.
+{
+  const tripRows = [
+    { id: 'g1', startTime: '2026-03-11T15:00:00.000Z', siteName: 'Gilboa Quarry', durationSeconds: 2400, maxDepthMeters: 18 },
+    { id: 'g2', startTime: '2026-03-13T15:00:00.000Z', siteName: 'Gilboa Quarry', durationSeconds: 3000, maxDepthMeters: 24 },
+    { id: 'g3', startTime: '2026-03-15T15:00:00.000Z', siteName: 'Gilboa Quarry', durationSeconds: 2700, maxDepthMeters: 21 },
+    { id: 'g4', startTime: '2026-03-18T15:00:00.000Z', siteName: 'Gilboa Quarry', durationSeconds: 2100, maxDepthMeters: 15 },
+    { id: 'a1', startTime: '2026-04-02T15:00:00.000Z', siteName: 'Another site', durationSeconds: 1800, maxDepthMeters: 12 },
+  ];
+  const trips = deriveDiveTrips(tripRows);
+  assert.equal(trips.length, 2);
+  assert.equal(trips[1].rows.length, 4);
+  assert.equal(trips[1].diveDays, 4);
+  assert.equal(trips[1].name, 'Gilboa Quarry');
+  assert.equal(computeDiveLogStats(trips[1].rows).totalBottomTimeSeconds, 10200);
+  assert.match(formatTripDateRange(trips[1].startTime, trips[1].endTime, 'en-US'), /Mar 11.*18, 2026/);
+  assert.equal(deriveDiveTrips([{ ...tripRows[0], deletedAt: '2026-04-01T00:00:00Z' }]).length, 0);
+}
 
 const near = (actual, expected, tolerance = 0.01) =>
   assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} not within ${tolerance} of ${expected}`);
@@ -1525,6 +1547,9 @@ function memoryStorage(seed = {}) {
 
   const screen = read('src', 'screens', 'DiveLogScreen.js');
   assert.match(screen, /useDiveLog/);
+  assert.match(screen, /contentScrollRef\.current\?\.scrollTo/);
+  assert.match(screen, /scrollOffsetsRef\.current\.get\(scrollRouteKey\) \|\| 0/);
+  assert.match(screen, /onScroll=\{rememberScrollOffset\}/);
   assert.match(screen, /validateDiveRecord/);
   assert.match(screen, /buildLogProfileGeometry/);
   assert.match(screen, /Maximum temperature/);
@@ -2576,7 +2601,7 @@ assert.equal(offlineDiveSites.matchOfflineDiveSite(0, 0.0001, overlappingSites).
     // must key off whether it produced a SAC, not off whether it exists.
     assert.match(
       read('src', 'lib', 'diveLog', 'storage.js'),
-      /a\?\.sacBarPerMin != null \? null :/,
+      /consumptionAnalytics\?\.sacBarPerMin != null \? null :/,
       'Derive whenever the log did not produce a SAC.',
     );
   }
@@ -2634,6 +2659,142 @@ assert.equal(offlineDiveSites.matchOfflineDiveSite(0, 0.0001, overlappingSites).
     const row = diveLog.indexRowFromDive(dive, [log]);
     assert.ok(row.sacBarPerMin > 0, 'A transmitter dive gets a SAC even with null begin/end pressure.');
     assert.ok(row.rmvLitersPerMin > 0);
+
+    // Trip stats use index rows, while detail can calculate straight from the
+    // profile. Keep both views truthful when the computer supplied neither an
+    // average-depth summary nor a tank-summary row, but did supply depth and
+    // transmitter curves.
+    const sparseSamples = [
+      { t: 0, depth: 0, pressureBar: 205 },
+      { t: 600, depth: 18, pressureBar: 160 },
+      { t: 1200, depth: 12, pressureBar: 115 },
+      { t: 1800, depth: 0, pressureBar: 75 },
+    ];
+    const sparseLog = createComputerLog({
+      durationSeconds: 1800,
+      water: { maxDepthMeters: 18, avgDepthMeters: null },
+      gas: { mixes: [{ o2: 0.21, he: 0 }], tanks: [] },
+      profile: { samples: sparseSamples },
+    });
+    const sparseDive = createDive({
+      startTime: '2026-09-06T10:00:00.000Z',
+      durationSeconds: 1800,
+      water: { maxDepthMeters: 18, avgDepthMeters: null },
+      logIds: [sparseLog.id],
+      primaryLogId: sparseLog.id,
+    });
+    const sparseRow = diveLog.indexRowFromDive(sparseDive, [sparseLog]);
+    assert.equal(sparseRow.hasTransmitterData, true);
+    assert.ok(sparseRow.avgDepthMeters > 0, 'Index derives average depth from the profile like detail does.');
+    assert.ok(sparseRow.sacBarPerMin > 0, 'Index recognises a transmitter curve without a tank summary.');
+    const tripTrends = computeDiveTrends([sparseRow]);
+    assert.ok(tripTrends.avgDepth.mean > 0, 'Trip summary receives the derived average depth.');
+    assert.ok(tripTrends.sac.mean > 0, 'Trip summary receives the derived transmitter SAC.');
+    assert.equal(tripTrends.transmitterDiveCount, 1);
+
+    // One canonical dive can carry two computers. If the primary has depth but
+    // the secondary has the transmitter, detail and trip stats must agree.
+    const depthOnly = createComputerLog({
+      durationSeconds: 1800,
+      water: { maxDepthMeters: 18, avgDepthMeters: 10 },
+      profile: { samples: [{ t: 0, depth: 0 }, { t: 900, depth: 18 }, { t: 1800, depth: 0 }] },
+    });
+    const pressureComputer = createComputerLog({
+      durationSeconds: 1800,
+      water: { maxDepthMeters: 18, avgDepthMeters: 10 },
+      gas: { mixes: [{ o2: 0.21, he: 0 }], tanks: [] },
+      profile: { samples: sparseSamples },
+    });
+    const twoComputerDive = createDive({
+      startTime: '2026-09-07T10:00:00.000Z',
+      durationSeconds: 1800,
+      water: { maxDepthMeters: 18, avgDepthMeters: 10 },
+      logIds: [depthOnly.id, pressureComputer.id],
+      primaryLogId: depthOnly.id,
+    });
+    const twoComputerRow = diveLog.indexRowFromDive(twoComputerDive, [depthOnly, pressureComputer]);
+    assert.equal(twoComputerRow.hasTransmitterData, true);
+    assert.ok(twoComputerRow.sacBarPerMin > 0, 'A secondary computer transmitter feeds trip stats.');
+  }
+
+  // Suunto event markers: timestamp-only rows between the regular readings
+  // (taken from a real EON Core ascent) must not pull the profile to 0 m.
+  {
+    const reading = (t, depth) => ({ t, depth, tempC: 9, pressureBar: 120, ndl: 6000 });
+    const samples = [
+      { t: 0, depth: 0 },
+      reading(1001, 20.61),
+      { t: 1009.893 },
+      reading(1011, 17.35),
+      { t: 1030.882, depth: 0 }, // already stored by the old normalizer
+      reading(1031, 11.8),
+      { t: 1040, pressureBar: 101 }, // a reading without depth: interpolated
+      reading(1041, 9.68),
+      reading(1100, 4.5),
+      { t: 1110, depth: 0, tempC: 11 }, // a real surfacing still carries a reading
+      reading(1150, 4.5),
+      reading(1201, 0.1),
+    ];
+    const cleaned = diveLog.normalizeComputerLog({ profile: { samples } }).profile.samples;
+    assert.deepEqual(cleaned.map((s) => s.t), [0, 1001, 1011, 1031, 1040, 1041, 1100, 1110, 1150, 1201]);
+    assert.equal(cleaned.find((s) => s.t === 1040).depth, 9.89, 'Depth-less readings sit between their neighbors.');
+    assert.equal(cleaned.find((s) => s.t === 1110).depth, 0, 'A surfacing with its own reading is kept.');
+    assert.ok(diveLog.ascentRateStats(cleaned).maxMPerMin < 30, 'No phantom 100+ m/min ascents.');
+
+    // A depth-only computer reports nothing but depth: its zeros are real.
+    const depthOnlyProfile = [{ t: 0, depth: 0 }, { t: 60, depth: 10 }, { t: 120, depth: 0 }, { t: 180, depth: 8 }, { t: 240, depth: 0 }];
+    assert.equal(diveLog.normalizeComputerLog({ profile: { samples: depthOnlyProfile } }).profile.samples.length, 5);
+  }
+
+  // Photo pins on the profile: placed on the depth trace at their capture time.
+  {
+    const { buildLogProfileGeometry } = loadSourceModule(path.join(srcRoot, 'lib', 'diveLog', 'profileChart.js'), srcRoot);
+    const { photoProfileMarkers } = loadSourceModule(path.join(srcRoot, 'lib', 'diveLog', 'photoMatching.js'), srcRoot);
+    const start = '2024-05-19T20:00:00.000Z';
+    const at = (seconds) => new Date(Date.parse(start) + seconds * 1000).toISOString();
+    const samples = [{ t: 0, depth: 0 }, { t: 600, depth: 20 }, { t: 1200, depth: 0 }];
+    const photos = [
+      { id: 'mid', uri: 'file:///mid.jpg', capturedAt: at(300) },
+      { id: 'none', uri: 'file:///none.jpg' },
+      { id: 'boat', uri: 'file:///boat.jpg', capturedAt: at(-3600) },
+      { id: 'deep', uri: 'file:///deep.jpg', capturedAt: at(600) },
+    ];
+    const markers = photoProfileMarkers(photos, start, samples);
+    assert.deepEqual(markers.map((m) => [m.id, m.index, m.t]), [['mid', 0, 300], ['deep', 3, 600]], 'Untimed and out-of-dive photos get no pin.');
+    const geometry = buildLogProfileGeometry(samples, 1200, 200, { markers: [...markers, { id: 'late', t: 1300 }] });
+    assert.deepEqual(geometry.markers.map((m) => m.id), ['mid', 'deep'], 'Pins outside the trace are dropped, not stacked on its ends.');
+    assert.equal(geometry.markers[0].depth, 10, 'A pin sits on the trace at its own time.');
+    assert.equal(geometry.markers[0].x, 300);
+    assert.equal(geometry.markers[1].y, geometry.points[1].y);
+  }
+
+  // Searching by date, against the local date the list shows.
+  {
+    const at = (y, m, d, h = 15) => new Date(y, m - 1, d, h, 28).toISOString();
+    const rows = [
+      { id: 'may19', startTime: at(2024, 5, 19), search: 'monterey breakwater' },
+      { id: 'may19-2025', startTime: at(2025, 5, 19), search: 'jupiter blue heron bridge' },
+      { id: 'may3', startTime: at(2024, 5, 3), search: 'monterey' },
+      { id: 'jan', startTime: at(2024, 3, 2), search: 'cozumel with jan' },
+      { id: 'late', startTime: at(2024, 5, 19, 23), search: 'night dive' },
+    ];
+    const ids = (text) => diveLog.filterDiveRows(rows, diveLog.sanitizeDiveFilter({ text })).map((r) => r.id).sort();
+    assert.deepEqual(ids('may 19'), ['late', 'may19', 'may19-2025']);
+    assert.deepEqual(ids('May 19, 2024'), ['late', 'may19']);
+    assert.deepEqual(ids('19th may 2024'), ['late', 'may19']);
+    assert.deepEqual(ids('may 19 2024'), ['late', 'may19'], 'Spaces alone separate day and year.');
+    assert.deepEqual(ids('may 19 24'), ['late', 'may19']);
+    assert.deepEqual(ids('5/19/24'), ['late', 'may19']);
+    assert.deepEqual(ids('2024-05-19'), ['late', 'may19']);
+    assert.deepEqual(ids('19/5'), ['late', 'may19', 'may19-2025'], 'Day-first when the first number cannot be a month.');
+    assert.deepEqual(ids('may 2024'), ['late', 'may19', 'may3']);
+    assert.deepEqual(ids('2025'), ['may19-2025']);
+    assert.deepEqual(ids('monterey may'), ['may19', 'may3'], 'Dates and words combine.');
+    assert.deepEqual(ids('jan'), ['jan'], 'A lone month word still finds a buddy called Jan.');
+    assert.deepEqual(ids('march'), ['jan']);
+    assert.deepEqual(ids('june 19'), []);
+    assert.deepEqual(diveLog.parseSearchDates('mar').dates[0].month, 3);
+    assert.deepEqual(diveLog.parseSearchDates('ma').rest, ['ma'], 'Two letters are not a month.');
   }
 
   console.log('Dive logbook checks passed.');

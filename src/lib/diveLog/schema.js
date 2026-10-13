@@ -201,11 +201,59 @@ function normalizeEvent(raw) {
   return event;
 }
 
+// Fields that make a sample a real reading rather than a bare timestamp.
+const SAMPLE_READING_KEYS = ['tempC', 'pressureBar', 'pressuresByTank', 'setpoint', 'rbt', 'ppo2', 'cns', 'ndl', 'deco'];
+
+function hasReading(sample) {
+  return SAMPLE_READING_KEYS.some((key) => sample[key] !== undefined);
+}
+
+// Some computers (the Suunto EON line) put event markers such as ascent-rate
+// warnings on their own timestamps between the regular readings. Those rows
+// carry no depth, and defaulting it to 0 drew a spike to the surface and back
+// on the profile and counted each one as a full re-descent. Logs saved before
+// this fix already store those rows as { t, depth: 0 }, so they are recognized
+// by shape: a bare zero-depth row in a profile whose readings otherwise carry
+// data. A genuine mid-dive surfacing on such a computer still carries its
+// temperature (and pressure, NDL...), so it is kept. The first and last rows
+// are the real start and end of the dive and are always kept.
+function cleanProfileSamples(rawSamples) {
+  const rows = rawSamples
+    .map((raw) => ({ sample: normalizeSample(raw), hasDepth: Number.isFinite(Number(raw?.depth)) && raw?.depth !== null && raw?.depth !== '' }))
+    .sort((a, b) => a.sample.t - b.sample.t);
+  const readings = rows.filter((row) => hasReading(row.sample)).length;
+  const richProfile = readings > rows.length / 2;
+  const kept = rows.filter((row, i) => {
+    if (hasReading(row.sample)) return true;
+    if (i === 0 || i === rows.length - 1) return row.hasDepth || rows.length < 3;
+    if (!row.hasDepth) return false;
+    return !(richProfile && row.sample.depth === 0);
+  });
+  // A reading that arrived without a depth (pressure-only, say) sits on the
+  // straight line between its neighbors instead of on the surface.
+  const depthAt = kept.map((row) => (row.hasDepth ? row.sample.depth : null));
+  return kept.map((row, i) => {
+    if (row.hasDepth) return row.sample;
+    let before = i - 1;
+    while (before >= 0 && depthAt[before] === null) before -= 1;
+    let after = i + 1;
+    while (after < kept.length && depthAt[after] === null) after += 1;
+    const a = before >= 0 ? kept[before].sample : null;
+    const b = after < kept.length ? kept[after].sample : null;
+    let depth = 0;
+    if (a && b) {
+      const span = b.t - a.t;
+      depth = span > 0 ? a.depth + ((b.depth - a.depth) * (row.sample.t - a.t)) / span : a.depth;
+    } else if (a || b) {
+      depth = (a || b).depth;
+    }
+    return { ...row.sample, depth: Math.round(depth * 100) / 100 };
+  });
+}
+
 function normalizeProfile(raw) {
   const source = isObject(raw) ? raw : {};
-  const samples = Array.isArray(source.samples)
-    ? source.samples.map(normalizeSample).sort((a, b) => a.t - b.t)
-    : [];
+  const samples = Array.isArray(source.samples) ? cleanProfileSamples(source.samples) : [];
   const events = Array.isArray(source.events)
     ? source.events.map(normalizeEvent).sort((a, b) => a.t - b.t)
     : [];

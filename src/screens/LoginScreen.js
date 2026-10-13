@@ -83,7 +83,7 @@ export default function LoginScreen({ onBack, onCreateAccount, onSignIn, initial
             label={phase === 'signingIn' ? 'Signing in…' : phase === 'verifying' ? 'Verifying securely…' : 'Sign in securely'}
             onPress={submit}
           />
-          <SecondaryButton label="Create a new account" onPress={onCreateAccount} style={styles.secondaryButton} />
+          {onCreateAccount ? <SecondaryButton label="Create a new account" onPress={onCreateAccount} style={styles.secondaryButton} /> : null}
           <Text style={styles.securityNote}>Your password is sent directly to the shared DMZ Scuba authentication service and is never stored by this app.</Text>
         </View>
       </ScrollView>

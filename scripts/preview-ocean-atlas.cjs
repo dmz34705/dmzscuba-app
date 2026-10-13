@@ -9,6 +9,8 @@ const { buildSiteGuide } = loadSourceModule(path.join(root, 'features/oceanAtlas
 const { unitSystem } = loadSourceModule(path.join(root, 'features/oceanAtlas/units.js'), root);
 const { fetchSiteWeather } = loadSourceModule(path.join(root, 'features/oceanAtlas/weather.js'), root);
 const { organizeAtlasGear } = loadSourceModule(path.join(root, 'features/oceanAtlas/atlasGear.js'), root);
+const { speciesIndex, speciesGuide } = loadSourceModule(path.join(root, 'features/oceanAtlas/species.js'), root);
+const { placeLabelsForSites } = loadSourceModule(path.join(root, 'features/oceanAtlas/places.js'), root);
 const settings = { temperatureUnit: 'F', depthUnit: 'ft' };
 const sampleGear = mode => {
   const items = (mode === 'freedive' ? [['Low-volume mask', 'Mask'], ['Long-blade fins', 'Fins'], ['3 mm open-cell suit', 'Exposure suit'], ['Freedive computer', 'Dive computer'], ['Rubber weight belt', 'Weights']] : [['Backplate + wing', 'BCD'], ['Primary regulator', 'Regulator'], ['Aluminum 80', 'Cylinder / tank'], ['3 mm full suit', 'Exposure suit'], ['Mask', 'Mask'], ['Open-heel fins', 'Fins'], ['Dive computer', 'Dive computer'], ['DSMB + spool', 'Surface safety']]).map(([name, category], index) => ({ id: `preview-${index}`, name, category }));
@@ -18,7 +20,7 @@ const sampleGear = mode => {
 };
 // In the app the native layer answers siteGuide messages. Mirror that bridge in
 // the browser preview so the complete card—not only its map-side fallback—can be reviewed.
-const bridge = `<script>window.ReactNativeWebView={postMessage:function(text){try{var m=JSON.parse(text);if(m.type==='siteGuide'){fetch('/__site-guide?'+new URLSearchParams(m)).then(function(r){return r.json()}).then(function(g){window.atlasReceive(Object.assign({type:'siteGuide'},g))});window.atlasReceive({type:'siteWeather',key:m.key,status:'loading'});fetch('/__site-weather?'+new URLSearchParams(m)).then(function(r){return r.json()}).then(function(weather){window.atlasReceive({type:'siteWeather',key:m.key,status:'ready',weather:weather})}).catch(function(){window.atlasReceive({type:'siteWeather',key:m.key,status:'error'})})}else if(m.type==='gearMode'){fetch('/__site-gear?'+new URLSearchParams(m)).then(function(r){return r.json()}).then(function(gear){window.atlasReceive({type:'siteGear',key:m.key,gear:gear})})}}catch(e){console.error(e)}}}</script>`;
+const bridge = `<script>window.ReactNativeWebView={postMessage:function(text){try{var m=JSON.parse(text);if(m.type==='siteGuide'){fetch('/__site-guide?'+new URLSearchParams(m)).then(function(r){return r.json()}).then(function(g){window.atlasReceive(Object.assign({type:'siteGuide'},g))});window.atlasReceive({type:'siteWeather',key:m.key,status:'loading'});fetch('/__site-weather?'+new URLSearchParams(m)).then(function(r){return r.json()}).then(function(weather){window.atlasReceive({type:'siteWeather',key:m.key,status:'ready',weather:weather})}).catch(function(){window.atlasReceive({type:'siteWeather',key:m.key,status:'error'})})}else if(m.type==='gearMode'){fetch('/__site-gear?'+new URLSearchParams(m)).then(function(r){return r.json()}).then(function(gear){window.atlasReceive({type:'siteGear',key:m.key,gear:gear})})}else if(m.type==='speciesIndex'){fetch('/__species-index').then(function(r){return r.json()}).then(function(species){window.atlasReceive({type:'speciesIndex',species:species})})}else if(m.type==='speciesGuide'){fetch('/__species-guide?'+new URLSearchParams(m)).then(function(r){return r.json()}).then(function(guide){window.atlasReceive({type:'speciesGuide',key:m.key,guide:guide})})}else if(m.type==='siteIndexPlaces'){fetch('/__site-index-places?ids='+encodeURIComponent((m.ids||[]).join(','))).then(function(r){return r.json()}).then(function(places){window.atlasReceive({type:'siteIndexPlaces',places:places})})}}catch(e){console.error(e)}}}</script>`;
 const html = buildAtlasDocument(settings)
   .replace("connect-src 'none'", "connect-src 'self'")
   .replace('<head>', `<head>${bridge}`);
@@ -30,6 +32,23 @@ if (process.argv[2]) {
 }
 const port = Number(process.env.ATLAS_PREVIEW_PORT || 8099);
 http.createServer((request, response) => {
+  if (request.url.startsWith('/__site-index-places?')) {
+    const ids = (new URL(request.url, 'http://127.0.0.1').searchParams.get('ids') || '').split(',').filter(Boolean);
+    response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+    response.end(JSON.stringify(placeLabelsForSites(ids)));
+    return;
+  }
+  if (request.url === '/__species-index') {
+    response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+    response.end(JSON.stringify(speciesIndex()));
+    return;
+  }
+  if (request.url.startsWith('/__species-guide?')) {
+    const params = new URL(request.url, 'http://127.0.0.1').searchParams;
+    response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+    response.end(JSON.stringify(speciesGuide(params.get('key'))));
+    return;
+  }
   if (request.url.startsWith('/__site-guide?')) {
     const params = new URL(request.url, 'http://127.0.0.1').searchParams;
     const guide = buildSiteGuide(Object.fromEntries(params), { units: unitSystem(settings) });

@@ -9,6 +9,7 @@ import { SEGMENT_TYPES, normalizeSegment } from './model';
 const TYPE_OPTIONS = Object.entries(SEGMENT_TYPES).map(([key, { label }]) => ({ key, label }));
 const PLACEHOLDERS = {
   flight: { title: 'UA 1234', from: 'ORD', to: 'CZM', provider: 'United' },
+  drive: { title: 'Drive to the airport', from: 'Home', to: 'Airport parking', provider: 'Parking reservation or driver' },
   transfer: { title: 'Airport shuttle', from: 'CZM arrivals', to: 'Hotel lobby', provider: 'Shuttle company' },
   ferry: { title: 'Playa del Carmen ferry', from: 'Playa del Carmen', to: 'Cozumel', provider: 'Ultramar' },
   stay: { title: 'Hotel name', from: 'Address', provider: 'Booking site or hotel' },
@@ -32,10 +33,10 @@ export default function SegmentEditor({ segment, visible, onCancel, onSave, onDe
     if (!draft.startDate) { Alert.alert('Add a date', 'Choose when this happens so it lands on the right day of the trip.'); return; }
     onSave(normalizeSegment(draft));
   };
-  const startLabel = { flight: 'Departs', stay: 'Check in', liveaboard: 'Embark', transfer: 'Pick-up', ferry: 'Departs', car: 'Pick-up', activity: 'Starts' }[draft.type] || 'Date';
-  const endLabel = { flight: 'Arrives', stay: 'Check out', liveaboard: 'Disembark', transfer: 'Arrives', ferry: 'Arrives', car: 'Drop-off' }[draft.type] || 'Ends';
+  const startLabel = { flight: 'Departs', drive: 'Leave', stay: 'Check in', liveaboard: 'Embark', transfer: 'Pick-up', ferry: 'Departs', car: 'Pick-up', activity: 'Starts' }[draft.type] || 'Date';
+  const endLabel = { flight: 'Arrives', drive: 'Arrive', stay: 'Check out', liveaboard: 'Disembark', transfer: 'Arrives', ferry: 'Arrives', car: 'Drop-off' }[draft.type] || 'Ends';
   return (
-    <EditorSheet eyebrow="ITINERARY" onCancel={onCancel} onSave={save} title={segment?.title ? 'Edit' : `Add ${type.label.toLowerCase()}`} visible={visible}
+    <EditorSheet eyebrow="ITINERARY" onCancel={onCancel} onSave={save} title={segment?.title ? 'Edit' : draft.type === 'other' ? 'Add itinerary item' : `Add ${type.label.toLowerCase()}`} visible={visible}
       footer={onDelete ? (
         <Pressable accessibilityRole="button" onPress={() => Alert.alert('Remove from itinerary?', draft.title || type.label, [{ text: 'Cancel', style: 'cancel' }, { text: 'Remove', style: 'destructive', onPress: onDelete }])} style={({ pressed }) => [styles.delete, pressed && styles.pressed]}>
           <Text style={styles.deleteText}>Remove from itinerary</Text>
@@ -59,8 +60,9 @@ export default function SegmentEditor({ segment, visible, onCancel, onSave, onDe
       <Field label={type.provider} onChange={(provider) => set({ provider })} placeholder={hint.provider} value={draft.provider} />
       <TwoUp>
         <Half><Field autoCapitalize="characters" label="Confirmation" maxLength={80} onChange={(reference) => set({ reference })} value={draft.reference} /></Half>
-        {type.diving ? <Half><Field keyboardType="number-pad" label="Dives" maxLength={2} onChange={(dives) => set({ dives })} placeholder="2" value={draft.dives ? String(draft.dives) : ''} /></Half> : <Half />}
+        <Half><Field keyboardType="phone-pad" label="Phone" maxLength={60} onChange={(phone) => set({ phone })} value={draft.phone} /></Half>
       </TwoUp>
+      {type.diving ? <Field keyboardType="number-pad" label="Dives" maxLength={2} onChange={(dives) => set({ dives })} placeholder="2" value={draft.dives ? String(draft.dives) : ''} /> : null}
       <Field label="Notes" multiline maxLength={2000} onChange={(notes) => set({ notes })} placeholder={draft.type === 'flight' ? 'Seats, bag allowance, terminal…' : 'Anything worth remembering'} value={draft.notes} />
       {type.diving ? <Text style={styles.hint}>Add the time you’re back on shore on the last dive day — the planner uses it to check the surface interval before your flight home.</Text> : null}
     </EditorSheet>

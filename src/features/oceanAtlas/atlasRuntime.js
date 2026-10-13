@@ -139,7 +139,7 @@ export function atlasRuntime(DATA, MODEL) {
   // `following` is the animal whose sighting areas stay outlined until the diver clears it.
   let speciesList = null, speciesListRequested = false, following = null, speciesLayer = null, speciesFit = null;
   const speciesGuides = new Map(), discoverPicks = new Map();
-  let panel = null;
+  let panel = null, browseView = null, browseLimit = 60;
   const temp = value => value == null ? '—' : `${Math.round(state.unit === 'F' ? value * 9 / 5 + 32 : value)}°${state.unit}`;
   // The month is contextual, not a preference: every launch starts in the
   // device's current month. Older saved month values are intentionally ignored.
@@ -157,7 +157,7 @@ export function atlasRuntime(DATA, MODEL) {
   $('app').innerHTML = `
     <div id="map" aria-label="Interactive dive map"></div>
     <div class="top">
-      <div class="brand"><button id="back" class="round glass" aria-label="Back">${icon('back')}</button><div class="brand-copy"><div class="eyebrow">DMZ SCUBA</div><h1>Ocean Atlas<span style="color:var(--mint)">.</span></h1></div><button id="search-toggle" class="round glass" aria-label="Search the atlas" aria-expanded="false">${icon('search')}</button></div>
+      <div class="brand"><button id="back" class="round glass" aria-label="Back">${icon('back')}</button><div class="brand-copy"><div class="eyebrow">DMZ SCUBA</div><h1>Ocean Atlas<span style="color:var(--mint)">.</span></h1></div><button id="search-toggle" class="search-cta glass" aria-label="Search the atlas" aria-expanded="false">${icon('search')}<span>Search</span></button></div>
       <div id="search-panel" hidden><div class="search glass">${icon('search')}<input id="search" aria-label="Search dive sites, regions or species" placeholder="Find a site, region or species" autocomplete="off"/><button id="clear-search" class="search-clear" aria-label="Clear search" hidden>×</button></div>
       <div id="results" class="results glass" aria-label="Search results" hidden></div>
       </div>
@@ -173,7 +173,7 @@ export function atlasRuntime(DATA, MODEL) {
       <section id="season-panel" class="season floating-panel glass" aria-label="Season controls" hidden><div class="panel-heading"><div><div class="eyebrow">FOLLOW THE SEASONS</div><h2>Explore by month</h2></div><button class="panel-close" data-dismiss aria-label="Close month selector">×</button></div><button id="current-month" class="current-month"></button><div class="months" role="group" aria-label="Month">${months.map((m, i) => `<button class="month" data-month="${i}" aria-pressed="false">${m}</button>`).join('')}</div><p class="note">Starts with the current month. Change it to preview ocean averages and marine-life seasons; logged dives stay visible across all dates.</p></section>
     </div>
     <div id="hint" class="hint">Tap the ocean to explore</div>
-    <nav class="dock glass" aria-label="Atlas controls"><button id="browse-toggle" aria-expanded="false">${icon('globe')}<span>Discover</span></button><span class="dock-divider"></span><button id="season-toggle" aria-expanded="false" aria-label="Choose month"><span class="dot"></span><span id="month-label"></span><span class="chevron">⌃</span></button></nav>
+    <nav class="dock glass" aria-label="Atlas controls"><button id="browse-toggle" aria-expanded="false">${icon('globe')}<span>Index</span></button><span id="browse-divider" class="dock-divider"></span><button id="search-dock" aria-expanded="false">${icon('search')}<span>Search</span></button><span id="season-divider" class="dock-divider"></span><button id="season-toggle" aria-expanded="false" aria-label="Choose month"><span class="dot"></span><span id="month-label"></span><span class="chevron">⌃</span></button></nav>
     <div class="attribution"><a href="https://www.naturalearthdata.com/about/terms-of-use/">Natural Earth</a> · <a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>${globalSource.recordCount ? ` · <a href="${esc(globalSource.sourceUrl)}">© OpenDiveMap contributors</a>` : ''} · <button id="credits">Data & coverage</button></div>
     <div id="toast" class="toast" role="status" hidden></div>`;
 
@@ -208,6 +208,7 @@ export function atlasRuntime(DATA, MODEL) {
   // Native guides: season/marine-life for a site and destination guides for islands, US states and countries.
   const native = Boolean(window.ReactNativeWebView);
   const siteGuides = new Map(), regionGuides = new Map();
+  const siteIndexPlaces = new Map(), siteIndexPlaceRequests = new Set();
   const regionKey = item => `${item.kind}:${item.id}`;
   let guideRequest = 0, pendingTap = null, placeOutline = null, showAllSites = false, quickTap = null;
   let scrollOwner = null, expandedOwner = null;
@@ -424,16 +425,18 @@ export function atlasRuntime(DATA, MODEL) {
     $('sheet').hidden = !selected || panel !== null;
     document.body.classList.toggle('panel-open', panel !== null);
     document.body.classList.toggle('has-selection', Boolean(selected));
-    [['layers-toggle', 'layers'], ['season-toggle', 'season'], ['browse-toggle', 'browse'], ['search-toggle', 'search']].forEach(([id, name]) => $(id).setAttribute('aria-expanded', String(panel === name)));
+    [['layers-toggle', 'layers'], ['season-toggle', 'season'], ['browse-toggle', 'browse'], ['search-toggle', 'search'], ['search-dock', 'search']].forEach(([id, name]) => $(id).setAttribute('aria-expanded', String(panel === name)));
   }
   function openPanel(name) {
-    panel = panel === name ? null : name;
+    const opening = panel !== name;
+    panel = opening ? name : null;
+    if (opening && name === 'browse') browseView = null;
     document.body.classList.remove('detail-expanded');
     $('expand').setAttribute('aria-expanded', 'false');
     $('expand').setAttribute('aria-label', 'Expand details');
     $('expand').textContent = 'View guide ↑';
     renderOverview(); updatePanels();
-    if (panel === 'search') { $('search').focus(); requestSpeciesList(); } else $('search').blur();
+    if (panel === 'search') { search(); $('search').focus(); requestSpeciesList(); } else $('search').blur();
   }
   let pickerMode = 'site';
   let pickerMarker = null;
@@ -604,12 +607,13 @@ export function atlasRuntime(DATA, MODEL) {
   }
   // What to wear this month, from the water temperature (and your comfort preferences, set in the app).
   // The card opens Gear for this dive, which matches it to your own Gear Locker on the device.
-  function wearCard(wear) {
+  function wearCard(wear, gear = null) {
     const w = wear?.[state.month];
-    const label = w?.label && w.label !== 'Confirm water temperature' ? (/mm$/.test(w.label) ? `${w.label} wetsuit` : w.label) : null;
-    const water = w?.temperatureC != null ? `For ${temp(w.temperatureC)} surface water · colder at depth${w.personal ? ' · adjusted for how you feel the cold' : ''}` : 'No water temperature here — confirm it locally';
+    const suggested = gear?.personalizedExposure ? gear.exposureLabel : w?.label;
+    const label = suggested && suggested !== 'Confirm water temperature' ? (/mm$/.test(suggested) ? `${suggested} wetsuit` : suggested) : null;
+    const water = w?.temperatureC != null ? `For ${temp(w.temperatureC)} surface water · colder at depth${gear?.personalizedExposure ? ' · matches your saved temperature preference' : w.personal ? ' · adjusted for how you feel the cold' : ''}` : 'No water temperature here — confirm it locally';
     return `<div class="section-label">What to wear · ${months[state.month]}</div><button id="gear-for-dive" class="wear-card">${label
-      ? `<strong>${esc(label)}</strong><span>${esc(water)}</span>${w.reason ? `<span class="wear-why">${esc(w.reason)}</span>` : ''}`
+      ? `<strong>${esc(label)}</strong><span>${esc(water)}</span>${w?.reason && !gear?.personalizedExposure ? `<span class="wear-why">${esc(w.reason)}</span>` : ''}`
       : `<strong>Plan your exposure protection</strong><span>${wear ? esc(water) : 'Pick a site for its water temperature, or plan from your Gear Locker'}</span>`}<b>Match it to my Gear Locker →</b></button>`;
   }
   // No published depth: the best estimate we have, most specific first, always named as an estimate.
@@ -1047,8 +1051,13 @@ export function atlasRuntime(DATA, MODEL) {
     const modes = [['recreational', 'Recreational'], ['technical', 'Technical'], ['freedive', 'Freedive']]
       .map(([value, title]) => `<button role="tab" data-gear-mode="${value}" aria-controls="locker-plan" aria-selected="${selectedMode === value}">${title}</button>`).join('');
     const gear = ng.gear;
-    const exposureItems = gear?.setup?.exposureItems || gear?.setup?.items?.filter(item => ['Exposure suit', 'Undergarment', 'Hood', 'Gloves', 'Boots'].includes(item.category)) || [];
-    const exposure = `<div class="locker-exposure"><small>1 · Exposure protection</small><strong>${esc(label)}</strong>${exposureItems.length ? `<span>${exposureItems.map(item => esc(item.name)).join(' · ')}</span>` : '<span>No matching exposure pieces found in this setup—confirm what you will actually wear.</span>'}</div>`;
+    const exposureItems = gear?.setup?.exposureItems?.length ? gear.setup.exposureItems : gear?.exposureItems?.length ? gear.exposureItems : gear?.setup?.items?.filter(item => ['Exposure suit', 'Undergarment', 'Hood', 'Gloves', 'Boots'].includes(item.category)) || [];
+    const exposureDetail = gear?.personalizedExposure
+      ? 'Matches your saved water-temperature preference.'
+      : gear?.hasTemperaturePreferences
+        ? 'No saved personal range matches this temperature, so this is the default starting point.'
+        : 'Default starting point—add personal temperature ranges to replace it with what you actually wear.';
+    const exposure = `<div class="locker-exposure"><small>1 · Exposure protection</small><strong>${esc(label)}</strong><span>${esc(exposureDetail)}</span>${exposureItems.length ? `<span>${exposureItems.map(item => esc(item.name)).join(' · ')}</span>` : '<span>No matching exposure pieces found in this setup—confirm what you will actually wear.</span>'}</div>`;
     const gearList = (items, reasons = false) => `<ul class="locker-items">${items.map(item => `<li><strong>${esc(item.name)}</strong><small>${esc(item.category)}</small>${reasons && item.reason ? `<em>${esc(item.reason)}</em>` : ''}</li>`).join('')}</ul>`;
     const itemCount = count => `${count} item${count === 1 ? '' : 's'}`;
     const locker = gear?.status === 'loading' || !gear ? '<div class="locker-empty"><strong>Matching your Gear Locker…</strong><small>Your saved setup and actual packing list will appear here.</small></div>'
@@ -1288,7 +1297,7 @@ export function atlasRuntime(DATA, MODEL) {
       // Photo of the site itself (openly licensed), when one exists.
       const photo = nativeGuide?.photo;
       const hero = photo ? `<figure class="site-photo"><img src="${esc(photo.url)}" alt="${esc(s.name)}" loading="lazy"><a href="${esc(photo.page)}">📷 ${esc(photo.attribution)} ↗</a></figure>` : '';
-      if (native && ['site', 'area'].includes(s.kind)) body = hero + crumbs(nativeGuide?.places || []) + glanceTiles(nativeGuide?.ratings, nativeGuide?.guide?.temps, nativeGuide?.guide?.inland, s, nativeGuide) + (nativeGuide ? wearCard(nativeGuide.wear) : '') + body + guideSection(nativeGuide?.guide);
+      if (native && ['site', 'area'].includes(s.kind)) body = hero + crumbs(nativeGuide?.places || []) + glanceTiles(nativeGuide?.ratings, nativeGuide?.guide?.temps, nativeGuide?.guide?.inland, s, nativeGuide) + (nativeGuide ? wearCard(nativeGuide.wear, nativeGuide.gear) : '') + body + guideSection(nativeGuide?.guide);
       const mine = s.kind === 'site' ? divesAtSite(s) : null;
       if (mine) body = `<div class="section-label">Your dives here</div>${siteTally(mine.dives.length, mine.verified || 0)}${diveRows(mine.dives.slice(0, 5))}${mine.dives.length > 5 ? `<p class="note">And ${mine.dives.length - 5} more in your logbook.</p>` : ''}` + body;
       const focusedRegion = state.layers.wildlife && !(native && ['site', 'area'].includes(s.kind)) ? (s.kind === 'region' ? s : MODEL.regionAt(DATA.regions, s.latitude, s.longitude)) : null;
@@ -1407,8 +1416,65 @@ export function atlasRuntime(DATA, MODEL) {
     const empty = !places && !curated ? '<p class="note">No sightings near dive sites are recorded for this animal yet.</p>' : '';
     return `${photo}${calendar}${curated}${places}${empty}<p class="note">Sightings are citizen-science and survey records within each outlined area — a guide to where divers look, not a promise of an encounter. Confirm with a local operator.</p>${guide.sources.map(source => `<a class="source" href="${esc(source.url)}">${esc(source.name)} ↗</a>`).join('<br>')}`;
   }
+  const siteIndexText = site => `${site.siteType || ''} ${site.environment || ''} ${(site.topologies || []).join(' ')} ${site.entry || ''}`.toLowerCase();
+  const siteIndexCategories = [
+    { id: 'wreck', label: 'Wrecks', detail: 'Shipwrecks, aircraft and submerged structures', group: 'Dive site type', matches: site => /wreck|aircraft/.test(siteIndexText(site)) },
+    { id: 'reef', label: 'Reefs', detail: 'Coral, rocky and artificial reefs', group: 'Dive site type', matches: site => /reef/.test(siteIndexText(site)) },
+    { id: 'wall', label: 'Walls & drop-offs', detail: 'Walls, slopes and dramatic ledges', group: 'Dive site type', matches: site => /wall|drop.?off|slope/.test(siteIndexText(site)) },
+    { id: 'overhead', label: 'Caves & caverns', detail: 'Caves, caverns, cenotes and blue holes', group: 'Dive site type', matches: site => /cave|cavern|cenote|blue hole/.test(siteIndexText(site)) },
+    { id: 'drift', label: 'Drift & current', detail: 'Sites mapped for drift diving or current', group: 'Dive site type', matches: site => /drift|current/.test(siteIndexText(site)) },
+    { id: 'fresh', label: 'Freshwater', detail: 'Lakes, quarries, springs, rivers and mines', group: 'Water & access', matches: site => site.environment === 'fresh' || /fresh|lake|quarry|spring|river|mine/.test(siteIndexText(site)) },
+    { id: 'spring', label: 'Springs & blue holes', detail: 'Spring-fed sites, cenotes and blue holes', group: 'Water & access', matches: site => /spring|cenote|blue hole/.test(siteIndexText(site)) },
+    { id: 'shore', label: 'Shore entry', detail: 'Sites catalogued with shore access', group: 'Water & access', matches: site => site.entry === 'shore' },
+    { id: 'boat', label: 'Boat entry', detail: 'Sites catalogued with boat access', group: 'Water & access', matches: site => site.entry === 'boat' },
+    { id: 'shallow', label: 'Published max ≤ 18 m', detail: 'Sites with a published maximum of 60 ft / 18 m or less', group: 'Depth', matches: site => Number.isFinite(site.maxDepthMeters) && site.maxDepthMeters <= 18 && !site.depthIsWholeLake },
+    { id: 'deep', label: 'Published max ≥ 30 m', detail: 'Sites reaching 100 ft / 30 m or more; training and plans still apply', group: 'Depth', matches: site => Number.isFinite(site.maxDepthMeters) && site.maxDepthMeters >= 30 && !site.depthIsWholeLake },
+  ];
+  const coordinateLabel = site => `${Math.abs(site.latitude).toFixed(2)}° ${site.latitude < 0 ? 'S' : 'N'}, ${Math.abs(site.longitude).toFixed(2)}° ${site.longitude < 0 ? 'W' : 'E'}`;
+  const siteIndexLocation = site => {
+    const source = [site.region, site.country].filter(Boolean);
+    const resolved = siteIndexPlaces.get(site.id) || [];
+    return [...new Set(source.length ? source : resolved)].slice(0, 2).join(', ') || coordinateLabel(site);
+  };
+  const siteIndexFacts = site => [site.siteType || 'Dive site', site.entry ? `${site.entry[0].toUpperCase()}${site.entry.slice(1)} entry` : 'Entry not listed',
+    Number.isFinite(site.maxDepthMeters) && !site.depthIsWholeLake ? `Max ${depthText(site.maxDepthMeters)}` : 'Depth not published'].join(' · ');
+  const siteIndexSubtitle = site => `${siteIndexLocation(site)} · ${siteIndexFacts(site)}`;
+  function requestSiteIndexPlaces(sites) {
+    if (!native) return;
+    const ids = sites.map(site => site.id).filter(id => !siteIndexPlaces.has(id) && !siteIndexPlaceRequests.has(id)).slice(0, 120);
+    if (!ids.length) return;
+    ids.forEach(id => siteIndexPlaceRequests.add(id));
+    post('siteIndexPlaces', { ids });
+  }
+  function renderSiteIndex(category) {
+    const all = DATA.sites.filter(category.matches).sort((a, b) => a.name.localeCompare(b.name));
+    const shown = all.slice(0, browseLimit);
+    requestSiteIndexPlaces(shown);
+    $('overview').innerHTML = `<div class="panel-heading"><button class="index-back" data-index-back>${icon('back')}<span>Atlas index</span></button><button id="close-browse" class="panel-close" aria-label="Close index">×</button></div><div class="eyebrow">${esc(category.group)}</div><h2>${esc(category.label)}</h2><p>${esc(category.detail)}. Select any result for its full guide and map location.</p><div class="index-list">${shown.map(site => `<button class="result index-result" data-index-site="${esc(site.id)}">${icon('site')}<span><strong>${esc(site.name)}</strong><small class="result-location">${esc(siteIndexLocation(site))}</small><small class="result-facts">${esc(siteIndexFacts(site))}</small></span></button>`).join('')}</div>${shown.length < all.length ? `<button class="index-more" data-index-more>Show ${Math.min(60, all.length - shown.length)} more · ${all.length.toLocaleString()} total</button>` : ''}<div class="summary-line"><span class="dot"></span>${all.length.toLocaleString()} matching sites</div>`;
+    $('close-browse').onclick = () => openPanel('browse');
+    $('overview').querySelector('[data-index-back]').onclick = () => { browseView = null; browseLimit = 60; renderOverview(); };
+    $('overview').querySelectorAll('[data-index-site]').forEach(button => button.onclick = () => {
+      const site = DATA.sites.find(item => item.id === button.dataset.indexSite);
+      if (site) { state.layers.sites = true; render(); choose({ ...site, kind: 'site' }, true); }
+    });
+    const more = $('overview').querySelector('[data-index-more]');
+    if (more) more.onclick = () => { browseLimit += 60; renderOverview(); };
+  }
+  function renderMarineIndex() {
+    requestSpeciesList();
+    const all = speciesList ? [...speciesList].sort((a, b) => a[1].localeCompare(b[1])) : [];
+    const shown = all.slice(0, browseLimit);
+    $('overview').innerHTML = `<div class="panel-heading"><button class="index-back" data-index-back>${icon('back')}<span>Atlas index</span></button><button id="close-browse" class="panel-close" aria-label="Close index">×</button></div><div class="eyebrow">MARINE LIFE</div><h2>Marine-life index</h2><p>Browse animals alphabetically, then open where and when divers report seeing them. Sightings guide exploration; they never promise an encounter.</p>${speciesList ? `<div class="index-list">${shown.map(row => `<button class="result" data-index-species="${esc(row[0])}" data-name="${esc(row[1])}">${icon('wildlife')}<span><strong>${esc(row[1])}</strong><small>${esc([row[2], row[3], row[4] ? `${row[4]} sighting ${row[4] === 1 ? 'area' : 'areas'}` : 'regional season guide'].filter(Boolean).join(' · '))}</small></span></button>`).join('')}</div>${shown.length < all.length ? `<button class="index-more" data-index-more>Show ${Math.min(60, all.length - shown.length)} more · ${all.length.toLocaleString()} total</button>` : ''}` : '<div class="index-loading">Loading the marine-life index…</div>'}`;
+    $('close-browse').onclick = () => openPanel('browse');
+    $('overview').querySelector('[data-index-back]').onclick = () => { browseView = null; browseLimit = 60; renderOverview(); };
+    $('overview').querySelectorAll('[data-index-species]').forEach(button => button.onclick = () => openSpecies(button.dataset.indexSpecies, button.dataset.name));
+    const more = $('overview').querySelector('[data-index-more]');
+    if (more) more.onclick = () => { browseLimit += 60; renderOverview(); };
+  }
   function renderOverview() {
-    let headline = 'A whole ocean to explore.', copy = 'Find your next dive, follow the seasons, and revisit the places you’ve been.';
+    if (browseView?.kind === 'sites') { renderSiteIndex(siteIndexCategories.find(category => category.id === browseView.id)); return; }
+    if (browseView?.kind === 'marine') { renderMarineIndex(); return; }
+    let headline = 'Browse the Atlas your way.', copy = 'Start with a dive style, water type, animal or place. The map is always there when you want it.';
     let status = `${DATA.diveRegions.length} dive regions · ${DATA.oceanRegions.length} ocean lenses · ${DATA.sites.length} mapped sites`;
     if (state.layers.dives) {
       const count = logPins.reduce((sum, pin) => sum + pin.dives.length, 0);
@@ -1424,8 +1490,13 @@ export function atlasRuntime(DATA, MODEL) {
       : `<div class="section-label">Seasonal wildlife spotlights</div><div class="destinations compact">${candidates.slice(0, 4).map(r => `<button class="destination" data-region="${r.id}">${esc(r.name)}</button>`).join('')}</div>`;
     const remoteStart = state.month % DATA.remoteAreas.length;
     const remote = Array.from({ length: 4 }, (_, index) => DATA.remoteAreas[(remoteStart + index) % DATA.remoteAreas.length]);
-    $('overview').innerHTML = `<div class="panel-heading"><div class="eyebrow">${state.layers.dives ? 'YOUR DIVES, ON THE MAP' : 'THE WORLD BELOW THE SURFACE'}</div><button id="close-browse" class="panel-close" aria-label="Close discover">×</button></div><h2>${headline}</h2><p>${copy}</p>${state.layers.dives ? `<div class="destinations"><button class="destination" id="see-dives">${logStatus === 'error' ? 'Retry' : logPins.length ? 'Show my dives' : 'Open logbook'}</button></div>${wildlife}` : `${wildlife}<div class="section-label">Popular dive regions</div><div class="destinations">${DATA.diveRegions.map(r => `<button class="destination" data-dive-region="${r.id}">${esc(r.name)}</button>`).join('')}</div><div class="section-label">Remote & standalone</div><div class="destinations compact">${remote.map(area => `<button class="destination" data-remote="${area.id}">${esc(area.name)}</button>`).join('')}</div>`}<div class="summary-line"><span class="dot"></span>${status}</div>`;
+    const categoryGroups = [...new Set(siteIndexCategories.map(category => category.group))];
+    const directory = `<button class="index-search" data-index-search>${icon('search')}<span><strong>Search the whole Atlas</strong><small>Sites, destinations, marine life and your saved places</small></span>${icon('arrow')}</button>${categoryGroups.map(group => `<div class="section-label">${esc(group)}</div><div class="index-grid">${siteIndexCategories.filter(category => category.group === group).map(category => { const count = DATA.sites.filter(category.matches).length; return `<button class="index-card" data-index-category="${category.id}"><strong>${esc(category.label)}</strong><span>${count.toLocaleString()} sites</span><small>${esc(category.detail)}</small></button>`; }).join('')}</div>`).join('')}<div class="section-label">Marine life</div><button class="index-search marine" data-index-marine>${icon('wildlife')}<span><strong>Marine-life index</strong><small>${speciesList ? `${speciesList.length.toLocaleString()} animals · browse A–Z` : 'Animals, seasons and sighting areas'}</small></span>${icon('arrow')}</button>`;
+    $('overview').innerHTML = `<div class="panel-heading"><div class="eyebrow">${state.layers.dives ? 'YOUR DIVES & THE ATLAS INDEX' : 'DIVE DIRECTORY'}</div><button id="close-browse" class="panel-close" aria-label="Close index">×</button></div><h2>${headline}</h2><p>${copy}</p>${directory}${state.layers.dives ? `<div class="section-label">Your logbook</div><div class="destinations"><button class="destination" id="see-dives">${logStatus === 'error' ? 'Retry' : logPins.length ? 'Show my dives' : 'Open logbook'}</button></div>${wildlife}` : `${wildlife}<div class="section-label">Popular dive regions</div><div class="destinations">${DATA.diveRegions.map(r => `<button class="destination" data-dive-region="${r.id}">${esc(r.name)}</button>`).join('')}</div><div class="section-label">Remote & standalone</div><div class="destinations compact">${remote.map(area => `<button class="destination" data-remote="${area.id}">${esc(area.name)}</button>`).join('')}</div>`}<div class="summary-line"><span class="dot"></span>${status}</div>`;
     $('close-browse').onclick = () => openPanel('browse');
+    $('overview').querySelector('[data-index-search]').onclick = () => openPanel('search');
+    $('overview').querySelectorAll('[data-index-category]').forEach(button => button.onclick = () => { browseView = { kind: 'sites', id: button.dataset.indexCategory }; browseLimit = 60; renderOverview(); });
+    $('overview').querySelector('[data-index-marine]').onclick = () => { browseView = { kind: 'marine' }; browseLimit = 60; renderOverview(); };
     $('overview').querySelectorAll('[data-discover-species]').forEach(button => button.onclick = () => openSpecies(button.dataset.discoverSpecies, button.dataset.name));
     $('overview').querySelectorAll('[data-region]').forEach(button => button.onclick = () => {
       state.layers.wildlife = true; render();
@@ -1467,20 +1538,30 @@ export function atlasRuntime(DATA, MODEL) {
   function search() {
     const query = $('search').value.trim().toLowerCase();
     $('clear-search').hidden = !query;
-    if (!query) { $('results').hidden = true; return; }
+    if (!query) {
+      if (DATA.locationPicker) { $('results').hidden = true; return; }
+      $('results').innerHTML = `<div class="search-start"><div class="results-label">Try a category</div><div class="search-suggestions"><button data-index-category="wreck">Wrecks</button><button data-index-category="reef">Reefs</button><button data-index-category="overhead">Caves & caverns</button><button data-index-category="fresh">Freshwater</button><button data-index-category="shore">Shore dives</button></div><button class="index-search marine" data-search-index>${icon('globe')}<span><strong>Browse the full Atlas index</strong><small>Site types, water, access, depth, marine life and places</small></span>${icon('arrow')}</button></div>`;
+      $('results').hidden = false;
+      $('results').querySelectorAll('[data-index-category]').forEach(button => button.onclick = () => {
+        panel = 'browse'; browseView = { kind: 'sites', id: button.dataset.indexCategory }; browseLimit = 60;
+        renderOverview(); updatePanels(); $('search').blur();
+      });
+      $('results').querySelector('[data-search-index]').onclick = () => { panel = 'browse'; browseView = null; browseLimit = 60; renderOverview(); updatePanels(); $('search').blur(); };
+      return;
+    }
     const matches = [
       ...DATA.diveRegions.map(r => ({ ...r, kind: 'diveRegion', searchText: [r.name, r.subtitle, ...r.areas.flatMap(area => [area.name, area.subtitle])].join(' ') })),
       ...DATA.diveRegions.flatMap(r => r.areas.map(area => ({ ...area, kind: 'area', searchText: `${area.name} ${area.subtitle} ${r.name}` }))),
       ...DATA.remoteAreas.map(area => ({ ...area, kind: 'area', searchText: `${area.name} ${area.subtitle} remote standalone` })),
       ...DATA.regions.map(r => ({ ...r, kind: 'region', searchText: [r.name, r.subtitle, ...r.species.map(s => `${s.name} ${s.scientific}`)].join(' ') })),
       ...DATA.oceanRegions.map(r => ({ ...r, kind: 'province', searchText: [r.name, r.subtitle, r.story, ...r.habitats, ...r.wildlife].join(' ') })),
-      ...DATA.sites.map(s => ({ ...s, kind: 'site', searchText: `${s.name} ${(s.aliases || []).join(' ')} ${s.region || ''} ${s.country || ''} ${(s.topologies || []).join(' ')} ${s.entry || ''}` })),
+      ...DATA.sites.map(s => ({ ...s, kind: 'site', searchText: `${s.name} ${(s.aliases || []).join(' ')} ${s.siteType || ''} ${s.environment || ''} ${s.region || ''} ${s.country || ''} ${(s.topologies || []).join(' ')} ${s.entry || ''} ${s.note || ''}` })),
       ...logPins.map(p => ({ ...p, kind: 'dive', searchText: p.name })),
       ...mySites.map(site => ({ ...asMySite(site), region: 'My site', searchText: `${site.name} my site` })),
-    ].filter(item => (!DATA.locationPicker || item.kind === 'site') && (item.searchText.toLowerCase().includes(query) || (DATA.locationPicker && item.searchText.toLowerCase().replace(/[^a-z0-9]/g, '').includes(query.replace(/[^a-z0-9]/g, '') || query)))).slice(0, 18);
+    ].filter(item => (!DATA.locationPicker || item.kind === 'site') && (item.searchText.toLowerCase().includes(query) || (DATA.locationPicker && item.searchText.toLowerCase().replace(/[^a-z0-9]/g, '').includes(query.replace(/[^a-z0-9]/g, '') || query)))).slice(0, 30);
     const species = DATA.locationPicker ? [] : speciesMatches(query);
     if (native && !speciesList) requestSpeciesList();
-    $('results').innerHTML = (species.length ? `<div class="results-label">Marine life</div>${species.map((row, i) => `<button class="result" data-species-result="${i}">${icon('wildlife')}<span><strong>${esc(row[1])}</strong><small>${esc(row[2])}${row[4] ? ` · seen in ${row[4]} ${row[4] === 1 ? 'area' : 'areas'}` : ' · regional season guide'}</small></span></button>`).join('')}${matches.length ? '<div class="results-label">Places & sites</div>' : ''}` : '') + (matches.length ? matches.map((item, i) => `<button class="result" data-result="${i}">${icon(item.kind === 'region' ? 'wildlife' : item.kind === 'province' || item.kind === 'diveRegion' || item.kind === 'area' ? 'globe' : item.kind === 'dive' ? 'dives' : 'site')}<span><strong>${esc(item.name)}</strong><small>${esc(item.kind === 'diveRegion' ? item.subtitle : item.kind === 'area' ? `${item.region} · ${item.subtitle}` : item.kind === 'region' || item.kind === 'province' ? item.subtitle : item.kind === 'dive' ? 'Your logbook' : item.region || 'Dive site')}</small></span></button>`).join('') : species.length ? '' : '<div class="empty">No matches in the current atlas. Try Caribbean, Philippines, kelp, manta, Hawaiʻi, or a saved dive site.</div>');
+    $('results').innerHTML = (species.length ? `<div class="results-label">Marine life</div>${species.map((row, i) => `<button class="result" data-species-result="${i}">${icon('wildlife')}<span><strong>${esc(row[1])}</strong><small>${esc(row[2])}${row[4] ? ` · seen in ${row[4]} ${row[4] === 1 ? 'area' : 'areas'}` : ' · regional season guide'}</small></span></button>`).join('')}${matches.length ? '<div class="results-label">Places & sites</div>' : ''}` : '') + (matches.length ? matches.map((item, i) => `<button class="result" data-result="${i}">${icon(item.kind === 'region' ? 'wildlife' : item.kind === 'province' || item.kind === 'diveRegion' || item.kind === 'area' ? 'globe' : item.kind === 'dive' ? 'dives' : 'site')}<span><strong>${esc(item.name)}</strong><small>${esc(item.kind === 'diveRegion' ? item.subtitle : item.kind === 'area' ? `${item.region} · ${item.subtitle}` : item.kind === 'region' || item.kind === 'province' ? item.subtitle : item.kind === 'dive' ? 'Your logbook' : item.kind === 'site' ? siteIndexSubtitle(item) : item.region || 'Dive site')}</small></span></button>`).join('') : species.length ? '' : '<div class="empty">No matches in the current atlas. Try Caribbean, Philippines, wreck, freshwater, manta, Hawaiʻi, or a saved dive site.</div>');
     $('results').hidden = false;
     $('results').querySelectorAll('[data-species-result]').forEach(button => button.onclick = () => {
       const row = species[Number(button.dataset.speciesResult)];
@@ -1499,7 +1580,7 @@ export function atlasRuntime(DATA, MODEL) {
   $('clear-search').onclick = () => { $('search').value = ''; search(); };
   $('back').onclick = () => post('back');
   if (DATA.locationPicker) {
-    ['season-toggle', 'browse-toggle', 'species-bar', 'info', 'credits'].forEach(id => { if ($(id)) $(id).style.display = 'none'; });
+    ['season-toggle', 'season-divider', 'browse-toggle', 'browse-divider', 'species-bar', 'info', 'credits'].forEach(id => { if ($(id)) $(id).style.display = 'none'; });
     state.layers.temperature = false; state.layers.wildlife = false; state.layers.regions = false;
   }
   $('close').onclick = closeDetails;
@@ -1529,6 +1610,7 @@ export function atlasRuntime(DATA, MODEL) {
   $('season-toggle').onclick = () => openPanel('season');
   $('browse-toggle').onclick = () => openPanel('browse');
   $('search-toggle').onclick = () => openPanel('search');
+  $('search-dock').onclick = () => openPanel('search');
   document.querySelectorAll('[data-dismiss]').forEach(button => button.onclick = () => { panel = null; updatePanels(); });
   $('info').onclick = $('credits').onclick = () => choose({ kind: 'sources' });
   $('world').onclick = () => { panel = null; closeDetails(); fitTo([[-55, -170], [75, 170]], { paddingTopLeft: [18, 85], paddingBottomRight: [18, 95] }, 1); };
@@ -1634,9 +1716,17 @@ export function atlasRuntime(DATA, MODEL) {
       mySites = (Array.isArray(message.sites) ? message.sites : []).filter(site => Number.isFinite(site.latitude) && Number.isFinite(site.longitude));
       if (selected?.custom && !mySites.some(site => site.id === selected.id)) closeDetails();
       drawMySites();
+    } else if (message.type === 'siteIndexPlaces') {
+      for (const row of Array.isArray(message.places) ? message.places : []) {
+        if (!Array.isArray(row) || typeof row[0] !== 'string') continue;
+        siteIndexPlaces.set(row[0], Array.isArray(row[1]) ? row[1].filter(value => typeof value === 'string') : []);
+        siteIndexPlaceRequests.delete(row[0]);
+      }
+      if (panel === 'browse' && browseView?.kind === 'sites') renderOverview();
     } else if (message.type === 'speciesIndex') {
       speciesList = Array.isArray(message.species) ? message.species : [];
       if ($('search').value.trim()) search();
+      if (panel === 'browse' && browseView?.kind === 'marine') renderOverview();
     } else if (message.type === 'speciesGuide') {
       speciesGuides.set(message.key, message.guide || null);
       if (message.guide) drawSpecies(message.guide);

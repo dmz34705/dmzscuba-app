@@ -15,3 +15,4 @@ export * from './format';
 export * from './profileChart';
 export * from './diveModeFields';
 export * from './exports';
+export * from './trips';

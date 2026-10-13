@@ -1,6 +1,7 @@
 import { DEFAULT_LAYOUT, sanitizeLayout } from '../features/layout/layoutPreferences';
 
 export const APP_SETTINGS_STORAGE_KEY = '@dmz-scuba/app-settings-v1';
+export const CURRENT_SETUP_VERSION = 1;
 
 export const DEFAULT_PROFILE_COLORS = Object.freeze({
   depth: '#70DDF6',
@@ -12,6 +13,29 @@ export const DEFAULT_PROFILE_COLORS = Object.freeze({
 });
 
 const HEX_COLOR = /^#[0-9a-f]{6}$/i;
+
+export const PROFILE_PHOTO_MODES = Object.freeze(['off', 'pins', 'previews']);
+
+export const DEFAULT_PROFILE_DISPLAY = Object.freeze({
+  temperature: true,
+  pressure: true,
+  oxygen: true,
+  depthFill: true,
+  grid: true,
+  curve: 'sharp',
+});
+
+function sanitizeProfileDisplay(value) {
+  const display = value && typeof value === 'object' ? value : {};
+  return {
+    temperature: display.temperature !== false,
+    pressure: display.pressure !== false,
+    oxygen: display.oxygen !== false,
+    depthFill: display.depthFill !== false,
+    grid: display.grid !== false,
+    curve: display.curve === 'smooth' ? 'smooth' : 'sharp',
+  };
+}
 
 export const DEFAULT_APP_SETTINGS = {
   depthUnit: 'ft',
@@ -26,11 +50,33 @@ export const DEFAULT_APP_SETTINGS = {
   locationLoggingEnabled: false,
   profileColors: DEFAULT_PROFILE_COLORS,
   profileLineWidth: 2.75,
+  // Photos on the dive profile: 'off' (no pins), 'pins', or 'previews' (pins
+  // that pop up a thumbnail as the finger passes them).
+  profilePhotoMode: 'previews',
+  // What the interactive dive profile draws. Depth itself is always drawn.
+  profileDisplay: DEFAULT_PROFILE_DISPLAY,
   layout: DEFAULT_LAYOUT,
+  firstTimeSetup: { version: 0, status: 'pending', completedAt: '' },
+  // Optional starting values for Dive Intelligence. Recorded logbook evidence
+  // replaces each value independently as soon as it exists.
+  diveBaseline: {
+    sacBarPerMin: null,
+    rmvLitersPerMin: null,
+    avgDepthMeters: null,
+    durationSeconds: null,
+    tempMinC: null,
+  },
 };
+
+function optionalNumber(value, min, max) {
+  const parsed = Number(value);
+  return value !== '' && value != null && Number.isFinite(parsed) && parsed >= min && parsed <= max ? parsed : null;
+}
 
 export function sanitizeAppSettings(value) {
   const settings = value && typeof value === 'object' ? value : {};
+  const setup = settings.firstTimeSetup && typeof settings.firstTimeSetup === 'object' ? settings.firstTimeSetup : {};
+  const baseline = settings.diveBaseline && typeof settings.diveBaseline === 'object' ? settings.diveBaseline : {};
   return {
     layout: sanitizeLayout(settings.layout),
     depthUnit: settings.depthUnit === 'm' ? 'm' : 'ft',
@@ -44,7 +90,35 @@ export function sanitizeAppSettings(value) {
       HEX_COLOR.test(settings.profileColors?.[key]) ? settings.profileColors[key].toUpperCase() : fallback,
     ])),
     profileLineWidth: [1.5, 2.75, 4].includes(settings.profileLineWidth) ? settings.profileLineWidth : 2.75,
+    profileDisplay: sanitizeProfileDisplay(settings.profileDisplay),
+    profilePhotoMode: PROFILE_PHOTO_MODES.includes(settings.profilePhotoMode) ? settings.profilePhotoMode : 'previews',
+    firstTimeSetup: {
+      version: Math.max(0, Number.parseInt(setup.version, 10) || 0),
+      status: ['complete', 'skipped'].includes(setup.status) ? setup.status : 'pending',
+      completedAt: typeof setup.completedAt === 'string' ? setup.completedAt.slice(0, 40) : '',
+    },
+    diveBaseline: {
+      sacBarPerMin: optionalNumber(baseline.sacBarPerMin, 0.01, 20),
+      rmvLitersPerMin: optionalNumber(baseline.rmvLitersPerMin, 0.1, 200),
+      avgDepthMeters: optionalNumber(baseline.avgDepthMeters, 0.1, 300),
+      durationSeconds: optionalNumber(baseline.durationSeconds, 60, 86400),
+      tempMinC: optionalNumber(baseline.tempMinC, -2, 50),
+    },
   };
+}
+
+// A stored settings object without firstTimeSetup belongs to an installation
+// that predates onboarding. Do not surprise that diver with a first-run screen
+// after an app update; the setup remains available manually in Settings.
+export function hydrateAppSettings(storedValue) {
+  if (!storedValue || typeof storedValue !== 'object') return sanitizeAppSettings(DEFAULT_APP_SETTINGS);
+  if (!Object.prototype.hasOwnProperty.call(storedValue, 'firstTimeSetup')) {
+    return sanitizeAppSettings({
+      ...storedValue,
+      firstTimeSetup: { version: CURRENT_SETUP_VERSION, status: 'skipped', completedAt: '' },
+    });
+  }
+  return sanitizeAppSettings(storedValue);
 }
 
 // Units, calculator preferences and layouts sync between devices. Everything else is this phone's own:

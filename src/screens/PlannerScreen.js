@@ -8,7 +8,7 @@ import DateField from '../components/DateField';
 import { ProgressBar } from '../components/Ui';
 import { GEAR_CATEGORIES, checklistEntriesForItem, includedWithSelection, setupProgress, sortGear } from '../features/gearChecklist/model';
 import PolicyEditor from '../features/insurance/PolicyEditor';
-import { insuranceTypeLabel, policiesForPlan, policyTitle } from '../features/insurance/model';
+import { insuranceTypeLabel, policiesForPlan, policyTermForDate, policyTitle, renewalPeriodLabel } from '../features/insurance/model';
 import useInsurance from '../features/insurance/useInsurance';
 import FlightBookingEditor from '../features/planner/FlightBookingEditor';
 import { PolicyCard } from './InsuranceScreen';
@@ -18,12 +18,16 @@ import ImportSheet from '../features/planner/bookingImport/ImportSheet';
 import { applyImport, planImport } from '../features/planner/bookingImport/planImport';
 import PlanEditor from '../features/planner/PlanEditor';
 import SegmentEditor from '../features/planner/SegmentEditor';
+import { sharePlanPdf } from '../features/planner/sharePlanPdf';
 import usePlanner from '../features/planner/usePlanner';
+import { buildDiveBrief, diveBriefAssumptionCount } from '../features/diveIntelligence/model';
+import DiveBriefEditor from '../features/diveIntelligence/DiveBriefEditor';
+import { formatDepth, formatDuration as formatDiveDuration, formatPressure, formatTemperature } from '../lib/diveLog/format';
 import { planDives } from '../features/siteDives/siteMatch';
 import {
   MIN_CONNECTION_MINUTES, SEGMENT_TYPES, STATUS_LABELS, airportKey, bookingFlights, cardsFor, certLabel, createBookingId, emptyPlan, flightConnections,
-  formatDay, formatDuration, formatRange, formatTime, normalizePlan, normalizeSegment, parseDay, planPhase, planTimeline, planTitle, readinessSummary,
-  replaceFlights, sortPlans, todayString, withPlanPacking,
+  currentTripDay, formatDay, formatDuration, formatRange, formatTime, normalizePlan, normalizeSegment, parseDay, planPhase, planTimeline, planTitle, readinessSummary,
+  replaceFlights, sortPlans, suggestedSegmentType, todayString, withPlanPacking,
 } from '../features/planner/model';
 import { colors, radii, spacing } from '../theme';
 
@@ -129,7 +133,7 @@ function KindPicker({ visible, onPick, onClose }) {
         <Pressable onPress={(e) => e.stopPropagation()} style={[styles.pickerSheet, { paddingBottom: insets.bottom + spacing.md }]}>
           <Text style={styles.pickerTitle}>What are you planning?</Text>
           <Option body="A shore dive, a charter or a local boat trip — one day, one plan." kind="day" title="Dive day" tone={colors.cyan} />
-          <Option body="Flights, transfers, stays and dive days, with travel and paperwork checks." kind="trip" title="Dive trip" tone={colors.gold} />
+          <Option body="Travel, stays and dive days, with timing and paperwork checks." kind="trip" title="Dive trip" tone={colors.gold} />
         </Pressable>
       </Pressable>
     </Modal>
@@ -160,8 +164,8 @@ function LegRow({ leg, onPress, variant = 'start' }) {
   const name = leg.title || leg.provider || type.label;
   const car = leg.type === 'car';
   const title = variant === 'continuing' ? `${car ? 'Rental car' : leg.type === 'liveaboard' ? 'On board' : 'Staying'} · ${name}` : variant === 'end' ? `${car ? 'Return car' : leg.type === 'stay' ? 'Check out' : 'Disembark'} · ${name}` : car && !leg.title ? `Pick up car · ${name}` : name;
-  const route = leg.type === 'flight' || leg.type === 'transfer' || leg.type === 'ferry' || (car && leg.to && leg.to !== leg.from) ? [leg.from, leg.to].filter(Boolean).join(' → ') : leg.from;
-  const arrival = variant === 'start' && leg.endTime && (leg.type === 'flight' || leg.type === 'transfer' || leg.type === 'ferry') ? `arrives ${formatTime(leg.endTime)}${leg.endDate && leg.endDate !== leg.startDate ? ` (${formatDay(leg.endDate)})` : ''}` : '';
+  const route = leg.type === 'flight' || leg.type === 'drive' || leg.type === 'transfer' || leg.type === 'ferry' || (car && leg.to && leg.to !== leg.from) ? [leg.from, leg.to].filter(Boolean).join(' → ') : leg.from;
+  const arrival = variant === 'start' && leg.endTime && (leg.type === 'flight' || leg.type === 'drive' || leg.type === 'transfer' || leg.type === 'ferry') ? `arrives ${formatTime(leg.endTime)}${leg.endDate && leg.endDate !== leg.startDate ? ` (${formatDay(leg.endDate)})` : ''}` : '';
   const sub = variant === 'start' ? [route, arrival, leg.type !== 'flight' && leg.provider && leg.provider !== title ? leg.provider : leg.type === 'flight' ? leg.provider : '', leg.dives ? `${leg.dives} dives` : '', leg.reference ? `Conf. ${leg.reference}` : ''].filter(Boolean).join(' · ') : '';
   return (
     <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.leg, variant !== 'start' && styles.legQuiet, pressed && styles.rowPressed]}>
@@ -273,13 +277,6 @@ function LayoverRow({ minutes, airport }) {
   );
 }
 
-// A best guess at what's being added to a day: travel at either end of the trip, diving in between.
-function suggestedLegType(plan, day, lastDay) {
-  if (day.index === 1 && !day.starts.length) return 'flight';
-  if (day.date === lastDay && day.index > 1) return 'flight';
-  return 'diving';
-}
-
 function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onImport, onDone }) {
   const timeline = planTimeline(plan);
   const lastDay = timeline.days.at(-1)?.date || plan.startDate;
@@ -289,7 +286,7 @@ function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onImport, onDone }) {
       <ScreenHeader eyebrow={isNew ? 'NEW TRIP · ITINERARY' : 'ITINERARY'} onBack={onDone} title={isNew ? 'Build your itinerary' : 'Edit itinerary'} />
       <ScrollView contentContainerStyle={styles.content}>
         <Text style={styles.builderLead}>{[plan.destination.name, formatRange(plan.startDate, plan.endDate)].filter(Boolean).join(' · ')}</Text>
-        <Text style={styles.builderHelp}>Add flights, transfers, stays and dive days to the day they happen. Tap anything already here to change or remove it.</Text>
+        <Text style={styles.builderHelp}>Add drives, flights, transfers, stays and dive days to the day they happen. Tap anything already here to change or remove it.</Text>
         <View style={styles.quickRow}>
           <Pressable accessibilityRole="button" onPress={() => onAdd({ type: 'flight', startDate: plan.startDate })} style={({ pressed }) => [styles.quickButton, pressed && styles.pressed]}>
             <Glyph name="flight" />
@@ -303,8 +300,8 @@ function ItineraryBuilder({ plan, isNew, onEditLeg, onAdd, onImport, onDone }) {
           ) : null}
         </View>
         <View style={styles.card}>
-          <ItineraryDays onAddToDay={(day) => onAdd({ type: suggestedLegType(plan, day, lastDay), startDate: day.date })} onEditLeg={onEditLeg} plan={plan} />
-          <Pressable accessibilityRole="button" onPress={() => onAdd({ type: legs ? 'diving' : 'flight', startDate: lastDay })} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}>
+          <ItineraryDays onAddToDay={(day) => onAdd({ type: suggestedSegmentType(day, lastDay), startDate: day.date })} onEditLeg={onEditLeg} plan={plan} />
+          <Pressable accessibilityRole="button" onPress={() => onAdd({ type: legs ? 'diving' : 'other', startDate: lastDay })} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}>
             <Text style={styles.sectionAction}>{plan.endDate ? '+ Add something else' : '+ Add to a later day'}</Text>
           </Pressable>
         </View>
@@ -340,6 +337,89 @@ function ReadinessCard({ plan, summary, setupProgressValue, onPress }) {
       </View>
       <Text style={styles.chevron}>›</Text>
     </Pressable>
+  );
+}
+
+function DayOfTripCard({ day, onEditLeg, onEditItinerary, onDirections }) {
+  const focus = day.current || day.next;
+  const focusName = focus ? (focus.leg.title || focus.leg.provider || SEGMENT_TYPES[focus.leg.type].label) : '';
+  const focusTime = focus ? formatTime(focus.variant === 'end' ? focus.leg.endTime : focus.leg.startTime) : '';
+  const directionPlace = focus ? (day.current ? focus.leg.to || focus.leg.from : focus.leg.from || focus.leg.to) : '';
+  return (
+    <Section title="Today">
+      <View style={[styles.card, styles.todayCard]}>
+        <View style={styles.todayHead}>
+          <View style={styles.flex}>
+            <Text style={styles.todayEyebrow}>DAY {day.index} · {day.label.toUpperCase()}</Text>
+            <Text style={styles.todayTitle}>{formatDay(day.date, { weekday: true, year: true })}</Text>
+          </View>
+          <View style={styles.todayLive}><View style={styles.todayLiveDot} /><Text style={styles.todayLiveText}>TODAY</Text></View>
+        </View>
+        {focus ? (
+          <View style={styles.todayFocus}>
+            <Text style={styles.todayFocusLabel}>{day.current ? 'HAPPENING NOW' : 'NEXT UP'}</Text>
+            <Text style={styles.todayFocusTitle}>{[focusTime, focusName].filter(Boolean).join(' · ')}</Text>
+            <Text style={styles.todayFocusMeta}>{[
+              [focus.leg.from, focus.leg.to].filter(Boolean).join(' → '),
+              focus.leg.provider,
+              focus.leg.reference ? `Conf. ${focus.leg.reference}` : '',
+            ].filter(Boolean).join(' · ')}</Text>
+          </View>
+        ) : <Text style={styles.todayEmpty}>{day.entries.length ? 'Today’s timed items are complete.' : 'Nothing is scheduled today yet.'}</Text>}
+        <View style={styles.todaySchedule}>
+          {day.entries.length ? day.entries.map(({ leg, variant }) => <LegRow key={`${leg.id}-${variant}`} leg={leg} onPress={() => onEditLeg(leg)} variant={variant} />)
+            : <Text style={styles.dayEmpty}>Add a drive, flight, check-in, dive or anything else you need today.</Text>}
+        </View>
+        <View style={styles.todayActions}>
+          {directionPlace ? <Pressable accessibilityRole="button" onPress={() => onDirections(directionPlace)} style={({ pressed }) => [styles.todayButton, pressed && styles.pressed]}><Text style={styles.todayButtonText}>Directions</Text></Pressable> : null}
+          <Pressable accessibilityRole="button" onPress={onEditItinerary} style={({ pressed }) => [styles.todayButton, styles.todayButtonPrimary, pressed && styles.pressed]}><Text style={[styles.todayButtonText, styles.todayButtonPrimaryText]}>{day.entries.length ? 'Update today' : '+ Add today'}</Text></Pressable>
+        </View>
+      </View>
+    </Section>
+  );
+}
+
+function DiveBriefCard({ brief, plan, units, onConfigure }) {
+  const baseline = brief.baseline;
+  const profile = plan.diveProfile || {};
+  const hasProfile = profile.targetDepthMeters != null || profile.bottomTimeMinutes != null;
+  const assumptionCount = diveBriefAssumptionCount(profile);
+  return (
+    <Section title="Personal dive brief">
+      <View style={[styles.card, styles.intelligenceCard]}>
+        <View style={styles.intelligenceHead}>
+          <View style={styles.intelligenceMark}><Text style={styles.intelligenceMarkText}>DMZ</Text></View>
+          <View style={styles.flex}>
+            <Text style={styles.intelligenceTitle}>{baseline.diveCount || baseline.manualFields.length ? `${baseline.confidence.label} · ${baseline.scopeLabel}` : 'Builds from your logbook'}</Text>
+            <Text style={styles.intelligenceEvidence}>{brief.evidence}</Text>
+          </View>
+        </View>
+        <Pressable accessibilityRole="button" onPress={onConfigure} style={({ pressed }) => [styles.intelligenceSetup, pressed && styles.pressed]}>
+          <View style={styles.flex}>
+            <Text style={styles.intelligenceSetupTitle}>{assumptionCount === 4 ? 'Planning assumptions complete' : 'Set up this dive brief'}</Text>
+            <Text style={styles.intelligenceSetupMeta}>{assumptionCount === 4 ? 'Depth, time, starting pressure and reserve are set.' : `${assumptionCount} of 4 set · add depth, time, starting pressure and reserve`}</Text>
+          </View>
+          <Text style={styles.intelligenceSetupAction}>{assumptionCount === 4 ? 'Edit ›' : 'Set up ›'}</Text>
+        </Pressable>
+        {baseline.avgDepth.mean != null ? <Row label="Your average depth" value={formatDepth(baseline.avgDepth.mean, units.depthUnit)} /> : null}
+        {baseline.duration.mean != null ? <Row label="Typical dive time" value={formatDiveDuration(baseline.duration.mean)} /> : null}
+        {baseline.temperature.mean != null ? <Row label="Typical minimum temperature" value={formatTemperature(baseline.temperature.mean, units.temperatureUnit)} /> : null}
+        {baseline.sac.mean != null ? <Row label="Your average SAC" value={`${formatPressure(baseline.sac.mean, units.pressureUnit)}/min · ${baseline.sac.count} dives`} /> : null}
+        {brief.setup ? <Row label="Selected setup" value={brief.setup.name} /> : null}
+        {brief.plannedDives ? <Row label="Planned dives" value={String(brief.plannedDives)} /> : null}
+        {hasProfile ? <Row label="Planning assumption" value={[profile.targetDepthMeters != null ? formatDepth(profile.targetDepthMeters, units.depthUnit) : '', profile.bottomTimeMinutes ? `${profile.bottomTimeMinutes} min` : ''].filter(Boolean).join(' · ')} /> : null}
+        {brief.gas ? (
+          <View style={[styles.intelligenceGas, { borderColor: brief.gas.marginBar >= 0 ? `${colors.good}55` : `${colors.warning}66` }]}>
+            <Text style={styles.intelligenceGasLabel}>PERSONAL GAS ESTIMATE</Text>
+            <Text style={[styles.intelligenceGasValue, { color: brief.gas.marginBar >= 0 ? colors.good : colors.warning }]}>{formatPressure(brief.gas.endBar, units.pressureUnit)} estimated at ascent</Text>
+            <Text style={styles.intelligenceGasMeta}>{`${formatPressure(brief.gas.usedBar, units.pressureUnit)} estimated use · ${formatPressure(brief.gas.reserveBar, units.pressureUnit)} reserve · ${brief.gas.method} · ${brief.gas.evidenceLabel}`}</Text>
+          </View>
+        ) : (
+          <Text style={styles.intelligenceHint}>{baseline.sac.count || baseline.rmv.count ? 'Add target depth, time, start pressure and reserve under Edit to calculate a personal gas estimate.' : 'A gas estimate appears after transmitter dives establish a personal baseline and the plan has depth, time and pressure assumptions.'}</Text>
+        )}
+        <Text style={styles.intelligenceDisclaimer}>Planning reference only. Confirm conditions, reserves, decompression limits, redundancy and the complete plan with your training and dive computer.</Text>
+      </View>
+    </Section>
   );
 }
 
@@ -397,7 +477,7 @@ function ExtraGearPicker({ visible, setup, items, value, onSave, onClose }) {
 }
 
 // Policies on file to attach to this plan (travel, liability…); dive cover is found automatically.
-function PolicyPicker({ visible, policies, onPick, onAddNew, onClose }) {
+function PolicyPicker({ visible, policies, coverageDate, onPick, onAddNew, onClose }) {
   const insets = useSafeAreaInsets();
   return (
     <Modal animationType="fade" onRequestClose={onClose} transparent visible={visible}>
@@ -405,11 +485,14 @@ function PolicyPicker({ visible, policies, onPick, onAddNew, onClose }) {
         <Pressable onPress={(e) => e.stopPropagation()} style={[styles.pickerSheet, { paddingBottom: insets.bottom + spacing.md }]}>
           <Text style={styles.pickerTitle}>Attach a policy</Text>
           <ScrollView style={styles.pickerList}>
-            {policies.map((policy) => (
-              <Pressable key={policy.id} accessibilityRole="button" onPress={() => onPick(policy.id)} style={({ pressed }) => [styles.setupOption, pressed && styles.pressed]}>
-                <View style={styles.flex}><Text style={styles.kindTitle}>{policyTitle(policy)}</Text><Text style={styles.kindBody}>{[policy.policyNumber ? `Policy ${policy.policyNumber}` : '', policy.endDate ? `to ${formatDay(policy.endDate, { year: true })}` : ''].filter(Boolean).join(' · ') || insuranceTypeLabel(policy.type)}</Text></View>
-              </Pressable>
-            ))}
+            {policies.map((policy) => {
+              const term = policyTermForDate(policy, coverageDate);
+              return (
+                <Pressable key={policy.id} accessibilityRole="button" onPress={() => onPick(policy.id)} style={({ pressed }) => [styles.setupOption, pressed && styles.pressed]}>
+                  <View style={styles.flex}><Text style={styles.kindTitle}>{policyTitle(policy)}</Text><Text style={styles.kindBody}>{[policy.policyNumber ? `Policy ${policy.policyNumber}` : '', term.endDate ? `through ${formatDay(term.endDate, { year: true })}` : '', policy.autoRenews ? renewalPeriodLabel(policy.renewalMonths) : ''].filter(Boolean).join(' · ') || insuranceTypeLabel(policy.type)}</Text></View>
+                </Pressable>
+              );
+            })}
             {!policies.length ? <Text style={styles.empty}>Every policy you have on file is already on this plan.</Text> : null}
           </ScrollView>
           <Pressable accessibilityRole="button" onPress={onAddNew} style={styles.setupNone}><Text style={styles.sectionAction}>+ Add a new policy</Text></Pressable>
@@ -419,7 +502,7 @@ function PolicyPicker({ visible, policies, onPick, onAddNew, onClose }) {
   );
 }
 
-function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, onPage, onEdit, onBack, onOpenTool }) {
+function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, onPage, onEdit, onBack, onOpenTool, units, manualBaseline }) {
   const [segment, setSegment] = useState(null);
   // The flight booking being edited: { flights, previousIds, source?, issues? }.
   const [booking, setBooking] = useState(null);
@@ -428,15 +511,24 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
   const [imported, setImported] = useState(null);
   const [pickSetup, setPickSetup] = useState(false);
   const [pickExtras, setPickExtras] = useState(false);
+  const [briefEditor, setBriefEditor] = useState(false);
   // Insurance: the policy being added or edited ({ policy, attach }) and the attach picker.
   const insuranceStore = useInsurance();
   const [policyEditor, setPolicyEditor] = useState(null);
   const [pickPolicy, setPickPolicy] = useState(false);
   const [task, setTask] = useState('');
+  const [sharing, setSharing] = useState(false);
   const alerts = planner.alertsFor(plan);
   const summary = readinessSummary(alerts);
   const phase = planPhase(plan);
   const trip = plan.kind === 'trip';
+  const [dayClock, setDayClock] = useState(() => new Date());
+  useEffect(() => {
+    if (!trip) return undefined;
+    const timer = setInterval(() => setDayClock(new Date()), 60000);
+    return () => clearInterval(timer);
+  }, [trip]);
+  const activeDay = currentTripDay(plan, dayClock);
   const setup = planner.gear.setups.find((entry) => entry.id === plan.setupId) || null;
   const coverage = policiesForPlan(plan, planner.insurance);
   const attachable = planner.insurance.filter((policy) => !coverage.auto.includes(policy) && !coverage.attached.includes(policy));
@@ -447,6 +539,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
   // Dives the logbook has linked to this plan's site on its dates (computer + location → verified).
   const logged = planDives(plan, planner.dives);
   const verifiedCount = logged.filter((row) => row.siteVerification === 'verified').length;
+  const diveBrief = useMemo(() => buildDiveBrief(plan, planner.dives, planner.gear, manualBaseline), [plan, planner.dives, planner.gear, manualBaseline]);
   const save = (patch) => planner.savePlan({ ...plan, ...patch }).catch((error) => Alert.alert('Not saved', error?.message || 'Try again.'));
   const act = (action) => {
     if (action === 'gear') onOpenTool('gear-checklist');
@@ -490,6 +583,20 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
     { text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: () => planner.deletePlan(plan.id).then(onBack) },
   ]);
   const call = (phone) => Linking.openURL(`tel:${phone.replace(/[^+\d]/g, '')}`).catch(() => {});
+  const directions = (place) => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`).catch(() => {});
+  const sharePdf = async (format) => {
+    if (sharing) return;
+    setSharing(true);
+    try { await sharePlanPdf(plan, { format, insurance: [...coverage.auto, ...coverage.attached] }); }
+    catch (error) { Alert.alert('Couldn’t share this plan', error?.message || 'Please try again.'); }
+    finally { setSharing(false); }
+  };
+  // A PDF cannot reflow for the screen it lands on, so the sender picks the layout.
+  const share = () => Alert.alert('Share itinerary', 'Phone pages are easy to read on a phone. The document prints and emails on standard paper.', [
+    { text: 'For phone', onPress: () => sharePdf('phone') },
+    { text: 'For email or print', onPress: () => sharePdf('document') },
+    { text: 'Cancel', style: 'cancel' },
+  ]);
 
   const sheets = (
     <>
@@ -513,7 +620,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
       />
       <ImportSheet onCancel={() => setImporting(false)} onResult={reviewImport} signedIn={signedIn} visible={importing} />
       <ImportReviewSheet issues={imported?.issues || []} onCancel={() => setImported(null)} onSave={addImported} plan={plan} review={imported?.review || null} source={imported?.source || ''} visible={Boolean(imported)} />
-      <PolicyPicker onAddNew={() => { setPickPolicy(false); setTimeout(() => setPolicyEditor({ policy: null, attach: true }), 450); }} onClose={() => setPickPolicy(false)} onPick={(policyId) => { save({ insuranceIds: [...plan.insuranceIds, policyId] }); setPickPolicy(false); }} policies={attachable} visible={pickPolicy} />
+      <PolicyPicker coverageDate={plan.endDate || plan.startDate || todayString()} onAddNew={() => { setPickPolicy(false); setTimeout(() => setPolicyEditor({ policy: null, attach: true }), 450); }} onClose={() => setPickPolicy(false)} onPick={(policyId) => { save({ insuranceIds: [...plan.insuranceIds, policyId] }); setPickPolicy(false); }} policies={attachable} visible={pickPolicy} />
       <PolicyEditor
         onCancel={() => setPolicyEditor(null)}
         onDelete={policyEditor?.policy?.id ? async () => { await insuranceStore.deletePolicy(policyEditor.policy.id); setPolicyEditor(null); planner.refresh(); } : null}
@@ -529,6 +636,13 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
       />
       <ExtraGearPicker items={planner.gear.items} onClose={() => setPickExtras(false)} onSave={(extraItemIds) => { save({ extraItemIds }); setPickExtras(false); }} setup={setup} value={plan.extraItemIds} visible={pickExtras} />
       <SetupPicker items={planner.gear.items} onClose={() => setPickSetup(false)} onPick={(setupId) => { save(setupId === plan.setupId ? { setupId } : { setupId, packedIds: [] }); setPickSetup(false); }} setups={planner.gear.setups} value={plan.setupId} visible={pickSetup} />
+      <DiveBriefEditor
+        onCancel={() => setBriefEditor(false)}
+        onSave={(diveProfile) => { save({ diveProfile }); setBriefEditor(false); }}
+        plan={plan}
+        units={units}
+        visible={briefEditor}
+      />
     </>
   );
 
@@ -556,6 +670,8 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
               {alerts.map((alert, index) => <AlertRow key={alert.key} alert={alert} last={index === alerts.length - 1} onAction={act} />)}
             </View>
           </Section>
+
+          <DiveBriefCard brief={diveBrief} onConfigure={() => setBriefEditor(true)} plan={plan} units={units} />
 
           <Section action="Edit" onAction={onEdit} title="Requirements">
             <View style={styles.card}>
@@ -598,7 +714,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
           <Section action="+ Attach" onAction={() => setPickPolicy(true)} title="Insurance">
             {[...coverage.auto, ...coverage.attached].map((policy) => (
               <View key={policy.id}>
-                <PolicyCard compact onPress={() => setPolicyEditor({ policy, attach: false })} policy={policy} today={todayString()} />
+                <PolicyCard compact coverageDate={plan.endDate || plan.startDate || todayString()} onPress={() => setPolicyEditor({ policy, attach: false })} policy={policy} today={todayString()} />
                 {coverage.attached.includes(policy) ? (
                   <Pressable accessibilityRole="button" hitSlop={8} onPress={() => save({ insuranceIds: plan.insuranceIds.filter((id) => id !== policy.id) })} style={styles.detach}><Text style={styles.detachText}>Remove from this {trip ? 'trip' : 'dive'}</Text></Pressable>
                 ) : null}
@@ -662,7 +778,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
 
   return (
     <View style={styles.screen}>
-      <ScreenHeader action={<Pressable accessibilityRole="button" hitSlop={10} onPress={onEdit} style={styles.headerButton}><Text style={styles.headerButtonText}>Edit</Text></Pressable>} eyebrow={trip ? 'DIVE TRIP' : 'DIVE DAY'} onBack={onBack} title={planTitle(plan)} />
+      <ScreenHeader action={<View style={styles.headerActions}><Pressable accessibilityRole="button" disabled={sharing} hitSlop={8} onPress={share} style={[styles.headerButton, sharing && styles.disabled]}><Text style={styles.headerShareText}>{sharing ? 'Preparing…' : 'Share'}</Text></Pressable><Pressable accessibilityRole="button" hitSlop={8} onPress={onEdit} style={styles.headerButton}><Text style={styles.headerButtonText}>Edit</Text></Pressable></View>} eyebrow={trip ? 'DIVE TRIP' : 'DIVE DAY'} onBack={onBack} title={planTitle(plan)} />
       <ScrollView contentContainerStyle={styles.content}>
         <LinearGradient colors={trip ? ['#2A2410', '#0B1C2E'] : ['#0E3550', '#0B1C2E']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.hero}>
           <View style={styles.heroTop}>
@@ -674,7 +790,7 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
           {plan.destination.name && plan.title ? <Text style={styles.heroSub}>{plan.destination.name}</Text> : null}
         </LinearGradient>
 
-        {logged.length ? (
+        {logged.length && !trip ? (
           <Section title="Logged">
             <Pressable accessibilityRole="button" onPress={() => onOpenTool('dive-log')} style={({ pressed }) => [styles.card, styles.dived, pressed && styles.pressed]}>
               <View style={styles.divedBadge}><Glyph color={colors.background} name="check" size={18} /></View>
@@ -687,14 +803,18 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
           </Section>
         ) : null}
 
+        {trip && activeDay ? <DayOfTripCard day={activeDay} onDirections={directions} onEditItinerary={() => onPage('itinerary')} onEditLeg={editLeg} /> : null}
+
         <View style={styles.section}>
           <ReadinessCard onPress={() => onPage('readiness')} plan={plan} setupProgressValue={progress} summary={summary} />
         </View>
 
+        {!trip ? <DiveBriefCard brief={diveBrief} onConfigure={() => setBriefEditor(true)} plan={plan} units={units} /> : null}
+
         {trip ? (
           <Section title="Itinerary">
             <View style={styles.card}>
-              {plan.segments.length ? <ItineraryDays onEditLeg={editLeg} plan={plan} /> : <Text style={styles.empty}>Add your flights, transfers, stays and dive days to build the trip day by day.</Text>}
+              {plan.segments.length ? <ItineraryDays onEditLeg={editLeg} plan={plan} /> : <Text style={styles.empty}>Add drives, flights, transfers, stays and dive days to build the trip day by day.</Text>}
               <Pressable accessibilityRole="button" onPress={() => onPage('itinerary')} style={({ pressed }) => [styles.addRow, pressed && styles.rowPressed]}>
                 <Text style={styles.sectionAction}>{plan.segments.length ? 'Edit itinerary ›' : '+ Build your itinerary'}</Text>
               </Pressable>
@@ -724,6 +844,12 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
 
         {plan.notes ? <Section title="Notes"><View style={[styles.card, styles.cardPad]}><Text style={styles.notes}>{plan.notes}</Text></View></Section> : null}
 
+        {trip && logged.length ? (
+          <Pressable accessibilityRole="button" onPress={() => onOpenTool('dive-log')} style={({ pressed }) => [styles.tripHistory, pressed && styles.pressed]}>
+            <View style={styles.flex}><Text style={styles.tripHistoryTitle}>Logged dives from this trip</Text><Text style={styles.tripHistoryMeta}>{logged.length} in Logbook{verifiedCount ? ` · ${verifiedCount} verified` : ''}</Text></View><Text style={styles.chevron}>›</Text>
+          </Pressable>
+        ) : null}
+
         <View style={styles.footerActions}>
           {plan.status !== 'cancelled' ? <Pressable accessibilityRole="button" onPress={() => save({ status: 'cancelled' })} style={({ pressed }) => [styles.footerButton, pressed && styles.pressed]}><Text style={styles.footerText}>Mark cancelled</Text></Pressable>
             : <Pressable accessibilityRole="button" onPress={() => save({ status: 'planned' })} style={({ pressed }) => [styles.footerButton, pressed && styles.pressed]}><Text style={styles.footerText}>Restore plan</Text></Pressable>}
@@ -739,9 +865,15 @@ function PlanDetail({ plan, planner, certifications, signedIn, page, isNewTrip, 
 // --- screen -----------------------------------------------------------------
 const FILTERS = [['all', 'All'], ['day', 'Dive days'], ['trip', 'Trips']];
 
-export default function PlannerScreen({ account = null, signedIn = false, focusPlanId = null, onBack, onOpenTool }) {
+export default function PlannerScreen({ account = null, signedIn = false, focusPlanId = null, onBack, onOpenTool, appSettings = {} }) {
   const certifications = signedIn && Array.isArray(account?.certifications) ? account.certifications : null;
   const planner = usePlanner({ certifications });
+  const units = useMemo(() => ({
+    depthUnit: appSettings.depthUnit === 'm' ? 'm' : 'ft',
+    pressureUnit: appSettings.pressureUnit === 'bar' ? 'bar' : 'psi',
+    temperatureUnit: appSettings.temperatureUnit === 'C' ? 'C' : 'F',
+    gasVolumeUnit: appSettings.gasVolumeUnit === 'L' ? 'L' : 'ft³',
+  }), [appSettings.depthUnit, appSettings.gasVolumeUnit, appSettings.pressureUnit, appSettings.temperatureUnit]);
   const [openId, setOpenId] = useState(focusPlanId);
   const [filter, setFilter] = useState('all');
   const [showPast, setShowPast] = useState(false);
@@ -786,7 +918,7 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
   if (open) {
     return (
       <>
-        <PlanDetail certifications={certifications} isNewTrip={newTripId === open.id} onBack={() => openPlan(null)} onEdit={() => setEditor({ plan: open })} onOpenTool={onOpenTool} onPage={showPage} page={page} plan={open} planner={planner} signedIn={signedIn} />
+        <PlanDetail certifications={certifications} isNewTrip={newTripId === open.id} manualBaseline={appSettings.diveBaseline} onBack={() => openPlan(null)} onEdit={() => setEditor({ plan: open })} onOpenTool={onOpenTool} onPage={showPage} page={page} plan={open} planner={planner} signedIn={signedIn} units={units} />
         {editorSheet}
       </>
     );
@@ -849,7 +981,9 @@ const styles = StyleSheet.create({
   addButton: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, height: 40, justifyContent: 'center', width: 40 },
   addButtonText: { color: colors.cyan, fontSize: 24, fontWeight: '500', lineHeight: 26 },
   headerButton: { alignItems: 'center', height: 40, justifyContent: 'center', minWidth: 40 },
+  headerActions: { alignItems: 'center', flexDirection: 'row', gap: 8 },
   headerButtonText: { color: colors.cyan, fontSize: 15, fontWeight: '800' },
+  headerShareText: { color: colors.gold, fontSize: 15, fontWeight: '800' },
   filters: { backgroundColor: colors.backgroundRaised, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', marginBottom: spacing.md, padding: 4 },
   filter: { alignItems: 'center', borderRadius: 12, flex: 1, minHeight: 38, justifyContent: 'center' },
   filterOn: { backgroundColor: colors.surfaceSoft },
@@ -911,6 +1045,24 @@ const styles = StyleSheet.create({
   quickBody: { color: colors.faint, fontSize: 11, marginTop: 2 },
   dayAdd: { justifyContent: 'center', marginHorizontal: 14, marginTop: 4, minHeight: 40, paddingLeft: 72 },
   dayAddText: { color: colors.cyan, fontSize: 13, fontWeight: '700' },
+  todayCard: { borderColor: `${colors.gold}66` },
+  todayHead: { alignItems: 'center', backgroundColor: 'rgba(214,184,94,0.08)', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', gap: 12, padding: 14 },
+  todayEyebrow: { color: colors.gold, fontSize: 10, fontWeight: '900', letterSpacing: 1.3 },
+  todayTitle: { color: colors.text, fontSize: 18, fontWeight: '900', marginTop: 4 },
+  todayLive: { alignItems: 'center', borderColor: `${colors.good}66`, borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', gap: 6, paddingHorizontal: 9, paddingVertical: 5 },
+  todayLiveDot: { backgroundColor: colors.good, borderRadius: 4, height: 7, width: 7 },
+  todayLiveText: { color: colors.good, fontSize: 9, fontWeight: '900', letterSpacing: 1 },
+  todayFocus: { backgroundColor: colors.backgroundRaised, borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, padding: 14 },
+  todayFocusLabel: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.3 },
+  todayFocusTitle: { color: colors.text, fontSize: 17, fontWeight: '900', lineHeight: 23, marginTop: 5 },
+  todayFocusMeta: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4 },
+  todayEmpty: { color: colors.muted, fontSize: 13, lineHeight: 19, padding: 14 },
+  todaySchedule: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, paddingVertical: 3 },
+  todayActions: { flexDirection: 'row', gap: 10, padding: 12 },
+  todayButton: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: radii.sm, borderWidth: 1, flex: 1, justifyContent: 'center', minHeight: 44, paddingHorizontal: 10 },
+  todayButtonPrimary: { backgroundColor: colors.cyan, borderColor: colors.cyan },
+  todayButtonText: { color: colors.cyan, fontSize: 13, fontWeight: '900' },
+  todayButtonPrimaryText: { color: colors.background },
   builderLead: { color: colors.text, fontSize: 16, fontWeight: '800', marginBottom: 4, paddingHorizontal: 2 },
   builderHelp: { color: colors.muted, fontSize: 13, lineHeight: 19, marginBottom: spacing.md, paddingHorizontal: 2 },
   readinessCard: { alignItems: 'center', flexDirection: 'row', gap: 13, padding: 14 },
@@ -918,6 +1070,25 @@ const styles = StyleSheet.create({
   readinessEyebrow: { color: colors.muted, fontSize: 10, fontWeight: '900', letterSpacing: 1.4 },
   readinessLabel: { fontSize: 17, fontWeight: '900', marginTop: 3 },
   readinessMeta: { color: colors.faint, fontSize: 12, fontWeight: '700', marginTop: 5 },
+  intelligenceCard: { overflow: 'hidden' },
+  intelligenceHead: { alignItems: 'center', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', gap: 12, padding: 14 },
+  intelligenceMark: { alignItems: 'center', backgroundColor: 'rgba(112,221,246,0.12)', borderColor: `${colors.cyan}55`, borderRadius: 12, borderWidth: 1, height: 42, justifyContent: 'center', width: 42 },
+  intelligenceMarkText: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 0.8 },
+  intelligenceTitle: { color: colors.text, fontSize: 15, fontWeight: '800' },
+  intelligenceEvidence: { color: colors.muted, fontSize: 12, marginTop: 4 },
+  intelligenceSetup: { alignItems: 'center', backgroundColor: 'rgba(112,221,246,0.08)', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', gap: 12, minHeight: 62, paddingHorizontal: 14, paddingVertical: 11 },
+  intelligenceSetupTitle: { color: colors.text, fontSize: 14, fontWeight: '800' },
+  intelligenceSetupMeta: { color: colors.muted, fontSize: 11, lineHeight: 16, marginTop: 3 },
+  intelligenceSetupAction: { color: colors.cyan, fontSize: 13, fontWeight: '900' },
+  intelligenceGas: { backgroundColor: colors.backgroundRaised, borderRadius: radii.sm, borderWidth: 1, margin: 14, padding: 12 },
+  intelligenceGasLabel: { color: colors.muted, fontSize: 9, fontWeight: '900', letterSpacing: 1.2 },
+  intelligenceGasValue: { fontSize: 18, fontWeight: '900', marginTop: 5 },
+  intelligenceGasMeta: { color: colors.muted, fontSize: 11, lineHeight: 16, marginTop: 5 },
+  intelligenceHint: { color: colors.muted, fontSize: 12, lineHeight: 18, paddingHorizontal: 14, paddingTop: 12 },
+  intelligenceDisclaimer: { color: colors.faint, fontSize: 10, lineHeight: 15, paddingBottom: 14, paddingHorizontal: 14, paddingTop: 10 },
+  tripHistory: { alignItems: 'center', borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, flexDirection: 'row', marginBottom: spacing.lg, paddingHorizontal: 4, paddingVertical: 13 },
+  tripHistoryTitle: { color: colors.muted, fontSize: 13, fontWeight: '800' },
+  tripHistoryMeta: { color: colors.faint, fontSize: 11, marginTop: 3 },
   leg: { alignItems: 'flex-start', flexDirection: 'row', gap: 10, paddingHorizontal: 14, paddingVertical: 9 },
   legQuiet: { paddingVertical: 6 },
   legTime: { paddingTop: 7, width: 62 },

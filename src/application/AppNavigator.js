@@ -7,6 +7,8 @@ import useAccountSession from '../features/account/useAccountSession';
 import { getFeature } from '../features/catalog/featureCatalog';
 import useAppSettings from '../features/settings/useAppSettings';
 import useAtlasUpdates, { useAtlasSnapshot } from '../features/oceanAtlas/useAtlasUpdates';
+import FirstTimeSetup from '../features/onboarding/FirstTimeSetup';
+import { CURRENT_SETUP_VERSION } from '../lib/appSettings';
 import { createAccount, verifySignup } from '../lib/accountApi';
 import { ensureLocationTracking } from '../lib/locationLog/locationTrackingService';
 import AccountScreen from '../screens/AccountScreen';
@@ -45,6 +47,7 @@ export default function AppNavigator() {
   useAtlasSnapshot();
   const [navigation, dispatch] = useReducer(reduceNavigation, INITIAL_NAVIGATION);
   const [transitionKind, setTransitionKind] = useState('none');
+  const [showFirstTimeSetup, setShowFirstTimeSetup] = useState(false);
   const { activeTab, detailRoute, moreRoute, settingsSection, logbookIntent, atlasFocus, plannerFocus } = navigation;
   const appSettings = useAppSettings();
   const accountSession = useAccountSession({
@@ -60,6 +63,13 @@ export default function AppNavigator() {
     if (!appSettings.loaded || !appSettings.settings.locationLoggingEnabled) return;
     ensureLocationTracking().catch(() => {});
   }, [appSettings.loaded, appSettings.settings.locationLoggingEnabled]);
+
+  useEffect(() => {
+    if (!appSettings.loaded) return;
+    // This is an install-time gate, not a migration gate. Once the diver either
+    // completes or explicitly skips setup, app updates must never open it again.
+    if (appSettings.settings.firstTimeSetup?.status === 'pending') setShowFirstTimeSetup(true);
+  }, [appSettings.loaded, appSettings.settings.firstTimeSetup?.status]);
 
   const updateLayout = (key, ids) => appSettings.setSettings(current => ({ ...current, layout: { ...current.layout, [key]: ids } }));
 
@@ -93,12 +103,33 @@ export default function AppNavigator() {
     return () => subscription.remove();
   }, [activeTab, detailRoute, moreRoute, settingsSection]);
 
+  if (appSettings.loaded && showFirstTimeSetup) {
+    const finishSetup = (patch, status) => {
+      appSettings.setSettings((current) => ({
+        ...current,
+        ...patch,
+        firstTimeSetup: { version: CURRENT_SETUP_VERSION, status, completedAt: new Date().toISOString() },
+      }));
+      setShowFirstTimeSetup(false);
+    };
+    return (
+      <FirstTimeSetup
+        accountEmail={accountSession.account?.profile?.email || accountSession.profile.email}
+        authStatus={accountSession.authStatus}
+        onComplete={(patch) => finishSetup(patch, 'complete')}
+        onSignIn={accountSession.signIn}
+        onSkip={() => finishSetup({}, 'skipped')}
+        settings={appSettings.settings}
+      />
+    );
+  }
+
   const feature = getFeature(detailRoute);
   if (feature?.routeType === 'ocean-atlas') {
     return renderScreen(<OceanAtlasScreen account={accountSession.account} appSettings={appSettings.settings} focus={atlasFocus} signedIn={accountSession.authStatus === 'signedIn'} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
   }
   if (feature?.routeType === 'planner') {
-    return renderScreen(<PlannerScreen account={accountSession.account} focusPlanId={plannerFocus?.planId || null} key={plannerFocus?.at || 'planner'} onBack={closeDetail} onOpenTool={openDetail} signedIn={accountSession.authStatus === 'signedIn'} />);
+    return renderScreen(<PlannerScreen account={accountSession.account} appSettings={appSettings.settings} focusPlanId={plannerFocus?.planId || null} key={plannerFocus?.at || 'planner'} onBack={closeDetail} onOpenTool={openDetail} signedIn={accountSession.authStatus === 'signedIn'} />);
   }
   if (feature?.routeType === 'color-loss') {
     return renderScreen(<ColorLossScreen appSettings={appSettings.settings} onBack={closeDetail} />);
@@ -137,7 +168,7 @@ export default function AppNavigator() {
     return renderScreen(<DiveLensScreen onBack={closeDetail} />);
   }
   if (feature?.routeType === 'dive-log') {
-    return renderScreen(<DiveLogScreen appSettings={appSettings.settings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
+    return renderScreen(<DiveLogScreen appSettings={appSettings.settings} onChangeSettings={appSettings.setSettings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
   }
 
   if (detailRoute === ACCOUNT_ROUTES.login) {
@@ -190,7 +221,7 @@ export default function AppNavigator() {
         {activeTab === 'home' ? <HomeScreen onLayoutChange={updateLayout} appSettings={appSettings.settings} certifications={accountSession.authStatus === 'signedIn' && Array.isArray(accountSession.account?.certifications) ? accountSession.account.certifications : null} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
         {activeTab === 'learn' ? <LearnScreen appSettings={appSettings.settings} onLayoutChange={updateLayout} onOpenTool={openDetail} /> : null}
         {activeTab === 'tools' ? <ToolsScreen appSettings={appSettings.settings} onLayoutChange={updateLayout} onOpenTool={openDetail} /> : null}
-        {activeTab === 'logbook' ? <DiveLogScreen key={logbookIntent?.at || 'logbook'} appSettings={appSettings.settings} initialAction={logbookIntent?.action || null} initialFolder={logbookIntent?.folder || null} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
+        {activeTab === 'logbook' ? <DiveLogScreen key={logbookIntent?.at || 'logbook'} appSettings={appSettings.settings} onChangeSettings={appSettings.setSettings} initialAction={logbookIntent?.action || null} initialFolder={logbookIntent?.folder || null} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
         {activeTab === 'more' && !moreRoute ? <MoreScreen onOpen={selectTab} /> : null}
         {activeTab === 'more' && moreRoute === 'account' ? (
           <AccountScreen
@@ -212,6 +243,7 @@ export default function AppNavigator() {
             accountEmail={accountSession.account?.profile?.email || ''}
             authStatus={accountSession.authStatus}
             onChange={appSettings.setSettings}
+            onRunFirstTimeSetup={() => setShowFirstTimeSetup(true)}
             settings={appSettings.settings}
             syncStatus={accountSession.settingsSyncStatus}
           />

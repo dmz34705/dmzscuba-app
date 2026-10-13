@@ -8,13 +8,19 @@ map data in acknowledged chunks rather than embedding it in their initial HTML.
 
 Open from Home → Ocean Atlas or Tools → Ocean Atlas. Independent layers show
 dive locations, monthly average sea-surface temperature, curated marine life,
-and saved logbook coordinates. Search matches sites, regional guides, species,
-and mapped dive names. The month selector affects temperature and species;
+and saved logbook coordinates. Search is available both at the top of the map
+and in the main control dock; it matches sites, site types, water environments,
+regional guides, species, and mapped dive names. The month selector affects temperature and species;
 personal dives include all dates. Temperature defaults to the app's unit setting
 and can be changed in the legend. Map preferences are saved locally.
 
-The default view prioritizes the map. The layer button opens five toggles,
-species filtering and the temperature legend. Discover and Season open separate
+The map remains the default view, but it is no longer required for discovery.
+Index opens a directory organized by site type (including wreck, reef, wall,
+cave and drift), water and access, published depth, marine life, and destination.
+Category results are alphabetical and open the same full site guides and map
+locations as map pins. The marine-life index browses animals A–Z and connects
+them to their seasonal sighting areas. The layer button opens five toggles,
+species filtering and the temperature legend. Index and Season open separate
 panels; only one panel is visible at a time. Tapping a location opens a compact
 card, with an explicit expand/collapse control for its full guide.
 
@@ -244,11 +250,19 @@ keyed by them.
 
 ### Dive operators & stay-and-dive (`data/diveOperators.json`)
 
+`operatorRecommendations.js` contains the deliberately small editorial list of
+DMZ Scuba recommended operators and its explicit geographic rules. A matching
+operator leads the list in a gold card labelled **DMZ Scuba recommended
+operator**. Milwaukee/Wisconsin Lake Michigan matching is restricted to wrecks;
+the Cozumel boundary excludes the Playa del Carmen mainland; and the Similan
+boundary includes the offshore chain through Richelieu Rock. Recommendations
+identify an operator for the area, not confirmation that it runs the exact site.
+
 `node scripts/build-dive-operators.cjs` collects named dive shops, dive centres,
 dive clubs and lodging tagged for scuba diving from OpenStreetMap (© OpenStreetMap
 contributors, ODbL). "Get me here" lists the ones within 30 km of the site
-(else the three nearest within 80 km) **strictly by distance, closest first** —
-never ranked or sponsored — with type, website (or the OSM listing) and phone
+(else the three nearest within 80 km) **strictly by distance, closest first**
+after any gold recommendation, with type, website (or the OSM listing) and phone
 when mapped. Hand-sourced destination-profile entries (Cozumel, Florida Keys)
 follow, de-duplicated by name. With nothing nearby, only the external search
 links show. A named dive area now labels a site only within 40 km.
@@ -551,7 +565,11 @@ refreshed when the sheet closes. The map sends only location identity and the se
 month; native code resolves catalog facts. The Gear Locker inventory and the raw
 preferences never enter the WebView — only the resulting starting point and whether it
 was adjusted. Preferences live separately at `@dmz-scuba/gear-advice/v1` on this device
-and can also be edited from the locker. Proposals never write gear state, move
+and can be edited from either the locker or **Settings → Temperature & gear preferences**.
+When the selected month's water temperature falls inside a saved suit range or complete
+exposure combination, the Atlas card names that actual personal match instead of its
+generic millimeter band. Generic guidance remains the fallback when no actionable personal
+range matches. Proposals never write gear state, move
 floating gear, change accessory choices or mark a setup complete.
 
 `exposure.js` separates thermal demand from full-length contact protection.

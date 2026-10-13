@@ -30,7 +30,7 @@ import {
 } from './schema';
 import { createJsonBackup, createJsonExport, exportDivesToCsv, exportDivesToUddf, parseJsonBackup } from './exports';
 import { fuseComputerLogs } from './fuseLogs';
-import { combinedConsumption, cumulativeDescentMeters, tankPressuresFromSamples } from './logAnalytics';
+import { averageDepth, combinedConsumption, cumulativeDescentMeters, tankPressuresFromSamples } from './logAnalytics';
 import { sameComputer } from './matchDives';
 import { dedupePhotoAssets } from './photoIdentity';
 
@@ -81,7 +81,7 @@ function parseJson(raw, fallback) {
 // Bump whenever indexRowFromDive's shape or derived values change: useDiveLog
 // rebuilds the whole index when a stored row carries an older stamp. Cheaper
 // to reason about than remembering which field arrived in which version.
-export const INDEX_ROW_VERSION = 7;
+export const INDEX_ROW_VERSION = 10;
 
 /** The richest mix on the dive, used to classify air / nitrox / trimix. */
 function maxMixValue(mixes, key) {
@@ -115,6 +115,14 @@ function buildSearchText(dive) {
     .slice(0, SEARCH_TEXT_LIMIT);
 }
 
+function logHasPressureData(log) {
+  return (log?.gas?.tanks || []).some((tank) => tank?.startBar != null || tank?.endBar != null)
+    || (log?.profile?.samples || []).some((sample) => (
+      sample?.pressureBar != null
+      || (sample?.pressuresByTank && Object.values(sample.pressuresByTank).some((value) => value != null))
+    ));
+}
+
 /** Lightweight row for the list + stats, computed from a Dive and its logs. */
 export function indexRowFromDive(dive, logs = []) {
   const attachedLogs = Array.isArray(logs) ? logs.filter(Boolean) : [];
@@ -123,6 +131,12 @@ export function indexRowFromDive(dive, logs = []) {
     ? primary
     : attachedLogs.find((log) => log?.profile?.samples?.length) || null;
   const a = primary?.analytics || null;
+  const primarySamples = primary?.profile?.samples || [];
+  // Match the detail view: several computers omit their summary average even
+  // though the complete depth profile is present.
+  const avgDepthMeters = dive.water?.avgDepthMeters
+    ?? primary?.water?.avgDepthMeters
+    ?? (primarySamples.length ? averageDepth(primarySamples) : null);
   // A dive without a transmitter has no computed SAC, but a start and end
   // pressure typed into the form is enough to derive one — and the detail
   // screen shows exactly that. Deriving it here too keeps "SAC under 15" from
@@ -131,22 +145,39 @@ export function indexRowFromDive(dive, logs = []) {
   // hand-entered pressures is filterable. Derive whenever the log didn't
   // actually produce a SAC — a log existing is not the same as it having a
   // transmitter.
-  const mergedGas = mergeGas(primary?.gas, dive.gas);
+  // Detail shows transmitter data from any attached computer, even when the
+  // primary computer did not record pressure. Trip/logbook stats must use the
+  // same evidence or a two-computer dive appears to lose its transmitter.
+  const consumptionLog = (primary && logHasPressureData(primary))
+    ? primary
+    : attachedLogs.find(logHasPressureData) || primary;
+  const consumptionAnalytics = consumptionLog?.analytics || null;
+  const consumptionSamples = consumptionLog?.profile?.samples || [];
+  const consumptionAvgDepth = consumptionLog?.water?.avgDepthMeters
+    ?? (consumptionSamples.length ? averageDepth(consumptionSamples) : avgDepthMeters);
+  const mergedGas = mergeGas(consumptionLog?.gas, dive.gas);
   // A transmitter curve carries the pressures even when the computer left the
   // tank's begin/end fields empty — recover them so this dive is filterable by
   // SAC, the same way the detail screen displays it.
-  const tanksForGas = mergedGas.tanks.map((tank, index) => {
+  const primaryCurvePressure = tankPressuresFromSamples(consumptionSamples);
+  // Some downloads have a transmitter curve but no usable tank summary. The
+  // detail page already treats that curve as a real cylinder; do the same here
+  // so trip/logbook stats do not claim there is no transmitter data.
+  const tankRows = mergedGas.tanks.length
+    ? mergedGas.tanks
+    : (primaryCurvePressure.startBar != null && primaryCurvePressure.endBar != null ? [{}] : []);
+  const tanksForGas = tankRows.map((tank, index) => {
     if (tank.startBar != null && tank.endBar != null) return tank;
-    const fromCurve = tankPressuresFromSamples(primary?.profile?.samples, index);
+    const fromCurve = index === 0 ? primaryCurvePressure : tankPressuresFromSamples(consumptionSamples, index);
     return {
       ...tank,
       startBar: tank.startBar ?? fromCurve.startBar,
       endBar: tank.endBar ?? fromCurve.endBar,
     };
   });
-  const derived = a?.sacBarPerMin != null ? null : combinedConsumption(tanksForGas, {
-    durationSeconds: dive.durationSeconds,
-    avgDepthMeters: dive.water?.avgDepthMeters ?? primary?.water?.avgDepthMeters ?? null,
+  const derived = consumptionAnalytics?.sacBarPerMin != null ? null : combinedConsumption(tanksForGas, {
+    durationSeconds: consumptionLog?.durationSeconds ?? dive.durationSeconds,
+    avgDepthMeters: consumptionAvgDepth,
   });
   return {
     v: INDEX_ROW_VERSION,
@@ -159,13 +190,14 @@ export function indexRowFromDive(dive, logs = []) {
     siteId: dive.site?.siteId || '',
     siteVerification: dive.site?.verification?.status || '',
     maxDepthMeters: dive.water?.maxDepthMeters ?? 0,
-    avgDepthMeters: dive.water?.avgDepthMeters ?? null,
+    avgDepthMeters,
     durationSeconds: dive.durationSeconds ?? 0,
     source: dive.source || 'manual',
     rating: dive.rating ?? null,
     number: dive.number ?? null,
     gasLabel: dive.gas?.mixes?.[0]?.label || '',
     logCount: attachedLogs.length,
+    hasTransmitterData: attachedLogs.some(logHasPressureData),
     descentMeters: cumulativeDescentMeters(descentLog?.profile?.samples),
 
     // --- filterable summary (see lib/diveLog/filterDives.js) -------------
@@ -187,8 +219,8 @@ export function indexRowFromDive(dive, logs = []) {
     primaryDevice: primary ? { ...primary.device } : null,
     // primary-log analytics summary for the trends view (avoids loading every log)
     safetyScore: a && a.safetyScore != null ? a.safetyScore : null,
-    sacBarPerMin: a?.sacBarPerMin ?? derived?.sacBarPerMin ?? null,
-    rmvLitersPerMin: a?.rmvLitersPerMin ?? derived?.rmvLitersPerMin ?? null,
+    sacBarPerMin: consumptionAnalytics?.sacBarPerMin ?? derived?.sacBarPerMin ?? null,
+    rmvLitersPerMin: consumptionAnalytics?.rmvLitersPerMin ?? derived?.rmvLitersPerMin ?? null,
     ascentRateMaxMPerMin: a ? a.ascentRateMaxMPerMin : null,
   };
 }

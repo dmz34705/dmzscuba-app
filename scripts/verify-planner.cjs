@@ -3,6 +3,7 @@ const path = require('node:path');
 const { loadSourceModule } = require('./lib/load-source-module.cjs');
 const root = path.resolve(__dirname, '../src');
 const P = loadSourceModule(path.join(root, 'features/planner/model.js'), root);
+const SHARE = loadSourceModule(path.join(root, 'features/planner/sharePlanPdf.js'), root);
 
 const now = new Date(2026, 8, 25, 9, 0); // Sep 25, 2026, 9am local
 const keys = (alerts) => alerts.map((a) => a.key);
@@ -17,6 +18,7 @@ assert.equal(P.normalizePlan({ kind: 'day', startDate: '2026-10-10', endDate: '2
 assert.equal(P.normalizePlan({ startTime: '25:00' }, now).startTime, '');
 assert.deepEqual(P.normalizePlan({ requirements: { certs: ['nitrox', 'bogus', 'nitrox'] } }, now).requirements.certs, ['nitrox']);
 assert.equal(P.normalizeSegment({ type: 'rocket' }).type, 'other');
+assert.equal(P.normalizeSegment({ type: 'drive', from: 'Home', to: 'ORD' }).type, 'drive', 'A drive to the airport is a first-class itinerary item.');
 assert.equal(P.normalizeSegment({ type: 'diving', endDate: '2026-10-11' }).endDate, '', 'A dive day leg has no end date.');
 assert.equal(P.normalizePlannerState(null).plans.length, 0);
 
@@ -116,6 +118,125 @@ assert.equal(timeline.days.length, 8);
 assert.equal(timeline.days[0].starts.length, 3);
 assert.ok(timeline.days[2].continuing.some((leg) => leg.type === 'stay'), 'A multi-night stay continues through the days.');
 assert.ok(timeline.days[5].ends.some((leg) => leg.type === 'stay'), 'And shows checkout on its last day.');
+
+// Day-of mode surfaces the live schedule instead of only the pre-trip summary.
+const travelMorning = P.currentTripDay(trip, new Date(2026, 10, 7, 7, 0));
+assert.equal(travelMorning.label, 'Travel day');
+assert.equal(travelMorning.index, 1);
+assert.equal(travelMorning.current.leg.title, 'ORD → MIA', 'A timed leg underway is identified.');
+assert.equal(travelMorning.next.leg.title, 'MIA → CZM', 'The next departure is ready for the day-of card.');
+const diveMorning = P.currentTripDay(trip, new Date(2026, 10, 8, 7, 0));
+assert.equal(diveMorning.label, 'Dive day');
+assert.equal(diveMorning.next.leg.title, 'Palancar', 'An untimed dive still appears as next up.');
+assert.equal(P.currentTripDay(trip, new Date(2026, 10, 20, 7, 0)), null, 'Day-of mode appears only during the trip.');
+assert.equal(P.suggestedSegmentType({ index: 1, date: '2026-11-07', starts: [] }, '2026-11-14'), 'other', 'An empty first day opens the general itinerary editor, not flights.');
+assert.equal(P.suggestedSegmentType({ index: 8, date: '2026-11-14', starts: [] }, '2026-11-14'), 'flight');
+assert.equal(P.suggestedSegmentType({ index: 3, date: '2026-11-09', starts: [] }, '2026-11-14'), 'diving');
+
+// Shared PDFs are complete travel documents but omit private readiness data.
+const sharedPlan = P.normalizePlan({ ...trip, setupId: 'PRIVATE-SETUP-491', title: 'Cozumel & Friends <2026>', notes: 'Meet by the dock & bring cash.',
+  operator: { name: 'Blue Water <Dive>', phone: '+1 555 0100', email: 'crew@example.com', confirmation: 'SHOP-42' },
+  tasks: [{ label: 'Confirm tanks', done: true }, { label: 'Pack reef-safe sunscreen', done: false }],
+  segments: trip.segments.map((leg, index) => index === 0 ? { ...leg, reference: 'ABC<123>' } : leg),
+}, now);
+const sharedHtml = SHARE.buildPlanShareHtml(sharedPlan, { generatedAt: new Date(2026, 9, 13) });
+assert.match(sharedHtml, /^<!DOCTYPE html>/);
+assert.match(sharedHtml, /DIVE TRIP OPERATIONS BRIEF/, 'The PDF uses the branded operations-brief layout.');
+assert.match(sharedHtml, /data:image\/png;base64,/, 'The DMZ logo is embedded so Expo Print can render it on iOS.');
+assert.match(sharedHtml, /DIVE · TRAVEL · EXPLORE/, 'The cover uses the complete DMZ brand lockup.');
+assert.match(sharedHtml, /-webkit-print-color-adjust: exact/, 'Expo Print is told to preserve the DMZ colors.');
+assert.match(sharedHtml, /Cozumel &amp; Friends &lt;2026&gt;/, 'User text is HTML escaped.');
+assert.match(sharedHtml, /ABC&lt;123&gt;/, 'Booking references are included safely.');
+assert.match(sharedHtml, /DAY 1/);
+assert.match(sharedHtml, /Shared checklist · 1\/2 complete/);
+assert.ok(!sharedHtml.includes(sharedPlan.travel.passportExpiry), 'Passport details never enter a shared plan.');
+assert.ok(!sharedHtml.includes(sharedPlan.setupId), 'Gear setup identity never enters a shared plan.');
+assert.equal(SHARE.planPdfFileName(sharedPlan), 'dmz-scuba-cozumel-friends-2026.pdf');
+
+// Itinerary rows carry an at-a-glance panel: confirmation, a callable phone, and when a stay ends.
+assert.equal(P.normalizeSegment({ type: 'stay', phone: ' +1 561 842 3121 ' }).phone, '+1 561 842 3121', 'Itinerary items keep a phone number.');
+const glanceHtml = SHARE.buildPlanShareHtml(P.normalizePlan({ kind: 'trip', title: 'Glance', startDate: '2026-09-30', endDate: '2026-10-03', operator: { name: 'Jupiter Dive Center', phone: '+1 (561) 745-7807' }, segments: [
+  { type: 'stay', title: 'Super 8', startDate: '2026-09-30', startTime: '15:00', endDate: '2026-10-03', endTime: '11:00', reference: '3VD53943CGT3', phone: '+1 561 842 3121' },
+  { type: 'car', title: 'Jetta', startDate: '2026-09-30', endDate: '2026-10-03', from: '2005 Belvedere Rd', to: '2005 Belvedere Rd' },
+  { type: 'diving', title: 'Breakers Reef', startDate: '2026-10-01', provider: 'Jupiter Dive Center', dives: 2 },
+] }, now));
+assert.match(glanceHtml, /href="tel:\+15618423121"/, 'Item phone numbers are tappable in the shared PDF.');
+assert.match(glanceHtml, /Night 2 of 3/, 'Ongoing stays show which night it is.');
+assert.match(glanceHtml, /Sat, Oct 3 · 11:00 AM/, 'Check-in rows show when the stay ends.');
+assert.match(glanceHtml, /href="tel:\+15617457807"/, "Dive days with the plan's operator borrow its phone.");
+assert.match(glanceHtml, /Pick-up &amp; return 2005 Belvedere Rd/, 'A same-counter rental shows its address once.');
+
+// The phone layout is its own screen-shaped PDF; long trips paginate instead of clipping.
+const phonePlan = P.normalizePlan({ ...sharedPlan, segments: [...sharedPlan.segments, ...Array.from({ length: 14 }, (_, index) => ({ type: 'diving', title: `Reef ${index + 1}`, startDate: '2026-11-09', startTime: '08:00', reference: `R${index}`, phone: '+1 555 0100', notes: 'Long briefing notes that wrap over a couple of lines on a phone screen.' }))] }, now);
+const phoneHtml = SHARE.buildPlanShareHtml(phonePlan, { generatedAt: new Date(2026, 9, 13), format: 'phone' });
+assert.match(phoneHtml, /@page \{ size: 390pt 844pt/, 'The phone PDF uses phone-shaped pages.');
+assert.match(phoneHtml, /\.pdf-page \{[^}]*height: 1125px/, 'Phone pages stay within the paper so no blank pages are added.');
+assert.match(phoneHtml, /DAY \d+ · CONTINUED/, 'A busy day continues onto the next phone page.');
+assert.match(phoneHtml, /<script>\(function \(\) \{/, 'Phone pages are laid out by measuring in the renderer, not by estimates.');
+const stayPhone = SHARE.buildPlanShareHtml(P.normalizePlan({ kind: 'trip', title: 'Stay', startDate: '2026-09-30', endDate: '2026-10-03', segments: [
+  { type: 'stay', title: 'Super 8', startDate: '2026-09-30', startTime: '15:00', endDate: '2026-10-03', endTime: '11:00', reference: 'STAY-REF-1' },
+] }, now), { format: 'phone' });
+const middleDay = stayPhone.split('DAY 2 · CONTINUED')[1].split('</section>')[0];
+assert.match(middleDay, /class="ongoing-tag">Staying<\/span><span class="ongoing-name">Super 8<\/span><span class="ongoing-when">Night 2 of 3<\/span>/, 'A middle day shows the stay as one slim line.');
+assert.ok(!middleDay.includes('STAY-REF-1'), 'Middle days do not repeat the confirmation; the check-in row and cover have it.');
+assert.doesNotMatch(phoneHtml, /row-ongoing/, 'Days in the middle of a stay no longer repeat a full row.');
+assert.match(phoneHtml, /Cozumel &amp; Friends &lt;2026&gt;/, 'Phone layout escapes user text too.');
+assert.ok(!phoneHtml.includes(sharedPlan.setupId), 'The phone layout keeps gear setups private.');
+assert.match(glanceHtml, /maps\.apple\.com\/\?daddr=2005%20Belvedere%20Rd/, 'Addresses link to Apple Maps directions.');
+assert.match(glanceHtml, /google\.com\/maps\/dir\/\?api=1&amp;destination=2005%20Belvedere%20Rd/, 'Addresses link to Google Maps directions.');
+const glancePhone = SHARE.buildPlanShareHtml(P.normalizePlan({ kind: 'trip', title: 'Glance', startDate: '2026-09-30', endDate: '2026-10-03', segments: [
+  { type: 'flight', title: 'AA 1831', startDate: '2026-09-30', from: 'ORD', to: 'DJT', reference: 'QAUSMA' },
+  { type: 'flight', title: 'AA 1029', startDate: '2026-10-03', from: 'DJT', to: 'ORD', reference: 'qausma' },
+  { type: 'diving', title: 'Shore dive', startDate: '2026-10-01', from: 'Resort dive pier' },
+] }, now), { format: 'phone', insurance: [{ type: 'dive', provider: 'DAN', emergencyPhone: '+1-919-684-9111' }] });
+assert.match(glancePhone, /<strong>AA 1831 · AA 1029<\/strong>/, 'Flights on one booking share a line in the cover bookings list.');
+assert.match(glancePhone, /daddr=ORD%20airport/, 'Flights link directions to the departure airport.');
+assert.ok(!glancePhone.includes('Resort%20dive%20pier'), 'Vague places get no directions link.');
+assert.match(glancePhone, /href="tel:\+19196849111"/, 'Insurance emergency numbers are tappable.');
+assert.equal(SHARE.planPdfFileName(sharedPlan, 'phone'), 'dmz-scuba-cozumel-friends-2026-phone.pdf');
+assert.deepEqual(SHARE.SHARE_FORMATS.document, { width: 612, height: 792 });
+const sharedDayHtml = SHARE.buildPlanShareHtml(P.normalizePlan({ kind: 'day', title: 'Saturday charter', startDate: '2026-11-08', startTime: '07:30', segments: [
+  { type: 'diving', title: 'Two-tank morning charter', startDate: '2026-11-08', startTime: '07:30', dives: 2 },
+] }, now));
+assert.match(sharedDayHtml, /DIVE DAY OPERATIONS BRIEF/, 'Dive-day shares use the same DMZ document system.');
+assert.match(sharedDayHtml, /DAY 1/, 'A shared dive day includes its actual schedule, not only the cover.');
+assert.match(sharedDayHtml, /Two-tank morning charter/, 'Dive-day itinerary details are present.');
+const insuredHtml = SHARE.buildPlanShareHtml(sharedPlan, { generatedAt: new Date(2026, 9, 13), insurance: [{
+  id: 'dan', type: 'dive', provider: 'DAN', memberNumber: 'DAN-42', startDate: '2025-01-01', endDate: '2025-12-31',
+  autoRenews: true, renewalMonths: 12, emergencyPhone: '+1 919 684 9111', documents: [{ uri: 'file:///private/policy.pdf' }],
+}] });
+assert.match(insuredHtml, /Insurance for this trip/, 'The shared PDF identifies trip insurance.');
+assert.match(insuredHtml, /DAN-42/, 'Useful policy identification is shared.');
+assert.match(insuredHtml, /Yearly auto-renewal · effective through Dec 31, 2026/, 'The PDF prints the effective renewed term covering the trip, not the stale entered date.');
+assert.match(insuredHtml, /Emergency assistance/, 'The insurer emergency number is easy to find.');
+assert.ok(!insuredHtml.includes('file:///private/policy.pdf'), 'Private document locations never enter the shared PDF.');
+const leanTrip = P.normalizePlan({ kind: 'trip', title: 'Four-day recon', startDate: '2026-09-30', endDate: '2026-10-03', segments: [
+  ...Array.from({ length: 4 }, (_, i) => ({ type: 'activity', title: `Arrival item ${i + 1}`, startDate: '2026-09-30' })),
+  ...Array.from({ length: 3 }, (_, i) => ({ type: 'activity', title: `Day two item ${i + 1}`, startDate: '2026-10-01' })),
+  ...Array.from({ length: 2 }, (_, i) => ({ type: 'activity', title: `Day three item ${i + 1}`, startDate: '2026-10-02' })),
+  ...Array.from({ length: 3 }, (_, i) => ({ type: 'activity', title: `Departure item ${i + 1}`, startDate: '2026-10-03' })),
+] }, now);
+const leanHtml = SHARE.buildPlanShareHtml(leanTrip, { insurance: [{ type: 'dive', provider: 'DAN', memberNumber: '42', endDate: '2026-12-31' }] });
+// Pages are laid out in the renderer (see PAGINATE_SCRIPT); page counts are checked in previews.
+assert.match(leanHtml, /<script>\(function \(\) \{/, 'The document is paged by measuring in the renderer, not by estimates.');
+assert.ok(!leanHtml.includes('Ready when you need it'), 'Insurance alone does not open a sparse reference section.');
+assert.match(leanHtml, /Insurance for this trip/, 'Cover insurance remains easy to find.');
+const consolidatedTrip = P.normalizePlan({ kind: 'trip', title: 'Compact recon', startDate: '2026-09-30', endDate: '2026-10-03', operator: { name: 'Jupiter Dive Center', phone: '555-0100' }, segments: [
+  { type: 'flight', title: 'Outbound', startDate: '2026-09-30', startTime: '09:00' },
+  { type: 'car', title: 'Rental car', startDate: '2026-09-30', endDate: '2026-10-03' },
+  { type: 'stay', title: 'Dive hotel', startDate: '2026-09-30', endDate: '2026-10-03' },
+  { type: 'activity', title: 'Site visit', startDate: '2026-10-01', startTime: '10:00' },
+  { type: 'flight', title: 'Return', startDate: '2026-10-03', startTime: '14:00' },
+] }, now);
+const consolidatedHtml = SHARE.buildPlanShareHtml(consolidatedTrip, { insurance: [{ type: 'dive', provider: 'DAN', memberNumber: '42', endDate: '2026-12-31', emergencyPhone: '555-0199' }] });
+assert.match(consolidatedHtml, /<span class="ongoing-tag">Staying<\/span><span class="ongoing-name">Dive hotel<\/span><span class="ongoing-when">Night 2 of 3<\/span>/, 'Repeated hotel rows collapse into one ongoing strip in the document too.');
+assert.match(consolidatedHtml, /<span class="ongoing-tag">Car<\/span><span class="ongoing-name">Rental car<\/span>/, 'Rental-car days in between join the same strip.');
+assert.ok(!consolidatedHtml.includes('Staying · Dive hotel'), 'The document no longer repeats a full row for each night.');
+const pastSharedHtml = SHARE.buildPlanShareHtml({ ...sharedPlan, startDate: '2025-11-07', endDate: '2025-11-14' }, { generatedAt: new Date(2026, 9, 13) });
+assert.match(pastSharedHtml, /Nov 7–14, 2025/, 'Completed trips remain exportable; sharing is not limited by plan phase.');
+assert.match(SHARE.buildPlanShareHtml(P.normalizePlan({ ...sharedPlan, title: 'Long stay test', segments: [
+  { type: 'stay', title: 'Dive resort', startDate: '2026-11-07', startTime: '16:00', endDate: '2026-11-09' },
+] }, now)), /<span class="ongoing-tag">Staying<\/span><span class="ongoing-name">Dive resort<\/span><span class="ongoing-when">Night 2 of 2<\/span>/, 'An ongoing stay reads as a strip instead of repeating its check-in row.');
 
 // Linked sites keep their atlas id, position and area.
 const linked = P.normalizePlan({ destination: { name: 'Palancar Gardens', siteId: 'x', latitude: 20.3, longitude: -87.03, area: 'Cozumel, Mexico', custom: false } }, now);

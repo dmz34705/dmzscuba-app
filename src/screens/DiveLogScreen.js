@@ -3,6 +3,7 @@ import {
   ActivityIndicator,
   Alert,
   Animated,
+  Dimensions,
   FlatList,
   Image,
   Keyboard,
@@ -54,6 +55,12 @@ import {
   sanitizeDiveFilter,
 } from '../lib/diveLog/filterDives';
 import { describeDiveSort, sortDiveRows } from '../lib/diveLog/sortDives';
+import { computeDiveLogStats } from '../lib/diveLog/stats';
+import { computeDiveTrends } from '../lib/diveLog/diveTrends';
+import { deriveDiveTrips, formatTripDateRange } from '../lib/diveLog/trips';
+import { indexRowFromDive } from '../lib/diveLog/storage';
+import { buildTripDebrief, matchPlanToTrip } from '../features/diveIntelligence/model';
+import { loadPlannerState } from '../features/planner/usePlanner';
 import {
   averageDepth,
   combinedConsumption,
@@ -100,6 +107,7 @@ import { isManagedDivePhotoUri, persistDivePhoto, repairDivePhoto } from '../lib
 import {
   buildPhotoImportPlan,
   depthAtPhotoTime,
+  photoProfileMarkers,
   findDivePhotoMatches,
   manualDivePhotoMatch,
   photoCapturedAt,
@@ -107,7 +115,7 @@ import {
 } from '../lib/diveLog/photoMatching';
 import { hiddenDataSections, sectionIsVisible } from '../lib/diveLog/diveModeFields';
 import { getLibdivecomputerVersion } from '../../modules/dive-computer-bridge';
-import { DEFAULT_PROFILE_COLORS } from '../lib/appSettings';
+import { DEFAULT_PROFILE_COLORS, DEFAULT_PROFILE_DISPLAY } from '../lib/appSettings';
 import { captureCurrentLocationBreadcrumb, getLocationRecordingSummary } from '../lib/locationLog/locationTrackingService';
 import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComputerDownloadPanel';
 import useDiveComputerDownload from '../features/diveComputerDownload/useDiveComputerDownload';
@@ -481,26 +489,131 @@ function formatProfileTime(seconds) {
   return `${minutes}:${String(total % 60).padStart(2, '0')}`;
 }
 
-function ScrubValue({ label, value, color = colors.text, compact = false }) {
+const EMPTY_MARKERS = [];
+const PHOTO_MODE_OPTIONS = [
+  { key: 'off', label: 'Off' },
+  { key: 'pins', label: 'Pins' },
+  { key: 'previews', label: 'Previews' },
+];
+
+// Pin heads stand just above the trace; near the surface, where there is no
+// room above, they hang below it instead.
+function pinHeadY(y, chartHeight) {
+  return y - 13 >= 6 ? y - 13 : Math.min(chartHeight - 6, y + 13);
+}
+
+function nearestPhotoMarker(markers, x, reach) {
+  let best = null;
+  for (const marker of markers) {
+    const distance = Math.abs(marker.x - x);
+    if (distance <= reach && (!best || distance < Math.abs(best.x - x))) best = marker;
+  }
+  return best;
+}
+
+function scrubHint(scrubPoint, activeMarker, photoPreviews, markerCount) {
+  if (activeMarker) return photoPreviews ? 'Photo taken here · tap the preview to open it' : 'Photo taken here';
+  if (scrubPoint) return 'Showing the nearest recorded sample';
+  return markerCount ? 'Touch and drag across the chart · pins mark your photos' : 'Touch and drag across the chart to inspect the dive';
+}
+
+// Small thumbnail over the photo pin under the cursor. Sits above the pin, or
+// below it when the pin is too close to the top, and never leaves the chart.
+function PhotoPinPreview({ marker, chartWidth, chartHeight, size, onPress }) {
+  const headY = pinHeadY(marker.y, chartHeight);
+  const above = headY - size - 8;
+  const top = above >= 0 ? above : Math.min(chartHeight - size, headY + 10);
+  const left = Math.max(0, Math.min(chartWidth - size, marker.x - size / 2));
   return (
-    <View style={[styles.scrubValue, compact && styles.scrubValueCompact]}>
-      <Text style={styles.scrubValueLabel}>{label}</Text>
-      <Text numberOfLines={1} style={[styles.scrubValueText, { color }]}>{value}</Text>
+    <Pressable
+      accessibilityLabel="Open this photo"
+      accessibilityRole="imagebutton"
+      disabled={!onPress}
+      onPress={onPress}
+      style={[styles.photoPinPreview, { height: size, left, top, width: size }]}
+    >
+      <Image source={{ uri: marker.uri }} style={styles.photoPinImage} />
+    </Pressable>
+  );
+}
+
+// The live readout: every value under the cursor in one strip, each with the
+// colour of the line it reads from. With no cursor it shows the dive summary
+// instead (duration, max depth, ...), labelled as such and slightly dimmed.
+function ReadoutCell({ label, value, color, idle, fullscreen, width }) {
+  return (
+    <View style={[styles.readoutCell, fullscreen && styles.readoutCellFullscreen, { borderLeftColor: color, width }]}>
+      <Text numberOfLines={1} style={styles.readoutLabel}>{label}</Text>
+      <Text numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75} style={[styles.readoutValue, fullscreen && styles.readoutValueFullscreen, idle && styles.readoutValueIdle]}>{value}</Text>
     </View>
   );
 }
 
-function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temperatureUnit, pressureSeries = [], availableWidth = null, fullscreen = false, onExpand, onClose, showTemperature = true, showPressure = true, showOxygen = true, onOverlayChange, headerDetails = null, chartColors = DEFAULT_PROFILE_COLORS, lineWidth = 2.75 }) {
+// A toggle chip that doubles as the legend entry for its line.
+function DisplayChip({ label, color, on, onPress }) {
+  return (
+    <Pressable
+      accessibilityRole="switch"
+      accessibilityState={{ checked: on }}
+      accessibilityLabel={`${label} on the profile`}
+      hitSlop={4}
+      onPress={onPress}
+      style={({ pressed }) => [styles.displayChip, on && styles.displayChipOn, pressed && styles.pressed]}
+    >
+      <View style={[styles.displaySwatch, { backgroundColor: on ? color : colors.line }]} />
+      <Text style={[styles.displayChipText, on && styles.displayChipTextOn]}>{label}</Text>
+    </Pressable>
+  );
+}
+
+function DisplaySegments({ label, value, options, onChange }) {
+  return (
+    <View style={styles.displayRow}>
+      <Text style={styles.displayRowLabel}>{label}</Text>
+      <View style={styles.photoModeSegments}>
+        {options.map((option) => {
+          const selected = value === option.key;
+          return (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected }}
+              hitSlop={6}
+              key={String(option.key)}
+              onPress={() => onChange(option.key)}
+              style={[styles.photoModeSegment, selected && styles.photoModeSegmentOn]}
+            >
+              <Text style={[styles.photoModeText, selected && styles.photoModeTextOn]}>{option.label}</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
+
+const READOUT_GAP = 6;
+const LINE_WEIGHT_OPTIONS = [{ key: 1.5, label: 'Thin' }, { key: 2.75, label: 'Standard' }, { key: 4, label: 'Bold' }];
+const CURVE_OPTIONS = [{ key: 'sharp', label: 'Sharp' }, { key: 'smooth', label: 'Smooth' }];
+const DEFAULT_PROFILE_PREFS = Object.freeze({
+  temperature: true, pressure: true, oxygen: true, depthFill: true, grid: true, curve: 'sharp', lineWidth: 2.75, photoMode: 'previews',
+});
+
+function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temperatureUnit, pressureSeries = [], availableWidth = null, fullscreen = false, onExpand, onClose, headerDetails = null, chartColors = DEFAULT_PROFILE_COLORS, prefs = DEFAULT_PROFILE_PREFS, onPrefsChange, photoMarkers = EMPTY_MARKERS, focusPhotoId = null, onOpenPhoto }) {
   const { width, height } = useWindowDimensions();
+  // The card's real inner width, measured from the readout row once laid out.
+  // Until then, an estimate from the window — the measurement keeps the plot
+  // from running into the card's padding.
+  const [innerWidth, setInnerWidth] = useState(null);
   const contentWidth = Math.max(240, availableWidth != null ? availableWidth - spacing.md * 2 : width - spacing.md * 4);
-  const chartWidth = contentWidth;
+  const chartWidth = innerWidth ?? contentWidth;
   // Landscape phones have much less usable vertical space than their pixel
   // dimensions suggest. Keep the plot inside the modal instead of letting the
   // card clip its bottom edge below the safe area.
-  const chartHeight = fullscreen ? Math.max(150, Math.min(260, height - 230)) : 204;
+  const chartHeight = fullscreen ? Math.max(140, Math.min(260, height - 250)) : 204;
+  const { lineWidth, photoMode } = prefs;
   const geometry = useMemo(
-    () => buildLogProfileGeometry(samples, chartWidth, chartHeight, { maxDepthMeters }),
-    [chartWidth, samples, maxDepthMeters],
+    () => buildLogProfileGeometry(samples, chartWidth, chartHeight, { maxDepthMeters, markers: photoMarkers, curve: prefs.curve }),
+    [chartWidth, chartHeight, samples, maxDepthMeters, photoMarkers, prefs.curve],
   );
   const { maxBar, airPaths } = useMemo(() => {
     const withAir = pressureSeries.filter((series) => (series.samples || []).some((sample) => sample?.pressureBar > 0));
@@ -519,7 +632,18 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temper
     [samples],
   );
   const [scrubX, setScrubX] = useState(null);
+  const [customizing, setCustomizing] = useState(false);
   const touchOriginRef = useRef(null);
+  // Opened from a gallery photo: start with the cursor on that photo's pin.
+  // Only once — after that the cursor is wherever the diver drags it.
+  const focusedRef = useRef(null);
+  useEffect(() => {
+    if (!focusPhotoId || focusedRef.current === focusPhotoId) return;
+    const marker = geometry.markers.find((m) => m.id === focusPhotoId);
+    if (!marker) return;
+    focusedRef.current = focusPhotoId;
+    setScrubX(marker.x);
+  }, [focusPhotoId, geometry.markers]);
 
   const handleScrub = useCallback((event) => {
     const x = Math.max(0, Math.min(chartWidth, event.nativeEvent.locationX));
@@ -536,22 +660,99 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temper
 
   if (!geometry.linePath) return null;
 
+  const showTemperature = geometry.hasTemp && prefs.temperature;
+  const showOxygen = geometry.hasOxygen && prefs.oxygen;
+  const showPressure = airPaths.length > 0 && prefs.pressure;
+  const showPins = photoMode !== 'off';
+  const photoPreviews = photoMode === 'previews';
+  const change = (patch) => onPrefsChange?.(patch);
+
   const scrubPoint = scrubX == null ? null : profilePointAtX(geometry.points, scrubX);
+  const idle = !scrubPoint;
   const profileOrigin = geometry.points[0]?.t || 0;
   const selectedSeconds = scrubPoint?.t ?? null;
-  const selectedTemperature = selectedSeconds == null
-    ? null
-    : nearestSampleAt(temperatureSamples, selectedSeconds)?.tempC;
-  // Nearest recorded ppO2 to the scrub position, same as temperature. Reads
-  // from the geometry's own points so it stays on the scale the trace is drawn
-  // against.
-  const selectedPpo2 = selectedSeconds == null
-    ? null
-    : nearestSampleAt(geometry.ppo2Points.map((p) => ({ t: p.t, ppo2: p.v })), selectedSeconds)?.ppo2 ?? null;
-  const selectedPressures = selectedSeconds == null ? [] : airPaths.map((series) => ({
-    ...series,
-    pressureBar: nearestSampleAt(series.pressureSamples, selectedSeconds)?.pressureBar,
-  })).filter((series) => Number.isFinite(series.pressureBar));
+  // Pins are hidden entirely in 'off' mode; the markers are still placed so a
+  // dive opened from a photo can start the cursor at that photo's moment.
+  const activeMarker = scrubPoint && showPins ? nearestPhotoMarker(geometry.markers, scrubPoint.x, fullscreen ? 16 : 12) : null;
+
+  // Readout values: nearest recorded sample under the cursor, or the dive's
+  // summary when nothing is selected.
+  const readout = [];
+  readout.push({
+    key: 'time',
+    label: idle ? 'Duration' : 'Time',
+    value: idle ? formatProfileTime(geometry.durationSeconds) : formatProfileTime(scrubPoint.t - profileOrigin),
+    color: colors.white,
+  });
+  readout.push({
+    key: 'depth',
+    label: idle ? 'Deepest' : 'Depth',
+    value: formatDepth(idle ? geometry.maxDepthMeters : scrubPoint.depth, depthUnit),
+    color: chartColors.depth,
+  });
+  if (showTemperature) {
+    const temperature = idle
+      ? temperatureSamples.reduce((min, sample) => Math.min(min, sample.tempC), Infinity)
+      : nearestSampleAt(temperatureSamples, selectedSeconds)?.tempC;
+    readout.push({
+      key: 'temp',
+      label: idle ? 'Min temp' : 'Temp',
+      value: Number.isFinite(temperature) ? formatTemperature(temperature, temperatureUnit) : '—',
+      color: chartColors.temperature,
+    });
+  }
+  if (showOxygen) {
+    // Read from the geometry's own points so it stays on the scale the trace
+    // is drawn against.
+    const ppo2 = idle
+      ? geometry.ppo2Points.reduce((max, p) => Math.max(max, p.v), 0) || null
+      : nearestSampleAt(geometry.ppo2Points.map((p) => ({ t: p.t, ppo2: p.v })), selectedSeconds)?.ppo2 ?? null;
+    readout.push({
+      key: 'ppo2',
+      label: idle ? 'Max ppO₂' : 'ppO₂',
+      value: ppo2 != null ? `${ppo2.toFixed(2)} bar` : '—',
+      color: chartColors.oxygen,
+    });
+  }
+  if (showPressure) {
+    for (const series of airPaths) {
+      const pressure = idle
+        ? series.pressureSamples[series.pressureSamples.length - 1]?.pressureBar
+        : nearestSampleAt(series.pressureSamples, selectedSeconds)?.pressureBar;
+      const name = airPaths.length > 1 ? series.label : 'Tank';
+      readout.push({
+        key: `tank-${series.label}`,
+        label: idle ? `${name} end` : name,
+        value: Number.isFinite(pressure) ? formatPressure(pressure, pressureUnit) : '—',
+        color: series.color,
+      });
+    }
+  }
+
+  // Up to four values share one row (all of them in landscape); more wrap
+  // three to a row. Widths are computed rather than left to flex so every
+  // cell in a row is the same size whatever its value.
+  const perRow = fullscreen ? readout.length : (readout.length <= 4 ? readout.length : 3);
+  const readoutCellWidth = Math.floor((chartWidth - READOUT_GAP * (perRow - 1)) / perRow);
+
+  const displayChips = (
+    <>
+      <DisplayChip label="Fill" color={chartColors.depth} on={prefs.depthFill} onPress={() => change({ depthFill: !prefs.depthFill })} />
+      {geometry.hasTemp ? <DisplayChip label="Temp" color={chartColors.temperature} on={prefs.temperature} onPress={() => change({ temperature: !prefs.temperature })} /> : null}
+      {airPaths.length ? <DisplayChip label={airPaths.length > 1 ? 'Tank pressures' : 'Tank pressure'} color={airPaths[0].color} on={prefs.pressure} onPress={() => change({ pressure: !prefs.pressure })} /> : null}
+      {geometry.hasOxygen ? <DisplayChip label="ppO₂" color={chartColors.oxygen} on={prefs.oxygen} onPress={() => change({ oxygen: !prefs.oxygen })} /> : null}
+      <DisplayChip label="Grid" color={chartColors.grid} on={prefs.grid} onPress={() => change({ grid: !prefs.grid })} />
+    </>
+  );
+  const styleRows = (
+    <>
+      <DisplaySegments label="Line" value={lineWidth} options={LINE_WEIGHT_OPTIONS} onChange={(value) => change({ lineWidth: value })} />
+      <DisplaySegments label="Curve" value={prefs.curve} options={CURVE_OPTIONS} onChange={(value) => change({ curve: value })} />
+    </>
+  );
+  const photoRow = geometry.markers.length
+    ? <DisplaySegments label="Photos" value={photoMode} options={PHOTO_MODE_OPTIONS} onChange={(value) => change({ photoMode: value })} />
+    : null;
 
   return (
     <Card style={[styles.profileCard, fullscreen && styles.profileCardFullscreen]}>
@@ -562,7 +763,6 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temper
         </View>
         {headerDetails ? <View style={styles.profileHeaderDetails}>{headerDetails}</View> : null}
         <View style={styles.profileHeaderActions}>
-          {!fullscreen ? <Text style={styles.profileDuration}>{formatDuration(geometry.durationSeconds)}</Text> : null}
           {onExpand ? (
             <Pressable accessibilityLabel="Expand dive profile" accessibilityRole="button" hitSlop={8} onPress={onExpand} style={({ pressed }) => [styles.expandButton, pressed && styles.pressed]}>
               <Text style={styles.expandIcon}>⛶</Text>
@@ -575,43 +775,19 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temper
           ) : null}
         </View>
       </View>
-      {onOverlayChange ? (
-        <View style={styles.overlayControls}>
-          <Text style={styles.overlayControlsLabel}>OVERLAYS</Text>
-          <Pressable accessibilityRole="button" onPress={() => onOverlayChange('temperature')} style={[styles.overlayToggle, showTemperature && styles.overlayToggleActive]}>
-          <View style={[styles.overlayDot, { backgroundColor: chartColors.temperature }]} />
-            <Text style={[styles.overlayToggleText, showTemperature && styles.overlayToggleTextActive]}>Temp</Text>
-          </Pressable>
-          <Pressable accessibilityRole="button" onPress={() => onOverlayChange('pressure')} style={[styles.overlayToggle, showPressure && styles.overlayToggleActive]}>
-            <View style={[styles.overlayDot, { backgroundColor: chartColors.pressure }]} />
-            <Text style={[styles.overlayToggleText, showPressure && styles.overlayToggleTextActive]}>Tank pressure</Text>
-          </Pressable>
-          {geometry.hasOxygen ? (
-          <Pressable accessibilityRole="button" onPress={() => onOverlayChange('oxygen')} style={[styles.overlayToggle, showOxygen && styles.overlayToggleActive]}>
-            <View style={[styles.overlayDot, { backgroundColor: chartColors.oxygen }]} />
-            <Text style={[styles.overlayToggleText, showOxygen && styles.overlayToggleTextActive]}>ppO₂</Text>
-          </Pressable>
-          ) : null}
-        </View>
-      ) : null}
-      <View style={[styles.scrubBar, fullscreen && styles.scrubBarFullscreen]}>
-        <ScrubValue compact={fullscreen} label="Time" value={scrubPoint ? formatProfileTime(scrubPoint.t - profileOrigin) : '—:—'} />
-        <ScrubValue compact={fullscreen} label="Depth" value={scrubPoint ? formatDepth(scrubPoint.depth, depthUnit) : '—'} color={chartColors.depth} />
-        {showTemperature ? <ScrubValue compact={fullscreen} label="Temperature" value={scrubPoint && selectedTemperature != null ? formatTemperature(selectedTemperature, temperatureUnit) : '—'} color={chartColors.temperature} /> : null}
-        {geometry.hasOxygen && showOxygen ? (
-          <ScrubValue
-            color={chartColors.oxygen}
-            compact={fullscreen}
-            label="ppO₂"
-            value={selectedPpo2 != null ? `${selectedPpo2.toFixed(2)} bar` : '—'}
-          />
-        ) : null}
-        {fullscreen && showPressure ? airPaths.map((series) => {
-          const pressure = selectedPressures.find((selected) => selected.label === series.label)?.pressureBar;
-          return <ScrubValue compact label={airPaths.length > 1 ? series.label : 'Tank pressure'} key={`scrub-${series.label}`} value={pressure != null ? formatPressure(pressure, pressureUnit) : '—'} color={series.color} />;
-        }) : null}
+      <View
+        accessibilityLiveRegion="polite"
+        onLayout={(event) => {
+          const measured = Math.round(event.nativeEvent.layout.width);
+          if (measured > 0 && measured !== innerWidth) setInnerWidth(measured);
+        }}
+        style={styles.readout}
+      >
+        {readout.map((cell) => (
+          <ReadoutCell key={cell.key} label={cell.label} value={cell.value} color={cell.color} idle={idle} fullscreen={fullscreen} width={readoutCellWidth} />
+        ))}
       </View>
-      <Text style={styles.scrubHint}>{scrubPoint ? 'Showing the nearest recorded sample' : 'Touch and drag across the chart to inspect the dive'}</Text>
+      <View style={[styles.chartPlotWrap, fullscreen && styles.chartPlotFullscreen]}>
       <View
         accessibilityLabel="Interactive dive profile. Touch and drag to inspect readings."
         accessibilityRole="adjustable"
@@ -627,34 +803,34 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temper
           touchOriginRef.current = { x: event.nativeEvent.pageX, y: event.nativeEvent.pageY };
           if (fullscreen) handleScrub(event);
         }}
-        style={[styles.chartPlot, fullscreen && styles.chartPlotFullscreen]}
+        style={styles.chartPlot}
       >
         <Svg pointerEvents="none" width={chartWidth} height={chartHeight + 18}>
           <Line x1="0" y1="0" x2={chartWidth} y2="0" stroke={chartColors.grid} strokeWidth="1" />
           {geometry.depthTicks.map((tick) => (
             <Fragment key={`depth-${tick.meters}`}>
-              <Line x1="0" y1={tick.y} x2={chartWidth} y2={tick.y} stroke={chartColors.grid} opacity="0.28" strokeWidth="1" />
+              {prefs.grid ? <Line x1="0" y1={tick.y} x2={chartWidth} y2={tick.y} stroke={chartColors.grid} opacity="0.28" strokeWidth="1" /> : null}
               <SvgText x="5" y={Math.max(10, tick.y - 5)} fill={chartColors.grid} fontSize="8" fontWeight="800">
                 {formatDepth(tick.meters, depthUnit)}
               </SvgText>
             </Fragment>
           ))}
-          {geometry.timeTicks.map((tick) => (
+          {prefs.grid ? geometry.timeTicks.map((tick) => (
             <Line key={`t-${tick.seconds}`} x1={tick.x} y1="0" x2={tick.x} y2={chartHeight} stroke={chartColors.grid} opacity="0.2" strokeWidth="1" />
-          ))}
-          <Path d={geometry.areaPath} fill={chartColors.depth} opacity="0.12" />
+          )) : null}
+          {prefs.depthFill ? <Path d={geometry.areaPath} fill={chartColors.depth} opacity="0.12" /> : null}
           <Path d={geometry.linePath} fill="none" stroke={chartColors.depth} strokeWidth={lineWidth} strokeLinejoin="round" />
-          {geometry.hasTemp && showTemperature ? <Path d={geometry.tempPath} fill="none" opacity="0.9" stroke={chartColors.temperature} strokeWidth={lineWidth} strokeLinejoin="round" /> : null}
-          {geometry.hasOxygen && showOxygen && geometry.setpointPath ? (
+          {showTemperature ? <Path d={geometry.tempPath} fill="none" opacity="0.9" stroke={chartColors.temperature} strokeWidth={lineWidth} strokeLinejoin="round" /> : null}
+          {showOxygen && geometry.setpointPath ? (
             <Path d={geometry.setpointPath} fill="none" opacity="0.75" stroke={chartColors.setpoint} strokeDasharray="5,4" strokeWidth={Math.max(1, lineWidth - 1)} />
           ) : null}
-          {geometry.hasOxygen && showOxygen && geometry.ppo2Path ? (
+          {showOxygen && geometry.ppo2Path ? (
             <Path d={geometry.ppo2Path} fill="none" opacity="0.95" stroke={chartColors.oxygen} strokeLinejoin="round" strokeWidth={lineWidth} />
           ) : null}
           {showPressure && airPaths.map((series) => (
             <Path key={series.label} d={series.path} fill="none" opacity="0.9" stroke={series.color} strokeWidth={lineWidth} strokeLinejoin="round" />
           ))}
-          {showPressure && airPaths.length ? (
+          {showPressure ? (
             <>
               <SvgText x={chartWidth - 5} y="11" fill={chartColors.pressure} fontSize="8" fontWeight="800" textAnchor="end">{formatPressure(maxBar, pressureUnit)}</SvgText>
               <SvgText x={chartWidth - 5} y={chartHeight - 5} fill={chartColors.pressure} fontSize="8" fontWeight="800" textAnchor="end">0</SvgText>
@@ -667,6 +843,16 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temper
               <Circle cx={scrubPoint.x} cy={scrubPoint.y} r="4" fill={colors.background} stroke={colors.white} strokeWidth="2" />
             </>
           ) : null}
+          {showPins && geometry.markers.map((marker) => {
+            const active = marker === activeMarker;
+            const headY = pinHeadY(marker.y, chartHeight);
+            return (
+              <Fragment key={`photo-${marker.id}`}>
+                <Line x1={marker.x} y1={marker.y} x2={marker.x} y2={headY} stroke={colors.white} strokeWidth={active ? 1.5 : 1} opacity={active ? 1 : 0.7} />
+                <Circle cx={marker.x} cy={headY} r={active ? 6 : 4} fill={active ? colors.white : chartColors.depth} stroke={colors.background} strokeWidth="1.5" />
+              </Fragment>
+            );
+          })}
           {geometry.timeTicks.map((tick) => (
             <SvgText key={`tl-${tick.seconds}`} x={tick.x} y={chartHeight + 13} fill={colors.faint} fontSize="8" fontWeight="700" textAnchor="middle">
               {`${Math.round(tick.seconds / 60)}m`}
@@ -674,58 +860,89 @@ function ProfileChart({ samples, maxDepthMeters, depthUnit, pressureUnit, temper
           ))}
         </Svg>
       </View>
-      {!fullscreen && scrubPoint && selectedPressures.length ? (
-        <View style={styles.pressureReadouts}>
-          {selectedPressures.map((series) => (
-            <View key={series.label} style={styles.pressureReadout}>
-              <View style={[styles.pressureDot, { backgroundColor: series.color }]} />
-              <Text numberOfLines={1} style={styles.pressureName}>{series.label}</Text>
-              <Text style={[styles.pressureValue, { color: series.color }]}>{formatPressure(series.pressureBar, pressureUnit)}</Text>
-            </View>
-          ))}
-        </View>
+      {activeMarker && photoPreviews ? (
+        <PhotoPinPreview
+          marker={activeMarker}
+          chartWidth={chartWidth}
+          chartHeight={chartHeight}
+          size={fullscreen ? 84 : 72}
+          onPress={onOpenPhoto ? () => onOpenPhoto(activeMarker.index) : undefined}
+        />
       ) : null}
-      <View style={styles.chartLegend}>
-        <View style={styles.legendItem}><View style={[styles.legendSwatch, { backgroundColor: chartColors.depth }]} /><Text style={styles.legendText}>Depth</Text></View>
-        {geometry.hasTemp && showTemperature ? <View style={styles.legendItem}><View style={[styles.legendSwatch, { backgroundColor: chartColors.temperature }]} /><Text style={styles.legendText}>Temperature</Text></View> : null}
-        {geometry.hasOxygen && showOxygen ? <View style={styles.legendItem}><View style={[styles.legendSwatch, { backgroundColor: chartColors.oxygen }]} /><Text style={styles.legendText}>ppO₂ (dashed: setpoint)</Text></View> : null}
-        {showPressure && airPaths.map((series) => (
-          <View key={series.label} style={styles.legendItem}>
-            <View style={[styles.legendSwatch, { backgroundColor: series.color }]} />
-            <Text numberOfLines={1} style={styles.legendText}>{airPaths.length > 1 ? series.label : 'Tank pressure'}</Text>
-          </View>
-        ))}
       </View>
+      <Text style={styles.scrubHint}>{scrubHint(scrubPoint, activeMarker, photoPreviews, showPins ? geometry.markers.length : 0)}</Text>
+      {onPrefsChange ? (
+        fullscreen ? (
+          // Landscape has no height to spare: every control on one scrolling row.
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.displayStripFullscreen}>
+            {displayChips}
+            {photoRow}
+            {styleRows}
+          </ScrollView>
+        ) : (
+          <View style={styles.displayPanel}>
+            <View style={styles.displayPanelHeader}>
+              <Text style={styles.displayPanelTitle}>SHOW</Text>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityState={{ expanded: customizing }}
+                hitSlop={8}
+                onPress={() => setCustomizing((open) => !open)}
+              >
+                <Text style={styles.displayCustomize}>{customizing ? 'Done' : 'Customize'}</Text>
+              </Pressable>
+            </View>
+            <View style={styles.displayChips}>{displayChips}</View>
+            {photoRow}
+            {customizing ? <View style={styles.displayStyleRows}>{styleRows}</View> : null}
+          </View>
+        )
+      ) : null}
     </Card>
   );
 }
 
-function FullscreenProfile({ dive, samples, maxDepthMeters, durationSeconds, temperatures, mixLabel, computerLabel, units, pressureSeries, onClose, chartColors, lineWidth }) {
+// Full-screen profile rotation. The screen is turned to landscape *before*
+// the modal is presented: presenting first and locking after leaves iOS 27
+// with a portrait modal over a landscape scene (or, if the modal only allows
+// landscape, no orientation in common and an abort).
+function waitForLandscape(timeoutMs = 900) {
+  return new Promise((resolve) => {
+    const { width, height } = Dimensions.get('window');
+    if (width > height) { resolve(); return; }
+    let subscription = null;
+    const done = () => { clearTimeout(timer); subscription?.remove(); resolve(); };
+    const timer = setTimeout(done, timeoutMs);
+    subscription = Dimensions.addEventListener('change', ({ window }) => {
+      if (window.width > window.height) done();
+    });
+  });
+}
+
+async function openLandscapeProfile() {
+  let previous = ScreenOrientation.OrientationLock.PORTRAIT_UP;
+  try {
+    previous = await ScreenOrientation.getOrientationLockAsync();
+    await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+    await waitForLandscape();
+  } catch (error) {
+    console.log('[dive-log] landscape profile unavailable:', error?.message);
+  }
+  return previous;
+}
+
+function closeLandscapeProfile(previous) {
+  const restorable = previous != null
+    && previous !== ScreenOrientation.OrientationLock.UNKNOWN
+    && previous !== ScreenOrientation.OrientationLock.OTHER;
+  ScreenOrientation.lockAsync(restorable ? previous : ScreenOrientation.OrientationLock.PORTRAIT_UP).catch(() => {});
+}
+
+function FullscreenProfile({ dive, samples, maxDepthMeters, durationSeconds, temperatures, mixLabel, computerLabel, units, pressureSeries, onClose, chartColors, photoMarkers, prefs, onPrefsChange }) {
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
-  const [overlays, setOverlays] = useState({ temperature: true, pressure: true, oxygen: true });
-  const previousLockRef = useRef(ScreenOrientation?.OrientationLock.PORTRAIT_UP);
-
-  useEffect(() => {
-    let active = true;
-    (async () => {
-      try {
-        const previous = await ScreenOrientation.getOrientationLockAsync();
-        if (!active) return;
-        previousLockRef.current = previous;
-        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-      } catch (error) {
-        console.log('[dive-log] landscape profile unavailable:', error?.message);
-      }
-    })();
-    return () => {
-      active = false;
-      const previous = previousLockRef.current;
-      const restorable = previous !== ScreenOrientation.OrientationLock.UNKNOWN
-        && previous !== ScreenOrientation.OrientationLock.OTHER;
-      ScreenOrientation.lockAsync(restorable ? previous : ScreenOrientation.OrientationLock.PORTRAIT_UP).catch(() => {});
-    };
-  }, []);
+  // The landscape lock is taken by openLandscapeProfile before this mounts
+  // and released by closeLandscapeProfile — see there for why.
 
   // During an orientation transition the safe-area provider can briefly
   // report zero for the Dynamic Island edge. Reserve a 56pt landscape gutter
@@ -733,7 +950,6 @@ function FullscreenProfile({ dive, samples, maxDepthMeters, durationSeconds, tem
   const leftPadding = Math.max(insets.left, spacing.sm, 56);
   const rightPadding = Math.max(insets.right, spacing.sm, 56);
   const modalWidth = Math.max(280, width - leftPadding - rightPadding - spacing.lg * 2);
-  const toggleOverlay = (key) => setOverlays((current) => ({ ...current, [key]: !current[key] }));
   const location = [dive?.site?.name, dive?.site?.location, dive?.site?.country].filter(Boolean).join(' · ');
   const siteDisplay = dive?.number != null ? `#${dive.number} · ${location || 'Unnamed dive'}` : (location || 'Unnamed dive');
   const headerDetails = (
@@ -782,7 +998,10 @@ function FullscreenProfile({ dive, samples, maxDepthMeters, durationSeconds, tem
       onRequestClose={onClose}
       presentationStyle="fullScreen"
       statusBarTranslucent
-      supportedOrientations={['landscape-left', 'landscape-right']}
+      // Portrait stays listed as a safety net: if the landscape lock could
+      // not be taken, a landscape-only modal over a portrait-locked app has no
+      // orientation in common and iOS 27 aborts the presentation.
+      supportedOrientations={['portrait', 'landscape-left', 'landscape-right']}
       visible
     >
       <View style={[styles.fullscreenProfile, {
@@ -801,17 +1020,15 @@ function FullscreenProfile({ dive, samples, maxDepthMeters, durationSeconds, tem
           fullscreen
           maxDepthMeters={maxDepthMeters}
           onClose={onClose}
-          onOverlayChange={toggleOverlay}
           headerDetails={headerDetails}
+          photoMarkers={photoMarkers}
+          prefs={prefs}
+          onPrefsChange={onPrefsChange}
           pressureSeries={pressureSeries}
           pressureUnit={units.pressureUnit}
           samples={samples}
-          showOxygen={overlays.oxygen}
-          showPressure={overlays.pressure}
-          showTemperature={overlays.temperature}
           temperatureUnit={units.temperatureUnit}
           chartColors={chartColors}
-          lineWidth={lineWidth}
         />
       </View>
     </Modal>
@@ -858,10 +1075,11 @@ function StatSummaryCard({ stats, units, onPress }) {
 function LogbookViewTabs({ active, onChange }) {
   const reducedMotion = useReducedMotion();
   const [width, setWidth] = useState(0);
-  const activeIndex = active === 'gallery' ? 1 : active === 'stats' ? 2 : 0;
+  const activeIndex = active === 'trips' ? 1 : active === 'gallery' ? 2 : active === 'stats' ? 3 : 0;
   const position = useRef(new Animated.Value(activeIndex)).current;
   const tabs = [
     { key: 'dives', label: 'Dives' },
+    { key: 'trips', label: 'Trips' },
     { key: 'gallery', label: 'Gallery' },
     { key: 'stats', label: 'Stats' },
   ];
@@ -986,12 +1204,12 @@ function formatTotalDescent(meters, unit) {
   return `${Math.round(value).toLocaleString()} ${unit}`;
 }
 
-function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic, onHealthCheck, onRestoreBackup }) {
+function StatsView({ trends, stats, units, title = 'Your diving, measured.', showHousekeeping = true, onRecheck, rechecking, deletedCount, onPurge, onEraseAll, onDiagnostic, onHealthCheck, onRestoreBackup }) {
   const sacUnit = units.pressureUnit;
   return (
     <>
       <SectionLabel>NERD STATS</SectionLabel>
-      <Text style={styles.title}>Your diving, measured.</Text>
+      <Text style={styles.title}>{title}</Text>
 
       <Card style={styles.summaryCard}>
         <Text style={styles.detailCardTitle}>Totals</Text>
@@ -1014,7 +1232,15 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
 
       <Card style={styles.detailCard}>
         <Text style={styles.detailCardTitle}>Gas consumption</Text>
-        <DetailRow label="Average SAC" value={trends.sac.mean != null ? `${formatPressure(trends.sac.mean, sacUnit)}/min` : 'No transmitter data yet'} />
+        <DetailRow label="Transmitter dives" value={`${trends.transmitterDiveCount || 0} of ${trends.diveCount}`} />
+        <DetailRow
+          label="Average SAC"
+          value={trends.sac.mean != null
+            ? `${formatPressure(trends.sac.mean, sacUnit)}/min`
+            : trends.transmitterDiveCount
+              ? 'Pressure recorded · consumption unavailable'
+              : 'No transmitter data yet'}
+        />
         <DetailRow label="Average RMV" value={trends.rmv.mean != null ? `${trends.rmv.mean.toFixed(1)} L/min` : ''} />
         {trends.sac.mean != null ? (
           <View style={styles.trendRow}><Text style={styles.trendLabel}>Over time</Text><TrendArrow slope={trends.sac.trendPerDive} goodDirection="down" /></View>
@@ -1044,7 +1270,7 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
         </Card>
       ) : null}
 
-      <Card style={styles.detailCard}>
+      {showHousekeeping ? <Card style={styles.detailCard}>
         <Text style={styles.detailCardTitle}>Housekeeping</Text>
         <Text style={styles.reviewBody}>
           Re-check every dive for the same dive logged twice — e.g. one computer
@@ -1079,7 +1305,153 @@ function StatsView({ trends, stats, units, onRecheck, rechecking, deletedCount, 
         <Pressable onPress={onEraseAll} hitSlop={8} style={styles.reviewSkip}>
           <Text style={[styles.reviewSkipText, { color: colors.danger }]}>Erase the entire logbook (dev)</Text>
         </Pressable>
+      </Card> : null}
+    </>
+  );
+}
+
+function TripListView({ trips, units, onOpen }) {
+  if (!trips.length) {
+    return (
+      <Card style={styles.emptyCard}>
+        <Text style={styles.emptyTitle}>No trips yet</Text>
+        <Text style={styles.emptyBody}>Trips appear automatically as soon as your logbook has dated dives.</Text>
       </Card>
+    );
+  }
+  return (
+    <>
+      <SectionLabel>AUTOMATIC TRIPS</SectionLabel>
+      <Text style={styles.title}>Your dive trips.</Text>
+      <Text style={styles.subtitle}>A new trip begins after more than 72 hours without a dive.</Text>
+      <View style={styles.tripList}>
+        {trips.map((trip) => {
+          const stats = computeDiveLogStats(trip.rows);
+          return (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`${trip.name}, ${formatTripDateRange(trip.startTime, trip.endTime)}`}
+              key={trip.id}
+              onPress={() => onOpen(trip.id)}
+              style={({ pressed }) => [styles.tripCard, pressed && styles.pressed]}
+            >
+              <View style={styles.tripCardCopy}>
+                <Text style={styles.tripDate}>{formatTripDateRange(trip.startTime, trip.endTime)}</Text>
+                <Text numberOfLines={1} style={styles.tripName}>{trip.name}</Text>
+                <Text style={styles.tripMeta}>
+                  {`${trip.rows.length} ${trip.rows.length === 1 ? 'dive' : 'dives'} · ${trip.diveDays} ${trip.diveDays === 1 ? 'day' : 'days'}`}
+                  {stats.totalBottomTimeSeconds ? ` · ${formatDuration(stats.totalBottomTimeSeconds)}` : ''}
+                  {stats.deepestMeters ? ` · ${formatDepth(stats.deepestMeters, units.depthUnit)}` : ''}
+                </Text>
+              </View>
+              <Text style={styles.tripChevron}>›</Text>
+            </Pressable>
+          );
+        })}
+      </View>
+    </>
+  );
+}
+
+function comparisonLabel(comparison, formatter) {
+  if (!comparison) return '';
+  const direction = comparison.percent > 0 ? 'higher' : comparison.percent < 0 ? 'lower' : 'the same as';
+  const amount = Math.abs(comparison.percent);
+  return `${formatter(comparison.actual)} · ${amount < 1 ? 'about the same as' : `${Math.round(amount)}% ${direction}`} your baseline`;
+}
+
+function TripDebriefCard({ debrief, units }) {
+  const { actual, baseline, comparisons, plan } = debrief;
+  return (
+    <>
+      <SectionLabel>TRIP DEBRIEF</SectionLabel>
+      <Card style={styles.tripDebriefCard}>
+        <View style={styles.tripDebriefHead}>
+          <View style={styles.tripDebriefMark}><Text style={styles.tripDebriefMarkText}>DMZ</Text></View>
+          <View style={styles.tripCardCopy}>
+            <Text style={styles.detailCardTitle}>What this trip added</Text>
+            <Text style={styles.tripDebriefEvidence}>{debrief.evidence}</Text>
+          </View>
+        </View>
+        {plan ? <DetailRow label="Matched plan" value={plan.title} /> : null}
+        {plan ? <DetailRow label="Plan vs. actual" value={plan.dives ? `${actual.dives} logged · ${plan.dives} planned` : `${actual.dives} logged · no planned count`} /> : null}
+        {plan?.targetDepthMeters != null && actual.maxDepth != null ? <DetailRow label="Depth plan" value={`${formatDepth(actual.maxDepth, units.depthUnit)} actual max · ${formatDepth(plan.targetDepthMeters, units.depthUnit)} target`} /> : null}
+        {plan?.bottomTimeMinutes != null && actual.dives ? <DetailRow label="Time plan" value={`${formatDuration(actual.durationSeconds / actual.dives)} average · ${Math.round(plan.bottomTimeMinutes)} min target`} /> : null}
+        {comparisons.sac ? <DetailRow label="SAC vs. baseline" value={comparisonLabel(comparisons.sac, (value) => `${formatPressure(value, units.pressureUnit)}/min`)} /> : null}
+        {comparisons.depth ? <DetailRow label="Depth vs. baseline" value={comparisonLabel(comparisons.depth, (value) => formatDepth(value, units.depthUnit))} /> : null}
+        {comparisons.temperature ? <DetailRow label="Temperature vs. baseline" value={comparisonLabel(comparisons.temperature, (value) => formatTemperature(value, units.temperatureUnit))} /> : null}
+        <DetailRow label="Transmitter coverage" value={`${actual.transmitterDives} of ${actual.dives} dives`} />
+        <DetailRow label="Fast-ascent dives" value={String(actual.fastAscentDives)} />
+        {baseline.diveCount ? <DetailRow label="Personal baseline" value={`${baseline.confidence.label} · ${baseline.diveCount} earlier ${baseline.scope === 'site' ? 'site' : 'personal'} ${baseline.diveCount === 1 ? 'dive' : 'dives'}`} /> : baseline.manualFields.length ? <DetailRow label="Personal baseline" value="Starting values · personal setup answers" /> : null}
+        <Text style={styles.tripDebriefNote}>Comparisons describe recorded data; they do not diagnose fitness, decompression stress, or whether a dive was safe.</Text>
+      </Card>
+    </>
+  );
+}
+
+function TripDetailView({ trip, units, getDive, onOpenDive, allRows, manualBaseline }) {
+  const [fullRows, setFullRows] = useState(null);
+  const [matchedPlan, setMatchedPlan] = useState(null);
+  useEffect(() => {
+    let active = true;
+    setFullRows(null);
+    setMatchedPlan(null);
+    if (!trip) return () => { active = false; };
+    Promise.all([
+      Promise.all(trip.rows.map((row) => getDive(row.id))),
+      loadPlannerState().catch(() => ({ plans: [] })),
+    ])
+      .then(([bundles, planner]) => {
+        if (!active) return;
+        setFullRows(bundles.map((bundle, index) => (
+          bundle?.dive ? indexRowFromDive(bundle.dive, bundle.logs) : trip.rows[index]
+        )));
+        setMatchedPlan(matchPlanToTrip(trip, planner.plans));
+      })
+      .catch(() => { if (active) setFullRows(trip.rows); });
+    return () => { active = false; };
+  }, [getDive, trip]);
+  if (!trip) return null;
+  const statRows = fullRows || trip.rows;
+  const stats = computeDiveLogStats(statRows);
+  const trends = computeDiveTrends(statRows);
+  const debrief = fullRows ? buildTripDebrief(fullRows, allRows, matchedPlan, manualBaseline) : null;
+  return (
+    <>
+      <View style={styles.tripDetailHead}>
+        <Text style={styles.tripDate}>{formatTripDateRange(trip.startTime, trip.endTime)}</Text>
+        <Text style={styles.tripDetailTitle}>{trip.name}</Text>
+        <Text style={styles.tripMeta}>{`${trip.rows.length} ${trip.rows.length === 1 ? 'dive' : 'dives'} across ${trip.diveDays} ${trip.diveDays === 1 ? 'day' : 'days'}`}</Text>
+      </View>
+      {fullRows ? (
+        <>
+          <TripDebriefCard debrief={debrief} units={units} />
+          <StatsView
+            stats={stats}
+            trends={trends}
+            units={units}
+            title="This trip, measured."
+            showHousekeeping={false}
+          />
+        </>
+      ) : (
+        <View style={styles.tripStatsLoading}>
+          <ActivityIndicator color={colors.cyan} size="small" />
+          <Text style={styles.tripStatsLoadingText}>Reading computer logs…</Text>
+        </View>
+      )}
+      <SectionLabel>DIVES ON THIS TRIP</SectionLabel>
+      <View style={styles.diveList}>
+        {trip.rows.map((row, index) => (
+          <DiveListCard
+            key={row.id}
+            row={row}
+            units={units}
+            last={index === trip.rows.length - 1}
+            onPress={() => onOpenDive(row.id)}
+          />
+        ))}
+      </View>
     </>
   );
 }
@@ -1478,8 +1850,17 @@ function KeyStats({ water, phys, temperatures, mix, pressure, sac, units }) {
   );
 }
 
-function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePhoto, chartColors, lineWidth }) {
+function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePhoto, chartColors, focusPhotoId = null, profilePrefs, onProfilePrefsChange }) {
   const [profileFullscreen, setProfileFullscreen] = useState(false);
+  const previousLockRef = useRef(null);
+  const openFullscreen = useCallback(async () => {
+    previousLockRef.current = await openLandscapeProfile();
+    setProfileFullscreen(true);
+  }, []);
+  const closeFullscreen = useCallback(() => {
+    setProfileFullscreen(false);
+    closeLandscapeProfile(previousLockRef.current);
+  }, []);
   const [viewerIndex, setViewerIndex] = useState(null);
   // Physical data comes from the shown computer's log; user's own fields from the Dive.
   const phys = primaryLog || dive;
@@ -1558,6 +1939,24 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
   );
 
   const shownSeries = airSeries.find((s) => s.label === shownName) || airSeries[0] || null;
+  const photoMarkers = useMemo(
+    () => photoProfileMarkers(dive.photos, dive.startTime, samples),
+    [dive.photos, dive.startTime, samples],
+  );
+  // Opened from a gallery photo: show photo previews for this visit, whatever
+  // the saved setting, so that photo's thumbnail is up under the cursor. The
+  // saved setting is left alone; picking a photo mode here replaces the
+  // override and is saved as usual.
+  const [photoModeOverride, setPhotoModeOverride] = useState(focusPhotoId ? 'previews' : null);
+  useEffect(() => { setPhotoModeOverride(focusPhotoId ? 'previews' : null); }, [focusPhotoId, dive.id]);
+  const chartPrefs = useMemo(
+    () => (photoModeOverride && profilePrefs ? { ...profilePrefs, photoMode: photoModeOverride } : profilePrefs),
+    [photoModeOverride, profilePrefs],
+  );
+  const changeChartPrefs = useCallback((patch) => {
+    if (patch.photoMode !== undefined) setPhotoModeOverride(null);
+    onProfilePrefsChange?.(patch);
+  }, [onProfilePrefsChange]);
   const primarySac = shownSeries?.analytics?.sacBarPerMin
     ?? shownSeries?.consumption?.sacBarPerMin
     ?? manualConsumption.sacBarPerMin
@@ -1600,14 +1999,18 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
           <SecondaryButton label="Share dive" onPress={() => setShareOpen(true)} style={styles.shareButton} />
           <ProfileChart
             samples={samples}
+            photoMarkers={photoMarkers}
+            prefs={chartPrefs}
+            onPrefsChange={changeChartPrefs}
+            onOpenPhoto={setViewerIndex}
+            focusPhotoId={focusPhotoId}
             maxDepthMeters={water.maxDepthMeters}
             depthUnit={units.depthUnit}
             pressureUnit={units.pressureUnit}
             temperatureUnit={units.temperatureUnit}
             pressureSeries={airSeries}
-            onExpand={ScreenOrientation ? () => setProfileFullscreen(true) : undefined}
+            onExpand={ScreenOrientation ? openFullscreen : undefined}
             chartColors={chartColors}
-            lineWidth={lineWidth}
           />
         </>
       ) : null}
@@ -1619,13 +2022,15 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
           durationSeconds={phys.durationSeconds}
           maxDepthMeters={water.maxDepthMeters}
           mixLabel={mix ? formatGasLabel(mix) : null}
-          onClose={() => setProfileFullscreen(false)}
+          onClose={closeFullscreen}
+          photoMarkers={photoMarkers}
+          prefs={chartPrefs}
+          onPrefsChange={changeChartPrefs}
           pressureSeries={airSeries}
           samples={samples}
           temperatures={temperatures}
           units={units}
           chartColors={chartColors}
-          lineWidth={lineWidth}
         />
       ) : null}
 
@@ -2616,7 +3021,7 @@ function PhotoGalleryView({
               row={diveById.get(photo.diveId)}
               getDive={getDive}
               units={units}
-              onOpenDive={() => { setViewerIndex(null); onOpenDive(photo.diveId); }}
+              onOpenDive={() => { setViewerIndex(null); onOpenDive(photo.diveId, photo.id); }}
             />
           )}
         />
@@ -2625,7 +3030,7 @@ function PhotoGalleryView({
   );
 }
 
-export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings = () => {}, initialDiveId = null, initialAction = null, initialFolder = null }) {
+export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () => {}, onBack, onOpenSettings = () => {}, initialDiveId = null, initialAction = null, initialFolder = null }) {
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
@@ -2770,12 +3175,31 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   }), [appSettings.depthUnit, appSettings.pressureUnit, appSettings.temperatureUnit, appSettings.gasVolumeUnit]);
   const chartColors = appSettings.profileColors || DEFAULT_PROFILE_COLORS;
   const lineWidth = appSettings.profileLineWidth || 2.75;
+  // Everything the interactive profile lets the diver choose, as one object.
+  // Saved in app settings so the inline and full-screen charts always agree.
+  const profilePrefs = useMemo(() => ({
+    ...DEFAULT_PROFILE_DISPLAY,
+    ...appSettings.profileDisplay,
+    lineWidth,
+    photoMode: appSettings.profilePhotoMode || 'previews',
+  }), [appSettings.profileDisplay, appSettings.profilePhotoMode, lineWidth]);
+  const changeProfilePrefs = useCallback((patch) => onChangeSettings((current) => {
+    const { lineWidth: nextLineWidth, photoMode: nextPhotoMode, ...display } = patch;
+    return {
+      ...current,
+      ...(nextLineWidth !== undefined ? { profileLineWidth: nextLineWidth } : {}),
+      ...(nextPhotoMode !== undefined ? { profilePhotoMode: nextPhotoMode } : {}),
+      profileDisplay: { ...current.profileDisplay, ...display },
+    };
+  }), [onChangeSettings]);
 
   const libdcVersion = useMemo(() => getLibdivecomputerVersion(), []);
 
   const [view, setView] = useState(initialDiveId ? 'detail' : 'list');
   const [folderKey, setFolderKey] = useState(null);
   const [selectedId, setSelectedId] = useState(initialDiveId);
+  const [selectedTripId, setSelectedTripId] = useState(null);
+  const [detailReturnView, setDetailReturnView] = useState(null);
   const [selectMode, setSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState(() => new Set());
   const [photoImportReview, setPhotoImportReview] = useState(null);
@@ -2791,12 +3215,54 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
     () => folders.find((f) => f.key === folderKey) || null,
     [folders, folderKey],
   );
+  const trips = useMemo(() => deriveDiveTrips(rows), [rows]);
+  const selectedTrip = useMemo(
+    () => trips.find((trip) => trip.id === selectedTripId) || null,
+    [selectedTripId, trips],
+  );
+  // One ScrollView hosts the logbook's lightweight routes. Keep an independent
+  // offset per route so a newly opened trip/detail starts at zero while Back can
+  // restore the list the diver was browsing instead of leaking one page's
+  // scroll position into another.
+  const contentScrollRef = useRef(null);
+  const scrollOffsetsRef = useRef(new Map());
+  const scrollRouteKey = view === 'trip'
+    ? `trip:${selectedTripId || ''}`
+    : view === 'detail'
+      ? `detail:${selectedId || ''}`
+      : view === 'list'
+        ? `list:${folderKey || 'home'}`
+        : view;
+  const activeScrollRouteRef = useRef(scrollRouteKey);
+  useEffect(() => {
+    activeScrollRouteRef.current = scrollRouteKey;
+    const frame = requestAnimationFrame(() => {
+      contentScrollRef.current?.scrollTo({
+        y: scrollOffsetsRef.current.get(scrollRouteKey) || 0,
+        animated: false,
+      });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [scrollRouteKey]);
+  const rememberScrollOffset = useCallback((event) => {
+    scrollOffsetsRef.current.set(activeScrollRouteRef.current, event.nativeEvent.contentOffset.y);
+  }, []);
   const [filter, setFilter] = useState(DEFAULT_DIVE_FILTER);
   const [filterOpen, setFilterOpen] = useState(false);
+  // What is in the search box, as typed. The filter keeps a trimmed copy;
+  // feeding that back into the box would swallow every space as it is typed.
+  const [searchText, setSearchText] = useState('');
   const applyFilter = useCallback((patch) => {
     setFilter((current) => sanitizeDiveFilter({ ...current, ...patch }));
   }, []);
-  const clearFilter = useCallback(() => setFilter(DEFAULT_DIVE_FILTER), []);
+  const changeSearchText = useCallback((text) => {
+    setSearchText(text);
+    applyFilter({ text });
+  }, [applyFilter]);
+  const clearFilter = useCallback(() => {
+    setSearchText('');
+    setFilter(DEFAULT_DIVE_FILTER);
+  }, []);
 
   const { setSort, sort } = useDiveListSort();
 
@@ -3121,15 +3587,25 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
   const openList = useCallback(() => {
     setView('list');
     setSelectedId(null);
+    setDetailReturnView(null);
     setRecord(null);
     setLogs([]);
     setForm(null);
     setFormError('');
   }, []);
 
-  const openDetail = useCallback((id) => {
+  // The photo a dive was opened from (gallery), so its pin starts out shown.
+  const [focusPhotoId, setFocusPhotoId] = useState(null);
+  const openDetail = useCallback((id, returnView = null, photoId = null) => {
+    setFocusPhotoId(photoId);
     setSelectedId(id);
+    setDetailReturnView(returnView);
     setView('detail');
+  }, []);
+
+  const openTrip = useCallback((id) => {
+    setSelectedTripId(id);
+    setView('trip');
   }, []);
 
   const openNew = useCallback(() => {
@@ -3163,11 +3639,15 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
       return;
     }
     if (view === 'detail' && initialDiveId && selectedId === initialDiveId) { onBack?.(); return; }
-    if (view === 'detail' || view === 'download' || view === 'stats' || view === 'gallery') { openList(); return; }
+    if (view === 'detail' && detailReturnView === 'trip' && selectedTrip) {
+      setSelectedId(null); setDetailReturnView(null); setView('trip'); return;
+    }
+    if (view === 'trip') { setView('trips'); return; }
+    if (view === 'detail' || view === 'download' || view === 'stats' || view === 'gallery' || view === 'trips') { openList(); return; }
     if (view === 'review') { clearProposals(); openList(); return; }
     if (view === 'list' && activeFolder) { setFolderKey(null); return; }
     onBack?.();
-  }, [activeFolder, clearProposals, exitSelect, initialDiveId, onBack, openList, selectMode, selectedId, view]);
+  }, [activeFolder, clearProposals, detailReturnView, exitSelect, initialDiveId, onBack, openList, selectMode, selectedId, selectedTrip, view]);
 
   const handleSave = useCallback(async () => {
     if (!form) return;
@@ -3238,6 +3718,10 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           ? 'Review matches'
           : view === 'stats'
             ? 'Stats'
+            : view === 'trips'
+              ? 'Trips'
+              : view === 'trip'
+                ? (selectedTrip?.name || 'Trip')
             : view === 'gallery'
               ? 'Dive photos'
               : (view === 'list' && activeFolder ? activeFolder.label : 'Dive Log');
@@ -3267,8 +3751,11 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         </View>
       ) : null}
       <ScrollView
+        ref={contentScrollRef}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom, 16) + 32 }]}
+        onScroll={rememberScrollOffset}
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
       >
         {view !== 'download' && (download.status === 'downloading' || download.status === 'connecting') ? (
@@ -3294,9 +3781,9 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
           </Pressable>
         ) : null}
 
-        {loaded && !selectMode && (view === 'list' || view === 'gallery' || view === 'stats') ? (
+        {loaded && !selectMode && (view === 'list' || view === 'trips' || view === 'gallery' || view === 'stats') ? (
           <LogbookViewTabs
-            active={view === 'gallery' ? 'gallery' : view === 'stats' ? 'stats' : 'dives'}
+            active={view === 'trips' ? 'trips' : view === 'gallery' ? 'gallery' : view === 'stats' ? 'stats' : 'dives'}
             onChange={(next) => {
               if (next === 'dives') openList();
               else setView(next);
@@ -3384,12 +3871,12 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
                       autoCapitalize="none"
                       autoCorrect={false}
                       clearButtonMode="while-editing"
-                      onChangeText={(text) => applyFilter({ text })}
-                      placeholder="Search site, buddy, tag, notes"
+                      onChangeText={changeSearchText}
+                      placeholder="Search site, buddy, tag, notes, date"
                       placeholderTextColor={colors.faint}
                       returnKeyType="search"
                       style={styles.searchInput}
-                      value={filter.text}
+                      value={searchText}
                     />
                     <View style={styles.toolbarActions}>
                       <Pressable
@@ -3517,10 +4004,25 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
             loadGalleryPhotos={loadGalleryPhotos}
             getDive={getDive}
             units={units}
-            onOpenDive={(id) => openDetail(id)}
+            onOpenDive={(id, photoId) => openDetail(id, null, photoId)}
             onImport={beginPhotoImport}
             onRepair={recoverMissingPhotoLinks}
             repairing={photoRepairing}
+          />
+        )}
+
+        {view === 'trips' && (
+          <TripListView trips={trips} units={units} onOpen={openTrip} />
+        )}
+
+        {view === 'trip' && (
+          <TripDetailView
+            allRows={rows}
+            manualBaseline={appSettings.diveBaseline}
+            trip={selectedTrip}
+            units={units}
+            getDive={getDive}
+            onOpenDive={(id) => openDetail(id, 'trip')}
           />
         )}
 
@@ -3641,7 +4143,7 @@ export default function DiveLogScreen({ appSettings = {}, onBack, onOpenSettings
         {view === 'detail' && (
           record ? (
             <>
-              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} onRemovePhoto={handleRemovePhoto} chartColors={chartColors} lineWidth={lineWidth} />
+              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} onRemovePhoto={handleRemovePhoto} chartColors={chartColors} focusPhotoId={focusPhotoId} profilePrefs={profilePrefs} onProfilePrefsChange={changeProfilePrefs} />
               <View style={styles.detailActions}>
                 <SecondaryButton label="Edit" onPress={openEdit} style={styles.detailActionButton} />
                 <SecondaryButton label="Export" onPress={() => chooseExportFormat([record.id])} style={styles.detailActionButton} />
@@ -3824,6 +4326,28 @@ const styles = StyleSheet.create({
   trendGood: { color: colors.good, fontSize: 12, fontWeight: '800' },
   trendBad: { color: colors.warning, fontSize: 12, fontWeight: '800' },
   trendFlat: { color: colors.faint, fontSize: 12, fontWeight: '700' },
+
+  tripList: { gap: 10, marginBottom: spacing.lg },
+  tripCard: {
+    alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.line,
+    borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', minHeight: 94,
+    paddingHorizontal: 14, paddingVertical: 13,
+  },
+  tripCardCopy: { flex: 1, minWidth: 0 },
+  tripDate: { color: colors.cyan, fontSize: 11, fontWeight: '900', letterSpacing: 0.7, textTransform: 'uppercase' },
+  tripName: { color: colors.text, fontSize: 18, fontWeight: '900', marginTop: 5 },
+  tripMeta: { color: colors.muted, fontSize: 12, fontWeight: '600', lineHeight: 17, marginTop: 5 },
+  tripChevron: { color: colors.cyan, fontSize: 26, fontWeight: '300', marginLeft: 12 },
+  tripDetailHead: { marginBottom: spacing.lg },
+  tripDetailTitle: { color: colors.text, fontSize: 28, fontWeight: '900', letterSpacing: -0.6, marginTop: 5 },
+  tripStatsLoading: { alignItems: 'center', gap: 10, justifyContent: 'center', minHeight: 150 },
+  tripStatsLoadingText: { color: colors.muted, fontSize: 12, fontWeight: '700' },
+  tripDebriefCard: { marginBottom: spacing.lg, overflow: 'hidden' },
+  tripDebriefHead: { alignItems: 'center', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', gap: 12, paddingBottom: 13 },
+  tripDebriefMark: { alignItems: 'center', backgroundColor: 'rgba(112,221,246,0.12)', borderColor: `${colors.cyan}55`, borderRadius: 12, borderWidth: 1, height: 42, justifyContent: 'center', width: 42 },
+  tripDebriefMarkText: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 0.8 },
+  tripDebriefEvidence: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 3 },
+  tripDebriefNote: { color: colors.faint, fontSize: 10, lineHeight: 15, paddingTop: 11 },
 
   // dive rows — a single clipped surface container, hairline-separated rows
   diveList: {
@@ -4017,34 +4541,40 @@ const styles = StyleSheet.create({
   profileHeaderActions: { alignItems: 'center', flexDirection: 'row', gap: 10 },
   profileEyebrow: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.3 },
   profileTitle: { color: colors.text, fontSize: 17, fontWeight: '900', marginTop: 3 },
-  profileDuration: { color: colors.muted, fontSize: 11, fontWeight: '800', marginTop: 3 },
   expandButton: { alignItems: 'center', backgroundColor: 'rgba(112,221,246,.1)', borderColor: colors.lineStrong, borderRadius: radii.sm, borderWidth: 1, height: 34, justifyContent: 'center', width: 38 },
   expandIcon: { color: colors.cyan, fontSize: 21, fontWeight: '800', lineHeight: 23 },
-  scrubBar: { backgroundColor: 'rgba(2,10,18,.52)', borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', marginTop: 2, overflow: 'hidden' },
-  scrubBarFullscreen: { marginTop: 0 },
-  overlayControls: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 7, marginBottom: 7 },
-  overlayControlsLabel: { color: colors.faint, fontSize: 8, fontWeight: '900', letterSpacing: 0.8, marginRight: 2 },
-  overlayToggle: { alignItems: 'center', backgroundColor: 'rgba(2,10,18,.4)', borderColor: colors.line, borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', gap: 5, paddingHorizontal: 9, paddingVertical: 5 },
-  overlayToggleActive: { backgroundColor: 'rgba(112,221,246,.1)', borderColor: colors.lineStrong },
-  overlayDot: { borderRadius: 3, height: 6, width: 6 },
-  overlayToggleText: { color: colors.faint, fontSize: 9, fontWeight: '800' },
-  overlayToggleTextActive: { color: colors.text },
-  scrubValue: { flex: 1, minWidth: 0, paddingHorizontal: 9, paddingVertical: 9 },
-  scrubValueCompact: { paddingHorizontal: 7, paddingVertical: 6 },
-  scrubValueLabel: { color: colors.faint, fontSize: 8, fontWeight: '900', letterSpacing: 0.7, textTransform: 'uppercase' },
-  scrubValueText: { fontSize: 15, fontWeight: '900', marginTop: 3 },
   scrubHint: { color: colors.faint, fontSize: 9, marginBottom: 2, marginTop: 6, textAlign: 'center' },
   chartPlot: { marginTop: 4 },
+  readout: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginBottom: 2, marginTop: 2 },
+  readoutCell: { backgroundColor: 'rgba(2,10,18,.52)', borderColor: colors.line, borderLeftWidth: 3, borderRadius: radii.sm, borderWidth: 1, paddingHorizontal: 8, paddingVertical: 7 },
+  readoutCellFullscreen: { paddingVertical: 5 },
+  readoutLabel: { color: colors.faint, fontSize: 8, fontWeight: '900', letterSpacing: 0.7, textTransform: 'uppercase' },
+  readoutValue: { color: colors.text, fontSize: 16, fontVariant: ['tabular-nums'], fontWeight: '900', marginTop: 2 },
+  readoutValueFullscreen: { fontSize: 14 },
+  readoutValueIdle: { color: colors.muted },
+  displayPanel: { borderTopColor: colors.line, borderTopWidth: 1, gap: 9, marginTop: 6, paddingTop: 10 },
+  displayPanelHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
+  displayPanelTitle: { color: colors.faint, fontSize: 8, fontWeight: '900', letterSpacing: 1 },
+  displayCustomize: { color: colors.cyan, fontSize: 11, fontWeight: '800' },
+  displayChips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
+  displayChip: { alignItems: 'center', backgroundColor: 'rgba(2,10,18,.4)', borderColor: colors.line, borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', gap: 6, paddingHorizontal: 10, paddingVertical: 6 },
+  displayChipOn: { backgroundColor: 'rgba(112,221,246,.1)', borderColor: colors.lineStrong },
+  displaySwatch: { borderRadius: 2, height: 3, width: 14 },
+  displayChipText: { color: colors.faint, fontSize: 11, fontWeight: '800' },
+  displayChipTextOn: { color: colors.text },
+  displayStyleRows: { gap: 9 },
+  displayRow: { alignItems: 'center', flexDirection: 'row', gap: 10, justifyContent: 'space-between' },
+  displayRowLabel: { color: colors.muted, fontSize: 11, fontWeight: '800' },
+  displayStripFullscreen: { alignItems: 'center', gap: 8, paddingTop: 4 },
+  chartPlotWrap: { position: 'relative' },
+  photoPinPreview: { backgroundColor: colors.background, borderColor: colors.white, borderRadius: radii.sm, borderWidth: 2, marginTop: 4, overflow: 'hidden', position: 'absolute' },
+  photoPinImage: { height: '100%', width: '100%' },
+  photoModeSegments: { borderColor: colors.line, borderRadius: radii.sm, borderWidth: 1, flexDirection: 'row', overflow: 'hidden' },
+  photoModeSegment: { paddingHorizontal: 7, paddingVertical: 3 },
+  photoModeSegmentOn: { backgroundColor: colors.line },
+  photoModeText: { color: colors.faint, fontSize: 10, fontWeight: '700' },
+  photoModeTextOn: { color: colors.text },
   chartPlotFullscreen: { alignSelf: 'center' },
-  pressureReadouts: { borderTopColor: colors.line, borderTopWidth: 1, gap: 5, marginTop: 5, paddingTop: 8 },
-  pressureReadout: { alignItems: 'center', flexDirection: 'row', gap: 6, minHeight: 20 },
-  pressureDot: { borderRadius: 3, height: 6, width: 6 },
-  pressureName: { color: colors.muted, flex: 1, fontSize: 10, fontWeight: '700' },
-  pressureValue: { fontSize: 11, fontWeight: '900' },
-  chartLegend: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 7 },
-  legendItem: { alignItems: 'center', flexDirection: 'row', flexShrink: 1, gap: 5 },
-  legendSwatch: { borderRadius: 2, height: 3, width: 14 },
-  legendText: { color: colors.muted, flexShrink: 1, fontSize: 10, fontWeight: '700' },
   fullscreenProfile: { backgroundColor: colors.background, flex: 1 },
   // No flex here: this is the sole child of a column-direction parent
   // (profileHeaderDetails) with no fixed height. `flex: 1` implies

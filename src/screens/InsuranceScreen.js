@@ -5,19 +5,23 @@ import MenuPage from '../components/MenuPage';
 import { PrimaryButton } from '../components/Ui';
 import { callNumber } from '../features/insurance/openDocument';
 import PolicyEditor from '../features/insurance/PolicyEditor';
-import { insuranceTypeLabel, policyStatus } from '../features/insurance/model';
+import { insuranceTypeLabel, policyStatus, policyTermForDate, renewalPeriodLabel } from '../features/insurance/model';
 import useInsurance from '../features/insurance/useInsurance';
 import { formatDay, todayString } from '../features/planner/model';
 import { colors, radii, spacing } from '../theme';
 
 const TONES = { good: colors.good, warning: colors.warning, danger: colors.danger, info: colors.cyan };
 
-export function PolicyCard({ policy, today, onPress, compact = false }) {
+export function PolicyCard({ policy, today, coverageDate = today, onPress, compact = false }) {
   const status = policyStatus(policy, today);
   const tone = TONES[status.tone];
-  const dates = policy.startDate || policy.endDate
-    ? [policy.startDate ? formatDay(policy.startDate, { year: true }) : '', policy.endDate ? formatDay(policy.endDate, { year: true }) : policy.autoRenews ? 'renews' : ''].filter(Boolean).join(' – ')
-    : '';
+  const term = policyTermForDate(policy, coverageDate);
+  const termRange = [term.startDate ? formatDay(term.startDate, { year: true }) : '', term.endDate ? formatDay(term.endDate, { year: true }) : ''].filter(Boolean).join(' – ');
+  const dates = policy.autoRenews
+    ? [`${coverageDate !== today ? 'Trip term' : 'Current term'}${termRange ? `: ${termRange}` : ''}`, renewalPeriodLabel(policy.renewalMonths)].filter(Boolean).join(' · ')
+    : policy.startDate || policy.endDate
+      ? [policy.startDate ? formatDay(policy.startDate, { year: true }) : '', policy.endDate ? formatDay(policy.endDate, { year: true }) : ''].filter(Boolean).join(' – ')
+      : '';
   return (
     <Pressable accessibilityRole="button" accessibilityLabel={`${insuranceTypeLabel(policy.type)} insurance, ${policy.provider}, ${status.label}`} disabled={!onPress} onPress={onPress} style={({ pressed }) => [styles.card, compact && styles.cardCompact, pressed && styles.pressed]}>
       <View style={styles.cardTop}>
@@ -46,7 +50,7 @@ export default function InsuranceScreen({ onBack }) {
   const today = todayString();
   const current = insurance.policies.filter((policy) => policyStatus(policy, today).key !== 'expired');
   const expired = insurance.policies.filter((policy) => policyStatus(policy, today).key === 'expired');
-  const byEnd = (a, b) => (a.endDate || '9999').localeCompare(b.endDate || '9999');
+  const byEnd = (a, b) => (policyTermForDate(a, today).endDate || '9999').localeCompare(policyTermForDate(b, today).endDate || '9999');
 
   return (
     <MenuPage backLabel="Account" onBack={onBack} subtitle="Dive accident, travel, liability and equipment cover — details and documents kept on this phone, ready for your trips." title="Insurance">

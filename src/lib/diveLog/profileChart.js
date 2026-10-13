@@ -23,6 +23,7 @@ const EMPTY = Object.freeze({
   durationSeconds: 0,
   maxDepthMeters: 0,
   points: [],
+  markers: [],
   pressurePath: '',
   pressureTicks: [],
   pressureRange: null,
@@ -149,6 +150,17 @@ function oxygenSeries(rows, xFn, safeHeight) {
   };
 }
 
+// Linear depth at `t` between the two samples around it (samples sorted by t).
+function depthAtSeconds(rows, t) {
+  const hi = rows.findIndex((row) => row.t >= t);
+  if (hi === -1) return rows[rows.length - 1].depth;
+  if (hi === 0) return rows[0].depth;
+  const a = rows[hi - 1];
+  const b = rows[hi];
+  const span = b.t - a.t;
+  return span > 0 ? a.depth + ((b.depth - a.depth) * (t - a.t)) / span : b.depth;
+}
+
 export function buildLogProfileGeometry(samples, width, height, options = {}) {
   const safeWidth = Math.max(1, finiteNumber(width, 1));
   const safeHeight = Math.max(1, finiteNumber(height, 1));
@@ -185,9 +197,13 @@ export function buildLogProfileGeometry(samples, width, height, options = {}) {
     y: y(sample.depth),
   }));
 
-  const linePath = points
-    .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
-    .join(' ');
+  // 'smooth' draws the depth trace as a curve through the samples instead of
+  // straight segments between them — a display choice; the points are the same.
+  const linePath = options.curve === 'smooth'
+    ? smoothPath(points)
+    : points
+      .map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x.toFixed(2)} ${point.y.toFixed(2)}`)
+      .join(' ');
   // Shade the water column above the diver: curve down to the surface line.
   const areaPath = `${linePath} L ${points[points.length - 1].x.toFixed(2)} 0 L ${points[0].x.toFixed(2)} 0 Z`;
 
@@ -221,9 +237,21 @@ export function buildLogProfileGeometry(samples, width, height, options = {}) {
       .join(' ');
   };
 
+  // Photo pins (or any other timed marker): placed on the depth trace at their
+  // own time, so a pin sits exactly where the diver was when it happened.
+  // Markers before or after the profile are dropped, not stacked on its ends.
+  const markers = (Array.isArray(options.markers) ? options.markers : [])
+    .filter((marker) => Number.isFinite(marker?.t) && marker.t >= originSeconds && marker.t <= endSeconds)
+    .sort((a, b) => a.t - b.t)
+    .map((marker) => {
+      const depth = depthAtSeconds(clean, marker.t);
+      return { ...marker, depth, x: x(marker.t), y: y(depth) };
+    });
+
   return {
     linePath,
     areaPath,
+    markers,
     depthTicks,
     timeTicks,
     durationSeconds,

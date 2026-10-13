@@ -1,4 +1,4 @@
-import { recommendDiveGear } from '../gearChecklist/diveAdvice';
+import { hasTemperatureGearPreferences, normalizeAdvicePreferences, recommendDiveGear } from '../gearChecklist/diveAdvice';
 
 export const ATLAS_DIVE_MODES = [
   { id: 'recreational', label: 'Recreational', use: 'Open water' },
@@ -55,12 +55,29 @@ export function organizeAtlasGear(items, { site = {}, profile = null } = {}) {
 // The WebView receives only the recommended packing result, never the full Gear Locker inventory.
 export function buildAtlasGearSuggestion(state, preferences, { mode, site, profile = null, inland = null, temperatureC = null } = {}) {
   const normalizedMode = normalizeAtlasDiveMode(mode);
-  const result = recommendDiveGear(state, preferences, { use: atlasDiveUse(normalizedMode), site, inland, temperatureC });
+  const normalizedPreferences = normalizeAdvicePreferences(preferences);
+  const result = recommendDiveGear(state, normalizedPreferences, { use: atlasDiveUse(normalizedMode), site, inland, temperatureC });
   const entry = result.ranked[0];
   const groups = entry ? organizeAtlasGear(entry.items.map(item => ({ id: item.id, name: item.name, category: item.category })), { site, profile }) : null;
+  const rangeMatches = item => {
+    const range = normalizedPreferences.suits[item?.id];
+    return item && result.advice.temperatureC != null && range?.minC != null && range?.maxC != null
+      && result.advice.temperatureC >= range.minC && result.advice.temperatureC <= range.maxC;
+  };
+  const personalSuit = rangeMatches(entry?.suit) ? entry.suit : result.suits.find(rangeMatches);
+  const matchedCombination = entry?.combination || result.combination;
+  const personalItems = matchedCombination
+    ? matchedCombination.itemIds.map(id => state.items.find(item => item.id === id)).filter(Boolean)
+    : personalSuit ? [personalSuit] : [];
+  const personalizedExposure = Boolean(matchedCombination || personalItems.length);
+  const personalLabel = matchedCombination?.name || personalItems.map(item => item.name).join(' + ');
   return {
     mode: normalizedMode,
-    exposureLabel: result.advice.label,
+    exposureLabel: personalizedExposure ? personalLabel : result.advice.label,
+    defaultExposureLabel: result.advice.label,
+    personalizedExposure,
+    hasTemperaturePreferences: hasTemperatureGearPreferences(normalizedPreferences),
+    exposureItems: personalItems.map(item => ({ id: item.id, name: item.name, category: item.category })),
     setup: entry ? {
       id: entry.setup.id,
       name: entry.setup.name,

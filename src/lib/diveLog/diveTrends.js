@@ -58,6 +58,7 @@ export function computeDiveTrends(indexRows) {
 
   return {
     diveCount: rows.length,
+    transmitterDiveCount: rows.filter((r) => r.hasTransmitterData).length,
     totalBottomTimeSeconds: rows.reduce((s, r) => s + (r.durationSeconds || 0), 0),
     sac: { points: sac, mean: mean(sac.map((p) => p.value)), trendPerDive: linTrend(sac) },
     rmv: { points: rmv, mean: mean(rmv.map((p) => p.value)) },

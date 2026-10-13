@@ -125,17 +125,113 @@ function inRange(value, range) {
   return true;
 }
 
+// Dates typed into the search box. Matched against the dive's local calendar
+// date — the same one the list shows — so "may 19" finds the dive listed as
+// May 19 whatever time zone it was logged in.
+const MONTH_NAMES = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+
+// "may", "sept", "dec" or a full name; at least three letters so "ma" stays text.
+function monthOf(word) {
+  if (word.length < 3) return null;
+  const index = MONTH_NAMES.findIndex((name) => name.startsWith(word));
+  if (index >= 0) return index + 1;
+  return word === 'sept' ? 9 : null;
+}
+
+const fullYear = (text) => {
+  const value = Number(text);
+  return text.length === 2 ? 2000 + value : value;
+};
+const validDay = (day) => day >= 1 && day <= 31;
+const validMonth = (month) => month >= 1 && month <= 12;
+const isYear = (text) => /^(19|20)\d\d$/.test(text);
+const stripOrdinal = (word) => (/^\d+(st|nd|rd|th)$/.test(word || '') ? word.replace(/\D+$/, '') : word);
+const isDay = (word) => /^\d{1,2}$/.test(word || '') && validDay(Number(word));
+
+/**
+ * Pull date expressions out of a search query.
+ * Understands "may", "may 19", "19 may", "may 19 2024", "may 2024", "2024",
+ * "2024-05-19", "2024-05", "5/19", "5/19/24" and "19/5" (when 19 can't be a month).
+ * Returns the date parts and the words left over for the text search.
+ * A month word on its own is `loose`: it may match the date or the text,
+ * since "Jan" could be a buddy and "March" a site.
+ */
+export function parseSearchDates(text) {
+  const words = String(text || '').toLowerCase().replace(/,/g, ' ').split(/\s+/).filter(Boolean);
+  const dates = [];
+  const rest = [];
+  for (let i = 0; i < words.length; i += 1) {
+    const word = stripOrdinal(words[i]);
+    let match = word.match(/^(\d{4})-(\d{1,2})(?:-(\d{1,2}))?$/);
+    if (match && validMonth(Number(match[2])) && (!match[3] || validDay(Number(match[3])))) {
+      dates.push({ year: Number(match[1]), month: Number(match[2]), day: match[3] ? Number(match[3]) : null });
+      continue;
+    }
+    match = word.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{2}|\d{4}))?$/);
+    if (match) {
+      let [month, day] = [Number(match[1]), Number(match[2])];
+      if (!validMonth(month) && validMonth(day)) [month, day] = [day, month];
+      if (validMonth(month) && validDay(day)) {
+        dates.push({ year: match[3] ? fullYear(match[3]) : null, month, day });
+        continue;
+      }
+    }
+    if (isYear(word)) {
+      dates.push({ year: Number(word), month: null, day: null, loose: true });
+      continue;
+    }
+    const month = monthOf(word);
+    if (month) {
+      const date = { year: null, month, day: null };
+      // "19 may": the day came first and was parked in `rest`.
+      const before = stripOrdinal(words[i - 1]);
+      if (isDay(before) && rest[rest.length - 1] === words[i - 1]) {
+        date.day = Number(before);
+        rest.pop();
+      }
+      const next = stripOrdinal(words[i + 1]);
+      if (date.day === null && isDay(next)) {
+        date.day = Number(next);
+        i += 1;
+      }
+      // "may 19 2024", or "may 19 24" once a day has been given.
+      const after = words[i + 1];
+      if (after && (isYear(after) || (date.day !== null && /^\d\d$/.test(after)))) {
+        date.year = fullYear(after);
+        i += 1;
+      }
+      if (date.day === null && date.year === null) date.loose = word;
+      dates.push(date);
+      continue;
+    }
+    rest.push(words[i]);
+  }
+  return { dates, rest };
+}
+
+function matchesDate(started, date) {
+  if (date.year !== null && started.getFullYear() !== date.year) return false;
+  if (date.month !== null && started.getMonth() + 1 !== date.month) return false;
+  if (date.day !== null && started.getDate() !== date.day) return false;
+  return true;
+}
+
 function matchesText(row, text) {
   if (!text) return true;
   const haystack = typeof row?.search === 'string' ? row.search : '';
-  if (!haystack) return false;
+  const { dates, rest } = parseSearchDates(text);
+  const startMs = Date.parse(row?.startTime);
+  const started = Number.isFinite(startMs) ? new Date(startMs) : null;
+  const datesMatch = dates.every((date) => {
+    if (started && matchesDate(started, date)) return true;
+    // A lone month or year may also just be a word in the site, notes or tags.
+    if (date.loose) return haystack.includes(typeof date.loose === 'string' ? date.loose : String(date.year));
+    return false;
+  });
+  if (!datesMatch) return false;
   // Every whitespace-separated term must appear somewhere: typing more words
   // should narrow the results, not widen them.
-  return text
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean)
-    .every((term) => haystack.includes(term));
+  return rest.every((term) => haystack.includes(term));
 }
 
 function matchesAny(value, selected) {

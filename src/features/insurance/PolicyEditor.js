@@ -4,8 +4,9 @@ import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import DateField from '../../components/DateField';
 import { colors, radii } from '../../theme';
 import { Chips, EditorSheet, Field, FormLabel, Half, ToggleRow, TwoUp } from '../planner/fields';
-import { INSURANCE_TYPES, createDocumentId, normalizeDocument, normalizePolicy } from './model';
+import { INSURANCE_TYPES, RENEWAL_PERIODS, createDocumentId, normalizeDocument, normalizePolicy, policyTermForDate, renewalPeriodLabel } from './model';
 import { openDocument } from './openDocument';
+import { formatDay, todayString } from '../planner/model';
 
 const TYPE_OPTIONS = INSURANCE_TYPES.map(({ key, label }) => ({ key, label }));
 
@@ -33,6 +34,9 @@ export default function PolicyEditor({ policy, visible, onCancel, onSave, onDele
   if (!draft) return null;
   const set = (patch) => setDraft((current) => ({ ...current, ...patch }));
   const hint = INSURANCE_TYPES.find((type) => type.key === draft.type)?.hint;
+  const currentTerm = policyTermForDate(draft, todayString());
+  const cadence = renewalPeriodLabel(draft.renewalMonths);
+  const renewalCopy = cadence === 'Yearly' ? 'Renews yearly' : `Renews ${cadence.toLowerCase()}`;
 
   const add = async (picker) => {
     try { const documents = await picker(); if (documents.length) set({ documents: [...draft.documents, ...documents] }); }
@@ -44,6 +48,7 @@ export default function PolicyEditor({ policy, visible, onCancel, onSave, onDele
   ]);
   const save = async () => {
     if (!draft.provider.trim() && !draft.policyNumber.trim()) { Alert.alert('Add the provider or policy number', 'Enough to recognise this policy later.'); return; }
+    if (draft.autoRenews && !draft.endDate) { Alert.alert('Add the first term’s end date', 'DMZ Scuba needs it to calculate each renewed coverage period.'); return; }
     setBusy(true);
     try { await onSave(draft); } catch (error) { Alert.alert('Not saved', error?.message || 'Try again.'); } finally { setBusy(false); }
   };
@@ -71,12 +76,21 @@ export default function PolicyEditor({ policy, visible, onCancel, onSave, onDele
       </TwoUp>
       <FormLabel>Coverage</FormLabel>
       <TwoUp>
-        <Half><DateField label="Starts" onChange={(startDate) => set({ startDate, endDate: draft.endDate && draft.endDate < startDate ? '' : draft.endDate })} value={draft.startDate} /></Half>
-        <Half><DateField label="Ends" minimumDate={draft.startDate || undefined} onChange={(endDate) => set({ endDate })} value={draft.endDate} /></Half>
+        <Half><DateField label={draft.autoRenews ? 'First term starts' : 'Starts'} onChange={(startDate) => set({ startDate, endDate: draft.endDate && draft.endDate < startDate ? '' : draft.endDate })} value={draft.startDate} /></Half>
+        <Half><DateField label={draft.autoRenews ? 'First term ends' : 'Ends'} minimumDate={draft.startDate || undefined} onChange={(endDate) => set({ endDate })} value={draft.endDate} /></Half>
       </TwoUp>
       <View style={styles.group}>
-        <ToggleRow body="It renews automatically, so it won’t be flagged as expiring." label="Auto-renews" last onChange={(autoRenews) => set({ autoRenews })} value={draft.autoRenews} />
+        <ToggleRow body="DMZ Scuba advances the coverage dates for readiness checks." label="Auto-renews" last onChange={(autoRenews) => set({ autoRenews })} value={draft.autoRenews} />
       </View>
+      {draft.autoRenews ? (
+        <>
+          <Chips helper="How long each renewed policy term lasts." label="Renewal period" onChange={(renewalMonths) => set({ renewalMonths })} options={RENEWAL_PERIODS} value={draft.renewalMonths} />
+          <View style={styles.renewalSummary}>
+            <Text style={styles.renewalTitle}>{currentTerm.endDate ? `Current term ends ${formatDay(currentTerm.endDate, { year: true })}` : 'Add the first term’s end date'}</Text>
+            <Text style={styles.renewalBody}>{currentTerm.endDate ? `${renewalCopy} · readiness uses this current term automatically.` : 'This is required to calculate future coverage accurately.'}</Text>
+          </View>
+        </>
+      ) : null}
       <Field autoCapitalize="none" helper="The 24/7 emergency or assistance line — shown on your trips, tap to call." keyboardType="phone-pad" label="Emergency / assistance phone" maxLength={60} onChange={(emergencyPhone) => set({ emergencyPhone })} placeholder="+1 919 684 9111" value={draft.emergencyPhone} />
       <Field label="Who’s covered" maxLength={200} onChange={(covered) => set({ covered })} placeholder="Me, or family members" value={draft.covered} />
       <Field label="Coverage limits & notes" maxLength={2000} multiline onChange={(notes) => set({ notes })} placeholder="Medical limit, evacuation, depth limits, excluded activities…" value={draft.notes} />
@@ -102,6 +116,9 @@ export default function PolicyEditor({ policy, visible, onCancel, onSave, onDele
 
 const styles = StyleSheet.create({
   group: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, marginBottom: 14, overflow: 'hidden' },
+  renewalSummary: { backgroundColor: 'rgba(112, 221, 246, 0.08)', borderColor: 'rgba(112, 221, 246, 0.24)', borderRadius: radii.md, borderWidth: 1, marginBottom: 14, padding: 12 },
+  renewalTitle: { color: colors.text, fontSize: 13, fontWeight: '800' },
+  renewalBody: { color: colors.muted, fontSize: 11, lineHeight: 16, marginTop: 3 },
   document: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', gap: 12, marginBottom: 8, minHeight: 56, paddingHorizontal: 12 },
   documentCopy: { flex: 1, paddingVertical: 10 },
   documentName: { color: colors.text, fontSize: 14, fontWeight: '700' },

@@ -5,6 +5,7 @@ import { colors } from '../../theme';
 
 const GLYPHS = {
   flight: 'M3 13.5 21 6l-4.5 15-4.2-6.3L3 13.5Zm9.3 1.2L21 6',
+  drive: 'M5 16V11.5L7 7h10l2 4.5V16M5 16h14M5 16v2h2.5v-2m9 0v2H19v-2M4 11.5h16M8 13.5h.01M16 13.5h.01',
   transfer: 'M5 16.5h14M6.5 16.5 8 11h8l1.5 5.5M5 16.5v2h2.5v-2m9 0v2H19v-2',
   ferry: 'M3 18c2 1.4 4 1.4 6 0s4-1.4 6 0 4 1.4 6 0M5 15l1-5h12l1 5M9.5 10V6.5h5V10',
   stay: 'M3 18V7m0 7h18v4m0-4v-1.5A2.5 2.5 0 0 0 18.5 10H11v4M7 12.5h.01',

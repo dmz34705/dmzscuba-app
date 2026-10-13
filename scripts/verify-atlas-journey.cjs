@@ -3,6 +3,7 @@ const path = require('node:path');
 const { loadSourceModule } = require('./lib/load-source-module.cjs');
 const root = path.resolve(__dirname, '../src');
 const J = loadSourceModule(path.join(root, 'features/oceanAtlas/journey.js'), root);
+const OPERATOR_RECOMMENDATIONS = loadSourceModule(path.join(root, 'features/oceanAtlas/operatorRecommendations.js'), root);
 const { planJourney, resolveDestination, countryCode, journeyDirections } = J;
 const modes = plan => plan.legs.map(leg => leg.mode);
 
@@ -22,15 +23,29 @@ assert.match(decodeURIComponent(mainland.legs[1].url), /origin=Cancún Internati
 assert.deepEqual(modes(planJourney(cozumel, { origin: 'My hotel', arrivalIndex: 1, local: true })), ['LAND', 'DIVE']);
 assert.ok(!mainland.legs.some(leg => leg.url.includes('20.307')), 'Never direct ground navigation to an approximate offshore site.');
 assert.ok(island.base.operators.length >= 3 && island.base.stays.length >= 2 && island.base.operators.some(op => op.source === 'curated'));
+assert.equal(island.base.operators[0].name, 'Dressel Divers', 'A regional DMZ recommendation leads the operator list.');
+assert.ok(island.base.operators[0].recommended && island.base.operators[0].recommendationLabel === 'DMZ Scuba recommended operator');
 assert.equal(resolveDestination({ name: 'Mainland', latitude: 20.5, longitude: -87.3, country: 'Mexico' }).profile, null, 'Mainland sites must not inherit island access.');
 assert.equal(resolveDestination({ id: 'noaa-fknms-test', latitude: 24.5, longitude: -81.8 }).town, 'Key West, Florida');
 const keys = planJourney({ id: 'noaa-fknms-x', name: 'Sombrero Reef', latitude: 24.63, longitude: -81.11, country: 'US' });
 const mapped = keys.base.operators.filter(op => op.distanceKm != null);
 assert.ok(mapped.length > 0 && mapped.every((op, i) => i === 0 || mapped[i - 1].distanceKm <= op.distanceKm), 'OpenStreetMap operators are listed strictly by distance, closest first.');
-assert.ok(keys.base.operators.findIndex(op => op.distanceKm == null) === -1 || keys.base.operators.findIndex(op => op.distanceKm == null) >= mapped.length, 'Sourced local lists follow the distance-ordered operators.');
+const firstCurated = keys.base.operators.findIndex(op => op.source === 'curated');
+assert.ok(firstCurated === -1 || firstCurated >= mapped.length, 'Sourced local lists follow the distance-ordered operators.');
 const tulum = planJourney({ name: 'Cenote test', latitude: 20.2, longitude: -87.46 });
 assert.notEqual(tulum.destination.areaName, 'Cozumel', 'A mainland cenote is not given an island base 60 km away.');
 assert.ok(tulum.base.operators[0].distanceKm < 5, 'Every site gets its nearest mapped operators, not just curated destinations.');
+
+// Editorial operator recommendations use narrow, explicit regional rules.
+const recommendedNames = site => OPERATOR_RECOMMENDATIONS.recommendedOperators(site).map(item => item.name);
+assert.deepEqual(recommendedNames({ name: 'MV Prins Willem V', latitude: 43.02565, longitude: -87.8088, topologies: ['wreck'] }), ['Shipwreck Explorers']);
+assert.deepEqual(recommendedNames({ name: 'Milwaukee reef', latitude: 43.02565, longitude: -87.8088, topologies: ['reef'] }), [], 'Wisconsin recommendation is wreck-only.');
+assert.deepEqual(recommendedNames({ name: 'Michigan wreck', latitude: 43.0, longitude: -86.8, topologies: ['wreck'] }), [], 'The opposite Lake Michigan shore is excluded.');
+assert.deepEqual(recommendedNames({ name: 'Jupiter reef', latitude: 26.95, longitude: -80.05 }), ['Jupiter Dive Center']);
+assert.deepEqual(recommendedNames({ name: 'Tampa Bay reef', latitude: 27.8, longitude: -82.8 }), ['Letts Dive']);
+assert.deepEqual(recommendedNames({ name: 'Palancar Gardens', latitude: 20.3387, longitude: -87.0287, region: 'Cozumel' }), ['Dressel Divers']);
+assert.deepEqual(recommendedNames({ name: 'Playa del Carmen reef', latitude: 20.63, longitude: -87.08, country: 'Mexico' }), [], 'Mainland sites do not inherit the Cozumel recommendation.');
+assert.deepEqual(recommendedNames({ name: 'Richelieu Rock', latitude: 9.36341, longitude: 98.02206 }), ['Khao Lak Scuba Adventures']);
 
 // General engine: no site depends on a profile.
 const dominica = planJourney({ name: 'Champagne', latitude: 15.25, longitude: -61.37, country: 'Dominica', region: 'Caribbean Sea' }, { origin: 'Chicago' });
