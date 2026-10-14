@@ -9,6 +9,7 @@ const ROOT = '@dmz-scuba/account-sync/dev-v1/';
 const DIVE = '@dmz-scuba/dive-log/dive-v2/';
 const LOG = '@dmz-scuba/dive-log/log-v2/';
 const GEAR = '@dmz-scuba/gear-checklist/v1';
+const PLANNER = '@dmz-scuba/planner/v1';
 const listeners = new Set();
 const dataListeners = new Set();
 let owner = null;
@@ -22,7 +23,7 @@ function announce(next) { status = { ...status, ...next }; listeners.forEach((fn
 function changed() { dataListeners.forEach((fn) => fn()); }
 const read = async (key, fallback) => { const raw = await AsyncStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; };
 const emptyGear = () => ({ version: 2, items: [], setups: [], dismissedDeviceKeys: [] });
-const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR;
+const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR || key === PLANNER;
 
 // Each account keeps its own complete on-device vault. Guest records are adopted only once.
 // The journal makes interrupted account switches recoverable without uploading mixed data.
@@ -66,6 +67,8 @@ async function snapshot() {
     for (const data of gear?.[list] || []) records.push({ kind, id: data.id, data, deleted: false });
   }
   if (gear) records.push({ kind: 'preferences', id: 'gear', data: { id: 'gear', dismissedDeviceKeys: gear.dismissedDeviceKeys || [] }, deleted: false });
+  const planner = await read(PLANNER, null);
+  for (const data of planner?.plans || []) records.push({ kind: 'plan', id: data.id, data, deleted: false });
   const priority = await read('@dmz-scuba/dive-log/computer-priority-v1', null);
   if (priority) records.push({ kind: 'preferences', id: 'computer-priority', data: { id: 'computer-priority', value: priority }, deleted: false });
   return records;
@@ -85,6 +88,11 @@ async function apply(record) {
     gear[list] = (gear[list] || []).filter((r) => r.id !== id);
     if (!deleted) gear[list].push({ ...data, ...(kind === 'gear' ? { attachments: existing?.attachments || [] } : {}) });
     await AsyncStorage.setItem(GEAR, JSON.stringify(gear));
+  } else if (kind === 'plan') {
+    const planner = await read(PLANNER, { version: 1, plans: [] });
+    planner.plans = (planner.plans || []).filter((entry) => entry.id !== id);
+    if (!deleted) planner.plans.push(data);
+    await AsyncStorage.setItem(PLANNER, JSON.stringify({ version: 1, plans: planner.plans }));
   } else if (id === 'gear' && !deleted) {
     const gear = await read(GEAR, emptyGear());
     await AsyncStorage.setItem(GEAR, JSON.stringify({ ...gear, dismissedDeviceKeys: data.dismissedDeviceKeys || [] }));
@@ -100,7 +108,7 @@ export async function syncAccountData() {
   const active = () => owner === userId && generation === ticket;
   let applied = false;
   running = (async () => {
-    announce({ state: 'syncing', message: 'Syncing your logbook and gear locker…' });
+    announce({ state: 'syncing', message: 'Syncing your logbook, gear locker, and trip plans…' });
     const state = await read(`${ROOT}state/${userId}`, { records: {}, pending: {}, conflicts: {} });
     const request = (path, options) => syncAccountRequest(path, options, userId);
     const remote = []; let after = '';
@@ -114,7 +122,7 @@ export async function syncAccountData() {
       apply: async (record) => { await apply(record); applied = true; }, current, active, makeId: createId });
     if (!active()) return;
     announce({ state: result.conflicts ? 'conflict' : 'synced', conflicts: result.conflicts,
-      lastSyncedAt: new Date().toISOString(), message: result.conflicts ? `${result.conflicts} changed records need your review. Both versions are saved.` : 'Logbook and gear records are synced to your account.' });
+      lastSyncedAt: new Date().toISOString(), message: result.conflicts ? `${result.conflicts} changed records need your review. Both versions are saved.` : 'Logbook, gear, and trip plans are synced to your account.' });
   })().catch((error) => {
     if (active()) announce({ state: 'error', message: error.message || 'Sync will retry when connected. Your device data is safe.' });
   }).finally(async () => {

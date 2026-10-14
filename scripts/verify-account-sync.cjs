@@ -11,6 +11,7 @@ const challengeSource = fs.readFileSync(path.join(root, 'src', 'components', 'Tu
 const createAccountSource = fs.readFileSync(path.join(root, 'src', 'screens', 'CreateAccountScreen.js'), 'utf8');
 const profileSource = fs.readFileSync(path.join(root, 'src', 'screens', 'ProfileScreen.js'), 'utf8');
 const settingsSource = fs.readFileSync(path.join(root, 'src', 'screens', 'SettingsScreen.js'), 'utf8');
+const dataSyncSource = fs.readFileSync(path.join(root, 'src', 'lib', 'accountDataSync.js'), 'utf8');
 
 assert.match(apiSource, /from 'expo-secure-store'/);
 assert.match(apiSource, /WHEN_UNLOCKED_THIS_DEVICE_ONLY/);
@@ -50,5 +51,8 @@ assert.match(profileSource, /onAddCertification/);
 assert.match(profileSource, /onDeleteCertification/);
 assert.doesNotMatch(profileSource, /app session only|Save profile draft/);
 assert.match(settingsSource, /ACCOUNT SYNC/);
+assert.match(dataSyncSource, /const PLANNER = '@dmz-scuba\/planner\/v1'/);
+assert.match(dataSyncSource, /kind: 'plan'/);
+assert.match(dataSyncSource, /kind === 'plan'/);
 
 console.log('Account login and settings sync checks passed.');
