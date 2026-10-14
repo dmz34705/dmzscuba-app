@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { subscribeAccountData } from '../../lib/accountDataSync';
+import { subscribeAccountData, syncAccountData } from '../../lib/accountDataSync';
 import { loadIndex } from '../../lib/diveLog/storage';
 import { moveFloatingForChecks } from '../gearChecklist/model';
 import { loadGearState, saveGearState } from '../gearChecklist/storage';
@@ -55,6 +55,8 @@ export default function usePlanner({ certifications = null } = {}) {
     const saved = await savePlannerState({ plans: nextPlans });
     setPlans(saved.plans);
     setError('');
+    // Plans are account data too; don't make a diver wait for the periodic sync after editing.
+    void syncAccountData();
     return saved.plans;
   }, []);
 
