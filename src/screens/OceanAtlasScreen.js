@@ -15,6 +15,7 @@ import DiveLogScreen from './DiveLogScreen';
 import JourneySheet from '../features/oceanAtlas/JourneySheet';
 import GearAdviceSheet from '../features/gearChecklist/GearAdviceSheet';
 import { ADVICE_PREFERENCES_KEY } from '../features/gearChecklist/diveAdvice';
+import { subscribeAccountData } from '../lib/accountDataSync';
 import { normalizeAdvicePreferences } from '../features/gearChecklist/diveAdvice';
 import { GEAR_STORAGE_KEY } from '../features/gearChecklist/storage';
 import { normalizeGearState } from '../features/gearChecklist/model';
@@ -92,6 +93,9 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
     setGearAdvice(null);
     loadGearPlanner().then(() => send({ type: 'adviceChanged' }));
   }, [loadGearPlanner, send]);
+  useEffect(() => subscribeAccountData(() => {
+    loadGearPlanner().then(() => send({ type: 'adviceChanged' }));
+  }), [loadGearPlanner, send]);
 
   // Sites the diver pinned (from the planner): shown on the atlas's My sites layer.
   const refreshMySites = useCallback(async () => {

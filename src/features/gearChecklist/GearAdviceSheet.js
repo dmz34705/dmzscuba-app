@@ -10,6 +10,7 @@ import { GEAR_STORAGE_KEY } from './storage';
 import { normalizeGearState } from './model';
 import { ADVICE_DEFAULTS, ADVICE_PREFERENCES_KEY, DIVE_USES, advicePreferenceError, coldDiverTemplate, normalizeAdvicePreferences, orderedTemperatureRange, recommendDiveGear } from './diveAdvice';
 import { buildDiveDayAdvice } from '../oceanAtlas/diveDayAdvice';
+import { syncAccountData } from '../../lib/accountDataSync';
 
 const KEY = ADVICE_PREFERENCES_KEY;
 const FormField = props => <AccountFormField {...props} inputAccessoryViewID={NUMBER_KEYBOARD_ACCESSORY_ID} />;
@@ -26,7 +27,7 @@ const TemperatureRangeFields = ({ coldest, warmest, onChange, tempUnit, upperExc
   </>;
 };
 
-// Personal ranges stay native and on-device; no inventory is sent into the map WebView.
+// Personal ranges sync through the account vault; no inventory is sent into the map WebView.
 export default function GearAdviceSheet({ context = {}, preferencesOnly = false, appSettings = {}, onClose }) {
   const insets = useSafeAreaInsets();
   const [state, setState] = useState(null), [prefs, setPrefs] = useState(ADVICE_DEFAULTS);
@@ -60,7 +61,7 @@ export default function GearAdviceSheet({ context = {}, preferencesOnly = false,
     const issue = advicePreferenceError(next);
     if (issue) { setError(issue); return; }
     setSaving(true);
-    try { await AsyncStorage.setItem(KEY, JSON.stringify(next)); setPrefs(next); setEditing(false); setError(''); Keyboard.dismiss(); if (preferencesOnly) onClose(); }
+    try { await AsyncStorage.setItem(KEY, JSON.stringify(next)); syncAccountData(); setPrefs(next); setEditing(false); setError(''); Keyboard.dismiss(); if (preferencesOnly) onClose(); }
     catch { setError('Couldn’t save. Your previous preferences are unchanged; please retry.'); }
     finally { setSaving(false); }
   };

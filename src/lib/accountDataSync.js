@@ -10,6 +10,7 @@ const DIVE = '@dmz-scuba/dive-log/dive-v2/';
 const LOG = '@dmz-scuba/dive-log/log-v2/';
 const GEAR = '@dmz-scuba/gear-checklist/v1';
 const PLANNER = '@dmz-scuba/planner/v1';
+const ADVICE = '@dmz-scuba/gear-advice/v1';
 const listeners = new Set();
 const dataListeners = new Set();
 let owner = null;
@@ -23,7 +24,7 @@ function announce(next) { status = { ...status, ...next }; listeners.forEach((fn
 function changed() { dataListeners.forEach((fn) => fn()); }
 const read = async (key, fallback) => { const raw = await AsyncStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; };
 const emptyGear = () => ({ version: 2, items: [], setups: [], dismissedDeviceKeys: [] });
-const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR || key === PLANNER;
+const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR || key === PLANNER || key === ADVICE;
 
 // Each account keeps its own complete on-device vault. Guest records are adopted only once.
 // The journal makes interrupted account switches recoverable without uploading mixed data.
@@ -68,6 +69,8 @@ async function snapshot() {
   }
   if (gear) records.push({ kind: 'preferences', id: 'gear', data: { id: 'gear', dismissedDeviceKeys: gear.dismissedDeviceKeys || [] }, deleted: false });
   const planner = await read(PLANNER, null);
+  const advice = await read(ADVICE, null);
+  if (advice) records.push({ kind: 'preferences', id: 'gear-advice', data: { id: 'gear-advice', value: advice }, deleted: false });
   for (const data of planner?.plans || []) records.push({ kind: 'plan', id: data.id, data, deleted: false });
   const priority = await read('@dmz-scuba/dive-log/computer-priority-v1', null);
   if (priority) records.push({ kind: 'preferences', id: 'computer-priority', data: { id: 'computer-priority', value: priority }, deleted: false });
@@ -93,6 +96,9 @@ async function apply(record) {
     planner.plans = (planner.plans || []).filter((entry) => entry.id !== id);
     if (!deleted) planner.plans.push(data);
     await AsyncStorage.setItem(PLANNER, JSON.stringify({ version: 1, plans: planner.plans }));
+  } else if (kind === 'preferences' && id === 'gear-advice') {
+    if (deleted) await AsyncStorage.removeItem(ADVICE);
+    else await AsyncStorage.setItem(ADVICE, JSON.stringify(data.value || {}));
   } else if (id === 'gear' && !deleted) {
     const gear = await read(GEAR, emptyGear());
     await AsyncStorage.setItem(GEAR, JSON.stringify({ ...gear, dismissedDeviceKeys: data.dismissedDeviceKeys || [] }));
@@ -113,7 +119,7 @@ export async function syncAccountData() {
     const request = (path, options) => syncAccountRequest(path, options, userId);
     const remote = []; let after = '';
     do {
-      const page = await request(after ? `?after=${encodeURIComponent(after)}` : '');
+      const page = await request(`?advice=1${after ? `&after=${encodeURIComponent(after)}` : ''}`);
       remote.push(...page.records); after = page.next;
     } while (after && active());
     if (!active()) return;
