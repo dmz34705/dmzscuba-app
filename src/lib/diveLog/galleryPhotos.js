@@ -36,6 +36,47 @@ export function galleryColumnsForPinch(startColumns, scale) {
   return clampColumns(start - steps);
 }
 
+// The most gallery thumbnails mounted at once. Each is a decoded photo, and
+// mounting the whole library is what used to crash the gallery; the window
+// below keeps the count bounded however long the library or the scroll.
+export const MAX_MOUNTED_GALLERY_TILES = 72;
+
+/**
+ * Which rows of the gallery grid should have their photos loaded, given where
+ * the grid sits in the scroll and how far down the user is. Rows outside the
+ * window are laid out as empty placeholders of the same size, so the scroll
+ * height never changes as photos load and unload.
+ *
+ * The window is the rows on screen plus a margin above and below (so photos
+ * are ready before they scroll in), with the margin shrunk at dense column
+ * counts to stay near MAX_MOUNTED_GALLERY_TILES (the snap can add up to
+ * `chunk` rows at each end). Its edges snap outward to `chunk` rows so ordinary
+ * scrolling only re-renders the grid every few rows.
+ *
+ * @returns {{ startRow: number, endRow: number }}  endRow is exclusive
+ */
+export function galleryVisibleRows({
+  count, columns, rowHeight, gridTop, scrollY, viewportHeight,
+  maxMounted = MAX_MOUNTED_GALLERY_TILES, chunk = 2,
+}) {
+  const cols = clampColumns(columns);
+  const totalRows = Math.ceil(Math.max(0, count) / cols);
+  if (!totalRows || !(rowHeight > 0)) return { startRow: 0, endRow: 0 };
+  const viewport = Math.max(rowHeight, Number.isFinite(viewportHeight) ? viewportHeight : 0);
+  const rowsOnScreen = Math.ceil(viewport / rowHeight) + 1;
+  const budgetRows = Math.max(rowsOnScreen, Math.floor(maxMounted / cols));
+  const margin = Math.max(0, Math.floor((budgetRows - rowsOnScreen) / 2));
+  const top = (Number.isFinite(scrollY) ? scrollY : 0) - (Number.isFinite(gridTop) ? gridTop : 0);
+  const firstOnScreen = Math.floor(top / rowHeight);
+  // Edges snap outward, so the rows actually on screen are always inside.
+  const startRow = Math.max(0, Math.min(totalRows - 1, Math.floor((firstOnScreen - margin) / chunk) * chunk));
+  const endRow = Math.max(
+    startRow + 1,
+    Math.min(totalRows, Math.ceil((firstOnScreen + rowsOnScreen + margin) / chunk) * chunk),
+  );
+  return { startRow, endRow };
+}
+
 function photoTime(photo) {
   const t = Date.parse(photo?.capturedAt || photo?.linkedAt || photo?.diveStartTime || '');
   return Number.isFinite(t) ? t : 0;

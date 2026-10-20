@@ -315,8 +315,12 @@ function normalizeSite(raw) {
 
 function normalizeWater(raw) {
   const source = isObject(raw) ? raw : {};
+  const type = WATER_TYPES.includes(source.type) ? source.type : null;
   return {
-    type: WATER_TYPES.includes(source.type) ? source.type : null,
+    type,
+    // True only when the diver chose the water type themselves. Dive computer
+    // salinity is a device setting, so Dive Lens ignores it unless confirmed.
+    typeConfirmed: Boolean(type && source.typeConfirmed === true),
     maxDepthMeters: clampNum(source.maxDepthMeters, 0, MAX_DEPTH_METERS, 0) ?? 0,
     avgDepthMeters: clampNum(source.avgDepthMeters, 0, MAX_DEPTH_METERS, null),
     tempSurfaceC: num(source.tempSurfaceC, null),
@@ -680,6 +684,11 @@ export function surfaceLogOntoDive(dive, log) {
   for (const key of LOG_SUMMARY_FIELDS) merged[key] = log[key];
   merged.startTime = log.startTime;
   merged.water = { ...dive.water, ...log.water };
+  // A water type the diver confirmed outranks the computer's salinity setting.
+  if (dive.water?.typeConfirmed && dive.water?.type) {
+    merged.water.type = dive.water.type;
+    merged.water.typeConfirmed = true;
+  }
   merged.gas = log.gas && (log.gas.mixes?.length || log.gas.tanks?.length) ? log.gas : dive.gas;
   merged.updatedAt = nowIso();
   return normalizeDive(merged);

@@ -165,7 +165,7 @@ export default function AppNavigator() {
     return renderScreen(<DiveComputerSimulatorScreen appSettings={appSettings.settings} onBack={closeDetail} />);
   }
   if (feature?.routeType === 'lens') {
-    return renderScreen(<DiveLensScreen onBack={closeDetail} />);
+    return renderScreen(<DiveLensScreen onBack={closeDetail} onSignIn={() => openDetail(ACCOUNT_ROUTES.login)} signedIn={accountSession.authStatus === 'signedIn'} />);
   }
   if (feature?.routeType === 'dive-log') {
     return renderScreen(<DiveLogScreen appSettings={appSettings.settings} onChangeSettings={appSettings.setSettings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);

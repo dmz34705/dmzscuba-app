@@ -39,6 +39,8 @@ import {
   saveComputerPriority,
   saveDeviceTimeCorrection,
   saveDive,
+  setClockReference,
+  findDivesSharingClockCorrection,
   softDeleteDive,
   splitDive,
 } from '../../lib/diveLog/storage';
@@ -639,6 +641,25 @@ export default function useDiveLog() {
     }
   }, [refreshIndex]);
 
+  /**
+   * Fix a "which clock is right" answer after the fact. `device` is the
+   * computer whose clock was actually right; the dives it applies to come from
+   * previewClockFix (this dive, or every dive that took the same decision).
+   */
+  const previewClockFix = useCallback(async (diveId, logId) => {
+    const bundle = await loadDive(diveId).then(async (dive) => (dive ? { dive, logs: await loadLogsForDive(dive) } : null));
+    const log = bundle?.logs.find((l) => l.id === logId);
+    if (!log || !log.timeCorrectionMinutes) return null;
+    const sharedDiveIds = await findDivesSharingClockCorrection(log.device, log.timeCorrectionMinutes);
+    return { device: log.device, shiftMinutes: -log.timeCorrectionMinutes, sharedDiveIds };
+  }, []);
+  const setCorrectClock = useCallback(async (diveIds, device) => {
+    const changed = await setClockReference(diveIds, device);
+    changed.forEach((id) => diveCache.current.delete(id));
+    await refreshIndex();
+    return changed;
+  }, [refreshIndex]);
+
   return {
     loaded,
     rows,
@@ -665,6 +686,8 @@ export default function useDiveLog() {
     getLocationSuggestions,
     resolveLocationSuggestion,
     resolveProposal,
+    previewClockFix,
+    setCorrectClock,
     clearProposals,
     recheckDuplicates,
     mergeDivesManual,

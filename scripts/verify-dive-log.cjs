@@ -1145,6 +1145,24 @@ function memoryStorage(seed = {}) {
     const redownload = logs.filter((log) => !known.has(computerDiveKeyOf(log.device, log.fingerprint)));
     assert.equal(redownload.length, 0, 'download dedup still recognizes merged logs after purge');
     await assertIntegrity(workflowStore, 'review, choose clock, merge, GPS, photos, redownload');
+
+    // Picked the wrong clock at review (the Aug 26 2026 Suunto/Shearwater
+    // case): switching to the other computer afterwards lands exactly where
+    // the other answer would have, and is found for the whole decision.
+    const wrongPick = attached.find((log) => !log.timeCorrectionMinutes);
+    const actuallyRight = attached.find((log) => log.timeCorrectionMinutes);
+    const shared = await diveLog.findDivesSharingClockCorrection(actuallyRight.device, actuallyRight.timeCorrectionMinutes, workflowStore);
+    assert.deepEqual(shared, [live[0].id]);
+    assert.deepEqual(await diveLog.setClockReference([live[0].id], actuallyRight.device, workflowStore), [live[0].id]);
+    const fixedDive = await loadDive(live[0].id, workflowStore);
+    const fixedLogs = await loadLogsForDive(fixedDive, workflowStore);
+    assert.ok(fixedLogs.every((log) => log.startTime === shiftIso(start, correctA ? 60 : 0)), 'both logs move together onto the right clock');
+    assert.equal(fixedLogs.find((log) => log.id === actuallyRight.id).timeCorrectionMinutes, 0);
+    assert.equal(fixedLogs.find((log) => log.id === wrongPick.id).timeCorrectionMinutes, -actuallyRight.timeCorrectionMinutes);
+    assert.equal(fixedDive.startTime, shiftIso(start, correctA ? 60 : 0), 'the dive start follows');
+    assert.deepEqual(await diveLog.setClockReference([live[0].id], actuallyRight.device, workflowStore), [], 'already right: a no-op');
+    assert.equal(fixedDive.photos.length, 2);
+    await assertIntegrity(workflowStore, 'fix the clock choice after merging');
   }
 
   const reviewState = loadSourceModule(path.join(srcRoot, 'features/diveComputerDownload/downloadReviewFlag.js'), srcRoot);
@@ -1710,11 +1728,43 @@ function memoryStorage(seed = {}) {
     /photos\.map/,
     'The full-screen viewer must not mount every original photo at once.',
   );
-  assert.match(screen, /GALLERY_INITIAL_PHOTO_BATCH/);
-  assert.match(screen, /Load .* more photos/);
+  // The gallery mounts only the photos near the screen (bounded), loading and
+  // unloading them as the logbook scrolls, instead of a "load more" button.
+  assert.match(screen, /galleryVisibleRows\(/);
+  assert.match(screen, /visible\.slice\(rowWindow\.startRow \* columnCount, rowWindow\.endRow \* columnCount\)/);
+  assert.doesNotMatch(screen, /visible\.map\(\(photo/, 'The gallery must not mount every photo at once.');
+  {
+    const g = loadSourceModule(path.join(srcRoot, 'lib', 'diveLog', 'galleryPhotos.js'), srcRoot);
+    const base = { count: 1000, columns: 4, rowHeight: 100, gridTop: 500, viewportHeight: 800 };
+    const at = (scrollY, extra = {}) => g.galleryVisibleRows({ ...base, ...extra, scrollY });
+    // Every row on screen is always inside the window.
+    for (const scrollY of [0, 500, 537, 4321, 20000, 25300]) {
+      const { startRow, endRow } = at(scrollY);
+      const first = Math.max(0, Math.floor((scrollY - base.gridTop) / base.rowHeight));
+      const last = Math.min(250, Math.ceil((scrollY - base.gridTop + base.viewportHeight) / base.rowHeight));
+      assert.ok(startRow <= first, `window starts above the screen at ${scrollY}`);
+      assert.ok(endRow >= Math.min(last, 250), `window reaches below the screen at ${scrollY}`);
+    }
+    // Bounded: far down a long library, only a window's worth is mounted.
+    for (const columns of [2, 4, 6]) {
+      const { startRow, endRow } = at(15000, { columns, rowHeight: 400 / columns });
+      assert.ok((endRow - startRow) * columns <= g.MAX_MOUNTED_GALLERY_TILES + 4 * columns, `bounded at ${columns} across`);
+    }
+    assert.ok(at(15000).startRow > 0, 'Rows scrolled well past are unloaded.');
+    assert.deepEqual(at(0, { count: 0 }), { startRow: 0, endRow: 0 });
+    assert.deepEqual(at(0, { count: 5 }), { startRow: 0, endRow: 2 });
+    // Small scrolls inside a chunk don't move the window (no re-render).
+    assert.deepEqual(at(3000), at(3040));
+  }
   assert.match(screen, /Photo unavailable/);
   assert.match(screen, /<PhotoViewerModal\s+photos=\{dive\.photos\}/);
-  assert.match(screen, /label="Close" onPress=\{onClose\}/);
+  assert.match(screen, /accessibilityLabel="Close photo"/);
+  assert.match(screen, /label="Customize & share"/);
+  assert.doesNotMatch(
+    screen.match(/function PhotoViewerModal[\s\S]*?\/\/ The dive-data footer/)?.[0] || '',
+    /<SecondaryButton label="Close" onPress=\{onClose\}/,
+    'The top Done action is the viewer close control.',
+  );
   assert.match(screen, /function PhotoMetaBody/);
   assert.match(screen, /renderMeta=\{\(photo\) => \(\s*<PhotoMetaBody/);
 
@@ -1747,6 +1797,14 @@ function memoryStorage(seed = {}) {
 
   assert.match(screen, /view === 'gallery'/);
   assert.match(screen, /function PhotoGalleryView/);
+  assert.match(screen, /function GalleryPhotoShareOverlay/);
+  assert.match(screen, /<PhotoViewerModal\s+photos=\{visible\}[\s\S]*?onShare=\{setSharePhoto\}/);
+  assert.match(screen, /<GalleryPhotoShareOverlay/);
+  assert.doesNotMatch(
+    screen.match(/function GalleryPhotoShareOverlay[\s\S]*?\/\/ The all-photos gallery/)?.[0] || '',
+    /<Modal/,
+    'Gallery share loading must not swap one native modal directly for another.',
+  );
   assert.match(screen, /function LogbookViewTabs/);
   assert.match(screen, /function LogbookQuickActions/);
   assert.match(screen, /function PhotoOrganizerRow/);
@@ -1757,7 +1815,8 @@ function memoryStorage(seed = {}) {
   assert.match(screen, /sortGalleryPhotos\(kept, diveById, sortKey\)/);
   assert.match(screen, /PanResponder\.create/);
   assert.match(screen, /Pinch to resize/);
-  assert.match(screen, /onLayout=\{\(event\) => setGridWidth/);
+  assert.match(screen, /setGridWidth\(event\.nativeEvent\.layout\.width\)/);
+  assert.match(screen, /setGridTop\(event\.nativeEvent\.layout\.y\)/);
   assert.match(hook, /const loadGalleryPhotos = useCallback/);
 
   // The gallery filter genuinely narrows the photo set (matched by diveId).
@@ -2796,6 +2855,163 @@ assert.equal(offlineDiveSites.matchOfflineDiveSite(0, 0.0001, overlappingSites).
     assert.deepEqual(diveLog.parseSearchDates('mar').dates[0].month, 3);
     assert.deepEqual(diveLog.parseSearchDates('ma').rest, ['ma'], 'Two letters are not a month.');
   }
+
+  // ---------------------------------------------------------------------------
+  // Photo overlay: crop coverage, pin placement, settings, signature
+  // ---------------------------------------------------------------------------
+  {
+    const po = loadSourceModule(path.join(srcRoot, 'features', 'divePhotoShare', 'photoOverlayOptions.js'), srcRoot);
+    const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-6, `${msg}: ${a} vs ${b}`);
+    const portrait = { width: 3000, height: 4000 };
+
+    // Frame shape: presets are fixed, original follows the photo (and its 90°
+    // turns), free is clamped.
+    assert.equal(po.cropFrameRatio({ aspectKey: 'square' }, portrait), 1);
+    near(po.cropFrameRatio({ aspectKey: 'original' }, portrait), 4 / 3, 'original portrait');
+    near(po.cropFrameRatio({ aspectKey: 'original', quarterTurns: 1 }, portrait), 3 / 4, 'turned once');
+    assert.equal(po.cropFrameRatio({ aspectKey: 'free', freeRatio: 99 }, portrait), po.MAX_FREE_RATIO);
+
+    // The photo always covers the frame: at every straighten angle, all four
+    // frame corners land inside the rotated, scaled photo, even after a pan
+    // far past the edge.
+    const corners = (W, H) => [[-W / 2, -H / 2], [W / 2, -H / 2], [W / 2, H / 2], [-W / 2, H / 2]];
+    for (const straighten of [0, 7.5, -20, 45]) {
+      for (const aspectKey of ['original', 'square', 'story', 'wide']) {
+        for (const quarterTurns of [0, 1]) {
+          const W = 300;
+          const crop = po.normalizeCrop({ aspectKey, straighten, quarterTurns, zoom: 1.4, panX: 5, panY: -5 }, portrait, W);
+          const H = W * po.cropFrameRatio(crop, portrait);
+          const L = po.cropLayout(crop, portrait, W, H);
+          const turned = po.turnedSize(portrait, quarterTurns);
+          const scale = L.imageWidth / portrait.width;
+          const rad = (straighten * Math.PI) / 180;
+          for (const [cx, cy] of corners(W, H)) {
+            const dx = cx - L.offsetX;
+            const dy = cy - L.offsetY;
+            const lx = dx * Math.cos(rad) + dy * Math.sin(rad);
+            const ly = -dx * Math.sin(rad) + dy * Math.cos(rad);
+            assert.ok(Math.abs(lx) <= (turned.width * scale) / 2 + 1e-6, `corner x covered (${aspectKey}, ${straighten}°, turns ${quarterTurns})`);
+            assert.ok(Math.abs(ly) <= (turned.height * scale) / 2 + 1e-6, `corner y covered (${aspectKey}, ${straighten}°, turns ${quarterTurns})`);
+          }
+        }
+      }
+    }
+    // Unzoomed and unrotated, a same-shape crop has nowhere to pan.
+    const still = po.normalizeCrop({ aspectKey: 'original', panX: 0.3, panY: 0.3 }, portrait, 300);
+    near(still.panX, 0, 'no pan room x');
+    near(still.panY, 0, 'no pan room y');
+    // A flip mirrors left-right on screen whatever the turn.
+    assert.equal(po.cropLayout({ flip: true }, portrait, 300, 400).flipX, -1);
+    assert.equal(po.cropLayout({ flip: true, quarterTurns: 1 }, portrait, 400, 300).flipY, -1);
+    // Pan is stored in frame-width units, so preview and export frame identically.
+    const zoomed = { aspectKey: 'square', zoom: 2, panX: 0.1, panY: -0.05 };
+    const small = po.cropLayout(zoomed, portrait, 300, 300);
+    const big = po.cropLayout(zoomed, portrait, 1080, 1080);
+    near(small.offsetX / 300, big.offsetX / 1080, 'pan scales with the frame');
+
+    // Pin: capture time by default, dragged time when manual, none when off.
+    const samples = [{ t: 0, depth: 0 }, { t: 600, depth: 20 }, { t: 1200, depth: 10 }, { t: 1800, depth: 0 }];
+    assert.deepEqual(po.profileSpan(samples), { start: 0, end: 1800 });
+    assert.equal(po.resolvePin({ pinMode: 'auto', photoSeconds: 300, samples }).depthMeters, 10);
+    assert.equal(po.resolvePin({ pinMode: 'manual', manualSeconds: 900, photoSeconds: 300, samples }).depthMeters, 15);
+    assert.equal(po.resolvePin({ pinMode: 'off', photoSeconds: 300, samples }), null);
+    assert.equal(po.resolvePin({ pinMode: 'auto', photoSeconds: null, samples }), null, 'No capture time, no automatic pin.');
+    assert.equal(po.resolvePin({ pinMode: 'auto', photoSeconds: 300, samples: [] }), null, 'No profile, no pin.');
+    assert.equal(po.resolvePin({ pinMode: 'auto', photoSeconds: 2000, samples }).seconds, 1800, 'Clamped onto the profile.');
+    assert.equal(po.initialPinMode(300), 'auto');
+    assert.equal(po.initialPinMode(null), 'off', 'A photo without a time starts with the pin off.');
+
+    // Info corner: the user's picks, in a fixed order, minus what's missing.
+    const lines = po.resolveInfoLines({ site: 'Blue Corner', depth: '18 m', date: '—' }, ['date', 'depth', 'site']);
+    assert.deepEqual(lines.map((l) => l.key), ['site', 'depth']);
+    assert.deepEqual(po.toggleInfoKey(['depth'], 'site'), ['site', 'depth']);
+
+    // Settings restore safely and keep a deliberate empty info selection.
+    const restored = po.sanitizePhotoOverlayOptions({
+      infoKeys: [], profileSizeKey: 'xl', signatureMode: 'drawn',
+      signatureStrokes: [[[0.1, 0.1], [NaN, 1], [2, 2]], 'junk'], signatureText: 'x'.repeat(80),
+    });
+    assert.deepEqual(restored.infoKeys, []);
+    assert.equal(restored.profileSizeKey, 'md');
+    assert.deepEqual(restored.signatureStrokes, [[[0.1, 0.1], [1, po.SIGNATURE_PAD_RATIO]]]);
+    assert.equal(restored.signatureText.length, po.MAX_SIGNATURE_TEXT);
+    assert.deepEqual(po.sanitizePhotoOverlayOptions(null).infoKeys, ['site', 'depth']);
+    assert.match(po.PHOTO_OVERLAY_STORAGE_KEY, /^@dmz-scuba\/photo-overlay-v\d+$/);
+
+    // Signature ink: a path per stroke, dots for taps, tight bounds.
+    assert.equal(po.thinStroke([[0, 0], [0.001, 0], [0.1, 0]]).length, 2);
+    const ink = po.signaturePath([[[0, 0], [0.5, 0.1], [1, 0]], [[0.2, 0.2]]], 100);
+    assert.match(ink, /^M 0\.00 0\.00 Q 50\.00 10\.00 75\.00 5\.00 L 100\.00 0\.00 M 20\.00 20\.00 l 0\.01 0$/);
+    assert.deepEqual(po.signatureBounds([[[0.2, 0.1], [0.6, 0.3]]]), { x: 0.2, y: 0.1, width: 0.6 - 0.2, height: 0.3 - 0.1 });
+    assert.equal(po.signatureBounds([]), null);
+
+    // Export keeps the frame's exact shape.
+    const exp = po.overlayExportPixelSize(po.MAX_FREE_RATIO);
+    near(exp.height / exp.width, po.MAX_FREE_RATIO, 'tall export ratio');
+    assert.equal(po.overlayExportPixelSize(9 / 16).width, po.EXPORT_LONG_SIDE);
+
+    // Signature: small by default, bottom middle when clear, else centred in
+    // the real gap between the corners, lifting only as a last resort.
+    {
+      assert.equal(po.sanitizePhotoOverlayOptions({}).signatureSizeKey, 'sm');
+      assert.equal(po.sanitizePhotoOverlayOptions({ signatureSizeKey: 'huge' }).signatureSizeKey, 'sm');
+      assert.ok(po.SIGNATURE_SIZES.every((size) => size.width <= 0.25 && size.height <= 0.06), 'signatures stay small');
+      const base = { width: 1000, pad: 45, gap: 30, maxWidth: 140 };
+      const centred = po.signatureSlot({ ...base, leftWidth: 320, rightWidth: 300 });
+      assert.deepEqual(centred, { left: 430, width: 140, lifted: false });
+      // Large profile on the left, short info on the right: off-centre, in the gap.
+      const shifted = po.signatureSlot({ ...base, leftWidth: 400, rightWidth: 180 });
+      assert.equal(shifted.lifted, false);
+      assert.ok(shifted.left >= 45 + 400 + 30 && shifted.left + shifted.width <= 1000 - 45 - 180 - 30);
+      assert.equal(po.signatureSlot({ ...base, leftWidth: 460, rightWidth: 400 }).lifted, true);
+      assert.deepEqual(po.signatureSlot({ ...base, leftWidth: 0, rightWidth: 0 }), { left: 430, width: 140, lifted: false });
+    }
+
+    // Editor undo/redo: one entry per settled change, a no-op on repeats, the
+    // redo branch dropped by a new change, and a bounded length.
+    {
+      const h = loadSourceModule(path.join(srcRoot, 'features', 'divePhotoShare', 'editHistory.js'), srcRoot);
+      let hist = h.createHistory({ zoom: 1 });
+      assert.equal(h.canUndo(hist), false);
+      hist = h.recordHistory(hist, { zoom: 2 });
+      hist = h.recordHistory(hist, { zoom: 3 });
+      assert.equal(h.recordHistory(hist, { zoom: 3 }), hist, 'Recording the same state is a no-op.');
+      hist = h.undoHistory(hist);
+      assert.deepEqual(h.currentSnapshot(hist), { zoom: 2 });
+      assert.equal(h.canRedo(hist), true);
+      assert.equal(h.recordHistory(hist, { zoom: 2 }), hist, 'Landing on an entry does not record it again.');
+      hist = h.redoHistory(hist);
+      assert.deepEqual(h.currentSnapshot(hist), { zoom: 3 });
+      hist = h.undoHistory(h.undoHistory(hist));
+      assert.equal(h.canUndo(hist), false);
+      assert.equal(h.undoHistory(hist), hist);
+      hist = h.recordHistory(hist, { zoom: 5 });
+      assert.equal(h.canRedo(hist), false, 'A new change drops the redo branch.');
+      assert.deepEqual(hist.entries, [{ zoom: 1 }, { zoom: 5 }]);
+      for (let i = 0; i < h.MAX_HISTORY + 10; i += 1) hist = h.recordHistory(hist, { zoom: 10 + i });
+      assert.equal(hist.entries.length, h.MAX_HISTORY);
+      assert.equal(hist.index, h.MAX_HISTORY - 1);
+    }
+
+    // Raw elements only: the overlay never draws a scrim, gradient, or grid.
+    const card = read('src', 'features', 'divePhotoShare', 'PhotoOverlayCard.js');
+    assert.doesNotMatch(card, /LinearGradient|CardBackground|gridLine/);
+    assert.match(card, /fillOpacity=\{0\}/, 'The profile is drawn without its gradient wash.');
+  }
+
+  // A water type the diver confirmed survives normalisation and outranks a
+  // dive computer's salinity setting when a log is surfaced onto the Dive.
+  const confirmedFresh = createDive({ source: 'computer', water: { type: 'fresh', typeConfirmed: true } });
+  assert.equal(confirmedFresh.water.typeConfirmed, true);
+  assert.equal(createDive({ water: { typeConfirmed: true } }).water.typeConfirmed, false, 'No type means nothing confirmed.');
+  const saltLog = normalizeComputerLog(createComputerLog({ startTime: '2026-07-29T23:00:00.000Z', water: { type: 'salt', maxDepthMeters: 12 } }));
+  const keptFresh = surfaceLogOntoDive(confirmedFresh, saltLog);
+  assert.equal(keptFresh.water.type, 'fresh');
+  assert.equal(keptFresh.water.typeConfirmed, true);
+  assert.equal(keptFresh.water.maxDepthMeters, 12, 'Other log water fields still surface.');
+  const unconfirmed = surfaceLogOntoDive(createDive({ source: 'computer', water: { type: 'fresh' } }), saltLog);
+  assert.equal(unconfirmed.water.type, 'salt', 'Unconfirmed types still follow the primary log.');
+  assert.equal(unconfirmed.water.typeConfirmed, false);
 
   console.log('Dive logbook checks passed.');
 })().catch((error) => {

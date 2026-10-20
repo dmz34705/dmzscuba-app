@@ -100,6 +100,7 @@ import {
   GALLERY_GRID_GAP,
   GALLERY_SORTS,
   galleryColumnsForPinch,
+  galleryVisibleRows,
   galleryTileSize,
   sortGalleryPhotos,
 } from '../lib/diveLog/galleryPhotos';
@@ -120,6 +121,7 @@ import { captureCurrentLocationBreadcrumb, getLocationRecordingSummary } from '.
 import DiveComputerDownloadPanel from '../features/diveComputerDownload/DiveComputerDownloadPanel';
 import useDiveComputerDownload from '../features/diveComputerDownload/useDiveComputerDownload';
 import DiveShareCardScreen from '../features/diveShareCard/DiveShareCardScreen';
+import DivePhotoShareScreen from '../features/divePhotoShare/DivePhotoShareScreen';
 import DiveFilterSheet from '../features/diveLog/DiveFilterSheet';
 import { clearPendingReview, hasPendingReview } from '../features/diveComputerDownload/downloadReviewFlag';
 import { colors, radii, shadow, spacing } from '../theme';
@@ -127,8 +129,6 @@ import { shareLogbookExport } from '../features/diveLog/shareLogbookExport';
 
 const DIVE_MODE_LABELS = { oc: 'Open circuit', ccr: 'Closed circuit', scr: 'Semi-closed', gauge: 'Gauge', freedive: 'Freedive' };
 const WATER_TYPE_LABELS = { salt: 'Salt', fresh: 'Fresh' };
-const GALLERY_INITIAL_PHOTO_BATCH = 32;
-const GALLERY_PHOTO_BATCH_SIZE = 32;
 
 // ---------------------------------------------------------------------------
 // Form <-> record mapping
@@ -183,6 +183,7 @@ function blankForm() {
     maxDepth: '',
     avgDepth: '',
     waterType: '',
+    waterTypeConfirmed: false,
     tempSurface: '',
     tempMin: '',
     tempMax: '',
@@ -237,6 +238,7 @@ function recordToForm(record, units) {
     maxDepth: depthToInput(record.water.maxDepthMeters, units.depthUnit),
     avgDepth: depthToInput(record.water.avgDepthMeters, units.depthUnit),
     waterType: record.water.type || '',
+    waterTypeConfirmed: Boolean(record.water.typeConfirmed),
     tempSurface: temperatureToInput(record.water.tempSurfaceC, units.temperatureUnit),
     tempMin: temperatureToInput(record.water.tempMinC, units.temperatureUnit),
     tempMax: temperatureToInput(record.water.tempMaxC, units.temperatureUnit),
@@ -304,6 +306,7 @@ function formToRecordPartial(form, units) {
     buddies: splitList(form.buddies),
     water: {
       type: form.waterType || null,
+      typeConfirmed: Boolean(form.waterType && form.waterTypeConfirmed),
       maxDepthMeters: parseDepthInput(form.maxDepth, units.depthUnit) || 0,
       avgDepthMeters: parseDepthInput(form.avgDepth, units.depthUnit),
       tempSurfaceC: parseTemperatureInput(form.tempSurface, units.temperatureUnit),
@@ -1791,6 +1794,47 @@ function LogRows({ logs, primaryLog, units, onShowLog }) {
   );
 }
 
+// "Which computer's clock was right?" — in the Edit dive screen, only when the
+// computers on this dive were lined up by shifting one of them. The computer
+// with no correction is the one currently trusted; tapping another makes it
+// the trusted one instead (DiveLogScreen confirms first, see handleFixClock).
+function ClockReferencePicker({ logs, onFixClock }) {
+  if (!onFixClock || logs.length < 2 || !logs.some((log) => log.timeCorrectionMinutes)) return null;
+  return (
+    <>
+      <Text style={styles.detailSubhead}>Which clock was right?</Text>
+      <View style={styles.clockChoices}>
+        {logs.map((log) => {
+          const trusted = !log.timeCorrectionMinutes;
+          return (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: trusted }}
+              disabled={trusted}
+              key={log.id}
+              onPress={() => onFixClock(log)}
+              style={({ pressed }) => [styles.clockChoice, trusted && styles.clockChoiceOn, pressed && styles.pressed]}
+            >
+              <Text numberOfLines={1} style={[styles.clockChoiceText, trusted && styles.clockChoiceTextOn]}>
+                {trusted ? '✓ ' : ''}{computerName(log)}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+      <Text style={styles.detailHint}>
+        The computers were lined up by shifting one clock. If the wrong one was treated as right, tap the computer whose clock was actually right.
+      </Text>
+    </>
+  );
+}
+
+/** "+1:00" / "−0:30" for a clock shift in minutes. */
+function formatClockShift(minutes) {
+  const abs = Math.abs(Math.round(minutes));
+  return `${minutes < 0 ? '−' : '+'}${Math.floor(abs / 60)}:${String(abs % 60).padStart(2, '0')}`;
+}
+
 const PRESSURE_COLORS = ['#F0C84B', '#70E2A3', '#FF9F7F']; // per air-bearing computer
 
 function logHasAir(log) {
@@ -1862,6 +1906,7 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
     closeLandscapeProfile(previousLockRef.current);
   }, []);
   const [viewerIndex, setViewerIndex] = useState(null);
+  const [sharePhoto, setSharePhoto] = useState(null);
   // Physical data comes from the shown computer's log; user's own fields from the Dive.
   const phys = primaryLog || dive;
   // A computer log may legitimately omit individual condition fields. Keep the
@@ -1964,6 +2009,9 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
   const pressureForTile = tankForNumbers?.endBar ?? tankForNumbers?.startBar ?? null;
 
   const [shareOpen, setShareOpen] = useState(false);
+  // The profile photos are placed on: the shown computer's, or the dive's own
+  // when that log has none.
+  const photoSamples = samples.length > 1 ? samples : (dive.profile?.samples || []);
   // Everything the share card can draw, already formatted in the user's units
   // — the card owns layout and which of these appear, never unit choice. Keys
   // in `values` match shareCardOptions.STAT_FIELDS; a null means this dive
@@ -2015,6 +2063,22 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
         </>
       ) : null}
 
+      {/* Right under the profile: which computer the chart is drawn from, and
+          what each one recorded, read best next to the curve itself. */}
+      {sectionIsVisible(diveMode, 'computerAnalytics') ? <DetailCard title="Computer analytics" defaultExpanded={logs.length > 1}>
+        {analytics ? (
+          <>
+            <DetailRow label="Max ascent rate" value={analytics.ascentRateMaxMPerMin != null ? `${analytics.ascentRateMaxMPerMin} m/min` : ''} />
+            <DetailRow label="Sawtooth" value={analytics.sawtoothIndex ? `${analytics.sawtoothIndex} m extra descent` : ''} />
+            <DetailRow label="Safety score" value={analytics.safetyScore != null ? `${analytics.safetyScore} / 100` : ''} />
+            <DetailRow label="Deco model" value={analytics.decoModelType ? `${analytics.decoModelType.toUpperCase()}${analytics.gfLow != null ? ` ${analytics.gfLow}/${analytics.gfHigh}` : ''}` : ''} />
+            <DetailRow label="Max ceiling" value={analytics.ceilingMaxMeters != null ? formatDepth(analytics.ceilingMaxMeters, units.depthUnit) : ''} />
+            <DetailRow label="CNS" value={analytics.cnsEndPct != null ? `${Math.round(analytics.cnsEndPct)}%` : ''} />
+          </>
+        ) : null}
+        {logs.length ? <LogRows logs={logs} primaryLog={primaryLog} units={units} onShowLog={onShowLog} /> : null}
+      </DetailCard> : null}
+
       {profileFullscreen ? (
         <FullscreenProfile
           computerLabel={shownName}
@@ -2037,7 +2101,7 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
       <KeyStats water={water} phys={phys} temperatures={temperatures} mix={mix} pressure={pressureForTile} sac={primarySac} units={units} />
 
       {logs.length > 1 && shownName ? (
-        <Text style={styles.detailShownFrom}>Showing {shownName}&apos;s data — tap a computer in Computer analytics below to switch</Text>
+        <Text style={styles.detailShownFrom}>Showing {shownName}&apos;s data — tap a computer in Computer analytics above to switch</Text>
       ) : null}
 
       <DetailCard title="Site & conditions">
@@ -2074,7 +2138,7 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
               </Pressable>
             ))}
           </ScrollView>
-          <Text style={styles.divePhotoHint}>Tap a photo to view it full screen.</Text>
+          <Text style={styles.divePhotoHint}>Tap a photo to view it full screen or share it with the dive profile.</Text>
         </DetailCard>
       ) : null}
 
@@ -2083,13 +2147,30 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
           photos={dive.photos}
           index={Math.min(viewerIndex, dive.photos.length - 1)}
           onIndex={setViewerIndex}
-          onClose={() => setViewerIndex(null)}
+          onClose={() => { setSharePhoto(null); setViewerIndex(null); }}
+          onShare={setSharePhoto}
+          overlay={sharePhoto ? (
+            <DivePhotoShareScreen
+              dive={{
+                samples: photoSamples,
+                maxDepthMeters: water.maxDepthMeters,
+                photoSeconds: depthAtPhotoTime(sharePhoto.capturedAt, dive.startTime, photoSamples)?.offsetSeconds ?? null,
+                siteName: dive.site?.name || '',
+                location: [dive.site?.location, dive.site?.country].filter(Boolean).join(', '),
+                dateLabel: formatDate(sharePhoto.capturedAt || dive.startTime),
+                formatDepth: (meters) => formatDepth(meters, units.depthUnit),
+                formatElapsed: formatDuration,
+              }}
+              onClose={() => setSharePhoto(null)}
+              photo={sharePhoto}
+            />
+          ) : null}
           renderMeta={(photo) => (
             <PhotoMetaBody
               depthState={depthAtPhotoTime(
                 photo.capturedAt,
                 dive.startTime,
-                samples.length > 1 ? samples : (dive.profile?.samples || []),
+                photoSamples,
               )}
               siteName={dive.site?.name}
               whenIso={photo.capturedAt}
@@ -2241,20 +2322,6 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
         ) : null}
       </DetailCard> : null}
 
-      {sectionIsVisible(diveMode, 'computerAnalytics') ? <DetailCard title="Computer analytics" defaultExpanded={logs.length > 1}>
-        {analytics ? (
-          <>
-            <DetailRow label="Max ascent rate" value={analytics.ascentRateMaxMPerMin != null ? `${analytics.ascentRateMaxMPerMin} m/min` : ''} />
-            <DetailRow label="Sawtooth" value={analytics.sawtoothIndex ? `${analytics.sawtoothIndex} m extra descent` : ''} />
-            <DetailRow label="Safety score" value={analytics.safetyScore != null ? `${analytics.safetyScore} / 100` : ''} />
-            <DetailRow label="Deco model" value={analytics.decoModelType ? `${analytics.decoModelType.toUpperCase()}${analytics.gfLow != null ? ` ${analytics.gfLow}/${analytics.gfHigh}` : ''}` : ''} />
-            <DetailRow label="Max ceiling" value={analytics.ceilingMaxMeters != null ? formatDepth(analytics.ceilingMaxMeters, units.depthUnit) : ''} />
-            <DetailRow label="CNS" value={analytics.cnsEndPct != null ? `${Math.round(analytics.cnsEndPct)}%` : ''} />
-          </>
-        ) : null}
-        {logs.length ? <LogRows logs={logs} primaryLog={primaryLog} units={units} onShowLog={onShowLog} /> : null}
-      </DetailCard> : null}
-
       {hiddenSections.length ? (
         <DetailCard title="Additional recorded data" defaultExpanded>
           <Text style={styles.detailHint}>
@@ -2368,7 +2435,9 @@ function DiveEditForm({ form, units, onChange, error }) {
           label="Water type"
           options={WATER_TYPES.map((type) => ({ key: type, label: WATER_TYPE_LABELS[type] }))}
           value={form.waterType}
-          onChange={set('waterType')}
+          // Choosing a water type here is the diver confirming it, which Dive
+          // Lens trusts over an imported dive computer salinity setting.
+          onChange={(value) => onChange({ ...form, waterType: value, waterTypeConfirmed: Boolean(value) })}
         />
         <Field label="Surface temperature" value={form.tempSurface} onChangeText={set('tempSurface')} suffix={`°${temperatureUnit}`} keyboardType="numbers-and-punctuation" />
         <View style={styles.twoColumn}>
@@ -2712,7 +2781,7 @@ function PhotoViewerPage({ photo, width }) {
   );
 }
 
-function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMeta }) {
+function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, onShare, renderMeta, overlay = null }) {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const listRef = useRef(null);
@@ -2758,12 +2827,31 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, renderMet
           style={styles.photoViewerPager}
         />
         {renderMeta ? <View style={styles.photoViewerMeta}>{renderMeta(current)}</View> : null}
-        <View style={[styles.photoViewerActions, { paddingBottom: Math.max(insets.bottom, spacing.lg) }]}>
-          {onRemove ? (
-            <SecondaryButton label="Remove from this dive" onPress={() => onRemove(current)} style={styles.photoViewerButton} />
-          ) : null}
-          <SecondaryButton label="Close" onPress={onClose} style={styles.photoViewerButton} />
-        </View>
+        {onShare || onRemove ? (
+          <View style={[styles.photoViewerActions, { paddingBottom: Math.max(insets.bottom, spacing.lg) }]}>
+            {onShare ? (
+              <PrimaryButton
+                label="Customize & share"
+                onPress={() => onShare(current)}
+                style={styles.photoViewerShareButton}
+              />
+            ) : null}
+            {onRemove ? (
+              <Pressable
+                accessibilityLabel="Remove from this dive"
+                accessibilityRole="button"
+                hitSlop={8}
+                onPress={() => onRemove(current)}
+                style={({ pressed }) => [styles.photoViewerRemove, pressed && styles.pressed]}
+              >
+                <Text style={styles.photoViewerRemoveText}>Remove from this dive</Text>
+              </Pressable>
+            ) : null}
+          </View>
+        ) : null}
+        {/* The photo share editor: its own full-screen Modal, mounted inside
+            this one so iOS presents it on top of the viewer. */}
+        {overlay}
       </View>
     </Modal>
   );
@@ -2787,7 +2875,16 @@ function PhotoMetaBody({ depthState, siteName, whenIso, fallbackDate, maxDepthMe
             : (maxDepth ? `Max depth ${maxDepth}` : 'Depth not recorded for this dive')}
       </Text>
       <Text style={styles.galleryMetaSecondary}>{[site, when].filter(Boolean).join(' · ')}</Text>
-      {onOpenDive ? <SecondaryButton label="Open this dive →" onPress={onOpenDive} style={styles.galleryMetaButton} /> : null}
+      {onOpenDive ? (
+        <Pressable
+          accessibilityRole="button"
+          hitSlop={8}
+          onPress={onOpenDive}
+          style={({ pressed }) => [styles.galleryMetaButton, pressed && styles.pressed]}
+        >
+          <Text style={styles.galleryMetaButtonText}>Open this dive →</Text>
+        </Pressable>
+      ) : null}
     </>
   );
 }
@@ -2828,20 +2925,91 @@ function GalleryPhotoMeta({ photo, row, getDive, units, onOpenDive }) {
   );
 }
 
+// The gallery only keeps lightweight photo/index rows in memory. Resolve the
+// full dive when sharing starts so the overlay gets the same profile, timing,
+// site, and unit-aware labels as it does from the dive detail screen.
+function GalleryPhotoShareOverlay({ photo, getDive, units, onClose }) {
+  const [shareDive, setShareDive] = useState(null);
+  const [error, setError] = useState('');
+  const { capturedAt, diveId, diveStartTime } = photo;
+
+  useEffect(() => {
+    let active = true;
+    (async () => {
+      try {
+        const bundle = await getDive(diveId);
+        if (!bundle?.dive) throw new Error('The dive linked to this photo could not be opened.');
+        const dive = bundle.dive;
+        const samples = (bundle.logs || [])
+          .map((log) => log?.profile?.samples)
+          .find((value) => Array.isArray(value) && value.length > 1)
+          || dive.profile?.samples
+          || [];
+        const startTime = dive.startTime || diveStartTime;
+        if (active) {
+          setShareDive({
+            samples,
+            maxDepthMeters: dive.water?.maxDepthMeters,
+            photoSeconds: depthAtPhotoTime(capturedAt, startTime, samples)?.offsetSeconds ?? null,
+            siteName: dive.site?.name || '',
+            location: [dive.site?.location, dive.site?.country].filter(Boolean).join(', '),
+            dateLabel: formatDate(capturedAt || startTime),
+            formatDepth: (meters) => formatDepth(meters, units.depthUnit),
+            formatElapsed: formatDuration,
+          });
+        }
+      } catch (loadError) {
+        if (active) setError(loadError?.message || 'The dive details could not be loaded.');
+      }
+    })();
+    return () => { active = false; };
+  }, [capturedAt, diveId, diveStartTime, getDive, units.depthUnit]);
+
+  if (shareDive) {
+    return <DivePhotoShareScreen dive={shareDive} onClose={onClose} photo={photo} />;
+  }
+
+  // Stay inside the already-presented photo viewer while the dive is loading.
+  // Presenting a temporary native Modal and immediately replacing it with the
+  // editor's Modal can leave iOS mid-transition with an unresponsive backdrop.
+  return (
+    <View style={styles.galleryShareLoading}>
+      <View style={styles.galleryShareLoadingCard}>
+        {error ? (
+          <>
+            <Text style={styles.photoViewerErrorTitle}>Couldn’t prepare this photo</Text>
+            <Text style={styles.photoViewerStatusText}>{error}</Text>
+            <SecondaryButton label="Close" onPress={onClose} style={styles.photoViewerRetry} />
+          </>
+        ) : (
+          <>
+            <ActivityIndicator color={colors.cyan} />
+            <Text style={styles.photoViewerStatusText}>Loading dive profile…</Text>
+          </>
+        )}
+      </View>
+    </View>
+  );
+}
+
 // The all-photos gallery: every linked photo across the logbook in a grid,
 // narrowed by the same dive filter the list uses (matched by diveId), each
 // photo carrying its dive's data.
 function PhotoGalleryView({
   rows, filter, filterActiveCount, onOpenFilter, onClearFilter,
-  loadGalleryPhotos, getDive, units, onOpenDive, onImport, onRepair, repairing,
+  loadGalleryPhotos, getDive, units, onOpenDive, onImport, onRepair, repairing, scrollState,
 }) {
   const { width } = useWindowDimensions();
   const [photos, setPhotos] = useState(null); // null = still loading
   const [viewerIndex, setViewerIndex] = useState(null);
+  const [sharePhoto, setSharePhoto] = useState(null);
   const [sortKey, setSortKey] = useState(DEFAULT_GALLERY_SORT);
   const [columnCount, setColumnCount] = useState(DEFAULT_GALLERY_COLUMNS);
   const [gridWidth, setGridWidth] = useState(0);
-  const [renderLimit, setRenderLimit] = useState(GALLERY_INITIAL_PHOTO_BATCH);
+  // Where the grid starts inside the logbook's scroll content, for working
+  // out which of its rows are on screen.
+  const [gridTop, setGridTop] = useState(0);
+  const [rowWindow, setRowWindow] = useState({ startRow: 0, endRow: 0 });
   const columnCountRef = useRef(DEFAULT_GALLERY_COLUMNS);
   const pinchRef = useRef(null);
 
@@ -2906,16 +3074,35 @@ function PhotoGalleryView({
     const kept = (photos || []).filter((photo) => matchingIds.has(photo.diveId));
     return sortGalleryPhotos(kept, diveById, sortKey);
   }, [photos, matchingIds, diveById, sortKey]);
-  const renderedPhotos = useMemo(() => visible.slice(0, renderLimit), [visible, renderLimit]);
   const diveCount = useMemo(() => new Set(visible.map((p) => p.diveId)).size, [visible]);
   const hasLegacyPhotoLinks = (photos || []).some((photo) => !isManagedDivePhotoUri(photo.uri));
 
   const availableGridWidth = gridWidth || Math.max(0, width - spacing.lg * 2);
   const tile = galleryTileSize(availableGridWidth, columnCount);
+  const rowHeight = tile + GALLERY_GRID_GAP;
+  const totalRows = Math.ceil(visible.length / columnCount);
 
+  // Photos load and unload with the scroll: only rows near the screen mount
+  // their images (galleryVisibleRows bounds how many), and every other row is
+  // an empty placeholder of the same height, so the grid is full length from
+  // the start and the scroll never jumps. Re-renders only when the window
+  // actually moves, which is every couple of rows rather than every frame.
+  const windowInputs = useRef(null);
+  windowInputs.current = { count: visible.length, columns: columnCount, rowHeight, gridTop };
+  const updateWindow = useCallback(() => {
+    const next = galleryVisibleRows({
+      ...windowInputs.current,
+      scrollY: scrollState?.y ?? 0,
+      viewportHeight: scrollState?.viewport || Dimensions.get('window').height,
+    });
+    setRowWindow((prev) => (prev.startRow === next.startRow && prev.endRow === next.endRow ? prev : next));
+  }, [scrollState]);
   useEffect(() => {
-    setRenderLimit(GALLERY_INITIAL_PHOTO_BATCH);
-  }, [filter, sortKey]);
+    if (!scrollState) return undefined;
+    scrollState.listeners.add(updateWindow);
+    return () => { scrollState.listeners.delete(updateWindow); };
+  }, [scrollState, updateWindow]);
+  useEffect(updateWindow, [updateWindow, visible.length, columnCount, rowHeight, gridTop]);
 
   if (photos == null) return <Text style={styles.muted}>Loading photos…</Text>;
 
@@ -2976,10 +3163,19 @@ function PhotoGalleryView({
           </View>
           <View
             {...pinchResponder.panHandlers}
-            onLayout={(event) => setGridWidth(event.nativeEvent.layout.width)}
+            onLayout={(event) => {
+              setGridWidth(event.nativeEvent.layout.width);
+              setGridTop(event.nativeEvent.layout.y);
+            }}
             style={[styles.galleryGrid, { gap: GALLERY_GRID_GAP }]}
           >
-            {renderedPhotos.map((photo, i) => {
+            {/* Rows above the window. Height minus one gap: the grid's own gap
+                is added after it. */}
+            {rowWindow.startRow > 0 ? (
+              <View style={{ height: rowWindow.startRow * rowHeight - GALLERY_GRID_GAP, width: '100%' }} />
+            ) : null}
+            {visible.slice(rowWindow.startRow * columnCount, rowWindow.endRow * columnCount).map((photo, offset) => {
+              const i = rowWindow.startRow * columnCount + offset;
               const row = diveById.get(photo.diveId);
               return (
                 <Pressable
@@ -2998,14 +3194,11 @@ function PhotoGalleryView({
                 </Pressable>
               );
             })}
+            {/* Rows below the window. */}
+            {rowWindow.endRow < totalRows ? (
+              <View style={{ height: (totalRows - rowWindow.endRow) * rowHeight - GALLERY_GRID_GAP, width: '100%' }} />
+            ) : null}
           </View>
-          {renderedPhotos.length < visible.length ? (
-            <SecondaryButton
-              label={`Load ${Math.min(GALLERY_PHOTO_BATCH_SIZE, visible.length - renderedPhotos.length)} more photos`}
-              onPress={() => setRenderLimit((limit) => Math.min(visible.length, limit + GALLERY_PHOTO_BATCH_SIZE))}
-              style={styles.galleryLoadMore}
-            />
-          ) : null}
         </>
       )}
 
@@ -3014,7 +3207,16 @@ function PhotoGalleryView({
           photos={visible}
           index={Math.min(viewerIndex, visible.length - 1)}
           onIndex={setViewerIndex}
-          onClose={() => setViewerIndex(null)}
+          onClose={() => { setSharePhoto(null); setViewerIndex(null); }}
+          onShare={setSharePhoto}
+          overlay={sharePhoto ? (
+            <GalleryPhotoShareOverlay
+              getDive={getDive}
+              onClose={() => setSharePhoto(null)}
+              photo={sharePhoto}
+              units={units}
+            />
+          ) : null}
           renderMeta={(photo) => (
             <GalleryPhotoMeta
               photo={photo}
@@ -3034,7 +3236,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
-    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, replacePhotoOnDive, loadGalleryPhotos, deleteDive, deleteDives, bulkEditDives, importComputerLogs, finishImport, getLocationSuggestions, resolveLocationSuggestion, resolveProposal, clearProposals,
+    getDive, addDive, updateDive, attachPhotosToDive, removePhotoFromDive, replacePhotoOnDive, loadGalleryPhotos, deleteDive, deleteDives, bulkEditDives, importComputerLogs, finishImport, getLocationSuggestions, resolveLocationSuggestion, resolveProposal, previewClockFix, setCorrectClock, clearProposals,
     recheckDuplicates, mergeDivesManual, splitDiveRecord, purgeDeletedDownloads, eraseAllDiveData, dumpDiagnostic,
     runHealthCheck, repairHealthProblems,
     getSnapshots, restoreBackup,
@@ -3244,8 +3446,18 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
     });
     return () => cancelAnimationFrame(frame);
   }, [scrollRouteKey]);
+  // The gallery follows the scroll to decide which photos to load. A ref with
+  // listeners rather than state, so scrolling doesn't re-render this screen.
+  const galleryScrollRef = useRef({ y: 0, viewport: 0, listeners: new Set() });
+  const notifyGalleryScroll = () => galleryScrollRef.current.listeners.forEach((listener) => listener());
   const rememberScrollOffset = useCallback((event) => {
     scrollOffsetsRef.current.set(activeScrollRouteRef.current, event.nativeEvent.contentOffset.y);
+    galleryScrollRef.current.y = event.nativeEvent.contentOffset.y;
+    notifyGalleryScroll();
+  }, []);
+  const rememberScrollViewport = useCallback((event) => {
+    galleryScrollRef.current.viewport = event.nativeEvent.layout.height;
+    notifyGalleryScroll();
   }, []);
   const [filter, setFilter] = useState(DEFAULT_DIVE_FILTER);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -3365,7 +3577,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
         patch.site = editedDiveSite(patch.site, set.has('selectedSite') ? values.selectedSite : dive.site);
       }
       if (set.has('operator')) patch.operator = values.operator.trim();
-      if (set.has('waterType')) patch.water = { ...dive.water, type: values.waterType };
+      if (set.has('waterType')) patch.water = { ...dive.water, type: values.waterType, typeConfirmed: Boolean(values.waterType) };
       if (set.has('suit')) patch.gear = { ...dive.gear, exposureSuit: values.suit.trim() };
       if (set.has('buddies')) {
         patch.buddies = values.buddies.split(',').map((s) => s.trim()).filter(Boolean);
@@ -3696,6 +3908,53 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
     }
   }, [record, removePhotoFromDive]);
 
+  const handleFixClock = useCallback(async (log) => {
+    if (!record || !log) return;
+    try {
+      const preview = await previewClockFix(record.id, log.id);
+      if (!preview) return;
+      const name = computerName(log);
+      const shift = formatClockShift(preview.shiftMinutes);
+      const newStart = new Date(Date.parse(record.startTime) + preview.shiftMinutes * 60000);
+      const others = preview.sharedDiveIds.filter((id) => id !== record.id);
+      const apply = async (ids) => {
+        try {
+          await setCorrectClock(ids, preview.device);
+          const bundle = await getDive(record.id);
+          if (bundle) {
+            setRecord(bundle.dive);
+            setLogs(bundle.logs);
+            // The edit form has its own copy of the date and time; bring just
+            // those in line, or saving the form would put the old start back.
+            // Anything else already typed into the form is kept.
+            const fresh = recordToForm(bundle.dive, units);
+            setForm((current) => (current ? { ...current, date: fresh.date, time: fresh.time } : current));
+          }
+          setGalleryReloadKey((k) => k + 1);
+        } catch (error) {
+          Alert.alert('Could not change the clock', error?.message || 'Nothing was changed.');
+        }
+      };
+      const buttons = [{ text: 'Cancel', style: 'cancel' }];
+      if (others.length) {
+        buttons.push({ text: `All ${others.length + 1} dives with this mix-up`, onPress: () => apply([record.id, ...others]) });
+      }
+      buttons.push({ text: others.length ? 'This dive only' : 'Use this clock', onPress: () => apply([record.id]) });
+      Alert.alert(
+        `Use the ${name}’s clock?`,
+        `The ${name} goes back to its own recorded time, and the other computer moves ${shift} so they stay lined up. `
+          + `This dive’s start time becomes ${formatDate(newStart.toISOString())} · ${formatTimeOfDay(newStart.toISOString())}.`
+          + (others.length
+            ? `\n\nThe same clock choice was applied to ${others.length} other ${others.length === 1 ? 'dive' : 'dives'} with these computers — usually the rest of that trip.`
+            : '')
+          + '\n\nA backup is saved first.',
+        buttons,
+      );
+    } catch (error) {
+      Alert.alert('Could not check the clocks', error?.message || 'Nothing was changed.');
+    }
+  }, [getDive, previewClockFix, record, setCorrectClock, units]);
+
   const handleSplit = useCallback(() => {
     if (!selectedId || logs.length < 2) return;
     Alert.alert(
@@ -3754,6 +4013,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
         ref={contentScrollRef}
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={[styles.content, { paddingBottom: Math.max(insets.bottom, 16) + 32 }]}
+        onLayout={rememberScrollViewport}
         onScroll={rememberScrollOffset}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
@@ -4008,6 +4268,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
             onImport={beginPhotoImport}
             onRepair={recoverMissingPhotoLinks}
             repairing={photoRepairing}
+            scrollState={galleryScrollRef.current}
           />
         )}
 
@@ -4159,6 +4420,11 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
         {view === 'edit' && form && (
           <>
             <DiveEditForm form={form} units={units} onChange={setForm} error={formError} />
+            {selectedId && logs.length > 1 && logs.some((log) => log.timeCorrectionMinutes) ? (
+              <DetailCard title="Computer clocks" defaultExpanded>
+                <ClockReferencePicker logs={logs} onFixClock={handleFixClock} />
+              </DetailCard>
+            ) : null}
             <PrimaryButton label={saving ? 'Saving…' : 'Save dive'} onPress={handleSave} disabled={saving} style={styles.primaryCta} />
             <SecondaryButton label="Cancel" onPress={handleBack} style={styles.cancelButton} />
           </>
@@ -4241,9 +4507,42 @@ const styles = StyleSheet.create({
   photoViewerErrorTitle: { color: colors.text, fontSize: 17, fontWeight: '900' },
   photoViewerStatusText: { color: colors.muted, fontSize: 13, lineHeight: 19, textAlign: 'center' },
   photoViewerRetry: { alignSelf: 'stretch', marginTop: 4 },
-  photoViewerActions: { flexDirection: 'row', gap: 12, padding: spacing.lg },
-  photoViewerButton: { flex: 1 },
+  photoViewerActions: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(5,11,20,0.92)',
+    borderTopColor: colors.line,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    gap: spacing.sm,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
+  },
+  photoViewerShareButton: { alignSelf: 'stretch' },
+  photoViewerRemove: { paddingHorizontal: spacing.md, paddingVertical: spacing.xs },
+  photoViewerRemoveText: { color: colors.danger, fontSize: 12, fontWeight: '700' },
   photoViewerMeta: { gap: 4, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
+  galleryShareLoading: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(2,6,11,0.94)',
+    bottom: 0,
+    justifyContent: 'center',
+    left: 0,
+    padding: spacing.xl,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 30,
+  },
+  galleryShareLoadingCard: {
+    alignItems: 'center',
+    backgroundColor: colors.backgroundRaised,
+    borderColor: colors.lineStrong,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    gap: spacing.md,
+    maxWidth: 360,
+    padding: spacing.xl,
+    width: '100%',
+  },
   galleryImport: { marginBottom: 14 },
   galleryBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' },
   gallerySummary: { color: colors.text, fontSize: 13, fontWeight: '800' },
@@ -4261,14 +4560,14 @@ const styles = StyleSheet.create({
   galleryZoomHint: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 },
   galleryZoomHintText: { color: colors.faint, fontSize: 10, fontWeight: '700' },
   galleryGrid: { flexDirection: 'row', flexWrap: 'wrap', marginTop: 6 },
-  galleryLoadMore: { marginTop: spacing.md },
   galleryTile: { borderRadius: 10, overflow: 'hidden' },
   galleryThumb: { backgroundColor: colors.surface, height: '100%', width: '100%' },
   galleryTileTag: { backgroundColor: 'rgba(0,0,0,0.5)', bottom: 0, left: 0, paddingHorizontal: 4, paddingVertical: 2, position: 'absolute', right: 0 },
   galleryTileText: { color: '#fff', fontSize: 9, fontWeight: '700' },
   galleryMetaPrimary: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
   galleryMetaSecondary: { color: 'rgba(255,255,255,0.7)', fontSize: 12 },
-  galleryMetaButton: { marginTop: 8 },
+  galleryMetaButton: { alignSelf: 'flex-start', marginTop: 3, paddingVertical: 5 },
+  galleryMetaButtonText: { color: colors.cyan, fontSize: 12, fontWeight: '800' },
   photoStrip: { gap: 10, paddingVertical: 4 },
   divePhotoWrap: { borderRadius: 12, overflow: 'hidden' },
   divePhoto: { borderRadius: 12, height: 140, width: 140 },
@@ -4531,6 +4830,18 @@ const styles = StyleSheet.create({
   logRowNameShown: { color: colors.cyan },
   logRowSerial: { color: colors.faint, fontSize: 10, fontWeight: '700' },
   logRowMeta: { color: colors.muted, fontSize: 11, marginTop: 3 },
+  clockChoices: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 8 },
+  clockChoice: {
+    borderColor: colors.line,
+    borderRadius: radii.pill,
+    borderWidth: 1,
+    maxWidth: '100%',
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+  },
+  clockChoiceOn: { backgroundColor: 'rgba(112,221,246,0.14)', borderColor: colors.cyan },
+  clockChoiceText: { color: colors.muted, fontSize: 12, fontWeight: '800' },
+  clockChoiceTextOn: { color: colors.cyan },
 
 
   profileCard: { overflow: 'hidden', paddingTop: 15 },

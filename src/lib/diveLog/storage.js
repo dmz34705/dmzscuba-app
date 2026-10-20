@@ -27,6 +27,7 @@ import {
   normalizeDiveRecord,
   surfaceLogOntoDive,
   touchRecord,
+  withTimeCorrection,
 } from './schema';
 import { createJsonBackup, createJsonExport, exportDivesToCsv, exportDivesToUddf, parseJsonBackup } from './exports';
 import { fuseComputerLogs } from './fuseLogs';
@@ -625,6 +626,64 @@ export async function saveDeviceTimeCorrection(entry, storage = AsyncStorage) {
   rows.push({ ...entry, decidedAt: entry.decidedAt || new Date().toISOString() });
   await storage.setItem(DIVE_LOG_CORRECTIONS_KEY, JSON.stringify(rows));
   return rows;
+}
+
+/**
+ * The other dives that took the same clock decision as one log: every live
+ * dive where the same physical computer has a log carrying exactly the same
+ * (non-zero) correction alongside a log from another computer. That is what a
+ * "Which clock is correct?" answer in the duplicate review wrote across a
+ * whole trip, so it is also what one corrected answer should undo.
+ *
+ * @returns {Promise<string[]>} dive ids, including the given dive's own
+ */
+export async function findDivesSharingClockCorrection(device, correctionMinutes, storage = AsyncStorage) {
+  if (!correctionMinutes) return [];
+  const bundles = await loadLogbookBundle(storage);
+  return bundles
+    .filter(({ dive, logs }) => !dive.deletedAt
+      && logs.some((log) => sameComputer(log.device, device) && (log.timeCorrectionMinutes || 0) === correctionMinutes)
+      && logs.some((log) => !sameComputer(log.device, device)))
+    .map(({ dive }) => dive.id);
+}
+
+/**
+ * Make `device` the computer with the right clock on each of `diveIds`.
+ *
+ * Only the *difference* between the computers' clocks is known from the
+ * matching; which one is right is a human answer. So this re-bases every
+ * log's correction on that computer: its own correction goes to zero, and
+ * every other log moves by the same amount, keeping them lined up with each
+ * other. The dive's start time follows its primary log. A snapshot is taken
+ * first, so the change can be rolled back from the logbook's backups.
+ *
+ * @returns {Promise<string[]>} the dive ids that actually changed
+ */
+export async function setClockReference(diveIds, device, storage = AsyncStorage) {
+  const ids = [...new Set((Array.isArray(diveIds) ? diveIds : [diveIds]).filter(Boolean))];
+  if (!ids.length) return [];
+  await snapshotLogbook(storage);
+  const changed = [];
+  for (const id of ids) {
+    // eslint-disable-next-line no-await-in-loop
+    const dive = await loadDive(id, storage);
+    if (!dive || dive.deletedAt) continue;
+    // eslint-disable-next-line no-await-in-loop
+    const logs = await loadLogsForDive(dive, storage);
+    const reference = logs.find((log) => sameComputer(log.device, device));
+    const shift = reference?.timeCorrectionMinutes || 0;
+    if (!shift) continue;
+    const corrected = [];
+    for (const log of logs) {
+      // eslint-disable-next-line no-await-in-loop
+      corrected.push(await saveLog(withTimeCorrection(log, (log.timeCorrectionMinutes || 0) - shift), storage));
+    }
+    const primary = corrected.find((log) => log.id === dive.primaryLogId) || corrected[0];
+    // eslint-disable-next-line no-await-in-loop
+    await saveDive(surfaceLogOntoDive(dive, primary), storage);
+    changed.push(id);
+  }
+  return changed;
 }
 
 // ---------------------------------------------------------------------------

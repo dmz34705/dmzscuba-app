@@ -36,7 +36,7 @@ const TABS = [
   { key: 'stats', label: 'Stats' },
 ];
 
-function Segmented({ accessibilityLabel, options, value, onChange }) {
+export function Segmented({ accessibilityLabel, options, value, onChange }) {
   return (
     <View accessibilityLabel={accessibilityLabel} accessibilityRole="tablist" style={styles.segmented}>
       {options.map((option) => {
@@ -65,7 +65,7 @@ function Segmented({ accessibilityLabel, options, value, onChange }) {
   );
 }
 
-function Chip({ label, selected, disabled, onPress }) {
+export function Chip({ label, selected, disabled, onPress }) {
   return (
     <Pressable
       accessibilityLabel={label}
@@ -80,7 +80,7 @@ function Chip({ label, selected, disabled, onPress }) {
   );
 }
 
-function ThemeSwatch({ theme, selected, onPress }) {
+export function ThemeSwatch({ theme, selected, onPress }) {
   return (
     <Pressable
       accessibilityLabel={`${theme.label} style`}
