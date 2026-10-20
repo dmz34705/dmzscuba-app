@@ -7,7 +7,7 @@ import { EditorSheet } from '../fields';
 import { todayString } from '../model';
 import { readBooking } from './readBooking';
 
-// Emails with photos export to 6-10MB+ PDFs; the server reads up to 25MB (large ones via Gemini's Files API).
+// Emails with photos export to 6-10MB+ PDFs; the private desktop reader accepts up to 25MB.
 const MAX_PDF_BYTES = 25 * 1024 * 1024;
 const megabytes = (bytes) => (bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1024))} KB`);
 
@@ -91,7 +91,7 @@ export default function ImportSheet({ visible, signedIn, onCancel, onResult }) {
       <Text style={styles.tip}>In Mail, press and hold the message text, tap Select All, then Copy. Forwarded emails work too.</Text>
       <Text style={styles.privacy}>
         Emails are read on this phone first. {signedIn
-          ? 'If it can’t fill in everything — or you choose a PDF — smart import sends the email to DMZ Scuba’s server, which uses Google Gemini to read it. Nothing is kept.'
+          ? 'If it can’t fill in everything — or you choose a PDF — smart import sends it through DMZ Scuba’s private local AI. PDF pages are converted in memory and nothing is kept.'
           : 'Sign in to your DMZ account to turn on smart import for emails this phone can’t read, and for PDFs.'}
       </Text>
     </EditorSheet>

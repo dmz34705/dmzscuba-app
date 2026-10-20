@@ -1,11 +1,12 @@
 import { getAccessToken } from './accountApi';
+import { createAiRequestId, logAiDiagnostic } from './aiDiagnostics';
 import { AIRLINES } from '../features/planner/bookingImport/parseFlightText';
 
 // Smart import: the Worker reads confirmation emails (and PDFs) the on-device parsers couldn't —
 // flights, hotels, rental cars, liveaboards, tours. Signed-in only; like Dive Lens it goes straight
 // to the Worker from native builds.
 const IMPORT_API_URL = 'https://dmz-media-api.zacharylisowski55.workers.dev/api/planner/itinerary/parse';
-// The Worker allows about a minute (long PDFs, retries while Google is busy); wait a little longer.
+// Text imports normally finish within a minute; wait a little longer than the Worker.
 const REQUEST_TIMEOUT_MS = 65000;
 // Sending a 10-25MB PDF over a phone connection takes time before the server even starts reading.
 const PDF_TIMEOUT_MS = 150000;
@@ -13,10 +14,11 @@ const TYPES = ['flight', 'stay', 'car', 'liveaboard', 'diving', 'activity', 'tra
 const LABELS = { flight: 'Flight', stay: 'Hotel', car: 'Rental car', liveaboard: 'Liveaboard', diving: 'Dive booking', activity: 'Activity', transfer: 'Transfer', ferry: 'Ferry', other: 'Booking' };
 
 export class BookingImportError extends Error {
-  constructor(message, code = 'IMPORT_FAILED') {
+  constructor(message, code = 'IMPORT_FAILED', requestId = '') {
     super(message);
     this.name = 'BookingImportError';
     this.code = code;
+    this.requestId = requestId;
   }
 }
 
@@ -49,26 +51,37 @@ export async function smartImportBooking({ text = '', pdfBase64 = '', referenceD
   try { token = await getAccessToken(); } catch { throw new BookingImportError('Sign in to your DMZ account to use smart import.', 'AUTH_REQUIRED'); }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), pdfBase64 ? PDF_TIMEOUT_MS : REQUEST_TIMEOUT_MS);
+  const requestId = createAiRequestId(pdfBase64 ? 'itinerary-pdf' : 'itinerary-text');
+  const feature = pdfBase64 ? 'itinerary-pdf' : 'itinerary-text';
+  const startedAt = Date.now();
+  logAiDiagnostic('request.started', { requestId, feature, requestBytes: (text?.length || 0) + (pdfBase64?.length || 0) });
   let response, data;
   try {
     response = await fetch(IMPORT_API_URL, {
       method: 'POST',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json', Authorization: `Bearer ${token}`, 'X-DMZ-Request-ID': requestId },
       body: JSON.stringify({ text: text || undefined, pdfBase64: pdfBase64 || undefined, referenceDate: referenceDate || undefined }),
       signal: controller.signal,
     });
     data = await response.json().catch(() => ({}));
+    logAiDiagnostic('request.completed', {
+      requestId: response.headers.get('x-dmz-request-id') || requestId,
+      feature,
+      status: response.status,
+      elapsedMs: Date.now() - startedAt,
+    });
   } catch (error) {
-    throw new BookingImportError(error?.name === 'AbortError' ? 'Smart import took too long. Please try again.' : 'Smart import could not be reached. Check your connection.', 'NETWORK');
+    logAiDiagnostic('request.failed', { requestId, feature, elapsedMs: Date.now() - startedAt, error: error?.name || 'Error' });
+    throw new BookingImportError(error?.name === 'AbortError' ? 'Smart import took too long. Please try again.' : 'Smart import could not be reached. Check your connection.', 'NETWORK', requestId);
   } finally {
     clearTimeout(timer);
   }
-  if (response.status === 401) throw new BookingImportError('Your session expired. Sign in again to use smart import.', 'AUTH_REQUIRED');
+  if (response.status === 401) throw new BookingImportError('Your session expired. Sign in again to use smart import.', 'AUTH_REQUIRED', requestId);
   // The server doesn't have smart import (not deployed yet, or an older server).
-  if (response.status === 404) throw new BookingImportError('Smart import isn’t available right now. Paste the email text instead, or add the booking by hand.', 'UNAVAILABLE');
-  if (response.status === 503) throw new BookingImportError(data?.error || 'Google’s AI service is overloaded right now. Try again in a few minutes.', 'AI_BUSY');
-  if (response.status === 504) throw new BookingImportError('That took too long to read. Try again, or paste just the booking part of the email.', 'TIMEOUT');
-  if (response.status === 413) throw new BookingImportError(data?.error || 'That file is too large for smart import.', 'TOO_LARGE');
-  if (!response.ok || data?.ok !== true) throw new BookingImportError(data?.error || 'Smart import could not read that email.');
+  if (response.status === 404) throw new BookingImportError('Smart import isn’t available right now. Paste the email text instead, or add the booking by hand.', 'UNAVAILABLE', requestId);
+  if (response.status === 503) throw new BookingImportError(data?.error || 'Smart import is busy right now. Try again in a few minutes.', 'AI_BUSY', requestId);
+  if (response.status === 504) throw new BookingImportError('That took too long to read. Try again, or paste just the booking part of the email.', 'TIMEOUT', requestId);
+  if (response.status === 413) throw new BookingImportError(data?.error || 'That file is too large for smart import.', 'TOO_LARGE', requestId);
+  if (!response.ok || data?.ok !== true) throw new BookingImportError(data?.error || 'Smart import could not read that email.', 'IMPORT_FAILED', requestId);
   return itemsFromSmartImport(data);
 }

@@ -62,3 +62,7 @@ metro.log
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# Generated previews and scratch renders
+/output/
+/tmp/

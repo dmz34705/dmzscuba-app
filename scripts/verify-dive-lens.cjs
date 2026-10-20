@@ -14,6 +14,9 @@ const { normalizeLensResult, lensDetailSections } = loadSourceModule(path.join(r
 const { photoCapturedAt, findDivePhotoMatches } = loadSourceModule(
   path.join(root, 'src/lib/diveLog/photoMatching.js'), path.join(root, 'src'),
 );
+const { buildLensContext } = loadSourceModule(
+  path.join(root, 'src/features/diveLens/lensContext.js'), path.join(root, 'src'),
+);
 const { createDive } = loadSourceModule(
   path.join(root, 'src/lib/diveLog/schema.js'), path.join(root, 'src'),
 );
@@ -23,12 +26,19 @@ assert.match(catalogSource, /id: 'dive-lens'/);
 assert.match(catalogSource, /routeType: 'lens'/);
 assert.match(navigatorSource, /feature\?\.routeType === 'lens'/);
 assert.match(navigatorSource, /<DiveLensScreen onBack=\{closeDetail\}/);
+assert.match(navigatorSource, /signedIn=\{accountSession\.authStatus === 'signedIn'\}/);
 assert.match(screenSource, /requestCameraPermissionsAsync/);
 assert.match(screenSource, /launchImageLibraryAsync/);
 assert.match(screenSource, /identifyPhoto/);
 assert.match(apiSource, /\/api\/vision\/identify/);
 assert.match(apiSource, /AbortController/);
 assert.match(apiSource, /normalizeLensResult/);
+assert.match(apiSource, /getAccessToken/);
+assert.match(apiSource, /Authorization: `Bearer \$\{token\}`/);
+assert.match(apiSource, /X-DMZ-Request-ID/);
+assert.match(apiSource, /context/);
+assert.match(apiSource, /createAiRequestId/);
+assert.match(screenSource, /Sign in to use Dive Lens/);
 assert.match(screenSource, /<LensDetails result=\{result\}/);
 
 for (const invalid of [null, [], 'fish', {}, { category: 'gear', commonName: {} }]) assert.equal(normalizeLensResult(invalid), null);
@@ -88,5 +98,26 @@ const buffered = findDivePhotoMatches({ creationTime: Date.parse(dive.startTime)
 assert.equal(buffered[0].confidence, 'medium');
 const outside = findDivePhotoMatches({ creationTime: Date.parse(dive.startTime) - 91 * 60000 }, [dive]);
 assert.equal(outside.length, 0);
+
+const lakeSuperior = buildLensContext({
+  startTime: '2026-10-15T12:00:00.000Z',
+  site: { name: 'Lake Superior', latitude: 46.46, longitude: -86.6 },
+  water: { type: 'fresh' },
+});
+assert.equal(lakeSuperior.waterType, 'fresh');
+assert.equal(lakeSuperior.month, 10);
+assert.ok(lakeSuperior.nearbySpecies.some((item) => item.scientificName === 'Lota lota' && item.commonName === 'Burbot'));
+assert.equal('latitude' in lakeSuperior, false, 'Exact coordinates are not sent as Lens context.');
+
+// Dive computer salinity is a device setting, not evidence about the water.
+const importedSalt = { startTime: '2026-07-29T23:00:00.000Z', source: 'computer', logIds: ['log-1'], primaryLogId: 'log-1' };
+assert.equal(buildLensContext({ ...importedSalt, water: { type: 'salt' } }).waterType, 'unknown');
+assert.equal(buildLensContext({ ...importedSalt, water: { type: 'salt' }, site: { name: 'Gilboa Quarry' } }).waterType, 'fresh');
+assert.equal(buildLensContext({ ...importedSalt, source: 'manual', water: { type: 'salt' } }).waterType, 'unknown', 'An attached log makes the type device-derived.');
+// Once the diver confirms the water type in the log, Dive Lens trusts it.
+assert.equal(buildLensContext({ ...importedSalt, water: { type: 'fresh', typeConfirmed: true } }).waterType, 'fresh');
+assert.equal(buildLensContext({ ...importedSalt, water: { type: 'salt', typeConfirmed: true } }).waterType, 'salt');
+// A water type the diver logged by hand is still trusted, even with a lake-like name.
+assert.equal(buildLensContext({ startTime: '2026-07-29T23:00:00.000Z', site: { name: 'Blue Heron Bridge, Lake Worth' }, water: { type: 'salt' } }).waterType, 'salt');
 
 console.log('Dive Lens integration checks passed.');

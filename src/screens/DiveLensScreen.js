@@ -8,6 +8,7 @@ import { ScreenHeader, SectionLabel } from '../components/AppShell';
 import { Card, PrimaryButton, SecondaryButton } from '../components/Ui';
 import { identifyPhoto } from '../lib/lensApi';
 import LensDetails from '../features/diveLens/LensDetails';
+import { buildLensContext } from '../features/diveLens/lensContext';
 import { findDivePhotoMatches, photoCapturedAt } from '../lib/diveLog/photoMatching';
 import { loadAll, loadDive, saveDive } from '../lib/diveLog/storage';
 import { colors, radii, shadow, spacing } from '../theme';
@@ -17,11 +18,12 @@ const CATEGORY_LABEL = { marine_life: 'MARINE LIFE', gear: 'DIVE GEAR', unclear:
 
 async function prepareAnalysisAsset(asset) {
   if (!asset?.uri) return asset;
+  const operations = Number(asset.width) > 1600 ? [{ resize: { width: 1600 } }] : [];
   const prepared = await ImageManipulator.manipulateAsync(
     asset.uri,
-    [{ resize: { width: 1280 } }],
+    operations,
     {
-      compress: 0.65,
+      compress: 0.85,
       format: ImageManipulator.SaveFormat.JPEG,
       base64: true,
     },
@@ -45,7 +47,7 @@ function PickerOption({ icon, title, body, onPress }) {
   );
 }
 
-export default function DiveLensScreen({ onBack }) {
+export default function DiveLensScreen({ onBack, onSignIn, signedIn = false }) {
   const insets = useSafeAreaInsets();
   const [photo, setPhoto] = useState(null);
   const [status, setStatus] = useState('idle');
@@ -57,9 +59,10 @@ export default function DiveLensScreen({ onBack }) {
 
   const suggestDiveLink = async (asset, capturedAtOverride = null) => {
     const capturedAt = photoCapturedAt(asset, capturedAtOverride);
-    if (!capturedAt) return;
+    if (!capturedAt) return null;
     const matches = findDivePhotoMatches(asset, await loadAll(), capturedAt);
     if (matches[0]) setDiveMatch({ ...matches[0], asset, capturedAt });
+    return matches[0] ? { match: matches[0], context: buildLensContext(matches[0].dive, capturedAt) } : null;
   };
 
   const runIdentify = async (asset, capturedAtOverride = null) => {
@@ -70,11 +73,20 @@ export default function DiveLensScreen({ onBack }) {
     setErrorMessage('');
     setStatus('loading');
     try {
-      const analysisAsset = await prepareAnalysisAsset(asset);
-      const identified = await identifyPhoto({ base64: analysisAsset.base64, mimeType: analysisAsset.mimeType || 'image/jpeg' });
+      // Resolve a timestamp-matched dive before inference so the local model
+      // can use water type and nearby taxa. Exact coordinates never leave the
+      // phone; buildLensContext reduces them to coarse ecological evidence.
+      const [analysisAsset, diveEvidence] = await Promise.all([
+        prepareAnalysisAsset(asset),
+        suggestDiveLink(asset, capturedAtOverride),
+      ]);
+      const identified = await identifyPhoto({
+        base64: analysisAsset.base64,
+        mimeType: analysisAsset.mimeType || 'image/jpeg',
+        context: diveEvidence?.context || null,
+      });
       setResult(identified);
       setStatus('result');
-      suggestDiveLink(asset, capturedAtOverride).catch(() => {});
     } catch (error) {
       setErrorMessage(error?.message || 'That photo could not be analyzed. Try a clearer, closer shot.');
       setStatus('error');
@@ -87,7 +99,7 @@ export default function DiveLensScreen({ onBack }) {
       Alert.alert('Camera access needed', 'Enable camera access for DMZ Scuba in your device settings to use Dive Lens.');
       return;
     }
-    const capture = await ImagePicker.launchCameraAsync({ base64: true, quality: 0.5, allowsEditing: true });
+    const capture = await ImagePicker.launchCameraAsync({ quality: 0.9, allowsEditing: true });
     if (capture.canceled || !capture.assets?.[0]) return;
     await runIdentify(capture.assets[0], new Date().toISOString());
   };
@@ -100,9 +112,8 @@ export default function DiveLensScreen({ onBack }) {
     }
     const picked = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      base64: true,
       exif: true,
-      quality: 0.5,
+      quality: 0.9,
       allowsEditing: true,
     });
     if (picked.canceled || !picked.assets?.[0]) return;
@@ -153,8 +164,18 @@ export default function DiveLensScreen({ onBack }) {
             <Text style={styles.title}>What am I looking at?</Text>
             <Text style={styles.subtitle}>Explore marine-life profiles or identify dive gear by type, configuration, and—when visible—brand and model.</Text>
 
-            <PickerOption icon="📷" title="Take a photo" body="Use your camera to capture a creature or gear now." onPress={takePhoto} />
-            <PickerOption icon="🖼️" title="Choose from library" body="Analyze a photo you already have saved." onPress={pickPhoto} />
+            {signedIn ? (
+              <>
+                <PickerOption icon="📷" title="Take a photo" body="Use your camera to capture a creature or gear now." onPress={takePhoto} />
+                <PickerOption icon="🖼️" title="Choose from library" body="Analyze a photo you already have saved." onPress={pickPhoto} />
+              </>
+            ) : (
+              <Card style={styles.tipCard}>
+                <Text style={styles.tipTitle}>Sign in to use Dive Lens</Text>
+                <Text style={styles.tipBody}>A DMZ account keeps the private identification service available to divers instead of exposing it as a public AI endpoint.</Text>
+                <PrimaryButton label="Sign in" onPress={onSignIn} style={styles.signInButton} />
+              </Card>
+            )}
 
             <Card style={styles.tipCard}>
               <Text style={styles.tipTitle}>Tips for a good ID</Text>
@@ -259,6 +280,7 @@ const styles = StyleSheet.create({
   tipCard: { backgroundColor: '#0B2838', borderColor: 'rgba(112,221,246,.34)', marginTop: 4 },
   tipTitle: { color: colors.cyan, fontSize: 12, fontWeight: '900', letterSpacing: 0.6 },
   tipBody: { color: colors.text, fontSize: 13, lineHeight: 19, marginTop: 6 },
+  signInButton: { marginTop: 14 },
   disclaimer: { color: colors.faint, fontSize: 11, lineHeight: 17, marginHorizontal: 4, marginTop: 16, textAlign: 'center' },
   previewShell: { borderColor: colors.lineStrong, borderRadius: radii.lg, borderWidth: 1, marginBottom: 12, overflow: 'hidden', ...shadow },
   previewImage: { backgroundColor: colors.surface, height: 280, width: '100%' },
