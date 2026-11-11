@@ -16,3 +16,11 @@ cyan-teal accent border and a LOGBOOK ribbon; square opaque iOS icon.
 
 Build a Release configuration to embed the historical JavaScript bundle;
 do not point this app at the beta's Metro server.
+
+## Build result
+
+Release build succeeded on November 11, 2026. Signed app:
+`/Users/dmz/dmzscuba-logbook-build/Build/Products/Release-iphoneos/DMZLogbook.app`.
+Installation is pending: the free developer profile's three-installed-app limit
+blocked installation of the first retrospective app. DMZ Scuba, DMZ Light, and
+AltStore occupy the slots. No existing app was removed or replaced.
