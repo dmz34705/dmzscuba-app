@@ -59,6 +59,19 @@ function stage() {
   copyDir(path.join(vendorRoot, 'include'), path.join(stageRoot, 'include'), (name) => name.endsWith('.h'));
   fs.copyFileSync(path.join(vendorRoot, 'COPYING'), path.join(stageRoot, 'COPYING'));
 
+  // DMZ Scuba overlays: modules/dive-computer-bridge/overlays/<file>.c is
+  // appended to the staged src/<file>.c, so additions can reach a driver's
+  // static helpers without forking the pinned submodule.
+  const overlayRoot = path.join(__dirname, '..', 'overlays');
+  if (fs.existsSync(overlayRoot)) {
+    for (const name of fs.readdirSync(overlayRoot).filter((n) => n.endsWith('.c'))) {
+      const target = path.join(stageRoot, 'src', name);
+      if (!fs.existsSync(target)) fail(`overlay ${name} has no matching libdivecomputer source`);
+      fs.appendFileSync(target, `\n${fs.readFileSync(path.join(overlayRoot, name), 'utf8')}`);
+      console.log(`[stage-libdivecomputer] applied overlay ${name}`);
+    }
+  }
+
   const count = fs.readdirSync(path.join(stageRoot, 'src')).filter((n) => n.endsWith('.c')).length;
   console.log(`[stage-libdivecomputer] staged ${count} C sources -> modules/dive-computer-bridge/ios/libdivecomputer/`);
 }

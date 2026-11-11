@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, spacing } from '../theme';
 
 // Menu-only layout: tool headers and their measured workspaces stay separate.
-export default function MenuPage({ title, subtitle, onBack, backLabel = 'Back', children, pageKey = title }) {
+export default function MenuPage({ title, subtitle, onBack, backLabel = 'Back', children, pageKey = title, scrollEnabled = true }) {
   const insets = useSafeAreaInsets();
   return (
     <View style={styles.screen}>
@@ -15,7 +15,7 @@ export default function MenuPage({ title, subtitle, onBack, backLabel = 'Back', 
         ) : <Text style={styles.brand}>DMZ SCUBA</Text>}
         <Text accessibilityRole="header" style={styles.title}>{title}</Text>
       </View>
-      <ScrollView key={pageKey} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView key={pageKey} contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled" scrollEnabled={scrollEnabled} showsVerticalScrollIndicator={false}>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         {children}
       </ScrollView>

@@ -52,6 +52,49 @@ NS_ASSUME_NONNULL_BEGIN
                   onEvent:(void (^)(NSString *name, NSDictionary<NSString *, id> *body))onEvent
                completion:(void (^)(NSDictionary *_Nullable result, NSString *_Nullable error))completion;
 
+/// Pre-dive setup in one session: sets the "first" open-circuit gas to `oxygen` %
+/// (Heinrichs-Weikamp OSTC family only — verified by read-back; pass a value
+/// outside 5…100 to skip) and, when `setClock` is YES, the clock.
+///
+/// `completion` fires with { @"vendor", @"product", @"gas": { @"status":
+/// set|unsupported|skipped|error, @"message"?, @"slot"?, @"previous"? },
+/// @"clock": { @"status": set|unsupported|skipped|error, @"message"? } }, or a
+/// non-nil error string when no session with the computer could be opened.
+- (void)setupDeviceWithName:(NSString *)name
+                     vendor:(nullable NSString *)vendor
+                    product:(nullable NSString *)product
+                     oxygen:(NSInteger)oxygen
+                   setClock:(BOOL)setClock
+                       year:(NSInteger)year
+                      month:(NSInteger)month
+                        day:(NSInteger)day
+                       hour:(NSInteger)hour
+                     minute:(NSInteger)minute
+                     second:(NSInteger)second
+                    onEvent:(void (^)(NSString *name, NSDictionary<NSString *, id> *body))onEvent
+                 completion:(void (^)(NSDictionary *_Nullable result, NSString *_Nullable error))completion;
+
+/// READ-ONLY: lists and reads the non-dive files on a Suunto EON Steel / EON
+/// Core / D5 (to find where dive modes and gases live). `completion` gets
+/// { vendor, product, root, entries: [{path, dir}], files: [{path, size,
+/// base64} | {path, error}], problems: [string], truncated } or an error.
+- (void)exploreSuuntoWithName:(NSString *)name
+                       vendor:(nullable NSString *)vendor
+                      product:(nullable NSString *)product
+                      onEvent:(void (^)(NSString *name, NSDictionary<NSString *, id> *body))onEvent
+                   completion:(void (^)(NSDictionary *_Nullable result, NSString *_Nullable error))completion;
+
+/// READ-ONLY: reads every data identifier in `ranges` ([[start, end], …],
+/// inclusive) from a Shearwater Petrel-family computer. `completion` gets
+/// { vendor, product, values: { "0x8010": hex }, scanned, total, refused,
+/// failures: [{id, rc}], complete, seconds } or an error.
+- (void)scanShearwaterWithName:(NSString *)name
+                        vendor:(nullable NSString *)vendor
+                       product:(nullable NSString *)product
+                        ranges:(NSArray<NSArray<NSNumber *> *> *)ranges
+                       onEvent:(void (^)(NSString *name, NSDictionary<NSString *, id> *body))onEvent
+                    completion:(void (^)(NSDictionary *_Nullable result, NSString *_Nullable error))completion;
+
 /// Feeds bytes received from a BLE notification to the download thread.
 - (void)provideBytes:(NSData *)data;
 

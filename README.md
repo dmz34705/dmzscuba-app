@@ -1,7 +1,7 @@
 # DMZ Scuba
 
-> **Pre-alpha 0.0.120** — active development. Data models, workflows and visual
-> design can still change before the first public alpha.
+> **0.1.0 Beta 1 — prerelease** (`v0.1.0-beta.1`). Feature-rich and entering
+> stabilization; physical-device validation and product refinement are ongoing.
 
 DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion for divers who
 have outgrown a pile of disconnected single-purpose apps. It combines a serious
@@ -34,14 +34,25 @@ This README serves two audiences:
 
 ## Current status
 
-This is a functional **pre-alpha**, not a store-ready release. The major native
-workflows are implemented and covered by focused regression scripts, but the app
-still needs broader physical-device testing, accessibility work, content review,
-production service hardening and public-alpha migration guarantees. Pre-alpha
-builds are numbered `0.0.x` and the number only goes up; the current release is
-`0.0.120` (`version` in `package.json` and `app.json`).
+This is a **beta prerelease**, not a store-ready stable release. The pre-alpha
+label previously lagged behind development; this milestone records the current
+state without inventing intermediate releases. The app version is `0.1.0` in
+`package.json` and `app.json`; the GitHub prerelease tag is `v0.1.0-beta.1`.
 
-**New in 0.0.120:** A substantial pre-alpha update, jumping several build
+The focus now is reliability, physical-device validation, accessibility, and
+cohesive workflows. See the [product refinement review](docs/PRODUCT_REFINEMENT_REVIEW.md)
+for technical findings and the proposed roadmap. Known issues include interrupted
+download checkpoints, interruption recovery during backup restoration, and
+account isolation for insurance and location history. The recent Bluetooth
+timeout mitigation still requires hardware verification.
+
+**New in 0.1.0 Beta 1:** Bluetooth nitrox-analyzer integration, native pre-dive
+setup and diagnostic support, Bluetooth notification-readiness handling, and a
+documented stabilization and product-refinement roadmap. These changes include
+native code; an older phone binary does not gain native features through reload.
+See [release notes](docs/RELEASE_0.1.0_BETA_1.md) for scope and validation limits.
+
+**Previously in 0.0.120:** A substantial pre-alpha update, jumping several build
 numbers.
 
 - **iOS 27:** the app now adopts the UIScene life cycle, which iOS 27 requires

@@ -77,11 +77,16 @@ const DIVE_COMPUTER_NAME_HINTS = [
 // have no time-sync support in the library for any model, at any BLE service;
 // setting the clock on those always fails, so the UI hides the option rather
 // than offering a button that can only ever error.
+// `gasSync` marks families whose gas the app can set: Heinrichs-Weikamp OSTC
+// (hw_ostc3_device_config_write) and Suunto EON Steel / EON Core / D5 (the
+// settings exchange the Suunto app uses — see
+// modules/dive-computer-bridge/overlays/suunto_eonsteel.c). Everything else has
+// no known gas-write path, so the app asks the diver to set it by hand.
 const KNOWN_SERVICES = [
-  { uuid: '0000fefb-0000-1000-8000-00805f9b34fb', label: 'Heinrichs-Weikamp (Telit/Stollmann) — OSTC', timeSync: true },
-  { uuid: '2456e1b9-26e2-8f83-e744-f34f01e9d701', label: 'Heinrichs-Weikamp (U-Blox)', timeSync: true },
+  { uuid: '0000fefb-0000-1000-8000-00805f9b34fb', label: 'Heinrichs-Weikamp (Telit/Stollmann) — OSTC', timeSync: true, gasSync: true },
+  { uuid: '2456e1b9-26e2-8f83-e744-f34f01e9d701', label: 'Heinrichs-Weikamp (U-Blox)', timeSync: true, gasSync: true },
   { uuid: '544e326b-5b72-c6b0-1c46-41c1bc448118', label: 'Mares BlueLink Pro', timeSync: false },
-  { uuid: '98ae7120-e62e-11e3-badd-0002a5d5c51b', label: 'Suunto EON Steel / EON Core / D5', timeSync: true },
+  { uuid: '98ae7120-e62e-11e3-badd-0002a5d5c51b', label: 'Suunto EON Steel / EON Core / D5', timeSync: true, gasSync: true },
   { uuid: 'cb3c4555-d670-4670-bc20-b61dbc851e9a', label: 'Aqualung / Apeks / Oceanic (Pelagic — i770R, i200C, i300C, Pro Plus X, Geo 4.0)', timeSync: false },
   { uuid: 'ca7b0001-f785-4c38-b599-c7c5fbadb034', label: 'Aqualung / Apeks (Pelagic — i330R, DSX)', timeSync: false },
   { uuid: 'fdcdeaaa-295d-470e-bf15-04217b7aa0a0', label: 'Scubapro G2 / G3', timeSync: false },
@@ -143,6 +148,17 @@ export function looksLikeDiveComputer(nameOrDevice) {
 // device often drops the link once bonding completes. Callers use this to warn
 // the user and to retry the connect after the pairing hiccup.
 const SUUNTO_NAME_HINTS = ['suunto', 'eon steel', 'eon core', 'eon ', 'd5'];
+
+const SHEARWATER_NAME_HINTS = ['shearwater', 'perdix', 'petrel', 'teric', 'peregrine', 'nerd', 'tern'];
+
+/** Shearwater Petrel-family computers (the ones with a settings scan). */
+export function looksLikeShearwater(nameOrDevice) {
+  const raw = typeof nameOrDevice === 'string'
+    ? nameOrDevice
+    : (nameOrDevice?.name || nameOrDevice?.localName || '');
+  const name = raw.toLowerCase().trim();
+  return Boolean(name) && SHEARWATER_NAME_HINTS.some((hint) => name.includes(hint));
+}
 
 export function looksLikeSuunto(nameOrDevice) {
   const raw = typeof nameOrDevice === 'string'

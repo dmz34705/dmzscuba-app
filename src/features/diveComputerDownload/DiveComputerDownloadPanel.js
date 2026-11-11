@@ -1,10 +1,17 @@
+import { useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { Card, PrimaryButton, ProgressBar, SecondaryButton } from '../../components/Ui';
 import { colors, radii } from '../../theme';
-import { looksLikeSuunto } from './diveComputerBle';
+import { looksLikeShearwater, looksLikeSuunto } from './diveComputerBle';
 import DownloadConsole from './DownloadConsole';
+import { describePredive, gasPercent, predivePlan } from './predive';
 import useDiveComputerDownload from './useDiveComputerDownload';
+
+// Read-only protocol tools (Suunto settings-file explorer, Shearwater settings
+// scan) used to reverse engineer gas sending. Hidden from divers; flip to true
+// to bring them back, e.g. when testing a new computer model.
+const SHOW_PROTOCOL_TOOLS = false;
 
 const SUUNTO_PAIRING_HINT =
   'Suunto EON / D5 bonds with one device at a time. If you have the Suunto app installed, '
@@ -100,19 +107,154 @@ function DownloadActions({ onDisconnect, download, connectedDevice, timeSync, on
   );
 }
 
+
+const TONE_COLOR = { good: colors.good, warning: colors.warning, danger: colors.danger, info: colors.cyan };
+
+// "Send gas to computer" mode (opened from the nitrox log): instead of the
+// download buttons, one action sends the analyzed gas (OSTC family) and sets
+// the clock where supported. Computers that can't take a gas from an app get
+// an explicit "I've set it by hand" confirmation instead — never a silent pass.
+function GasSendActions({ gas, connectedDevice, gasSync, onSend, onDisconnect, onFinish }) {
+  const pct = gasPercent(gas.o2);
+  const plan = predivePlan(connectedDevice, gas.o2);
+  const running = gasSync?.status === 'running';
+  const ran = gasSync?.status === 'done' && gasSync.o2 === pct;
+  const outcome = ran ? describePredive(gasSync.result, gas.o2) : null;
+  const failed = gasSync?.status === 'error' && gasSync.o2 === pct;
+
+  return (
+    <>
+      <View style={styles.gasBox}>
+        <Text style={styles.gasLabel}>GAS TO SEND</Text>
+        <Text style={styles.gasValue}>{gas.o2.toFixed(1)}% <Text style={styles.gasSub}>→ {pct}% on the computer</Text></Text>
+        {gas.label ? <Text style={styles.deviceId}>{gas.label}</Text> : null}
+      </View>
+      {!ran ? <Text style={styles.body}>{plan.note}</Text> : null}
+
+      {outcome ? outcome.lines.map((line, i) => (
+        <Text key={i} style={[styles.outcome, { color: TONE_COLOR[line.tone] }]}>{line.text}</Text>
+      )) : null}
+      {failed ? <Text style={styles.error}>{gasSync.error}</Text> : null}
+
+      {!ran && plan.canSend ? (
+        <PrimaryButton
+          label={running ? 'Talking to computer…' : plan.label}
+          onPress={onSend}
+          disabled={running}
+          style={styles.scanButton}
+        />
+      ) : null}
+
+      {outcome?.gasSet ? (
+        <PrimaryButton label="Done" onPress={() => onFinish({ gasSet: true, clockSet: outcome.clockSet, computer: connectedDevice.name })} style={styles.scanButton} />
+      ) : (ran || failed || !plan.canSend) ? (
+        <PrimaryButton
+          label={outcome?.gasPending ? `Computer shows ${pct}% — done` : `I've set ${pct}% on the computer`}
+          onPress={() => onFinish({ gasSet: false, confirmedByHand: true, clockSet: Boolean(outcome?.clockSet), computer: connectedDevice.name })}
+          style={styles.scanButton}
+        />
+      ) : null}
+      {onDisconnect ? <SecondaryButton label="Disconnect" onPress={onDisconnect} style={styles.backButton} /> : null}
+    </>
+  );
+}
+
+// READ-ONLY Suunto EON Steel / EON Core / D5 file dump — the first step toward
+// sending gases to Suunto computers: it shows where the Suunto app keeps dive
+// modes. The JSON is shared out (e.g. AirDrop to the Mac) for decoding.
+function SuuntoExplorer({ explore, onExplore }) {
+  const running = explore?.status === 'running';
+  const summary = explore?.status === 'done' ? explore.summary : null;
+  const share = async () => {
+    try {
+      const Sharing = require('expo-sharing');
+      await Sharing.shareAsync(summary.uri, { mimeType: 'application/json', dialogTitle: 'Share Suunto files' });
+    } catch {
+      // sharing sheet dismissed or unavailable — nothing to do
+    }
+  };
+  return (
+    <View style={styles.explorer}>
+      <Text style={styles.gasLabel}>SUUNTO SETTINGS FILES (READ-ONLY)</Text>
+      <Text style={styles.deviceId}>Reads the computer's non-dive files so we can find where dive modes and gases are stored. Nothing on the computer is changed.</Text>
+      {summary ? (
+        <>
+          <Text style={[styles.outcome, { color: colors.good }]}>✓ {summary.entries} entries, {summary.files} files read{summary.truncated ? ' (stopped at the size limit)' : ''}.</Text>
+          <SecondaryButton label="Share the file dump" onPress={share} style={styles.backButton} />
+        </>
+      ) : null}
+      {explore?.status === 'error' ? <Text style={styles.error}>{explore.error}</Text> : null}
+      <Pressable onPress={running ? undefined : onExplore} hitSlop={8} style={styles.linkRow}>
+        <Text style={styles.linkText}>{running ? 'Reading files…' : summary ? 'Read again' : 'Explore settings files'}</Text>
+      </Pressable>
+    </View>
+  );
+}
+
+// READ-ONLY Shearwater settings scan. Run it twice — before and after changing a
+// gas on the computer itself — and share both files: the ID whose value changed
+// is where the gas list lives.
+function ShearwaterScanner({ scan, onScan }) {
+  const [label, setLabel] = useState('before');
+  const running = scan?.status === 'running';
+  const summary = scan?.status === 'done' ? scan.summary : null;
+  const pct = scan?.progress && scan.progress.maximum > 0 ? scan.progress.current / scan.progress.maximum : 0;
+  const share = async () => {
+    try {
+      const Sharing = require('expo-sharing');
+      await Sharing.shareAsync(summary.uri, { mimeType: 'application/json', dialogTitle: 'Share Shearwater scan' });
+    } catch {
+      // sharing sheet dismissed or unavailable
+    }
+  };
+  return (
+    <View style={styles.explorer}>
+      <Text style={styles.gasLabel}>SHEARWATER SETTINGS SCAN (READ-ONLY)</Text>
+      <Text style={styles.deviceId}>Reads every setting the computer reports (a few minutes). Scan once, change a gas on the computer, scan again, then share both files. Nothing on the computer is changed.</Text>
+      <View style={styles.doneActions}>
+        {['before', 'after'].map((l) => (
+          <SecondaryButton key={l} label={l === 'before' ? 'Scan 1 · before' : 'Scan 2 · after'} selected={label === l} onPress={() => setLabel(l)} style={styles.flexButton} />
+        ))}
+      </View>
+      {running ? (
+        <>
+          <ProgressBar value={pct} />
+          <Text style={styles.progressText}>{scan.progress ? `${scan.progress.current} / ${scan.progress.maximum} settings read…` : 'Starting…'}</Text>
+        </>
+      ) : null}
+      {summary ? (
+        <>
+          <Text style={[styles.outcome, { color: summary.complete ? colors.good : colors.warning }]}>
+            {summary.complete ? '✓' : '!'} Scan "{summary.label}": {summary.answered} settings found in {summary.scanned} IDs ({summary.seconds}s){summary.complete ? '' : ' — stopped early'}.
+          </Text>
+          <SecondaryButton label={`Share scan "${summary.label}"`} onPress={share} style={styles.backButton} />
+        </>
+      ) : null}
+      {scan?.status === 'error' ? <Text style={styles.error}>{scan.error}</Text> : null}
+      <PrimaryButton label={running ? 'Scanning…' : `Run scan "${label}"`} onPress={() => onScan({ label })} disabled={running} style={styles.scanButton} />
+    </View>
+  );
+}
+
 /**
  * The download flow's UI. All transfer state lives in the module-level
  * `downloadService` (via `useDiveComputerDownload`), so leaving this screen does
  * NOT interrupt an in-progress download — the logbook screen picks the finished
  * dives up when it next renders.
  *
+ * With `gas` ({ o2, label }) it becomes the "Send gas to computer" flow: same
+ * scan / connect, then GasSendActions instead of the download buttons, and
+ * `onGasDone(outcome)` once the gas is on the computer (sent or set by hand).
+ *
  * @param {object} props
  * @param {() => void} props.onClose
+ * @param {{ o2: number, label?: string }} [props.gas]
+ * @param {(outcome: object) => void} [props.onGasDone]
  */
-export default function DiveComputerDownloadPanel({ onClose }) {
+export default function DiveComputerDownloadPanel({ onClose, gas = null, onGasDone }) {
   const {
-    supported, status, devices, connectedDevice, progress, summary, error, log, baselineKnown, timeSync,
-    scan, stopScan, connect, disconnect, download, cancel, clearLog, syncClock,
+    supported, status, devices, connectedDevice, progress, summary, error, log, baselineKnown, timeSync, gasSync, suuntoExplore, shearwaterScan,
+    scan, stopScan, connect, disconnect, download, cancel, clearLog, syncClock, sendGasToComputer, exploreSuuntoFiles, scanShearwaterSettings,
   } = useDiveComputerDownload();
 
   if (!supported) {
@@ -137,22 +279,44 @@ export default function DiveComputerDownloadPanel({ onClose }) {
 
   return (
     <Card style={styles.card}>
-      <Text style={styles.title}>Download from dive computer</Text>
+      <Text style={styles.title}>{gas ? 'Send gas to dive computer' : 'Download from dive computer'}</Text>
       <Text style={styles.body}>
-        Wake your dive computer and put it in Bluetooth / upload mode, then scan. You can leave
-        this screen while it downloads — the transfer keeps running.
+        {gas
+          ? 'Wake your dive computer and put it in Bluetooth mode, then scan and pick it.'
+          : 'Wake your dive computer and put it in Bluetooth / upload mode, then scan. You can leave this screen while it downloads — the transfer keeps running.'}
       </Text>
 
       {status === 'error' && error ? <Text style={styles.error}>{error}</Text> : null}
 
       {showSuuntoHint ? <Text style={styles.suuntoHint}>{SUUNTO_PAIRING_HINT}</Text> : null}
 
-      {connectedDevice ? (
+      {gas && !connectedDevice && gasSync?.status === 'done' && gasSync.o2 === gasPercent(gas.o2) ? (
+        <View style={styles.connectedBox}>
+          <Text style={styles.connectedLabel}>DISCONNECTED</Text>
+          <Text style={styles.connectedName}>{gasSync.computer || 'Dive computer'}</Text>
+          <GasSendActions
+            gas={gas}
+            connectedDevice={{ name: gasSync.computer, gasSyncSupported: true, timeSyncSupported: true }}
+            gasSync={gasSync}
+            onSend={() => {}}
+            onFinish={(outcome) => onGasDone?.(outcome)}
+          />
+        </View>
+      ) : connectedDevice ? (
         <View style={styles.connectedBox}>
           <Text style={styles.connectedLabel}>{downloading ? 'DOWNLOADING' : status === 'done' ? 'DONE' : 'CONNECTED'}</Text>
           <Text style={styles.connectedName}>{connectedDevice.name}</Text>
 
-          {downloading ? (
+          {gas && !downloading ? (
+            <GasSendActions
+              gas={gas}
+              connectedDevice={connectedDevice}
+              gasSync={gasSync}
+              onSend={() => sendGasToComputer({ o2: gas.o2 })}
+              onDisconnect={disconnect}
+              onFinish={(outcome) => onGasDone?.(outcome)}
+            />
+          ) : downloading ? (
             <>
               <ProgressBar value={pct} />
               <Text style={styles.progressText}>
@@ -184,6 +348,12 @@ export default function DiveComputerDownloadPanel({ onClose }) {
               <DownloadActions onDisconnect={disconnect} download={download} connectedDevice={connectedDevice} timeSync={timeSync} onSyncClock={syncClock} />
             </>
           )}
+          {SHOW_PROTOCOL_TOOLS && looksLikeSuunto(connectedDevice.name) && !downloading ? (
+            <SuuntoExplorer explore={suuntoExplore} onExplore={exploreSuuntoFiles} />
+          ) : null}
+          {SHOW_PROTOCOL_TOOLS && looksLikeShearwater(connectedDevice.name) && !downloading ? (
+            <ShearwaterScanner scan={shearwaterScan} onScan={scanShearwaterSettings} />
+          ) : null}
         </View>
       ) : (
         <>
@@ -261,6 +431,12 @@ const styles = StyleSheet.create({
   timeSyncOk: { color: colors.good, fontSize: 12, fontWeight: '700', marginTop: 8, textAlign: 'center' },
   timeSyncErrorText: { color: colors.danger, fontSize: 12, fontWeight: '700', marginTop: 8, textAlign: 'center' },
   deviceList: { gap: 8, marginTop: 14 },
+  explorer: { borderColor: colors.line, borderTopWidth: 1, marginTop: 16, paddingTop: 12 },
+  gasBox: { backgroundColor: 'rgba(112,226,163,0.08)', borderColor: 'rgba(112,226,163,0.3)', borderRadius: radii.sm, borderWidth: 1, marginTop: 12, padding: 12 },
+  gasLabel: { color: colors.good, fontSize: 10, fontWeight: '900', letterSpacing: 1 },
+  gasValue: { color: colors.text, fontSize: 26, fontWeight: '900', marginTop: 2 },
+  gasSub: { color: colors.muted, fontSize: 13, fontWeight: '700' },
+  outcome: { fontSize: 13, fontWeight: '700', lineHeight: 19, marginTop: 10 },
   deviceRow: {
     alignItems: 'center',
     backgroundColor: colors.backgroundRaised,

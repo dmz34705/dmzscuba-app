@@ -27,6 +27,9 @@ export default function useDiveComputerDownload() {
     log: snapshot.log,
     baselineKnown: snapshot.baselineKnown,
     timeSync: snapshot.timeSync,
+    gasSync: snapshot.gasSync,
+    suuntoExplore: snapshot.suuntoExplore,
+    shearwaterScan: snapshot.shearwaterScan,
     scan: downloadService.scan,
     stopScan: downloadService.stopScan,
     connect: downloadService.connect,
@@ -35,6 +38,9 @@ export default function useDiveComputerDownload() {
     cancel: downloadService.cancel,
     reset: downloadService.reset,
     syncClock: downloadService.syncClock,
+    sendGasToComputer: downloadService.sendGasToComputer,
+    exploreSuuntoFiles: downloadService.exploreSuuntoFiles,
+    scanShearwaterSettings: downloadService.scanShearwaterSettings,
     clearLog,
   };
 }

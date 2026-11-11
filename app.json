@@ -3,7 +3,7 @@
     "name": "DMZ Scuba",
     "slug": "dmz-scuba-app",
     "scheme": "dmzscuba",
-    "version": "0.0.120",
+    "version": "0.1.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -69,7 +69,7 @@
       [
         "react-native-ble-plx",
         {
-          "bluetoothAlwaysPermission": "DMZ Scuba connects to your dive computer over Bluetooth to download your dive log."
+          "bluetoothAlwaysPermission": "DMZ Scuba connects to your dive computer over Bluetooth to download your dive log, and to your nitrox analyzer to read gas analysis."
         }
       ],
       [

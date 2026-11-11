@@ -11,6 +11,10 @@
 #import <libdivecomputer/parser.h>
 #import <libdivecomputer/datetime.h>
 #import <libdivecomputer/ble.h>
+#import <libdivecomputer/hw_ostc3.h>
+#import "dmz_suunto_eonsteel.h"
+#import "dmz_suunto_settings.h"
+#import "dmz_shearwater.h"
 
 // ---------------------------------------------------------------------------
 // Session state
@@ -19,6 +23,8 @@
 @interface DiveComputerDownloader () {
   NSCondition *_rxCond;      // guards _rx / _closed / _cancelled
   NSMutableData *_rx;        // bytes received from BLE, not yet consumed
+  NSMutableArray<NSNumber *> *_rxPacketLengths; // pending Shearwater notification lengths
+  BOOL _preserveRxPackets;   // guarded by _rxCond
   NSCondition *_txCond;      // guards _txPending
   BOOL _txPending;           // a @"write" is awaiting -notifyWriteComplete
   BOOL _closed;
@@ -56,6 +62,7 @@
     _rxCond = [NSCondition new];
     _txCond = [NSCondition new];
     _rx = [NSMutableData new];
+    _rxPacketLengths = [NSMutableArray new];
     _timeoutMs = 3000;
   }
   return self;
@@ -70,6 +77,17 @@
   [self emit:@"log" body:@{ @"message": message ?: @"" }];
 }
 
+static void download_log_cb(dc_context_t *context, dc_loglevel_t level,
+                            const char *file, unsigned int line, const char *function,
+                            const char *message, void *userdata) {
+  (void)context;
+  (void)level;
+  DiveComputerDownloader *downloader = (__bridge DiveComputerDownloader *)userdata;
+  const char *basename = strrchr(file, '/');
+  [downloader log:[NSString stringWithFormat:@"libdivecomputer %s:%u (%s): %s",
+                   basename ? basename + 1 : file, line, function, message]];
+}
+
 // ---------------------------------------------------------------------------
 // JS -> download-thread plumbing
 // ---------------------------------------------------------------------------
@@ -78,6 +96,7 @@
   if (data.length == 0) return;
   [_rxCond lock];
   [_rx appendData:data];
+  if (_preserveRxPackets) [_rxPacketLengths addObject:@(data.length)];
   [_rxCond broadcast];
   [_rxCond unlock];
 }
@@ -103,6 +122,8 @@
   [_rxCond lock];
   _closed = YES;
   [_rx setLength:0];
+  [_rxPacketLengths removeAllObjects];
+  _preserveRxPackets = NO;
   [_rxCond broadcast];
   [_rxCond unlock];
   [_txCond lock];
@@ -149,6 +170,19 @@ static dc_status_t cb_read(void *ud, void *data, size_t size, size_t *actual) {
     return DC_STATUS_CANCELLED;
   }
   size_t n = MIN(size, (size_t)self->_rx.length);
+  if (n > 0 && self->_preserveRxPackets) {
+    // Shearwater's driver strips a two-byte header from every BLE read.
+    // Joining notifications would leave the subsequent headers in the payload.
+    size_t packetLength = self->_rxPacketLengths.firstObject.unsignedIntegerValue;
+    if (packetLength > size) {
+      [self->_rxCond unlock];
+      if (actual) *actual = 0;
+      [self log:@"Shearwater notification exceeds the driver's receive buffer."];
+      return DC_STATUS_PROTOCOL;
+    }
+    n = packetLength;
+    [self->_rxPacketLengths removeObjectAtIndex:0];
+  }
   if (n > 0) {
     memcpy(data, self->_rx.bytes, n);
     [self->_rx replaceBytesInRange:NSMakeRange(0, n) withBytes:NULL length:0];
@@ -202,6 +236,7 @@ static dc_status_t cb_purge(void *ud, dc_direction_t direction) {
   (void)direction;
   [self->_rxCond lock];
   [self->_rx setLength:0];
+  [self->_rxPacketLengths removeAllObjects];
   [self->_rxCond unlock];
   return DC_STATUS_SUCCESS;
 }
@@ -709,6 +744,7 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
       goto done;
     }
     dc_context_set_loglevel(context, DC_LOGLEVEL_WARNING);
+    dc_context_set_logfunc(context, download_log_cb, (__bridge void *)self);
 
     descriptor = find_descriptor(context, name, vendor, product);
     if (descriptor == NULL) {
@@ -728,6 +764,11 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
     // right vendor/product within the opened descriptor's family.
     self.dcContext = context;
     self.openFamily = dc_descriptor_get_type(descriptor);
+    [self->_rxCond lock];
+    self->_rx.length = 0;
+    self->_preserveRxPackets = self.openFamily == DC_FAMILY_SHEARWATER_PETREL
+      || self.openFamily == DC_FAMILY_SHEARWATER_PREDATOR;
+    [self->_rxCond unlock];
 
     dc_custom_cbs_t cbs = {0};
     cbs.set_timeout = cb_set_timeout;
@@ -931,6 +972,684 @@ static dc_descriptor_t *find_descriptor(dc_context_t *context, NSString *name,
       } else {
         error = [NSString stringWithFormat:@"Clock sync failed (%d).", rc];
       }
+    }
+
+  done:
+    self.dcContext = NULL;
+    if (device) dc_device_close(device);
+    if (iostream) dc_iostream_close(iostream);
+    if (descriptor) dc_descriptor_free(descriptor);
+    if (context) dc_context_free(context);
+
+    [self teardown];
+    self.onEvent = nil;
+    self.running = NO;
+    completion(result, error);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Pre-dive setup: set the breathing gas (where supported) and the clock in one
+// session.
+//
+// Gas writing is only implemented where libdivecomputer exposes a documented
+// configuration API: the Heinrichs-Weikamp OSTC family (OSTC 2/3/4/5, Plus,
+// Sport), via hw_ostc3_device_config_read/write. OSTC open-circuit gases are
+// config IDs 0x10–0x14, 4 bytes each: [O2 %, He %, type, change depth m],
+// type 0 = disabled, 1 = first, 2 = travel, 3 = deco (layout as used by
+// Subsurface's OSTC configuration code). Every other family is reported as
+// "unsupported" and nothing is written — blind memory writes could leave a
+// diver on the wrong gas.
+//
+// Safety rules for the OSTC write:
+//   - read all five gases first; refuse if any slot doesn't look like a gas
+//   - change only the "first" gas (or gas 1 if none is marked first)
+//   - refuse if that gas has helium (a trimix the O2 analyzer can't verify)
+//   - keep its type and change depth, set He to 0
+//   - read it back and only report success if every byte matches
+// ---------------------------------------------------------------------------
+
+#define OSTC_GAS1_CONFIG 0x10
+#define OSTC_GAS_COUNT 5
+#define OSTC_GAS_FIRST 1
+
+static NSDictionary *ostc_set_first_gas(dc_device_t *device, unsigned int oxygen) {
+  unsigned char slots[OSTC_GAS_COUNT][4];
+  memset(slots, 0, sizeof(slots));
+  for (int i = 0; i < OSTC_GAS_COUNT; i++) {
+    dc_status_t rc = hw_ostc3_device_config_read(device, OSTC_GAS1_CONFIG + i, slots[i], 4);
+    if (rc != DC_STATUS_SUCCESS) {
+      return @{ @"status": @"error", @"message": [NSString stringWithFormat:@"Could not read gas %d from the computer (%d). Nothing was changed.", i + 1, rc] };
+    }
+    if (slots[i][0] > 100 || slots[i][1] > 100 || slots[i][0] + slots[i][1] > 100 || slots[i][2] > 3) {
+      return @{ @"status": @"error", @"message": @"This computer's gas settings don't match the expected format. Nothing was changed — set the gas on the computer." };
+    }
+  }
+
+  int target = 0;
+  for (int i = 0; i < OSTC_GAS_COUNT; i++) {
+    if (slots[i][2] == OSTC_GAS_FIRST) { target = i; break; }
+  }
+  unsigned char *current = slots[target];
+  NSDictionary *previous = @{ @"o2": @(current[0]), @"he": @(current[1]) };
+  if (current[1] > 0) {
+    return @{ @"status": @"error", @"slot": @(target + 1), @"previous": previous,
+              @"message": [NSString stringWithFormat:@"Gas %d is a trimix (%d/%d). An O2 analyzer can't verify helium, so nothing was changed — set it on the computer.", target + 1, current[0], current[1]] };
+  }
+
+  unsigned char next[4] = { (unsigned char)oxygen, 0, current[2] == 0 ? OSTC_GAS_FIRST : current[2], current[3] };
+  dc_status_t rc = hw_ostc3_device_config_write(device, OSTC_GAS1_CONFIG + target, next, 4);
+  if (rc != DC_STATUS_SUCCESS) {
+    return @{ @"status": @"error", @"slot": @(target + 1), @"previous": previous,
+              @"message": [NSString stringWithFormat:@"Writing gas %d failed (%d). Check the gas on the computer.", target + 1, rc] };
+  }
+
+  unsigned char check[4] = { 0 };
+  rc = hw_ostc3_device_config_read(device, OSTC_GAS1_CONFIG + target, check, 4);
+  if (rc != DC_STATUS_SUCCESS || memcmp(check, next, 4) != 0) {
+    return @{ @"status": @"error", @"slot": @(target + 1), @"previous": previous,
+              @"message": [NSString stringWithFormat:@"Gas %d could not be verified after writing. Check the gas on the computer before diving.", target + 1] };
+  }
+  return @{ @"status": @"set", @"slot": @(target + 1), @"previous": previous, @"o2": @(oxygen) };
+}
+
+
+// Suunto EON Steel / EON Core / D5: set the active dive mode's gas O2 % using the
+// settings exchange the Suunto app uses (0x0011 read, 0x0111 write; decoded from
+// a Bluetooth capture). The computer's own settings are sent back unchanged
+// except for that one byte, then read back and compared. The caller sends the
+// apply/restart command (0x0002) afterwards — see -setupDeviceWithName:….
+static NSDictionary *suunto_set_gas(dc_device_t *device, unsigned int oxygen, DiveComputerDownloader *self) {
+  if (oxygen < 21 || oxygen > 100) {
+    return @{ @"status": @"error", @"message": @"Suunto Air/Nitrox gases must be 21–100% O2. Nothing was changed." };
+  }
+  dc_buffer_t *buffer = dc_buffer_new(0);
+  dc_status_t rc = dmz_suunto_eonsteel_settings_read(device, buffer);
+  if (rc != DC_STATUS_SUCCESS) {
+    dc_buffer_free(buffer);
+    return @{ @"status": @"error", @"message": [NSString stringWithFormat:@"Could not read the computer's settings (%d). Nothing was changed.", rc] };
+  }
+  NSMutableData *settings = [NSMutableData dataWithBytes:dc_buffer_get_data(buffer) length:dc_buffer_get_size(buffer)];
+  dc_buffer_free(buffer);
+
+  dmz_suunto_gas_t gas = dmz_suunto_find_active_gas(settings.bytes, settings.length);
+  if (!gas.ok) {
+    return @{ @"status": @"error", @"message": [NSString stringWithFormat:@"%s Nothing was changed.", gas.error] };
+  }
+  NSDictionary *previous = @{ @"o2": @(gas.o2), @"he": @(gas.he) };
+  NSString *mode = @(gas.mode);
+  [self log:[NSString stringWithFormat:@"suunto: mode \"%@\" gas %d/%d → %u", mode, gas.o2, gas.he, oxygen]];
+  if ((unsigned int)gas.o2 == oxygen) {
+    return @{ @"status": @"set", @"slot": @1, @"mode": mode, @"previous": previous, @"o2": @(oxygen), @"unchanged": @YES };
+  }
+
+  ((unsigned char *)settings.mutableBytes)[gas.o2_offset] = (unsigned char)oxygen;
+  const unsigned char *sbem = (const unsigned char *)settings.bytes + DMZ_SUUNTO_PREFIX_SIZE;
+  unsigned int sbemSize = (unsigned int)(settings.length - DMZ_SUUNTO_PREFIX_SIZE);
+  rc = dmz_suunto_eonsteel_settings_write(device, sbem, sbemSize);
+  if (rc != DC_STATUS_SUCCESS) {
+    return @{ @"status": @"error", @"mode": mode, @"previous": previous,
+              @"message": [NSString stringWithFormat:@"Writing the gas failed (%d). Check the gas on the computer.", rc] };
+  }
+
+  // Read back before applying. If the computer only reports the new value after
+  // its restart, say so instead of claiming it's verified.
+  dc_buffer_t *check = dc_buffer_new(0);
+  rc = dmz_suunto_eonsteel_settings_read(device, check);
+  dmz_suunto_gas_t after = rc == DC_STATUS_SUCCESS
+    ? dmz_suunto_find_active_gas(dc_buffer_get_data(check), dc_buffer_get_size(check))
+    : (dmz_suunto_gas_t){ 0 };
+  BOOL identical = rc == DC_STATUS_SUCCESS && dc_buffer_get_size(check) == settings.length
+    && memcmp(dc_buffer_get_data(check), settings.bytes, settings.length) == 0;
+  dc_buffer_free(check);
+  [self log:[NSString stringWithFormat:@"suunto: read-back rc %d o2 %d identical %d", rc, after.ok ? after.o2 : -1, identical]];
+
+  if (after.ok && (unsigned int)after.o2 == oxygen) {
+    return @{ @"status": @"set", @"slot": @1, @"mode": mode, @"previous": previous, @"o2": @(oxygen), @"identical": @(identical) };
+  }
+  if (after.ok && after.o2 == gas.o2) {
+    return @{ @"status": @"pending", @"mode": mode, @"previous": previous, @"o2": @(oxygen),
+              @"message": [NSString stringWithFormat:@"Sent %u%%. The computer applies it when it restarts — check it shows %u%% before diving.", oxygen, oxygen] };
+  }
+  return @{ @"status": @"error", @"mode": mode, @"previous": previous,
+            @"message": @"The gas could not be verified after writing. Check the gas on the computer before diving." };
+}
+
+
+- (void)setupDeviceWithName:(NSString *)name
+                     vendor:(NSString *)vendor
+                    product:(NSString *)product
+                     oxygen:(NSInteger)oxygen
+                   setClock:(BOOL)setClock
+                       year:(NSInteger)year
+                      month:(NSInteger)month
+                        day:(NSInteger)day
+                       hour:(NSInteger)hour
+                     minute:(NSInteger)minute
+                     second:(NSInteger)second
+                    onEvent:(void (^)(NSString *, NSDictionary<NSString *, id> *))onEvent
+                 completion:(void (^)(NSDictionary *_Nullable, NSString *_Nullable))completion {
+  if (self.running) {
+    completion(nil, @"A download is already in progress.");
+    return;
+  }
+
+  self.running = YES;
+  self.onEvent = onEvent;
+  self.firstFingerprint = nil;
+  self.resolvedVendor = nil;
+  self.resolvedProduct = nil;
+  self.deviceSerial = nil;
+  self.bleName = name;
+  self.dcContext = NULL;
+  [_rxCond lock]; _rx.length = 0; _closed = NO; _cancelled = NO; [_rxCond unlock];
+  [_txCond lock]; _txPending = NO; [_txCond unlock];
+
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+    NSString *error = nil;
+    NSDictionary *result = nil;
+    NSString *matchedVendor = vendor ?: @"";
+    NSString *matchedProduct = product ?: @"";
+
+    dc_context_t *context = NULL;
+    dc_descriptor_t *descriptor = NULL;
+    dc_iostream_t *iostream = NULL;
+    dc_device_t *device = NULL;
+
+    if (dc_context_new(&context) != DC_STATUS_SUCCESS || context == NULL) {
+      error = @"Could not create the libdivecomputer context.";
+      goto done;
+    }
+    dc_context_set_loglevel(context, DC_LOGLEVEL_WARNING);
+
+    descriptor = find_descriptor(context, name, vendor, product);
+    if (descriptor == NULL) {
+      error = @"This dive computer is not recognised by libdivecomputer.";
+      goto done;
+    }
+    {
+      const char *mv = dc_descriptor_get_vendor(descriptor);
+      const char *mp = dc_descriptor_get_product(descriptor);
+      if (mv) matchedVendor = @(mv);
+      if (mp) matchedProduct = @(mp);
+    }
+    // Forward libdivecomputer's own errors (e.g. a Shearwater NAK's reason code)
+    // to the transfer log — that's how a refused gas write explains itself.
+    dc_context_set_logfunc(context, download_log_cb, (__bridge void *)self);
+    [self log:[NSString stringWithFormat:@"opening as %@ %@ (BLE name \"%@\") for pre-dive setup",
+               matchedVendor, matchedProduct, name ?: @""]];
+    self.dcContext = context;
+    self.openFamily = dc_descriptor_get_type(descriptor);
+    [self->_rxCond lock];
+    self->_preserveRxPackets = self.openFamily == DC_FAMILY_SHEARWATER_PETREL
+      || self.openFamily == DC_FAMILY_SHEARWATER_PREDATOR;
+    [self->_rxCond unlock];
+
+    dc_custom_cbs_t cbs = {0};
+    cbs.set_timeout = cb_set_timeout;
+    cbs.set_break = cb_set_uint;
+    cbs.set_dtr = cb_set_uint;
+    cbs.set_rts = cb_set_uint;
+    cbs.get_lines = cb_get_lines;
+    cbs.get_available = cb_get_available;
+    cbs.configure = cb_configure;
+    cbs.poll = cb_poll;
+    cbs.read = cb_read;
+    cbs.write = cb_write;
+    cbs.ioctl = cb_ioctl;
+    cbs.flush = cb_flush;
+    cbs.purge = cb_purge;
+    cbs.sleep = cb_sleep;
+    cbs.close = cb_close;
+
+    if (dc_custom_open(&iostream, context, DC_TRANSPORT_BLE, &cbs, (__bridge void *)self) != DC_STATUS_SUCCESS) {
+      error = @"Could not open the Bluetooth I/O stream.";
+      goto done;
+    }
+    if (dc_device_open(&device, context, descriptor, iostream) != DC_STATUS_SUCCESS || device == NULL) {
+      error = @"Could not open a session with the dive computer.";
+      goto done;
+    }
+    dc_device_set_events(device, DC_EVENT_PROGRESS | DC_EVENT_DEVINFO, event_cb, (__bridge void *)self);
+    dc_device_set_cancel(device, cancel_cb, (__bridge void *)self);
+
+    {
+      // Gas first — it matters most, and a clock failure must not skip it.
+      NSDictionary *gas;
+      if (oxygen < 5 || oxygen > 100) {
+        gas = @{ @"status": @"skipped" };
+      } else if (self.openFamily == DC_FAMILY_HW_OSTC3) {
+        gas = ostc_set_first_gas(device, (unsigned int)oxygen);
+        [self log:[NSString stringWithFormat:@"gas: %@ %@", gas[@"status"], gas[@"message"] ?: @""]];
+      } else if (self.openFamily == DC_FAMILY_SUUNTO_EONSTEEL) {
+        gas = suunto_set_gas(device, (unsigned int)oxygen, self);
+        [self log:[NSString stringWithFormat:@"gas: %@ %@", gas[@"status"], gas[@"message"] ?: @""]];
+      } else {
+        gas = @{ @"status": @"unsupported" };
+      }
+
+      NSDictionary *clock;
+      if (!setClock) {
+        clock = @{ @"status": @"skipped" };
+      } else {
+        dc_datetime_t datetime = {0};
+        datetime.year = (int)year;
+        datetime.month = (int)month;
+        datetime.day = (int)day;
+        datetime.hour = (int)hour;
+        datetime.minute = (int)minute;
+        datetime.second = (int)second;
+        datetime.timezone = DC_TIMEZONE_NONE;
+        dc_status_t rc = dc_device_timesync(device, &datetime);
+        if (rc == DC_STATUS_SUCCESS) clock = @{ @"status": @"set" };
+        else if (rc == DC_STATUS_UNSUPPORTED) clock = @{ @"status": @"unsupported" };
+        else clock = @{ @"status": @"error", @"message": [NSString stringWithFormat:@"Clock sync failed (%d).", rc] };
+        [self log:[NSString stringWithFormat:@"clock: %@", clock[@"status"]]];
+      }
+
+      // A Suunto only takes new settings after an apply/restart command. Send it
+      // last (after the clock): the computer drops the connection as it restarts,
+      // so a missing reply here is expected and not an error.
+      BOOL restarted = NO;
+      if (self.openFamily == DC_FAMILY_SUUNTO_EONSTEEL && gas[@"unchanged"] == nil
+          && ([gas[@"status"] isEqual:@"set"] || [gas[@"status"] isEqual:@"pending"])) {
+        dc_status_t arc = dmz_suunto_eonsteel_apply(device);
+        restarted = YES;
+        [self log:[NSString stringWithFormat:@"suunto: apply sent (%d) — computer restarts", arc]];
+      }
+
+      result = @{ @"vendor": self.resolvedVendor ?: matchedVendor,
+                  @"product": self.resolvedProduct ?: matchedProduct,
+                  @"gas": gas,
+                  @"clock": clock,
+                  @"restarting": @(restarted) };
+    }
+
+  done:
+    self.dcContext = NULL;
+    if (device) dc_device_close(device);
+    if (iostream) dc_iostream_close(iostream);
+    if (descriptor) dc_descriptor_free(descriptor);
+    if (context) dc_context_free(context);
+
+    [self teardown];
+    self.onEvent = nil;
+    self.running = NO;
+    completion(result, error);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Suunto EON Steel / EON Core / D5: READ-ONLY filesystem explorer.
+//
+// Walks the computer's small filesystem and reads every non-dive file, so we
+// can find where the Suunto app stores dive modes and gases (the first step to
+// sending an analyzed mix). Dive logs (0:/dives) are only counted, not read.
+// Nothing is written to the device.
+// ---------------------------------------------------------------------------
+
+#define EXPLORE_MAX_DEPTH 5
+#define EXPLORE_MAX_ENTRIES 400
+#define EXPLORE_MAX_FILES 80
+#define EXPLORE_MAX_TOTAL_BYTES (3 * 1024 * 1024)
+
+typedef struct {
+  __unsafe_unretained NSMutableArray *names;
+  __unsafe_unretained NSMutableArray *isDir;
+} explore_dir_ctx;
+
+static void explore_dirent_cb(int is_directory, const char *name, void *userdata) {
+  explore_dir_ctx *ctx = (explore_dir_ctx *)userdata;
+  if (!name || !name[0] || strcmp(name, ".") == 0 || strcmp(name, "..") == 0) return;
+  [ctx->names addObject:@(name)];
+  [ctx->isDir addObject:@(is_directory ? YES : NO)];
+}
+
+static NSString *explore_join(NSString *dir, NSString *name) {
+  return [dir hasSuffix:@"/"] ? [dir stringByAppendingString:name] : [NSString stringWithFormat:@"%@/%@", dir, name];
+}
+
+- (void)exploreSuuntoWithName:(NSString *)name
+                       vendor:(NSString *)vendor
+                      product:(NSString *)product
+                      onEvent:(void (^)(NSString *, NSDictionary<NSString *, id> *))onEvent
+                   completion:(void (^)(NSDictionary *_Nullable, NSString *_Nullable))completion {
+  if (self.running) {
+    completion(nil, @"A download is already in progress.");
+    return;
+  }
+
+  self.running = YES;
+  self.onEvent = onEvent;
+  self.firstFingerprint = nil;
+  self.resolvedVendor = nil;
+  self.resolvedProduct = nil;
+  self.deviceSerial = nil;
+  self.bleName = name;
+  self.dcContext = NULL;
+  [_rxCond lock]; _rx.length = 0; _closed = NO; _cancelled = NO; [_rxCond unlock];
+  [_txCond lock]; _txPending = NO; [_txCond unlock];
+
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+    NSString *error = nil;
+    NSDictionary *result = nil;
+    NSString *matchedVendor = vendor ?: @"";
+    NSString *matchedProduct = product ?: @"";
+
+    dc_context_t *context = NULL;
+    dc_descriptor_t *descriptor = NULL;
+    dc_iostream_t *iostream = NULL;
+    dc_device_t *device = NULL;
+
+    if (dc_context_new(&context) != DC_STATUS_SUCCESS || context == NULL) {
+      error = @"Could not create the libdivecomputer context.";
+      goto done;
+    }
+    dc_context_set_loglevel(context, DC_LOGLEVEL_WARNING);
+
+    descriptor = find_descriptor(context, name, vendor, product);
+    if (descriptor == NULL) {
+      error = @"This dive computer is not recognised by libdivecomputer.";
+      goto done;
+    }
+    if (dc_descriptor_get_type(descriptor) != DC_FAMILY_SUUNTO_EONSTEEL) {
+      error = @"File exploring is only for the Suunto EON Steel, EON Core and D5.";
+      goto done;
+    }
+    {
+      const char *mv = dc_descriptor_get_vendor(descriptor);
+      const char *mp = dc_descriptor_get_product(descriptor);
+      if (mv) matchedVendor = @(mv);
+      if (mp) matchedProduct = @(mp);
+    }
+    [self log:[NSString stringWithFormat:@"opening as %@ %@ (BLE name \"%@\") to explore files (read-only)",
+               matchedVendor, matchedProduct, name ?: @""]];
+    self.dcContext = context;
+    self.openFamily = dc_descriptor_get_type(descriptor);
+
+    dc_custom_cbs_t cbs = {0};
+    cbs.set_timeout = cb_set_timeout;
+    cbs.set_break = cb_set_uint;
+    cbs.set_dtr = cb_set_uint;
+    cbs.set_rts = cb_set_uint;
+    cbs.get_lines = cb_get_lines;
+    cbs.get_available = cb_get_available;
+    cbs.configure = cb_configure;
+    cbs.poll = cb_poll;
+    cbs.read = cb_read;
+    cbs.write = cb_write;
+    cbs.ioctl = cb_ioctl;
+    cbs.flush = cb_flush;
+    cbs.purge = cb_purge;
+    cbs.sleep = cb_sleep;
+    cbs.close = cb_close;
+
+    if (dc_custom_open(&iostream, context, DC_TRANSPORT_BLE, &cbs, (__bridge void *)self) != DC_STATUS_SUCCESS) {
+      error = @"Could not open the Bluetooth I/O stream.";
+      goto done;
+    }
+    if (dc_device_open(&device, context, descriptor, iostream) != DC_STATUS_SUCCESS || device == NULL) {
+      error = @"Could not open a session with the dive computer.";
+      goto done;
+    }
+    dc_device_set_cancel(device, cancel_cb, (__bridge void *)self);
+
+    {
+      NSMutableArray *entries = [NSMutableArray new];   // { path, dir }
+      NSMutableArray *files = [NSMutableArray new];     // { path, size, base64 } or { path, error }
+      NSMutableArray *problems = [NSMutableArray new];
+      NSMutableArray *queue = [NSMutableArray new];     // { path, depth }
+      NSMutableArray *toRead = [NSMutableArray new];
+      NSUInteger totalBytes = 0;
+
+      // The dive directory is "0:/dives"; try the drive root with and without a slash.
+      NSString *root = nil;
+      for (NSString *candidate in @[@"0:/", @"0:"]) {
+        NSMutableArray *names = [NSMutableArray new], *isDir = [NSMutableArray new];
+        explore_dir_ctx ctx = { names, isDir };
+        dc_status_t rc = dmz_suunto_eonsteel_list_dir(device, candidate.UTF8String, explore_dirent_cb, &ctx);
+        if (rc == DC_STATUS_SUCCESS) { root = candidate; break; }
+        [problems addObject:[NSString stringWithFormat:@"list %@ failed (%d)", candidate, rc]];
+      }
+      if (root == nil) {
+        error = @"Could not list the computer's files.";
+        goto done;
+      }
+      [queue addObject:@{ @"path": root, @"depth": @0 }];
+
+      while (queue.count > 0 && entries.count < EXPLORE_MAX_ENTRIES && !self->_cancelled) {
+        NSDictionary *item = queue.firstObject;
+        [queue removeObjectAtIndex:0];
+        NSString *dir = item[@"path"];
+        NSInteger depth = [item[@"depth"] integerValue];
+
+        NSMutableArray *names = [NSMutableArray new], *isDir = [NSMutableArray new];
+        explore_dir_ctx ctx = { names, isDir };
+        dc_status_t rc = dmz_suunto_eonsteel_list_dir(device, dir.UTF8String, explore_dirent_cb, &ctx);
+        if (rc != DC_STATUS_SUCCESS) {
+          [problems addObject:[NSString stringWithFormat:@"list %@ failed (%d)", dir, rc]];
+          continue;
+        }
+        BOOL isDiveDir = [dir.lowercaseString hasSuffix:@"/dives"];
+        if (isDiveDir) {
+          [entries addObject:@{ @"path": dir, @"dir": @YES, @"children": @(names.count), @"note": @"dive logs — counted, not read" }];
+          continue;
+        }
+        for (NSUInteger i = 0; i < names.count; i++) {
+          NSString *child = explore_join(dir, names[i]);
+          BOOL childIsDir = [isDir[i] boolValue];
+          [entries addObject:@{ @"path": child, @"dir": @(childIsDir) }];
+          if (childIsDir && depth + 1 < EXPLORE_MAX_DEPTH) [queue addObject:@{ @"path": child, @"depth": @(depth + 1) }];
+          else if (!childIsDir) [toRead addObject:child];
+        }
+        [self log:[NSString stringWithFormat:@"listed %@ (%lu entries)", dir, (unsigned long)names.count]];
+      }
+
+      // Settings first (dive modes live in 0:/SETTINGS/MODEn.SET); skip UI
+      // assets — bitmaps, fonts (large, they time out), languages, layouts.
+      NSSet *skipExt = [NSSet setWithArray:@[@"PXB", @"NGF", @"LNG", @"SUX"]];
+      NSMutableArray *ordered = [NSMutableArray new];
+      for (NSString *path in toRead) {
+        if ([skipExt containsObject:path.pathExtension.uppercaseString]) continue;
+        if ([path.uppercaseString containsString:@"/SETTINGS/"] || [path.uppercaseString containsString:@"/BTSETT/"]) [ordered insertObject:path atIndex:0];
+        else [ordered addObject:path];
+      }
+      [self log:[NSString stringWithFormat:@"reading %lu files (UI assets skipped)", (unsigned long)ordered.count]];
+
+      for (NSString *path in ordered) {
+        if (files.count >= EXPLORE_MAX_FILES || totalBytes >= EXPLORE_MAX_TOTAL_BYTES || self->_cancelled) break;
+        dc_buffer_t *buffer = dc_buffer_new(0);
+        dc_status_t rc = dmz_suunto_eonsteel_read_file(device, path.UTF8String, buffer);
+        if (rc == DC_STATUS_SUCCESS) {
+          NSData *data = [NSData dataWithBytes:dc_buffer_get_data(buffer) length:dc_buffer_get_size(buffer)];
+          totalBytes += data.length;
+          [files addObject:@{ @"path": path, @"size": @(data.length), @"base64": [data base64EncodedStringWithOptions:0] }];
+          [self log:[NSString stringWithFormat:@"read %@ (%lu bytes)", path, (unsigned long)data.length]];
+        } else {
+          [files addObject:@{ @"path": path, @"error": @(rc) }];
+        }
+        dc_buffer_free(buffer);
+      }
+
+      result = @{ @"vendor": self.resolvedVendor ?: matchedVendor,
+                  @"product": self.resolvedProduct ?: matchedProduct,
+                  @"root": root,
+                  @"entries": entries,
+                  @"files": files,
+                  @"problems": problems,
+                  @"truncated": @(entries.count >= EXPLORE_MAX_ENTRIES || files.count >= EXPLORE_MAX_FILES || totalBytes >= EXPLORE_MAX_TOTAL_BYTES) };
+    }
+
+  done:
+    self.dcContext = NULL;
+    if (device) dc_device_close(device);
+    if (iostream) dc_iostream_close(iostream);
+    if (descriptor) dc_descriptor_free(descriptor);
+    if (context) dc_context_free(context);
+
+    [self teardown];
+    self.onEvent = nil;
+    self.running = NO;
+    completion(result, error);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Shearwater Petrel family (Perdix, Petrel, Teric, Peregrine, Nerd, Tern):
+// READ-ONLY settings scan. Reads every data identifier in `ranges` with RDBI
+// (0x22) and returns the ones the computer answers. Scanning before and after
+// changing a gas on the computer itself shows which ID holds the gas list.
+// Nothing is written to the device.
+// ---------------------------------------------------------------------------
+
+#define SCAN_MAX_IDS 8192
+#define SCAN_MAX_SECONDS 600
+#define SCAN_MAX_SILENT 6
+
+- (void)scanShearwaterWithName:(NSString *)name
+                        vendor:(NSString *)vendor
+                       product:(NSString *)product
+                        ranges:(NSArray<NSArray<NSNumber *> *> *)ranges
+                       onEvent:(void (^)(NSString *, NSDictionary<NSString *, id> *))onEvent
+                    completion:(void (^)(NSDictionary *_Nullable, NSString *_Nullable))completion {
+  if (self.running) {
+    completion(nil, @"A download is already in progress.");
+    return;
+  }
+
+  self.running = YES;
+  self.onEvent = onEvent;
+  self.firstFingerprint = nil;
+  self.resolvedVendor = nil;
+  self.resolvedProduct = nil;
+  self.deviceSerial = nil;
+  self.bleName = name;
+  self.dcContext = NULL;
+  [_rxCond lock]; _rx.length = 0; _closed = NO; _cancelled = NO; [_rxCond unlock];
+  [_txCond lock]; _txPending = NO; [_txCond unlock];
+
+  dispatch_async(dispatch_get_global_queue(QOS_CLASS_UTILITY, 0), ^{
+    NSString *error = nil;
+    NSDictionary *result = nil;
+    NSString *matchedVendor = vendor ?: @"";
+    NSString *matchedProduct = product ?: @"";
+
+    dc_context_t *context = NULL;
+    dc_descriptor_t *descriptor = NULL;
+    dc_iostream_t *iostream = NULL;
+    dc_device_t *device = NULL;
+
+    if (dc_context_new(&context) != DC_STATUS_SUCCESS || context == NULL) {
+      error = @"Could not create the libdivecomputer context.";
+      goto done;
+    }
+    dc_context_set_loglevel(context, DC_LOGLEVEL_NONE); // every refused ID would log an error otherwise
+
+    descriptor = find_descriptor(context, name, vendor, product);
+    if (descriptor == NULL) {
+      error = @"This dive computer is not recognised by libdivecomputer.";
+      goto done;
+    }
+    if (dc_descriptor_get_type(descriptor) != DC_FAMILY_SHEARWATER_PETREL) {
+      error = @"Settings scanning is for Shearwater Perdix, Petrel, Teric, Peregrine, Nerd and Tern.";
+      goto done;
+    }
+    {
+      const char *mv = dc_descriptor_get_vendor(descriptor);
+      const char *mp = dc_descriptor_get_product(descriptor);
+      if (mv) matchedVendor = @(mv);
+      if (mp) matchedProduct = @(mp);
+    }
+    [self log:[NSString stringWithFormat:@"opening as %@ %@ (BLE name \"%@\") to scan settings (read-only)",
+               matchedVendor, matchedProduct, name ?: @""]];
+    self.dcContext = context;
+    self.openFamily = dc_descriptor_get_type(descriptor);
+    [self->_rxCond lock];
+    self->_preserveRxPackets = YES; // Shearwater: one BLE notification per packet
+    [self->_rxCond unlock];
+
+    dc_custom_cbs_t cbs = {0};
+    cbs.set_timeout = cb_set_timeout;
+    cbs.set_break = cb_set_uint;
+    cbs.set_dtr = cb_set_uint;
+    cbs.set_rts = cb_set_uint;
+    cbs.get_lines = cb_get_lines;
+    cbs.get_available = cb_get_available;
+    cbs.configure = cb_configure;
+    cbs.poll = cb_poll;
+    cbs.read = cb_read;
+    cbs.write = cb_write;
+    cbs.ioctl = cb_ioctl;
+    cbs.flush = cb_flush;
+    cbs.purge = cb_purge;
+    cbs.sleep = cb_sleep;
+    cbs.close = cb_close;
+
+    if (dc_custom_open(&iostream, context, DC_TRANSPORT_BLE, &cbs, (__bridge void *)self) != DC_STATUS_SUCCESS) {
+      error = @"Could not open the Bluetooth I/O stream.";
+      goto done;
+    }
+    if (dc_device_open(&device, context, descriptor, iostream) != DC_STATUS_SUCCESS || device == NULL) {
+      error = @"Could not open a session with the dive computer.";
+      goto done;
+    }
+    dc_device_set_cancel(device, cancel_cb, (__bridge void *)self);
+
+    {
+      NSMutableDictionary *values = [NSMutableDictionary new]; // "0x8010" -> hex
+      NSMutableArray *failures = [NSMutableArray new];          // { id, rc } for non-NAK errors
+      NSUInteger refused = 0, scanned = 0, total = 0, silentRun = 0;
+      BOOL stopped = NO;
+      NSDate *start = [NSDate date];
+
+      for (NSArray<NSNumber *> *range in ranges) {
+        if (range.count == 2 && range[1].unsignedIntValue >= range[0].unsignedIntValue)
+          total += range[1].unsignedIntValue - range[0].unsignedIntValue + 1;
+      }
+      if (total == 0 || total > SCAN_MAX_IDS) {
+        error = @"Invalid scan ranges.";
+        goto done;
+      }
+
+      for (NSArray<NSNumber *> *range in ranges) {
+        if (range.count != 2) continue;
+        for (unsigned int ident = range[0].unsignedIntValue; ident <= range[1].unsignedIntValue && !stopped; ident++) {
+          if (self->_cancelled || -[start timeIntervalSinceNow] > SCAN_MAX_SECONDS) { stopped = YES; break; }
+          unsigned char data[DMZ_SHEARWATER_MAX_VALUE];
+          unsigned int actual = 0;
+          dc_status_t rc = dmz_shearwater_rdbi(device, ident, data, sizeof(data), &actual);
+          scanned++;
+          NSString *key = [NSString stringWithFormat:@"0x%04X", ident];
+          if (rc == DC_STATUS_SUCCESS) {
+            NSMutableString *hex = [NSMutableString stringWithCapacity:actual * 2];
+            for (unsigned int k = 0; k < actual; k++) [hex appendFormat:@"%02x", data[k]];
+            values[key] = hex;
+            silentRun = 0;
+          } else if (rc == DC_STATUS_UNSUPPORTED) {
+            refused++;
+            silentRun = 0;
+          } else {
+            [failures addObject:@{ @"id": key, @"rc": @(rc) }];
+            // Several timeouts in a row: the link is gone — stop rather than wait out every ID.
+            if (++silentRun >= SCAN_MAX_SILENT) { stopped = YES; [self log:@"scan: computer stopped answering"]; }
+          }
+          if (scanned % 64 == 0 || scanned == total) {
+            [self log:[NSString stringWithFormat:@"scan: %lu/%lu IDs · %lu answered", (unsigned long)scanned, (unsigned long)total, (unsigned long)values.count]];
+            [self emit:@"progress" body:@{ @"current": @(scanned), @"maximum": @(total) }];
+          }
+        }
+        if (stopped) break;
+      }
+
+      result = @{ @"vendor": self.resolvedVendor ?: matchedVendor,
+                  @"product": self.resolvedProduct ?: matchedProduct,
+                  @"values": values,
+                  @"scanned": @(scanned),
+                  @"total": @(total),
+                  @"refused": @(refused),
+                  @"failures": failures,
+                  @"complete": @(!stopped && scanned == total),
+                  @"seconds": @(-[start timeIntervalSinceNow]) };
     }
 
   done:

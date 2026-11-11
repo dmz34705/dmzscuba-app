@@ -9,6 +9,10 @@ function PlannerIcon() {
   return <Svg width={40} height={40} viewBox="0 0 40 40" fill="none"><Path d="M8 11a3 3 0 0 1 3-3h18a3 3 0 0 1 3 3v19a3 3 0 0 1-3 3H11a3 3 0 0 1-3-3V11Z" stroke="#79DAFA" strokeWidth={1.5} /><Path d="M8 15h24M14 5v6M26 5v6" stroke="#79DAFA" strokeWidth={1.5} strokeLinecap="round" /><Path d="M13 25.5 24 21l-2.8 9.2-2.6-3.9L13 25.5Z" fill="#F0C84B" stroke="#0B1C2E" strokeWidth={1} strokeLinejoin="round" /></Svg>;
 }
 
+function NitroxIcon() {
+  return <Svg width={40} height={40} viewBox="0 0 40 40" fill="none"><Path d="M15 6h10M17 6v4h6V6" stroke="#79DAFA" strokeWidth={1.5} strokeLinecap="round" /><Path d="M13 16a7 7 0 0 1 14 0v16a3 3 0 0 1-3 3h-8a3 3 0 0 1-3-3V16Z" stroke="#79DAFA" strokeWidth={1.5} /><Path d="M13 20h14v4H13z" fill="#70E2A3" opacity={0.85} /><Path d="M31 13c2 2 2 6 0 8M34 10c3.5 3.5 3.5 10.5 0 14" stroke="#70E2A3" strokeWidth={1.4} strokeLinecap="round" /></Svg>;
+}
+
 const ICONS = {
   atlas: AtlasIcon,
   boyle: BoyleIcon,
@@ -19,6 +23,7 @@ const ICONS = {
   gear: GearIcon,
   lens: LensIcon,
   logbook: LogbookIcon,
+  nitrox: NitroxIcon,
   planner: PlannerIcon,
 };
 

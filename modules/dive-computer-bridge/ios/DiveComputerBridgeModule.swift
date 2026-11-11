@@ -168,6 +168,120 @@ public class DiveComputerBridgeModule: Module {
       )
     }
 
+    // Pre-dive setup: gas (OSTC family only, verified natively by read-back)
+    // and clock, in one session with the computer.
+    AsyncFunction("setupDevice") { (options: [String: Any], promise: Promise) in
+      let name = options["name"] as? String ?? ""
+      let vendor = options["vendor"] as? String
+      let product = options["product"] as? String
+      let oxygen = intOption(options, "oxygen")
+      let setClock = options["setClock"] as? Bool ?? false
+      let year = intOption(options, "year")
+      let month = intOption(options, "month")
+      let day = intOption(options, "day")
+      let hour = intOption(options, "hour")
+      let minute = intOption(options, "minute")
+      let second = intOption(options, "second")
+
+      if setClock {
+        guard (1...12).contains(month), (1...31).contains(day), year > 2000 else {
+          promise.reject(TimeSyncException("Got an invalid date (\(year)-\(month)-\(day)) to sync — not sending it to the computer."))
+          return
+        }
+      }
+
+      DiveComputerDownloader.shared().setupDevice(
+        withName: name,
+        vendor: vendor,
+        product: product,
+        oxygen: oxygen,
+        setClock: setClock,
+        year: year,
+        month: month,
+        day: day,
+        hour: hour,
+        minute: minute,
+        second: second,
+        onEvent: { [weak self] eventName, body in
+          let payload = toEventBody(body)
+          switch eventName {
+          case "write": self?.sendEvent("onDownloadWrite", payload)
+          case "progress": self?.sendEvent("onDownloadProgress", payload)
+          case "log": self?.sendEvent("onDownloadLog", payload)
+          case "devinfo": self?.sendEvent("onDownloadDevinfo", payload)
+          default: break
+          }
+        },
+        completion: { result, error in
+          if let error = error {
+            promise.reject(TimeSyncException(error))
+          } else {
+            promise.resolve(result ?? [:])
+          }
+        }
+      )
+    }
+
+    // READ-ONLY Shearwater Petrel-family settings scan (RDBI over ID ranges).
+    AsyncFunction("scanShearwater") { (options: [String: Any], promise: Promise) in
+      let rawRanges = options["ranges"] as? [[Any]] ?? []
+      let ranges: [[NSNumber]] = rawRanges.compactMap { pair in
+        guard pair.count == 2,
+              let a = (pair[0] as? NSNumber) ?? (pair[0] as? Int).map({ NSNumber(value: $0) }),
+              let b = (pair[1] as? NSNumber) ?? (pair[1] as? Int).map({ NSNumber(value: $0) }) else { return nil }
+        return [a, b]
+      }
+      DiveComputerDownloader.shared().scanShearwater(
+        withName: options["name"] as? String ?? "",
+        vendor: options["vendor"] as? String,
+        product: options["product"] as? String,
+        ranges: ranges,
+        onEvent: { [weak self] eventName, body in
+          let payload = toEventBody(body)
+          switch eventName {
+          case "write": self?.sendEvent("onDownloadWrite", payload)
+          case "progress": self?.sendEvent("onDownloadProgress", payload)
+          case "log": self?.sendEvent("onDownloadLog", payload)
+          case "devinfo": self?.sendEvent("onDownloadDevinfo", payload)
+          default: break
+          }
+        },
+        completion: { result, error in
+          if let error = error {
+            promise.reject(TimeSyncException(error))
+          } else {
+            promise.resolve(result ?? [:])
+          }
+        }
+      )
+    }
+
+    // READ-ONLY Suunto EON Steel / EON Core / D5 filesystem explorer.
+    AsyncFunction("exploreSuunto") { (options: [String: Any], promise: Promise) in
+      DiveComputerDownloader.shared().exploreSuunto(
+        withName: options["name"] as? String ?? "",
+        vendor: options["vendor"] as? String,
+        product: options["product"] as? String,
+        onEvent: { [weak self] eventName, body in
+          let payload = toEventBody(body)
+          switch eventName {
+          case "write": self?.sendEvent("onDownloadWrite", payload)
+          case "progress": self?.sendEvent("onDownloadProgress", payload)
+          case "log": self?.sendEvent("onDownloadLog", payload)
+          case "devinfo": self?.sendEvent("onDownloadDevinfo", payload)
+          default: break
+          }
+        },
+        completion: { result, error in
+          if let error = error {
+            promise.reject(TimeSyncException(error))
+          } else {
+            promise.resolve(result ?? [:])
+          }
+        }
+      )
+    }
+
     Function("provideBytes") { (base64: String) -> Void in
       if let data = Data(base64Encoded: base64) {
         DiveComputerDownloader.shared().provideBytes(data)

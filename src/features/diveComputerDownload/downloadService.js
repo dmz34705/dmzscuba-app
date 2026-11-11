@@ -36,7 +36,7 @@ import {
   looksLikeSuunto,
   waitForPoweredOn,
 } from './diveComputerBle';
-import { abortDownload, primePairing, runDownload, runTimeSync } from './downloadRunner';
+import { abortDownload, primePairing, runDeviceSetup, runDownload, runShearwaterScan, runSuuntoExplore, runTimeSync } from './downloadRunner';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -69,6 +69,13 @@ let state = {
   // sync (a much shorter, independent operation) never gets confused with —
   // or clobbers — the state of an actual dive download.
   timeSync: { status: 'idle', error: '' }, // status: idle | running | done | error
+  // "Send gas to computer" (pre-dive setup): result is the native
+  // { gas: { status, … }, clock: { status, … } } summary.
+  gasSync: { status: 'idle', error: '', result: null, o2: null, computer: null }, // status: idle | running | done | error
+  // READ-ONLY Suunto filesystem dump (to find where dive modes / gases live).
+  suuntoExplore: { status: 'idle', error: '', summary: null }, // status: idle | running | done | error
+  // READ-ONLY Shearwater settings scan (to find which ID holds the gas list).
+  shearwaterScan: { status: 'idle', error: '', summary: null, progress: null }, // status: idle | running | done | error
 };
 
 function emit() {
@@ -290,9 +297,15 @@ export async function connect(deviceId, meta = {}) {
       // UI can offer that action only where it can actually succeed.
       const knownService = await detectKnownService(ready);
       set({
-        connectedDevice: { id: ready.id, name: resolvedName, timeSyncSupported: knownService?.timeSync === true },
+        connectedDevice: {
+          id: ready.id,
+          name: resolvedName,
+          timeSyncSupported: knownService?.timeSync === true,
+          gasSyncSupported: knownService?.gasSync === true,
+        },
         status: 'connected',
         timeSync: { status: 'idle', error: '' },
+        gasSync: { status: 'idle', error: '', result: null, o2: null },
       });
       log('connected');
       refreshBaseline(resolvedName);
@@ -354,7 +367,7 @@ export async function disconnect() {
   const target = state.connectedDevice;
   device = null;
   clearDisconnectWatch();
-  set({ connectedDevice: null, progress: null, status: 'idle', baselineKnown: false, timeSync: { status: 'idle', error: '' } });
+  set({ connectedDevice: null, progress: null, status: 'idle', baselineKnown: false, timeSync: { status: 'idle', error: '' }, gasSync: { status: 'idle', error: '', result: null, o2: null } });
   if (manager && target) {
     try { await manager.cancelDeviceConnection(target.id); } catch { /* already gone */ }
   }
@@ -563,6 +576,127 @@ export async function syncClock() {
     const message = syncError?.message || 'Could not sync the clock.';
     set({ timeSync: { status: 'error', error: message } });
     log(`clock sync failed: ${message}`, 'error');
+  }
+}
+
+/**
+ * Pre-dive setup for the connected computer: sends `o2` % as its first gas
+ * (OSTC family only — natively verified by read-back) and sets the clock to the
+ * phone's local time where the computer supports it. Each half reports its own
+ * status, so a computer without gas support still gets its clock set.
+ */
+export async function sendGasToComputer({ o2, setClock = true } = {}) {
+  if (downloadRunning) return null;
+  if (!device || !state.connectedDevice) return null;
+  const oxygen = Math.round(Number(o2));
+  if (!Number.isFinite(oxygen) || oxygen < 5 || oxygen > 100) {
+    set({ gasSync: { status: 'error', error: 'That O2 value is out of range.', result: null, o2 } });
+    return null;
+  }
+
+  const name = state.connectedDevice.name;
+  const knownModel = await loadKnownModel(name).catch(() => null);
+  set({ gasSync: { status: 'running', error: '', result: null, o2: oxygen, computer: name } });
+  log(`pre-dive setup · ${name} · gas ${oxygen}% · clock ${setClock ? 'yes' : 'no'}`);
+  try {
+    const result = await runDeviceSetup({
+      device,
+      name,
+      vendor: knownModel?.vendor,
+      product: knownModel?.product,
+      oxygen,
+      setClock: setClock && state.connectedDevice.timeSyncSupported !== false,
+      gasSupported: state.connectedDevice.gasSyncSupported === true,
+      onLog: (m) => log(m),
+    });
+    set({ gasSync: { status: 'done', error: '', result, o2: oxygen, computer: name } });
+    log(`pre-dive setup done · gas ${result?.gas?.status} · clock ${result?.clock?.status}`);
+    return result;
+  } catch (setupError) {
+    const message = setupError?.message || 'Could not talk to the dive computer.';
+    set({ gasSync: { status: 'error', error: message, result: null, o2: oxygen, computer: name } });
+    log(`pre-dive setup failed: ${message}`, 'error');
+    return null;
+  }
+}
+
+/**
+ * READ-ONLY: dumps the connected Suunto EON's non-dive files to a JSON file in
+ * the cache directory and returns its uri (for sharing). Nothing is written to
+ * the computer.
+ */
+export async function exploreSuuntoFiles() {
+  if (downloadRunning || !device || !state.connectedDevice) return null;
+  const name = state.connectedDevice.name;
+  const knownModel = await loadKnownModel(name).catch(() => null);
+  set({ suuntoExplore: { status: 'running', error: '', summary: null } });
+  log(`exploring Suunto files (read-only) · ${name}`);
+  try {
+    const result = await runSuuntoExplore({ device, name, vendor: knownModel?.vendor, product: knownModel?.product, onLog: (m) => log(m) });
+    const FileSystem = require('expo-file-system');
+    const file = new FileSystem.File(FileSystem.Paths.cache, `suunto-files-${Date.now()}.json`);
+    file.write(JSON.stringify({ exportedAt: new Date().toISOString(), computer: name, ...result }, null, 2));
+    const summary = {
+      uri: file.uri,
+      entries: result?.entries?.length || 0,
+      files: (result?.files || []).filter((f) => f.base64 != null).length,
+      paths: (result?.files || []).map((f) => f.path),
+      truncated: Boolean(result?.truncated),
+    };
+    set({ suuntoExplore: { status: 'done', error: '', summary } });
+    log(`explore done · ${summary.entries} entries · ${summary.files} files read`);
+    return summary;
+  } catch (exploreError) {
+    const message = exploreError?.message || 'Could not read the computer\'s files.';
+    set({ suuntoExplore: { status: 'error', error: message, summary: null } });
+    log(`explore failed: ${message}`, 'error');
+    return null;
+  }
+}
+
+// Data-identifier ranges to scan. 0x80xx holds device info (serial 0x8010,
+// firmware 0x8011, hardware 0x8050) and 0x90xx the clock (0x9030–0x9033) —
+// settings most likely sit near those. ~2,800 IDs, a few minutes over BLE.
+export const SHEARWATER_SCAN_RANGES = [[0x8000, 0x83ff], [0x9000, 0x93ff], [0xa000, 0xa1ff], [0xb000, 0xb0ff]];
+
+/**
+ * READ-ONLY: reads every data identifier in SHEARWATER_SCAN_RANGES from the
+ * connected Shearwater, saves the answers to a JSON file in the cache directory
+ * and returns its uri (for sharing). Nothing is written to the computer.
+ */
+export async function scanShearwaterSettings({ label = '' } = {}) {
+  if (downloadRunning || !device || !state.connectedDevice) return null;
+  const name = state.connectedDevice.name;
+  const knownModel = await loadKnownModel(name).catch(() => null);
+  set({ shearwaterScan: { status: 'running', error: '', summary: null, progress: null } });
+  log(`scanning Shearwater settings (read-only) · ${name}`);
+  try {
+    const result = await runShearwaterScan({
+      device, name, vendor: knownModel?.vendor, product: knownModel?.product, ranges: SHEARWATER_SCAN_RANGES,
+      onLog: (m) => log(m),
+      onProgress: (p) => set({ shearwaterScan: { ...state.shearwaterScan, progress: p } }),
+    });
+    const FileSystem = require('expo-file-system');
+    const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+    const file = new FileSystem.File(FileSystem.Paths.cache, `shearwater-scan-${label ? `${label}-` : ''}${stamp}.json`);
+    file.write(JSON.stringify({ exportedAt: new Date().toISOString(), computer: name, label, ranges: SHEARWATER_SCAN_RANGES, ...result }, null, 2));
+    const summary = {
+      uri: file.uri,
+      answered: Object.keys(result?.values || {}).length,
+      scanned: result?.scanned || 0,
+      total: result?.total || 0,
+      complete: Boolean(result?.complete),
+      seconds: Math.round(result?.seconds || 0),
+      label,
+    };
+    set({ shearwaterScan: { status: 'done', error: '', summary, progress: null } });
+    log(`scan done · ${summary.answered} IDs answered of ${summary.scanned} in ${summary.seconds}s`);
+    return summary;
+  } catch (scanError) {
+    const message = scanError?.message || 'Could not scan the computer.';
+    set({ shearwaterScan: { status: 'error', error: message, summary: null, progress: null } });
+    log(`scan failed: ${message}`, 'error');
+    return null;
   }
 }
 

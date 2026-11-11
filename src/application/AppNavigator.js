@@ -21,6 +21,7 @@ import DiveLensScreen from '../screens/DiveLensScreen';
 import ComingSoonScreen from '../screens/ComingSoonScreen';
 import CompassNavScreen from '../screens/CompassNavScreen';
 import DiveLogScreen from '../screens/DiveLogScreen';
+import NitroxAnalyzerScreen from '../screens/NitroxAnalyzerScreen';
 import OceanAtlasScreen from '../screens/OceanAtlasScreen';
 import PlannerScreen from '../screens/PlannerScreen';
 import GearSetupScreen from '../screens/GearSetupScreen';
@@ -163,6 +164,9 @@ export default function AppNavigator() {
   }
   if (feature?.routeType === 'dive-computer-simulator') {
     return renderScreen(<DiveComputerSimulatorScreen appSettings={appSettings.settings} onBack={closeDetail} />);
+  }
+  if (feature?.routeType === 'nitrox-analyzer') {
+    return renderScreen(<NitroxAnalyzerScreen appSettings={appSettings.settings} onBack={closeDetail} />);
   }
   if (feature?.routeType === 'lens') {
     return renderScreen(<DiveLensScreen onBack={closeDetail} onSignIn={() => openDetail(ACCOUNT_ROUTES.login)} signedIn={accountSession.authStatus === 'signedIn'} />);

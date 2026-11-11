@@ -5,8 +5,12 @@
 import {
   addDownloadListener,
   cancelDownload,
+  exploreSuunto,
+  scanShearwater,
   provideBytes,
+  isSetupDeviceAvailable,
   provideWriteComplete,
+  setupDevice,
   startDownload,
   syncDeviceTime,
 } from '../../../modules/dive-computer-bridge';
@@ -17,6 +21,34 @@ import { KNOWN_SERVICE_UUIDS } from './diveComputerBle';
 // hand it the right characteristics.
 
 const norm = (uuid) => String(uuid || '').toLowerCase();
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// react-native-ble-plx returns the monitor's cancellation handle immediately;
+// it does not expose a promise that resolves when CoreBluetooth has finished
+// enabling notifications. Shearwater answers the first command immediately,
+// so starting libdivecomputer before `isNotifying` flips to true can lose that
+// first reply and surface as DC_STATUS_TIMEOUT (-7).
+async function waitForNotificationSubscription(device, notifyChar, onLog) {
+  const deadline = Date.now() + 1500;
+  let lastError = null;
+
+  while (Date.now() < deadline) {
+    try {
+      const characteristics = await device.characteristicsForService(notifyChar.serviceUUID);
+      const current = characteristics.find((candidate) => norm(candidate.uuid) === norm(notifyChar.uuid));
+      if (current?.isNotifying) {
+        onLog?.('notifications ready');
+        return;
+      }
+    } catch (error) {
+      lastError = error;
+    }
+    await delay(30);
+  }
+
+  const detail = lastError?.message ? `: ${lastError.message}` : '';
+  throw new Error(`Could not enable Bluetooth notifications${detail}`);
+}
 
 function classifyCharacteristics(characteristics) {
   const writeChar = characteristics.find(
@@ -126,6 +158,7 @@ async function withBlePump(device, onLog, perform) {
   const logSub = addDownloadListener('onDownloadLog', (body) => onLog?.(body.message));
 
   try {
+    await waitForNotificationSubscription(device, notifyChar, onLog);
     return await perform();
   } finally {
     notifySub.remove();
@@ -201,6 +234,54 @@ export async function runTimeSync({
   return withBlePump(device, onLog, () => (
     syncDeviceTime({ name, vendor, product, year, month, day, hour, minute, second })
   ));
+}
+
+/**
+ * Pre-dive setup over the connected device: gas (where supported) + clock.
+ * Resolves with the native { vendor, product, gas, clock } result.
+ */
+export async function runDeviceSetup({ device, name, vendor, product, oxygen, setClock, gasSupported, date, onLog }) {
+  const when = date || new Date();
+  if (!isSetupDeviceAvailable()) {
+    // Older installed native build: no gas write available, but the clock
+    // still works through the existing time-sync call.
+    onLog?.('native setupDevice missing (app build is older than this JS) — clock only');
+    const gas = gasSupported
+      ? { status: 'error', message: 'Sending gases needs the latest app build. Rebuild / reinstall the app, then try again.' }
+      : { status: 'unsupported' };
+    if (!setClock) return { gas, clock: { status: 'skipped' } };
+    try {
+      await runTimeSync({
+        device, name, vendor, product, onLog,
+        year: when.getFullYear(), month: when.getMonth() + 1, day: when.getDate(),
+        hour: when.getHours(), minute: when.getMinutes(), second: when.getSeconds(),
+      });
+      return { gas, clock: { status: 'set' } };
+    } catch (error) {
+      const message = error?.message || 'Clock sync failed.';
+      return { gas, clock: /does not support/i.test(message) ? { status: 'unsupported' } : { status: 'error', message } };
+    }
+  }
+  return withBlePump(device, onLog, () => setupDevice({
+    name, vendor, product, oxygen, setClock,
+    year: when.getFullYear(), month: when.getMonth() + 1, day: when.getDate(),
+    hour: when.getHours(), minute: when.getMinutes(), second: when.getSeconds(),
+  }));
+}
+
+/** READ-ONLY Suunto EON filesystem dump over the connected device. */
+export async function runSuuntoExplore({ device, name, vendor, product, onLog }) {
+  return withBlePump(device, onLog, () => exploreSuunto({ name, vendor, product }));
+}
+
+/** READ-ONLY Shearwater settings scan (RDBI over ID ranges) over the connected device. */
+export async function runShearwaterScan({ device, name, vendor, product, ranges, onLog, onProgress }) {
+  const progressSub = addDownloadListener('onDownloadProgress', (body) => onProgress?.(body));
+  try {
+    return await withBlePump(device, onLog, () => scanShearwater({ name, vendor, product, ranges }));
+  } finally {
+    progressSub.remove();
+  }
 }
 
 export function abortDownload() {
