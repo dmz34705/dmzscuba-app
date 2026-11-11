@@ -25,6 +25,10 @@ function authErrorMessage(data, fallback) {
 }
 
 async function fetchJson(url, options = {}) {
+  throw new AccountApiError('Account services are disabled in this historical edition. Use DMZ Scuba for your current account.', 'HISTORY_OFFLINE');
+}
+
+async function historicalFetchJsonUnused(url, options = {}) {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {
