@@ -15,10 +15,16 @@ The backend working copy is `/Users/dmz/DMZScuba.com`; the implementation is in
 - The new client accepts old responses and notes when detailed information was not returned. It does not invent a profile from old prose.
 - Deploy the Worker through the website's normal reviewed deployment workflow, then use the updated app. Updating only the app cannot improve the existing server's recognition.
 
-## Local fish specialist
+## Provider
+
+Dive Lens runs on Gemini (paid tier) by default: the Worker reads `LENS_AI_PROVIDER = "gemini"`,
+`LENS_GEMINI_MODEL` and the `GEMINI_API_KEY` secret. The app uploads 1280px JPEGs and waits up to 35 seconds
+(the Worker gives Gemini 25). The local path below is kept as an opt-in fallback only.
+
+## Local fish specialist (opt-in, `LENS_AI_PROVIDER = "local"`)
 
 - Before inference, a photo timestamp is matched to the diver's logbook. When a match exists, the app builds coarse context from the saved water type, month and bundled Atlas sightings. Exact coordinates are used on-device to select taxa and are not sent to the API.
-- With `AI_PROVIDER=local`, the private inference gateway asks the loopback Fishial service to detect and crop the prominent fish and rank its supported scientific names. The original photo, crop, candidates and nearby taxa are then given to Qwen for visual adjudication and explanation.
+- With `LENS_AI_PROVIDER=local`, the private inference gateway asks the loopback Fishial service to detect and crop the prominent fish and rank its supported scientific names. The original photo, crop, candidates and nearby taxa are then given to Qwen for visual adjudication and explanation.
 - Water type comes from the logbook only when it is trustworthy: dives logged by hand, or imported dives where the diver confirmed the water type in the dive editor or bulk edit (`water.typeConfirmed`). Dive computer salinity is a device setting and is ignored; an inland Atlas site or a lake/quarry/river/spring/mine site name marks the dive freshwater, otherwise the context says `unknown`.
 - Nearby records add a modest ranking bonus; they never exclude an unusual sighting. Fishial scores are similarities rather than calibrated probabilities.
 - A missed detection, unavailable Fishial service or unsupported species falls back to the existing Qwen path. Gear identification therefore does not depend on Fishial.

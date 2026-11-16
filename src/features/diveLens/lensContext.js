@@ -42,7 +42,7 @@ function contextSpecies(rows) {
 }
 
 // Produces coarse ecological context only. Exact coordinates stay on-device;
-// the private inference host receives a site label, water type, month and the
+// the identification service receives a site label, water type, month and the
 // app's already-bundled nearby taxa.
 export function buildLensContext(dive, capturedAt = null) {
   if (!dive || typeof dive !== 'object') return null;

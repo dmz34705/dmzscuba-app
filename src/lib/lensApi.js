@@ -2,9 +2,8 @@ import { normalizeLensResult } from './lensResult';
 import { getAccessToken } from './accountApi';
 import { createAiRequestId, logAiDiagnostic } from './aiDiagnostics';
 
-// Leave room for the desktop model's first request after it has been unloaded
-// from VRAM. Warm requests normally return much sooner.
-const REQUEST_TIMEOUT_MS = 70000;
+// The Worker gives Gemini 25 seconds; allow a little extra for the upload.
+const REQUEST_TIMEOUT_MS = 35000;
 // Native iOS networking can fail before HTTP when reaching the public site hostname.
 // Keep account traffic on the site, but use the Worker directly for the image request.
 const VISION_API_BASE_URL = 'https://dmz-media-api.zacharylisowski55.workers.dev';

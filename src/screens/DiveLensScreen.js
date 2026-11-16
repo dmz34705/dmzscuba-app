@@ -18,12 +18,14 @@ const CATEGORY_LABEL = { marine_life: 'MARINE LIFE', gear: 'DIVE GEAR', unclear:
 
 async function prepareAnalysisAsset(asset) {
   if (!asset?.uri) return asset;
-  const operations = Number(asset.width) > 1600 ? [{ resize: { width: 1600 } }] : [];
+  // Gemini reads species and gear labels well at 1280px; smaller uploads keep
+  // requests fast and well inside the Worker's 25-second Gemini deadline.
+  const operations = Number(asset.width) > 1280 ? [{ resize: { width: 1280 } }] : [];
   const prepared = await ImageManipulator.manipulateAsync(
     asset.uri,
     operations,
     {
-      compress: 0.85,
+      compress: 0.7,
       format: ImageManipulator.SaveFormat.JPEG,
       base64: true,
     },
@@ -73,9 +75,9 @@ export default function DiveLensScreen({ onBack, onSignIn, signedIn = false }) {
     setErrorMessage('');
     setStatus('loading');
     try {
-      // Resolve a timestamp-matched dive before inference so the local model
-      // can use water type and nearby taxa. Exact coordinates never leave the
-      // phone; buildLensContext reduces them to coarse ecological evidence.
+      // Resolve a timestamp-matched dive alongside image prep. The coarse
+      // context (water type, site label, month, nearby taxa) is sent with the
+      // request; exact coordinates never leave the phone.
       const [analysisAsset, diveEvidence] = await Promise.all([
         prepareAnalysisAsset(asset),
         suggestDiveLink(asset, capturedAtOverride),
