@@ -59,7 +59,10 @@ class MemoryFile {
 const storage = {
   getAllKeys: async () => [...phone.storage.keys()],
   multiGet: async (keys) => keys.map((key) => [key, phone.storage.get(key) ?? null]),
-  multiSet: async (pairs) => { for (const [key, value] of pairs) phone.storage.set(key, value); },
+  multiSet: async (pairs) => {
+    if (phone.failSetAfter != null && phone.failSetAfter-- <= 0) { phone.failSetAfter = null; throw new Error('killed during storage write'); }
+    for (const [key, value] of pairs) phone.storage.set(key, value);
+  },
   multiRemove: async (keys) => { for (const key of keys) phone.storage.delete(key); },
 };
 
@@ -72,10 +75,13 @@ const legacy = {
     return { exists: under(uri.endsWith('/') ? uri : `${uri}/`).length > 0, isDirectory: true };
   },
   makeDirectoryAsync: async () => {},
+  writeAsStringAsync: async (uri, text) => { phone.files.set(uri, bytes(text)); },
+  readAsStringAsync: async (uri) => { if (!phone.files.has(uri)) throw new Error(`missing ${uri}`); return new TextDecoder().decode(phone.files.get(uri)); },
   deleteAsync: async (uri) => {
     for (const key of [...phone.files.keys()]) if (key === uri || key.startsWith(uri.endsWith('/') ? uri : `${uri}/`)) phone.files.delete(key);
   },
   moveAsync: async ({ from, to }) => {
+    if (phone.failMoveAfter != null && phone.failMoveAfter-- <= 0) { phone.failMoveAfter = null; throw new Error('killed during move'); }
     const exact = phone.files.get(from);
     if (exact) { phone.files.set(to, exact); phone.files.delete(from); return; }
     const prefix = from.endsWith('/') ? from : `${from}/`;
@@ -147,7 +153,48 @@ Module._load = function load(request, ...rest) {
     assert.equal(phone.storage.has('@dmz-scuba/unrelated'), false);
     assert.equal(JSON.parse(phone.storage.get('@dmz-scuba/dive-log/dive-v2/d1')).photos[0].uri, newPhoto);
 
-    console.log('Portable backup checks passed: one streamed archive, validation, complete restore, and iOS path rewrite.');
+    assert.equal(under(`${phone.documents}.dmz-restore/`).length, 0, 'The restore work folder is removed after success.');
+    assert.equal(await backup.recoverPortableRestore(), null, 'Nothing to recover after a clean restore.');
+
+    // Interruptions: kill the install at each file move and storage batch, relaunch, recover.
+    const expectRestored = (label) => {
+      assert.equal(new TextDecoder().decode(phone.files.get(newPhoto)), 'PHOTO-DATA', `${label}: photo restored`);
+      assert.equal(new TextDecoder().decode(phone.files.get(`${phone.documents}gear-attachments/g1/manual.pdf`)), 'PDF-DATA', `${label}: attachment restored`);
+      assert.equal(phone.files.has(`${phone.documents}unrelated.txt`), false, `${label}: old files gone`);
+      assert.equal(phone.storage.has('@dmz-scuba/unrelated'), false, `${label}: old records gone`);
+      assert.equal(JSON.parse(phone.storage.get('@dmz-scuba/dive-log/dive-v2/d1')).photos[0].uri, newPhoto, `${label}: records point at restored files`);
+      assert.equal(under(`${phone.documents}.dmz-restore/`).length, 0, `${label}: work folder cleaned up`);
+    };
+    const resetCurrent = () => {
+      for (const key of [...phone.files.keys()]) if (key.startsWith(phone.documents)) phone.files.delete(key);
+      phone.files.set(`${phone.documents}unrelated.txt`, bytes('remove me'));
+      phone.storage.clear();
+      phone.storage.set('@dmz-scuba/unrelated', 'remove me');
+    };
+    for (const [label, setup] of [
+      ['first move', () => { phone.failMoveAfter = 0; }],
+      ['second move', () => { phone.failMoveAfter = 1; }],
+      ['storage write', () => { phone.failSetAfter = 0; }],
+    ]) {
+      resetCurrent(); setup();
+      await assert.rejects(backup.restorePortableBackup(selected.uri), /killed/, `${label}: interruption happens`);
+      const recovered = await backup.recoverPortableRestore();
+      assert.equal(recovered?.dives, 1, `${label}: recovery reports the restored backup`);
+      expectRestored(label);
+    }
+
+    // A failure while staging leaves the current data untouched and nothing to recover.
+    resetCurrent();
+    const truncated = 'file:///picker/truncated.dmzbackup';
+    const full = phone.files.get(externalArchive);
+    phone.files.set(truncated, full.slice(0, full.length - 4));
+    await assert.rejects(backup.restorePortableBackup(truncated), /incomplete|ended while restoring/);
+    assert.equal(new TextDecoder().decode(phone.files.get(`${phone.documents}unrelated.txt`)), 'remove me', 'Staging failure keeps current files.');
+    assert.equal(phone.storage.get('@dmz-scuba/unrelated'), 'remove me', 'Staging failure keeps current records.');
+    assert.equal(under(`${phone.documents}.dmz-restore/`).length, 0, 'Staging failure leaves no work folder.');
+    assert.equal(await backup.recoverPortableRestore(), null);
+
+    console.log('Portable backup checks passed: one streamed archive, validation, complete restore, iOS path rewrite, and recovery after interruption at each install step.');
   } finally {
     Module._load = originalLoad;
   }

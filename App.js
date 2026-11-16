@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AppNavigator from './src/application/AppNavigator';
+import RestoreRecoveryGate from './src/application/RestoreRecoveryGate';
 import NumberKeyboardAccessory from './src/components/NumberKeyboardAccessory';
 import { usePortraitOrientation } from './src/lib/screenOrientation';
 import { startDevAutoBackup } from './src/lib/devBackup';
@@ -14,7 +15,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <StatusBar style="light" translucent backgroundColor="transparent" />
-      <AppNavigator />
+      <RestoreRecoveryGate><AppNavigator /></RestoreRecoveryGate>
       <NumberKeyboardAccessory />
     </SafeAreaProvider>
   );

@@ -119,7 +119,7 @@ function validateManifest(manifest) {
   if (!Array.isArray(manifest.files)) throw new Error('The backup file index is missing.');
   const paths = new Set();
   for (const entry of manifest.files) {
-    if (!validBackupPath(entry?.path) || paths.has(entry.path)) throw new Error('The backup contains an unsafe or duplicate file path.');
+    if (!validBackupPath(entry?.path) || entry.path.startsWith('.') || paths.has(entry.path)) throw new Error('The backup contains an unsafe or duplicate file path.');
     if (!Number.isSafeInteger(entry.size) || entry.size < 0) throw new Error(`The backup contains an invalid file size for ${entry.path}.`);
     paths.add(entry.path);
   }
@@ -223,25 +223,91 @@ export async function choosePortableBackup() {
   return { uri: result.assets[0].uri, name: result.assets[0].name, manifest };
 }
 
-async function clearDocuments(directory) {
-  const names = await LegacyFileSystem.readDirectoryAsync(directory).catch(() => []);
-  for (const name of names) {
-    // eslint-disable-next-line no-await-in-loop
-    await LegacyFileSystem.deleteAsync(`${directory}${name}`, { idempotent: true });
+// Installation is journaled so an interruption (app killed, phone restarted)
+// can never leave a mix of old and restored data. The payload is staged and
+// validated inside Documents first (iOS may purge the cache directory), then a
+// journal file records each phase. Once the swap begins the restore always
+// rolls forward: recoverPortableRestore() finishes it on the next launch,
+// before any screen or account sync reads app data. Before the swap begins,
+// recovery simply discards the staging folder and the current data is untouched.
+const RESTORE_WORK = '.dmz-restore/';
+const workDirectory = (directory) => `${directory}${RESTORE_WORK}`;
+
+async function readJournal(work) {
+  const raw = await LegacyFileSystem.readAsStringAsync(`${work}journal.json`).catch(() => null);
+  if (!raw) return null;
+  try { return JSON.parse(raw); } catch { return null; }
+}
+const writeJournal = (work, journal) => LegacyFileSystem.writeAsStringAsync(`${work}journal.json`, JSON.stringify(journal));
+
+async function finishInstall(directory, journal) {
+  const work = workDirectory(directory);
+  const incoming = `${work}incoming/`;
+  let current = journal;
+  if (current.phase === 'files-out') {
+    // Remove the current Documents content (everything but the work folder).
+    const names = await LegacyFileSystem.readDirectoryAsync(directory).catch(() => []);
+    for (const name of names) {
+      if (name.startsWith('.')) continue;
+      // eslint-disable-next-line no-await-in-loop
+      await LegacyFileSystem.deleteAsync(`${directory}${name}`, { idempotent: true });
+    }
+    current = { ...current, phase: 'files-in' };
+    await writeJournal(work, current);
   }
+  if (current.phase === 'files-in') {
+    // Roots already moved are gone from incoming, so this resumes cleanly.
+    const roots = await LegacyFileSystem.readDirectoryAsync(incoming).catch(() => []);
+    for (const root of roots) {
+      // eslint-disable-next-line no-await-in-loop
+      await LegacyFileSystem.deleteAsync(`${directory}${root}`, { idempotent: true });
+      // eslint-disable-next-line no-await-in-loop
+      await LegacyFileSystem.moveAsync({ from: `${incoming}${root}`, to: `${directory}${root}` });
+    }
+    current = { ...current, phase: 'storage' };
+    await writeJournal(work, current);
+  }
+  if (current.phase === 'storage') {
+    // Clearing and rewriting every record is idempotent, so a repeat is safe.
+    const pairs = JSON.parse(await LegacyFileSystem.readAsStringAsync(`${work}storage.json`));
+    const oldKeys = await AsyncStorage.getAllKeys();
+    if (oldKeys.length) await AsyncStorage.multiRemove(oldKeys);
+    for (let index = 0; index < pairs.length; index += 50) {
+      // eslint-disable-next-line no-await-in-loop
+      await AsyncStorage.multiSet(pairs.slice(index, index + 50));
+    }
+  }
+  await LegacyFileSystem.deleteAsync(work, { idempotent: true }).catch(() => {});
+  return current.result || null;
+}
+
+// Call once at launch, before anything reads app data. Returns the restore's
+// counts when an interrupted restore was completed, otherwise null.
+export async function recoverPortableRestore() {
+  const directory = LegacyFileSystem.documentDirectory;
+  if (!directory) return null;
+  const work = workDirectory(directory);
+  const journal = await readJournal(work);
+  if (!journal || !['files-out', 'files-in', 'storage'].includes(journal.phase)) {
+    await LegacyFileSystem.deleteAsync(work, { idempotent: true }).catch(() => {});
+    return null;
+  }
+  return finishInstall(directory, journal);
 }
 
 export async function restorePortableBackup(uri, { onProgress } = {}) {
   const { handle, manifest, payloadOffset } = openArchive(uri);
   const directory = LegacyFileSystem.documentDirectory;
   if (!directory) { handle.close(); throw new Error('The app Documents directory is unavailable.'); }
-  const staging = `${LegacyFileSystem.cacheDirectory}dmz-portable-restore-${Date.now()}/`;
+  const work = workDirectory(directory);
+  const incoming = `${work}incoming/`;
+  await LegacyFileSystem.deleteAsync(work, { idempotent: true }).catch(() => {});
   handle.offset = payloadOffset;
   let restored = 0;
   try {
     // Fully materialize and validate the payload before touching current app data.
     for (const entry of manifest.files) {
-      const targetUri = `${staging}${entry.path}`;
+      const targetUri = `${incoming}${entry.path}`;
       // eslint-disable-next-line no-await-in-loop
       await LegacyFileSystem.makeDirectoryAsync(targetUri.slice(0, targetUri.lastIndexOf('/') + 1), { intermediates: true });
       const targetFile = new File(targetUri);
@@ -261,32 +327,23 @@ export async function restorePortableBackup(uri, { onProgress } = {}) {
       // eslint-disable-next-line no-await-in-loop
       await pauseForUi();
     }
+    const pairs = Object.entries(manifest.storage).map(([key, value]) => [
+      key,
+      rewritePortableDocumentPaths(value, manifest.documentDirectory, directory),
+    ]);
+    await LegacyFileSystem.writeAsStringAsync(`${work}storage.json`, JSON.stringify(pairs));
   } catch (error) {
     handle.close();
-    await LegacyFileSystem.deleteAsync(staging, { idempotent: true }).catch(() => {});
+    await LegacyFileSystem.deleteAsync(work, { idempotent: true }).catch(() => {});
     throw error;
   }
   handle.close();
 
-  await clearDocuments(directory);
-  const roots = await LegacyFileSystem.readDirectoryAsync(staging).catch(() => []);
-  for (const root of roots) {
-    // eslint-disable-next-line no-await-in-loop
-    await LegacyFileSystem.moveAsync({ from: `${staging}${root}`, to: `${directory}${root}` });
-  }
-  await LegacyFileSystem.deleteAsync(staging, { idempotent: true }).catch(() => {});
-
-  const oldKeys = await AsyncStorage.getAllKeys();
-  if (oldKeys.length) await AsyncStorage.multiRemove(oldKeys);
-  const pairs = Object.entries(manifest.storage).map(([key, value]) => [
-    key,
-    rewritePortableDocumentPaths(value, manifest.documentDirectory, directory),
-  ]);
-  for (let index = 0; index < pairs.length; index += 50) {
-    // eslint-disable-next-line no-await-in-loop
-    await AsyncStorage.multiSet(pairs.slice(index, index + 50));
-  }
-  return { ...manifest.counts, createdAt: manifest.createdAt };
+  // From here the restore is committed and will complete even if interrupted.
+  const result = { ...manifest.counts, createdAt: manifest.createdAt };
+  const journal = { phase: 'files-out', result };
+  await writeJournal(work, journal);
+  return finishInstall(directory, journal);
 }
 
 export const portableBackupDescription = (counts = {}) => [
