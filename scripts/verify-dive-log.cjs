@@ -1921,6 +1921,28 @@ function memoryStorage(seed = {}) {
   assert.match(dlService, /baselineKnown/);             // incremental-safe only with a live marker
   assert.match(dlService, /function refreshBaseline/);
 
+  // An interrupted transfer must not advance the incremental baseline, or older
+  // unread dives would be skipped by every later sync.
+  assert.match(dlService, /downloadOutcome\(/);
+  assert.doesNotMatch(dlService, /if \(result\?\.fingerprint\) await saveFingerprint/);
+  const { downloadOutcome } = loadSourceModule(path.join(srcRoot, 'features', 'diveComputerDownload', 'downloadOutcome.js'), srcRoot);
+  const firstImportCut = downloadOutcome({ result: { partial: true, fingerprint: 'NEWEST' }, hadBaseline: false, tally: { downloaded: 4, saved: 4 } });
+  assert.equal(firstImportCut.saveFingerprint, false, 'An interrupted first import does not set a baseline.');
+  assert.equal(firstImportCut.baselineKnown, false);
+  assert.match(firstImportCut.error, /Full re-download/);
+  assert.doesNotMatch(firstImportCut.error, /pick up where/);
+  const syncCut = downloadOutcome({ result: { partial: true, fingerprint: 'NEWEST' }, hadBaseline: true, tally: { downloaded: 2, saved: 2 } });
+  assert.equal(syncCut.saveFingerprint, false, 'An interrupted sync keeps the previous baseline.');
+  assert.equal(syncCut.baselineKnown, true);
+  assert.match(syncCut.error, /Sync new dives/);
+  const forcedCut = downloadOutcome({ result: { partial: true, cancelled: true, fingerprint: 'NEWEST' }, hadBaseline: true, tally: { downloaded: 1, saved: 0 } });
+  assert.equal(forcedCut.saveFingerprint, false, 'A cancelled full re-download leaves a valid baseline alone.');
+  assert.match(forcedCut.logLine, /cancelled/);
+  const complete = downloadOutcome({ result: { fingerprint: 'NEWEST' }, hadBaseline: false, tally: { downloaded: 9, saved: 9 } });
+  assert.deepEqual([complete.saveFingerprint, complete.status, complete.baselineKnown], [true, 'done', true], 'A complete transfer sets the baseline.');
+  const nothingNew = downloadOutcome({ result: {}, hadBaseline: true, tally: {} });
+  assert.deepEqual([nothingNew.saveFingerprint, nothingNew.baselineKnown], [false, true], 'An empty incremental sync keeps the baseline.');
+
   const dlPanel = read('src', 'features', 'diveComputerDownload', 'DiveComputerDownloadPanel.js');
   assert.match(dlPanel, /Sync new dives/);              // incremental sync is always an offered button
   assert.match(dlPanel, /Full re-download/);            // full read is always an offered button

@@ -10,6 +10,7 @@
 // `createDivesFromLogs`); it raises `markPendingReview` so the logbook re-runs
 // index rebuild + cross-computer reconciliation the next time it renders.
 
+import { downloadOutcome } from './downloadOutcome';
 import {
   clearFingerprint,
   createDivesFromLogs,
@@ -492,28 +493,10 @@ export async function download({ incremental = false, force = false } = {}) {
     }
 
     await markPendingReview();
-    if (result?.fingerprint) await saveFingerprint(name, result.fingerprint).catch(() => {});
-
-    if (result?.partial) {
-      // Interrupted partway through (cancelled, or the link dropped) — but the
-      // newest dive's fingerprint is still saved, so the NEXT sync resumes
-      // from here via the device's own fingerprint check instead of re-reading
-      // everything again. Surface this as a clear, expected outcome, not a
-      // failure: the dives read so far are already saved.
-      set({
-        summary: { ...tally },
-        status: 'error',
-        error: `Stopped after ${tally.downloaded} ${tally.downloaded === 1 ? 'dive' : 'dives'} `
-          + `(${tally.saved} new) — progress is saved. Tap "Sync new dives" to pick up where this left off.`,
-        baselineKnown: true,
-      });
-      log(`download ${result.cancelled ? 'cancelled' : 'interrupted'} — progress saved for the next sync`, 'warn');
-    } else {
-      // A clean finish means the newest dive's fingerprint is saved and its dive
-      // is in the book — future syncs can go incremental.
-      set({ summary: { ...tally }, status: 'done', baselineKnown: !!result?.fingerprint || state.baselineKnown });
-      log('download complete');
-    }
+    const outcome = downloadOutcome({ result, hadBaseline: markerValid, tally });
+    if (outcome.saveFingerprint) await saveFingerprint(name, result.fingerprint).catch(() => {});
+    set({ summary: { ...tally }, status: outcome.status, error: outcome.error, baselineKnown: outcome.baselineKnown });
+    log(outcome.logLine, outcome.status === 'done' ? 'info' : 'warn');
   } catch (downloadError) {
     // Still persist whatever arrived before the failure.
     if (pendingLogs.length && !saveAttempted) {
