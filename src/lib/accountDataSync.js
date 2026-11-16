@@ -24,7 +24,19 @@ function announce(next) { status = { ...status, ...next }; listeners.forEach((fn
 function changed() { dataListeners.forEach((fn) => fn()); }
 const read = async (key, fallback) => { const raw = await AsyncStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; };
 const emptyGear = () => ({ version: 2, items: [], setups: [], dismissedDeviceKeys: [] });
-const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR || key === PLANNER || key === ADVICE;
+// Personal records that stay on the device (not cloud-synced) but still belong
+// to whoever is signed in: switching accounts must hide them from the next
+// person. Device preferences (units, Atlas view, sort order, analyzer pairing)
+// are deliberately left shared.
+const PERSONAL_DEVICE_KEYS = new Set([
+  '@dmz-scuba/insurance/v1',
+  '@dmz-scuba/location-log-v1',
+  '@dmz-scuba/location-suggestion-handled-v1',
+  '@dmz-scuba/nitrox-log/v1',
+  '@dmz-scuba/my-sites/v1',
+  '@dmz-scuba/site-link-handled/v1',
+]);
+const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR || key === PLANNER || key === ADVICE || PERSONAL_DEVICE_KEYS.has(key);
 
 // Each account keeps its own complete on-device vault. Guest records are adopted only once.
 // The journal makes interrupted account switches recoverable without uploading mixed data.
