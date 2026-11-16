@@ -236,6 +236,7 @@ export default function AppNavigator() {
             onCreateAccount={() => openDetail(ACCOUNT_ROUTES.create)}
             onOpenScreen={openDetail}
             onSignOut={accountSession.signOut}
+            onDeleteAccount={accountSession.deleteAccount}
             profile={accountSession.profile}
           />
         ) : null}

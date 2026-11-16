@@ -5,7 +5,7 @@ import MenuPage from '../components/MenuPage';
 import { GroupedSection, NavigationRow } from '../components/Ui';
 import { colors, spacing } from '../theme';
 
-export default function AccountScreen({ account, authStatus, onCreateAccount, onOpenScreen, onSignOut, profile, onBack, onOpenSettings }) {
+export default function AccountScreen({ account, authStatus, onCreateAccount, onDeleteAccount, onOpenScreen, onSignOut, profile, onBack, onOpenSettings }) {
   const displayName = [profile.firstName, profile.lastName].filter(Boolean).join(' ');
   const signedIn = authStatus === 'signedIn';
   const restoring = authStatus === 'restoring';
@@ -22,6 +22,47 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
       { text: 'Use this device', onPress: () => resolveSyncConflict(conflict.key, 'local').catch((e) => Alert.alert('Sync', e.message)) },
     ]);
   };
+  const email = account?.profile?.email || profile.email || '';
+  const confirmDelete = () => {
+    Alert.alert(
+      'Delete your account?',
+      'This permanently deletes your DMZ Scuba login, diver profile, certifications, and every logbook, gear, and trip record synced to your account. It can’t be undone.\n\nDives, photos, and documents saved on this phone stay here unless you delete the app. DMZ Scuba keeps a protected record of past bookings for its business records.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Continue', style: 'destructive', onPress: askForEmail },
+      ],
+    );
+  };
+  const askForEmail = () => {
+    Alert.prompt(
+      'Type your email to confirm',
+      email ? `Enter ${email} to permanently delete this account.` : 'Enter your account email to permanently delete this account.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete account',
+          style: 'destructive',
+          onPress: async (typed) => {
+            if (String(typed || '').trim().toLowerCase() !== email.trim().toLowerCase()) {
+              Alert.alert('Account not deleted', 'That email doesn’t match this account. Nothing was removed.');
+              return;
+            }
+            setDeleting(true);
+            try {
+              await onDeleteAccount(typed);
+              Alert.alert('Account deleted', 'Your DMZ Scuba account was deleted. Data on this phone is still available while signed out.');
+            } catch (error) {
+              Alert.alert('Account not deleted', error?.message || 'The account could not be deleted. Please try again.');
+            } finally { setDeleting(false); }
+          },
+        },
+      ],
+      'plain-text',
+      '',
+      'email-address',
+    );
+  };
+  const [deleting, setDeleting] = useState(false);
   return (
     <MenuPage title="Account" onBack={onBack} backLabel="More">
       <View style={styles.identity}>
@@ -49,7 +90,8 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
         <NavigationRow title="Open my web logbook" body="Development website · Same DMZ Scuba account" onPress={() => Linking.openURL('https://dmzscuba-com.pages.dev/pages/account/#logbook')} last />
       </GroupedSection> : null}
       {signedIn ? <GroupedSection title="Session">
-        <NavigationRow title="Sign out" onPress={onSignOut} accent={colors.danger} last />
+        <NavigationRow title="Sign out" onPress={onSignOut} accent={colors.danger} />
+        <NavigationRow title={deleting ? 'Deleting account…' : 'Delete account'} body="Permanently delete your account and synced data" disabled={deleting || !onDeleteAccount} onPress={confirmDelete} accent={colors.danger} last />
       </GroupedSection> : null}
       <Text style={styles.footer}>{signedIn ? 'Logbook, computer profiles, gear, and setups sync while the app is open and connected. Offline changes stay on this device until sync succeeds. Photos and documents remain on this device for now.' : 'Use the app offline without an account. Sign in to sync your logbook and gear locker to the development website.'}</Text>
     </MenuPage>

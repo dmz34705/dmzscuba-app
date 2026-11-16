@@ -271,6 +271,16 @@ export function linkExistingCustomerRecords() {
   return accountRequest('/api/account/link-existing', { method: 'POST' });
 }
 
+// Permanently deletes the signed-in account: first every synced logbook, gear
+// and plan record, then the login and profile. Synced records go first so a
+// failure partway never leaves cloud data behind a deleted login; retrying is
+// safe. The diver confirms by typing their account email.
+export async function deleteOwnAccount({ confirmation, userId }) {
+  await syncAccountRequest('', { method: 'DELETE' }, userId);
+  await accountRequest('/api/account', { method: 'DELETE', body: JSON.stringify({ confirmation: String(confirmation || '').trim() }) });
+  await clearSession();
+}
+
 export async function signOut() {
   const accessToken = activeSession?.accessToken;
   if (accessToken) {

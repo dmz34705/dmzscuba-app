@@ -19,7 +19,7 @@ const src = path.join(__dirname,'../src/lib');
     cloud.set(key,record); return { record };
   };
   const service = fs.readFileSync(path.join(src,'accountDataSync.js'),'utf8').replace(/^import .*;\r?\n/gm,'').replace(/export /g,'');
-  const api = new Function('AsyncStorage','AppState','syncAccountRequest','canonical','reconcile','createId','rebuildIndex','migrateToV2',service + '\nreturn { prepareAccountData,syncAccountData,stopAccountDataSync,getDataSyncStatus };')(
+  const api = new Function('AsyncStorage','AppState','syncAccountRequest','canonical','reconcile','createId','rebuildIndex','migrateToV2',service + '\nreturn { prepareAccountData,syncAccountData,stopAccountDataSync,getDataSyncStatus,releaseDeletedAccountData };')(
     storage,{},request,engine.canonical,engine.reconcile,() => crypto.randomUUID(),async () => { rebuilds++; },async () => {});
   const gearKey = '@dmz-scuba/gear-checklist/v1',diveKey = '@dmz-scuba/dive-log/dive-v2/d1';
   const adviceKey = '@dmz-scuba/gear-advice/v1';
@@ -60,6 +60,16 @@ const src = path.join(__dirname,'../src/lib');
   offline = true; await api.syncAccountData(); assert.equal(api.getDataSyncStatus().state,'error');
   offline = false; await api.syncAccountData(); assert.equal(api.getDataSyncStatus().state,'synced');
   api.stopAccountDataSync(); assert.equal(api.getDataSyncStatus().state,'local');
+  // Account deletion forgets that account's sync state and vault, keeps on-screen data as guest data.
+  await api.prepareAccountData('alice'); await api.syncAccountData();
+  assert.ok(store.has('@dmz-scuba/account-sync/dev-v1/vault/bob'));
+  await api.releaseDeletedAccountData('alice');
+  assert.equal(store.has('@dmz-scuba/account-sync/dev-v1/owner'),false,'deleted account no longer owns this phone');
+  assert.equal(store.has('@dmz-scuba/account-sync/dev-v1/state/alice'),false,'deleted account sync state is forgotten');
+  assert.ok(store.has(diveKey),'dives on this phone stay after deleting the account');
+  assert.ok(store.has('@dmz-scuba/account-sync/dev-v1/vault/bob'),'other accounts on this phone are untouched');
+  const callsBefore = clouds.get('alice').size; await api.syncAccountData();
+  assert.equal(clouds.get('alice').size,callsBefore,'nothing uploads after deletion');
   assert.ok(rebuilds > 0);
   console.log('PASS: guest adoption, account vault switching, no cross-account uploads, web-to-app edits, local media preserved, offline retry, and sign-out.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

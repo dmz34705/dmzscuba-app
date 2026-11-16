@@ -31,3 +31,16 @@ assert.match(profileScreen, /label="Certifications"/);
 
 
 console.log('Account profile checks passed.');
+
+// Account deletion (App Store requirement): synced records are deleted before the login.
+{
+  const fs = require('node:fs');
+  const api = fs.readFileSync(require('node:path').join(__dirname, '../src/lib/accountApi.js'), 'utf8');
+  const body = api.slice(api.indexOf('export async function deleteOwnAccount'));
+  assert.ok(body.indexOf("syncAccountRequest('', { method: 'DELETE' }") < body.indexOf("accountRequest('/api/account', { method: 'DELETE'"), 'sync records are deleted first');
+  const screen = fs.readFileSync(require('node:path').join(__dirname, '../src/screens/AccountScreen.js'), 'utf8');
+  assert.match(screen, /title=\{deleting \? 'Deleting account…' : 'Delete account'\}/);
+  assert.match(screen, /can’t be undone/);
+  console.log('Account deletion checks passed.');
+}
+

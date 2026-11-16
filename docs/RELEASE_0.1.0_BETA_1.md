@@ -38,12 +38,15 @@ Fixed in code and covered by `npm run verify:release` (41 checks). Items marked
 - Bluetooth write and notification failures stop the transfer and show the
   real cause instead of a later timeout. *Device*
 - The planner check failure was a test-fixture date bug, now fixed.
+- Account → Delete account (App Store requirement): type the account email to
+  confirm; synced records are deleted first, then the login and profile.
+  Data on the phone stays as signed-out data.
 
 Still open before App Store submission:
 
-- **In-app account deletion** (App Store requirement). The account-sync Worker
-  (`workers/dmz-account-sync`) is not in the Mac checkout of the website repo,
-  so synced records cannot yet be deleted with the account.
+- Deploy the account-deletion endpoints (`dmz-media-api` and `dmz-account-sync`,
+  website branch `feat/self-service-account-deletion`), then test Account →
+  Delete account with a throwaway account.
 - Physical-device validation of the Bluetooth items above, including the
   notification-readiness gate.
 - Decide whether backup export is account-scoped or whole-device.

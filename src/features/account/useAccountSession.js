@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { DEFAULT_PROFILE } from '../../lib/accountProfile';
-import { prepareAccountData, startAccountDataSync, stopAccountDataSync } from '../../lib/accountDataSync';
+import { prepareAccountData, releaseDeletedAccountData, startAccountDataSync, stopAccountDataSync } from '../../lib/accountDataSync';
 import { sanitizeLayout } from '../layout/layoutPreferences';
 import {
   addCustomerCertification,
+  deleteOwnAccount,
   fetchAccount,
   linkExistingCustomerRecords,
   removeCustomerCertification,
@@ -161,6 +162,21 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
     resetSessionState();
   }, [resetSessionState]);
 
+  const deleteAccount = useCallback(async (confirmation) => {
+    const userId = account?.profile?.userId;
+    if (!userId) throw new Error('Sign in again before deleting your account.');
+    stopAccountDataSync(); // no upload may race the deletion
+    try {
+      await deleteOwnAccount({ confirmation, userId });
+    } catch (error) {
+      await prepareAccountData(userId).catch(() => {}); // resume normal sync
+      throw error;
+    }
+    retryRestoreRef.current = false;
+    await releaseDeletedAccountData(userId).catch(() => {});
+    resetSessionState();
+  }, [account, resetSessionState]);
+
   const completeAccountVerification = useCallback(async () => {
     await linkExistingCustomerRecords().catch(() => null);
     return applyAccount(await fetchAccount());
@@ -175,6 +191,7 @@ export default function useAccountSession({ appSettings, settingsLoaded, onRemot
     addCertification,
     authStatus,
     completeAccountVerification,
+    deleteAccount,
     deleteCertification,
     profile,
     settingsSyncStatus,

@@ -66,6 +66,16 @@ async function restoreVault({ userId, entries }) {
   await AsyncStorage.setItem(`${ROOT}owner`, userId);
   await AsyncStorage.removeItem(`${ROOT}switch`);
 }
+// After the account is deleted: forget its sync state and saved vault. Records
+// currently on screen stay on this phone as signed-out (guest) data.
+export async function releaseDeletedAccountData(userId) {
+  if (!userId) return;
+  generation += 1; owner = null;
+  const keys = (await AsyncStorage.getAllKeys()).filter((key) => key === `${ROOT}vault/${userId}` || key === `${ROOT}state/${userId}`
+    || key.startsWith(`${ROOT}resolved/${userId}/`));
+  if ((await AsyncStorage.getItem(`${ROOT}owner`)) === userId) keys.push(`${ROOT}owner`);
+  if (keys.length) await AsyncStorage.multiRemove(keys);
+}
 export function stopAccountDataSync() { generation += 1; owner = null; announce({ state: 'local', message: 'Saved on this device. Sign in to sync.', conflicts: 0 }); }
 
 async function snapshot() {
