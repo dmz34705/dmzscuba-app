@@ -282,7 +282,7 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   const trip = P.normalizePlan({ kind: 'trip', startDate: '2026-11-07', endDate: '2026-11-10', segments: [car, { type: 'activity', title: 'Cenote tour', startDate: '2026-11-08' }] }, now);
   const days = P.planTimeline(trip).days;
   assert.deepEqual(days.map((day) => [day.starts.length, day.continuing.length, day.ends.length]), [[1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 1]], 'Car picked up, carried through, returned.');
-  assert.ok(find(P.planAlerts(trip, {}, now), 'nights-'), 'A rental car does not cover the nights.');
+  assert.ok(find(P.planAlerts(trip, { now }), 'nights-'), 'A rental car does not cover the nights.');
 }
 
 // Packing belongs to each plan: two trips on one setup pack separately, and nothing carries over.
@@ -302,9 +302,9 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   assert.equal(P.nextPlanForSetup([{ ...thailand, status: 'cancelled' }, cozumel], 'single', now).id, 'cz', 'Cancelled trips are skipped.');
   assert.equal(P.nextPlanForSetup([P.normalizePlan({ setupId: 'single', startDate: '2026-09-01' }, now)], 'single', now), null, 'Past plans are not packed for.');
   const soon = P.normalizePlan({ kind: 'day', startDate: '2026-09-26', setupId: 'single' }, now);
-  const alerts = P.planAlerts(soon, { gear: { setups: [setup], items }, now }, now);
+  const alerts = P.planAlerts(soon, { gear: { setups: [setup], items }, now });
   assert.ok(find(alerts, 'packing'), 'Readiness counts the plan’s own packing: 0 of 2, despite the setup’s old ticks.');
-  assert.ok(!find(P.planAlerts(P.packPlan(soon, ['bcd', 'reg'], true), { gear: { setups: [setup], items }, now }, now), 'packing'));
+  assert.ok(!find(P.planAlerts(P.packPlan(soon, ['bcd', 'reg'], true), { gear: { setups: [setup], items }, now }), 'packing'));
 }
 
 // Extra gear for one plan: packed and checked with it, the setup itself untouched.
@@ -376,7 +376,7 @@ assert.ok(S.searchDiveSites('devils den').some((site) => /Devil.s Den/.test(site
   const replaced = P.replaceFlights(trip.segments, ['f1', 'f2', 'f3'], [out1, home]);
   assert.deepEqual(replaced.map((leg) => leg.id), ['f1', 's1', 'f3'], 'Editing a booking swaps its legs and keeps the itinerary in order.');
   const tight = P.normalizePlan({ kind: 'trip', startDate: '2026-11-07', segments: [out1, { ...out2, startTime: '09:15' }] }, now);
-  assert.ok(find(P.planAlerts(tight, {}, now), 'connect-'), 'A 30-minute connection is still flagged.');
+  assert.ok(find(P.planAlerts(tight, { now }), 'connect-'), 'A 30-minute connection is still flagged.');
 }
 
 console.log(`Planner checks passed: records, dates, phases, sorting, timeline, gear service lead times, out-of-service gear, packing, certification levels and expiry, experience and recency, paperwork, no-fly intervals, connections, uncovered nights and passport validity (${alerts.length} alerts on the sample trip).`);

@@ -103,7 +103,8 @@
     "deploy": "npx expo export -p web && wrangler deploy",
     "preview": "npx expo export -p web && wrangler dev",
     "research:fates": "node scripts/scan-wikipedia-fates.cjs",
-    "research:process": "node scripts/process-site-research.cjs"
+    "research:process": "node scripts/process-site-research.cjs",
+    "verify:release": "node scripts/verify-release.cjs"
   },
   "private": true,
   "devDependencies": {
