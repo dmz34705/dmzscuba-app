@@ -1943,6 +1943,22 @@ function memoryStorage(seed = {}) {
   const nothingNew = downloadOutcome({ result: {}, hadBaseline: true, tally: {} });
   assert.deepEqual([nothingNew.saveFingerprint, nothingNew.baselineKnown], [false, true], 'An empty incremental sync keeps the baseline.');
 
+  // Bluetooth failures in JS stop the native operation and surface their own cause.
+  const dlRunner = read('src', 'features', 'diveComputerDownload', 'downloadRunner.js');
+  assert.match(dlRunner, /if \(!finished\) fail\('write', error\)/);
+  assert.match(dlRunner, /if \(!finished\) fail\('notify', error\)/);
+  assert.match(dlRunner, /cancelDownload\(\)/);
+  assert.match(dlRunner, /throw transportError \|\| error/);
+  const { BleTransportError, transportMessage } = loadSourceModule(path.join(srcRoot, 'features', 'diveComputerDownload', 'bleTransportError.js'), srcRoot);
+  assert.match(transportMessage('write', new Error('Device ABC is not connected')), /disconnected/);
+  assert.match(transportMessage('notify', new Error('BluetoothLE is powered off')), /Bluetooth turned off/);
+  assert.match(transportMessage('write', new Error('GATT error 133')), /could not send a command/);
+  assert.match(transportMessage('notify', new Error('weird')), /stopped receiving data/);
+  const writeFailure = new BleTransportError('write', new Error('GATT error 133'));
+  assert.equal(writeFailure.code, 'BLE_WRITE_FAILED');
+  assert.equal(writeFailure.detail, 'GATT error 133');
+  assert.doesNotMatch(writeFailure.message, /timeout/i);
+
   const dlPanel = read('src', 'features', 'diveComputerDownload', 'DiveComputerDownloadPanel.js');
   assert.match(dlPanel, /Sync new dives/);              // incremental sync is always an offered button
   assert.match(dlPanel, /Full re-download/);            // full read is always an offered button

@@ -14,6 +14,7 @@ import {
   startDownload,
   syncDeviceTime,
 } from '../../../modules/dive-computer-bridge';
+import { BleTransportError } from './bleTransportError';
 import { KNOWN_SERVICE_UUIDS } from './diveComputerBle';
 
 // libdivecomputer's per-model driver runs its own framing (HDLC, credit flow
@@ -129,12 +130,24 @@ async function withBlePump(device, onLog, perform) {
   const { writeChar, notifyChar, serviceUuid } = await pickCharacteristics(device);
   onLog?.(`service ${serviceUuid} · write ${writeChar.uuid} · notify ${notifyChar.uuid}`);
 
+  // Remember the first transport failure and stop the native operation at once,
+  // so the diver sees the real cause instead of a later native timeout.
+  let transportError = null;
+  let finished = false;
+  const fail = (kind, error) => {
+    if (transportError) return;
+    transportError = new BleTransportError(kind, error);
+    onLog?.(`stopping: ${kind} failed`);
+    try { cancelDownload(); } catch { /* the native operation may already be done */ }
+  };
+
   const notifySub = device.monitorCharacteristicForService(
     notifyChar.serviceUUID,
     notifyChar.uuid,
     (error, characteristic) => {
       if (error) {
         onLog?.(`notification error: ${error.message}`);
+        if (!finished) fail('notify', error);
         return;
       }
       if (characteristic?.value) provideBytes(characteristic.value);
@@ -150,7 +163,10 @@ async function withBlePump(device, onLog, perform) {
       }
     } catch (error) {
       onLog?.(`write failed: ${error.message}`);
+      if (!finished) fail('write', error);
     } finally {
+      // Always release the native writer; after a failure the cancel above
+      // makes it stop instead of waiting for a reply.
       provideWriteComplete();
     }
   });
@@ -159,8 +175,17 @@ async function withBlePump(device, onLog, perform) {
 
   try {
     await waitForNotificationSubscription(device, notifyChar, onLog);
-    return await perform();
+    if (transportError) throw transportError;
+    let result;
+    try {
+      result = await perform();
+    } catch (error) {
+      throw transportError || error;
+    }
+    if (transportError) throw transportError;
+    return result;
   } finally {
+    finished = true;
     notifySub.remove();
     writeSub.remove();
     logSub.remove();
