@@ -17,7 +17,39 @@ been retroactively created.
 The existing product includes the local-first multi-computer logbook, Ocean Atlas,
 Planner, Gear Locker, Dive Lens, personal dive intelligence, and training tools.
 
-## Known issues and validation limits
+## Platform scope
+
+The first release is **iOS only**. The native dive-computer bridge exists only
+for Apple platforms; Android is out of scope for this release.
+
+## Stabilization fixes since Beta 1 (November 2026)
+
+Fixed in code and covered by `npm run verify:release` (41 checks). Items marked
+*device* still need confirming on a phone with real dive computers.
+
+- Dive Lens is back on paid Gemini: 1280px uploads and a 35-second timeout.
+- An interrupted download no longer advances the sync baseline. The next
+  "Sync new dives" (or, for an interrupted first import, "Full re-download")
+  re-reads the missing range and skips duplicates. *Device*
+- Insurance, location history, nitrox analyses and saved sites now move with
+  their own account when someone else signs in on the phone.
+- Complete-backup restore is journaled and finishes on the next launch if
+  interrupted; nothing reads app data until it has.
+- Bluetooth write and notification failures stop the transfer and show the
+  real cause instead of a later timeout. *Device*
+- The planner check failure was a test-fixture date bug, now fixed.
+
+Still open before App Store submission:
+
+- **In-app account deletion** (App Store requirement). The account-sync Worker
+  (`workers/dmz-account-sync`) is not in the Mac checkout of the website repo,
+  so synced records cannot yet be deleted with the account.
+- Physical-device validation of the Bluetooth items above, including the
+  notification-readiness gate.
+- Decide whether backup export is account-scoped or whole-device.
+- App Store Connect listing and privacy details once the developer account is approved.
+
+## Known issues and validation limits (as of Beta 1)
 
 - Interrupted downloads may save a baseline that skips older, unread history on
   subsequent incremental sync. Full re-download is the current recovery path.
