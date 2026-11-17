@@ -124,10 +124,21 @@ Module._load = function load(request, ...rest) {
     phone.storage.set('@dmz-scuba/dive-log/dive-v2/d1', JSON.stringify({ id: 'd1', photos: [{ uri: oldPhoto }] }));
     phone.storage.set('@dmz-scuba/gear-checklist/v1', JSON.stringify({ items: [{ id: 'g1' }], setups: [] }));
     phone.storage.set('@dmz-scuba/dev-backup/state-v1', 'not portable');
+    // Phone-only records (never synced) travel in the backup too: insurance with its document,
+    // location history, nitrox analyses and saved sites.
+    const oldPolicy = `${phone.documents}insurance-documents/p1/card.pdf`;
+    phone.files.set(oldPolicy, bytes('POLICY-PDF'));
+    const phoneOnly = {
+      '@dmz-scuba/insurance/v1': JSON.stringify({ policies: [{ id: 'p1', provider: 'DAN', documents: [{ uri: oldPolicy }] }] }),
+      '@dmz-scuba/location-log-v1': JSON.stringify([{ at: '2026-10-01T10:00:00Z', latitude: 20.5, longitude: -86.9 }]),
+      '@dmz-scuba/nitrox-log/v1': JSON.stringify([{ id: 'n1', o2: 32 }]),
+      '@dmz-scuba/my-sites/v1': JSON.stringify([{ id: 'my-1', name: 'Home quarry' }]),
+    };
+    for (const [key, value] of Object.entries(phoneOnly)) phone.storage.set(key, value);
 
     const created = await backup.createPortableBackup();
     assert.equal(created.manifest.counts.dives, 1);
-    assert.equal(created.manifest.counts.files, 2);
+    assert.equal(created.manifest.counts.files, 3);
     assert.equal(created.manifest.storage['@dmz-scuba/dev-backup/state-v1'], undefined);
     assert.ok(phone.files.get(created.uri).length > 'PHOTO-DATA'.length + 'PDF-DATA'.length);
 
@@ -152,6 +163,12 @@ Module._load = function load(request, ...rest) {
     assert.equal(phone.files.has(`${phone.documents}unrelated.txt`), false);
     assert.equal(phone.storage.has('@dmz-scuba/unrelated'), false);
     assert.equal(JSON.parse(phone.storage.get('@dmz-scuba/dive-log/dive-v2/d1')).photos[0].uri, newPhoto);
+    const newPolicy = `${phone.documents}insurance-documents/p1/card.pdf`;
+    assert.equal(new TextDecoder().decode(phone.files.get(newPolicy)), 'POLICY-PDF', 'the insurance document is restored');
+    assert.equal(JSON.parse(phone.storage.get('@dmz-scuba/insurance/v1')).policies[0].documents[0].uri, newPolicy, 'the policy links to the restored document');
+    for (const key of ['@dmz-scuba/location-log-v1', '@dmz-scuba/nitrox-log/v1', '@dmz-scuba/my-sites/v1']) {
+      assert.equal(phone.storage.get(key), phoneOnly[key], `${key} is restored`);
+    }
 
     assert.equal(under(`${phone.documents}.dmz-restore/`).length, 0, 'The restore work folder is removed after success.');
     assert.equal(await backup.recoverPortableRestore(), null, 'Nothing to recover after a clean restore.');
