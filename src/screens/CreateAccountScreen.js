@@ -81,8 +81,10 @@ export default function CreateAccountScreen({
 
   const verifyEmail = async () => {
     const token = verificationCode.trim().replace(/\s+/g, '');
-    if (!/^\d{6}$/.test(token)) {
-      setError('Enter the six-digit verification code from your email.');
+    // Supabase's email code length is a project setting (6 to 10 digits; this
+    // project sends 8), so accept any length it can issue.
+    if (!/^\d{6,10}$/.test(token)) {
+      setError('Enter the verification code from your email.');
       return;
     }
     setBusy(true);
@@ -176,16 +178,16 @@ export default function CreateAccountScreen({
           <>
             <Text style={styles.stepLabel}>STEP 2 OF 2</Text>
             <Text style={styles.title}>Check your email.</Text>
-            <Text style={styles.subtitle}>Enter the six-digit code sent to {email.trim().toLowerCase()} to finish creating your DMZ Scuba account.</Text>
+            <Text style={styles.subtitle}>Enter the code sent to {email.trim().toLowerCase()} to finish creating your DMZ Scuba account.</Text>
             <View style={styles.formCard}>
               <FormField
                 autoCapitalize="none"
                 autoComplete="one-time-code"
                 keyboardType="number-pad"
                 label="Verification code"
-                maxLength={6}
+                maxLength={10}
                 onChangeText={setVerificationCode}
-                placeholder="000000"
+                placeholder="00000000"
                 textContentType="oneTimeCode"
                 value={verificationCode}
               />
