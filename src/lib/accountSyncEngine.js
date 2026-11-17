@@ -16,7 +16,7 @@ export function canonical(value, kind) {
 // side. Returns what would happen so the caller can pause, or null when the sync looks normal.
 // Records deleted on purpose (dives keep a tombstone) are never counted here: only records that are
 // simply absent locally, or that arrive deleted from the cloud while still active here.
-export function bulkDeletion({ local, remote, state, min = 10, share = 0.25 }) {
+export function bulkDeletion({ local, remote, state, min = 10, share = 0.1 }) {
   const keyOf = (r) => `${r.kind}/${r.id}`;
   const locals = new Map(local.map((r) => [keyOf(r), r]));
   const known = Object.entries(state.records || {}).filter(([, base]) => base.value !== 'deleted');
@@ -33,7 +33,7 @@ export function bulkDeletion({ local, remote, state, min = 10, share = 0.25 }) {
   return null;
 }
 
-export async function reconcile({ local, remote, state, request, persist, apply, current, active, makeId }) {
+export async function reconcile({ local, remote, state, request, persist, apply, current, active, makeId, confirmBulk = false }) {
   const keyOf = (r) => `${r.kind}/${r.id}`;
   const locals = new Map(local.map((r) => [keyOf(r), r]));
   const remotes = new Map(remote.map((r) => [keyOf(r), r]));
@@ -79,6 +79,9 @@ export async function reconcile({ local, remote, state, request, persist, apply,
     try {
       const result = await request(`/${key}`, { method: 'PUT', body: JSON.stringify({
         baseRevision: base?.revision || 0, mutationId, deleted: !!here.deleted,
+        // Tells the server this deletion is intended: the diver deleted the record (it is still here as a
+        // tombstone) or confirmed a bulk change. A record that is merely missing here is not.
+        ...(here.deleted ? { bulkConfirmed: confirmBulk || !!locals.get(key)?.deleted } : {}),
         data: Object.fromEntries(Object.entries(here.data).filter(([field]) => !['sync', 'photos', 'attachments'].includes(field))),
       }) });
       if (!active()) break;

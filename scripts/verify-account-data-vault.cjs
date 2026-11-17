@@ -4,7 +4,7 @@ const path = require('node:path');
 const src = path.join(__dirname,'../src/lib');
 (async () => {
   const engine = await import(`data:text/javascript;base64,${Buffer.from(fs.readFileSync(path.join(src,'accountSyncEngine.js'),'utf8')).toString('base64')}`);
-  const store = new Map(), clouds = new Map(); let offline = false, rebuilds = 0;
+  const store = new Map(), clouds = new Map(), bodies = []; let offline = false, rebuilds = 0;
   const storage = { getItem:async (key) => store.get(key) ?? null,setItem:async (key,value) => store.set(key,value),removeItem:async (key) => store.delete(key),getAllKeys:async () => [...store.keys()],multiGet:async (keys) => keys.map((key) => [key,store.get(key) ?? null]),multiSet:async (pairs) => pairs.forEach(([k,v]) => store.set(k,v)),multiRemove:async (keys) => keys.forEach((key) => store.delete(key)) };
   const request = async (path,options,user) => {
     assert.ok(['alice','bob'].includes(user));
@@ -13,7 +13,7 @@ const src = path.join(__dirname,'../src/lib');
     const cloud = clouds.get(user),key = path.slice(1);
     if (!path || path.startsWith('?')) return { records:[...cloud.values()],next:null };
     if (!options) return { record:structuredClone(cloud.get(key)) };
-    const body = JSON.parse(options.body),prior = cloud.get(key);
+    const body = JSON.parse(options.body),prior = cloud.get(key); bodies.push({ key,...body });
     if ((prior?.revision || 0) !== body.baseRevision) throw Object.assign(new Error('Conflict'),{ status:409,record:prior });
     const [kind,id] = key.split('/'); const record = { kind,id,data:body.data,deleted:body.deleted,revision:body.baseRevision+1 };
     cloud.set(key,record); return { record };
@@ -80,6 +80,37 @@ const src = path.join(__dirname,'../src/lib');
   await api.syncAccountData();
   assert.equal(clouds.get('bob').get('gear/b1').deleted,false,'the cloud copy is not deleted');
   assert.equal(clouds.get('bob').get('gear/b1').revision,bobCloud.revision);
+
+  // End to end: an emptied phone pauses sync, and "Restore from my account" brings everything back.
+  const bobItems = Array.from({ length:12 },(_,i) => ({ id:`bg${i}`,name:`Bob item ${i}` }));
+  store.set(gearKey,JSON.stringify({ ...gear,items:bobItems })); await api.syncAccountData();
+  assert.equal([...clouds.get('bob').values()].filter((r) => r.id.startsWith('bg') && !r.deleted).length,12);
+  store.set(gearKey,JSON.stringify({ ...gear,items:[] }));
+  await api.syncAccountData();
+  assert.equal(api.getDataSyncStatus().state,'paused','an emptied phone pauses sync');
+  assert.equal(api.getDataSyncStatus().bulk.direction,'upload');
+  assert.equal([...clouds.get('bob').values()].filter((r) => r.id.startsWith('bg') && r.deleted).length,0,'nothing is deleted from the account while paused');
+  await api.syncAccountData({ bulk:'restore' });
+  assert.equal(JSON.parse(store.get(gearKey)).items.length,12,'restore downloads the missing records');
+  assert.equal(api.getDataSyncStatus().state,'synced');
+  // A wiped account pauses too, and "Keep this phone's records" uploads them back over the deletions.
+  for (const r of clouds.get('bob').values()) if (r.id.startsWith('bg')) { r.deleted = true; r.revision++; }
+  await api.syncAccountData();
+  assert.equal(api.getDataSyncStatus().bulk?.direction,'download','a wiped account pauses sync');
+  assert.equal(JSON.parse(store.get(gearKey)).items.length,12,'nothing is removed from the phone while paused');
+  await api.syncAccountData({ bulk:'restore' });
+  assert.equal([...clouds.get('bob').values()].filter((r) => r.id.startsWith('bg') && !r.deleted).length,12,'the phone copy is uploaded back');
+  // Confirming applies the deletion, and tells the server it was intended.
+  bodies.length = 0; const sent = []; const original = clouds.get('bob');
+  store.set(gearKey,JSON.stringify({ ...gear,items:[] }));
+  await api.syncAccountData();
+  assert.equal(api.getDataSyncStatus().state,'paused');
+  const realSet = original.set.bind(original); original.set = (k,v) => { sent.push(v); return realSet(k,v); };
+  await api.syncAccountData({ bulk:'apply' });
+  original.set = realSet;
+  assert.equal([...original.values()].filter((r) => r.id.startsWith('bg') && !r.deleted).length,0,'a confirmed bulk deletion is carried out');
+  assert.ok(sent.length >= 12);
+  assert.ok(bodies.filter((b) => b.key.startsWith('gear/bg')).every((b) => b.deleted && b.bulkConfirmed === true),'confirmed deletions are marked intended for the server');
 
   // A sync that would delete a large share of an account's records at once pauses instead.
   const many = Array.from({ length:12 },(_,i) => ({ kind:'dive',id:`m${i}`,data:{ id:`m${i}` },deleted:false }));

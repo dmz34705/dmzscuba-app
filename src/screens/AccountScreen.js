@@ -22,6 +22,16 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
       { text: 'Use this device', onPress: () => resolveSyncConflict(conflict.key, 'local').catch((e) => Alert.alert('Sync', e.message)) },
     ]);
   };
+  // A sync that would delete many records at once waits for the diver. Bringing them back is the default.
+  const bulk = sync.state === 'paused' ? sync.bulk : null;
+  const runBulk = (choice) => syncAccountData({ bulk: choice }).catch((e) => Alert.alert('Sync', e.message));
+  const confirmBulkDelete = () => Alert.alert(
+    bulk.direction === 'upload' ? 'Delete them from your account?' : 'Remove them from this phone?',
+    bulk.direction === 'upload'
+      ? `${bulk.count} records that are missing from this phone will be deleted from your DMZ Scuba account too. Only do this if you removed them on purpose.`
+      : `${bulk.count} records deleted from your account will also be removed from this phone. Only do this if you deleted them on purpose.`,
+    [{ text: 'Cancel', style: 'cancel' }, { text: 'Delete', style: 'destructive', onPress: () => runBulk('apply') }],
+  );
   const email = account?.profile?.email || profile.email || '';
   const confirmDelete = () => {
     Alert.alert(
@@ -86,6 +96,11 @@ export default function AccountScreen({ account, authStatus, onCreateAccount, on
       </GroupedSection>
       {signedIn ? <GroupedSection title="Logbook & gear sync">
         <NavigationRow title={sync.state === 'syncing' ? 'Syncing…' : 'Sync now'} body={sync.message} disabled={sync.state === 'syncing'} onPress={syncAccountData} />
+        {bulk ? <>
+          <NavigationRow title={bulk.direction === 'upload' ? 'Restore from my account' : "Keep this phone's records"}
+            body={bulk.direction === 'upload' ? `Download the ${bulk.count} missing records back to this phone` : `Upload the ${bulk.count} records back to your account`} onPress={() => runBulk('restore')} />
+          <NavigationRow title={bulk.direction === 'upload' ? 'Delete them from my account' : 'Remove them from this phone'} body="Only if you deleted them on purpose" accent={colors.danger} onPress={confirmBulkDelete} />
+        </> : null}
         {sync.conflicts ? <NavigationRow title="Review changed records" body={`${sync.conflicts} records need your choice`} onPress={reviewConflict} /> : null}
         <NavigationRow title="Open my web logbook" body="Development website · Same DMZ Scuba account" onPress={() => Linking.openURL('https://dmzscuba-com.pages.dev/pages/account/#logbook')} last />
       </GroupedSection> : null}

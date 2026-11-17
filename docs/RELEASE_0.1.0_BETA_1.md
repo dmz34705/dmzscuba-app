@@ -41,12 +41,28 @@ Fixed in code and covered by `npm run verify:release` (41 checks). Items marked
 - Account → Delete account (App Store requirement): type the account email to
   confirm; synced records are deleted first, then the login and profile.
   Data on the phone stays as signed-out data.
+- Sign-up accepts the 8-digit email verification code (6–10 digits).
+- **Sync data-loss fix (found in testing, Nov 17).** Creating then deleting a
+  second account left the first account's records set aside on the phone;
+  signing back in adopted the empty screen, and the next sync deleted every
+  cloud record. Now:
+  - signing in to an account with set-aside records brings them back;
+  - a sync that would delete at least 10 records and 10% of the account at
+    once, in either direction, pauses and asks in Account → Logbook & gear
+    sync (Restore / Delete);
+  - the sync Worker keeps a deleted record's last contents and refuses
+    unconfirmed deletion bursts, so older app versions can't wipe an account;
+  - recovery steps: `workers/dmz-account-sync/RECOVERY.md` (website repo).
+  *Device*
+- Development backup restore downloads only files the phone doesn't have, so
+  restoring onto the same phone no longer needs gigabytes of free space.
 
 Still open before App Store submission:
 
-- Deploy the account-deletion endpoints (`dmz-media-api` and `dmz-account-sync`,
-  website branch `feat/self-service-account-deletion`), then test Account →
-  Delete account with a throwaway account.
+- Deploy `dmz-account-sync` again for the sync safeguards (website branch
+  `feat/self-service-account-deletion`, not yet on GitHub). The account-deletion
+  endpoints are deployed and Delete account was tested with a throwaway account.
+- The sync pause only shows in Account; nothing elsewhere tells the diver.
 - Physical-device validation of the Bluetooth items above, including the
   notification-readiness gate.
 - Decide whether backup export is account-scoped or whole-device.

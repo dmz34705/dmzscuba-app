@@ -81,7 +81,7 @@ export async function releaseDeletedAccountData(userId) {
   if ((await AsyncStorage.getItem(`${ROOT}owner`)) === userId) keys.push(`${ROOT}owner`);
   if (keys.length) await AsyncStorage.multiRemove(keys);
 }
-export function stopAccountDataSync() { generation += 1; owner = null; announce({ state: 'local', message: 'Saved on this device. Sign in to sync.', conflicts: 0 }); }
+export function stopAccountDataSync() { generation += 1; owner = null; announce({ state: 'local', bulk: null, message: 'Saved on this device. Sign in to sync.', conflicts: 0 }); }
 
 async function snapshot() {
   const keys = (await AsyncStorage.getAllKeys()).filter((key) => key.startsWith(DIVE) || key.startsWith(LOG));
@@ -134,8 +134,12 @@ async function apply(record) {
   }
 }
 
-export async function syncAccountData() {
-  if (running) return running;
+// `choice` answers a paused bulk deletion (see bulkDeletion): 'restore' undoes it (missing records come
+// back from the account, or this phone's records are uploaded over the cloud deletions), 'apply'
+// carries it out. Any other value (including a button's press event) is a normal sync.
+export async function syncAccountData(options) {
+  const choice = ['restore', 'apply'].includes(options?.bulk) ? options.bulk : null;
+  if (running) { if (!choice) return running; await running.catch(() => {}); }
   if (!owner) return;
   const userId = owner; const ticket = generation;
   const active = () => owner === userId && generation === ticket;
@@ -152,17 +156,29 @@ export async function syncAccountData() {
     if (!active()) return;
     const local = await snapshot();
     const bulk = bulkDeletion({ local, remote, state });
-    if (bulk) {
-      announce({ state: 'error', message: bulk.direction === 'upload'
-        ? `Sync paused: it would delete ${bulk.count} of your ${bulk.known} records from your account. Nothing was changed. If records are missing here, restore a backup.`
-        : `Sync paused: your account has ${bulk.count} of your ${bulk.known} records marked deleted, which would remove them from this phone. Nothing was changed.` });
+    if (bulk && !choice) {
+      announce({ state: 'paused', bulk, message: bulk.direction === 'upload'
+        ? `Sync paused: ${bulk.count} of your ${bulk.known} synced records are missing from this phone. Nothing was deleted from your account.`
+        : `Sync paused: your account has ${bulk.count} of your ${bulk.known} records marked deleted. Nothing was removed from this phone.` });
       return;
     }
-    const result = await reconcile({ local, remote, state, request,
+    if (bulk && choice === 'restore') {
+      const locals = new Set(local.map((r) => `${r.kind}/${r.id}`));
+      for (const [key, base] of Object.entries(state.records)) {
+        if (base.value === 'deleted') continue;
+        // Missing here: forget the baseline so the account's copy downloads again.
+        if (bulk.direction === 'upload' && !locals.has(key)) { delete state.records[key]; delete state.pending[key]; }
+        // Deleted in the account: baseline the deletion so this phone's copy uploads over it.
+        const there = remote.find((r) => `${r.kind}/${r.id}` === key);
+        if (bulk.direction === 'download' && there?.deleted && locals.has(key)) state.records[key] = { revision: there.revision, value: 'deleted' };
+      }
+      await AsyncStorage.setItem(`${ROOT}state/${userId}`, JSON.stringify(state));
+    }
+    const result = await reconcile({ local, remote, state, request, confirmBulk: choice === 'apply',
       persist: (value) => AsyncStorage.setItem(`${ROOT}state/${userId}`, JSON.stringify(value)),
       apply: async (record) => { await apply(record); applied = true; }, current, active, makeId: createId });
     if (!active()) return;
-    announce({ state: result.conflicts ? 'conflict' : 'synced', conflicts: result.conflicts,
+    announce({ state: result.conflicts ? 'conflict' : 'synced', bulk: null, conflicts: result.conflicts,
       lastSyncedAt: new Date().toISOString(), message: result.conflicts ? `${result.conflicts} changed records need your review. Both versions are saved.` : 'Logbook, gear, and trip plans are synced to your account.' });
   })().catch((error) => {
     if (active()) announce({ state: 'error', message: error.message || 'Sync will retry when connected. Your device data is safe.' });
