@@ -24,11 +24,10 @@ function announce(next) { status = { ...status, ...next }; listeners.forEach((fn
 function changed() { dataListeners.forEach((fn) => fn()); }
 const read = async (key, fallback) => { const raw = await AsyncStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; };
 const emptyGear = () => ({ version: 2, items: [], setups: [], dismissedDeviceKeys: [] });
-// Personal records that stay on the device (not cloud-synced) but still belong
-// to whoever is signed in: switching accounts must hide them from the next
-// person. Device preferences (units, Atlas view, sort order, analyzer pairing)
-// are deliberately left shared.
-const PERSONAL_DEVICE_KEYS = new Set([
+// Records that never leave the phone (no cloud sync) stay on it whoever is signed in: they belong to
+// the phone, not an account. Older versions set them aside with the signed-in account on a switch,
+// which looked like deletion; rescuePhoneRecords brings those copies back.
+const PHONE_ONLY_KEYS = new Set([
   '@dmz-scuba/insurance/v1',
   '@dmz-scuba/location-log-v1',
   '@dmz-scuba/location-suggestion-handled-v1',
@@ -36,7 +35,26 @@ const PERSONAL_DEVICE_KEYS = new Set([
   '@dmz-scuba/my-sites/v1',
   '@dmz-scuba/site-link-handled/v1',
 ]);
-const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR || key === PLANNER || key === ADVICE || PERSONAL_DEVICE_KEYS.has(key);
+// Only synced records (and the dive-log data that travels with them) belong to an account.
+const ownedKey = (key) => key.startsWith('@dmz-scuba/dive-log/') || key === GEAR || key === PLANNER || key === ADVICE;
+const isVault = (key) => key.startsWith(`${ROOT}vault/`) || key.startsWith(`${ROOT}signed-out/`);
+
+// Puts phone-only records that an older version set aside back on the phone, when the phone has none
+// of its own for that key (the phone's current copy always wins), and drops them from the vaults.
+async function rescuePhoneRecords() {
+  const vaultKeys = (await AsyncStorage.getAllKeys()).filter(isVault).sort();
+  for (const vaultKey of vaultKeys.reverse()) { // newest signed-out copies first
+    // eslint-disable-next-line no-await-in-loop
+    const entries = await read(vaultKey, []);
+    if (!Array.isArray(entries) || !entries.some(([key]) => PHONE_ONLY_KEYS.has(key))) continue;
+    for (const [key, value] of entries) {
+      // eslint-disable-next-line no-await-in-loop
+      if (PHONE_ONLY_KEYS.has(key) && value != null && (await AsyncStorage.getItem(key)) == null) await AsyncStorage.setItem(key, value);
+    }
+    // eslint-disable-next-line no-await-in-loop
+    await AsyncStorage.setItem(vaultKey, JSON.stringify(entries.filter(([key]) => !PHONE_ONLY_KEYS.has(key))));
+  }
+}
 
 // Each account keeps its own complete on-device vault. Guest records are adopted only once.
 // The journal makes interrupted account switches recoverable without uploading mixed data.
@@ -46,6 +64,7 @@ export async function prepareAccountData(userId) {
   if (running) await running.catch(() => {});
   let journal = await read(`${ROOT}switch`, null);
   if (journal) await restoreVault(journal);
+  await rescuePhoneRecords();
   const previous = await AsyncStorage.getItem(`${ROOT}owner`);
   // Signed out with no owner (e.g. after deleting another account) but this account's records are in its
   // vault: they must come back. Adopting what's on screen instead would leave the vault unused and the
@@ -67,7 +86,9 @@ export async function prepareAccountData(userId) {
 async function restoreVault({ userId, entries }) {
   const keys = (await AsyncStorage.getAllKeys()).filter(ownedKey);
   if (keys.length) await AsyncStorage.multiRemove(keys);
-  if (entries.length) await AsyncStorage.multiSet(entries.filter(([, value]) => value != null));
+  // Only account records: a vault from an older version may still hold phone-only records.
+  const owned = entries.filter(([key, value]) => value != null && ownedKey(key));
+  if (owned.length) await AsyncStorage.multiSet(owned);
   await AsyncStorage.setItem(`${ROOT}owner`, userId);
   await AsyncStorage.removeItem(`${ROOT}switch`);
 }

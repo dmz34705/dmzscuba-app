@@ -31,8 +31,10 @@ Fixed in code and covered by `npm run verify:release` (41 checks). Items marked
 - An interrupted download no longer advances the sync baseline. The next
   "Sync new dives" (or, for an interrupted first import, "Full re-download")
   re-reads the missing range and skips duplicates. *Device*
-- Insurance, location history, nitrox analyses and saved sites now move with
-  their own account when someone else signs in on the phone.
+- Insurance, location history, nitrox analyses and saved sites never leave the
+  phone, so they stay on it whoever signs in (earlier builds set them aside
+  with the previous account, which looked like deletion; those copies come
+  back on the next sign-in). Only synced records switch with the account.
 - Complete-backup restore is journaled and finishes on the next launch if
   interrupted; nothing reads app data until it has.
 - Bluetooth write and notification failures stop the transfer and show the
