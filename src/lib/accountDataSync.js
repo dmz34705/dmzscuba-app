@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppState } from 'react-native';
 import { syncAccountRequest } from './accountApi';
-import { canonical, reconcile } from './accountSyncEngine';
+import { bulkDeletion, canonical, reconcile } from './accountSyncEngine';
 import { createId } from './diveLog/schema';
 import { rebuildIndex, migrateToV2 } from './diveLog/storage';
 
@@ -47,10 +47,15 @@ export async function prepareAccountData(userId) {
   let journal = await read(`${ROOT}switch`, null);
   if (journal) await restoreVault(journal);
   const previous = await AsyncStorage.getItem(`${ROOT}owner`);
-  if (previous && previous !== userId) {
+  // Signed out with no owner (e.g. after deleting another account) but this account's records are in its
+  // vault: they must come back. Adopting what's on screen instead would leave the vault unused and the
+  // next sync would delete every one of this account's cloud records.
+  const vaulted = !previous && (await AsyncStorage.getItem(`${ROOT}vault/${userId}`)) != null;
+  if ((previous && previous !== userId) || vaulted) {
     const keys = (await AsyncStorage.getAllKeys()).filter(ownedKey);
     const entries = await AsyncStorage.multiGet(keys);
-    await AsyncStorage.setItem(`${ROOT}vault/${previous}`, JSON.stringify(entries));
+    // Signed-out records are set aside, never discarded.
+    await AsyncStorage.setItem(previous ? `${ROOT}vault/${previous}` : `${ROOT}signed-out/${Date.now()}`, JSON.stringify(entries));
     journal = { userId, entries: await read(`${ROOT}vault/${userId}`, []) };
     await AsyncStorage.setItem(`${ROOT}switch`, JSON.stringify(journal));
     await restoreVault(journal);
@@ -145,7 +150,15 @@ export async function syncAccountData() {
       remote.push(...page.records); after = page.next;
     } while (after && active());
     if (!active()) return;
-    const result = await reconcile({ local: await snapshot(), remote, state, request,
+    const local = await snapshot();
+    const bulk = bulkDeletion({ local, remote, state });
+    if (bulk) {
+      announce({ state: 'error', message: bulk.direction === 'upload'
+        ? `Sync paused: it would delete ${bulk.count} of your ${bulk.known} records from your account. Nothing was changed. If records are missing here, restore a backup.`
+        : `Sync paused: your account has ${bulk.count} of your ${bulk.known} records marked deleted, which would remove them from this phone. Nothing was changed.` });
+      return;
+    }
+    const result = await reconcile({ local, remote, state, request,
       persist: (value) => AsyncStorage.setItem(`${ROOT}state/${userId}`, JSON.stringify(value)),
       apply: async (record) => { await apply(record); applied = true; }, current, active, makeId: createId });
     if (!active()) return;

@@ -176,27 +176,41 @@ export async function restoreDevBackup(id, { onProgress } = {}) {
   if (counts.dives || counts.gear || counts.files || Object.keys(current.storage).length > 3) await backupNow('before-restore');
 
   const directory = FileSystem.documentDirectory;
+  // Only files the phone doesn't already have are downloaded. Restoring onto the same phone (the usual
+  // case after a data problem) keeps every unchanged photo in place instead of staging a second copy of
+  // all of them, which on a large library can need gigabytes of free space and fail partway.
   // Files first, so a failure leaves the current data in place.
-  const managedRoots = [...new Set([...manifest.files, ...current.files].map((file) => file.path.split('/')[0]))];
+  const here = new Map(current.files.map((file) => [file.path, file.key]));
+  const wanted = new Set(manifest.files.map((file) => file.path));
+  const toFetch = manifest.files.filter((file) => here.get(file.path) !== file.key);
   const staging = `${FileSystem.cacheDirectory}dev-restore-${Date.now()}/`;
   let done = 0;
-  for (const file of manifest.files) {
+  for (const file of toFetch) {
     const target = `${staging}${file.path}`;
     // eslint-disable-next-line no-await-in-loop
     await FileSystem.makeDirectoryAsync(target.slice(0, target.lastIndexOf('/') + 1), { intermediates: true });
     // eslint-disable-next-line no-await-in-loop
     const result = await FileSystem.downloadAsync(`${origin}${PREFIX}/files/${file.key}`, target);
-    if (result.status !== 200) throw new Error(`Couldn't download ${file.path} (${result.status}).`);
+    if (result.status !== 200) {
+      await FileSystem.deleteAsync(staging, { idempotent: true }).catch(() => {});
+      throw new Error(`Couldn't download ${file.path} (${result.status}). Nothing on this phone was changed.`);
+    }
     done += 1;
-    onProgress?.({ done, total: manifest.files.length });
+    onProgress?.({ done, total: toFetch.length });
   }
-  for (const root of managedRoots) {
+  // Remove files the backup doesn't have, then put each downloaded file in place.
+  for (const file of current.files) {
     // eslint-disable-next-line no-await-in-loop
-    await FileSystem.deleteAsync(`${directory}${root}`, { idempotent: true });
+    if (!wanted.has(file.path)) await FileSystem.deleteAsync(`${directory}${file.path}`, { idempotent: true });
   }
-  for (const root of [...new Set(manifest.files.map((file) => file.path.split('/')[0]))]) {
+  for (const file of toFetch) {
+    const target = `${directory}${file.path}`;
     // eslint-disable-next-line no-await-in-loop
-    await FileSystem.moveAsync({ from: `${staging}${root}`, to: `${directory}${root}` });
+    await FileSystem.makeDirectoryAsync(target.slice(0, target.lastIndexOf('/') + 1), { intermediates: true });
+    // eslint-disable-next-line no-await-in-loop
+    await FileSystem.deleteAsync(target, { idempotent: true });
+    // eslint-disable-next-line no-await-in-loop
+    await FileSystem.moveAsync({ from: `${staging}${file.path}`, to: target });
   }
   await FileSystem.deleteAsync(staging, { idempotent: true });
 

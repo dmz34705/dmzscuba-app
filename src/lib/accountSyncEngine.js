@@ -10,6 +10,29 @@ export function canonical(value, kind) {
   return JSON.stringify(clean(value, true));
 }
 
+// A sync that would delete a large share of an account's records at once is almost never what the
+// diver did: it means this phone's records went missing (an account switch, a restore, storage
+// trouble) or the cloud copy was wiped. Either way, carrying it out spreads the loss to the other
+// side. Returns what would happen so the caller can pause, or null when the sync looks normal.
+// Records deleted on purpose (dives keep a tombstone) are never counted here: only records that are
+// simply absent locally, or that arrive deleted from the cloud while still active here.
+export function bulkDeletion({ local, remote, state, min = 10, share = 0.25 }) {
+  const keyOf = (r) => `${r.kind}/${r.id}`;
+  const locals = new Map(local.map((r) => [keyOf(r), r]));
+  const known = Object.entries(state.records || {}).filter(([, base]) => base.value !== 'deleted');
+  if (!known.length) return null;
+  const upload = known.filter(([key]) => !locals.has(key)).length;
+  const remotes = new Map(remote.map((r) => [keyOf(r), r]));
+  const download = known.filter(([key, base]) => {
+    const there = remotes.get(key); const here = locals.get(key);
+    return there?.deleted && there.revision !== base.revision && here && !here.deleted;
+  }).length;
+  const limit = Math.max(min, Math.ceil(known.length * share));
+  if (upload >= limit) return { direction: 'upload', count: upload, known: known.length };
+  if (download >= limit) return { direction: 'download', count: download, known: known.length };
+  return null;
+}
+
 export async function reconcile({ local, remote, state, request, persist, apply, current, active, makeId }) {
   const keyOf = (r) => `${r.kind}/${r.id}`;
   const locals = new Map(local.map((r) => [keyOf(r), r]));

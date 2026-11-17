@@ -40,7 +40,7 @@ const { withDevBackups } = require('./dev-backup/server.cjs');
     },
     makeDirectoryAsync: async () => {},
     deleteAsync: async (uri) => { for (const key of [...phone.files.keys()]) if (key === uri || key.startsWith(uri.endsWith('/') ? uri : `${uri}/`)) phone.files.delete(key); },
-    moveAsync: async ({ from, to }) => { for (const key of under(`${from}/`)) { phone.files.set(`${to}/${key.slice(from.length + 1)}`, phone.files.get(key)); phone.files.delete(key); } },
+    moveAsync: async ({ from, to }) => { if (phone.files.has(from)) { phone.files.set(to, phone.files.get(from)); phone.files.delete(from); return; } for (const key of under(`${from}/`)) { phone.files.set(`${to}/${key.slice(from.length + 1)}`, phone.files.get(key)); phone.files.delete(key); } },
     uploadAsync: async (url, uri, options) => {
       const response = await fetch(url, { method: options.httpMethod, body: phone.files.get(uri), headers: options.headers });
       return { status: response.status };
@@ -108,6 +108,15 @@ const { withDevBackups } = require('./dev-backup/server.cjs');
   assert.ok(reasons.includes('before-restore'), 'the replaced data was backed up first');
   assert.equal(JSON.parse(phone.storage.get('@dmz-scuba/app-settings-v1')).depthUnit, 'ft');
 
+  // Restoring onto the same phone downloads only what changed: unchanged photos stay in place.
+  const extra = `${phone.documents}dive-photos/not-in-backup.jpg`;
+  phone.files.set(extra, Buffer.from('EXTRA'));
+  const downloads = [];
+  await B.restoreDevBackup(latest.id, { onProgress: (p) => downloads.push(p) });
+  assert.equal(downloads.length, 0, 'files the phone already has are not downloaded again');
+  assert.ok(!phone.files.has(extra), 'files the backup does not have are removed');
+  assert.equal(phone.files.get(newPhoto)?.toString(), 'JPEG-BYTES-1', 'unchanged photos are still there');
+
   // The server refuses a manifest whose files never arrived, and passes other requests to Metro.
   const refused = await fetch(`${origin}/__dmz-backup/backups/2026-01-01-test`, { method: 'POST', body: JSON.stringify({ files: [{ key: 'missing-file-key' }], storage: {} }) });
   assert.equal(refused.status, 409);
@@ -129,7 +138,7 @@ const { withDevBackups } = require('./dev-backup/server.cjs');
   const all = await B.listDevBackups();
   assert.equal(all.filter((backup) => backup.reason === 'automatic').length, 30, 'only the newest 30 automatic backups are kept');
   assert.ok(all.filter((backup) => backup.reason === 'manual').length >= 30, 'manual backups are never pruned');
-  assert.ok(fs.existsSync(path.join(backupDir, 'store')) && fs.readdirSync(path.join(backupDir, 'store')).length === 2, 'each file is stored once');
+  assert.ok(fs.existsSync(path.join(backupDir, 'store')) && fs.readdirSync(path.join(backupDir, 'store')).length === 3, 'each file is stored once (two photos/PDFs plus the extra photo kept by a before-restore backup)');
 
   // A dev server started before backups existed answers unknown addresses with the app manifest (200 OK):
   // the app must say so, not fail on the reply.
@@ -145,4 +154,4 @@ const { withDevBackups } = require('./dev-backup/server.cjs');
   Module._load = originalLoad;
   fs.rmSync(backupDir, { recursive: true, force: true });
   console.log('Dev backup checks passed: full backup to the Mac, files uploaded once, unchanged/empty automatic backups skipped, restore after reinstall with new photo paths, safety backup before restore, refused incomplete backups, pruning.');
-})().catch((error) => { console.error(error); process.exitCode = 1; });
+})().catch((error) => { console.error(error); process.exit(1); });

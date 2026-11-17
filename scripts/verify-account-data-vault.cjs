@@ -19,8 +19,8 @@ const src = path.join(__dirname,'../src/lib');
     cloud.set(key,record); return { record };
   };
   const service = fs.readFileSync(path.join(src,'accountDataSync.js'),'utf8').replace(/^import .*;\r?\n/gm,'').replace(/export /g,'');
-  const api = new Function('AsyncStorage','AppState','syncAccountRequest','canonical','reconcile','createId','rebuildIndex','migrateToV2',service + '\nreturn { prepareAccountData,syncAccountData,stopAccountDataSync,getDataSyncStatus,releaseDeletedAccountData };')(
-    storage,{},request,engine.canonical,engine.reconcile,() => crypto.randomUUID(),async () => { rebuilds++; },async () => {});
+  const api = new Function('AsyncStorage','AppState','syncAccountRequest','bulkDeletion','canonical','reconcile','createId','rebuildIndex','migrateToV2',service + '\nreturn { prepareAccountData,syncAccountData,stopAccountDataSync,getDataSyncStatus,releaseDeletedAccountData };')(
+    storage,{},request,engine.bulkDeletion,engine.canonical,engine.reconcile,() => crypto.randomUUID(),async () => { rebuilds++; },async () => {});
   const gearKey = '@dmz-scuba/gear-checklist/v1',diveKey = '@dmz-scuba/dive-log/dive-v2/d1';
   const adviceKey = '@dmz-scuba/gear-advice/v1';
   const advice = { drysuitBelowC:22, thermalTendency:'cold', motionSensitive:true, suits:{suit:{minC:18,maxC:30}}, combinations:[{id:'outfit',name:'Cold outfit',itemIds:['suit'],minC:18,maxC:24}], setups:{s1:['Technical']} };
@@ -71,5 +71,22 @@ const src = path.join(__dirname,'../src/lib');
   const callsBefore = clouds.get('alice').size; await api.syncAccountData();
   assert.equal(clouds.get('alice').size,callsBefore,'nothing uploads after deletion');
   assert.ok(rebuilds > 0);
-  console.log('PASS: guest adoption, account vault switching, no cross-account uploads, web-to-app edits, local media preserved, offline retry, and sign-out.');
+  // Signing back in to an account whose records are in its vault (here: after deleting another account
+  // on this phone) brings them back instead of adopting the empty screen and deleting them in the cloud.
+  const bobCloud = clouds.get('bob').get('gear/b1');
+  await api.prepareAccountData('bob');
+  assert.equal(JSON.parse(store.get(gearKey)).items[0].name,'Bob mask','the vaulted account gets its own records back');
+  assert.ok([...store.keys()].some((key) => key.startsWith('@dmz-scuba/account-sync/dev-v1/signed-out/')),'signed-out records are set aside, not discarded');
+  await api.syncAccountData();
+  assert.equal(clouds.get('bob').get('gear/b1').deleted,false,'the cloud copy is not deleted');
+  assert.equal(clouds.get('bob').get('gear/b1').revision,bobCloud.revision);
+
+  // A sync that would delete a large share of an account's records at once pauses instead.
+  const many = Array.from({ length:12 },(_,i) => ({ kind:'dive',id:`m${i}`,data:{ id:`m${i}` },deleted:false }));
+  const base = { records:Object.fromEntries(many.map((r) => [`dive/${r.id}`,{ revision:1,value:'x' }])) };
+  assert.equal(engine.bulkDeletion({ local:[],remote:many.map((r) => ({ ...r,revision:1 })),state:base })?.direction,'upload','an emptied phone does not wipe the account');
+  assert.equal(engine.bulkDeletion({ local:many,remote:many.map((r) => ({ ...r,revision:2,deleted:true })),state:base })?.direction,'download','a wiped account does not empty the phone');
+  assert.equal(engine.bulkDeletion({ local:many.slice(2),remote:many.map((r) => ({ ...r,revision:1 })),state:base }),null,'removing a couple of records syncs normally');
+  assert.equal(engine.bulkDeletion({ local:many.map((r) => ({ ...r,deleted:true })),remote:many,state:base }),null,'dives deleted on purpose (tombstones) sync normally');
+  console.log('PASS: guest adoption, account vault switching, no cross-account uploads, web-to-app edits, local media preserved, offline retry, sign-out, vault return after another account is deleted, and bulk-deletion pause.');
 })().catch((error) => { console.error(error); process.exitCode = 1; });
