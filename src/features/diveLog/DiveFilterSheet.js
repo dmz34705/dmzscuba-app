@@ -124,7 +124,7 @@ function ChipGroup({ options, selected, onToggle }) {
             onPress={() => onToggle(option.key)}
             style={[styles.chip, isOn && styles.chipOn]}
           >
-            <Text numberOfLines={1} style={[styles.chipLabel, isOn && styles.chipLabelOn]}>{option.label}</Text>
+            <Text style={[styles.chipLabel, isOn && styles.chipLabelOn]}>{option.label}</Text>
           </Pressable>
         );
       })}
@@ -190,7 +190,7 @@ export default function DiveFilterSheet({ filter, onChange, onClear, onClose, ma
                     onPress={() => onSortChange({ ...sort, direction })}
                     style={[styles.segment, isOn && styles.segmentOn]}
                   >
-                    <Text numberOfLines={1} style={[styles.segmentLabel, isOn && styles.segmentLabelOn]}>
+                    <Text style={[styles.segmentLabel, isOn && styles.segmentLabelOn]}>
                       {direction === 'asc' ? field.ascLabel : field.descLabel}
                     </Text>
                   </Pressable>
@@ -348,11 +348,13 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: { paddingBottom: spacing.lg, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
   section: { gap: spacing.sm, marginBottom: spacing.lg },
-  sectionTitle: { color: colors.faint, fontSize: 11, fontWeight: '900', letterSpacing: 1.4, textTransform: 'uppercase' },
+  sectionTitle: { color: colors.muted, fontSize: 14, fontWeight: '600' },
   rangeRow: { gap: 6 },
   rangeLabel: { color: colors.muted, fontSize: 13, fontWeight: '700' },
   rangeInputs: { alignItems: 'center', flexDirection: 'row', gap: 8 },
   rangeInput: {
+    minHeight: 44,
+    justifyContent: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.line,
     borderRadius: radii.sm,
@@ -370,11 +372,13 @@ const styles = StyleSheet.create({
   rangeUnit: { color: colors.muted, fontSize: 12, fontWeight: '800', minWidth: 46 },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   segmented: { backgroundColor: colors.surface, borderRadius: radii.md, flexDirection: 'row', gap: 3, padding: 3 },
-  segment: { alignItems: 'center', borderRadius: radii.sm, flex: 1, paddingVertical: 8 },
+  segment: { minHeight: 44, justifyContent: 'center', alignItems: 'center', borderRadius: radii.sm, flex: 1, paddingVertical: 8 },
   segmentOn: { backgroundColor: colors.cyan },
   segmentLabel: { color: colors.muted, fontSize: 13, fontWeight: '800' },
   segmentLabelOn: { color: colors.black },
   chip: {
+    minHeight: 44,
+    justifyContent: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.line,
     borderRadius: radii.pill,

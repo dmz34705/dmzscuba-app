@@ -2,15 +2,25 @@
 // which only uses Expo's shared ngrok account.
 // Usage: npm run tunnel [-- <extra expo start args>]
 // Set NGROK_URL (e.g. https://name.ngrok-free.app) to use a reserved static domain.
-// Any Metro server already running for this project, and any ngrok tunnel to its
-// port, is stopped first so every run starts fresh.
+// On macOS, replace this project's existing server/tunnel. On Windows, refuse
+// an occupied port without terminating an unidentified process.
 const { execFileSync, spawn } = require('node:child_process');
 const readline = require('node:readline');
+const path = require('node:path');
+const fs = require('node:fs');
+const net = require('node:net');
 
 const projectRoot = __dirname;
+const hostEnv = path.join(projectRoot, '.env.host.local');
+if (fs.existsSync(hostEnv)) process.loadEnvFile(hostEnv);
 const expoArgs = process.argv.slice(2).filter((arg) => arg !== '--tunnel');
 const portFlag = expoArgs.indexOf('--port');
 const port = portFlag >= 0 ? expoArgs[portFlag + 1] : process.env.RCT_METRO_PORT || '8081';
+if (!/^\d+$/.test(port) || Number(port) < 1 || Number(port) > 65535) {
+  console.error('Metro port must be an integer between 1 and 65535.');
+  process.exit(1);
+}
+if (portFlag < 0) expoArgs.push('--port', port);
 
 function run(command, args) {
   try {
@@ -68,8 +78,6 @@ function stopExistingServers() {
   stopProcesses([...metro, ...tunnels]);
 }
 
-stopExistingServers();
-
 const ngrokArgs = ['http', port, '--log', 'stdout', '--log-format', 'json'];
 if (process.env.NGROK_URL) ngrokArgs.push('--url', process.env.NGROK_URL);
 
@@ -77,10 +85,16 @@ const ENDPOINT_BUSY_RETRIES = 10;
 let ngrok = null;
 let expo = null;
 let tunnelUrl = null;
+let shuttingDown = false;
 
 function shutdown(code) {
-  if (ngrok && !ngrok.killed) ngrok.kill();
-  if (expo && !expo.killed) expo.kill();
+  if (shuttingDown) return;
+  shuttingDown = true;
+  for (const child of [ngrok, expo]) {
+    if (!child || !child.pid || child.exitCode !== null) continue;
+    if (process.platform === 'win32') run('taskkill', ['/pid', String(child.pid), '/T', '/F']);
+    else child.kill('SIGTERM');
+  }
   process.exit(code);
 }
 
@@ -92,9 +106,18 @@ const timeout = setTimeout(() => {
 function startExpo(url) {
   clearTimeout(timeout);
   console.log(`ngrok tunnel: ${url} -> localhost:${port}`);
-  expo = spawn('npx', ['expo', 'start', ...expoArgs], {
+  // Launch the JS entry point directly: spawning npx.cmd fails on Windows
+  // without a shell and a shell can leave Metro running after shutdown.
+  const expoCli = path.join(path.dirname(require.resolve('expo/package.json')), 'bin', 'cli');
+  expo = spawn(process.execPath, [expoCli, 'start', ...expoArgs], {
+    cwd: projectRoot,
     stdio: 'inherit',
     env: { ...process.env, EXPO_PACKAGER_PROXY_URL: url },
+  });
+  console.log(`iPhone development client: dmzscuba://expo-development-client/?url=${encodeURIComponent(url)}`);
+  expo.on('error', (error) => {
+    console.error(`Could not start Metro: ${error.message}`);
+    shutdown(1);
   });
   expo.on('exit', (code) => shutdown(code ?? 0));
 }
@@ -134,13 +157,26 @@ function startNgrok(attempt) {
     } catch {
       return;
     }
+    if (entry.lvl === 'eror' || entry.lvl === 'error') errors += `${line}\n`;
     if (tunnelUrl || entry.msg !== 'started tunnel' || !entry.url) return;
     tunnelUrl = entry.url;
     startExpo(tunnelUrl);
   });
 }
 
-startNgrok(0);
+if (process.platform === 'win32') {
+  // Windows has no lsof/pgrep. Refuse an occupied port rather than terminating
+  // a process whose project directory we cannot establish.
+  const probe = net.createServer();
+  probe.once('error', (error) => {
+    console.error(`Cannot use Metro port ${port}: ${error.message}. Stop the existing server or choose --port 8082.`);
+    shutdown(1);
+  });
+  probe.listen(Number(port), () => probe.close(() => startNgrok(0)));
+} else {
+  stopExistingServers();
+  startNgrok(0);
+}
 
 process.on('SIGINT', () => shutdown(0));
 process.on('SIGTERM', () => shutdown(0));

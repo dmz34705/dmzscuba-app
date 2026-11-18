@@ -25,6 +25,7 @@ export function FormField({
     <View style={styles.field}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
+        accessibilityLabel={label}
         autoCapitalize={autoCapitalize}
         autoComplete={autoComplete}
         autoCorrect={false}
@@ -73,14 +74,14 @@ export function FormError({ message }) {
 
 const styles = StyleSheet.create({
   field: { marginBottom: 14 },
-  label: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 0.45, marginBottom: 7, textTransform: 'uppercase' },
+  label: { color: colors.muted, fontSize: 13, fontWeight: '600', marginBottom: 7 },
   input: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, color: colors.text, fontSize: 16, fontWeight: '700', minHeight: 50, paddingHorizontal: 13, paddingVertical: 11 },
   inputDisabled: { color: colors.muted, opacity: 0.72 },
-  helper: { color: colors.faint, fontSize: 10, lineHeight: 15, marginTop: 5 },
+  helper: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 5 },
   choices: { gap: 7, paddingBottom: 2 },
-  choice: { minHeight: 40, paddingHorizontal: 12, paddingVertical: 8 },
+  choice: { minHeight: 44, paddingHorizontal: 12, paddingVertical: 8 },
   notice: { backgroundColor: 'rgba(112,221,246,0.08)', borderColor: 'rgba(112,221,246,0.3)', borderRadius: radii.md, borderWidth: 1, marginBottom: 16, padding: 12 },
-  noticeLabel: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 1.2 },
-  noticeText: { color: colors.muted, fontSize: 11, lineHeight: 17, marginTop: 4 },
+  noticeLabel: { color: colors.cyan, fontSize: 13, fontWeight: '700' },
+  noticeText: { color: colors.muted, fontSize: 14, lineHeight: 21, marginTop: 4 },
   error: { backgroundColor: 'rgba(255,127,127,0.1)', borderColor: 'rgba(255,127,127,0.35)', borderRadius: radii.sm, borderWidth: 1, color: colors.danger, fontSize: 12, lineHeight: 18, marginBottom: 13, padding: 10 },
 });

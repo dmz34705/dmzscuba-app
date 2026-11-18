@@ -1,6 +1,6 @@
 # DMZ Scuba
 
-> **0.1.0 Beta 1 — prerelease** (`v0.1.0-beta.1`). Feature-rich and entering
+> **0.1.0 Beta 2 — prerelease** (`v0.1.0-beta.2`). Feature-rich and entering
 > stabilization; physical-device validation and product refinement are ongoing.
 
 DMZ Scuba is an [Expo](https://expo.dev/) / React Native companion for divers who
@@ -37,14 +37,18 @@ This README serves two audiences:
 This is a **beta prerelease**, not a store-ready stable release. The pre-alpha
 label previously lagged behind development; this milestone records the current
 state without inventing intermediate releases. The app version is `0.1.0` in
-`package.json` and `app.json`; the GitHub prerelease tag is `v0.1.0-beta.1`.
+`package.json` and `app.json`; the GitHub prerelease tag is `v0.1.0-beta.2`.
 
 The focus now is reliability, physical-device validation, accessibility, and
 cohesive workflows. See the [product refinement review](docs/PRODUCT_REFINEMENT_REVIEW.md)
-for technical findings and the proposed roadmap. Known issues include interrupted
-download checkpoints, interruption recovery during backup restoration, and
-account isolation for insurance and location history. The recent Bluetooth
-timeout mitigation still requires hardware verification.
+for technical findings and the proposed roadmap. Physical-device checks and backend
+deployment verification remain required.
+
+**New in 0.1.0 Beta 2:** Checkpoint all stabilization, Dive Lens photo preparation,
+logbook-to-identification, readability and interface changes, and add a Windows
+Metro/ngrok trip host with automatic process retry. See the
+[Beta 2 release notes](docs/RELEASE_0.1.0_BETA_2.md) and
+[Windows host guide](docs/WINDOWS_DEV_HOST.md).
 
 **New in 0.1.0 Beta 1:** Bluetooth nitrox-analyzer integration, native pre-dive
 setup and diagnostic support, Bluetooth notification-readiness handling, and a

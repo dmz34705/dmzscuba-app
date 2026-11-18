@@ -6,7 +6,7 @@ export default function ToolsScreen({ onOpenTool, appSettings, onLayoutChange })
       appSettings={appSettings}
       onLayoutChange={onLayoutChange}
       area="tools"
-      body="Planning, gas, identification, and future field utilities stay organized in one place."
+      body="Explore dive sites, prepare your gear, and plan your next dive."
       eyebrow="DIVE WORKBENCH"
       headerEyebrow="DMZ SCUBA UTILITIES"
       onOpenFeature={onOpenTool}

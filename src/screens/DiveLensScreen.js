@@ -9,6 +9,7 @@ import { Card, PrimaryButton, SecondaryButton } from '../components/Ui';
 import { identifyPhoto } from '../lib/lensApi';
 import LensDetails from '../features/diveLens/LensDetails';
 import { buildLensContext } from '../features/diveLens/lensContext';
+import { prepareLensPhoto } from '../features/diveLens/preparePhoto';
 import { findDivePhotoMatches, photoCapturedAt } from '../lib/diveLog/photoMatching';
 import { loadAll, loadDive, saveDive } from '../lib/diveLog/storage';
 import { colors, radii, shadow, spacing } from '../theme';
@@ -17,24 +18,7 @@ const CONFIDENCE_LABEL = { high: 'High confidence', medium: 'Medium confidence',
 const CATEGORY_LABEL = { marine_life: 'MARINE LIFE', gear: 'DIVE GEAR', unclear: 'UNIDENTIFIED' };
 
 async function prepareAnalysisAsset(asset) {
-  if (!asset?.uri) return asset;
-  // Gemini reads species and gear labels well at 1280px; smaller uploads keep
-  // requests fast and well inside the Worker's 25-second Gemini deadline.
-  const operations = Number(asset.width) > 1280 ? [{ resize: { width: 1280 } }] : [];
-  const prepared = await ImageManipulator.manipulateAsync(
-    asset.uri,
-    operations,
-    {
-      compress: 0.7,
-      format: ImageManipulator.SaveFormat.JPEG,
-      base64: true,
-    },
-  );
-  return {
-    ...asset,
-    base64: prepared.base64,
-    mimeType: 'image/jpeg',
-  };
+  return prepareLensPhoto(asset, ImageManipulator);
 }
 
 function PickerOption({ icon, title, body, onPress }) {
@@ -49,7 +33,7 @@ function PickerOption({ icon, title, body, onPress }) {
   );
 }
 
-export default function DiveLensScreen({ onBack, onSignIn, signedIn = false }) {
+export default function DiveLensScreen({ onBack, onSignIn, signedIn = false, initialPhoto = null, initialDiveId = null }) {
   const insets = useSafeAreaInsets();
   const [photo, setPhoto] = useState(null);
   const [status, setStatus] = useState('idle');
@@ -61,6 +45,14 @@ export default function DiveLensScreen({ onBack, onSignIn, signedIn = false }) {
 
   const suggestDiveLink = async (asset, capturedAtOverride = null) => {
     const capturedAt = photoCapturedAt(asset, capturedAtOverride);
+    if (initialDiveId && asset.uri === initialPhoto?.uri) {
+      const dive = await loadDive(initialDiveId);
+      if (dive) {
+        setDiveMatch({ dive, asset, capturedAt, alreadyLinked: true });
+        setLinked(true);
+        return { context: buildLensContext(dive, capturedAt) };
+      }
+    }
     if (!capturedAt) return null;
     const matches = findDivePhotoMatches(asset, await loadAll(), capturedAt);
     if (matches[0]) setDiveMatch({ ...matches[0], asset, capturedAt });
@@ -168,14 +160,21 @@ export default function DiveLensScreen({ onBack, onSignIn, signedIn = false }) {
 
             {signedIn ? (
               <>
+                {initialPhoto ? (
+                  <Card>
+                    <Image source={{ uri: initialPhoto.uri }} style={styles.previewImage} resizeMode="contain" accessibilityLabel="Selected dive photo" />
+                    <Text style={styles.tipBody}>Identify the marine life or gear in this logbook photo. This sends the photo to Dive Lens for analysis.</Text>
+                    <PrimaryButton label="Identify this photo" onPress={() => runIdentify(initialPhoto, initialPhoto.capturedAt)} style={styles.signInButton} />
+                  </Card>
+                ) : null}
                 <PickerOption icon="📷" title="Take a photo" body="Use your camera to capture a creature or gear now." onPress={takePhoto} />
                 <PickerOption icon="🖼️" title="Choose from library" body="Analyze a photo you already have saved." onPress={pickPhoto} />
               </>
             ) : (
               <Card style={styles.tipCard}>
                 <Text style={styles.tipTitle}>Sign in to use Dive Lens</Text>
-                <Text style={styles.tipBody}>A DMZ account keeps the private identification service available to divers instead of exposing it as a public AI endpoint.</Text>
-                <PrimaryButton label="Sign in" onPress={onSignIn} style={styles.signInButton} />
+                <Text style={styles.tipBody}>{onSignIn ? 'Sign in to identify marine life and dive gear in your photos.' : 'Sign in from Account, then return to this photo to identify marine life or dive gear.'}</Text>
+                <PrimaryButton label={onSignIn ? 'Sign in' : 'Back to photo'} onPress={onSignIn || onBack} style={styles.signInButton} />
               </Card>
             )}
 
@@ -237,7 +236,7 @@ export default function DiveLensScreen({ onBack, onSignIn, signedIn = false }) {
                 <Text style={styles.linkTitle}>{linked ? 'Photo linked to this dive' : 'This photo may belong to a logged dive'}</Text>
                 <Text style={styles.linkBody}>
                   {diveMatch.dive.site?.name || 'Logged dive'} · {new Date(diveMatch.dive.startTime).toLocaleDateString()}
-                  {'\\n'}Timestamp match: {diveMatch.confidence === 'high' ? 'inside the dive' : 'near the dive'}
+                  {'\n'}{diveMatch.alreadyLinked ? 'Opened from this dive’s photos' : `Timestamp match: ${diveMatch.confidence === 'high' ? 'inside the dive' : 'near the dive'}`}
                 </Text>
                 {!linked && (
                   <View style={styles.linkActions}>
@@ -256,6 +255,7 @@ export default function DiveLensScreen({ onBack, onSignIn, signedIn = false }) {
             )}
 
             <View style={styles.resultActions}>
+              {initialPhoto ? <SecondaryButton label="Back to photo" onPress={onBack} style={styles.resultButtonFlex} /> : null}
               <PrimaryButton label="Scan another" onPress={reset} style={styles.resultButtonFlex} />
             </View>
             <Text style={styles.disclaimer}>{result.category === 'gear'

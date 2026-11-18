@@ -329,7 +329,7 @@ export default function OceanAtlasScreen({ appSettings = {}, account = null, sig
         </View>
       ) : null}
       <Modal visible={Boolean(logbook)} animationType="slide" onRequestClose={dismissLogbook}>
-        {logbook ? <DiveLogScreen key={logbook.id || 'list'} initialDiveId={logbook.id} appSettings={appSettings} onBack={dismissLogbook} onOpenSettings={() => { setLogbook(null); onOpenSettings?.(); }} /> : null}
+        {logbook ? <DiveLogScreen signedIn={signedIn} key={logbook.id || 'list'} initialDiveId={logbook.id} appSettings={appSettings} onBack={dismissLogbook} onOpenSettings={() => { setLogbook(null); onOpenSettings?.(); }} /> : null}
       </Modal>
       <Modal visible={Boolean(journey)} animationType="slide" onRequestClose={() => setJourney(null)}>
         {journey ? <JourneySheet site={journey} units={units} onOrigin={rememberOrigin} onClose={() => setJourney(null)} /> : null}

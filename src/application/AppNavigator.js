@@ -172,7 +172,7 @@ export default function AppNavigator() {
     return renderScreen(<DiveLensScreen onBack={closeDetail} onSignIn={() => openDetail(ACCOUNT_ROUTES.login)} signedIn={accountSession.authStatus === 'signedIn'} />);
   }
   if (feature?.routeType === 'dive-log') {
-    return renderScreen(<DiveLogScreen appSettings={appSettings.settings} onChangeSettings={appSettings.setSettings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
+    return renderScreen(<DiveLogScreen signedIn={accountSession.authStatus === 'signedIn'} appSettings={appSettings.settings} onChangeSettings={appSettings.setSettings} onBack={closeDetail} onOpenSettings={() => selectTab('settings')} />);
   }
 
   if (detailRoute === ACCOUNT_ROUTES.login) {
@@ -225,7 +225,7 @@ export default function AppNavigator() {
         {activeTab === 'home' ? <HomeScreen onLayoutChange={updateLayout} appSettings={appSettings.settings} certifications={accountSession.authStatus === 'signedIn' && Array.isArray(accountSession.account?.certifications) ? accountSession.account.certifications : null} onOpenTool={openDetail} onSelectTab={selectTab} profile={accountSession.profile} signedIn={accountSession.authStatus === 'signedIn'} /> : null}
         {activeTab === 'learn' ? <LearnScreen appSettings={appSettings.settings} onLayoutChange={updateLayout} onOpenTool={openDetail} /> : null}
         {activeTab === 'tools' ? <ToolsScreen appSettings={appSettings.settings} onLayoutChange={updateLayout} onOpenTool={openDetail} /> : null}
-        {activeTab === 'logbook' ? <DiveLogScreen key={logbookIntent?.at || 'logbook'} appSettings={appSettings.settings} onChangeSettings={appSettings.setSettings} initialAction={logbookIntent?.action || null} initialFolder={logbookIntent?.folder || null} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
+        {activeTab === 'logbook' ? <DiveLogScreen signedIn={accountSession.authStatus === 'signedIn'} key={logbookIntent?.at || 'logbook'} appSettings={appSettings.settings} onChangeSettings={appSettings.setSettings} initialAction={logbookIntent?.action || null} initialFolder={logbookIntent?.folder || null} onBack={() => selectTab('home')} onOpenSettings={() => selectTab('settings')} /> : null}
         {activeTab === 'more' && !moreRoute ? <MoreScreen onOpen={selectTab} /> : null}
         {activeTab === 'more' && moreRoute === 'account' ? (
           <AccountScreen

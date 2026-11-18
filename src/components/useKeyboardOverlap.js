@@ -11,7 +11,7 @@
 // above it reflows into the space that's left.
 
 import { useEffect, useState } from 'react';
-import { Keyboard, useWindowDimensions } from 'react-native';
+import { Keyboard, Platform, useWindowDimensions } from 'react-native';
 
 export default function useKeyboardOverlap() {
   const { height: windowHeight } = useWindowDimensions();
@@ -25,8 +25,8 @@ export default function useKeyboardOverlap() {
     // "will" events fire before the keyboard animates, so layout moves in step
     // with it rather than snapping once it has landed. WillChangeFrame also
     // catches mid-session height changes, like the autocorrect bar appearing.
-    const shown = Keyboard.addListener('keyboardWillChangeFrame', onFrame);
-    const hidden = Keyboard.addListener('keyboardWillHide', () => setOverlap(0));
+    const shown = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillChangeFrame' : 'keyboardDidShow', onFrame);
+    const hidden = Keyboard.addListener(Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide', () => setOverlap(0));
     return () => {
       shown.remove();
       hidden.remove();

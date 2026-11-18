@@ -2,7 +2,66 @@
 
 Working review • November 11, 2026
 
+### Visual refinement progress — November 13, 2026
+
+Implemented the first presentation pass:
+
+- Shared navigation rows and screen-header titles wrap instead of truncating;
+  primary and secondary action labels are centered. Secondary buttons now honor
+  disabled state and expose it to accessibility services.
+- Header back controls and catalog Arrange actions have at least 44-point targets.
+- Tools has current, task-focused introductory copy; More has dedicated account
+  and settings icons. Home quick-access titles can wrap and its planning prompt
+  avoids a clipped description.
+- The download screen uses shorter setup text, stacked import actions, and a
+  baseline-dependent primary action. Both full and incremental import remain
+  available. Recovery re-import is behind an explicit disclosure.
+- Native download errors receive plain-language summaries with expandable,
+  selectable technical details. Connection help is collapsible and connected
+  non-Suunto computers no longer inherit Suunto help from nearby scan results.
+- Transfer diagnostics are collapsed by default, with a larger disclosure target,
+  more readable timestamps, and a separate clear action.
+
+Validation: iOS simulator build succeeded; the app loaded through Metro, and Home
+and the disconnected download screen were visually inspected. Architecture,
+layout, onboarding, logbook, and nitrox checks passed. Connected-device, error,
+large-text, and broader screen-by-screen visual acceptance remain to be checked.
+This presentation pass does not resolve the technical findings below or implement
+the proposed cross-feature workflows.
+
 ## Purpose and evidence
+
+### Follow-up implementation and device build — November 15, 2026
+
+The six-area refinement pass now includes:
+
+1. Logbook rows separate site names, dates and measurements, allowing long names
+   to wrap. Dive details place key metrics directly below the heading and keep
+   computer evidence in the existing disclosure sections.
+2. Shared sections, account fields, date fields and Planner sheets use more
+   consistent labels, readable helper text and larger controls.
+3. Routine metrics no longer use warning/success colors as decoration. Section
+   headings use less uppercase and less visual emphasis.
+4. Logbook, gallery, Gear and Planner loading states use a shared presentation.
+   Gallery load failures offer retry instead of appearing as an empty gallery.
+   Completed downloads provide a Review logbook action. Gear service status
+   distinguishes recorded service dates from untracked equipment.
+5. Both logbook photo viewers open Dive Lens with the selected photo and linked
+   dive context. Analysis requires an explicit action and sign-in; returning to
+   the photo preserves the viewer. Existing linked photos are not reattached.
+6. Photo metadata/actions can scroll separately, Planner paired fields stack at
+   larger text sizes, editor titles have a separate row at accessibility sizes,
+   filters have larger targets, and the extra-gear picker accommodates keyboards.
+
+Validation: populated simulator logbook list/detail, photo-to-Lens navigation
+and return, and large-text Planner form were inspected. Simulator data was a
+temporary fixture, not phone data. Nine regression suites passed (dive-log,
+lens, gear-checklist, layout, architecture, keyboard, onboarding, account,
+settings). The previously documented Planner date-sensitive fixture still fails.
+Authenticated photo inference, physical BLE behavior, all device sizes and full
+screen-by-screen accessibility acceptance remain unverified. These changes do
+not resolve the technical findings below. A signed Release device build succeeds;
+its native version label now matches the project's 0.1.0 version.
 
 Bring DMZ Scuba toward a dependable, cohesive, premium diving product without losing the depth that distinguishes it. This document records technical priorities, usability observations, and proposed connected workflows. It authorizes no implementation or deployment.
 

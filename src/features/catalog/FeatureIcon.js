@@ -14,6 +14,8 @@ function NitroxIcon() {
 }
 
 const ICONS = {
+  account: () => <Svg width={32} height={32} viewBox="0 0 32 32" fill="none"><Circle cx={16} cy={10} r={5} stroke="#70DDF6" strokeWidth={1.5} /><Path d="M6 27c0-6 4-10 10-10s10 4 10 10" stroke="#70DDF6" strokeWidth={1.5} strokeLinecap="round" /></Svg>,
+  settings: () => <Svg width={32} height={32} viewBox="0 0 32 32" fill="none"><Path d="M5 9h22M5 23h22" stroke="#70DDF6" strokeWidth={1.5} strokeLinecap="round" /><Circle cx={12} cy={9} r={4} fill="#0B1C2E" stroke="#70DDF6" strokeWidth={1.5} /><Circle cx={21} cy={23} r={4} fill="#0B1C2E" stroke="#70DDF6" strokeWidth={1.5} /></Svg>,
   atlas: AtlasIcon,
   boyle: BoyleIcon,
   calculator: CalculatorIcon,

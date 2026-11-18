@@ -29,6 +29,8 @@ import AtlasLocationPicker from '../features/diveLocation/AtlasLocationPicker';
 import { editedDiveSite } from '../features/diveLocation/manualLocation';
 
 import { ScreenHeader, SectionLabel } from '../components/AppShell';
+import { ContentState } from '../components/ScreenLayout';
+import DiveLensScreen from './DiveLensScreen';
 import { useReducedMotion } from '../components/Motion';
 import { FormError } from '../components/AccountForm';
 import { InlineIosPicker, formatDateDisplay, useDatePicker } from '../components/DateField';
@@ -1462,16 +1464,16 @@ function TripDetailView({ trip, units, getDive, onOpenDive, allRows, manualBasel
 function DiveListCard({ row, units, onPress, onLongPress, selectable, selected, last = false }) {
   const dateLabel = formatDate(row.startTime) || 'Undated dive';
   const timeLabel = formatTimeOfDay(row.startTime) || '';
-  // Date and start time lead so same-day dives stay distinguishable; the site
-  // name, when set, follows.
+  // Keep the site, date and measurements on separate lines so long site names
+  // remain readable and same-day dives stay distinguishable.
   const lead = [dateLabel, timeLabel].filter(Boolean).join(' · ');
-  const title = row.siteName ? `${lead} · ${row.siteName}` : lead;
+  const title = row.siteName || lead;
   const meta = [formatDepth(row.maxDepthMeters, units.depthUnit), formatDuration(row.durationSeconds)].join('  ·  ');
   return (
     <Pressable
       accessibilityRole={selectable ? 'checkbox' : 'button'}
       accessibilityState={selectable ? { checked: selected } : undefined}
-      accessibilityLabel={title}
+      accessibilityLabel={[title, row.siteName ? lead : null, meta].filter(Boolean).join('. ')}
       onPress={onPress}
       onLongPress={onLongPress}
       style={({ pressed }) => [styles.diveRow, !last && styles.diveRowBorder, selected && styles.diveRowSelected, pressed && styles.navRowPressed]}
@@ -1482,9 +1484,10 @@ function DiveListCard({ row, units, onPress, onLongPress, selectable, selected, 
         </View>
       ) : null}
       <View style={styles.diveRowCopy}>
-        <Text style={styles.diveRowTitle} numberOfLines={1}>{title}</Text>
+        <Text style={styles.diveRowTitle}>{title}</Text>
+        {row.siteName ? <Text style={styles.diveRowDate}>{lead}</Text> : null}
         <View style={styles.diveRowMetaLine}>
-          <Text style={styles.diveRowMeta} numberOfLines={1}>{meta}</Text>
+          <Text style={styles.diveRowMeta}>{meta}</Text>
           {row.rating ? <Text style={styles.diveRowRating}>{'★'.repeat(row.rating)}</Text> : null}
         </View>
       </View>
@@ -1873,10 +1876,11 @@ function DiveHero({ dive }) {
   );
 }
 
-// The handful of numbers a diver checks first, at a glance, right under the
-// profile chart. Everything else lives one tap away in the sections below.
+// The numbers a diver checks first, directly beneath the dive heading.
 function KeyStats({ water, phys, temperatures, mix, pressure, sac, units }) {
-  const waterTemp = temperatures.min != null && temperatures.max != null
+  const waterTemp = temperatures.min != null && temperatures.min === temperatures.max
+    ? formatTemperature(temperatures.min, units.temperatureUnit)
+    : temperatures.min != null && temperatures.max != null
     ? `${formatTemperature(temperatures.min, units.temperatureUnit)}–${formatTemperature(temperatures.max, units.temperatureUnit)}`
     : (temperatures.surface != null ? formatTemperature(temperatures.surface, units.temperatureUnit) : null);
   const hasAny = water.maxDepthMeters != null || phys.durationSeconds != null || waterTemp != null
@@ -1886,15 +1890,15 @@ function KeyStats({ water, phys, temperatures, mix, pressure, sac, units }) {
     <View style={styles.keyStats}>
       <ProfileMetric style={styles.keyStat} label="Max depth" value={formatDepth(water.maxDepthMeters, units.depthUnit)} accent={colors.cyan} />
       <ProfileMetric style={styles.keyStat} label="Duration" value={formatDuration(phys.durationSeconds)} />
-      <ProfileMetric style={styles.keyStat} label="Water temp" value={waterTemp} accent={colors.warning} />
-      <ProfileMetric style={styles.keyStat} label="Gas" value={mix ? formatGasLabel(mix) : null} accent={colors.good} />
+      <ProfileMetric style={styles.keyStat} label="Water temp" value={waterTemp} />
+      <ProfileMetric style={styles.keyStat} label="Gas" value={mix ? formatGasLabel(mix) : null} />
       <ProfileMetric style={styles.keyStat} label="Pressure" value={pressure != null ? formatPressure(pressure, units.pressureUnit) : null} />
       <ProfileMetric style={styles.keyStat} label="SAC" value={sac != null ? `${formatPressure(sac, units.pressureUnit)}/min` : null} />
     </View>
   );
 }
 
-function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePhoto, chartColors, focusPhotoId = null, profilePrefs, onProfilePrefsChange }) {
+function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePhoto, chartColors, focusPhotoId = null, profilePrefs, onProfilePrefsChange, signedIn }) {
   const [profileFullscreen, setProfileFullscreen] = useState(false);
   const previousLockRef = useRef(null);
   const openFullscreen = useCallback(async () => {
@@ -2039,6 +2043,7 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
   return (
     <>
       <DiveHero dive={dive} />
+      <KeyStats water={water} phys={phys} temperatures={temperatures} mix={mix} pressure={pressureForTile} sac={primarySac} units={units} />
 
       {shareOpen ? <DiveShareCardScreen dive={shareCardData} onClose={() => setShareOpen(false)} /> : null}
 
@@ -2098,8 +2103,6 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
         />
       ) : null}
 
-      <KeyStats water={water} phys={phys} temperatures={temperatures} mix={mix} pressure={pressureForTile} sac={primarySac} units={units} />
-
       {logs.length > 1 && shownName ? (
         <Text style={styles.detailShownFrom}>Showing {shownName}&apos;s data — tap a computer in Computer analytics above to switch</Text>
       ) : null}
@@ -2138,13 +2141,15 @@ function DiveDetail({ dive, logs = [], primaryLog, units, onShowLog, onRemovePho
               </Pressable>
             ))}
           </ScrollView>
-          <Text style={styles.divePhotoHint}>Tap a photo to view it full screen or share it with the dive profile.</Text>
+          <Text style={styles.divePhotoHint}>Open a photo to identify it with Dive Lens, see its dive context, or share it.</Text>
         </DetailCard>
       ) : null}
 
       {viewerIndex != null && dive.photos?.length ? (
         <PhotoViewerModal
           photos={dive.photos}
+          signedIn={signedIn}
+          diveId={dive.id}
           index={Math.min(viewerIndex, dive.photos.length - 1)}
           onIndex={setViewerIndex}
           onClose={() => { setSharePhoto(null); setViewerIndex(null); }}
@@ -2781,8 +2786,9 @@ function PhotoViewerPage({ photo, width }) {
   );
 }
 
-function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, onShare, renderMeta, overlay = null }) {
+function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, onShare, renderMeta, overlay = null, signedIn = false, diveId = null }) {
   const { width } = useWindowDimensions();
+  const [lensPhoto, setLensPhoto] = useState(null);
   const insets = useSafeAreaInsets();
   const listRef = useRef(null);
   const current = photos[index] || null;
@@ -2799,7 +2805,7 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, onShare, 
       <View style={styles.photoViewerBackdrop}>
         <View style={[styles.photoViewerBar, { paddingTop: Math.max(insets.top, 12) }]}>
           <Text style={styles.photoViewerCount}>{index + 1} / {photos.length}</Text>
-          <Pressable onPress={onClose} hitSlop={12} accessibilityRole="button" accessibilityLabel="Close photo">
+          <Pressable onPress={onClose} style={styles.photoViewerDone} accessibilityRole="button" accessibilityLabel="Close photo">
             <Text style={styles.photoViewerClose}>Done</Text>
           </Pressable>
         </View>
@@ -2826,9 +2832,11 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, onShare, 
           }}
           style={styles.photoViewerPager}
         />
+        <ScrollView style={styles.photoViewerFooter} contentContainerStyle={{ paddingBottom: Math.max(insets.bottom, spacing.lg) }}>
         {renderMeta ? <View style={styles.photoViewerMeta}>{renderMeta(current)}</View> : null}
         {onShare || onRemove ? (
-          <View style={[styles.photoViewerActions, { paddingBottom: Math.max(insets.bottom, spacing.lg) }]}>
+          <View style={styles.photoViewerActions}>
+            <SecondaryButton label="Identify with Dive Lens" onPress={() => setLensPhoto(current)} style={styles.photoViewerShareButton} />
             {onShare ? (
               <PrimaryButton
                 label="Customize & share"
@@ -2849,9 +2857,15 @@ function PhotoViewerModal({ photos, index, onIndex, onClose, onRemove, onShare, 
             ) : null}
           </View>
         ) : null}
+        </ScrollView>
         {/* The photo share editor: its own full-screen Modal, mounted inside
             this one so iOS presents it on top of the viewer. */}
         {overlay}
+        {lensPhoto ? (
+          <Modal animationType="slide" visible onRequestClose={() => setLensPhoto(null)}>
+            <DiveLensScreen initialPhoto={lensPhoto} initialDiveId={diveId || lensPhoto.diveId} signedIn={signedIn} onBack={() => setLensPhoto(null)} />
+          </Modal>
+        ) : null}
       </View>
     </Modal>
   );
@@ -2997,10 +3011,12 @@ function GalleryPhotoShareOverlay({ photo, getDive, units, onClose }) {
 // photo carrying its dive's data.
 function PhotoGalleryView({
   rows, filter, filterActiveCount, onOpenFilter, onClearFilter,
-  loadGalleryPhotos, getDive, units, onOpenDive, onImport, onRepair, repairing, scrollState,
+  loadGalleryPhotos, getDive, units, onOpenDive, onImport, onRepair, repairing, scrollState, signedIn,
 }) {
   const { width } = useWindowDimensions();
   const [photos, setPhotos] = useState(null); // null = still loading
+  const [photoError, setPhotoError] = useState(false);
+  const [loadAttempt, setLoadAttempt] = useState(0);
   const [viewerIndex, setViewerIndex] = useState(null);
   const [sharePhoto, setSharePhoto] = useState(null);
   const [sortKey, setSortKey] = useState(DEFAULT_GALLERY_SORT);
@@ -3055,9 +3071,11 @@ function PhotoGalleryView({
 
   useEffect(() => {
     let active = true;
-    loadGalleryPhotos().then((list) => { if (active) setPhotos(list); }).catch(() => { if (active) setPhotos([]); });
+    setPhotoError(false);
+    setPhotos(null);
+    loadGalleryPhotos().then((list) => { if (active) setPhotos(list); }).catch(() => { if (active) setPhotoError(true); });
     return () => { active = false; };
-  }, [loadGalleryPhotos]);
+  }, [loadGalleryPhotos, loadAttempt]);
 
   const diveById = useMemo(() => {
     const map = new Map();
@@ -3104,7 +3122,8 @@ function PhotoGalleryView({
   }, [scrollState, updateWindow]);
   useEffect(updateWindow, [updateWindow, visible.length, columnCount, rowHeight, gridTop]);
 
-  if (photos == null) return <Text style={styles.muted}>Loading photos…</Text>;
+  if (photoError) return <ContentState title="Couldn’t load your photos" body="Your linked photos haven’t been changed. Try loading them again." action="Try again" onAction={() => setLoadAttempt((value) => value + 1)} />;
+  if (photos == null) return <ContentState busy title="Loading your photos" body="Gathering the moments linked to your dives." />;
 
   return (
     <>
@@ -3150,11 +3169,7 @@ function PhotoGalleryView({
       </ScrollView>
 
       {visible.length === 0 ? (
-        <Text style={styles.muted}>
-          {total === 0
-            ? 'No photos linked yet. Use “Match camera roll photos” to pull some in from your camera roll.'
-            : 'No linked photos match the current filter — tap Filter to change it.'}
-        </Text>
+        <ContentState title={total === 0 ? 'Your dives, in pictures' : 'No photos match these filters'} body={total === 0 ? 'Match photos from your camera roll to see where and when each moment happened.' : 'Clear the filters to see all your linked dive photos.'} action={total === 0 ? 'Match photos to dives' : 'Clear filters'} onAction={total === 0 ? onImport : onClearFilter} />
       ) : (
         <>
           <View style={styles.galleryZoomHint}>
@@ -3205,6 +3220,7 @@ function PhotoGalleryView({
       {viewerIndex != null && visible[viewerIndex] ? (
         <PhotoViewerModal
           photos={visible}
+          signedIn={signedIn}
           index={Math.min(viewerIndex, visible.length - 1)}
           onIndex={setViewerIndex}
           onClose={() => { setSharePhoto(null); setViewerIndex(null); }}
@@ -3232,7 +3248,7 @@ function PhotoGalleryView({
   );
 }
 
-export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () => {}, onBack, onOpenSettings = () => {}, initialDiveId = null, initialAction = null, initialFolder = null }) {
+export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () => {}, onBack, onOpenSettings = () => {}, initialDiveId = null, initialAction = null, initialFolder = null, signedIn = false }) {
   const insets = useSafeAreaInsets();
   const {
     loaded, rows, stats, trends, deletedCount, computerPriority, setComputerRank, folders, knownComputerKeys, pendingProposals,
@@ -4054,7 +4070,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
         {view === 'list' && (
           <>
             {!loaded ? (
-              <Text style={styles.muted}>Loading your logbook…</Text>
+              <ContentState busy title="Opening your logbook" body="Loading your dives and totals." />
             ) : showFolderGrid ? (
               <>
                 <StatSummaryCard stats={stats} units={units} onPress={() => setView('stats')} />
@@ -4255,6 +4271,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
 
         {view === 'gallery' && (
           <PhotoGalleryView
+            signedIn={signedIn}
             key={galleryReloadKey}
             rows={rows}
             filter={filter}
@@ -4404,7 +4421,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
         {view === 'detail' && (
           record ? (
             <>
-              <DiveDetail dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} onRemovePhoto={handleRemovePhoto} chartColors={chartColors} focusPhotoId={focusPhotoId} profilePrefs={profilePrefs} onProfilePrefsChange={changeProfilePrefs} />
+              <DiveDetail signedIn={signedIn} dive={record} logs={logs} primaryLog={primaryLog} units={units} onShowLog={setShownLogId} onRemovePhoto={handleRemovePhoto} chartColors={chartColors} focusPhotoId={focusPhotoId} profilePrefs={profilePrefs} onProfilePrefsChange={changeProfilePrefs} />
               <View style={styles.detailActions}>
                 <SecondaryButton label="Edit" onPress={openEdit} style={styles.detailActionButton} />
                 <SecondaryButton label="Export" onPress={() => chooseExportFormat([record.id])} style={styles.detailActionButton} />
@@ -4413,7 +4430,7 @@ export default function DiveLogScreen({ appSettings = {}, onChangeSettings = () 
               </View>
             </>
           ) : (
-            <Text style={styles.muted}>Loading dive…</Text>
+            <ContentState busy title="Opening this dive" body="Loading its profile, photos and notes." />
           )
         )}
 
@@ -4500,7 +4517,9 @@ const styles = StyleSheet.create({
   photoViewerBar: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: spacing.lg, paddingTop: spacing.lg },
   photoViewerCount: { color: 'rgba(255,255,255,0.7)', fontSize: 13, fontWeight: '700' },
   photoViewerClose: { color: colors.cyan, fontSize: 15, fontWeight: '800' },
-  photoViewerPager: { flex: 1 },
+  photoViewerDone: { minHeight: 44, minWidth: 44, alignItems: 'center', justifyContent: 'center' },
+  photoViewerPager: { flex: 1, minHeight: 100 },
+  photoViewerFooter: { flexGrow: 0, maxHeight: '50%' },
   photoViewerPage: { alignItems: 'center', height: '100%', justifyContent: 'center' },
   photoViewerImage: { height: '100%', width: '100%' },
   photoViewerStatus: { alignItems: 'center', backgroundColor: 'rgba(4,18,27,0.92)', borderRadius: 16, gap: 10, left: spacing.xl, padding: spacing.lg, position: 'absolute', right: spacing.xl },
@@ -4517,7 +4536,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing.md,
   },
   photoViewerShareButton: { alignSelf: 'stretch' },
-  photoViewerRemove: { paddingHorizontal: spacing.md, paddingVertical: spacing.xs },
+  photoViewerRemove: { minHeight: 44, justifyContent: 'center', paddingHorizontal: spacing.md, paddingVertical: spacing.xs },
   photoViewerRemoveText: { color: colors.danger, fontSize: 12, fontWeight: '700' },
   photoViewerMeta: { gap: 4, paddingHorizontal: spacing.lg, paddingTop: spacing.md },
   galleryShareLoading: {
@@ -4657,8 +4676,9 @@ const styles = StyleSheet.create({
   diveRowBorder: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth },
   diveRowSelected: { backgroundColor: 'rgba(112,221,246,0.08)' },
   diveRowCopy: { flex: 1, minWidth: 0 },
-  diveRowTitle: { color: colors.text, fontSize: 14, fontWeight: '700' },
-  diveRowMetaLine: { alignItems: 'center', flexDirection: 'row', gap: 8, marginTop: 3 },
+  diveRowTitle: { color: colors.text, fontSize: 16, fontWeight: '700' },
+  diveRowDate: { color: colors.muted, fontSize: 13, marginTop: 4 },
+  diveRowMetaLine: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 6 },
   diveRowMeta: { color: colors.muted, fontSize: 12, fontWeight: '600', flexShrink: 1 },
   diveRowRating: { color: colors.gold, fontSize: 11 },
   diveRowChevron: { color: colors.faint, fontSize: 22, fontWeight: '300' },
@@ -4721,7 +4741,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     width: '100%',
   },
-  toolbarActions: { flexDirection: 'row', gap: 8 },
+  toolbarActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
   toolbarButton: {
     alignItems: 'center',
     backgroundColor: colors.surface,
@@ -4796,12 +4816,12 @@ const styles = StyleSheet.create({
   cancelButton: { marginTop: 10 },
 
   detailCard: { paddingTop: 14 },
-  detailCardHeader: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
-  detailCardTitle: { color: colors.text, fontSize: 15, fontWeight: '900' },
+  detailCardHeader: { alignItems: 'center', flexDirection: 'row', gap: 12, minHeight: 44, justifyContent: 'space-between', marginBottom: 6 },
+  detailCardTitle: { color: colors.text, fontSize: 16, fontWeight: '700', flex: 1 },
   detailCardChevron: { color: colors.faint, fontSize: 13, fontWeight: '900' },
   detailSubhead: { color: colors.faint, fontSize: 10, fontWeight: '900', letterSpacing: 0.7, marginTop: 12, textTransform: 'uppercase' },
   detailRow: { borderTopColor: colors.line, borderTopWidth: 1, flexDirection: 'row', gap: 12, justifyContent: 'space-between', paddingVertical: 9 },
-  detailRowLabel: { color: colors.muted, fontSize: 12, flexShrink: 0 },
+  detailRowLabel: { color: colors.muted, fontSize: 13, flex: 1 },
   detailRowValue: { color: colors.text, flex: 1, fontSize: 13, fontWeight: '700', textAlign: 'right' },
   detailNotes: { borderTopColor: colors.line, borderTopWidth: 1, color: colors.text, fontSize: 13, lineHeight: 20, marginTop: 4, paddingTop: 9 },
   detailSource: { color: colors.faint, fontSize: 11, marginBottom: 8, marginTop: 4, textAlign: 'center' },
@@ -4809,17 +4829,16 @@ const styles = StyleSheet.create({
   detailActionButton: { flexGrow: 1, minWidth: 100 },
   detailShownFrom: { color: colors.cyan, fontSize: 11, fontWeight: '700', marginBottom: 8 },
   shareButton: { marginBottom: 12 },
-  diveHero: { backgroundColor: '#0A2638', borderColor: 'rgba(112,221,246,.3)', padding: 18 },
+  diveHero: { backgroundColor: colors.surface, borderColor: colors.line, padding: 18 },
   diveHeroEyebrow: { color: colors.cyan, fontSize: 10, fontWeight: '900', letterSpacing: 1.5, marginBottom: 6 },
   diveHeroTitle: { color: colors.text, fontSize: 25, fontWeight: '900', letterSpacing: -0.5, lineHeight: 29 },
   diveHeroMeta: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 6 },
   profileMetric: { backgroundColor: 'rgba(2,10,18,.52)', borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexBasis: '46%', flexGrow: 1, minHeight: 66, paddingHorizontal: 11, paddingVertical: 10 },
-  profileMetricLabel: { color: colors.faint, fontSize: 9, fontWeight: '800', letterSpacing: 0.7, textTransform: 'uppercase' },
+  profileMetricLabel: { color: colors.muted, fontSize: 12, fontWeight: '600' },
   profileMetricValue: { fontSize: 16, fontWeight: '900', marginTop: 4 },
-  // At-a-glance row under the profile chart: 3 tiles per line on typical
-  // phone widths, reflowing to 2 on narrower ones via flexGrow.
+  // Two readable columns; tiles wrap as the available width shrinks.
   keyStats: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 12 },
-  keyStat: { flexBasis: '30%', minHeight: 60 },
+  keyStat: { flexBasis: '46%', minWidth: 120, minHeight: 74 },
   // The per-computer rows override this colour to match their trace; the
   // hand-entered cylinder headings rely on the default.
   airFrom: { color: colors.muted, fontSize: 11, fontWeight: '800', marginTop: 8 },

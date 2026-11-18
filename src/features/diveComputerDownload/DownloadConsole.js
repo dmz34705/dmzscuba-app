@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { colors, radii } from '../../theme';
@@ -26,30 +26,23 @@ function stamp(t) {
  */
 export default function DownloadConsole({ log = [], onClear }) {
   const scrollRef = useRef(null);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     // stick to the bottom as new lines land
     const id = setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 30);
     return () => clearTimeout(id);
-  }, [log.length]);
+  }, [log.length, expanded]);
 
   if (!log.length) return null;
 
   return (
     <View style={styles.wrap}>
-      <View style={styles.header}>
-        <View style={styles.dots}>
-          <View style={[styles.dot, { backgroundColor: '#FF5F56' }]} />
-          <View style={[styles.dot, { backgroundColor: '#FFBD2E' }]} />
-          <View style={[styles.dot, { backgroundColor: '#27C93F' }]} />
-        </View>
-        <Text style={styles.headerLabel}>transfer log</Text>
-        {onClear ? (
-          <Pressable onPress={onClear} hitSlop={8}>
-            <Text style={styles.clear}>clear</Text>
-          </Pressable>
-        ) : null}
-      </View>
+      <Pressable accessibilityRole="button" accessibilityState={{ expanded }} onPress={() => setExpanded(!expanded)} style={styles.header}>
+        <Text style={styles.headerLabel}>Transfer details</Text>
+        <Text style={styles.clear}>{expanded ? 'Hide −' : 'Show +'}</Text>
+      </Pressable>
+      {expanded ? <>
       <ScrollView
         ref={scrollRef}
         style={styles.body}
@@ -63,6 +56,8 @@ export default function DownloadConsole({ log = [], onClear }) {
           </Text>
         ))}
       </ScrollView>
+      {onClear ? <Pressable accessibilityRole="button" onPress={onClear} style={styles.clearButton}><Text style={styles.clear}>Clear details</Text></Pressable> : null}
+      </> : null}
     </View>
   );
 }
@@ -84,19 +79,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 10,
     paddingHorizontal: 12,
-    paddingVertical: 7,
+    minHeight: 44,
+    paddingVertical: 10,
   },
   dots: { flexDirection: 'row', gap: 5 },
   dot: { borderRadius: 4, height: 8, width: 8 },
   headerLabel: {
-    color: '#5B7488',
+    color: colors.muted,
     flex: 1,
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: '700',
-    letterSpacing: 1.5,
-    textTransform: 'uppercase',
+    letterSpacing: 0.2,
   },
-  clear: { color: '#5B7488', fontSize: 11, fontWeight: '700' },
+  clear: { color: colors.cyan, fontSize: 12, fontWeight: '600' },
+  clearButton: { alignItems: 'center', justifyContent: 'center', minHeight: 44, borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: colors.line },
   body: { maxHeight: 190 },
   bodyContent: { padding: 11 },
   line: {
@@ -104,5 +100,5 @@ const styles = StyleSheet.create({
     fontSize: 11,
     lineHeight: 17,
   },
-  time: { color: '#3E5061' },
+  time: { color: colors.muted },
 });

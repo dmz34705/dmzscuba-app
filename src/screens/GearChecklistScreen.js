@@ -20,6 +20,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ChoiceGroup, FormError, FormField as AccountFormField } from '../components/AccountForm';
 import { ScreenHeader } from '../components/AppShell';
+import { ContentState, StatusBanner } from '../components/ScreenLayout';
 import DateField from '../components/DateField';
 import { Card, PrimaryButton, ProgressBar, SecondaryButton, Stat } from '../components/Ui';
 import {
@@ -112,13 +113,7 @@ function TinyAction({ label, onPress, danger = false }) {
 }
 
 function EmptyState({ title, body, action, onPress }) {
-  return (
-    <Card style={styles.emptyCard}>
-      <Text style={styles.emptyTitle}>{title}</Text>
-      <Text style={styles.emptyBody}>{body}</Text>
-      {action ? <SecondaryButton label={action} onPress={onPress} style={styles.emptyAction} /> : null}
-    </Card>
-  );
+  return <ContentState title={title} body={body} action={action} onAction={onPress} />;
 }
 
 function ServiceBadge({ item, items, includeParts = false }) {
@@ -154,15 +149,15 @@ function GearRow({ item, items, setups, onPress, last = false }) {
       <View style={styles.categoryGlyph}><Text style={styles.categoryGlyphText}>{item.category.slice(0, 2).toUpperCase()}</Text></View>
       <View style={styles.gearRowCopy}>
         <View style={styles.gearTitleRow}>
-          <Text numberOfLines={1} style={styles.gearName}>{item.name}</Text>
+          <Text style={styles.gearName}>{item.name}</Text>
           {item.quantity && item.quantity !== '1' ? <Text style={styles.quantity}>×{item.quantity}</Text> : null}
         </View>
-        <Text numberOfLines={1} style={styles.gearMeta}>{[item.manufacturer, item.model, item.category, item.configuration].filter(Boolean).join(' · ')}</Text>
+        <Text style={styles.gearMeta}>{[item.manufacturer, item.model, item.category, item.configuration].filter(Boolean).join(' · ')}</Text>
         {item.components?.length ? <Text style={styles.componentCount}>{item.components.length} TRACKED PARTS</Text> : null}
         {isCylinderSet(item) ? <Text style={styles.componentCount}>{(item.accessoryItemIds || []).length} LINKED CYLINDERS</Text> : null}
         <WhereLine item={item} items={items} setups={setups} />
         <ServiceBadge item={item} items={items} includeParts />
-        {memberships.length ? <Text numberOfLines={1} style={styles.listMembership}>{memberships.map((setup) => setup.name).join('  ·  ')}</Text> : null}
+        {memberships.length ? <Text style={styles.listMembership}>{memberships.map((setup) => setup.name).join('  ·  ')}</Text> : null}
       </View>
       <Text style={styles.chevron}>›</Text>
     </Pressable>
@@ -189,10 +184,10 @@ function CompactGearRow({ item, items, onPress, last = false }) {
     <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={onPress} style={({ pressed }) => [styles.compactRow, !last && styles.rowBorder, pressed && styles.rowPressed]}>
       <View style={styles.gearRowCopy}>
         <View style={styles.gearTitleRow}>
-          <Text numberOfLines={1} style={styles.compactName}>{item.name}</Text>
+          <Text style={styles.compactName}>{item.name}</Text>
           {item.quantity && item.quantity !== '1' ? <Text style={styles.quantity}>×{item.quantity}</Text> : null}
         </View>
-        {meta ? <Text numberOfLines={1} style={styles.gearMeta}>{meta}</Text> : null}
+        {meta ? <Text style={styles.gearMeta}>{meta}</Text> : null}
         {ATTENTION_STATUSES.includes(status.key) ? <ServiceBadge item={item} items={items} includeParts /> : null}
       </View>
       <Text style={styles.chevron}>›</Text>
@@ -394,7 +389,7 @@ function ServiceHome({ state, onOpen }) {
           <Text style={styles.alertText}>{groups.urgent.length} {groups.urgent.length === 1 ? 'item needs' : 'items need'} service or attention.</Text>
         </View>
       ) : (
-        <View style={styles.goodBanner}><Text style={styles.goodLabel}>NO ACTIVE SERVICE ALERTS</Text><Text style={styles.alertText}>Nothing recorded is due within the next 30 days.</Text></View>
+        <StatusBanner label="Service dates checked" body="No recorded service dates are due within 30 days. Items without dates are listed below." tone="success" />
       )}
       {[
         ['Needs attention', groups.urgent],
@@ -1033,7 +1028,7 @@ function SetupDetail({ setup, baseSetup = setup, items, setups = [], packingFor 
                 return (
                   <View key={item.id} style={[styles.floatRow, index < list.length - 1 && styles.rowBorder]}>
                     <View style={styles.gearRowCopy}>
-                      <Text numberOfLines={1} style={styles.selectTitle}>{item.name}</Text>
+                      <Text style={styles.selectTitle}>{item.name}</Text>
                       <Text style={[styles.floatStatus, { color: here ? colors.good : where ? colors.warning : colors.faint }]}>{here ? '✓ On this setup' : where ? `On ${where.name} — move it before you pack` : 'Not on a setup'}</Text>
                     </View>
                     {!here ? <TinyAction label="MOVE HERE" onPress={() => onMoveFloating(item.id, setup.id)} /> : null}
@@ -1118,8 +1113,8 @@ function AccessoryRow({ item, last, onPress }) {
     <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={onPress} style={({ pressed }) => [styles.gearRow, !last && styles.rowBorder, pressed && styles.rowPressed]}>
       <View style={styles.categoryGlyph}><Text style={styles.categoryGlyphText}>{item.category.slice(0, 2).toUpperCase()}</Text></View>
       <View style={styles.gearRowCopy}>
-        <Text numberOfLines={1} style={styles.gearName}>{item.name}</Text>
-        <Text numberOfLines={1} style={styles.gearMeta}>{[item.manufacturer, item.model, item.category].filter(Boolean).join(' · ')}</Text>
+        <Text style={styles.gearName}>{item.name}</Text>
+        <Text style={styles.gearMeta}>{[item.manufacturer, item.model, item.category].filter(Boolean).join(' · ')}</Text>
         <ServiceBadge item={item} />
       </View>
       <Text style={styles.chevron}>›</Text>
@@ -1403,14 +1398,14 @@ export default function GearChecklistScreen({ onBack, onOpenComputerDives, appSe
       <ScreenHeader eyebrow="DIVE WORKBENCH" title="Gear Locker" onBack={onBack} />
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Text style={styles.pageTitle}>Your gear. Your dive.</Text>
-        <Text style={styles.pageBody}>Track complete gear, its individual parts, service needs, and reusable dive setups—all stored privately on this device.</Text>
+        <Text style={styles.pageBody}>Keep your equipment, service dates and dive setups ready for the next trip.</Text>
         <View style={styles.tabs}>
           <SecondaryButton label="Inventory" onPress={() => setTab('inventory')} selected={tab === 'inventory'} style={styles.tab} />
           <SecondaryButton label="Setups" onPress={() => setTab('setups')} selected={tab === 'setups'} style={styles.tab} />
           <SecondaryButton label="Service" onPress={() => setTab('service')} selected={tab === 'service'} style={styles.tab} />
         </View>
         <FormError message={gear.error} />
-        {!gear.loaded ? <Text style={styles.loading}>Opening your gear locker…</Text> : null}
+        {!gear.loaded ? <ContentState busy title="Opening your gear locker" body="Loading equipment, setups and service dates." /> : null}
         {gear.loaded && tab === 'inventory' ? <InventoryHome state={gear.state} appSettings={appSettings} onAdd={() => setRoute({ name: 'add-gear-wizard' })} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
         {gear.loaded && tab === 'setups' ? <SetupsHome packingFor={packing.nextFor} state={gear.state} onAdd={() => setRoute({ name: 'setup-form' })} onOpen={(setup) => setRoute({ name: 'setup', setupId: setup.id })} /> : null}
         {gear.loaded && tab === 'service' ? <ServiceHome state={gear.state} onOpen={(item) => setRoute({ name: 'gear-detail', itemId: item.id })} /> : null}
@@ -1428,23 +1423,23 @@ const styles = StyleSheet.create({
   setupPickerFooter: { backgroundColor: colors.surfaceGlass, borderTopColor: colors.lineStrong, borderTopWidth: StyleSheet.hairlineWidth, paddingHorizontal: spacing.md, paddingTop: spacing.sm },
   formTabsScroll: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexGrow: 0 },
   formTabs: { gap: 7, paddingHorizontal: spacing.md, paddingVertical: 10 },
-  formTab: { minHeight: 38, paddingHorizontal: 13, paddingVertical: 8 },
+  formTab: { minHeight: 44, paddingHorizontal: 13, paddingVertical: 8 },
   formTabsRow: { flexDirection: 'row', gap: 7 },
   formTabPhone: { flex: 1, minWidth: 0, minHeight: 44, paddingHorizontal: 4, paddingVertical: 8 },
   footer: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, gap: 10, padding: spacing.md },
   pageTitle: { color: colors.text, fontSize: 29, fontWeight: '900', letterSpacing: -0.7, lineHeight: 34 },
   pageBody: { color: colors.muted, fontSize: 14, lineHeight: 21, marginBottom: 16, marginTop: 6 },
-  tabs: { flexDirection: 'row', gap: 7, marginBottom: 14 },
-  tab: { flex: 1, minHeight: 42, paddingHorizontal: 7 },
+  tabs: { flexDirection: 'row', flexWrap: 'wrap', gap: 7, marginBottom: 14 },
+  tab: { flex: 1, minWidth: 90, minHeight: 44, paddingHorizontal: 7 },
   loading: { color: colors.muted, fontSize: 13, paddingVertical: 30, textAlign: 'center' },
   statGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginBottom: 12 },
   stat: { flexBasis: '47%', flexGrow: 1 },
   filters: { gap: 7, paddingVertical: 13 },
-  filter: { minHeight: 38, paddingHorizontal: 11, paddingVertical: 7 },
+  filter: { minHeight: 44, paddingHorizontal: 11, paddingVertical: 7 },
   inventoryControls: { flexDirection: 'row', gap: 8, marginTop: 10 },
   viewSwitchRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
   viewSwitch: { backgroundColor: colors.backgroundRaised, borderColor: colors.line, borderRadius: radii.pill, borderWidth: 1, flexDirection: 'row', padding: 3 },
-  viewSwitchOption: { alignItems: 'center', borderRadius: radii.pill, justifyContent: 'center', minHeight: 32, paddingHorizontal: 16 },
+  viewSwitchOption: { alignItems: 'center', borderRadius: radii.pill, justifyContent: 'center', minHeight: 44, paddingHorizontal: 16 },
   viewSwitchOn: { backgroundColor: colors.surfaceSoft },
   viewSwitchText: { color: colors.faint, fontSize: 12, fontWeight: '800' },
   viewSwitchTextOn: { color: colors.text },
@@ -1462,7 +1457,7 @@ const styles = StyleSheet.create({
   inventoryControl: { flex: 1, minHeight: 40, paddingHorizontal: 9 },
   inventoryPanel: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, marginTop: 9, padding: 12, paddingBottom: 2 },
   sectionRow: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8, marginTop: 18 },
-  sectionTitle: { color: colors.text, fontSize: 16, fontWeight: '900' },
+  sectionTitle: { color: colors.text, fontSize: 16, fontWeight: '700', flexShrink: 1 },
   sectionMeta: { color: colors.faint, fontSize: 9, fontWeight: '900', letterSpacing: 1 },
   rowGroup: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, overflow: 'hidden' },
   gearRow: { alignItems: 'center', flexDirection: 'row', gap: 11, minHeight: 92, padding: 11 },
@@ -1512,7 +1507,7 @@ const styles = StyleSheet.create({
   floatNow: { color: colors.text, fontSize: 16, fontWeight: '800' },
   floatBody: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 4 },
   floatActions: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
-  floatButton: { minHeight: 38, paddingHorizontal: 12 },
+  floatButton: { minHeight: 44, paddingHorizontal: 12 },
   floatRow: { alignItems: 'center', flexDirection: 'row', gap: 10, minHeight: 60, paddingHorizontal: 12, paddingVertical: 10 },
   floatStatus: { fontSize: 11, fontWeight: '700', marginTop: 3 },
   componentCount: { color: colors.gold, fontSize: 8, fontWeight: '900', letterSpacing: 0.7, marginTop: 4 },
@@ -1578,7 +1573,7 @@ const styles = StyleSheet.create({
   attachmentCopy: { flex: 1 },
   attachmentName: { color: colors.text, fontSize: 12, fontWeight: '800' },
   attachmentMeta: { color: colors.faint, fontSize: 8, fontWeight: '800', marginTop: 3 },
-  tinyAction: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, justifyContent: 'center', minHeight: 32, paddingHorizontal: 10 },
+  tinyAction: { alignItems: 'center', borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, justifyContent: 'center', minHeight: 44, paddingHorizontal: 10 },
   tinyDanger: { borderColor: 'rgba(255,127,127,0.35)' },
   tinyActionText: { color: colors.cyan, fontSize: 9, fontWeight: '900', letterSpacing: 0.5 },
   dangerText: { color: colors.danger },

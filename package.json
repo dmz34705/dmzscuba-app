@@ -57,7 +57,7 @@
     "test:keyboard": "node scripts/verify-number-keyboard.cjs",
     "test:calculator": "node scripts/verify-dive-calculator.cjs",
     "test:integration": "node scripts/verify-demo-integration.cjs",
-    "test:lens": "node scripts/verify-dive-lens.cjs",
+    "test:lens": "node scripts/verify-lens-photo.cjs && node scripts/verify-dive-lens.cjs",
     "test:tanks": "node scripts/verify-tank-profiles.cjs",
     "web": "expo start --web",
     "test:physics": "node scripts/verify-dive-physics.cjs",
@@ -104,7 +104,9 @@
     "preview": "npx expo export -p web && wrangler dev",
     "research:fates": "node scripts/scan-wikipedia-fates.cjs",
     "research:process": "node scripts/process-site-research.cjs",
-    "verify:release": "node scripts/verify-release.cjs"
+    "verify:release": "node scripts/verify-release.cjs",
+    "host:dev": "node scripts/host-dev-server.cjs",
+    "test:dev-host": "node scripts/verify-dev-host.cjs"
   },
   "private": true,
   "devDependencies": {

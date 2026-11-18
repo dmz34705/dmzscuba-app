@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ScreenHeader } from '../components/AppShell';
+import { ContentState } from '../components/ScreenLayout';
+import useKeyboardOverlap from '../components/useKeyboardOverlap';
 import DateField from '../components/DateField';
 import { ProgressBar } from '../components/Ui';
 import { GEAR_CATEGORIES, checklistEntriesForItem, includedWithSelection, setupProgress, sortGear } from '../features/gearChecklist/model';
@@ -427,6 +429,7 @@ function DiveBriefCard({ brief, plan, units, onConfigure }) {
 // them from the plan; the setup itself is never changed.
 function ExtraGearPicker({ visible, setup, items, value, onSave, onClose }) {
   const insets = useSafeAreaInsets();
+  const keyboardOverlap = useKeyboardOverlap();
   const [chosen, setChosen] = useState(new Set(value));
   const [query, setQuery] = useState('');
   useEffect(() => { if (visible) { setChosen(new Set(value)); setQuery(''); } }, [visible]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -442,11 +445,11 @@ function ExtraGearPicker({ visible, setup, items, value, onSave, onClose }) {
   const toggle = (id) => setChosen((current) => { const next = new Set(current); if (next.has(id)) next.delete(id); else next.add(id); return next; });
   return (
     <Modal animationType="fade" onRequestClose={onClose} transparent visible={visible}>
-      <Pressable onPress={onClose} style={styles.backdrop}>
-        <Pressable onPress={(e) => e.stopPropagation()} style={[styles.pickerSheet, styles.extraSheet, { paddingBottom: insets.bottom + spacing.md }]}>
+      <Pressable onPress={onClose} style={[styles.backdrop, { paddingBottom: keyboardOverlap }]}>
+        <Pressable onPress={(e) => e.stopPropagation()} style={[styles.pickerSheet, styles.extraSheet, { paddingBottom: (keyboardOverlap ? 0 : insets.bottom) + spacing.md }]}>
           <Text style={styles.pickerTitle}>Extra gear for this trip</Text>
           <Text style={styles.kindBody}>From your Gear Locker, on top of {setup?.name || 'your setup'}. The setup itself stays as it is.</Text>
-          <TextInput accessibilityLabel="Search your gear" autoCorrect={false} onChangeText={setQuery} placeholder="Search tanks, lights, test kit…" placeholderTextColor={colors.faint} style={styles.taskInput} value={query} />
+          <TextInput accessibilityLabel="Search gear" accessibilityLabel="Search your gear" autoCorrect={false} onChangeText={setQuery} placeholder="Search tanks, lights, test kit…" placeholderTextColor={colors.faint} style={styles.taskInput} value={query} />
           <ScrollView keyboardShouldPersistTaps="handled" style={[styles.pickerList, styles.extraList]}>
             {groups.map((group) => (
               <View key={group.category}>
@@ -938,7 +941,7 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
           ))}
         </View>
 
-        {!planner.loaded ? <Text style={styles.empty}>Loading your plans…</Text> : null}
+        {!planner.loaded ? <ContentState busy title="Loading your plans" body="Bringing together your itinerary and dive preparation." /> : null}
         {planner.error ? <Text style={[styles.empty, { color: colors.danger }]}>{planner.error}</Text> : null}
 
         {next ? <NextUp alerts={planner.alertsFor(next)} onPress={() => openPlan(next.id)} plan={next} /> : null}
@@ -946,7 +949,7 @@ export default function PlannerScreen({ account = null, signedIn = false, focusP
         {planner.loaded && !next ? (
           <View style={styles.emptyCard}>
             <Text style={styles.emptyTitle}>{filter === 'trip' ? 'No trips planned' : filter === 'day' ? 'No dive days planned' : 'Nothing planned yet'}</Text>
-            <Text style={styles.emptyBody}>Add a dive day or a trip. The planner checks it against your gear service dates, certification cards, logbook and travel times, and flags anything to sort out before you go.</Text>
+            <Text style={styles.emptyBody}>Start with a dive day or trip. Bring your itinerary, gear and preparation together in one place.</Text>
             <View style={styles.emptyActions}>
               {filter !== 'trip' ? <Pressable accessibilityRole="button" onPress={() => startNew('day')} style={({ pressed }) => [styles.emptyButton, pressed && styles.pressed]}><Glyph name="diving" /><Text style={styles.emptyButtonText}>Plan a dive day</Text></Pressable> : null}
               {filter !== 'day' ? <Pressable accessibilityRole="button" onPress={() => startNew('trip')} style={({ pressed }) => [styles.emptyButton, pressed && styles.pressed]}><Glyph color={colors.gold} name="flight" /><Text style={styles.emptyButtonText}>Plan a trip</Text></Pressable> : null}
@@ -978,19 +981,19 @@ const styles = StyleSheet.create({
   flex: { flex: 1, minWidth: 0 },
   pressed: { opacity: 0.8, transform: [{ scale: 0.99 }] },
   disabled: { opacity: 0.4 },
-  addButton: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, height: 40, justifyContent: 'center', width: 40 },
+  addButton: { alignItems: 'center', backgroundColor: colors.surface, borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, minHeight: 44, justifyContent: 'center', minWidth: 44 },
   addButtonText: { color: colors.cyan, fontSize: 24, fontWeight: '500', lineHeight: 26 },
-  headerButton: { alignItems: 'center', height: 40, justifyContent: 'center', minWidth: 40 },
+  headerButton: { alignItems: 'center', minHeight: 44, justifyContent: 'center', minWidth: 40 },
   headerActions: { alignItems: 'center', flexDirection: 'row', gap: 8 },
   headerButtonText: { color: colors.cyan, fontSize: 15, fontWeight: '800' },
   headerShareText: { color: colors.gold, fontSize: 15, fontWeight: '800' },
   filters: { backgroundColor: colors.backgroundRaised, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', marginBottom: spacing.md, padding: 4 },
-  filter: { alignItems: 'center', borderRadius: 12, flex: 1, minHeight: 38, justifyContent: 'center' },
+  filter: { alignItems: 'center', borderRadius: 12, flex: 1, minHeight: 44, justifyContent: 'center' },
   filterOn: { backgroundColor: colors.surfaceSoft },
   filterText: { color: colors.faint, fontSize: 13, fontWeight: '700' },
   filterTextOn: { color: colors.text },
   hero: { borderColor: colors.lineStrong, borderRadius: radii.lg, borderWidth: 1, marginBottom: spacing.lg, padding: spacing.md + 2 },
-  heroTop: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 },
+  heroTop: { alignItems: 'center', flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'space-between', marginBottom: 10 },
   heroEyebrow: { fontSize: 10, fontWeight: '900', letterSpacing: 1.6 },
   heroCountdown: { color: colors.text, fontSize: 13, fontWeight: '800' },
   heroTitle: { color: colors.text, fontSize: 26, fontWeight: '900', letterSpacing: -0.5, lineHeight: 31 },
@@ -1002,14 +1005,14 @@ const styles = StyleSheet.create({
   pillText: { fontSize: 10, fontWeight: '900', letterSpacing: 1 },
   section: { marginBottom: spacing.lg },
   sectionHead: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', marginBottom: 9, paddingHorizontal: 2 },
-  sectionTitle: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 1, textTransform: 'uppercase' },
+  sectionTitle: { color: colors.muted, fontSize: 14, fontWeight: '600', flexShrink: 1 },
   sectionAction: { color: colors.cyan, fontSize: 13, fontWeight: '800' },
   card: { backgroundColor: colors.surface, borderColor: colors.line, borderRadius: radii.md, borderWidth: 1, overflow: 'hidden' },
   cardPad: { padding: spacing.md, paddingBottom: 2 },
   row: { flexDirection: 'row', gap: 12, minHeight: 50, paddingHorizontal: 14, paddingVertical: 13 },
   rowBorder: { borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth },
   rowPressed: { backgroundColor: colors.surfaceSoft },
-  rowLabel: { color: colors.muted, fontSize: 13, fontWeight: '600', width: 104 },
+  rowLabel: { color: colors.muted, fontSize: 13, fontWeight: '600', flex: 1 },
   rowValue: { color: colors.text, flex: 1, fontSize: 14, fontWeight: '600', lineHeight: 20, textAlign: 'right' },
   link: { color: colors.cyan },
   planRow: { alignItems: 'center', flexDirection: 'row', gap: 13, minHeight: 78, paddingHorizontal: 13, paddingVertical: 12 },
@@ -1125,7 +1128,7 @@ const styles = StyleSheet.create({
   emptyBody: { color: colors.muted, fontSize: 14, lineHeight: 21, marginTop: 8 },
   emptyActions: { gap: 10, marginTop: spacing.md },
   emptyButton: { alignItems: 'center', backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, flexDirection: 'row', gap: 10, minHeight: 52, paddingHorizontal: 14 },
-  emptyButtonText: { color: colors.text, fontSize: 15, fontWeight: '800' },
+  emptyButtonText: { color: colors.text, fontSize: 15, fontWeight: '700', flex: 1 },
   dived: { alignItems: 'center', borderColor: 'rgba(112,226,163,0.4)', flexDirection: 'row', gap: 12, padding: 14 },
   divedBadge: { alignItems: 'center', backgroundColor: colors.good, borderRadius: 18, height: 36, justifyContent: 'center', width: 36 },
   divedTitle: { color: colors.text, fontSize: 16, fontWeight: '800' },

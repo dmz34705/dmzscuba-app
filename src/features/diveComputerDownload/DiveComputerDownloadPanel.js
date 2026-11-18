@@ -22,6 +22,33 @@ const SUUNTO_PAIRING_HINT =
   + 'still says "connection refused", remove the existing pairing on the computer and in iPhone '
   + 'Settings → Bluetooth.';
 
+function ConnectionHelp({ suunto }) {
+  const [expanded, setExpanded] = useState(false);
+  return <View style={styles.help}>
+    <Pressable accessibilityRole="button" accessibilityState={{ expanded }} onPress={() => setExpanded(!expanded)} style={styles.disclosure}>
+      <Text style={styles.linkText}>{suunto ? 'Suunto pairing help' : 'Having trouble connecting?'}</Text>
+      <Text style={styles.linkText}>{expanded ? '−' : '+'}</Text>
+    </Pressable>
+    {expanded ? <Text style={styles.body}>{suunto ? SUUNTO_PAIRING_HINT : 'Keep your computer awake in Bluetooth or upload mode and close other apps connected to it. Keep it near your phone, then scan again.'}</Text> : null}
+  </View>;
+}
+
+function DownloadError({ message }) {
+  const [expanded, setExpanded] = useState(false);
+  const nativeError = /Exception|BridgeModule|Download failed \(-?\d+\)/i.test(message);
+  const timeout = /\(-7\)|timed?\s*out|timeout/i.test(message);
+  return <View accessibilityLiveRegion="polite" style={styles.error}>
+    <Text style={styles.errorTitle}>{timeout ? 'The computer didn’t respond' : 'Download needs attention'}</Text>
+    <Text style={styles.errorBody}>{timeout ? 'Keep your computer awake and nearby. Close any other app connected to it, then try again.' : nativeError ? 'The transfer couldn’t finish. Check the connection and try again. Details are available below.' : message}</Text>
+    {nativeError || timeout ? <>
+      <Pressable accessibilityRole="button" accessibilityState={{ expanded }} onPress={() => setExpanded(!expanded)} style={styles.disclosure}>
+        <Text style={styles.errorDetailLabel}>{expanded ? 'Hide technical details' : 'Technical details'}</Text>
+      </Pressable>
+      {expanded ? <Text selectable style={styles.errorBody}>{message}</Text> : null}
+    </> : null}
+  </View>;
+}
+
 function SignalDots({ rssi }) {
   if (rssi == null) return null;
   const bars = rssi > -60 ? 3 : rssi > -75 ? 2 : 1;
@@ -68,19 +95,22 @@ function DeviceRow({ device, onConnect, disabled }) {
 // (rather than a separate prompt) means it's available both as a standing
 // manual action and right after a download finishes, since this component
 // renders in both places already.
-function DownloadActions({ onDisconnect, download, connectedDevice, timeSync, onSyncClock }) {
+function DownloadActions({ onDisconnect, download, connectedDevice, timeSync, onSyncClock, baselineKnown }) {
   const syncingClock = timeSync?.status === 'running';
+  const [recoveryOpen, setRecoveryOpen] = useState(false);
   return (
     <>
       <View style={styles.doneActions}>
         <PrimaryButton
-          label="Sync new dives"
-          onPress={() => download({ incremental: true })}
+          label={baselineKnown ? 'Sync new dives' : 'Full re-download'}
+          onPress={() => download({ incremental: !!baselineKnown })}
+          disabled={syncingClock}
           style={styles.flexButton}
         />
         <SecondaryButton
-          label="Full re-download"
-          onPress={() => download()}
+          label={baselineKnown ? 'Full re-download' : 'Sync new dives'}
+          onPress={() => baselineKnown ? download() : download({ incremental: true })}
+          disabled={syncingClock}
           style={styles.flexButton}
         />
       </View>
@@ -99,10 +129,11 @@ function DownloadActions({ onDisconnect, download, connectedDevice, timeSync, on
           ) : null}
         </>
       ) : null}
-      <SecondaryButton label="Disconnect" onPress={onDisconnect} style={styles.backButton} />
-      <Pressable onPress={() => download({ force: true })} hitSlop={8} style={styles.linkRow}>
-        <Text style={styles.linkText}>Re-import every dive (ignore what's already saved)</Text>
+      <SecondaryButton label="Disconnect" disabled={syncingClock} onPress={onDisconnect} style={styles.backButton} />
+      <Pressable accessibilityRole="button" accessibilityState={{ expanded: recoveryOpen }} onPress={() => setRecoveryOpen(!recoveryOpen)} style={styles.disclosure}>
+        <Text style={styles.linkText}>Recovery options</Text><Text style={styles.linkText}>{recoveryOpen ? '−' : '+'}</Text>
       </Pressable>
+      {recoveryOpen ? <SecondaryButton label="Re-import every dive (ignore what's already saved)" onPress={() => download({ force: true })} /> : null}
     </>
   );
 }
@@ -274,21 +305,20 @@ export default function DiveComputerDownloadPanel({ onClose, gas = null, onGasDo
   const connecting = status === 'connecting';
   const downloading = status === 'downloading';
   const pct = progress && progress.maximum > 0 ? progress.current / progress.maximum : 0;
-  const showSuuntoHint = !downloading && status !== 'done'
-    && (devices.some((d) => looksLikeSuunto(d.name)) || looksLikeSuunto(connectedDevice?.name));
+  const showSuuntoHint = connectedDevice
+    ? looksLikeSuunto(connectedDevice.name)
+    : devices.some((d) => looksLikeSuunto(d.name));
 
   return (
     <Card style={styles.card}>
       <Text style={styles.title}>{gas ? 'Send gas to dive computer' : 'Download from dive computer'}</Text>
-      <Text style={styles.body}>
+      {!connectedDevice ? <Text style={styles.body}>
         {gas
           ? 'Wake your dive computer and put it in Bluetooth mode, then scan and pick it.'
-          : 'Wake your dive computer and put it in Bluetooth / upload mode, then scan. You can leave this screen while it downloads — the transfer keeps running.'}
-      </Text>
+          : 'Put your dive computer in Bluetooth or upload mode, then scan to connect.'}
+      </Text> : null}
 
-      {status === 'error' && error ? <Text style={styles.error}>{error}</Text> : null}
-
-      {showSuuntoHint ? <Text style={styles.suuntoHint}>{SUUNTO_PAIRING_HINT}</Text> : null}
+      {status === 'error' && error ? <DownloadError key={error} message={error} /> : null}
 
       {gas && !connectedDevice && gasSync?.status === 'done' && gasSync.o2 === gasPercent(gas.o2) ? (
         <View style={styles.connectedBox}>
@@ -326,6 +356,7 @@ export default function DiveComputerDownloadPanel({ onClose, gas = null, onGasDo
             </>
           ) : status === 'done' ? (
             <>
+              <Text accessibilityRole="header" style={[styles.title, { color: colors.good, marginTop: 12 }]}>Download complete</Text>
               <Text style={styles.body}>
                 {summary
                   ? `Read ${summary.downloaded} ${summary.downloaded === 1 ? 'dive' : 'dives'} — `
@@ -334,18 +365,17 @@ export default function DiveComputerDownloadPanel({ onClose, gas = null, onGasDo
                     + '. Any matches with another computer are on the next screen.'
                   : 'No dives read.'}
               </Text>
-              <DownloadActions onDisconnect={disconnect} download={download} connectedDevice={connectedDevice} timeSync={timeSync} onSyncClock={syncClock} />
+              <PrimaryButton label="Review logbook" onPress={onClose} style={styles.backButton} />
+              <SecondaryButton label="Disconnect computer" onPress={disconnect} style={styles.backButton} />
             </>
           ) : (
             <>
               <Text style={styles.body}>
                 {baselineKnown
-                  ? '“Sync new dives” pulls only dives that aren’t already in your logbook. '
-                    + '“Full re-download” reads everything (use it to get back a dive you deleted here).'
-                  : 'First time: “Full re-download” reads every dive on the computer — with a large log '
-                    + 'this can take a while. After that, “Sync new dives” is quick.'}
+                  ? 'Sync recent dives, or read the full history to recover older or deleted dives.'
+                  : 'First import? Choose Full re-download to read the complete history.'}
               </Text>
-              <DownloadActions onDisconnect={disconnect} download={download} connectedDevice={connectedDevice} timeSync={timeSync} onSyncClock={syncClock} />
+              <DownloadActions baselineKnown={baselineKnown} onDisconnect={disconnect} download={download} connectedDevice={connectedDevice} timeSync={timeSync} onSyncClock={syncClock} />
             </>
           )}
           {SHOW_PROTOCOL_TOOLS && looksLikeSuunto(connectedDevice.name) && !downloading ? (
@@ -386,6 +416,7 @@ export default function DiveComputerDownloadPanel({ onClose, gas = null, onGasDo
         </>
       )}
 
+      {!downloading && status !== 'done' ? <ConnectionHelp key={connectedDevice?.id || 'scan'} suunto={showSuuntoHint} /> : null}
       <DownloadConsole log={log} onClear={clearLog} />
     </Card>
   );
@@ -393,12 +424,17 @@ export default function DiveComputerDownloadPanel({ onClose, gas = null, onGasDo
 
 const styles = StyleSheet.create({
   card: {},
-  title: { color: colors.text, fontSize: 16, fontWeight: '900' },
-  body: { color: colors.muted, fontSize: 13, lineHeight: 19, marginTop: 6 },
+  title: { color: colors.text, fontSize: 18, fontWeight: '700' },
+  body: { color: colors.muted, fontSize: 14, lineHeight: 21, marginTop: 8 },
   scanButton: { marginTop: 14 },
   backButton: { marginTop: 12 },
   flexButton: { flex: 1 },
-  doneActions: { flexDirection: 'row', gap: 9, marginTop: 12 },
+  doneActions: { gap: 10, marginTop: 16 },
+  help: { borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, marginTop: 16 },
+  disclosure: { alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', minHeight: 44, gap: 8 },
+  errorTitle: { color: colors.danger, fontSize: 15, fontWeight: '700' },
+  errorBody: { color: colors.text, fontSize: 13, lineHeight: 20, marginTop: 6 },
+  errorDetailLabel: { color: colors.danger, fontSize: 13, fontWeight: '600' },
   linkRow: { marginTop: 10, alignItems: 'center' },
   linkText: { color: colors.cyan, fontSize: 12, fontWeight: '700' },
   error: {

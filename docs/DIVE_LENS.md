@@ -1,8 +1,22 @@
 # Dive Lens structured profiles
 
+## Gemini reliability update — November 16, 2026
+
+The Worker routes Dive Lens to Gemini independently of the local itinerary
+provider. Deployment `72acad42-3c42-47a5-ab69-2bd074ec5ed4` extends the Gemini
+deadline to 55 seconds (including response-body reading) and requests low
+thinking for Gemini 3 models. The app retains its 70-second network deadline.
+
+Analysis copies now use decoded image dimensions, including logbook photos with
+no width/height metadata. Their longest edge is capped at 1280px, with JPEG
+compression and a 2,000,000-character base64 ceiling. A second 960px pass handles
+larger encodings; failure stops before uploading. Originals and photo links are
+preserved. `npm run test:lens` covers these cases. Live photo identification still
+requires an authenticated phone test; mocked tests do not verify model accuracy.
+
 The app and `/api/vision/identify` now support structured gear and marine-life profiles.
 The backend working copy is `/Users/dmz/DMZScuba.com`; the implementation is in
-`workers/dmz-media-api/src/index.js`. Changes are local, not deployed.
+`workers/dmz-media-api/src/index.js`.
 
 ## Contract and rollout
 

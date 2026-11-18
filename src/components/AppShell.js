@@ -100,7 +100,7 @@ export function ScreenHeader({ eyebrow = 'DMZ SCUBA', title, onBack, action }) {
         ) : <View style={styles.backSpacer} />}
         <View style={styles.titleWrap}>
           <Text style={styles.eyebrow}>{eyebrow}</Text>
-          <Text numberOfLines={1} style={styles.title}>{title}</Text>
+          <Text accessibilityRole="header" style={styles.title}>{title}</Text>
         </View>
         {action || <View style={styles.backSpacer} />}
       </View>
@@ -123,24 +123,24 @@ const styles = StyleSheet.create({
   headerRow: { alignItems: 'center', flexDirection: 'row', minHeight: 48 },
   titleWrap: { alignItems: 'center', flex: 1, paddingHorizontal: 8 },
   eyebrow: { color: colors.cyan, fontSize: 10, fontWeight: '800', letterSpacing: 2 },
-  title: { color: colors.text, fontSize: 17, fontWeight: '800', marginTop: 2 },
+  title: { color: colors.text, fontSize: 17, fontWeight: '800', marginTop: 2, textAlign: 'center' },
   backButton: {
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.lineStrong,
     borderRadius: radii.pill,
     borderWidth: 1,
-    height: 40,
+    height: 44,
     justifyContent: 'center',
-    width: 40,
+    width: 44,
   },
-  backSpacer: { height: 40, width: 40 },
+  backSpacer: { height: 44, width: 44 },
   pressed: { opacity: 0.7, transform: [{ scale: 0.97 }] },
   sectionLabel: { color: colors.cyan, fontSize: 11, fontWeight: '800', letterSpacing: 1.7, marginBottom: spacing.sm },
   tabBar: { backgroundColor: 'rgba(5, 11, 20, 0.98)', borderTopColor: colors.lineStrong, borderTopWidth: StyleSheet.hairlineWidth, flexDirection: 'row', paddingHorizontal: 7, paddingTop: 7 },
   tabItem: { alignItems: 'center', flex: 1, gap: 3, justifyContent: 'center', minHeight: 50, paddingHorizontal: 3, paddingVertical: 4 },
   tabIcon: { minWidth: 44, height: 28, alignItems: 'center', justifyContent: 'center', borderRadius: 10 },
   tabIconSelection: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(112,221,246,0.12)', borderRadius: 10 },
-  tabLabel: { color: colors.muted, fontSize: 11, fontWeight: '600' },
+  tabLabel: { color: colors.muted, fontSize: 11, fontWeight: '600', textAlign: 'center' },
   tabLabelSelected: { color: colors.cyan },
 });

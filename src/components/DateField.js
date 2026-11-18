@@ -113,15 +113,15 @@ export default function DateField({ label, value, onChange, placeholder = 'Selec
 
 const styles = StyleSheet.create({
   field: { marginBottom: 14 },
-  label: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 0.45, marginBottom: 7, textTransform: 'uppercase' },
+  label: { color: colors.muted, fontSize: 13, fontWeight: '600', marginBottom: 7 },
   row: { alignItems: 'center', flexDirection: 'row', gap: 8 },
   input: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, flex: 1, justifyContent: 'center', minHeight: 50, paddingHorizontal: 13, paddingVertical: 11 },
   pressed: { opacity: 0.74 },
   value: { color: colors.text, fontSize: 16, fontWeight: '700' },
   placeholder: { color: colors.faint, fontSize: 16, fontWeight: '600' },
-  clear: { alignItems: 'center', backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, height: 34, justifyContent: 'center', width: 34 },
+  clear: { alignItems: 'center', backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, minHeight: 44, justifyContent: 'center', minWidth: 44 },
   clearText: { color: colors.faint, fontSize: 13, fontWeight: '900' },
-  helper: { color: colors.faint, fontSize: 10, lineHeight: 15, marginTop: 5 },
+  helper: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 5 },
   backdrop: { backgroundColor: 'rgba(2, 8, 16, 0.6)', flex: 1, justifyContent: 'flex-end' },
   sheet: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderTopLeftRadius: radii.lg, borderTopRightRadius: radii.lg, borderWidth: 1, overflow: 'hidden', width: '100%' },
   spinner: { alignSelf: 'stretch' },

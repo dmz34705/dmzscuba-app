@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
 import MenuPage from '../../components/MenuPage';
 import { GroupedSection, NavigationRow } from '../../components/Ui';
@@ -15,7 +15,7 @@ export default function FeatureCatalogScreen({ area, body, footer, onOpenFeature
 
   return (
     <MenuPage title={area === 'learn' ? 'Learn' : 'Tools'} subtitle={body}>
-        <GroupedSection title={area === 'learn' ? 'Lessons' : 'Tools'} action={<Text accessibilityRole="button" onPress={() => setEditing(true)} style={styles.edit}>Edit order</Text>}>
+        <GroupedSection title={area === 'learn' ? 'Lessons' : 'Tools'} action={<Pressable accessibilityRole="button" accessibilityLabel={`Arrange ${area === 'learn' ? 'lessons' : 'tools'}`} onPress={() => setEditing(true)} style={styles.editButton}><Text style={styles.edit}>Arrange</Text></Pressable>}>
           {features.map((feature, index) => (
             <NavigationRow
               accent={colors[feature.accent] || colors.cyan}
@@ -38,6 +38,7 @@ export default function FeatureCatalogScreen({ area, body, footer, onOpenFeature
 }
 
 const styles = StyleSheet.create({
-  edit: { color: colors.cyan, fontSize: 13, padding: 8 },
+  editButton: { minHeight: 44, justifyContent: 'center', paddingHorizontal: 10 },
+  edit: { color: colors.cyan, fontSize: 13, fontWeight: '600' },
   footer: { color: colors.faint, fontSize: 11, lineHeight: 17, marginHorizontal: 8, marginTop: 6, textAlign: 'center' },
 });

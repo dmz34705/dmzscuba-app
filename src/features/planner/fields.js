@@ -1,6 +1,6 @@
 // Form pieces for the planner's editors, styled to match DateField (gear locker, profile).
 import { useState } from 'react';
-import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View, useWindowDimensions } from 'react-native';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -108,7 +108,8 @@ export function ToggleRow({ label, body, value, onChange, last = false }) {
 }
 
 export function TwoUp({ children }) {
-  return <View style={styles.twoUp}>{children}</View>;
+  const { width, fontScale } = useWindowDimensions();
+  return <View style={[styles.twoUp, (width < 375 || fontScale > 1.2) && { flexDirection: 'column' }]}>{children}</View>;
 }
 export function Half({ children }) {
   return <View style={styles.flex}>{children}</View>;
@@ -121,16 +122,22 @@ export function FormLabel({ children }) {
 // A full-height editor with Cancel / title / Save, keyboard-aware.
 export function EditorSheet({ visible, title, eyebrow, onCancel, onSave, saveLabel = 'Save', saveDisabled = false, children, footer }) {
   const insets = useSafeAreaInsets();
+  const { fontScale } = useWindowDimensions();
+  const largeText = fontScale > 1.3;
+  const heading = (
+    <View style={[styles.sheetTitleWrap, largeText && styles.sheetTitleLarge]}>
+      {eyebrow ? <Text style={styles.sheetEyebrow}>{eyebrow}</Text> : null}
+      <Text accessibilityRole="header" style={styles.sheetTitle}>{title}</Text>
+    </View>
+  );
   return (
     <Modal animationType="slide" onRequestClose={onCancel} presentationStyle="pageSheet" visible={visible}>
       <View style={[styles.sheet, { paddingTop: Platform.OS === 'android' ? insets.top : 0 }]}>
-        <View style={styles.sheetHeader}>
-          <Pressable accessibilityRole="button" hitSlop={10} onPress={onCancel}><Text style={styles.cancel}>Cancel</Text></Pressable>
-          <View style={styles.sheetTitleWrap}>
-            {eyebrow ? <Text style={styles.sheetEyebrow}>{eyebrow}</Text> : null}
-            <Text numberOfLines={1} style={styles.sheetTitle}>{title}</Text>
-          </View>
-          <Pressable accessibilityRole="button" accessibilityState={{ disabled: saveDisabled }} disabled={saveDisabled} hitSlop={10} onPress={onSave}><Text style={[styles.save, saveDisabled && styles.disabled]}>{saveLabel}</Text></Pressable>
+        {largeText ? heading : null}
+        <View style={[styles.sheetHeader, largeText && { justifyContent: 'space-between' }]}>
+          <Pressable accessibilityRole="button" style={styles.headerAction} onPress={onCancel}><Text style={styles.cancel}>Cancel</Text></Pressable>
+          {!largeText ? heading : null}
+          <Pressable accessibilityRole="button" accessibilityState={{ disabled: saveDisabled }} disabled={saveDisabled} style={styles.headerAction} onPress={onSave}><Text style={[styles.save, saveDisabled && styles.disabled]}>{saveLabel}</Text></Pressable>
         </View>
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={styles.flex}>
           <ScrollView contentContainerStyle={[styles.sheetContent, { paddingBottom: insets.bottom + 40 }]} keyboardShouldPersistTaps="handled">
@@ -146,10 +153,10 @@ export function EditorSheet({ visible, title, eyebrow, onCancel, onSave, saveLab
 const styles = StyleSheet.create({
   flex: { flex: 1 },
   field: { marginBottom: 14 },
-  label: { color: colors.muted, fontSize: 11, fontWeight: '800', letterSpacing: 0.45, marginBottom: 7, textTransform: 'uppercase' },
+  label: { color: colors.muted, fontSize: 13, fontWeight: '600', marginBottom: 7 },
   input: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.md, borderWidth: 1, color: colors.text, fontSize: 16, fontWeight: '600', justifyContent: 'center', minHeight: 50, paddingHorizontal: 13, paddingVertical: 11 },
   multiline: { minHeight: 96, textAlignVertical: 'top' },
-  helper: { color: colors.faint, fontSize: 11, lineHeight: 16, marginTop: 5 },
+  helper: { color: colors.muted, fontSize: 12, lineHeight: 18, marginTop: 5 },
   row: { alignItems: 'center', flexDirection: 'row', gap: 8 },
   value: { color: colors.text, fontSize: 16, fontWeight: '700' },
   placeholder: { color: colors.faint, fontSize: 16, fontWeight: '600' },
@@ -162,7 +169,7 @@ const styles = StyleSheet.create({
   done: { alignItems: 'center', borderTopColor: colors.line, borderTopWidth: StyleSheet.hairlineWidth, paddingVertical: 11 },
   doneText: { color: colors.cyan, fontSize: 13, fontWeight: '900' },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, minHeight: 38, justifyContent: 'center', paddingHorizontal: 13, paddingVertical: 8 },
+  chip: { backgroundColor: colors.backgroundRaised, borderColor: colors.lineStrong, borderRadius: radii.pill, borderWidth: 1, minHeight: 44, justifyContent: 'center', paddingHorizontal: 13, paddingVertical: 8 },
   chipOn: { backgroundColor: 'rgba(112, 221, 246, 0.14)', borderColor: colors.cyan },
   chipText: { color: colors.muted, fontSize: 13, fontWeight: '700' },
   chipTextOn: { color: colors.cyan },
@@ -171,12 +178,14 @@ const styles = StyleSheet.create({
   toggleTitle: { color: colors.text, fontSize: 15, fontWeight: '600' },
   toggleBody: { color: colors.muted, fontSize: 12, lineHeight: 17, marginTop: 3 },
   twoUp: { flexDirection: 'row', gap: 10 },
-  formLabel: { color: colors.cyan, fontSize: 11, fontWeight: '800', letterSpacing: 1.6, marginBottom: 12, marginTop: 10, textTransform: 'uppercase' },
+  formLabel: { color: colors.text, fontSize: 16, fontWeight: '700', marginBottom: 12, marginTop: 10 },
   sheet: { backgroundColor: colors.background, flex: 1 },
+  headerAction: { minHeight: 44, minWidth: 56, justifyContent: 'center', maxWidth: '40%' },
+  sheetTitleLarge: { flex: 0, paddingTop: 12, paddingBottom: 8 },
   sheetHeader: { alignItems: 'center', borderBottomColor: colors.line, borderBottomWidth: StyleSheet.hairlineWidth, flexDirection: 'row', minHeight: 58, paddingHorizontal: spacing.md },
   sheetTitleWrap: { alignItems: 'center', flex: 1, paddingHorizontal: 8 },
   sheetEyebrow: { color: colors.cyan, fontSize: 9, fontWeight: '800', letterSpacing: 1.8 },
-  sheetTitle: { color: colors.text, fontSize: 16, fontWeight: '800', marginTop: 2 },
+  sheetTitle: { color: colors.text, fontSize: 16, fontWeight: '700', marginTop: 2, textAlign: 'center' },
   cancel: { color: colors.muted, fontSize: 15, fontWeight: '600', minWidth: 56 },
   save: { color: colors.cyan, fontSize: 15, fontWeight: '800', minWidth: 56, textAlign: 'right' },
   disabled: { opacity: 0.4 },

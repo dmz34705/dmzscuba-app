@@ -162,7 +162,7 @@ function QuickTile({ feature, detail, badge, onPress, onLongPress }) {
         <View style={styles.tileIcon}><FeatureIcon name={feature.icon} /></View>
         {badge ? <View style={styles.tileBadge}><Text style={styles.tileBadgeText}>{badge}</Text></View> : null}
       </View>
-      <Text numberOfLines={1} style={styles.tileTitle}>{feature.title}</Text>
+      <Text style={styles.tileTitle}>{feature.title}</Text>
       <Text numberOfLines={2} style={styles.tileBody}>{detail}</Text>
     </Pressable>
   );
@@ -195,7 +195,7 @@ function UpNext({ plan, alerts, onPress, onPlan }) {
         <View style={[styles.noticeIcon, { backgroundColor: 'rgba(240,200,75,0.14)' }]}><Glyph d={CALENDAR} color={colors.gold} size={18} /></View>
         <View style={styles.noticeCopy}>
           <Text numberOfLines={1} style={styles.noticeTitle}>Plan your next dive</Text>
-          <Text numberOfLines={1} style={styles.noticeBody}>Dive days and trips, checked against your gear and cards</Text>
+          <Text style={styles.noticeBody}>Plan with your gear and certifications in view.</Text>
         </View>
         <Glyph d={CHEVRON} color={colors.faint} size={16} />
       </Pressable>
