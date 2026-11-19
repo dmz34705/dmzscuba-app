@@ -2,7 +2,7 @@ import { ATLAS_BASE_PATH, ATLAS_DATASET_KEYS, MAX_MANIFEST_BYTES, utf8Bytes, val
 
 // Platform-independent transaction engine. Files are immutable; the small state pointer
 // changes only once all required files have been downloaded, hashed and parsed.
-export function createAtlasUpdater({ storage, fetchText, digest, activate, baseUrl, onStatus = () => {} }) {
+export function createAtlasUpdater({ storage, fetchText, digest, activate, baseUrl, onStatus = () => {}, bundledData = null }) {
   let state = { active: null, previous: null }, initialized = null, running = null;
   let status = { source: 'bundled', phase: 'idle', version: null, publishedAt: null, checkedAt: null };
   const report = patch => { status = { ...status, ...patch }; onStatus(status); return status; };
@@ -29,6 +29,12 @@ export function createAtlasUpdater({ storage, fetchText, digest, activate, baseU
   function initialize() {
     if (initialized) return initialized;
     initialized = (async () => {
+      // Local development must show the current server's data even when a phone
+      // retains an older published snapshot. Keep that snapshot for release builds.
+      if (bundledData) {
+        activate(validateAtlasDatasets(bundledData));
+        return report({ source: 'bundled', phase: 'current' });
+      }
       const saved = await storage.readState().catch(() => null);
       for (const manifest of [saved?.active, saved?.previous]) {
         if (!manifest) continue;
@@ -47,6 +53,7 @@ export function createAtlasUpdater({ storage, fetchText, digest, activate, baseU
     return initialized;
   }
   function checkForUpdates() {
+    if (bundledData) return initialize();
     if (running) return running;
     running = (async () => {
       await initialize();

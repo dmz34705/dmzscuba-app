@@ -46,12 +46,31 @@ function harness() {
     if (fail?.(route)) throw new Error('Website unreachable');
     return route.endsWith('/manifest.json') ? JSON.stringify(server.manifest) : server.bodies.get(route);
   };
-  const make = () => createAtlasUpdater({ storage, fetchText, digest: async text => sha(text), baseUrl: 'https://atlas.example', activate: data => activations.push(data) });
+  const make = (options = {}) => createAtlasUpdater({ storage, fetchText, digest: async text => sha(text), baseUrl: 'https://atlas.example', activate: data => activations.push(data), ...options });
   return { files, requests, activations, make, state: () => clone(state), server: value => { server = value; }, fail: value => { fail = value; }, pointerFailure: value => { pointerFailure = value; } };
 }
 
 (async () => {
   contract.validateAtlasDatasets(datasets.BUNDLED_ATLAS_DATA);
+  // Reproduce a phone restoring a release that predates the newly added site.
+  const local = harness();
+  const oldData = clone(datasets.BUNDLED_ATLAS_DATA);
+  oldData.curatedSites = oldData.curatedSites.filter(site => site.id !== 'us-fl-hudson-grotto');
+  delete oldData.siteProfiles.sites['us-fl-hudson-grotto'];
+  local.server(release(oldData));
+  await local.make().checkForUpdates();
+  await local.make().initialize();
+  assert.ok(!local.activations.at(-1).curatedSites.some(site => site.id === 'us-fl-hudson-grotto'), 'Saved releases can override a new bundled site.');
+  const savedState = local.state(), requestCount = local.requests.length;
+  const development = local.make({ bundledData: datasets.BUNDLED_ATLAS_DATA, activate: data => {
+    local.activations.push(data); datasets.activateAtlasDatasets(data);
+  } });
+  assert.equal((await development.initialize()).source, 'bundled');
+  await development.checkForUpdates();
+  assert.ok(catalog.catalogSites().some(site => site.id === 'us-fl-hudson-grotto'), 'Development catalog uses the current server data.');
+  assert.ok(document.buildAtlasData().sites.some(site => site.id === 'us-fl-hudson-grotto'), 'Development map receives Hudson Grotto too.');
+  assert.equal(local.requests.length, requestCount, 'Local development does not download an older published Atlas.');
+  assert.deepEqual(local.state(), savedState, 'Saved release state remains available to production builds.');
   assert.equal(contract.utf8Bytes('reef 🐠 café \ud800'), Buffer.byteLength('reef 🐠 café \ud800'));
   const temp = fs.mkdtempSync(path.join(os.tmpdir(), 'dmz-atlas-release-test-'));
   try {

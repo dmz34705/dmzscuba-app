@@ -1,13 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Directory, File, Paths } from 'expo-file-system';
 import * as Crypto from 'expo-crypto';
-import { activateAtlasDatasets } from './datasets';
+import { activateAtlasDatasets, BUNDLED_ATLAS_DATA } from './datasets';
 import { createAtlasUpdater } from './updateEngine';
 import { utf8Bytes } from './updateContract';
 
 // Set EXPO_PUBLIC_ATLAS_ORIGIN=https://dmzscuba-com.pages.dev for development releases.
 // Production never silently falls back to a development endpoint.
 export const ATLAS_ORIGIN = (process.env.EXPO_PUBLIC_ATLAS_ORIGIN || 'https://www.dmzscuba.com').replace(/\/$/, '');
+// An explicit origin still enables testing published Atlas releases in a dev client.
+const LOCAL_ATLAS = typeof __DEV__ !== 'undefined' && __DEV__ && !process.env.EXPO_PUBLIC_ATLAS_ORIGIN;
 // Development and production downloads have independent active/rollback state.
 const STATE_KEY = `@dmz-scuba/ocean-atlas/releases-v1/${ATLAS_ORIGIN}`;
 const sourceFolder = ATLAS_ORIGIN.replace(/[^a-z0-9.-]/gi, '_');
@@ -54,6 +56,7 @@ async function fetchText(url, maxBytes) {
 }
 
 export const atlasUpdater = createAtlasUpdater({
+  bundledData: LOCAL_ATLAS ? BUNDLED_ATLAS_DATA : null,
   storage, fetchText, baseUrl: ATLAS_ORIGIN,
   digest: text => Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm.SHA256, text),
   activate: activateAtlasDatasets,
@@ -61,6 +64,7 @@ export const atlasUpdater = createAtlasUpdater({
 });
 
 export function atlasStatusLabel(value) {
+  if (LOCAL_ATLAS) return 'Development Atlas · server data';
   const date = value.publishedAt ? new Date(value.publishedAt).toLocaleDateString() : null;
   if (value.phase === 'checking') return 'Checking Atlas updates…';
   if (value.phase === 'downloading') return 'Updating Atlas…';
