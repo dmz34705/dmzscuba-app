@@ -23,6 +23,7 @@ const sites = catalog.catalogSites().map(s => {
 fs.writeFileSync(path.join(web,'assets/data/atlas-studio-catalog.json'),JSON.stringify({schemaVersion:1,sites})+'\n');
 const dir=path.join(web,'assets/vendor/leaflet');fs.mkdirSync(dir,{recursive:true});
 const leaflet=load('data/leaflet.js');fs.writeFileSync(path.join(dir,'leaflet.js'),leaflet.leafletJs);fs.writeFileSync(path.join(dir,'leaflet.css'),leaflet.leafletCss);
+fs.copyFileSync(path.join(root,'features/oceanAtlas/data/LEAFLET-LICENSE.txt'),path.join(dir,'LICENSE.txt'));
 const {buildAtlasRelease}=require(path.join(app,'scripts/build-atlas-release.cjs'));
 const manifest=buildAtlasRelease(web);
 console.log(`Exported ${sites.length} editable sites and baseline release ${manifest.version.slice(0,12)}.`);
