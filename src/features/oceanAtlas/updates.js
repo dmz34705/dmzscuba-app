@@ -5,11 +5,11 @@ import { activateAtlasDatasets, BUNDLED_ATLAS_DATA } from './datasets';
 import { createAtlasUpdater } from './updateEngine';
 import { utf8Bytes } from './updateContract';
 
-// Set EXPO_PUBLIC_ATLAS_ORIGIN=https://dmzscuba-com.pages.dev for development releases.
-// Production never silently falls back to a development endpoint.
-export const ATLAS_ORIGIN = (process.env.EXPO_PUBLIC_ATLAS_ORIGIN || 'https://www.dmzscuba.com').replace(/\/$/, '');
-// An explicit origin still enables testing published Atlas releases in a dev client.
-const LOCAL_ATLAS = typeof __DEV__ !== 'undefined' && __DEV__ && !process.env.EXPO_PUBLIC_ATLAS_ORIGIN;
+const DEVELOPMENT = typeof __DEV__ !== 'undefined' && __DEV__;
+// Development releases are isolated from the production Atlas and its saved files.
+export const ATLAS_ORIGIN = (process.env.EXPO_PUBLIC_ATLAS_ORIGIN || (DEVELOPMENT ? 'https://dmzscuba-com.pages.dev' : 'https://www.dmzscuba.com')).replace(/\/$/, '');
+// Opt in only when editing local datasets instead of testing Atlas Studio releases.
+const LOCAL_ATLAS = DEVELOPMENT && process.env.EXPO_PUBLIC_ATLAS_USE_BUNDLED === '1';
 // Development and production downloads have independent active/rollback state.
 const STATE_KEY = `@dmz-scuba/ocean-atlas/releases-v1/${ATLAS_ORIGIN}`;
 const sourceFolder = ATLAS_ORIGIN.replace(/[^a-z0-9.-]/gi, '_');

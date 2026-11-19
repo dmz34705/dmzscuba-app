@@ -99,6 +99,8 @@
     "test:layout": "node scripts/verify-layout.cjs",
     "tunnel": "node tunnel.cjs",
     "build:atlas-release": "node scripts/build-atlas-release.cjs",
+    "build:atlas-studio": "node scripts/build-atlas-studio.cjs",
+    "test:atlas-feeds": "node scripts/verify-atlas-feeds.cjs",
     "test:atlas-updates": "node scripts/verify-atlas-update-lifecycle.cjs && node scripts/verify-atlas-updates.cjs",
     "deploy": "npx expo export -p web && wrangler deploy",
     "preview": "npx expo export -p web && wrangler dev",

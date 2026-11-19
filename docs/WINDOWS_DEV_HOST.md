@@ -1,5 +1,13 @@
 # Windows trip host
 
+Atlas Studio is available on the development website at
+`https://dmzscuba-com.pages.dev/management/` for individually signed-in
+administrator accounts. Development builds download Atlas releases from that
+development site by default; production builds keep their production feed.
+The most recent verified release remains available offline and after an app
+restart. Set `EXPO_PUBLIC_ATLAS_USE_BUNDLED=1` only when deliberately testing
+local bundled datasets instead of published Atlas Studio updates.
+
 Windows serves JavaScript to the existing iPhone development build. Xcode is not
 needed to host Metro; rebuilding the iOS native binary still requires a Mac.
 Use the same native dependencies as the phone build. Do not uninstall the phone

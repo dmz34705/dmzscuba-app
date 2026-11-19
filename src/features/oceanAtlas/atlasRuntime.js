@@ -56,6 +56,9 @@ export function atlasRuntime(DATA, MODEL) {
       note: protection ? [protection, origin.note].filter(Boolean).join(' ') : source === 'curated' ? 'Well-known inland dive site. Access, fees and rules change — confirm with the site or park before visiting.' : source === 'tbnms' ? 'NOAA sanctuary shipwreck with a seasonal dive mooring. Protected: look, don\'t take.' : origin.note,
       sources: [{ sourceName: origin.name, sourceUrl: url ? (url[0] === '~' ? `https://en.wikipedia.org/wiki/${url.slice(1)}` : url) : origin.url, dataLicense: origin.license, coordinateQuality: 'community' }] };
   }));
+  // Administrator corrections replace imported versions under the original ID.
+  const editorialSites = new Map(DATA.sites.filter(site => site.editorial === true).map(site => [site.id, site]));
+  DATA.sites = DATA.sites.filter(site => !editorialSites.has(site.id) || editorialSites.get(site.id) === site);
   // Published depths (scripts/build-published-depths.cjs; same rule as catalog.js).
   for (const site of DATA.sites) {
     const row = DATA.publishedDepths?.depths?.[site.id];

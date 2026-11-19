@@ -53,7 +53,7 @@ export function rawCatalogSites() {
       communityVisibilityMeters: stats[0] || null, communityRating: stats[1] || null, communityDives: stats[2] || 0,
       communityDiveMinutes: stats[3] || null };
   });
-  const listed = [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites].map(site => ({ id: site.id, name: site.name, latitude: site.latitude, longitude: site.longitude,
+  const listed = [...OFFLINE_DIVE_SITES, ...sites, ...curatedSites].map(site => ({ ...site, id: site.id, name: site.name, latitude: site.latitude, longitude: site.longitude,
     country: site.country || '', region: site.region || '', environment: site.environment || '', topologies: site.topologies || featuresOf(site.siteType),
     entry: site.entry || '', maxDepthMeters: site.maxDepthMeters || null }));
   const osm = osmSource.sites.map(([osmId, name, latitude, longitude, depth, entryCode, mask, fresh, difficulty, currentCode, accessCode, hazardMask, mooringCode, fee, accessEase, entryDetailMask]) => ({ id: `osm-${osmId}`, name, latitude, longitude,
@@ -72,7 +72,10 @@ export function rawCatalogSites() {
       country: '', region: '', environment: fresh ? 'fresh' : 'ocean', topologies: extraSource.topologyCodes.filter((_, code) => mask & (1 << code)),
       entry: ['', 'boat', 'shore'][entryCode], maxDepthMeters: depth || null, ...(note ? { note } : {}) };
   });
-  const everything = [...listed, ...global, ...osm, ...extra];
+  // Administrator-maintained records replace imported versions under the same
+  // permanent ID, preserving logbook links while avoiding duplicate pins.
+  const overrides = new Map(listed.filter(site => site.editorial === true).map(site => [site.id, site]));
+  const everything = [...listed, ...global, ...osm, ...extra].filter(site => !overrides.has(site.id) || overrides.get(site.id) === site);
   closedCount = everything.filter(site => CLOSED_WRECKS.test(site.name)).length;
   rawCache = everything.filter(site => !CLOSED_WRECKS.test(site.name));
   applyPublishedDepths(rawCache, publishedDepths);
