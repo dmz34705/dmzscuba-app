@@ -63,7 +63,11 @@ for (const [id, row] of Object.entries(data.sites)) {
   const guide = buildSiteGuide({ id, latitude: site.latitude, longitude: site.longitude, key: id }, {});
   assert.equal(guide.profile?.summary, row.summary, `${row.name}: the card receives the profile`);
   assert.equal(guide.profile?.depthCheck, row.depthCheck === 'map' ? 'map' : null, `${row.name}: depth corroboration reaches the card`);
-  if (row.basis !== 'depth' && !row.researchBatch) assert.ok(guide.profile.region?.name === 'Lake Michigan' && guide.profile.region.tempDeepC, `${row.name}: regional conditions attached`);
+  if (row.basis !== 'depth' && !row.researchBatch) {
+    const region = P.profileRegion(data, site.latitude, site.longitude);
+    assert.equal(guide.profile.region?.name || null, region?.name || null, `${row.name}: only matching regional conditions attached`);
+    if (region?.name === 'Lake Michigan') assert.ok(guide.profile.region.tempDeepC, `${row.name}: deep-water regional temperature attached`);
+  }
   assert.ok(guide.profile.sources.every(source => source.name && (source.url === null || /^https:\/\//.test(source.url))), `${row.name}: source links`);
 }
 const communitySite = C.catalogSites().find(site => site.communityVisibilityMeters);
